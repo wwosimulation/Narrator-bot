@@ -1,0 +1,363 @@
+**__Village__**
+
+:villager: Villager - Good
+You are a regular villager without any special abilities.
+
+:mason: Sibling - Good (Werewolf Classic Role)
+You can see and chat with other siblings!
+
+:mayor: Mayor - Good
+Once a game, you can reveal yourself and make your votes double.
+
+:president: President - Good
+Everyone knows your role. If you die, the village loses!
+
+:pacifist: Pacifist - Good
+Once a game, reveal a player and disable voting for that day!
+
+:grumpy_grandma: Grumpy Grandma - Good
+After the first night, select a player to mute the following day denying them to talk or vote. You can't mute two players consecutively.
+
+:drunk: Drunk - Good (Werewolf Classic Role)
+You can't talk during the day!
+
+:doctor: Doctor - Good
+Every night, protect a player but yourself. That player can't be killed the following day!
+
+:bodyguard: Bodyguard - Good
+Select a player to be protected every night. If that player gets attacked, you will take hit instead. You automatically protect yourself. You have two lives.
+
+:tough_guy: Tough Guy - Good
+Select a player to be protected during the night. If that player is attacked, they will not die, but instead, you and the killer will see each other's role and you will die at the end of the day.
+
+:beast_hunter: Beast Hunter - Unknown
+Select a player to trap. After the trap is active, if that player gets attacked, they won't die. If the attacker is from the werewolves, the weakest wolf will die!
+
+:witch: Witch - Unknown
+You have two potions to be used at night, one to save a player, the other to kill. You can only use the poison potion after the first night. You only have one potion each.
+
+:avenger: Avenger - Good
+After the first day, select a player to die when you die.
+
+:wise_man: Wise Man - Good (Werewolf Classic Role)
+You can't be killed by the werewolves!
+
+:jailer: Jailer - Unknown
+Every day, select a player to be jailed the following night. That player cannot use their abilities and can't be killed at night. If you find your target suspicious, you can shoot them. You can only shoot a player once.
+
+:gunner: Gunner - Unknown 
+You can shoot up to 2 players in a game. You can only use a bullet a day.
+
+:marksman: Marksman - Unknown
+Select a player to mark. The following night you can choose to kill the marked player or mark another player. If you try to kill a villager, the shot will backfire and kill you instead. You only have 2 arrows.
+
+:sect_hunter: Sect Hunter - Unknown (Werewolf Classic Role)
+Every night, select a player. If that player belongs to the Sect, they will die!
+
+:mad_scientist: Mad Scientist - Unknown (Werewolf Classic Role)
+If you die, two players that are next to you die as well!
+
+:medium: Medium - Unknown
+Once a game, select a dead player to revive. You can only revive villagers!
+
+:detective~1: Detective - Good
+Every night, select two players to see if they belong to the same team!
+
+:seer: Seer - Good
+Every night, select a player to uncover their role.
+
+:aura_seer: Aura Seer - Good
+Every night, select a player to check their aura! Possible auras are: `Good` `Evil` `Unknown`.
+
+:spirit_seer: Spirit Seer - Good
+Every night, select up to two players. If one of them killed the following day, you will be notified.
+
+:cupid~1: Cupid - Good
+During the first night, select two players to be a couple. Your main team will be on the couple's side. If one of your couple dies, the other dies as well and you will become a regular villager.
+
+:doppelganger: Doppelgangger - Unknown (before turned) | (Werewolf Classic Role)
+During the first night, select a player to inherit their role after they die.
+
+:naughty_boy: Naughty Boy - Unknown (Werewolf Classic Role)
+Once a game, during the night, switch two player so that their role will change. The effect will take place the following night. If one of them dies before that, you ability is wasted!
+
+:cursed: Cursed - Good (before turned)
+You are a regular villager until the werewolves kill you, at that point, you will turn into a werewolf.
+
+:red_lady: Red Lady - Good
+Every night you can visit a player. If that player is a werewolf or a killer, you will die. You can't be attacked when visiting players!
+
+:fortune_teller: Fortune Teller - Good
+You can give two cards to two players. They can use those cards to reveal themselves!
+
+:flower_child: Flower Child - Good
+Once a game, protect a player from being voted out by the villagers.
+
+:handsome_prince: Handsome Prince - Good (Werewolf Classic Role)
+If you are lynched by the village, you won't die, instead your role will be revealed to everyone!
+
+:idiot: Idiot - Good (Werewolf Classic Role)
+If you are lynched by the village, you won't die, instead you lose your right to vote and your role is revealed to everyone!
+
+:sheriff: Sheriff - Good
+Every night, select a player to watch. If that player dies, you will receive 2 suspects. One will be the killer, and the other random.
+
+:loudmouth: Loudmouth - Good
+Select a player to be revealed when you die!
+
+:forger: Forger - Good
+You can forge 2 items, a shield and a sword, you want to give to other players. You can forge a shield two times but you can only forge one time. The shield protects them from being attack while the sword allows them to kill someone. Each item takes two days to forge.
+
+:random_regular_villager: Random Regular Villager
+One of: `Villager` `Sibling` `Mayor` `Pacifist` `Grumpy Grandma` `Doctor` `Bodyguard` `Tough Guy` `Beast Hunter` `Witch` `Wise Man` `Avenger` `Marksman` `Aura Seer` `Seer Apprentice` `Spirit Seer` `Red Lady` `Flower Child` `Sheriff` `Loudmouth`.
+
+:random_strong_villager: Random Strong Villager
+One of: `Jailer` `Gunner` `Medium` `Detective` `Seer` `Doppelganger` `Naughty Boy` `Fortune Teller` `Forger` 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**__Werewolves__**
+
+:werewolf: Werewolf - Evil
+You are a regular werewolf without any special abilities.
+
+:junior_werewolf: Junior Werewolf - Evil
+Select a player to die when you die. 
+
+:nightmare_werewolf: Nightmare Werewolf - Evil
+Each day, you can nightmare a player. That player won't be able to use their abilities the following night. You can do this twice!
+
+:kitten_wolf: Kitten Wolf - Evil
+Once a game, select a player to convert to a werewolf. If that player was not a villager, headhunter's target or was protected, your ability will fail@
+
+:wolf_shaman: Wolf Shaman - Evil
+Every day, you can select a player to enchant. They will appear as Wolf Shaman to the Seers, and evil to the auras. You cannot do this if you are the last wolf alive!
+
+:wolf_pacifist: Wolf Pacifist - Evil
+Once a game, reveal a player and disable voting for that day!
+
+:shadow_wolf: Shadow Wolf - Evil
+Once a game, you can activate your ability and hide the votes of everyone but double the votes for werewolves!
+
+:guardian_wolf: Guardian Wolf - Evil
+Once a game, protect a player from being voted out by the villagers.
+
+:werewolf_berserk: Werewolf Berserk - Evil
+Once a game, you can activate a frenzy. The following night, if the player you attack was protected, they will die along with the protectors who protected them!
+
+:alpha_werewolf: Alpha Werewolf - Unknown
+You have double votes when voting as a wolf!
+
+:wolf_seer: Wolf Seer - Evil
+Every night, select a player to uncover their role.
+
+:sorcerer: Sorcerer - Evil
+Every night, select a player to uncover their role. You can't talk with the werewolves!
+
+:random_werewolf: 
+One of: `Werewolf` `Junior Werewolf` `Nightmare Werewolf` `Kitten Wolf` `Wolf Shaman` `Wolf Pacifist` `Shadow Wolf` `Guardian Wolf` `Werewolf Berserk` `Alpha Werewolf` `Wolf Seer`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**__Solo Voting__**
+:fool: Fool - Unknown
+Your goal is to get lynched by the village. You win if they lynch you.
+
+:headhunter: Headhunter - Unknown
+Your goal is to get your target lynched by the village during the day. Your target must be lynched before you die in order to win. If your target dies another way, you become a regular villager.
+
+:random_voting: Random Voting - Unknown
+One of: `Fool` `Headhunter`.
+
+
+
+
+
+
+
+
+**__Solo Killer__**
+
+:serial_killer: Serial Killer - Unknown
+Each night you can kill one player. You cannot be killed by the werewolves. You win if you are the last player alive.
+
+:lone_wolf: Lone Wolf - Unknown (Werewolf Classic Role)
+You are werewolf that only wins alone. You only win if you are the last wolf alive!
+
+:cannibal: Cannibal - Unknown
+Every night you can choose to eat a player or keep your hunger to eat one extra player the next day! Your hunger will stack until 5 players. You cannot be killed by the Werewolves. You win if you are the last player alive.
+
+:arsonist: Arsonist - Unknown
+Every night you can either select two players to douse with gasoline, or ignite all doused players which kills them. You cannot be killed by the Werewolves. You win if you are the last player alive.
+
+:bomber: Bomber - Unknown
+At night you can place a bomb which will explode during the following night. You cannot be killed by the Werewolves. You win if you are the last player alive.
+
+:corruptor: Corruptor - Unknown
+Each night you can select one player to 'glitch'. That player won't be able to use their role abilities, speak or vote the following day and will die at the end of the day. The role of the player will not be revealed when dying. The player cannot be revived by the medium. You cannot be killed by the Werewolves. You win if you are the last player alive.
+
+:illusionist: Illusionist - Unknown
+Each night you can disguise a player. This player will appear to be an illusionist tp seer roles. You can kill all disguised players during the discussion phase. You cannot be killed by the Werewolves. You win if you are the last player alive.
+
+:bandit: Bandit - Unknown
+Find an accomplice by converting a player at night. Together you can kill one player each night. If your accomplice dies you can select a new one. You cannot be killed by the Werewolves. You win if all alive players belong to your team.
+
+:accomplice: Accomplice - Unknown
+The bandit can convert another player to be their accomplice at night. As an accomplice, you and the bandit can select a player to kill at night. If the vote is a draw, your vote wins. You cannot be killed by the Werewolves. You win if all alive players belong to your team.
+ 
+:sect_leader: Sect Leader - Unknown
+every night you can convert a player to join your sect. All sect members will commit suicide if the sect leader dies. You cannot convert werewolves and solo killers. You cannot be killed by the Werewolves. You win if all alive players belong to your team.
+
+:zombie~1:Zombie - Unknown
+Every night you can bite a player which will turn that player into a zombie at the end of the next night. Bitten players will remain in their team for one day before converting. All zombies can select different targets. Only players from the village team, headhunter and fool can be converted. You win if all players have been converted. You win if all alive players belong to your team.
+
+:random_killer: Random Killer
+One of: `Serial Killer` `Lone Wolf` `Cannibal` `Arsonist` `Bomber` `Corruptor` `Illusionist` `Bandit` `Sect Leader` `Zombie`.
+
+:random: Random
+One random role.
+
+
+
+●▬▬▬▬๑ :one: Classic Roles ๑▬▬▬▬●
+
+1. :aura_seer: Aura Seer
+2. :medium: Medium
+3. :jailer: Jailer
+4. :werewolf: Werewolf
+•═══════════════════════════•
+5. :doctor: Doctor
+6. :alpha_werewolf: Alpha Werewolf
+•═══════════════════════════•
+7. :seer: Seer
+8. :fool Fool or :headhunter: Headhunter
+•═══════════════════════════•
+9. :bodyguard: Bodyguard
+10. :gunner: Gunner
+11. :wolf_shaman: Wolf Shaman
+•═══════════════════════════•
+12. :aura_seer: Aura Seer
+13. :serial_killer: Serial Killer 
+•═══════════════════════════•
+14. :priest: Priest 
+15. :wolf_seer: Wolf Seer 
+16. :seer: Seer
+ 
+
+●▬▬▬▬๑  :two: Sandbox Roles ๑▬▬▬▬●
+ 
+1. :jailer: Jailer
+2. :mayor: Mayor
+3. :beast_hunter: Beast Hunter
+4. :junior_werewolf: Junior Werewolf
+•═══════════════════════════•
+5. :doctor: Doctor
+6. :wolf_seer: Wolf Seer 
+•═══════════════════════════•
+7. :seer: Seer
+8. :fool: Fool or :headhunter: Headhunter
+•═══════════════════════════•
+9. :bodyguard: Bodyguard 
+10. :gunner: Gunner 
+11. :alpha_werewolf: Alpha Werewolf 
+•═══════════════════════════•
+12. :aura_seer: Aura Seer 
+13. :sect_leader: Sect Leader or :arsonist: Arsonist 
+•═══════════════════════════•
+14. :cupid~1: Cupid
+15. :werewolf: Werewolf
+16. :medium: Medium
+
+
+●▬▬▬▬๑  Ranked Roles Season 12 ๑▬▬▬▬●
+
+1. :aura_seer: Aura Seer
+2. :junior_werewolf: Junior Werewolf
+3. :doctor: Doctor
+4. :detective: Detective or :spirit_seer: Spirit Seer
+5. :random_werewolf: Random WerewolfF
+6. :random_regular_villager: Random Regular Villager
+•═══════════════════════════•
+7. + 8. :fool: Fool + :gunner: Gunner or :headhunter: Headhunter + :marksman: Marksman
+•═══════════════════════════•
+9. :wolf_seer: Wolf Seer
+10. :medium: Medium
+•═══════════════════════════•
+11. :random_regular_villager: Random Regular Villager
+12. + 13. :arsonist: Arsonist + :jailer: Jailer or :cannibal: Cannibal + :witch: Witch
+14. :random_werewolf: Random Werewolf
+15. :priest: Priest
+16. :random_regular_villager: Random Regular Villager
