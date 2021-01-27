@@ -28,6 +28,9 @@ const db = require("quick.db");
 //discord.js
 const Discord = require("discord.js");
 
+//tictactoe
+const TicTacToe = require('discord-tictactoe');
+
 // DanBot hosting to make the bot online 24/7
 let yyyy
 //Bot client
