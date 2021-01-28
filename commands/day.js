@@ -351,7 +351,7 @@ module.exports = {
                 if (theCanni) {
                   if (cannibal.permissionsFor(theCanni).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     if (theCanni.roles.cache.has(alive.id)) {
-                      if (eat[j] == "Tough Guy") {
+                      if (db.get(`role_${message.guild.members.cache.find(m => m.nickname === eat[j]).id}`)== "Tough Guy") {
 
                       } else {
                         for (let p = 0; p < tg.length; p++) {
