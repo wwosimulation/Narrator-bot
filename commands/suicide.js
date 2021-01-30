@@ -18,6 +18,7 @@ module.exports = {
       message.channel.name.includes("priv") ||
       message.channel.name == "day-chat"
     ) {
+      if (!message.member.roles.cache.has("606140092213624859") return 
       let day = message.guild.channels.cache.find(c => c.name === "day-chat");
       let role = await db.fetch(`role_${message.author.id}`);
       day.send(
