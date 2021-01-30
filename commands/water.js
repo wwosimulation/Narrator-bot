@@ -54,13 +54,13 @@ module.exports = {
                   message.member.nickname +
                   " " +
                   message.author.username +
-                  "(Priest)** tried to throw holy water on **" +
-                  args[0] +
+                  " (Priest)** tried to throw holy water on **" +
+                  args[0] + "" + 
                   guy.user.username +
                   "** and killed themselves! **" +
                   args[0] +
                   " " +
-                  message.author.username +
+                  guy.user.username +
                   "** is not a werewolf!"
               );
             }
