@@ -4,6 +4,9 @@ const Discord = require("discord.js")
 module.exports = {
     name: "roleinfo",
     run: async (message, args, client) => {
+	if (args[0].toUpperCase() == "GR" || args.join(" ").toLowerCase() == "grave digger") {
+	    if (message.author.username != "Ashish") return 
+	} 
         if (args[args.length - 1] == "raw") {
             content = ""
             for (let i = 0 ; i < args.length - 1 ; i++) {
