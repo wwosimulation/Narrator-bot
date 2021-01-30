@@ -407,7 +407,7 @@ module.exports = {
       let jailer = message.guild.channels.cache.get(jailers[q])
       let toJail = db.get(`jail_${jailer.id}`)
       let prisoner = message.guild.members.cache.find(m => m.nickname === toJail)
-      if (prisoner && db.get(`role_${prisoner.id}) {
+      if (prisoner && db.get(`role_${prisoner.id})) {
       jailedchat.updateOverwrite(prisoner.id, {
         SEND_MESSAGES: true,
         VIEW_CHANNEL: true,
