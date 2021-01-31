@@ -1754,6 +1754,7 @@ module.exports = {
               role = "targetofhh"
             }
           }
+          if (!leader) return;
           if (leader.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
             if (role.toLowerCase().includes("wolf") ||
               role == "Arsonist" ||
