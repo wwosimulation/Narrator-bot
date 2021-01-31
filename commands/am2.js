@@ -1,6 +1,8 @@
 module.exports = {
   name: "am2",
   run: async (message, args, client) => {
+    
+    if (message.guild.id != "472261911526768642") return; 
     let narrator = message.guild.roles.cache.find(r => r.name === "Narrator")
 
     let mininarr = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")
