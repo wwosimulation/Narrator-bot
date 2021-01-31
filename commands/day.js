@@ -1946,14 +1946,8 @@ module.exports = {
       let sected = message.guild.channels.cache.get('682617467767357453')
       let leader
       if (hunt != "0") {
-        for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
-          let lol = message.guild.members.cache.find(m => m.nickname === j.toString())
-          if (sl.permissionsFor(lol).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-            leader = lol
-          }
-        }
         let role = db.get(`role_${guy.id}`)
-        if (guy.roles.cache.has(alive.id) && leader.roles.cache.has(alive.id)) {
+        if (guy.roles.cache.has(alive.id)) {
           if (role == "Sect Leader" || sected.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
             dayChat.send(`<:arrow:744571940374708234> The Sect Hunter killed **${guy.nickname} ${guy.user.username} (${role})**`)
             guy.roles.add(dead.id)
