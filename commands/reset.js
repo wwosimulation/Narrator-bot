@@ -92,8 +92,8 @@ module.exports = {
       }
       
       for (let i = 0; i < beasthunter.length; i++) {
-        db.set(`setTrap_${message.channel.id}`, null) 
-        db.set(`trapActive_${message.channel.id}`, false) 
+        db.set(`setTrap_${beasthunter[i]}`, null) 
+        db.set(`trapActive_${beasthunter[i]}`, false) 
       }
       
       for (let i = 0; i < witch.length ; i++) {
