@@ -11,9 +11,9 @@ module.exports = {
             let roses = [1, 1, 1, 1, 1, 5, 5]
             let coins = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 15, 15, 15, 30, 30, 50]
 
-            let quantity = db.get(`lootbox_${guy.id}`) || 0
+            let quantity = db.get(`lootbox_${message.author.id}`) || 0
             if (quantity == 0) return message.channel.send("You don't have this item dumb.")
-            db.subtract(`lootbox_${guy.id}`, 1)
+            db.subtract(`lootbox_${message.author.id}`, 1)
             let t = await message.author.send("Opening Lootbox...").catch(e => {
                 return message.channel.send(`Error: ${e.message}.\nPlease enable DMs with me.`)
             })
