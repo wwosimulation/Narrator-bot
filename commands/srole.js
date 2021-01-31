@@ -8,6 +8,7 @@ module.exports = {
     function random(x) {
       return Math.floor(Math.random() * x.length)
     }
+    if (message.guild.id != "472261911526768642") return; 
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let mininarr = message.guild.roles.cache.find(
       r => r.name === "Narrator Trainee"
