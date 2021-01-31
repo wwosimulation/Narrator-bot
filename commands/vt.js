@@ -9,6 +9,7 @@ module.exports = {
       // modOnly doesn't work
       return;
     } else {
+      if (message.guild.id != "472261911526768642") return; 
       let wwsVote = await db.fetch(`wwsVote_${message.guild.id}`);
       let commandEnabled = await db.fetch(`commandEnabled_${message.guild.id}`);
       let voteChat = message.guild.channels.cache.find(c => c.name === "vote-chat");
