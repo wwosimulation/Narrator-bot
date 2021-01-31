@@ -1270,7 +1270,6 @@ module.exports = {
             for (let k = 0; k < bg.length; k++) {
               let thecha = message.guild.channels.cache.get(bg[k])
               if (thecha.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                k = 89
                 if (db.get(`lives_${bg[k]}`) == 2) {
                   thecha.send("<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.")
                   thecha.send(`${alive}`)
@@ -1285,6 +1284,7 @@ module.exports = {
                   thekiller.push("Werewolf")
                   db.set(`guard_${bg[k]}`, null)
                 }
+                k = 89
               }
             }
           }
