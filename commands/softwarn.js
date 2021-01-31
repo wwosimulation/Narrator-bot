@@ -38,6 +38,7 @@ module.exports = {
             .setTitle("Action: Softwarn")
             .setAuthor(guy.user.tag, guy.user.avatarURL())
             .setDescription(`Reason: ${t}\n\nTotal softwarns: ${softwarns}`)
+            .setFooter("Softwarned by: ${message.author.tag} (${message.author.id})", message.author.displayAvatarURL())
         )
         client.guilds.cache.get("465795320526274561").channels.cache.get("606123769031032863").send(avc)
         guy.send(`[Werewolf Online Simulation]\n\nYou have been softwarned for the following reason: ${t}`)
