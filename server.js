@@ -286,11 +286,19 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
                   newMember.guild.channels.cache.find(c => c.name === "day-chat").send(`<:sect_member:774556759523590154> Sect Member **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** commited suicide!`)
                   guy.roles.add("606131202814115882")
                   guy.roles.remove("606140092213624859")
+                  sectMember.updateOverwrite(guy.id, {VIEW_CHANNEL: false})
                 }
               }
             }
           }
         }
+       
+       // if someone from the sect dies
+       let sectMember = newMember.guild.channels.cache.find(c => c.name === "sect-members")
+       if (sectMember.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
+          sectMember.updateOverwrite(newMember.id, {VIEW_CHANNEL: false})
+       }
+
 
         // seer apprentice
         if (db.get(`role_${newMember.id}`) == "Seer") {
