@@ -3,6 +3,7 @@ const db = require("quick.db");
 module.exports = {
   name: "joingame",
   run: async (message, args, client) => {
+    if (message.guild.id != "472261911526768642") return; 
     if (
       args[0] == "started" &&
       (message.member.roles.cache.has("606139219395608603") ||
