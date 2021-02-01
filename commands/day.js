@@ -1949,7 +1949,7 @@ module.exports = {
       }
     }
 
-
+    console.log("btw, i am sect leader not SEXT leader")
     // sect hunter killing 
     for (let i = 0; i < shunt.length; i++) {
       let hunt = db.get(`hunt_${shunt[i]}`) || "0"
@@ -1967,6 +1967,7 @@ module.exports = {
         }
       }
     }
+    console.log("time to f*** you up sect")
 
     // allowing players to speak in #day-chat
     dayChat.updateOverwrite(alive.id, {
