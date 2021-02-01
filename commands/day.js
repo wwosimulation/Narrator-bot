@@ -1747,6 +1747,7 @@ module.exports = {
         }
 
         if (sect != "0") {
+          if (guy) {
           role = db.get(`role_${guy.id}`)
           for (let j = 0; j < hh.length; hh++) {
             let target = db.get(`hhtarget_${hh[j]}`)
@@ -1916,6 +1917,7 @@ module.exports = {
                     }
                   }
                 }
+              }
               }
               if (sect != "0") {
                 sected.updateOverwrite(guy.id, {
