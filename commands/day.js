@@ -1691,11 +1691,14 @@ module.exports = {
         }
       }
     }
-
+    
+    
     dayChat.send(`Day ${day + 1} has started! Get ready to discuss!`)
     db.add(`dayCount_${message.guild.id}`, 1)
     db.set(`isDay_${message.guild.id}`, "yes")
-
+    
+    
+    console.log("Ok so it is day")
     // lock werewolves from their chat
     for (let i = 1; i <= alive.members.size + dead.members.size; i++) {
       let guy = message.guild.members.cache.find(m => m.nickname === i.toString())
@@ -1706,6 +1709,7 @@ module.exports = {
         })
       }
     }
+    console.log("Nice! I have locked players from ww chat")
 
     // medium reviving
     for (let i = 0; i < med.length; i++) {
@@ -1720,6 +1724,8 @@ module.exports = {
       }
     }
 
+    console.log("Oki, i have completed reviving players")
+    
     // grumpy grandma muting
 
     for (let i = 0; i < gg.length; i++) {
@@ -1732,7 +1738,8 @@ module.exports = {
         })
       }
     }
-
+  
+    console.log("Shut up you stupid pests, i am trying to sleep over here. Can't a granny get some rest?")
     // sect leader converting 
     let sected = message.guild.channels.cache.find(c => c.name === "sect-members")
     for (let q = 0; q < sel.length; q++) {
