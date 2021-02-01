@@ -1621,6 +1621,8 @@ module.exports = {
       }
     }
 
+    console.log("Hello there Janet")
+    console.log("Oh hi there Bandit Conversion is ok")
     // confirming arsonist's douse
     for (let i = 0; i < arso.length; i++) {
       let chan = message.guild.channels.cache.get(arso[i])
