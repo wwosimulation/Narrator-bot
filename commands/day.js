@@ -1437,7 +1437,7 @@ module.exports = {
         }
       }
     }
-    console.log("Ok so the ww kill is passed")
+    //console.log("Ok so the ww kill is passed")
     // bandit conversion
     for (let i = 0; i < bandit.length; i++) {
       let MEBANDIT = "0"
@@ -1621,8 +1621,8 @@ module.exports = {
       }
     }
 
-    console.log("Hello there Janet")
-    console.log("Oh hi there Bandit Conversion is ok")
+    //console.log("Hello there Janet")
+    //console.log("Oh hi there Bandit Conversion is ok")
     // confirming arsonist's douse
     for (let i = 0; i < arso.length; i++) {
       let chan = message.guild.channels.cache.get(arso[i])
@@ -1724,7 +1724,7 @@ module.exports = {
       }
     }
 
-    console.log("Oki, i have completed reviving players")
+    //console.log("Oki, i have completed reviving players")
 
     // grumpy grandma muting
 
@@ -1739,7 +1739,7 @@ module.exports = {
       }
     }
 
-    console.log("Shut up you stupid pests, i am trying to sleep over here. Can't a granny get some rest?")
+    //console.log("Shut up you stupid pests, i am trying to sleep over here. Can't a granny get some rest?")
     // sect leader converting 
     let sected = message.guild.channels.cache.find(c => c.name === "sect-members")
     for (let q = 0; q < sel.length; q++) {
@@ -1949,7 +1949,7 @@ module.exports = {
       }
     }
 
-    console.log("btw, i am sect leader not SEXT leader")
+    //console.log("btw, i am sect leader not SEXT leader")
     // sect hunter killing 
     for (let i = 0; i < shunt.length; i++) {
       let hunt = db.get(`hunt_${shunt[i]}`) || "0"
@@ -1967,7 +1967,7 @@ module.exports = {
         }
       }
     }
-    console.log("time to f*** you up sect")
+    //console.log("time to f*** you up sect")
 
     // allowing players to speak in #day-chat
     dayChat.updateOverwrite(alive.id, {
