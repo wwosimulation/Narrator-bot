@@ -1317,7 +1317,7 @@ module.exports = {
         if (role == "Tough Guy") {
           let tgc
           for (let k = 0; k < tg.length; k++) {
-            let tempchan = message.guild.channels.cache.find(c => c.name === tg[k])
+            let tempchan = message.guild.channels.cache.find(c => c.id === tg[k])
             if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
               tgc = tempchan
             }
