@@ -409,8 +409,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
         let dead = newMember.guild.roles.cache.find(r => r.name === "Dead").id
         for (let a = 0 ; a < rl.length ; a++) {
           let chan = newMember.guild.channels.cache.get(rl[a])
-          console.log(newMember.nickname + " rl")
-          console.log(db.get(`visit_${chan.id}`))
+          //console.log(newMember.nickname + " rl")
+          //console.log(db.get(`visit_${chan.id}`))
           if (db.get(`visit_${chan.id}`) == newMember.nickname) {
             for (let b = 1 ; b < 17 ; b++) {
               let guy = newMember.guild.members.cache.find(m => m.nickname === b.toString())
