@@ -4,7 +4,8 @@
   "description": "A discord bot that simulates the game Werewolf Online",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start server.js --name wwosim"
   },
   "author": "Ashish",
   "license": "ISC",
