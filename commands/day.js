@@ -1437,7 +1437,7 @@ module.exports = {
         }
       }
     }
-
+    console.log("Ok so the ww kill is passed")
     // bandit conversion
     for (let i = 0; i < bandit.length; i++) {
       let MEBANDIT = "0"
