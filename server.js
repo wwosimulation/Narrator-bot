@@ -156,18 +156,79 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (newMember.guild.id == "472261911526768642") { 
       if (newMember.roles.cache.has("606131202814115882")) { // new member having dead role
         if (newMember.roles.cache.has("606140092213624859")) return
+       
         // canceling frenzy
         if (db.get(`role_${newMember.id}`) == "Werewolf Berserk") {
           let wwb = newMember.guild.channels.cache.filter(c => c.name === "priv-werewolf-berserk").keyArray("id")
           for (let a = 0 ; a < wwb.length ; a++) {
             let chan = newMember.guild.channels.cache.get(wwb[a])
             if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-              db.set(`frenzy_${chan.id}`, false)
-              newMember.guild.channels.cache.find(c => c.name === "werewolves-chat").send("<:frenzy:744573088204718412> The frenzy has stopped because the Werewolf Berserk has died!")
+              if (db.get(`frenzy_${chan.id}`) == true) {
+                 db.set(`frenzy_${chan.id}`, false)
+                 newMember.guild.channels.cache.find(c => c.name === "werewolves-chat").send("<:frenzy:744573088204718412> The frenzy has stopped because the Werewolf Berserk has died!")
+              }
             }
           }
         }
 
+        // grave robber
+       let alive = newMember.guild.roles.cache.find(r => r.name === "Alive")
+       let graverobbers = newMember.guild.channels.cache.filter(c => c.name === "priv-grave-robber").keyArray("id")
+       for (let a = 0 ; a < graverobbers.length ; a++) {
+          let chan = newMember.guild.channels.cache.get(graverobbers[a])
+          if (db.get(`target_${chan.id}`) == newMember.nickname) {
+             let role = db.get(`role_${newMember.id}`)
+             let invalidroles = ["Jailer", "Doppelganger", "Cupid", "President", "Sect Leader"]
+             if (invalidroles.includes(role)) {
+                chan.send(`You could not rob the role from **${newMember.nickname} ${newMember.user.username}** because they were the **${role}**!`)
+             } else {
+                let guy
+                for (let b = 1 ; b < 1 ; b++) {
+                   let um = newMember.guild.members.cache.find(m => m.nickname === b.toString())
+                   if (um) {
+                      if (um.roles.cache.has(alive.id)) {
+                         if (chan.permissionsFor(um).has(["VIEW_CHANNEL"])) {
+                            guy = um
+                            b = 99
+                         }
+                      }
+                   }
+                }
+                if (guy) {
+                   let abc = await newMember.guild.channels.create(`priv-${role.toLowerCase().replace(" ", "-")}`, {
+                      parent: "748959630520090626",
+                      permissionOverwrites: [
+                        {
+                          id: guy.id,
+                          allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]
+                        }, 
+                        {
+                          id: newMember.guild.id,
+                          deny: ["VIEW_CHANNEL"]
+                        },
+                        {
+                          id: '606139219395608603',
+                          allow: ["READ_MESSAGE_HISTORY", "SEND_MESSAGES", "VIEW_CHANNEL", "USE_EXTERNAL_EMOJIS", "ATTACH_FILES", "ADD_REACTIONS", "EMBED_LINKS"]
+                        },
+                        {
+                          id: "606276949689499648",
+                          allow: ["READ_MESSAGE_HISTORY", "SEND_MESSAGES", "VIEW_CHANNEL", "USE_EXTERNAL_EMOJIS", "ATTACH_FILES", "ADD_REACTIONS", "EMBED_LINKS"]
+                        }
+                      ]
+                   })
+                   await abc.send(db.get(`roleinfo_${role.toLowerCase()}`))
+                   let t = await abc.send(alive)
+                   await t.delete({timeout: 5000})
+                   chan.updateOverwrite(guy.id, {VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: false, SEND_MESSAGES: false})
+                   await t.send(`You have stolen the role from **${newMember.nickname} ${newMember.user.username}**!`)
+                   db.set(`role_${guy.id}`, role)
+                   if (role.toLowerCase().includes("wolf")) {
+                     newMember.guild.channels.cache.find(c => c.name === "werewolves-chat").updateOverwrite(guy.id, {VIEW_CHANNEL: true, SEND_MESSAGES: true, READ_MESSAGE_HISTORY: true})
+                   }
+                } 
+             }
+          }
+       }
         // jww tag
         if (db.get(`role_${newMember.id}`) == "Junior Werewolf") {
           let jww = newMember.guild.channels.cache.filter(c => c.name === "priv-junior-werewolf").keyArray("id")
