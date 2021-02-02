@@ -38,6 +38,30 @@ module.exports = {
       VIEW_CHANNEL: true
     })
 
+    
+    let allGr = []
+    let gr = essage.guild.channels.cache.filter(c => c.name === "priv-grave-robber").keyArray("id");
+    let grig = 0
+    for (let i = 0 ; i < gr.length ; i++) {
+         for (let a = 1 ; a <= alive.members.size ; a++) {
+              let player = message.guild.members.cache.find(m => m.nickname === a.toString())
+              let chan = message.guild.channels.cache.get(gr[i]);
+              if (chan.permissionsFor(player).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
+                    grig = grig + 1;
+                    allGr.push(gr[i])
+              }
+         }
+    }
+    
+    let ap = [];
+    for (let i = 1; i <= alive.members.size; i++) {
+      ap.push(i.toString());
+    }
+
+    shuffle(ap);
+    
+    
+    
     let allHh = [] 
 
 
