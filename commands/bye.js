@@ -12,6 +12,8 @@ module.exports = {
                         guy.kick()
                     }
                 }
+                let spec = message.guild.roles.cache.find(r => r.name === "Spectator")
+                spec.members.forEach(e => {e.kick()})
             }, 5000)
         }
     }
