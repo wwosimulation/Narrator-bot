@@ -466,7 +466,6 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
 
         // red lady
         let rl = newMember.guild.channels.cache.filter(c => c.name === "priv-red-lady").keyArray("id")
-        let alive = newMember.guild.roles.cache.find(r => r.name === "Alive").id
         let dead = newMember.guild.roles.cache.find(r => r.name === "Dead").id
         for (let a = 0 ; a < rl.length ; a++) {
           let chan = newMember.guild.channels.cache.get(rl[a])
@@ -476,11 +475,11 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
             for (let b = 1 ; b < 17 ; b++) {
               let guy = newMember.guild.members.cache.find(m => m.nickname === b.toString())
               if (guy) {
-                if (guy.roles.cache.has(alive)) {
+                if (guy.roles.cache.has(alive.id)) {
                   if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                    newMember.guild.channels.cache.find(c => c.name === "day-chat").send(`**${guy.nickname} ${guy.user.username} (Red Lady)** visited someone who was attacked and was killed!`)
                     guy.roles.add(dead)
-                    guy.roles.remove(alive)
+                    guy.roles.remove(alive.id)
                 }
               }
               }
