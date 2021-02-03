@@ -5,7 +5,7 @@ module.exports = {
   alises: ["burn", "fire"],
   run: async (message, args, client) => {
     let isNight = db.get(`isNight_${message.guild.id}`);
-    let doused = db.get(`doused_${message.channel.id}`);
+    let doused = db.get(`doused_${message.channel.id}`) || [];
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
     if (message.channel.name == "priv-arsonist") {
@@ -17,7 +17,7 @@ module.exports = {
         return await message.channel.send(
           "Burning in broad day light just makes you look stupid"
         );
-      if (doused == null)
+      if (doused.length == 0)
         return await message.channel.send(
           "Are you dumb? Don't try to think i'm stupid! You haven't even doused anyone yet! "
         );
