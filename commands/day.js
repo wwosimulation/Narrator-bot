@@ -1683,8 +1683,10 @@ module.exports = {
           // adding the doused players to the list
           if (douses[j] != "0") {
             if (guy.roles.cache.has(alive.id)) {
-              db.push(`doused_${arso[i]}`, `/${douses[j]}/`)
-              let arsoguy = message.guild.members.cache.find(m => m.nicname === douses[j])
+              let allDouses = db.get(`doused_${arso[i]}`)
+              allDouses.push(douses[j])
+              db.set(`doused_${arso[i]}`, allDouses)
+              let arsoguy = message.guild.members.cache.find(m => m.nickname === douses[j])
               message.guild.channels.cache.get(arso[i]).send(`<:douse:744574203025686568> Player **${douses[j]} ${arsoguy.user.username}** has been doused!`)
             }
           }
