@@ -21,7 +21,7 @@ module.exports = {
                 let total = await msgs.filter(m => !m.pinned())
                 
                 if (total.size > 0) {
-                    e.bulkDelete(msgs.size)
+                    e.bulkDelete(total.size)
                 }
             })
             let tempchannels = message.guild.channels.cache.filter(c => c.parent.id === "748959630520090626")
