@@ -15,6 +15,15 @@ module.exports = {
                 let spec = message.guild.roles.cache.find(r => r.name === "Spectator")
                 spec.members.forEach(e => {e.kick()})
             }, 5000)
+            let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv")).keyArray("id")
+            channels.forEach(async e => {
+                let msgs = await e.messages.fetch()
+                if (msgs.size > 0) {
+                    e.bulkDelete(msgs.size)
+                }
+            })
+            let emsgs = await message.guild.channels.cache.find(c => c.name === "enter-game").messages.fetch()
+            message.guild.channels.cache.find(c => c.name === "enter-game").bulkDelete(emsgs.size)
         }
     }
 }
