@@ -24,7 +24,7 @@ module.exports = {
                     e.bulkDelete(total.size)
                 }
             })
-            let tempchannels = message.guild.channels.cache.filter(c => c.parent.id === "748959630520090626")
+            let tempchannels = message.guild.channels.cache.filter(c => c.parentID === "748959630520090626")
             tempchannels.forEach(e => e.delete())
             let emsgs = await message.guild.channels.cache.find(c => c.name === "enter-game").messages.fetch()
             message.guild.channels.cache.find(c => c.name === "enter-game").bulkDelete(emsgs.size)
