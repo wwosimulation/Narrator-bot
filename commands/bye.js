@@ -21,13 +21,14 @@ module.exports = {
                 let total = await msgs.filter(m => !m.pinned)
                 
                 if (total.size > 0) {
-                    e.bulkDelete(total.size)
+                    e.bulkDelete(total)
                 }
             })
             let tempchannels = message.guild.channels.cache.filter(c => c.parentID === "748959630520090626")
             tempchannels.forEach(e => e.delete())
             let emsgs = await message.guild.channels.cache.find(c => c.name === "enter-game").messages.fetch()
-            message.guild.channels.cache.find(c => c.name === "enter-game").bulkDelete(emsgs.size)
+            let oki = emsgs.filter(m => !m.pinned)
+            message.guild.channels.cache.find(c => c.name === "enter-game").bulkDelete(oki)
         }
     }
 }
