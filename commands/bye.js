@@ -18,7 +18,7 @@ module.exports = {
             let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv"))
             channels.forEach(async e => {
                 let msgs = await e.messages.fetch()
-                let total = await msgs.filter(e => !e.pinned())
+                let total = await msgs.filter(m => !m.pinned())
                 
                 if (total.size > 0) {
                     e.bulkDelete(msgs.size)
