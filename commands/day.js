@@ -1665,7 +1665,7 @@ module.exports = {
           }
 
           // checking if the jailer has the user jailed!
-          if (douses[j] != "0" && jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+          if (douses[j] != "0" && guy != "0" && jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
             let jailerGuy = message.guild.channels.cache.find(c => c.name === "priv-jailer")
             for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
               let isJailer = message.guild.members.cache.find(m => m.nickname === j.toString())
