@@ -1682,7 +1682,7 @@ module.exports = {
 
           // adding the doused players to the list
           if (douses[j] != "0") {
-            if (guy) {
+            if (guy != "0") {
             if (guy.roles.cache.has(alive.id)) {
               let allDouses = db.get(`doused_${arso[i]}`)
               allDouses.push(douses[j])
