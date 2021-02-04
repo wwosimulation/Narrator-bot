@@ -580,6 +580,28 @@ module.exports = {
       await votechat.bulkDelete(md.size)
     }
 
+    // bomber 
+    setTimeout(async function () {
+    let bb = message.guild.channels.cache.filter(c => c.name === "priv-bomber").keyArray("id")
+    for (let i = 0 ; i < bb.length ; i++) {
+        let bombs = db.get(`bombs_${bb[i]}`) || []
+        if (bombs.length > 0) {
+          if (db.get(`didCmd_${bb[i]}`) == db.get(`nightCount_${message.guild.id}`) + 1) {
+              bombs.forEach(e => {
+                  let goy = message.guild.members.cache.find(m => m.nickname === e) 
+                  if (goy) {
+                      if (goy.roles.cache.has(alive.id)) {
+                          dayChat.send(`<:explode:745914819353509978> **${goy.nickname} ${goy.user.username} (${db.get(`role_${goy.id}`)})** was killed by an explosion!`)
+                          goy.roles.add(dead.id)
+                          goy.roles.remove(alive.id)
+                      }
+                  }
+              })
+          }
+        }
+    }
+    }, 60000)
+    
     db.set(`isDay_${message.guild.id}`, "no");
     db.set(`isNight_${message.guild.id}`, "yes");
     db.add(`nightCount_${message.guild.id}`, 1);
