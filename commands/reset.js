@@ -62,7 +62,6 @@ module.exports = {
       //await client.channels.cache.find(c => c.name === "game-warning").messages.cache.get(db.get(`game`)).delete().catch(e => message.channel.send(`Error: ${e.message}`))
       
       let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members
-      for (let i = 0 ; i < t.length; t++) {
       
       t.forEach(e => {
         e.roles.remove("606123676668133428")
