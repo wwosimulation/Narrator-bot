@@ -86,7 +86,7 @@ module.exports = {
         if (bombs.includes(message.member.nickname)) {
             bombs.splice(bombs.indexOf(message.author.id), 1)
         }
-        db.set(`bomb_${message.channel.id}`, bombs);
+        db.set(`bombs_${message.channel.id}`, bombs);
         db.set(`didCmd_${message.channel.id}`, night);
         console.log(db.get(`bomb_${message.channel.id}`));
       } else {
