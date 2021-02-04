@@ -675,7 +675,7 @@ module.exports = {
       let accig = false
       for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
         let tempguy = message.guild.members.cache.find(m => m.nickname === j.toString())
-        console.log(tempguy.id)
+        if (tempguy) {
         let temprole = db.get(`role_${tempguy.id}`)
         if (temprole == "Accomplice") {
           console.log(temprole)
@@ -685,6 +685,7 @@ module.exports = {
               THEACC = tempguy
             }
           }
+        }
         }
       }
       console.log(accig)
