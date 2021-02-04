@@ -2,7 +2,7 @@ const db = require("quick.db");
 
 module.exports = {
   name: "enchant",
-  alises: ["shaman", "disguise"],
+  alises: ["shaman", "disguise", "delude"],
   run: async (message, args, client) => {
     if (message.channel.name == "priv-wolf-shaman") {
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
@@ -38,7 +38,7 @@ module.exports = {
                 message.guild.members.cache.find(m => m.user.username === args[0]) || 
                 message.guild.members.cache.find(m => m.user.tag === args[0])
       if (!guy || guy == message.member) return message.reply("Invalid Target!")
-      if (!guy.roles.cache.has(alive.id)) return message.channel.send("Disguising dead player just isn't gonna work.")
+      if (!guy.roles.cache.has(alive.id)) return message.channel.send("Disguising a dead player just isn't gonna work.")
       if (disguised.length > 0) {
         if (disguised.includes(guy.nickname)) return message.channel.send("Breaking me won't work. You already disguised this player...")
       }
