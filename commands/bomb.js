@@ -30,7 +30,7 @@ module.exports = {
         return await message.channel.send(
           "I know you wanna be the arso but you're not. Select 3 players to place the bomb at."
         );
-      if (!guy1 && !guy2 && !guy3)
+      if (!guy1 || !guy2 || !guy3)
         return await message.channel.send("Invalid Target!");
       if (
         (!guy1.roles.cache.has(alive.id) &&
