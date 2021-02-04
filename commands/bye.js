@@ -15,7 +15,7 @@ module.exports = {
                 let spec = message.guild.roles.cache.find(r => r.name === "Spectator")
                 spec.members.forEach(e => {e.kick()})
             }, 5000)
-            let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv"))
+            let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv") && c.parentID != "748959630520090626")
             channels.forEach(async e => {
                 let msgs = await e.messages.fetch()
                 let total = await msgs.filter(m => !m.pinned)
@@ -35,6 +35,18 @@ module.exports = {
                 let hmm = oki.filter(m => !m.pinned)
                 if (hmm.size > 0) {
                     hmm.bulkDelete(hmm)
+                }
+            })
+            let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat"]
+            let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c))
+            ingame.forEach(async e => {
+                let ashish = await e.messages.fetch()
+                let filt = ashish.filter(c => !c.pinned)
+                if (filt.size < 100) {
+                    e.bulkDelete(filt)
+                } else {
+                    filt = filt.filter(m => m.size < 101)
+                    e.bulkDelete(filt)
                 }
             })
         }
