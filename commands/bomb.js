@@ -33,10 +33,10 @@ module.exports = {
       if (!guy1 && !guy2 && !guy3)
         return await message.channel.send("Invalid Target!");
       if (
-        (!guy1.roles.has(alive.id) &&
-          !guy2.roles.has(alive.id) &&
-          !guy3.roles.has(alive.id)) ||
-        !ownself.roles.has(alive.id)
+        (!guy1.roles.cache.has(alive.id) &&
+          !guy2.roles.cache.has(alive.id) &&
+          !guy3.roles.cache.has(alive.id)) ||
+        !ownself.roles.cache.has(alive.id)
       )
         return await message.channel.send(
           "Listen, placing bombs aren't possible when dead or to dead players. Now be a lamb and SHUT UP. "
