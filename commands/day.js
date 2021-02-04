@@ -7,7 +7,6 @@ module.exports = {
 
     if (message.guild.id != "472261911526768642") return
     // All the variables
-    let alive = message.guild.roles.cache.find(r => r.name === "Alive")
     let dead = message.guild.roles.cache.find(r => r.name === "Dead")
     let narrator = message.guild.roles.cache.find(r => r.name === "Narrator")
     let mininarr = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")
@@ -2161,7 +2160,7 @@ module.exports = {
       let illusionist = message.guild.channels.cache.get(illu[a])
       let toDelude = db.get(`toDisguise_${illu[a]}`) || null
 
-      if (toDelude != null && toDelude != null) {
+      if (toDelude != null && toDelude != undefined) {
         let disguise = message.guild.members.cache.find(m => m.nickname === toDelude)
         if (disguise.roles.cache.has(alive.id)) {
           let theroleiwant = db.get(`role_${disguise.id}`)
@@ -2309,7 +2308,9 @@ module.exports = {
           }
 
           if (toDelude != "0") {
-            db.push(`disguised_${illusionist.id}`, `/${disguise.nickname}/`) //.catch(e => message.channel.send("Something went wrong. The Illusionist could not try to add it's disguise!"))
+            let alldisguised = db.get(`disguised_${illusionist.id}`) || []
+            alldisguised.push(disguise.nickname)
+            db.set(`disguised_${illusionist.id}`, alldisguised) //.catch(e => message.channel.send("Something went wrong. The Illusionist could not try to add it's disguise!"))
             illusionist.send(`<:delude:74563265503874568> Player **${disguise.nickname} ${disguise.user.username}** has successfully been disguised!`)
             illusionist.send(`${alive}`)
           }
