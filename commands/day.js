@@ -7,6 +7,7 @@ module.exports = {
 
     if (message.guild.id != "472261911526768642") return
     // All the variables
+    let alive = message.guild.roles.cache.find(r => r.name === "Alive")
     let dead = message.guild.roles.cache.find(r => r.name === "Dead")
     let narrator = message.guild.roles.cache.find(r => r.name === "Narrator")
     let mininarr = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")
