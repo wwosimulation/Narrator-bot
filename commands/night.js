@@ -603,7 +603,7 @@ module.exports = {
     for (let i = 0 ; i < bb.length ; i++) {
         let bombs = db.get(`bombs_${bb[i]}`) || []
         if (bombs.length > 0) {
-          if (db.get(`didCmd_${bb[i]}`) == db.get(`nightCount_${message.guild.id}`) + 1) {
+          if (db.get(`didCmd_${bb[i]}`) == db.get(`nightCount_${message.guild.id}`)) {
               bombs.forEach(e => {
                   let goy = message.guild.members.cache.find(m => m.nickname === e) 
                   if (goy) {
