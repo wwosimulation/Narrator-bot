@@ -259,6 +259,7 @@ module.exports = {
       let guy = message.guild.members.cache.find(
         m => m.nickname === a.toString()
       );
+      if (guy) {
       let role = db.get(`role_${guy.id}`);
       if (role != "Drunk") {
         dayChat.updateOverwrite(guy.id, {
@@ -266,6 +267,7 @@ module.exports = {
           READ_MESSAGE_HISTORY: null,
           VIEW_CHANNEL: null
         })
+      }
       }
     }
 
