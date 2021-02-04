@@ -16,6 +16,9 @@ module.exports = {
             if (!guy || guy == message.member) return message.channel.send("Player does not exist!")
             if (!guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Player is not alive or you are trying to give a card to yourself!")
             let cards = db.get(`cards_${message.channel.id}`) || 2
+            if (cards == 2) {
+                db.set(`cards_${message.channel.id}`, 2)
+            }
             if (cards < 1) return message.channel.send("You already gave all the cards moron...")
             let role = db.get(`role_${guy.id}`)
             console.log()
