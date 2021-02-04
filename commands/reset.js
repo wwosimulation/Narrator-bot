@@ -152,7 +152,7 @@ module.exports = {
       }
 
       for (let i = 0; i < bomb ; i++) {
-        db.set(`bomb_${bomb[i]}`, null)
+        db.set(`bombs_${bomb[i]}`, null)
         db.set(`didCmd_${bomb[i]}`, -1)
       }
       
