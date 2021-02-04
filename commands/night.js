@@ -587,11 +587,13 @@ module.exports = {
         let chan = message.guild.channels.cache.get(bb[i])
         for (let j = 1 ; j <= 16 ; j++) {
             let tempguy = message.guild.members.cache.find(m => m.nickname === j.toString())
+            if (tempguy) {
             if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL"])) {
                 j = 99
                 if (tempguy.roles.cache.has(dead.id)) {
                      db.delete(`bombs_${chan.id}`)
                 }
+            }
             }
         }
     }
