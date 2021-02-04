@@ -61,15 +61,16 @@ module.exports = {
 
       //await client.channels.cache.find(c => c.name === "game-warning").messages.cache.get(db.get(`game`)).delete().catch(e => message.channel.send(`Error: ${e.message}`))
       
-      db.set(`game`, null)
-      let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members.keyArray("id")
-      console.log(t.length)
+      let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members
       for (let i = 0 ; i < t.length; t++) {
-      let guy = client.guilds.cache.get("465795320526274561").members.cache.get(t[i])
-      guy.roles.remove("606123676668133428")
-      }
-      client.channels.cache.find(c => c.name === "game-warning").send(`Game ended! ${db.get(`winner`)} won the match!`)
       
+      t.forEach(e => {
+        e.roles.remove("606123676668133428")
+      })
+        
+        
+      client.channels.cache.find(c => c.name === "game-warning").send(`Game ${db.get(`game`)} ended! ${db.get(`winner`)} won the match!`)
+      db.set(`game`, null)
       for (let i = 0; i < gunner.length ; i++) {
         db.set(`bullets_${gunner[i]}`, 2)
         db.set(`did_${gunner[i]}`,  555)
