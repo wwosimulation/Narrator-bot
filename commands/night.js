@@ -577,7 +577,7 @@ module.exports = {
     let ms = await votechat.messages.fetch()
     let md = await ms.filter(m => m.author.id === "744538701522010174")
     if (md.size > 0) {
-      await votechat.bulkDelete(md.size)
+      await votechat.bulkDelete(md)
     }
 
     // deleting bomber bombs if dead
@@ -605,9 +605,8 @@ module.exports = {
     for (let i = 0 ; i < bb.length ; i++) {
         let bombs = db.get(`bombs_${bb[i]}`) || []
         if (bombs.length > 0) {
-          if (db.get(`didCmd_${bb[i]}`) == db.get(`nightCount_${message.guild.id}`)) {
               bombs.forEach(e => {
-                  let goy = message.guild.members.cache.find(m => m.nickname === e) 
+                  let goy = message.guild.members.cache.find(m => m.nickname === e.toString()) 
                   if (goy) {
                       if (goy.roles.cache.has(alive.id)) {
                           dayChat.send(`<:explode:745914819353509978> **${goy.nickname} ${goy.user.username} (${db.get(`role_${goy.id}`)})** was killed by an explosion!`)
@@ -616,8 +615,9 @@ module.exports = {
                       }
                   }
               })
-          }
+
         }
+      db.delete(`bombs_${bb[i]}`)
     }
     }, 60000)
     
