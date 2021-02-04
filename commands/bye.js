@@ -34,7 +34,7 @@ module.exports = {
                 let oki = await e.messages.fetch()
                 let hmm = oki.filter(m => !m.pinned)
                 if (hmm.size > 0) {
-                    hmm.bulkDelete(hmm)
+                    e.bulkDelete(hmm)
                 }
             })
             let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat"]
