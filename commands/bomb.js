@@ -82,10 +82,13 @@ module.exports = {
         message.channel.send(
           `<:explode:745914819353509978> Placed bombs on **${guy1.user.username}**, **${guy2.user.username}** and **${guy3.user.username}**!`
         );
+        
+        if (bombs.include(message.member.nickname)) {
+            bombs.splice(bombs.indexOf(message.author.id), 1)
+        }
         db.set(`bomb_${message.channel.id}`, bombs);
         db.set(`didCmd_${message.channel.id}`, night);
         console.log(db.get(`bomb_${message.channel.id}`));
-        db.pop(`bomb_${message.channel.id}`, message.member.nickname)
       } else {
         return await message.channel.send(
           "Honey, you can only place bombs vertically, horizontally or diagonally. Make sure they are in order. \n\n+bomb 7 6 5 - :x:\n+bomb 5 6 7 - :white_check_mark:"
