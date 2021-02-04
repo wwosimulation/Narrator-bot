@@ -83,7 +83,7 @@ module.exports = {
           `<:explode:745914819353509978> Placed bombs on **${guy1.user.username}**, **${guy2.user.username}** and **${guy3.user.username}**!`
         );
         
-        if (bombs.include(message.member.nickname)) {
+        if (bombs.includes(message.member.nickname)) {
             bombs.splice(bombs.indexOf(message.author.id), 1)
         }
         db.set(`bomb_${message.channel.id}`, bombs);
