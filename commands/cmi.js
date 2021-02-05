@@ -125,36 +125,36 @@ module.exports = {
             if (boughtrole.includes(totalag)) return message.author.send("You already bought this role!")
             let money = db.get(`money_${message.author.id}`)
             let rose = db.get(`roses_${message.author.id}`) || 0
-            if (roses25.includes(totalag) {
+            if (roses25.includes(totalag)) {
                 
                 if (roses < 25) return message.author.send("You do not have enough roses to buy this role!")
                 db.subtract(`roses_${message.author.id}`, 25)
                 
-            } else if (roses50.includes(totalag) {
+            } else if (roses50.includes(totalag)) {
             
                 if (roses < 50) return message.author.send("You do not have enough roses to buy this role!")                
                 db.subtract(`roses_${message.author.id}`, 50)
                 boughtroles.push(totalag)
                 db.set(`boughtroles_${message.author.id}`, boughtroles)
                 
-            } else if (coins75.includes(totalag) {
+            } else if (coins75.includes(totalag)) {
                 
                 if (money < 75) return message.author.send("You do not have enough gold to buy this role!")                
                 db.subtract(`money_${message.author.id}`, 75)
                 boughtroles.push(totalag)
                 db.set(`boughtroles_${message.author.id}`, boughtroles)
                 
-            } else if (coins250.includes(totalag) {
+            } else if (coins250.includes(totalag)) {
             
-                if (money < 75) return message.author.send("You do not have enough gold to buy this role!")                
-                db.subtract(`money_${message.author.id}`, 75)
+                if (money < 250) return message.author.send("You do not have enough gold to buy this role!")                
+                db.subtract(`money_${message.author.id}`, 250)
                 boughtroles.push(totalag)
                 db.set(`boughtroles_${message.author.id}`, boughtroles)
                 
-            } else if (coins1000.includes(totalag) {
+            } else if (coins1000.includes(totalag)) {
                 
-                if (money < 75) return message.author.send("You do not have enough gold to buy this role!")                
-                db.subtract(`money_${message.author.id}`, 75)
+                if (money < 1000) return message.author.send("You do not have enough gold to buy this role!")                
+                db.subtract(`money_${message.author.id}`, 1000)
                 boughtroles.push(totalag)
                 db.set(`boughtroles_${message.author.id}`, boughtroles)
                 
