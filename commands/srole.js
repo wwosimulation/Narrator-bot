@@ -47,14 +47,11 @@ module.exports = {
         let skcanni = ["Serial Killer", "Cannibal"]
         let foolhh = ["Fool", "Headhunter"]
         
-        function e(x) {
-            shuffle(x)
-        }
-        let sd = e(seerdet)
-        let jw = e(jailerwitch)
-        let as = e(alphashaman)
-        let sc = e(skcanni)
-        let fh = e(foolhh)
+        let sd = shuffle(seerdet)
+        let jw = shuffle(jailerwitch)
+        let as = shuffle(alphashaman)
+        let sc = shuffle(skcanni)
+        let fh = shuffle(foolhh)
       
         let roles = [
           ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Serial Killer", "Cursed", "Wolf Seer", "Priest"],
