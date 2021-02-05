@@ -37,6 +37,33 @@ module.exports = {
     )
       return;
     if (args[0] == "quick") {
+        
+        let seerdet = ["Seer", "Detective"]
+        let jailerwitch = ["Jailer", "Witch"]
+        let alphashaman = ["Alpha Werewolf", "Wolf Shaman"]
+        let skcanni = ["Serial Killer", "Cannibal"]
+        let foolhh = ["Fool", "Headhunter"]
+        
+        function e(x) {
+            shuffle(x)
+        }
+        let sd = e(seerdet)
+        let jw = e(jailerwitch)
+        let as = e(alphashaman)
+        let sc = e(skcanni)
+        let fh = e(foolhh)
+      
+        let roles = [
+          ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Serial Killer", "Cursed", "Wolf Seer", "Priest"],
+          ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Beast Hunter", "Gunner", "Wolf Shaman", "Aura Seer", "Bomber", "Cursed", "Wolf Seer", "Avenger"],
+          ["Aura Seer", "Medium", jw[0], "Werewolf", "Doctor", as[0], sd[0], fh[0], "Beast Hunter", "Marksman", "Junior Werewolf", "Tough Guy", sc[0], "Cursed", "Wolf Seer", "Priest"],
+          ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Cupid", "Gunner", "Wolf Shaman", "Detective", "Cannibal", "Cursed", "Wolf Seer", "Avenger"],
+          ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Junior Werewolf", "Detective", "Arsonist", "Cursed", "Wolf Seer", "Priest"],
+          ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Mayor", "Corruptor", "Cursed", "Wolf Seer", "Avenger"]
+        ]
+        
+        shuffle(roles)
+      
     } else if (args[0] == "sandbox") {
     } else if (args[0] == "ranked") {
       let rrv = ["Aura Seer", "Avenger", "Beast Hunter", "Bodyguard", "Doctor", "Flower Child", "Grumpy Grandma", "Loudmouth", "Marksman", "Priest", "Red Lady", "Sheriff", "Spirit Seer", "Tough Guy", "Villager", "Witch"]
