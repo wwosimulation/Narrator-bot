@@ -519,6 +519,7 @@ client.on("message", message => {
   // blacklists
   let blacklists = db.get(`blacklistss`) || []
   //console.log(blacklists)
+  if (message.channel.type != "dm") {
   if (
     message.guild.id == "472261911526768642" &&
     message.channel.name == "day-chat"
@@ -574,7 +575,7 @@ Gotta make you understand
     return message.channel.send(
       "No, sending more than one line is prohibited!"
     );
-  }
+  } }
 
   //If user mentions bot
   if (message.content === "<@!549402544066002955>")
