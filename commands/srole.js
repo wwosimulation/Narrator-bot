@@ -101,7 +101,7 @@ module.exports = {
         }
           
         }
-        allplayers.forEach(e => {
+        allplayers.forEach(async e => {
             
             let guy = message.guild.members.cache.get(e)
             let role = newrole[allplayers.indexOf(e)]
@@ -109,7 +109,7 @@ module.exports = {
             
             if (allchan.indexOf(seechan) == "-1") {
                 let tehstart = 0
-                while (allchan.indexOf(seechan) == "-1") {
+                async while (allchan.indexOf(seechan) == "-1") {
                     tehstart++
                     seechan = spechan[allplayers.indexOf(e)][tehstart]
                     if (!seechan) {
