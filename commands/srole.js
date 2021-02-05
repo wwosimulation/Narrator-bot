@@ -83,7 +83,7 @@ module.exports = {
             
             let chan = message.guild.channels.cache.filter(c => c.name === newrole[k].toLowerCase().replace(" ", "-")).keyArray("id")
             chan.forEach(e => allchan.push(e))
-            spechan.push(e)
+            spechan.push(chan)
           
         }
         
