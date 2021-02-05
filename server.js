@@ -515,7 +515,7 @@ client.on("message", message => {
   }
   
   //let guy = message.member.nickname;
- if (message.author.bot || message.channel.type == "dm") return; //Ignore bots and dms 
+ if (message.author.bot) return; //Ignore bots and dms 
   // blacklists
   let blacklists = db.get(`blacklistss`) || []
   //console.log(blacklists)
