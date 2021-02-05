@@ -109,7 +109,7 @@ module.exports = {
             
             if (allchan.indexOf(seechan) == "-1") {
                 let tehstart = 0
-                async while (allchan.indexOf(seechan) == "-1") {
+                while (allchan.indexOf(seechan) == "-1") {
                     tehstart++
                     seechan = spechan[allplayers.indexOf(e)][tehstart]
                     if (!seechan) {
