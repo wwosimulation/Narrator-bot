@@ -27,9 +27,6 @@ module.exports = {
     let bandits = message.guild.channels.cache.find(c => c.name === "bandits")
     let sl = message.guild.channels.cache.find(c => c.name === `sect-members`)
     let zomb = message.guild.channels.cache.find(c => c.name === "zombies")
-    
-    await client.channels.cache.find(c => c.name === "game-warning").send("Game is starting. You can no longer join. Feel free to spectate!")
-    db.set("started", "yes")
 
     if (
       !message.member.roles.cache.has(mininarr.id) &&
@@ -37,6 +34,12 @@ module.exports = {
     )
       return;
     if (args[0] == "quick") {
+        let allplayers = []
+        for (let x = 0 ; x < alive.members.size ; x++) {
+            let guy = message.guild.members.cache.find(m => m.nickname === (x+1).toString())
+            if (!guy) return message.channel.send(`Player ${x+1} could not be found!`)
+            allplayers.push(guy.id)
+        }
         
         let seerdet = ["Seer", "Detective"]
         let jailerwitch = ["Jailer", "Witch"]
@@ -63,7 +66,109 @@ module.exports = {
         ]
         
         shuffle(roles)
+        
+        let newrole = []
+        let gr = ''
+        for (let k = 0 ; k < alive.members.size ; k++) {
+          newrole.push(roles[0][k])
+          gr += `${client.emojis.cache.find(e => e.name === roles[0][k].toLowerCase().replace(" ", "_"))} ${k+1}. ${roles[0][k]}\n`
+        }
+
+        let daychat = message.guild.channels.cache.find(c => c.name === "day-chat")
+        daychat.send(gr).then(msg => msg.pin())
+        
+        shuffle(newrole)
+        
+        let allchan = []
+        let spechan = []
+        
+        for (let k = 0 ; k < newrole.length ; k++) {
+            
+            let chan = message.guild.channels.cache.filter(c => c.name === newrole[k].toLowerCase().replace(" ", "-")).keyArray("id")
+            chan.forEach(e => allchan.push(e))
+            spechan.push(e)
+          
+        }
+        
+        allchan.sort(function (a, b) { return a - b })
       
+        for (let k = 0 ; k < allchan.length ; k++) {
+          
+          if (allchan[i] == allchan[i + 1]) {
+          allchan.splice(i + 1, 1)
+          k = k - 1
+            
+        }
+          
+        }
+        allplayers.forEach(e => {
+            
+            let guy = message.guild.members.cache.get(e)
+            let role = newrole[allplayers.indexOf(e)]
+            let seechan = spechan[allplayers.indexOf(e)][0]
+            
+            if (allchan.indexOf(seechan) == "-1") {
+                let tehstart = 0
+                while (allchan.indexOf(seechan) == "-1") {
+                    tehstart++
+                    seechan = spechan[allplayers.indexOf(e)][tehstart]
+                    if (!seechan) {
+                        let uwu = await message.guild.channels.create(`priv-${role.toLowerCase().replace(" ", "-")}`, {
+                            parent: "748959630520090626",
+                            permissionOverwrites: [
+                                {
+                                    id: message.guild.id,
+                                    deny: ["VIEW_CHANNEL"]
+                                },
+                                {
+                                    id: narrator.id,
+                                    allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"]
+                                },
+                                {
+                                    id: mininarr.id,
+                                    allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"]
+                                }
+                            ]
+                        })
+                        await uwu.send(`${db.get(`roleinfo_${role.toLowerCase()}`)}`).then(msg => msg.pin())
+                        allchan.push(uwu.id)
+                        seechan = uwu.id
+                    }
+                }
+            }
+            let thechan = message.guild.channels.cache.get(seechan)
+            db.set(`role_${guy.id}`, role)
+            allchan.splice(allchan.indexOf(seechan), 1)
+            thechan.updateOverwrite(guy.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true
+            })
+            let wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
+            if (role.toLowerCase().includes("wolf")) {
+                wwchat.updateOverwrite(guy.id, {
+                    SEND_MESSAGES: true,
+                    VIEW_CHANNEL: true,
+                    READ_MESSAGE_HISTORY: true
+                })
+                wwchat.send(`**${guy.nickname} ${guy.user.username}** is the ${role}!`)
+            } else if (role == "Sorcerer") {
+                wwchat.updateOverwrite(guy.id, {
+                    SEND_MESSAGES: false,
+                    VIEW_CHANNEL: true,
+                    READ_MESSAGE_HISTORY: true
+                })
+                wwchat.send(`**${guy.nickname} ${guy.user.username}** is the ${role}!`)
+            }
+            
+        })
+      
+        
+      setTimeout(() => {
+          daychat.send(`Night 1 has started ${alive}!`)
+          client.commands.get("playerinfo").run(message, args, client)
+          client.commands.get("startgame").run(message, args, client)
+      }, 3000)
     } else if (args[0] == "sandbox") {
     } else if (args[0] == "ranked") {
       let rrv = ["Aura Seer", "Avenger", "Beast Hunter", "Bodyguard", "Doctor", "Flower Child", "Grumpy Grandma", "Loudmouth", "Marksman", "Priest", "Red Lady", "Sheriff", "Spirit Seer", "Tough Guy", "Villager", "Witch"]
@@ -286,5 +391,7 @@ module.exports = {
       }*/
       message.channel.send(embed)
     }
+    await client.channels.cache.find(c => c.name === "game-warning").send("Game is starting. You can no longer join. Feel free to spectate!")
+    db.set("started", "yes")
   }
 };
