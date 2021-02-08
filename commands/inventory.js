@@ -31,7 +31,7 @@ module.exports = {
                	     msgroles += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
 		} else if (msgroles.length < 1024 && msgroles.length > 985) { 
 		     backup += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
-		} else if (backup.length < 1024 && backup.length > 985{
+		} else if (backup.length < 1024 && backup.length > 985) {
 		     backup2 += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
 		} 
             })
