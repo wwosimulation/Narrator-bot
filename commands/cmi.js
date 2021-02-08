@@ -122,7 +122,7 @@ module.exports = {
             
             if (!allroles.includes(totalag)) return message.author.send("Role not found!")
             
-            if (boughtrole.includes(totalag)) return message.author.send("You already bought this role!")
+            if (boughtroles.includes(totalag)) return message.author.send("You already bought this role!")
             let money = db.get(`money_${message.author.id}`)
             let rose = db.get(`roses_${message.author.id}`) || 0
             if (roses25.includes(totalag)) {
