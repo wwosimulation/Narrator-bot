@@ -22,7 +22,7 @@ module.exports = {
                     .addField("Lootboxes", lootbox)
 
         if (custom != "None") {
-            let roles = db.get(`boughtroles_${message.author.id}`) || []m
+            let roles = db.get(`boughtroles_${message.author.id}`) || []
             let msgroles = ""
             roles.forEach(e => {
                 msgroles += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(" ", "_"))} ${e}`
