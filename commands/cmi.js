@@ -68,7 +68,7 @@ module.exports = {
                     roses25.splice(roses25.indexOf(e), 1)
                 }
                 if (roses50.indexOf(e) != -1) {
-                    roses50.splice(roses25.indexOf(e), 1)
+                    roses50.splice(roses50.indexOf(e), 1)
                 }
                 if (coins75.indexOf(e) != -1) {
                     coins75.splice(coins75.indexOf(e), 1)
