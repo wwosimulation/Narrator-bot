@@ -89,9 +89,25 @@ module.exports = {
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 50<:rosesingle:807256844191793158>\n`
         })
         coins75.forEach(e => {
+	  if (msg.length > 1980 && msg.length < 2048) 
+	  message.channel.send(
+		new Discord.MessageEmbed() 
+		.setTitle("Roles to buy:") 
+		.setDescription(msg + "\n\n- Copyright © Ashish Emmanuel") 
+		.setColor("#008800")
+	  ) 
+	  msg = "" 
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 75<:coin:606434686931173377>\n`
         })
         coins250.forEach(e => {
+	if (msg.length > 1980 && msg.length < 2048) 
+	  message.channel.send(
+		new Discord.MessageEmbed() 
+		.setTitle("Roles to buy:") 
+		.setDescription(msg + "\n\n- Copyright © Ashish Emmanuel") 
+		.setColor("#008800")
+	  ) 
+	  msg = ""  
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 250<:coin:606434686931173377>\n`
         })
         coins1000.forEach(e => {
@@ -104,7 +120,7 @@ module.exports = {
             message.author.send(
               new Discord.MessageEmbed()
               .setTitle("Roles to buy:")
-              .setDescription(msg + "\n\n-Copyright © Ashish Emmanuel")
+              .setDescription(msg + "\n\n- Copyright © Ashish Emmanuel")
               .setColor("#008800")
             )
         } else if (args[0] == "buy") {
