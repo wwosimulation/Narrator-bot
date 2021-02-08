@@ -110,7 +110,7 @@ module.exports = {
 	  ) 
 	  msg = ""  
 	 } 
-          msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 250<:coin:606434686931173377>\n`
+          msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(/ /g, "_"))} ${e} - 250<:coin:606434686931173377>\n`
         })
         coins1000.forEach(e => {
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 1000<:coin:606434686931173377>\n`
