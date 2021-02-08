@@ -124,7 +124,7 @@ module.exports = {
             
             if (boughtroles.includes(totalag)) return message.author.send("You already bought this role!")
             let money = db.get(`money_${message.author.id}`)
-            let rose = db.get(`roses_${message.author.id}`) || 0
+            let roses = db.get(`roses_${message.author.id}`) || 0
             if (roses25.includes(totalag)) {
                 
                 if (roses < 25) return message.author.send("You do not have enough roses to buy this role!")
