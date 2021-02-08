@@ -2,7 +2,7 @@ const db = require("quick.db")
 const Discord = require("discord.js")
 
 module.exports = {
-    name: "",
+    name: "cmi",
     run: async (message, args, client) => {
         
         if (message.channel.type != "dm") return message.channel.send("Please try this command in DMs!")
