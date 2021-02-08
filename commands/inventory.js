@@ -27,11 +27,11 @@ module.exports = {
 	    let backup = "" 
 	    let backup2 = "" 
             roles.forEach(e => {
-		if (msgroles.length < 319 && msgroles.length > 280) {
+		if (msgroles.length < 319) {
                	     msgroles += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
-		} else if (msgroles.length < 1024 && msgroles.length > 985) { 
+		} else if (msgroles.length < 1024) { 
 		     backup += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
-		} else if (backup.length < 1024 && backup.length > 985) {
+		} else if (backup.length < 1024) {
 		     backup2 += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
 		} 
             })
