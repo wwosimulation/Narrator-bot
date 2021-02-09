@@ -86,15 +86,18 @@ module.exports = {
                 }
             })
         } 
-        
+        let ehek = ""
         roses25.forEach(e => {
+	  ehek += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n` 
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n`
         })
         roses50.forEach(e => {
+	  ehek += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 50<:rosesingle:807256844191793158>\n`
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 50<:rosesingle:807256844191793158>\n`
         })
         coins75.forEach(e => {
-	  if (args.length == 0 && msg.length > 1950 && msg.length < 2048) {
+	  ehek += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 75<:coin:606434686931173377>\n`
+	  if (args.length == 0 && ehek.length > 2009 && msg.length < 2010) {
 	  	message.channel.send(
 			new Discord.MessageEmbed() 
 			.setTitle("Roles to buy:") 
@@ -102,11 +105,13 @@ module.exports = {
 			.setColor("#008800")
 	  	) 
 	  	msg = ""
+		ehek = ""
 	  } 
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 75<:coin:606434686931173377>\n`
         })
         coins250.forEach(e => {
-		if (args.length == 0 && msg.length > 1950 && msg.length < 2048) {
+		ehek += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 75<:coin:606434686931173377>\n`
+		if (args.length == 0 && ehek.length > 2009 && msg.length < 2010) {
 	  		message.channel.send(
 			new Discord.MessageEmbed() 
 			.setTitle("Roles to buy:") 
