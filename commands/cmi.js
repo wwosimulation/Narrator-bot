@@ -94,7 +94,7 @@ module.exports = {
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 50<:rosesingle:807256844191793158>\n`
         })
         coins75.forEach(e => {
-	  if (args.length == 0 && msg.length > 1980 && msg.length < 2048) {
+	  if (args.length == 0 && msg.length > 1950 && msg.length < 2048) {
 	  	message.channel.send(
 			new Discord.MessageEmbed() 
 			.setTitle("Roles to buy:") 
@@ -106,7 +106,7 @@ module.exports = {
           msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 75<:coin:606434686931173377>\n`
         })
         coins250.forEach(e => {
-		if (args.length == 0 && msg.length > 1980 && msg.length < 2048) {
+		if (args.length == 0 && msg.length > 1950 && msg.length < 2048) {
 	  		message.channel.send(
 			new Discord.MessageEmbed() 
 			.setTitle("Roles to buy:") 
