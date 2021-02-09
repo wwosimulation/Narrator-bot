@@ -19,7 +19,7 @@ module.exports = {
                     .setDescription("Here is where all your good stuff are!")
                     .addField("Coins", coins + "<:coin:606434686931173377>")
                     .addField("Roses", `Roses (Bought): ${roseG}<:rosesingle:807256844191793158>\nRoses: ${roses}<:rosesingle:807256844191793158>\nBouquets: ${roseB}<:rosebouquet:808545517209387008>`)
-                    .addField("Lootboxes", `<:lootbox:808548473548963861> ${lootbox}`)
+                    .addField("Lootboxes", `${lootbox} <:lootbox:808548473548963861>`)
 
         if (custom != "None") {
             let roles = db.get(`boughtroles_${message.author.id}`) || []
