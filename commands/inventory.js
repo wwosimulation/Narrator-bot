@@ -18,8 +18,8 @@ module.exports = {
                     .setAuthor(message.author.tag, message.author.avatarURL())
                     .setDescription("Here is where all your good stuff are!")
                     .addField("Coins", coins + "<:coin:606434686931173377>")
-                    .addField("Roses", `Roses (Bought): ${roseG}<:rosesingle:807256844191793158>\nRoses: ${roses}<:rosesingle:807256844191793158>\nBouquets: ${roseB}`)
-                    .addField("Lootboxes", lootbox)
+                    .addField("Roses", `Roses (Bought): ${roseG}<:rosesingle:807256844191793158>\nRoses: ${roses}<:rosesingle:807256844191793158>\nBouquets: ${roseB}<:rosebouquet:808545517209387008>`)
+                    .addField("Lootboxes", `<:lootbox:808548473548963861> ${lootbox}`)
 
         if (custom != "None") {
             let roles = db.get(`boughtroles_${message.author.id}`) || []
