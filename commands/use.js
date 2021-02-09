@@ -20,20 +20,24 @@ module.exports = {
             setTimeout(async () => {
                 let item = items[Math.floor(Math.random() * 2)]
                 let amt 
+                let emoji = ""
                 if (item == "roses") {
                     amt = roses[Math.floor(Math.random() * 2)]
                     if (amt == 1) {
                         item = "bouquet of roses"
+                        emoji = "<:rosebouquet:808545517209387008>"
                         db.add(`roseBouquet_${message.author.id}`, 1)
                     } else {
                         db.add(`rosesG_${message.author.id}`, 5)
+                        emoji = "<:rosesingle:807256844191793158>"
                     }
                 } else {
                     amt = coins[Math.floor(Math.random * coins.length)]
+                    emoji = "<:coin:606434686931173377>"
                     db.add(`money_${message.author.id}`, amt)
                 }
-                await t.edit(`You recieved ${amt} ${item} from the lootbox!`)
-            })
+                await t.edit(`${emoji} You recieved ${amt} ${item} from the lootbox!`)
+            }, 7000)
         } else {
             return message.channel.send("You are lost and dumb. This item does not exist!")
         }
