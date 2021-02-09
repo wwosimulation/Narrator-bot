@@ -72,17 +72,12 @@ module.exports = {
                 }
                 if (coins75.indexOf(e) != -1) {
                     coins75.splice(coins75.indexOf(e), 1)
-		    message.channel.send(coins75) 
                 }
                 if (coins250.indexOf(e) != -1) {
                     coins250.splice(coins250.indexOf(e), 1)
-		    message.channel.send(coins250) 
-
                 }
                 if (coins1000.indexOf(e) != -1) {
                     coins1000.splice(coins1000.indexOf(e), 1)
-		    message.channel.send(coins1000) 
-
                 }
             })
         } 
