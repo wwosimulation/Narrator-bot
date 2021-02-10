@@ -27,7 +27,7 @@ module.exports = {
                         item = "bouquet of roses"
                         emoji = "<:rosebouquet:808545517209387008>"
                         db.add(`roseBouquet_${message.author.id}`, 1)
-                    } else if {
+                    } else {
                         db.add(`rosesG_${message.author.id}`, amt)
                         emoji = "<:rosesingle:807256844191793158>"
                     }
