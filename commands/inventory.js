@@ -29,9 +29,9 @@ module.exports = {
             roles.forEach(e => {
 		if (msgroles.length < 319) {
                	     msgroles += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
-		} else if (msgroles.length < 1024) { 
+		} else if (backup.length < 900) { 
 		     backup += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
-		} else if (backup.length < 1024) {
+		} else if (backup2.length < 900) {
 		     backup2 += `${client.emojis.cache.find(r => r.name === e.toLowerCase().replace(/ /g, "_"))} ${e}\n`
 		} 
             })
