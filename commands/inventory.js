@@ -42,6 +42,7 @@ module.exports = {
 	    if (backup2 != "") {
 		embed.addField("\u200b", `${backup2}`)
 	    } 
+	    message.channel.send(msgroles.length)
         }
 
 	message.channel.send(embed) 
