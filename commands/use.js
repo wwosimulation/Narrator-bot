@@ -8,7 +8,7 @@ module.exports = {
         
         if (args[0].toLowerCase() == "lootbox") {
             let items = ["roses", "coins"]
-            let roses = [1, 1, 1, 1, 1, 5, 5]
+            let roses = [1, 1, 2, 2, 2, 2, 2, 2, 5, 5]
             let coins = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 15, 15, 15, 30, 30, 50]
 
             let quantity = db.get(`lootbox_${message.author.id}`) || 0
@@ -27,8 +27,8 @@ module.exports = {
                         item = "bouquet of roses"
                         emoji = "<:rosebouquet:808545517209387008>"
                         db.add(`roseBouquet_${message.author.id}`, 1)
-                    } else {
-                        db.add(`rosesG_${message.author.id}`, 5)
+                    } else if {
+                        db.add(`rosesG_${message.author.id}`, amt)
                         emoji = "<:rosesingle:807256844191793158>"
                     }
                 } else {
