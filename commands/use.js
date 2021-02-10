@@ -32,7 +32,7 @@ module.exports = {
                         emoji = "<:rosesingle:807256844191793158>"
                     }
                 } else {
-                    amt = coins[Math.floor(Math.random * coins.length)]
+                    amt = coins[Math.floor(Math.random() * coins.length)]
                     emoji = "<:coin:606434686931173377>"
                     db.add(`money_${message.author.id}`, amt)
                 }
