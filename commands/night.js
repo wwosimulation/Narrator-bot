@@ -283,7 +283,7 @@ module.exports = {
             for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
               let player = message.guild.members.cache.find(m => m.nickname === c.toString())
               if (corruptor.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                if (player.roles.cache.has(alive.id)) {
+                if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                   db.set(`corrupt_${corr[a]}`, null)
                   dayChat.send(`<:corrupt:745632706838396989> The Corruptor killed **${guy.nickname} ${guy.user.username}**`)
                   guy.roles.add(dead.id)
