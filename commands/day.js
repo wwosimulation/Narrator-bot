@@ -1334,6 +1334,7 @@ module.exports = {
                 let thechan = message.guild.channels.cache.get(gr[a])
                 if (thechan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                   a = 99
+                  wwKill = "0"
                   thechan.send(`_ _\n**${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
                   thechan.send(`${alive.id}`)
                   wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
@@ -1357,14 +1358,15 @@ module.exports = {
                     for (let n = 0; n < wolvesID.length; n++) {
                       if (db.get(`role_${wolvesID[n]}`) == allwolves[0]) {
                         let thewolf = message.guild.members.cache.get(wolvesID[n])
-                        tgc.send(`You have been attacked by **${thewolf.nickname} ${thewolf.user.username} (${db.get(`role_${thewolf.id}`)})**. You have been wounded and will die at the end of the day.`)
-                        tgc.send(`${alive}`)
-                        db.set(`wounded_${tgc.id}`, true)
+                        theChannel.send(`You have been attacked by **${thewolf.nickname} ${thewolf.user.username} (${db.get(`role_${thewolf.id}`)})**. You have been wounded and will die at the end of the day.`)
+                        theChannel.send(`${alive}`)
+                        db.set(`wounded_${theChannel.id}`, true)
                         let gr = message.guild.channels.cache.filter(c => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
                         for (let a = 0; a < k.length; a++) {
                           let thechan = message.guild.channels.cache.get(gr[a])
                           if (thechan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             a = 99
+                            wwKill = "0"
                             thechan.send(`_ _\n**${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
                             thechan.send(`${alive.id}`)
                             wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
@@ -2132,6 +2134,8 @@ module.exports = {
             }
           }
 
+          // tough guy guard
+          
           // corrupting the player
           if (glitch != "0") {
             corruptor.send(`<:corrupt:745632706838396989> Player **${corrupted.nickname} ${corrupted.user.username}** has successfully been corrupted!`)
