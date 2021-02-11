@@ -40,7 +40,7 @@ module.exports = {
 
     
     let allGr = []
-    let gr = essage.guild.channels.cache.filter(c => c.name === "priv-grave-robber").keyArray("id");
+    let gr = message.guild.channels.cache.filter(c => c.name === "priv-grave-robber").keyArray("id");
     let grig = 0
     for (let i = 0 ; i < gr.length ; i++) {
          for (let a = 1 ; a <= alive.members.size ; a++) {
