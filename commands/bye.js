@@ -18,7 +18,7 @@ module.exports = {
             let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv") && c.parentID != "748959630520090626")
             channels.forEach(async e => {
                 let msgs = await e.messages.fetch()
-                let total = await msgs.filter(m => !m.pinned)
+                let total = await msgs.filter(m => !m.pinned && (Date.now() - m.createdTimestamp < (60*60*24*14)))
                 
                 if (total.size > 0) {
                     e.bulkDelete(total)
