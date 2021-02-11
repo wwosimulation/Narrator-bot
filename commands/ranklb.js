@@ -1,0 +1,56 @@
+modules.exports = {
+    name: "ranklb",
+    run: async (message, args, client) => {
+        let narr = client.roles.cache.get("606123619999023114")
+        let mini = client.roles.cache.get("606123620732895232")
+        if (!message.member.roles.cache.has(narr) && !message.member.roles.cache.has(mini)) return;
+
+        let allrank = db.all().filter(data => data.ID.startsWith("ranked")).sort((a ,b) => a.data - b.data)
+        
+        let allstar = ""
+        let legend = ""
+        let diamond = ""
+        let gold = ""
+        let silver = ""
+        let bronze = ""
+        
+        allrank.forEach(e => {
+            let star = db.get(e.data)
+            let user = client.users.cache.get(e.data.split("_")[1])
+            if (user) {
+                if (star > 500) {
+                    allstar += `\`${user.tag}\` - ${star}\n`
+                } else if (star > 400 && star < 501) {
+                    legend += `\`${user.tag}\` - ${star}\n`
+                } else if (star > 300 && star < 401) {
+                    diamond += `\`${user.tag}\` - ${star}\n`
+                } else if (star > 200 && star < 301) {
+                    gold += `\`${user.tag}\` - ${star}\n`
+                } else if (star > 100 && star < 201) {
+                    silver += `\`${user.tag}\` - ${star}\n`
+                } else if (star < 101) {
+                    bronze += `\`${user.tag}\` - ${star}\n`
+                }
+            }
+        })
+        
+        if (allstar != "") {
+            message.channel.send(`**:six: ALL STAR League**\n${allstar}`)
+        }
+        if (legend != "") {
+            message.channel.send(`**:five: Legend League**\n${allstar}`)
+        }
+        if (diamond != "") {
+            message.channel.send(`**:fpur: Diamond League**\n${allstar}`)
+        }
+        if (gold != "") {
+            message.channel.send(`**:three: Gold League**\n${allstar}`)
+        }
+        if (silver != "") {
+            message.channel.send(`**:two: Silver League**\n${allstar}`)
+        }
+        if (bronze != "") {
+            message.channel.send(`**:one: Bronze League**\n${allstar}`)
+        }
+    }
+}
