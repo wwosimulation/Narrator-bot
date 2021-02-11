@@ -3,7 +3,7 @@ module.exports = {
     run: async (message, args, client) => {
         let narr = client.guilds.cache.get("465795320526274561").roles.cache.get("606123619999023114")
         let mini = client.guilds.cache.get("465795320526274561").roles.cache.get("606123620732895232")
-        if (!message.member.roles.cache.has(narr) && !message.member.roles.cache.has(mini)) return;
+        if (!message.member.roles.cache.has(narr.id) && !message.member.roles.cache.has(mini.id)) return;
 
         let allrank = db.all().filter(data => data.ID.startsWith("ranked")).sort((a ,b) => a.data - b.data)
         
