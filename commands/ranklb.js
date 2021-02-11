@@ -18,7 +18,7 @@ module.exports = {
         
         allrank.forEach(e => {
             let star = db.get(e.ID)
-            let user = client.users.cache.get(e.data.split("_")[1])
+                let user = client.users.cache.get(e.ID.split("_")[1])
             if (user) {
                 if (star > 500) {
                     allstar += `\`${user.tag}\` - ${star}\n`
