@@ -1,4 +1,4 @@
-modules.exports = {
+module.exports = {
     name: "ranklb",
     run: async (message, args, client) => {
         let narr = client.roles.cache.get("606123619999023114")
