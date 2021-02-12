@@ -2,7 +2,7 @@ const http = require("http");
 const express = require("express");
 const app = express();
 require("dotenv").config()
-69 - 5)3)79'6gabidhsnzoz
+//69 - 5)3)79'6gabidhsnzoz
 app.use(express.static("public"));
 
 app.get("/", function(request, response) {
