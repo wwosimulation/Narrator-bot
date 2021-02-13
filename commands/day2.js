@@ -128,7 +128,7 @@ module.exports = {
     args[0] = "0"
     if (wnum.length > 0) {
       let highest = Math.max(...wnum)
-      args[0] = allkill[wnum.indexOf(highest)]
+      args[0] = wnum[wnum.indexOf(highest)]
     }
 
 
