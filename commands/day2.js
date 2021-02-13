@@ -107,7 +107,7 @@ module.exports = {
     wvotes.sort((a, b) => a - b)
     console.log(wvotes)
     
-    const wnum = wvotes .sort( (previous, current) => wvotes.filter(item => item === previous).length - wvotes.filter(item => item === current).length ) .pop();
+    wnum = wvotes .sort( (previous, current) => wvotes.filter(item => item === previous).length - wvotes.filter(item => item === current).length ) .pop();
 
     console.log(`${wnum}`)
     
