@@ -10,6 +10,7 @@ module.exports = {
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
       );
+      if (!args[0]) return message.channel.send("You are an a\*\*\*\*\*\*")
       let role = await db.fetch(`role_${guy.id}`);
       let toShaman = role.toLowerCase();
       if (!guy || guy == ownself) {
