@@ -85,7 +85,7 @@ module.exports = {
     let wnum = []
     
     for (let i = 1 ; i <= alive.members.size + dead.members.size ; i++) {
-      let tempguy = message.guild.roles.cache.find(m => m.nickname === i.toString())
+      let tempguy = message.guild.members.cache.find(m => m.nickname === i.toString())
       console.log("wwkill1")
       if (tempguy) {
         console.log("wwkill1")
