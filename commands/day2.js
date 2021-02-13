@@ -106,7 +106,12 @@ module.exports = {
     
     wvotes.sort((a, b) => a - b)
     console.log(wvotes)
-    let tv = 0
+    
+    const wnum = wvotes .sort( (previous, current) => wvotes.filter(item => item === previous).length - wvotes.filter(item => item === current).length ) .pop();
+
+    console.log(`${wnum}`)
+    
+    /*let tv = 0
     for (let i = 0 ; i < wvotes.length ; i++) {
       if (!wnum[tv]) {
         wnum[tv] = 0
@@ -121,10 +126,10 @@ module.exports = {
           tv++
         }
       }
-    }
+    }*/
 
 
-    console.log(wnum)
+   // console.log(wnum)
     args[0] = "0"
     if (wnum.length > 0) {
       let highest = Math.max(...wnum)
