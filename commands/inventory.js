@@ -3,6 +3,7 @@ const Discord = require("discord.js")
 
 module.exports = {
     name: "inventory",
+    aliases: ["inv"], 
     run: async (message, args, client) => {
         if (message.channel.type != "dm") return message.channel.send("This command only works in DMs as it contains private information!")
 
