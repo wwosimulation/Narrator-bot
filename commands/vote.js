@@ -96,6 +96,7 @@ module.exports = {
             let godei = await voteChat.messages.fetch(bruh)
             if (godei) {
               await godei.delete()
+	      return;
             }
           }
         }
