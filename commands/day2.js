@@ -131,11 +131,11 @@ module.exports = {
 
    // console.log(wnum)
     args[0] = "0"
-    if (wnum.length > 0) {
-      let highest = Math.max(...wnum)
-      args[0] = wnum[wnum.indexOf(highest)]
+    if (wnum > 0) {
+      args[0] = wnum
     }
 
+    
 
     // getting the forge shield and sword
     for (let i = 0; i < forger.length; i++) {
@@ -2959,6 +2959,14 @@ module.exports = {
     }
     for (let i = 0; i < rl.length; i++) {
       db.set(`visit_${rl[i]}`, null)
+    }
+    
+    // deleting ww's vote
+    for (let i = 1 ; i < 17 ; i++) {
+        let tempguy = message.guild.members.cache.find(m => m.nickname === i.toString())
+        if (guy) {
+            db.delete(`wolvesKill_${tempguy.id}`)
+        }
     }
     console.log("The code worked up to here!")
     db.set(`vtshadow`, false)
