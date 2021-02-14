@@ -4,7 +4,7 @@ const db = require("quick.db")
 module.exports = {
     name: "buy",
     run: async (message, args, client) => {
-        if (message.author.id != "552814709963751425") return;
+        if (message.author.id != "552814709963751425") return
         if (args.length < 1) return message.channel.send("Now i want you to think really hard about this one.")
         
         let buy = args.join(" ").toLowerCase()
