@@ -4,7 +4,7 @@ const Discord = require("discord.js")
 module.exports = {
     name: "shop",
     run: async (message, args, client) => {
-        return message.channel.send("Yes trying to get leaks from me huh?")
+        if (message.author.id != "552814709963751425") return message.channel.send("Yes trying to get leaks from me huh?")
         if (message.guild.id != '465795320526274561') return
         if (!args[0] || args[0] == '1') {
             message.channel.send(new Discord.MessageEmbed()
