@@ -16,7 +16,6 @@ module.exports = {
     let wwChat = message.guild.channels.cache.find(
       c => c.name === "werewolves-chat"
     );
-    let lynched = "yes";
 
     if (
       !message.member.roles.cache.has(mininarr.id) &&
