@@ -2964,7 +2964,7 @@ module.exports = {
     // deleting ww's vote
     for (let i = 1 ; i < 17 ; i++) {
         let tempguy = message.guild.members.cache.find(m => m.nickname === i.toString())
-        if (guy) {
+        if (tempguy) {
             db.delete(`wolvesKill_${tempguy.id}`)
         }
     }
