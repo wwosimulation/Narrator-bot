@@ -16,7 +16,7 @@ module.exports = {
     let wwChat = message.guild.channels.cache.find(
       c => c.name === "werewolves-chat"
     );
-
+    let lynched = "yes"
     if (
       !message.member.roles.cache.has(mininarr.id) &&
       !message.member.roles.cache.has(narrator.id)
@@ -55,7 +55,7 @@ module.exports = {
 
     // counts votes wrt each player
     const count_votes = allvotes => allvotes.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), []);
-    vote_list = count_votes(allvotes) // an hash array of players wrt votes they got 
+    let vote_list = count_votes(allvotes) // an hash array of players wrt votes they got 
     // e.g. [0, 3, 2, 3] states player 1 got 3 votes, player 2 got 2 votes, etc.
     for (let i = 0; i < vote_list.length; i++){
         if(!vote_list[i]){
@@ -64,10 +64,10 @@ module.exports = {
     }
 
     let highest_votes = Math.max(...vote_list) // get the maximum number of votes
-    let lynched = vote_list.indexOf(highest_votes) // get the first player who got maximu votes
+    let lynching = vote_list.indexOf(highest_votes) // get the first player who got maximu votes
     let tie = false // set's flag for tie as false
-    for (let i=lynched+1; i < vote_list.length; i++){ //
-        if (vote_list[i] == lynched) {
+    for (let i=lynching+1; i < vote_list.length; i++){ //
+        if (vote_list[i] == lynching) {
             tie = true // puts tie true if finds another player having highest_votes
         }
     }
