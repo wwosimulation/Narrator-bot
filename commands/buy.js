@@ -7,7 +7,7 @@ module.exports = {
         if (message.author.id != "552814709963751425") return;
         if (args.length < 1) return message.channel.send("Now i want you to think really hard about this one.")
         
-        let buy = args.toLowerCase().join(" ")
+        let buy = args.join(" ").toLowerCase()
         let balance = db.get(`money_${message.author.id}`) || 0        
         
         if (buy.includes("roses")) {
