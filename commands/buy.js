@@ -146,7 +146,7 @@ module.exports = {
             db.subtract(`money_${message.author.id}`, 500)
             client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add("691390867822477413")
             message.channel.send("You have bought the Immunity item! You do know you will still be lazy right?")
-        } else if (buy.includeS("emoji")) {
+        } else if (buy.includes("emoji")) {
             let price = 500
             if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has("663389088354664477")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
             if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
