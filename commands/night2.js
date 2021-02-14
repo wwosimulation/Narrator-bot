@@ -73,7 +73,7 @@ module.exports = {
     }
 
     if((highest_votes >= Math.floor(alive.members.size / 2)) && !tie) {
-            args[0] = String(lynched) // set final lynched player
+            args[0] = String(lynching) // set final lynched player
     }
     else {
         args[0] = "0" // set 0 if there is tie or votes are less than required
