@@ -859,7 +859,7 @@ module.exports = {
           if (db.get(`role_${theguy.id}`) == "Tough Guy") {
             for (let x = 0; x < tg.length; x++) {
               let thhh = message.guild.channels.cache.get(tg[x])
-              if (thhh.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+              if (thhh.permissionsFor(theguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 thhh.send(`You have been attacked by **${THEACC.nickname} ${THEACC.user.username} (Accomplice)**. You have been wounded and will die at the end of the day.`)
                 thhh.send(`${alive}`)
                 db.set(`wounded_${thhh.id}`, true)
@@ -868,9 +868,9 @@ module.exports = {
                 for (let y = 0; y < accs.length; y++) {
                   let killme = message.guild.channels.cache.get(accs[x])
                   if (killme.permissionsFor(THEACC).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    killme.send(`**${tempguy.nickname} ${tempguy.user.username}** is a tough guy! He now knows your role!`)
+                    killme.send(`**${theguy.nickname} ${theguy.user.username}** is a tough guy! He now knows your role!`)
                     killme.send(`${alive}`)
-                    thechan.send(`<:guard:744536167109886023> Player **${tempguy.nickname} ${tempguy.user.username}** could not be killed!`)
+                    thechan.send(`<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`)
                     thechan.send(`${alive}`)
                   }
                 }
@@ -894,7 +894,7 @@ module.exports = {
                       if (killme.permissionsFor(THEACC).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         killme.send(`**${iwannadie.nickname} ${iwannadie.user.username}** is a tough guy! He now knows your role!`)
                         killme.send(`${alive}`)
-                        thechan.send(`<:guard:744536167109886023> Player **${tempguy.nickname} ${tempguy.user.username}** could not be killed!`)
+                        thechan.send(`<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`)
                         thechan.send(`${alive}`)
                       }
                     }
