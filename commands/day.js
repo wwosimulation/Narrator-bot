@@ -1507,7 +1507,7 @@ module.exports = {
           let chans = message.guild.channels.cache.filter(c => c.name === `priv-${db.get(`role_${ST.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
           for (let k = 0; k < chans.length; k++) {
             let tempchan = message.guild.channels.cache.get(chans[k])
-            if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+            if (tempchan.permissionsFor(ST).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
               let shield = db.get(`shield_${tempchan.id}`)
               if (shield == true) {
                 tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
