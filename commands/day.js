@@ -1474,7 +1474,7 @@ module.exports = {
 
         // jailer
         if (conversion != "0") {
-          if (jailed.permissionsFor(ST).has(["VIEW_CHANNEL"])) {
+          if (ST && jailed.permissionsFor(ST).has(["VIEW_CHANNEL"])) {
             for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
               let bruhh = message.guild.members.cache.find(m => m.nickname === j.toString())
               if (bruhh) {
