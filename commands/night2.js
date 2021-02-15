@@ -556,6 +556,14 @@ module.exports = {
     if (md.size > 0) {
       await votechat.bulkDelete(md)
     }
+    
+    // deleting the votes
+    for (let i = 1 ; i <= alive.members.size + dead.members.size ; i++) {
+        let tempguy = message.guild.members.cache.find(c => c.name === i.toString())
+        if (tempguy) {
+            db.delete(`vote_${tempguy.id}`)
+        }
+    }
 
     // deleting bomber bombs if dead
     setTimeout(async function () {
