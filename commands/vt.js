@@ -16,6 +16,7 @@ module.exports = {
       let dayChat = message.guild.channels.cache.find(c => c.name === "day-chat");
       let aliveRole = message.guild.roles.cache.find(r => r.name === "Alive");
       db.set(`wwsVote_${message.guild.id}`, "NO");
+      db.set(`skippedpl`, 0)
       let votes = Math.floor(parseInt(aliveRole.members.size) / 2);
       voteChat.send(`<@&${aliveRole.id}>`);
       dayChat.send(`Get ready to vote! (${votes} votes required)`);
