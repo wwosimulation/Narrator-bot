@@ -2823,7 +2823,6 @@ module.exports = {
               console.log(guy.id)
               let killer = thekiller[killedplayers.indexOf(guy.id)]
               let KILLME = message.guild.members.cache.get(killer)
-              console.log(KILLME.id)
               if (killer == "Werewolf") {
                 let allwolves = []
                 let wolvesID = []
