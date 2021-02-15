@@ -612,5 +612,6 @@ module.exports = {
     db.set(`wwsVote_${message.guild.id}`, "yes");
     db.set(`commandEnabled_${message.guild.id}`, "no");
     console.log(`Night: ${db.get(`nightCount_${message.guild.id}`)}`)
+    setTimeout(() => {client.commands.get("day2").run(message, args, client)}, 150000)
   }
 };
