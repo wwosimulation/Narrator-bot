@@ -20,6 +20,7 @@ module.exports = {
       voteChat.send(`<@&${aliveRole.id}>`);
       dayChat.send(`Get ready to vote! (${votes} votes required)`);
       db.set(`commandEnabled_${message.guild.id}`, `yes`);
+      setTimeout(() => {client.commands.get("night2").run(message, args, client)}, 45000)
     }
   }
 };
