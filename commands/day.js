@@ -759,13 +759,13 @@ module.exports = {
           for (let x = 0; x < witch.length; x++) {
             let thewitch = message.guild.channels.cache.get(witch[x])
             if (db.get(`potion_${witch[x]}`) == terminal) {
-              thewitch.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+              thewitch.send(`<:potion:744536604252700766> Your potion saved **${theguy.nickname} ${theguy.user.username}**!`)
               thewitch.send(`${alive}`)
               thechan.send(`<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`)
               thechan.send(`${alive}`)
               terminal = "0"
               db.set(`potion_${thewitch.id}`, null)
-              db.set(`witchAbil_${thewitcj.id}`, "yes")
+              db.set(`witchAbil_${thewitch.id}`, "yes")
             }
           }
         }
@@ -773,7 +773,7 @@ module.exports = {
           let chans = message.guild.channels.cache.filter(c => c.name === `priv-${db.get(`role_${theguy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
           for (let k = 0; k < chans.length; k++) {
             let tempchan = message.guild.channels.cache.get(chans[k])
-            if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+            if (tempchan.permissionsFor(theguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
               let shield = db.get(`shield_${tempchan.id}`)
               if (shield == true) {
                 tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
