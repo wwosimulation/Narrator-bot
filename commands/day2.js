@@ -2975,6 +2975,10 @@ module.exports = {
       dayChat.send(`${alive}`)
     }
     console.log(`Day: ${db.get(`dayCount_${message.guild.id}`)}`)
-    setTimeout(() => {client.commands.get("vt").run(message, args, client)}, 90000)
+    setTimeout(() => {
+      if (db.get(`commandEnabled_${message.author.id}`) != "yes") {
+         client.commands.get("vt").run(message, args, client)
+      }
+    }, 90000)
   }
 }
