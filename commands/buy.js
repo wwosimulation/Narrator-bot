@@ -30,7 +30,7 @@ module.exports = {
                 client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add(`${x}`)
             }
             function rolehas(x) {
-                client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(x)
+                return client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(x);
             }
             let price = 50
             if (buy.includes("red")) {
