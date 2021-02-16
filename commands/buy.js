@@ -137,7 +137,8 @@ module.exports = {
             client.guilds.cache.get("465795320526274561").roles.create({
                 data: {
                     name: `${message.author.username}'s Special role`, 
-                    color: "#007880"
+                    color: "#007880",
+                    position: 155
                 }
             }).then(role => {
                 db.set(`srole_${message.author.id}`, role.id)
