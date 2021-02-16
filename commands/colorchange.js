@@ -29,6 +29,6 @@ module.exports = {
         return message.channel.send(e.message)
       })
       message.channel.send("Done! Your special role color has been changed!")
-    }
+    
   }
 }
