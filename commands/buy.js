@@ -120,13 +120,13 @@ module.exports = {
             let price = 500
             let specialrolesname = message.guild.roles.cache.get("606247032553865227")
             let colorsrolename = message.guild.roles.cache.get("606247387496972292")
-            let allsprole = message.guild.roles.cache.filter(r => r.position < specialrolesname.postion && r.positon > colorsrolename.position)
+            let allsprole = message.guild.roles.cache.filter(r => r.position < specialrolesname.postion || r.positon > colorsrolename.position)
             let hassprole = false
             allsprole.forEach(e => {
                 if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(e.id)) {
                     hassprole = true
                     if (!db.get(`srole_${message.author.id}`)) {
-                        db.set(`srole_${message.author.id}`, e)
+                        db.set(`srole_${message.author.id}`, e.id)
                     }
                 }
             })
