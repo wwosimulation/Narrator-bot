@@ -116,6 +116,13 @@ module.exports = {
             db.subtract(`money_${message.author.id}`, 450)
             message.channel.send("You have bought the DJ role!")
             client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add("606123674562723840")
+        } else if (buy.includes("profile")) { 
+            let price = 200
+            if (db.get(`profile_${message.author.id}`)) return message.channel.send("You already bought this item! Why are you wasting your gold?")
+            if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
+            message.channel.send("You have bought the profile item! Finally, you can do `+profile` and be lazy.")
+            db.subtract(`money_${message.author.id}`, 200)
+            db.set(`profile_${message.author.id}`, true)
         } else if (buy.includes("special")) {
             let price = 500
             let specialrolesname = client.guilds.cache.get("465795320526274561").roles.cache.get("606247032553865227")
