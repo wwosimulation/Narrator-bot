@@ -25,11 +25,10 @@ module.exports = {
     
     if (args.join(" ").length > 99) return message.channel.send("Too many characters!")
     
-    try {
-      client.guilds.cache.get("465795320526274561").roles.cache.get(role).setColor(args.join(" "))
-    } catch (e) {
-      message.channel.send(e.message)
+      client.guilds.cache.get("465795320526274561").roles.cache.get(role).setColor(args.join(" ")).catch(e => {
+        return message.channel.send(e.message)
+      })
+      message.channel.send("Done! Your special role color has been changed!")
     }
-    message.channel.send("Done! Your special role color has been changed!")
   }
 }
