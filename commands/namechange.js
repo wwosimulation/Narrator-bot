@@ -26,5 +26,6 @@ module.exports = {
     if (args.join(" ").length > 99) return message.channel.send("Too many characters!")
     
     client.guilds.cache.get("465795320526274561").roles.cache.get(role).edit({name: args.join(" ")})
+    message.channel.send("Done! Your special role name is: " + args.join(" "))
   }
 }
