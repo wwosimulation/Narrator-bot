@@ -29,7 +29,9 @@ module.exports = {
             function roleadd(x) {
                 client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add(`${x}`)
             }
-            let rolehas = client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache
+            function rolehas(x) {
+                client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(x)
+            }
             let price = 50
             if (buy.includes("red")) {
                 if (rolehas("606123651900899345")) return message.channel.send("You have already bought this role!")
