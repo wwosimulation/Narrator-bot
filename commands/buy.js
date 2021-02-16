@@ -120,7 +120,7 @@ module.exports = {
             let price = 500
             let specialrolesname = client.guilds.cache.get("465795320526274561").roles.cache.get("606247032553865227")
             let colorsrolename = client.guilds.cache.get("465795320526274561").roles.cache.get("606247387496972292")
-            let allsprole = client.guilds.cache.get("465795320526274561").roles.cache.filter(r => r.position < specialrolesname.position && r.positon > colorsrolename.position)
+            let allsprole = client.guilds.cache.get("465795320526274561").roles.cache.filter(r => r.position < specialrolesname.position && r.position > colorsrolename.position)
             let hassprole = false
             allsprole.forEach(e => {
                 if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(e.id)) {
