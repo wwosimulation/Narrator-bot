@@ -47,7 +47,12 @@ module.exports = {
     let bh = getallchan("priv-beast-hunter")
     let cursed = getallchan("priv-cursed")
     let cupid = getallchan("priv-cupid")
+    let kittenwolf = getallchan("kitten-wolf")
     
+    // if bandit killed with no accomplice, switch it to a conversion
+    banditss.forEach(e => {
+      let chan = message.guild.channels.cache.get(e)
+    })
     
   }
 }
