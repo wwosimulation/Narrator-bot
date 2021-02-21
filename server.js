@@ -495,10 +495,10 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
             if (guy) {
               if (cupid.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (guy != newMember) {
-                  if (guy.roles.cache.has(alive)) {
+                  if (guy.roles.cache.has(alive.id)) {
                     newMember.guild.channels.cache.find(c => c.name === "day-chat").send(`<:couple:744542381206143026> Player **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** lost the love of their live and commited suicide!`)
                     guy.roles.add(dead)
-                    guy.roles.remove(alive)
+                    guy.roles.remove(alive.id)
                   }
                 }
               } 
