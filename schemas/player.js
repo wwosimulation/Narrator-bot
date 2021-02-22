@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const schema = new mongoose.Schema({
     user: { type: String, unique: true }, //user id
     role: { type: String, default: ""}, // the role
+    atag: { type: String, default: null}, // avenger tag
+    jwwtag: { type: String, defualt: null}, // jwwtag
     balance: { type: Number, default: 0 }, //currency balance
     inventory: {
         cmi: { type: Boolean, default: false }, //true or false has the cmi
