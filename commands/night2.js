@@ -613,7 +613,7 @@ module.exports = {
     db.set(`commandEnabled_${message.guild.id}`, "no");
     console.log(`Night: ${db.get(`nightCount_${message.guild.id}`)}`)
     setTimeout(() => {
-      if (db.get(`isDay_${message..guild.id}`) != "yes") {
+      if (db.get(`isDay_${message.guild.id}`) != "yes") {
         client.commands.get("day2").run(message, args, client)
       }
     }, 150000)
