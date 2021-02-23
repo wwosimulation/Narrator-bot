@@ -22,7 +22,7 @@ module.exports = {
       dayChat.send(`Get ready to vote! (${votes} votes required)`);
       db.set(`commandEnabled_${message.guild.id}`, `yes`);
       setTimeout(() => {
-        if (db.get(`isNight_${message.guild.id}` != "yes") {
+        if (db.get(`isNight_${message.guild.id}`) != "yes") {
           client.commands.get("night2").run(message, args, client)
         }
       }, 45000)
