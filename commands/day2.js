@@ -2976,7 +2976,7 @@ module.exports = {
     }
     console.log(`Day: ${db.get(`dayCount_${message.guild.id}`)}`)
     setTimeout(() => {
-      if (db.get(`commandEnabled_${message.author.id}`) != "yes") {
+      if (db.get(`commandEnabled_${message.guild.id}`) != "yes") {
          client.commands.get("vt").run(message, args, client)
       }
     }, 90000)
