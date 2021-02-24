@@ -183,7 +183,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
                 chan.send(`You could not rob the role from **${newMember.nickname} ${newMember.user.username}** because they were the **${role}**!`)
              } else {
                 let guy
-                for (let b = 1 ; b < 1 ; b++) {
+                for (let b = 1 ; b < 17 ; b++) {
                    let um = newMember.guild.members.cache.find(m => m.nickname === b.toString())
                    if (um) {
                       if (um.roles.cache.has(alive.id)) {
