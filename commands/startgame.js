@@ -64,7 +64,7 @@ module.exports = {
         let thegr = message.guild.members.cache.find(m => m.nickname === allGr[x])
         ap.splice(ap.indexOf(thegr.nickname), 1)
         console.log(newppl)
-        let guy = message.guild.members.cache.find(m => m.nickname === ap[Math.floor(Math.random() * ap.length)])
+        let guy = message.guild.members.cache.find(m => m.nickname === newppl[Math.floor(Math.random() * newppl.length)])
         for (let z = 0 ; z < gr.length ; z++) {
             let chan = message.guild.channels.cache.get(gr[z])
             if (chan.permissionsFor(thegr).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
