@@ -65,7 +65,7 @@ module.exports = {
         let newppl = ap.splice(ap.indexOf(thegr.nickname), 1)
         let guy = message.guild.members.cache.find(m => m.nickname === newppl[Math.floor(Math.random() * newppl.length)])
         for (let z = 0 ; z < gr.length ; z++) {
-            let chan = message.guild.channels.cache.get(z)
+            let chan = message.guild.channels.cache.get(gr[z])
             if (chan.permissionsFor(guy).has()) {
               z = 99
               chan.send(`Your target is **${guy.nickname} ${guy.user.username}**!`)
