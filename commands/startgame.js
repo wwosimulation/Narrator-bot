@@ -48,7 +48,7 @@ module.exports = {
               let chan = message.guild.channels.cache.get(gr[i]);
               if (chan.permissionsFor(player).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
                     grig = grig + 1;
-                    allGr.push(gr[i])
+                    allGr.push(player.nickname)
               }
          }
     }
