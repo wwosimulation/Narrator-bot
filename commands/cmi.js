@@ -163,8 +163,8 @@ module.exports = {
             }
             
             if (!allroles.includes(totalag)) return message.author.send("Role not found!")
-            
             if (boughtroles.includes(totalag)) return message.author.send("You already bought this role!")
+	    if (totalag == "Grave Robber") return message.author.send("You can see that this role is under stricketthrough (or crossed). Any idiot knows that this role can't be bought...")
             let money = db.get(`money_${message.author.id}`)
             let roses = db.get(`roses_${message.author.id}`) || 0
             if (roses25.includes(totalag)) {
