@@ -48,7 +48,7 @@ module.exports = {
               let chan = message.guild.channels.cache.get(gr[i]);
               if (chan.permissionsFor(player).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
                     grig = grig + 1;
-                    allGr.push(gr[i])
+                    allGr.push(player.nickname)
               }
          }
     }
@@ -59,7 +59,24 @@ module.exports = {
     }
 
     shuffle(ap);
-    
+    let newppl = ap
+    for (let x = 0 ; x < allGr.length; x++) {
+        let thegr = message.guild.members.cache.find(m => m.nickname === allGr[x])
+        ap.splice(ap.indexOf(thegr.nickname), 1)
+        console.log(newppl)
+        let guy = message.guild.members.cache.find(m => m.nickname === newppl[Math.floor(Math.random() * newppl.length)])
+        if (guy) {
+        for (let z = 0 ; z < gr.length ; z++) {
+            let chan = message.guild.channels.cache.get(gr[z])
+            if (chan.permissionsFor(thegr).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+              z = 99
+              chan.send(`Your target is **${guy.nickname} ${guy.user.username}**!`)
+              db.set(`target_${chan.id}`, guy.nickname)
+            }
+        }
+        }
+        ap = newppl
+    }
     
     
     let allHh = [] 
