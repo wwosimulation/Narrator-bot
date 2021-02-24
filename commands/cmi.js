@@ -8,6 +8,8 @@ module.exports = {
         if (message.channel.type != "dm") return message.channel.send("Please try this command in DMs!")
         
         let allroles = [
+	"Alchemist",
+	"Grave Robber",
         "Fortune Teller",
         "Kitten Wolf",
         "Pacifist",
@@ -55,11 +57,11 @@ module.exports = {
         let msg = ""
         let boughtroles = db.get(`boughtroles_${message.author.id}`) || []
        
-        let roses25 = ["Fortune Teller","Kitten Wolf", "Pacifist", "Spirit Seer", "Sheriff", "Werewolf Berserk"]
+        let roses25 = ["Grave Robber", "Fortune Teller", "Pacifist", "Spirit Seer", "Sheriff", "Werewolf Berserk", "Kitten Wolf"]
         let roses50 = ["Cupid", "President"]
         let coins75 = ["Mayor", "Grumpy Grandma", "Seer Apprentice", "Tough Guy", "Loudmouth", "Sorcerer", "Flower Child", "Guardian Wolf"]
         let coins250 = ["Beast Hunter", "Avenger", "Witch", "Detective", "Forger", "Cursed", "Marksman", "Red Lady", "Junior Werewolf", "Nightmare Werewolf", "Shadow Wolf", "Random Regular Villager", "Random Strong Villager", "Random Werewolf", "Random Killer", "Random Voting", "Random"]
-        let coins1000 = ["Arsonist", "Sect Leader", "Bomber", "Zombie", "Corruptor", "Cannibal", "Illusionist", "Bandit"]
+        let coins1000 = ["Arsonist", "Sect Leader", "Bomber", "Zombie", "Corruptor", "Cannibal", "Illusionist", "Bandit", "Alchemist"]
         
         if (boughtroles.length > 0) {
             boughtroles.forEach(e => {
@@ -83,8 +85,13 @@ module.exports = {
         } 
         let ehek = ""
         roses25.forEach(e => {
-	  ehek += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n` 
-          msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n`
+	  if (e == "Grave Robber") {
+	  	ehek += `~~${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n~~` 
+          	msg += `~~${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n~~`
+	  } else {
+	  	ehek += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n` 
+          	msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n`
+	  } 
         })
         roses50.forEach(e => {
 	  ehek += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 50<:rosesingle:807256844191793158>\n`
