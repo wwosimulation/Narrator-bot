@@ -62,7 +62,7 @@ module.exports = {
     
     for (let x = 0 ; x < allGr.length; x++) {
         let thegr = message.guild.members.cache.find(m => m.nickname === allGr[x])
-        let newppl = ap.splice(ap.indexOf(thegr.nickname), 1)
+        ap.splice(ap.indexOf(thegr.nickname), 1)
         console.log(newppl)
         let guy = message.guild.members.cache.find(m => m.nickname === newppl[Math.floor(Math.random() * newppl.length)])
         for (let z = 0 ; z < gr.length ; z++) {
