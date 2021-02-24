@@ -86,8 +86,8 @@ module.exports = {
         let ehek = ""
         roses25.forEach(e => {
 	  if (e == "Grave Robber") {
-	  	ehek += `~~${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n~~` 
-          	msg += `~~${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n~~`
+	  	ehek += `~~${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>~~\n` 
+          	msg += `~~${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>~~\n`
 	  } else {
 	  	ehek += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n` 
           	msg += `${client.emojis.cache.find(x => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 25<:rosesingle:807256844191793158>\n`
