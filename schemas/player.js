@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const schema = new mongoose.Schema({
     user: { type: String, unique: true }, // user id
     role: { type: String, default: "" }, // the role
-    channelrole: { type: String, default: "" }, // the channel for the role
+    channelrole: { type: String, default: "" }, // the channel id for the role
+    didCmd: { type: String, default: "-1"},
     atag: { type: String, default: null}, // avenger tag
     jwwtag: { type: String, defualt: null}, // junior-werewolf tag
     balance: { type: Number, default: 0 }, // currency balance
