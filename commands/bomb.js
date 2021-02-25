@@ -1,4 +1,5 @@
-const db = require("quick.db");
+//const db = require("quick.db");
+const db = require(process.cwd() + "/db.js")
 /*
 01 02 03 04
 05 06 07 08
