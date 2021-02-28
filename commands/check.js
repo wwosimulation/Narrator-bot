@@ -8,28 +8,25 @@ module.exports = {
     let shaman2 = await db.fetch(`shaman_606156636704473098`);
     let shaman3 = await db.fetch(`shaman_606157075927662741`);
     let shaman4 = await db.fetch(`shaman_606157077315846146`);
-    let illu = message.guild.channels.cache.filter(c => c.name === "priv-illusionist")
+    let shaman = message.guild.channels.cache.filter(c => c.name === "priv-wolf-shaman").keyArray("id")
+    let illu = message.guild.channels.cache.filter(c => c.name === "priv-illusionist").keyArray("id")
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
     if (message.channel.name == "priv-aura-seer") {
-      if (args[0] == message.member.nickname) {
-        return await message.reply("You cannot check yourself!");
-      } else if (
-        parseInt(args[0]) >
-          parseInt(alive.members.size) + parseInt(dead.members.size) ||
-        parseInt(args[0]) < 1
-      ) {
-        return await message.reply("Invalid target!");
-      }
+      if (!args[0]) return message.channel.send("Hey stupid, maybe try inserting an argument for once?")
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
       );
+      if (!guy) return message.reply("Invalid Target!")
       if (
         !guy.roles.cache.has("606140092213624859") ||
         !ownself.roles.cache.has("606140092213624859")
       ) {
         return await message.reply("Your or your target is not alive");
+      } 
+      if (guy == ownself) {
+        return message.channel.send("Checking yourself is like a whole new level of stupid.")
       } else {
         let ability = await db.fetch(`auraCheck_${message.channel.id}`);
         if (ability == "yes") {
@@ -45,6 +42,7 @@ module.exports = {
             role == "Forger" ||
             role == "Loudmouth" ||
             role == "Santa Claus" ||
+            role == "Easter Bunny" ||
             role == "Doctor" ||
             role == "Bodyguard" ||
             role == "Tough Guy" ||
@@ -70,12 +68,11 @@ module.exports = {
             role == "Idiot" ||
             role == "Handsome Prince" ||
             role == "Drunk" ||
-            role == "Doppelganger"
+            role == "Grave Robber"
           ) {
             aura = "Good"
           } else if (
             role == "Werewolf" ||
-            role == "Lone Wolf" ||
             role == "Junior Werewolf" ||
             role == "Wolf Pacifist" ||
             role == "Wolf Shaman" ||
@@ -90,20 +87,21 @@ module.exports = {
           ) {
             aura = "Evil"
           } 
-          if (
-            shaman1 == args[0] ||
-            shaman2 == args[0] ||
-            shaman3 == args[0] ||
-            shaman4 == args[0]
-          )
-            aura = "Evil";
-
+          
             for (let i = 0 ; i < illu.length ; i++) {
               let disguised = db.get(`disguised_${illu[i]}`) || []
               if (disguised.length != 0) {
                 if (disguised.includes[args[0]]) {
                   aura == "Unknown"
                 } 
+              }
+            }
+          
+          
+            for (let i = 0 ; i < shaman.length ; i++) {
+              let disguised = db.get(`shaman_${shaman[i]}`) || ""
+              if (disguised == args[0]) {
+                aura = "Evil"
               }
             }
           db.set(`auraCheck_${message.channel.id}`, "yes");
@@ -113,6 +111,7 @@ module.exports = {
         }
       }
     } else if (message.channel.name == "priv-seer") {
+      if (!args[0]) return message.channel.send("Woah, i discovered a whole new level of stupid...")
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
@@ -129,14 +128,7 @@ module.exports = {
           "You already used your ability for tonight!"
         );
       let role = await db.fetch(`role_${guy.id}`);
-      if (
-        shaman1 == args[0] ||
-        shaman2 == args[0] ||
-        shaman3 == args[0] ||
-        shaman4 == args[0]
-      )
-        role = "Wolf Shaman";
-
+      
       for (let i = 0 ; i < illu.length ; i++) {
         let disguised = db.get(`disguised_${illu[i]}`) || []
         if (disguised.length != 0) {
@@ -145,6 +137,14 @@ module.exports = {
           } 
         }
       }
+      
+      for (let i = 0 ; i < shaman.length ; i++) {
+        let disguised = db.get(`shaman_${shaman[i]}`) || ""
+          if (disguised == args[0]) {
+            role = "Wolf Shaman"
+          }
+       }
+      
       message.channel.send(
         `You checked **${args[0]} ${guy.user.username} (${role})**!`
       );
@@ -208,7 +208,19 @@ module.exports = {
         role1 == "Flower Child" ||
         role1 == "Sheriff" ||
         role1 == "Fortune Teller" ||
-        role1 == "Forger"
+        role1 == "Forger" ||
+        role1 == "Grave Robber" ||
+        role1 == "Santa Claus" ||
+        role1 == "Easter Bunny" ||
+        role1 == "Sibling" ||
+        role1 == "Drunk" ||
+        role1 == "Mad Scientist" ||
+        role1 == "Idiot" ||
+        role1 == "Wise Man" ||
+        role1 == "Doppelganger" ||
+        role1 == "Naughty Boy" ||
+        role1 == "Handsome Prince" ||
+        role1 == "Sect Hunter"
       ) {
         team1 = "Village";
       } else if (
@@ -224,7 +236,8 @@ module.exports = {
         role1 == "Nightmare Werewolf" ||
         role1 == "Guardian Wolf" ||
         role1 == "Kitten Wolf" ||
-        role1 == "Sorcerer"
+        role1 == "Sorcerer" ||
+        role1 == "Lone Wolf"
       ) {
         team1 = "Werewolf";
       } else {
@@ -260,7 +273,19 @@ module.exports = {
         role2 == "Flower Child" ||
         role2 == "Sheriff" ||
         role2 == "Fortune Teller" ||
-        role2 == "Forger"
+        role2 == "Forger" ||
+        role2 == "Grave Robber" ||
+        role2 == "Santa Claus" ||
+        role2 == "Easter Bunny" ||
+        role2 == "Sibling" ||
+        role2 == "Drunk" ||
+        role2 == "Mad Scientist" ||
+        role2 == "Idiot" ||
+        role2 == "Wise Man" ||
+        role2 == "Doppelganger" ||
+        role2 == "Naughty Boy" ||
+        role2 == "Handsome Prince" ||
+        role2 == "Sect Hunter"
       ) {
         team2 = "Village";
       } else if (
@@ -276,21 +301,14 @@ module.exports = {
         role2 == "Nightmare Werewolf" ||
         role2 == "Guardian Wolf" ||
         role2 == "Kitten Wolf" ||
-        role2 == "Sorcerer"
+        role2 == "Sorcerer" ||
+        role2 == "Lone Wolf"
       ) {
         team2 = "Werewolf";
       } else {
         team2 = "Solo";
       }
-      if (
-        shaman1 == args[0] ||
-        shaman2 == args[0] ||
-        shaman3 == args[0] ||
-        shaman4 == args[0]
-      ) {
-        team1 = "Werewolf";
-      }
-
+      
       for (let i = 0 ; i < illu.length ; i++) {
         let disguised = db.get(`disguised_${illu[i]}`) || []
         if (disguised.length != 0) {
@@ -299,16 +317,7 @@ module.exports = {
           } 
         }
       }
-
-      if (
-        shaman1 == args[1] ||
-        shaman2 == args[1] ||
-        shaman3 == args[1] ||
-        shaman4 == args[1]
-      ) {
-        team2 = "Werewolf";
-      }
-
+      
       for (let i = 0 ; i < illu.length ; i++) {
         let disguised = db.get(`disguised_${illu[i]}`) || []
         if (disguised.length != 0) {
@@ -317,7 +326,21 @@ module.exports = {
           } 
         }
       }
-
+      
+      for (let i = 0 ; i < shaman.length ; i++) {
+        let disguised = db.get(`shaman_${shaman[i]}`) || ""
+          if (disguised == args[0]) {
+            team1 = "Werewolf"
+          }
+       }
+      
+      for (let i = 0 ; i < shaman.length ; i++) {
+        let disguised = db.get(`shaman_${shaman[i]}`) || ""
+          if (disguised == args[1]) {
+            team2 = "Werewolf"
+          }
+       }
+      
       let result = "";
       if (team1 == "Solo" || team2 == "Solo") {
         result = "different teams";
@@ -394,9 +417,15 @@ module.exports = {
         }
       }
 
+      let solokillers = ["Serial Killer", "Arsonist", "Bomber", "Corruptor", "Cannibal", "Illusionist", "Bandit", "Alchemist"]
       message.channel.send(
         `You checked **${args[0]} ${guy.user.username} (${role})**!`
       );
+      if (solokillers.includes(role)) {
+        wwchat.send(
+          `The Wolf Seer checked **${args[0]} ${guy.user.username} (${role})**! As a werewolf, you cannot kill this player at night.`
+        );  
+      }
       wwchat.send(
         `The Wolf Seer checked **${args[0]} ${guy.user.username} (${role})**!`
       );
