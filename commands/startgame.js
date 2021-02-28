@@ -62,9 +62,9 @@ module.exports = {
     let newppl = ap
     for (let x = 0 ; x < allGr.length; x++) {
         let thegr = message.guild.members.cache.find(m => m.nickname === allGr[x])
-        ap.splice(ap.indexOf(thegr.nickname), 1)
+        let abc = ap.splice(ap.indexOf(thegr.nickname), 1)
         console.log(newppl)
-        let guy = message.guild.members.cache.find(m => m.nickname === newppl[Math.floor(Math.random() * newppl.length)])
+        let guy = message.guild.members.cache.find(m => m.nickname === ap[Math.floor(Math.random() * ap.length)])
         if (guy) {
         for (let z = 0 ; z < gr.length ; z++) {
             let chan = message.guild.channels.cache.get(gr[z])
@@ -76,6 +76,7 @@ module.exports = {
         }
         }
         ap = newppl
+      ap.push(abc)
     }
     
     
@@ -154,5 +155,14 @@ module.exports = {
         message.channel.send("I could not find a valid target for the headhunter channel! To assign a new target, do `+sethhtarget [User to be the target] [Headhunter channel id]`\n\nHere is the channel id: " + hh[o])
       }
     }
+    for (let x = 1 ; x <= alive.members.size ; x++) {
+      let guy = message.guild.members.cache.find(m => m.nickname === x.toString())
+      if (guy) {
+        db.delete(`jwwtag_${guy.id}`)
+        db.delete(`mouth_${guy.id}`)
+        db.delete(`atag_${guy.id}`)
+      }
+    }
+    message.channel.send("All the actions worked!")
   }
 };
