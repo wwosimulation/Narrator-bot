@@ -28,6 +28,7 @@ module.exports = {
           let a = await wwchat.messages.fetch(tmtd)
           if (a) {
             await a.delete()
+	    db.delete(`wolvesKill_${message.author.id}`)
             return
           }
         } else {
@@ -117,11 +118,7 @@ module.exports = {
           let voteChat = message.guild.channels.cache.find(
             c => c.name === "vote-chat"
           );
-          if (db.get(`vtshadow`) == true) {
-            voteChat = message.guild.channels.cache.find(
-              c => c.name === "shadow-votes"
-            );
-          }
+         
           //voteChat.send(`${message.member.nickname} voted ${args[0]}`);
           let voted = message.guild.members.cache.find(
             m => m.nickname === args[0]

@@ -10,7 +10,7 @@ module.exports = {
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
       );
-      if (!args[0]) return message.channel.send("You are an a\*\*\*\*\*\*")
+      if (!args[0]) return message.channel.send("You are an as\*h\*\*\*")
       let role = await db.fetch(`role_${guy.id}`);
       let toShaman = role.toLowerCase();
       if (!guy || guy == ownself) {
@@ -42,8 +42,8 @@ module.exports = {
       if (!guy.roles.cache.has(alive.id)) return message.channel.send("Disguising a dead player just isn't gonna work.")
       if (disguised.length > 0) {
         if (disguised.includes(guy.nickname)) return message.channel.send("Breaking me won't work. You already disguised this player...")
-      }
-      message.channel.send(`<:delude:74563265503874568> You decided to disguise **${guy.nickname} ${guy.user.username}**!`)
+      }      
+      message.channel.send(`<:delude:745632655038742568> You decided to disguise **${guy.nickname} ${guy.user.username}**!`)
       db.set(`toDisguise_${message.channel.id}`, guy.nickname)
     }
   }

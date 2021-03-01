@@ -61,69 +61,6 @@ for (const file of commandFiles) {
 //Music queue for all servers
 var musicServers = {};
 
-if(!db.get("giveaways")) db.set("giveaways", []);
- 
-const { GiveawaysManager } = require("discord-giveaways");
-const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
- 
-    // This function is called when the manager needs to get all the giveaway stored in the database.
-    async getAllGiveaways(){
-        // Get all the giveaway in the database
-        return db.get("giveaways");
-    }
- 
-    // This function is called when a giveaway needs to be saved in the database (when a giveaway is created or when a giveaway is edited).
-    async saveGiveaway(messageID, giveawayData){
-        // Add the new one
-        db.push("giveaways", giveawayData);
-        // Don't forget to return something!
-        return true;
-    }
- 
-    async editGiveaway(messageID, giveawayData){
-        // Gets all the current giveaways
-        const giveaways = db.get("giveaways");
-        // Remove the old giveaway from the current giveaways ID
-        const newGiveawaysArray = giveaways.filter((giveaway) => giveaway.messageID !== messageID);
-        // Push the new giveaway to the array
-        newGiveawaysArray.push(giveawayData);
-        // Save the updated array
-        db.set("giveaways", newGiveawaysArray);
-        // Don't forget to return something!
-        return true;
-    }
- 
-    // This function is called when a giveaway needs to be deleted from the database.
-    async deleteGiveaway(messageID){
-        // Remove the giveaway from the array
-        const newGiveawaysArray = db.get("giveaways").filter((giveaway) => giveaway.messageID !== messageID);
-        // Save the updated array
-        db.set("giveaways", newGiveawaysArray);
-        // Don't forget to return something!
-        return true;
-    }
- 
-};
- 
-// Create a new instance of your new class
-const manager = new GiveawayManagerWithOwnDatabase(client, {
-    storage: false, // Important - use false instead of a storage path
-    updateCountdownEvery: 10000,
-    default: {
-        botsCanWin: false,
-        exemptPermissions: [],
-        embedColor: "#FF0000",
-        reaction: "475775416922275850"
-    }
-});
-// We now have a giveawaysManager property to access the manager everywhere!
-client.giveawaysManager = manager;
-
-new TicTacToe({
-  language: 'en',
-  command: '+ttt'
-}, client);
-
 //Bot on startup
 client.on("ready", async () => {
   client.user.setActivity("Werewolf Online!");
@@ -183,7 +120,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
                 chan.send(`You could not rob the role from **${newMember.nickname} ${newMember.user.username}** because they were the **${role}**!`)
              } else {
                 let guy
-                for (let b = 1 ; b < 1 ; b++) {
+                for (let b = 1 ; b < 17 ; b++) {
                    let um = newMember.guild.members.cache.find(m => m.nickname === b.toString())
                    if (um) {
                       if (um.roles.cache.has(alive.id)) {
@@ -495,10 +432,10 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
             if (guy) {
               if (cupid.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (guy != newMember) {
-                  if (guy.roles.cache.has(alive)) {
+                  if (guy.roles.cache.has(alive.id)) {
                     newMember.guild.channels.cache.find(c => c.name === "day-chat").send(`<:couple:744542381206143026> Player **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** lost the love of their live and commited suicide!`)
                     guy.roles.add(dead)
-                    guy.roles.remove(alive)
+                    guy.roles.remove(alive.id)
                   }
                 }
               } 

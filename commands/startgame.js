@@ -48,7 +48,7 @@ module.exports = {
               let chan = message.guild.channels.cache.get(gr[i]);
               if (chan.permissionsFor(player).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
                     grig = grig + 1;
-                    allGr.push(gr[i])
+                    allGr.push(player.nickname)
               }
          }
     }
@@ -59,7 +59,25 @@ module.exports = {
     }
 
     shuffle(ap);
-    
+    let newppl = ap
+    for (let x = 0 ; x < allGr.length; x++) {
+        let thegr = message.guild.members.cache.find(m => m.nickname === allGr[x])
+        let abc = ap.splice(ap.indexOf(thegr.nickname), 1)
+        console.log(newppl)
+        let guy = message.guild.members.cache.find(m => m.nickname === ap[Math.floor(Math.random() * ap.length)])
+        if (guy) {
+        for (let z = 0 ; z < gr.length ; z++) {
+            let chan = message.guild.channels.cache.get(gr[z])
+            if (chan.permissionsFor(thegr).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+              z = 99
+              chan.send(`Your target is **${guy.nickname} ${guy.user.username}**!`)
+              db.set(`target_${chan.id}`, guy.nickname)
+            }
+        }
+        }
+        ap = newppl
+      ap.push(abc)
+    }
     
     
     let allHh = [] 
@@ -137,5 +155,14 @@ module.exports = {
         message.channel.send("I could not find a valid target for the headhunter channel! To assign a new target, do `+sethhtarget [User to be the target] [Headhunter channel id]`\n\nHere is the channel id: " + hh[o])
       }
     }
+    for (let x = 1 ; x <= alive.members.size ; x++) {
+      let guy = message.guild.members.cache.find(m => m.nickname === x.toString())
+      if (guy) {
+        db.delete(`jwwtag_${guy.id}`)
+        db.delete(`mouth_${guy.id}`)
+        db.delete(`atag_${guy.id}`)
+      }
+    }
+    message.channel.send("All the actions worked!")
   }
 };
