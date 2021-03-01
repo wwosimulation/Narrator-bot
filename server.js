@@ -36,9 +36,13 @@ let yyyy
 //Bot client
 const client = new Discord.Client();
 
-//Prefix and token from config file
+//Prefix and token from .env
 const prefix = process.env.PREFIX
 const token = process.env.TOKEN
+
+// config file
+const config = require("./config.js")
+client.config = config
 
 //Cooldown
 const cooldowns = new Discord.Collection();
