@@ -3079,7 +3079,7 @@ module.exports = {
               let chans = message.guild.channels.cache
                 .filter(
                   (c) =>
-                    c.name === `priv-${role.toLowerCase().replace(" ", "-")}`
+                    c.name === `priv-${corrrole.toLowerCase().replace(" ", "-")}`
                 )
                 .keyArray("id");
               for (let k = 0; k < chans.length; k++) {
@@ -3108,7 +3108,7 @@ module.exports = {
 
             // bodyguard with 1 life
             if (glitch != "0") {
-              if (corrrole == "Boydguard") {
+              if (corrrole == "Bodyguard") {
                 for (let b = 0; b < bg.length; b++) {
                   let chan = message.guild.channels.cache.get(bg[b]);
                   if (
