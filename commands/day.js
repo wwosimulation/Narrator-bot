@@ -631,6 +631,7 @@ module.exports = {
           let tehGuy = message.guild.members.cache.find(
             (m) => m.nickname === j.toString()
           );
+          if (tehGuy) {
           if (tehGuy.roles.cache.has(alive.id)) {
             if (
               chan
@@ -662,6 +663,7 @@ module.exports = {
                 tehGuy.roles.remove(alive.id);
               }
             }
+          }
           }
         }
       }
@@ -1007,440 +1009,437 @@ module.exports = {
       }
     }
 
-    // getting the kills from bandit and accomplice
-    for (let i = 0; i < bandits.length; i++) {
-      let THEACC = "0";
-      let kill = "0";
-      let thechan = message.guild.channels.cache.get(bandits[i]);
-      let banditkill = db.get(`banditkill_${thechan.id}`);
-      let acc = db.get(`accomplice_${thechan.id}`);
-      let accig = false;
-      for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
-        let tempguy = message.guild.members.cache.find(
-          (m) => m.nickname === j.toString()
-        );
-        if (tempguy) {
-          let temprole = db.get(`role_${tempguy.id}`);
-          if (temprole == "Accomplice") {
-            console.log(temprole);
-            if (tempguy.roles.cache.has(alive.id)) {
-              if (
-                thechan
-                  .permissionsFor(tempguy)
-                  .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-              ) {
-                accig = true;
-                THEACC = tempguy;
-              }
-            }
-          }
-        }
-      }
-      console.log(accig);
-      if (accig == true) {
-        if (acc == null) {
-          console.log("worked");
-          kill = banditkill;
-        } else {
-          kill = acc;
-        }
-
-        let terminal = "0";
-        let theguy = message.guild.members.cache.find(
-          (m) => m.nickname === kill
-        );
-        if (theguy) {
-          if (theguy.roles.cache.has(alive.id)) {
-            terminal = kill;
-          }
-        }
-        console.log(kill);
-        // beast hunter
-        if (terminal != "0") {
-          for (let x = 0; x < bh.length; x++) {
-            let goaway = message.guild.channels.cache.get(bh[x]);
-            let trap = db.get(`setTrap_${bh[x]}`);
-            let active = db.get(`trapActive_${bh[x]}`);
-            if (trap == terminal && active == true) {
-              thechan.send(
-                `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-              );
-              thechan.send(`${alive}`);
-              goaway.send(
-                "<:trap:744535154927861761> Your trap was triggered last night but your target was too strong."
-              );
-              goaway.send(`${alive}`);
-              db.set(`setTrap_${bh[x]}`, null);
-              db.set(`trapActive_${bh[x]}`, false);
-              terminal = "0";
-            }
-          }
-        }
-
-        // jailer
-        if (terminal != "0") {
-          if (jailed.permissionsFor(theguy).has(["VIEW_CHANNEL"])) {
-            for (let x = 1; x <= alive.members.size + dead.members.size; x++) {
-              let jai = message.guild.members.cache.find(
-                (m) => m.nickname === x.toString()
-              );
-              if (jai) {
-                if (
-                  jai.roles.cache.has(alive.id) &&
-                  db.get(`role_${jai.id}`) == "Jailer"
-                )
-                  thechan.send(
-                    `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-                  );
-                thechan.send(`${alive}`);
-                x = 99;
-                terminal = "0";
-              }
-            }
-          }
-        }
-
-        // doc
-        if (terminal != "0") {
-          for (let x = 0; x < doc.length; x++) {
-            let thedoc = message.guild.channels.cache.get(doc[x]);
-            if (db.get(`heal_${thedoc.id}`) == terminal) {
-              thedoc.send(
-                `<:heal:744536259673718894> Your protection saved **${theguy.nickname} ${theguy.user.username}**!`
-              );
-              thedoc.send(`${alive}`);
-              thechan.send(
-                `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-              );
-              thechan.send(`${alive}`);
-              terminal = "0";
-              x = 99;
-            }
-          }
-        }
-
-        // witch
-        if (terminal != "0") {
-          for (let x = 0; x < witch.length; x++) {
-            let thewitch = message.guild.channels.cache.get(witch[x]);
-            if (db.get(`potion_${witch[x]}`) == terminal) {
-              thewitch.send(
-                `<:potion:744536604252700766> Your potion saved **${theguy.nickname} ${theguy.user.username}**!`
-              );
-              thewitch.send(`${alive}`);
-              thechan.send(
-                `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-              );
-              thechan.send(`${alive}`);
-              terminal = "0";
-              db.set(`potion_${thewitch.id}`, null);
-              db.set(`witchAbil_${thewitch.id}`, "yes");
-            }
-          }
-        }
-        if (terminal != "0") {
-          let chans = message.guild.channels.cache
-            .filter(
-              (c) =>
-                c.name ===
-                `priv-${db
-                  .get(`role_${theguy.id}`)
-                  .toLowerCase()
-                  .replace(" ", "-")}`
-            )
-            .keyArray("id");
-          for (let k = 0; k < chans.length; k++) {
-            let tempchan = message.guild.channels.cache.get(chans[k]);
-            if (
-              tempchan
-                .permissionsFor(theguy)
-                .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-            ) {
-              let shield = db.get(`shield_${tempchan.id}`);
-              if (shield == true) {
-                tempchan.send(
-                  `<:guard:744536167109886023> You were attacked but your shield saved you!`
-                );
-                tempchan.send(`${alive}`);
-                thechan.send(
-                  `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-                );
-                thechan.send(`${alive}`);
-                terminal = "0";
-                db.set(`shield_${tempchan.id}`, false);
-              }
-            }
-          }
-        }
-        // bodyguard
-        if (terminal != "0") {
-          if (db.get(`role_${theguy.id}`) == "Bodyguard") {
-            for (let x = 0; x < bg.length; x++) {
-              let thechanne = message.guild.channels.cache.get(bg[x]);
-              if (
-                thechanne
-                  .permissionsFor(tempguy)
-                  .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-              ) {
-                x = 99;
-                if (tempguy.roles.cache.has(alive.id)) {
-                  if (!db.get(`lives_${thechanne.id}`)) {
-                    db.set(`lives_${thechanne.id}`, 2);
-                  }
-                  if (lives == 2) {
-                    terminal = "0";
-                    thechan.send(
-                      `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-                    );
-                    thechan.send(`${alive}`);
-                    thechanne.send(
-                      `<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`
-                    );
-                    thechanne.send(`${alive}`);
-                    db.subtract(`lives_${thechanne.id}`, 1);
-                  } else if (lives == 1) {
-                    terminal = "0";
-                    dayChat.send(
-                      `<:thieve:745632726639706202> Bandits killed **${theguy.nickname} ${theguy.user.username} (Bodyguard)**!`
-                    );
-                    theguy.roles.remove(alive.id);
-                    theguy.roles.add(dead.id);
-                    killedplayers.push(theguy.id);
-                    thekiller.push(THEACC.id);
-                  }
-                }
-              }
-            }
-          } else {
-            for (let x = 0; x < bg.length; x++) {
-              let thechane = message.guild.channels.cache.get(bg[x]);
-              if (!db.get(`lives_${thechane.id}`)) {
-                db.set(`lives_${thechane.id}`, 2);
-              }
-              let lives = db.get(`lives_${thechane.id}`);
-              let guard = db.get(`guard_${thechane.id}`);
-              if (guard == terminal) {
-                if (lives == 2) {
-                  terminal = "0";
-                  thechan.send(
-                    `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-                  );
-                  thechan.send(`${alive}`);
-                  thechane.send(
-                    `<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`
-                  );
-                  thechane.send(`${alive}`);
-                  db.subtract(`lives_${thechane.id}`, 1);
-                } else if (lives == 1) {
-                  for (
-                    let bored = 1;
-                    bored <= alive.members.size + dead.members.size;
-                    bored++
-                  ) {
-                    let thebg = message.guild.members.cache.find(
-                      (m) => m.nickname === bored.toString()
-                    );
-                    if (thebg) {
-                      if (
-                        thechane
-                          .permissionsFor(thebg)
-                          .has([
-                            "SEND_MESSAGES",
-                            "VIEW_CHANNEL",
-                            "READ_MESSAGE_HISTORY",
-                          ])
-                      ) {
-                        if (thebg.roles.cache.has(alive.id)) terminal = "0";
-                        bored = 99;
-                        dayChat.send(
-                          `<:thieve:745632726639706202> Bandits killed **${thebg.nickname} ${thebg.user.username} (Bodyguard)**!`
-                        );
-                        thebg.roles.add(dead.id);
-                        thebg.roles.remove(alive.id);
-                        killedplayers.push(thebg.id);
-                        thekiller.push(THEACC.id);
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        // tough guy
-
-        if (terminal != "0") {
-          if (db.get(`role_${theguy.id}`) == "Tough Guy") {
-            for (let x = 0; x < tg.length; x++) {
-              let thhh = message.guild.channels.cache.get(tg[x]);
-              if (
-                thhh
-                  .permissionsFor(theguy)
-                  .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-              ) {
-                thhh.send(
-                  `You have been attacked by **${THEACC.nickname} ${THEACC.user.username} (Accomplice)**. You have been wounded and will die at the end of the day.`
-                );
-                thhh.send(`${alive}`);
-                db.set(`wounded_${thhh.id}`, true);
-                terminal = "0";
-                let accs = message.guild.channels.cache
-                  .filter((c) => c.name === "priv-accomplice")
-                  .keyArray("id");
-                for (let y = 0; y < accs.length; y++) {
-                  let killme = message.guild.channels.cache.get(accs[x]);
-                  if (
-                    killme
-                      .permissionsFor(THEACC)
-                      .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-                  ) {
-                    killme.send(
-                      `**${theguy.nickname} ${theguy.user.username}** is a tough guy! He now knows your role!`
-                    );
-                    killme.send(`${alive}`);
-                    thechan.send(
-                      `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-                    );
-                    thechan.send(`${alive}`);
-                  }
-                }
-              }
-            }
-          } else {
-            for (let x = 0; x < tg.length; x++) {
-              let thhh = message.guild.channels.cache.get(tg[x]);
-              let tough = db.get(`tough_${thhh.id}`);
-              if (tough == terminal) {
-                for (
-                  let y = 1;
-                  y <= alive.members.size + dead.members.size;
-                  y++
-                ) {
-                  let iwannadie = message.guild.members.cache.find(
-                    (m) => m.nickname === y.toString()
-                  );
-                  if (
-                    thhh
-                      .permissionsFor(iwannadie)
-                      .has([
-                        "SEND_MESSAGES",
-                        "VIEW_CHANNEL",
-                        "READ_MESSAGE_HISTORY",
-                      ])
-                  ) {
-                    thhh.send(
-                      `You have been attacked by **${THEACC.nickname} ${THEACC.user.username} (Accomplice)**. You have been wounded and will die at the end of the day.`
-                    );
-                    thhh.send(`${alive}`);
-                    terminal = "0";
-                    db.set(`wounded_${thhh.id}`, true);
-                    let accs = message.guild.channels.cache
-                      .filter((c) => c.name === "priv-accomplice")
-                      .keyArray("id");
-                    for (let y = 0; y < accs.length; y++) {
-                      let killme = message.guild.channels.cache.get(accs[x]);
-                      if (
-                        killme
-                          .permissionsFor(THEACC)
-                          .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-                      ) {
-                        killme.send(
-                          `**${iwannadie.nickname} ${iwannadie.user.username}** is a tough guy! He now knows your role!`
-                        );
-                        killme.send(`${alive}`);
-                        thechan.send(
-                          `<:guard:744536167109886023> Player **${theguy.nickname} ${theguy.user.username}** could not be killed!`
-                        );
-                        thechan.send(`${alive}`);
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        if (terminal != "0") {
-          dayChat.send(
-            `<:thieve:745632726639706202> Bandits killed **${theguy.nickname} ${
-              theguy.user.username
-            } (${db.get(`role_${theguy.id}`)})**!`
-          );
-          theguy.roles.remove(alive.id);
-          theguy.roles.add(dead.id);
-          killedplayers.push(theguy.id);
-          thekiller.push(THEACC.id);
-          if (db.get(`role_${theguy.id}`) == "Cupid") {
-            cupidKilled = true;
-          }
-        }
-      } else {
-        for (let k = 1; k <= alive.members.size + dead.members.size; k++) {
-          let tempguy1 = message.guild.members.cache.find(
-            (m) => m.nickname === k.toString()
-          );
-          if (tempguy1) {
-            if (db.get(`role_${tempguy1.id}`) == "Bandit") {
-              if (
-                thechan
-                  .permissionsFor(tempguy1)
-                  .has([
-                    "SEND_MESSAGES",
-                    "VIEW_CHANNEL",
-                    "READ_MESSAGE_HISTORY",
-                  ])
-              ) {
-                if (tempguy1.roles.cache.has(alive.id)) {
-                  if (banditkill != null) {
-                    db.set(`bandit_${thechan.id}`, banditkill);
-                    killedplayers.push(
-                      message.guild.members.cache.find(
-                        (m) => m.nickname === banditkill
-                      ).id
-                    );
-                    thekiller.push(THEACC);
-                  }
-                }
-              }
-            }
-          }
-        }
+    // bandit kill
+    
+    // checking hh target
+    let alltargetsforhh = []
+    for (let a = 0 ; a < hh.length ; a++) {
+      let target = db.get(`hhtarget_${hh[a]}`)
+      if (target) {
+        alltargetsforhh.push(target)
       }
     }
-
-    // getting the conversion and see if they are ww
-    for (let i = 0; i < bandit.length; i++) {
-      let conversion = db.get(`bandit_${bandit[i]}`);
+    // checking if player is a killer or a wolf
+    let abcdef = ["Serial Killer", "Arsonist", "Bomber", "Cannibal", "Corruptor", "Illusionist", "Alchemist", "Bandit", "Accomplice", "Sect Leader", "Zombie"]
+    for (let a = 0 ; a < bandit.length ; a++) {
+      let conversion = db.get(`bandit_${bandit[a]}`)
+      let bchan = message.guild.channels.cache.get(bandit[a])
       if (conversion != null) {
-        let guy = message.guild.members.cache.find(
-          (m) => m.nickname === conversion
-        );
-        if (guy) {
-          if (guy.roles.cache.has(alive.id)) {
-            let temprole = db.get(`role_${guy.id}`);
-            if (
-              temprole.toLowerCase().includes("wolf") ||
-              temprole == "Sorcerer" ||
-              temprole == "Zombie" ||
-              temprole == "Sect Leader" ||
-              temprole == "Accomplice" ||
-              soloKillers.includes(temprole) ||
-              hhtarget.includes(conversion)
-            ) {
-              db.set(`bandit_${bandit[i]}`, null);
-              dayChat.send(
-                `<:thieve:745632726639706202> Bandits killed **${guy.nickname} ${guy.user.username} (${temprole})**!`
-              );
-              guy.roles.add(dead.id);
-              guy.roles.remove(alive.id);
+        let theaccsoon = message.guild.members.cache.find(m => m.nickname === conversion)
+        if (theaccsoon) {
+          if (theaccsoon.roles.cache.has(alive.id)) {
+            let uwurole = db.get(`role_${theaccsoon.id}`) || "Wolf Medium"
+            if (abcdef.includes(uwurole) || uwurole.toLowerCase().includes("wolf") || uwurole == "Sorcerer" || alltargetsforhh.includes(theaccsoon.nickname)) {
+              let thebandit
+              for (let c = 1 ; c <= alive.members.size + dead.members.size ; c++) {
+                let hmm = message.guild.members.cahce.find(m => m.nickname === c.toString())
+                if (hmm) {
+                  if (bchan.permissionsFor(hmm).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    thebandit = hmm
+                  }
+                }
+              }
+              if (thebandit) {
+              // beast hunter
+              for (let b = 0 ; b < bh.length ; b++) {
+                let pro = message.guild.channels.cache.get(bh[b])
+                let trap = db.get(`setTrap_${bh[b]}`)
+                let active = db.get(`trapActive_${bh[b]}`)
+                if (trap == conversion && active == true) {
+                  bchan.send(`<:guard:744536167109886023> You could not turn player **${theaccsoon.nickname} ${theaccsoon.user.username}** into your accomplice!`)
+                  bchan.send(`${alive}`)
+                  pro.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                  pro.send(`${alive}`)
+                  conversion = "0"
+                  db.set(`bandit_${bchan.id}`, null)  
+                  db.set(`setTrap_${pro.id}`, null)
+                  db.set(`trapActive_${pro.id}`, false)
+                }
+              }
+              
+              // jailer
+              if (conversion != "0") {
+                if (jailed.permissionsFor(theaccsoon).has(["VIEW_CHANNEL"])) {
+                  for (let b = 1 ; b <= alive.members.size + dead.members.size ; b++) {
+                    let uwujailer = message.guild.members.cache.find(m => m.nickname === b.toString())
+                    if (uwujailer) {
+                      if (uwujailer.roles.cache.get(alive.id)) {
+                        if (db.get(`role_${uwujailer.id}`) == conversion) {
+                          bchan.send(`<:guard:744536167109886023> You could not turn player **${theaccsoon.nickname} ${theaccsoon.user.username}** into your accomplice!`)
+                          bchan.send(`${alive}`)
+                          conversion = "0"
+                          db.set(`bandit_${bchan.id}`, null) 
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              
+              // doctor
+              if (conversion != "0") {
+                for (let b = 0 ; b < doc.length ; b++) {
+                  let uwudoc = message.guild.channels.cache.get(doc[b])
+                  let heal = db.get(`uwudoc_${doc[b]}`)
+                  if (heal == conversion) {
+                    bchan.send(`<:guard:744536167109886023> You could not turn player **${theaccsoon.nickname} ${theaccsoon.user.username}** into your accomplice!`)
+                    bchan.send(`${alive}`)
+                    uwudoc.send(`<:heal:744536259673718894> Your protection saved **${theaccsoon.nickname} ${theaccsoon.user.username}**!`)
+                    uwudoc.send(`${alive}`)
+                    conversion = "0"
+                    db.set(`bandit_${bchan.id}`, null)  
+                  }
+                }
+              }
+              
+              // witch 
+              if (conversion != "0") {
+                for (let b = 0 ; b < witch.length ; b++) {
+                  let uwuwitch = message.guild.channels.cache.get(witch[b])
+                  let potion = db.get(`potion_${witch[b]}`)
+                  if (potion == conversion) {
+                    bchan.send(`<:guard:744536167109886023> You could not turn player **${theaccsoon.nickname} ${theaccsoon.user.username}** into your accomplice!`)
+                    bchan.send(`${alive}`)
+                    uwuwitch.send(`<:potion:744536604252700766> Your potion saved **${theaccsoon.nickname} ${theaccsoon.user.username}**!`)
+                    uwuwitch.send(`${alive}`)
+                    conversion = "0"
+                    db.set(`bandit_${bchan.id}`, null) 
+                    db.set(`witchAbil_${witch[b]}`, 1)
+                    db.set(`potion_${uwuwitch.id}`, null)
+                  }
+                }
+              }
+              
+              // forger shield
+              if (conversion != "0") {
+                let shadownub = message.guild.channels.cache.filter(`priv-${uwurole.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                for (let b = 0 ; b < shadownub.length ; b++) {
+                  let aquanub = message.guild.channels.cache.get(shadownub[b])
+                  let shield = db.get(`shield_${aquanub.id}`)
+                  if (shield == true) {
+                    bchan.send(`<:guard:744536167109886023> You could not turn player **${theaccsoon.nickname} ${theaccsoon.user.username}** into your accomplice!`)
+                    bchan.send(`${alive}`)
+                    aquanub.send(`<:getshield:744536572556476507> Your shield saved you a life!`)
+                    aquanub.send(`${alive}`)
+                    db.set(`shield_${aquanub.id}`, false)
+                    conversion = "0"
+                    db.set(`bandit_${bchan.id}`, null) 
+                  }
+                }
+              }
+              
+              // bodyguard
+              if (conversion != "0") {
+                for (let b = 0 ; b < bg.length ; b++) {
+                  let uwubg = message.guild.channels.cache.get(bg[b])    
+                  let guard = db.get(`guard_${uwubg.id}`)
+                  let lives = db.get(`lives_${uwubg.id}`)
+                  if (!lives) {
+                    db.set(`lives_${uwubg.id}`, 2)
+                    lives = 2
+                  }
+                  if (guard == conversion) {
+                    if (lives == 2) {
+                      bchan.send(`<:guard:744536167109886023> You could not turn player **${theaccsoon.nickname} ${theaccsoon.user.username}** into your accomplice!`)
+                      bchan.send(`${alive}`)
+                      uwubg.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                      uwubg.send(`${alive}`)
+                      db.subtract(`lives_${uwubg.id}`, 1)
+                      conversion = "0"
+                      db.set(`bandit_${bchan.id}`, null) 
+                    }
+                  }
+                }
+              }
+              
+              // tough guy
+              if (conversion != "0") {
+                for (let b = 0 ; b < tg.length ; b++) {
+                  let uwutg = message.guild.channels.cache.get(tg[b])
+                  let tough = db.get(`tough_${uwutg.id}`)
+                  let metg
+                  for (let d = 1 ; d <= alive.members.size + dead.members.size ; d++) {
+                    let teihie = message.guild.members.cache.find(m => m.nickname === d.toString())
+                    if (teihie) {
+                      if (teihie.roles.cache.has(alive.id)) {
+                        if (uwutg.permissionsFor(teihie).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                          metg = teihie
+                        }
+                      }
+                    }
+                  }
+                  if (tough == conversion) {
+                    if (metg) {
+                      uwutg.send(`<:guard:744536167109886023> You have been wounded for guarding **${theaccsoon.nickname} ${theaccsoon.user.username}** by **${thebandit.nickname} ${thebandit.user.username} (Bandit)**. You have been wounded and will die at the end of the day.`)
+                      uwutg.send(`${alive}`)
+                      bchan.send(`<:guard:744536167109886023> You could not turn player **${theaccsoon.nickname} ${theaccsoon.user.username}** into your accomplice!`)
+                      bchan.send(`_ _\n\nPlayer **${metg.nickname} ${metg.user.username}** is a tough guy! He know knows your role!`)
+                      bchan.send(`${alive}`)
+                      conversion = "0"
+                      db.set(`bandit_${bchan.id}`, null)
+                      db.set(`wounded_${uwutg.id}`, true)
+                    }
+                  }
+                }
+              }
+              // killing the player
+              if (conversion != "0") {
+                dayChat.send(`<:thieve:745632726639706202> Bandits killed **${theaccsoon.nickname} ${theaccsoon.user.username} (${uwurole})**!`)
+                bchan.send(`Player ${theaccsoon.nickname} ${theaccsoon.user.username} didn't want to be your accomplice, so you decided to kill them instead`)
+                bchan.send(`${alive}`)
+                theaccsoon.roles.add(dead.id)
+                theaccsoon.roles.remove(alive.id)
+              }
+              }
             }
           }
         }
       }
     }
-
+    
+    // bandit killing for real
+    for (let a = 0 ; a < bandits.length ; a++) {
+      let bchan = message.guild.channels.cache.get(bandits[a])
+      let acckill = db.get(`accomplice_${bchan.id}`)
+      let bkill = db.get(`banditKill_${bchan.id}`)
+      let kill = "0"
+      if (acckill) {
+        kill = acckill
+      } else if (bkill) {
+        kill = bkill
+      }
+      
+      let thebandit
+      let theaccomplice
+      let toTARGET 
+      
+      for (let c = 1 ; c <= alive.members.size + dead.members.size; c++) {
+        let okayig = message.guild.members.cache.find(m => m.nickname === c.toString())
+        if (okayig) {
+          if (db.get(`role_${okayig}`) == "Accomplice") {
+            if (okayig.roles.cahce.has(alive.id)) {
+              theaccomplice = okayig
+              toTARGET = okayig
+            }
+          }
+        }
+      }
+      
+      for (let c = 1 ; c <= alive.members.size + dead.members.size; c++) {
+        let okayig = message.guild.members.cache.find(m => m.nickname === c.toString())
+        if (okayig) {
+          if (db.get(`role_${okayig}`) == "Bandit") {
+            if (okayig.roles.cahce.has(alive.id)) {
+              thebandit = okayig
+              if (!toTARGET) {
+                toTARGET = okayig
+              }           
+            }
+          }
+        }
+      }
+      
+      let byebyea = message.guild.members.cache.find(m => m.nickname === kill)
+      if (byebyea) {
+        if (byebyea.roles.cache.has(alive.id)) {
+          let lolrole = db.get(`role_${byebyea.id}`)
+          // beast hunter
+          if (kill != "0") {
+            for (let b = 0 ; b < bh.length ; b++) {
+              let lolbh = message.guild.channels.cache.get(bh[b])
+              let trap = db.get(`setTrap_${lolbh.id}`)
+              let active = db.get(`trapActive_${lolbh.id}`)
+              if (trap == kill && active == true) {
+                bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                bchan.send(`${alive}`)
+                lolbh.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                lolbh.send(`${alive}`)
+                kill = "0"
+                db.set(`setTrap_${lolbh.id}`, null)
+                db.set(`trapActive_${lolbh.id}`, false)
+              }
+            }
+          }
+          
+          // jailer
+          if (kill != "0") {
+            if (jailed.permissionsFor(byebyea).has(["VIEW_CHANNEL"])) {
+              for (let b = 1 ; b <= alive.members.size + dead.members.size ; b++) {
+                let loljailer = message.guild.members.cache.find(m => m.nickname == b.toString())
+                if (loljailer) {
+                  if (loljailer.roles.cache.has(alive.id)) {
+                    if (db.get(`role_${loljailer}`) == "Jailer") {
+                      bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                      bchan.send(`${alive}`)
+                      kill = "0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+          
+          // doctor
+          if (kill != "0") {
+            for (let b = 0 ; b < doc.length ; b++) {
+              let loldoc = message.guild.channels.cache.get(doc[b])
+              if (db.get(`heal_${loldoc.id}`) == kill) {
+                bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                bchan.send(`${alive}`)
+                kill = "0"
+                loldoc.send(`<:heal:744536259673718894> Your protection saved **${byebyea.nickname} ${byebyea.user.username}**!`)
+                loldoc.send(`${alive}`)
+              }
+            }
+          }
+          
+          // witch 
+          if (kill != "0") {
+            for (let b = 0 ; b < witch.length ; b++) {
+              let lolwitch = message.guild.channels.cache.get(witch[b])
+              if (db.get(`potion_${lolwitch.id}`) == kill) {
+                bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                bchan.send(`${alive}`)
+                kill = "0"
+                lolwitch.send(`<:potion:744536604252700766> Your potion saved **${byebyea.nickname} ${byebyea.user.username}**!`)
+                lolwitch.send(`${alive}`)
+                db.set(`witchAbil_${lolwitch.id}`, 1)
+                db.set(`potion_${lolwitch.id}`, null)
+              }
+            }
+          }
+          
+           // forger
+          if (kill != "0") {
+            let ashpro = message.guild.channels.cache.filter(c => c.name === `priv-${lolrole.toLowerCase().replace(" ", "-")}`).keyArray("id")
+            for (let b = 0 ; b < ashpro.length ; b++) {
+              let aquanotpro = message.guild.channels.cache.get(ashpro[b])
+              let shield = db.get(`shield_${aquanotpro.id}`)
+              if (shield == true) {
+                aquanotpro.send(`<:getshield:744536572556476507> You were attacked, but your shield saved you!`)
+                aquanotpro.send(`${alive}`)
+                bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                bchan.send(`${alive}`)
+                kill = "0"
+                db.set(`shield_${aquanotpro.id}`, false)
+              }
+            }
+          }
+          
+          // bodyguard
+          if (kill != "0") {
+            for (let b = 0 ; b < bg.length ; b++) {
+              let lolbg = message.guild.channels.cache.get(bg[b])
+              if (db.get(`guard_${lolbg.id}`) == kill) {
+                let lives = db.get(`lives_${lolbg.id}`) || 2
+                let lolthebg 
+                for (let d = 1 ; d <= alive.members.size + dead.members.size ; d++) {
+                  let jijieji = message.guild.members.cache.find(m => m.nickname === d.toString())
+                  if (jijieji) {
+                    if (jijieji.roles.cache.has(alive.id)) {
+                      if (lolbg.permissionsFor(jijieji).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        lolthebg = jijieji
+                      }
+                    }
+                  }
+                }
+                if (lolthebg) {
+                  if (lives == 2) {
+                    kill = "0"
+                    bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                    bchan.send(`${alive}`)
+                    lolbg.send(`You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                    lolbg.send(`${alive}`)
+                    db.set(`lives_${lolbg.id}`, 1)
+                  } else {
+                    kill = "0"
+                    dayChat.send(`<:thieve:745632726639706202> Bandits killed **${lolthebg.nickname} ${lolthebg.user.username} (Bodyguard)**!`)
+                    lolthebg.roles.add(dead.id)
+                    lolthebg.roles.remove(alive.id)
+                    db.set(`guard_${lolbg.id}`, null)
+                  }
+                }
+              }
+            }
+          }
+          
+          // killing bodyguard
+          if (kill != "0") {
+            if (lolrole == "Bodyguard") {
+              for (let b = 0; b < bg.length ; b++) {
+                let lolbg = message.guild.channels.cache.get(bg[b])
+                if (lolbg.permissionsFor(byebyea).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                  let lives = db.get(`lives_${lolbg.id}`) || 2
+                  if (lives == 2) {
+                    kill = "0"
+                    bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                    bchan.send(`${alive}`)
+                    lolbg.send(`You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                    lolbg.send(`${alive}`)
+                    db.set(`lives_${lolbg.id}`, 1)
+                  } else if (lives == 1) {
+                    kill = "0"
+                    dayChat.send(`<:thieve:745632726639706202> Bandits killed **${byebyea.nickname} ${byebyea.user.username} (Bodyguard)**!`)
+                    byebyea.roles.remove(alive.id)
+                    byebyea.roles.add(dead.id)
+                    db.set(`guard_${lolbg.id}`, null)
+                  }
+                }
+              }
+            }
+          }
+          
+          // tough guy
+          if (kill != "0") {
+            let metg 
+            if (lolrole == "Tough Guy") {
+              for (let b = 0 ; b < tg.length ; b++) {
+                let loltg = message.guild.channels.cache.get(tg[b])
+                if (loltg.permissionsFor(byebyea).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                  bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                  bchan.send(`Player **${byebyea.nickname} ${byebyea.user.username}** is a tough guy! He know knows **${toTARGET.nickname} ${toTARGET.user.username}**'s role!`)
+                  bchan.send(`${alive}`)
+                  loltg.send(`You were attacked by **${toTARGET.nickname} ${toTARGET.user.username} (${db.get(`role_${toTARGET.id}`)})**! You will die at the end of the day!`)
+                  loltg.send(`${alive}`)
+                  db.set(`wounded_${loltg.id}`, true)
+                  kill = "0"
+                }
+              }
+            } else {
+              for (let b = 0 ; b < tg.length ; b++) {
+                let loltg = message.guild.channels.cache.get(tg[b])
+                if (db.get(`tough_${loltg.id}}`) == kill) {
+                  for (let d = 1 ; d <= alive.members.size + dead.members.size ; d++) {
+                    let lolthetg = message.guild.members.cache.find(m => m.nickname === d.toString())
+                    if (lolthetg) {
+                      if (lolthetg.roles.cache.has(alive.id)) {
+                        if (loltg.permissionsFor(lolthetg).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                          bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                          bchan.send(`Player **${lolthetg.nickname} ${lolthetg.user.username}** is a tough guy! He know knows **${toTARGET.nickname} ${toTARGET.user.username}**'s role!`)
+                          bchan.send(`${alive}`)
+                          loltg.send(`You were wounded for healing **${byebyea.nickname} ${byebyea.user.username}** by **${toTARGET.nickname} ${toTARGET.user.username} (${db.get(`role_${toTARGET.id}`)})**! You will die at the end of the day!`)
+                          loltg.send(`${alive}`)
+                          db.set(`wounded_${loltg.id}`, true)
+                          kill = "0"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          
+          // killing the player
+          if (kill != "0") {
+            dayChat.send(`<:thieve:745632726639706202> Bandits killed **${byebyea.nickname} ${byebyea.user.username} (${lolrole})**!`)
+            byebyea.roles.add(dead.id)
+            byebyea.roles.remove(alive.id)
+          }
+          
+        }
+      }
+    }
     let frenzy = false;
 
     for (let a = 0; a < wwb.length; a++) {
@@ -2145,279 +2144,194 @@ module.exports = {
       }
     }
     //console.log("Ok so the ww kill is passed")
-    // bandit conversion
-    for (let i = 0; i < bandit.length; i++) {
-      let MEBANDIT = "0";
-      let dumbchan = message.guild.channels.cache.get(bandit[i]);
-      for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
-        let kys = message.guild.members.cache.find(
-          (m) => m.nickname === j.toString()
-        );
-        if (kys) {
-          if (kys.roles.cache.has(alive.id)) {
-            if (
-              dumbchan
-                .permissionsFor(kys)
-                .has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-            ) {
-              MEBANDIT = kys;
+    
+    // Bandit conversion
+    for (let a = 0 ; a < bandit.length ; a++) {
+      let bchan = message.guild.channels.cache.get(bandit[a])
+      let conversion = db.get(`bandit_${bchan.id}`)
+      if (conversion) {
+        let pittguy = message.guild.members.cache.get(m => m.nickname === conversion) 
+        if (pittguy) {
+          if (pittguy.roles.cache.has(alive.id)) {
+            let pittrole = db.get(`role_${pittguy.id}`)
+            
+            // beast hunter
+            for (let b = 0 ; b < bh.length ; b++) {
+              let pittchan = message.guild.channels.cache.get(bh[b])
+              let trap = db.get(`setTrap_${pittchan.id}`)
+              let active = db.get(`trapActive_${pittchan.id}`)
+              if (trap == conversion && active == true) {
+                bchan.send(`<:guard:744536167109886023> Player **${pittguy.nickname} ${pittguy.user.username}** could not be an accomplice!`)
+                bchan.send(`${alive}`)
+                pittchan.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                pittchan.send(`${alive}`)
+                conversion = "0"
+                db.set(`setTrap_${pittchan.id}`, null)
+                db.set(`trapActive_${pittchan.id}`, false)
+              }
             }
-          }
-        }
-      }
-      let conversion = db.get(`bandit_${bandit[i]}`);
-      if (conversion != null) {
-        let ST = message.guild.members.cache.find(
-          (m) => m.nickname === conversion
-        );
-        // beast hunter
-        for (let j = 0; j < bh.length; j++) {
-          let bruhstop = message.guild.channels.cache.get(bh[j]);
-          let trap = db.get(`setTrap_${bruhstop.id}`);
-          let active = db.get(`trapActive_${bruhstop.id}`);
-          if (trap == conversion && active == true) {
-            bruhstop.send(
-              `<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`
-            );
-            bruhstop.send(`${alive}`);
-            dumbchan.send(
-              `<:guard:744536167109886023> Player **${ST.nickname} ${ST.user.username} could not be converted! They were either a werewolf, a Headhunter's target or were protected!`
-            );
-            dumbchan.send(`${alive}`);
-            conversion = "0";
-          }
-        }
-
-        // jailer
-        if (conversion != "0") {
-          if (ST && jailed.permissionsFor(ST).has(["VIEW_CHANNEL"])) {
-            for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
-              let bruhh = message.guild.members.cache.find(
-                (m) => m.nickname === j.toString()
-              );
-              if (bruhh) {
-                if (db.get(`role_${bruhh}`) == "Jailer") {
-                  if (bruhh.roles.cache.has(alive.id)) {
-                    dumbchan.send(
-                      `<:guard:744536167109886023> Player **${ST.nickname} ${ST.user.username} could not be converted! They were either a werewolf, a Headhunter's target or were protected!`
-                    );
-                    dumbchan.send(`${alive}`);
-                    conversion = "0";
+            
+            // jailer
+            if (conversion != "0") {
+              if (jailed.permissionsFor(pittguy).has(["VIEW_CHANNEL"])) {
+                for (let b = 1 ; b <= alive.members.size + dead.members.size ; b++) {
+                  let thejailer = message.guild.members.cache.find(m => m.nickname === b.toString())
+                  if (thejailer) {
+                    if (thejailer.roles.cache.has(alive.id)) {
+                      if (db.get(`role_${thejailer.od}`) == "Jailer") {
+                        bchan.send(`<:guard:744536167109886023> Player **${pittguy.nickname} ${pittguy.user.username}** could not be an accomplice!`)
+                        bchan.send(`${alive}`)
+                        conversion = "0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            
+            // doctor
+            if (conversion != "0") {
+              for (let b = 0 ; b < doc.length ; b++) {
+                let pittchan = message.guild.channels.cache.get(doc[b])
+                if (db.get(`heal_${pittchan.id}`) == conversion) {
+                  bchan.send(`<:guard:744536167109886023> Player **${pittguy.nickname} ${pittguy.user.username}** could not be an accomplice!`)
+                  bchan.send(`${alive}`)
+                  pittchan.send(`<:heal:744536259673718894> Your protection saved **${pittguy.nickname} ${pittguy.user.username}**!`)
+                  pittchan.send(`${alive}`)
+                  conversion = "0"
+                }
+              }
+            }
+            
+            // witch 
+            if (conversion != "0") {
+              for (let b = 0 ; b < witch.length ; b++) {
+                let pittchan = message.guild.channels.cache.get(witch[b])
+                if (db.get(`potion_${pittchan.id}`) == conversion) {
+                  bchan.send(`<:guard:744536167109886023> Player **${pittguy.nickname} ${pittguy.user.username}** could not be an accomplice!`)
+                  bchan.send(`${alive}`)
+                  pittchan.send(`<:potion:744536604252700766> Your potion saved **${pittguy.nickname} ${pittguy.user.username}**!`)
+                  pittchan.send(`${alive}`)
+                  conversion = "0"
+                  db.set(`witchAbil_${pittchan.id}`, 1)
+                  db.set(`potion_${pittchan.id}`, null)
+                }
+              }
+            }
+            
+            // forger shield
+            if (conversion != "0") {
+              let ashishpro = message.guild.channels.cache.filter(c => c.name === `priv-${pittrole.toLowerCase().replace(" ", "-")}`)
+              for (let b = 0 ; b < ashishpro.length ; b++) {
+                let shadowisnub = message.guild.channels.cache.get(ashishpro[b])
+                if (db.get(`shield_${shadowisnub.id}`) == true) {
+                  shadowisnub.send(`<:getshield:744536572556476507> Your shield saved you a life!`)
+                  shadowisnub.send(`${alive}`)
+                  bchan.send(`<:guard:744536167109886023> Player **${pittguy.nickname} ${pittguy.user.username}** could not be an accomplice!`)
+                  bchan.send(`${alive}`)
+                  conversion = "0"
+                  db.set(`shield_${shadowisnub.id}`, false)
+                }
+              }
+            }
+            
+            // bodyguard 
+            if (conversion != "0") {
+              for (let b = 0 ; b < bg.length ; b++) {
+                let pittchan = message.guild.channels.cache.get(bg[b])
+                let guard = db.get(`guard_${pittchan.id}`)
+                let lives = db.get(`lives_${pittchan.id}`) || 2
+                if (guard == conversion && lives == 2) {
+                  bchan.send(`<:guard:744536167109886023> Player **${pittguy.nickname} ${pittguy.user.username}** could not be an accomplice!`)
+                  bchan.send(`${alive}`)
+                  pittchan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                  pittchan.send(`${alive}`)
+                  db.set(`lives_${pittchan.id}`, 1)
+                  conversion = "0"
+                }
+              }
+            }
+            
+            if (conversion != "0") {
+              if (pittrole == "Bodyguard") {
+                for (let b = 0 ; b < bg.length ; b++) {
+                  let pittchan = message.guild.channels.cache.get(bg[b])
+                  if (pittchan.permissionsFor(pittguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    let lives = db.get(`lives_${pittchan.id}`) || 2
+                    if (lives == 2) {
+                      bchan.send(`<:guard:744536167109886023> Player **${pittguy.nickname} ${pittguy.user.username}** could not be an accomplice!`)
+                      bchan.send(`${alive}`)
+                      pittchan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                      pittchan.send(`${alive}`)
+                      db.set(`lives_${pittchan.id}`, 1)
+                      conversion = "0"
+                    }
+                  }
+                }
+              }
+            }
+            
+            // converting
+            if (conversion != "0") {
+              for (let b = 1 ; b <= alive.members.size + dead.members.size ; b++) {
+                let lolgd = message.guild.members.cache.find(m => m.nickname === b.toString())
+                if (lolgd) {
+                  if (lolgd.roles.cache.has(alive.id)) {
+                    if (bchan.permissionsFor(lolgd).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                      for (let d = 0 ; d < bandits.length ; d++) {
+                        let pittchan = message.guild.channels.cache.get(bandits[d])
+                        if (pittchan.permissionsFor(lolgd).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                          let fhde = await message.guild.channels.create("priv-accomplice", {
+                            parent: "748959630520090626",
+                            permissionOverwrites: [
+                              {
+                                id: message.guild.id,
+                                deny: ["VIEW_CHANNEL"]
+                              }, 
+                              {
+                                id: pittguy.id,
+                                allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]
+                              }, 
+                              {
+                                id: narrator.id,
+                                allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"]
+                              },
+                              {
+                                id: mininarr.id,
+                                allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"]
+                              }
+                            ]
+                          })
+                          await fhde.send(db.get(`roleinfo_accomplice`))
+                          await fhde.send(`${alive}`).then(m => m.delete({timeout: 3000}))
+                          let bruhieiu = message.guild.channels.cache.filter(c => c.name === `priv-${pittrole.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                          for (let e = 0 ; e < bruhieiu.length ; e++) {
+                            let oujdw = message.guild.channels.cache.get(bruhieiu[e])
+                            oujdw.updateOverwrite(pittguy.id, {
+                              "VIEW_CHANNEL": false,
+                              "READ_MESSAGE_HISTORY": false,
+                              "SEND_MESSAGES": false
+                            })
+                          }
+                          db.set(`role_${pittguy.id}`, "Accomplice")
+                          pittchan.updateOverwrite(pittguy.id, {
+                            "VIEW_CHANNEL": true,
+                            "READ_MESSAGE_HISTORY": true,
+                            "SEND_MESSAGES": true
+                          })
+                          pittchan.send(`<:kidnap:744575308904267796> The Bandit converted **${pittguy.nickname} ${pittguy.user.username} (${pittrole})** into their accomplice!`)
+                        }
+                      }
+                    }
                   }
                 }
               }
             }
           }
         }
-
-        // doctor
-        if (conversion != "0") {
-          for (let j = 0; j < doc.length; j++) {
-            let kme = message.guild.channels.cache.get(doc[j]);
-            if (db.get(`heal_${kme.id}`) == conversion) {
-              kme.send(
-                `<:heal:744536259673718894> Your protection saved **${ST.nickname} ${ST.user.username}**!`
-              );
-              kme.send(`${alive}`);
-              dumbchan.send(
-                `<:guard:744536167109886023> Player **${ST.nickname} ${ST.user.username} could not be converted! They were either a werewolf, a Headhunter's target or were protected!`
-              );
-              dumbchan.send(`${alive}`);
-              conversion = "0";
-            }
-          }
-        }
-        if (conversion != "0") {
-          let chans = message.guild.channels.cache
-            .filter(
-              (c) =>
-                c.name ===
-                `priv-${db
-                  .get(`role_${ST.id}`)
-                  .toLowerCase()
-                  .replace(" ", "-")}`
-            )
-            .keyArray("id");
-          for (let k = 0; k < chans.length; k++) {
-            let tempchan = message.guild.channels.cache.get(chans[k]);
-            if (
-              tempchan
-                .permissionsFor(ST)
-                .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-            ) {
-              let shield = db.get(`shield_${tempchan.id}`);
-              if (shield == true) {
-                tempchan.send(
-                  `<:guard:744536167109886023> You were attacked but your shield saved you!`
-                );
-                tempchan.send(`${alive}`);
-                dumbchan.send(
-                  `<:guard:744536167109886023> Player **${ST.nickname} ${ST.user.username}** could not be killed!`
-                );
-                dumbchan.send(`${alive}`);
-                conversion = "0";
-                db.set(`shield_${tempchan.id}`, false);
-              }
-            }
-          }
-        }
-        if (conversion != "0") {
-          for (let j = 0; j < witch.length; j++) {
-            let kme = message.guild.channels.cache.get(witch[j]);
-            if (db.get(`potion_${kme.id}`) == conversion) {
-              kme.send(
-                `<:potion:744536604252700766> Your potion saved **${ST.nickname} ${ST.user.username}**!`
-              );
-              kme.send(`${alive}`);
-              dumbchan.send(
-                `<:guard:744536167109886023> Player **${ST.nickname} ${ST.user.username} could not be converted! They were either a werewolf, a Headhunter's target or were protected!`
-              );
-              dumbchan.send(`${alive}`);
-              db.set(`potion_${kme.id}`, null);
-              db.set(`witchAbil_${kme.id}`, "yes");
-              converison = "0";
-            }
-          }
-        }
-
-        // bodyguard with 2 lives
-        if (conversion != "0") {
-          // if guy is bg
-          if (db.get(`role_${ST.id}`) == "Bodyguard") {
-            for (let j = 0; j < bg.length; j++) {
-              let kme = message.guild.channels.cache.get(bg[j]);
-              if (
-                kme
-                  .permissionsFor(ST)
-                  .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-              ) {
-                if (db.get(`lives_${kme.id}`) == 2) {
-                  kme.send(
-                    `<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`
-                  );
-                  kme.send(`${alive}`);
-                  dumbchan.send(
-                    `<:guard:744536167109886023> Player **${ST.nickname} ${ST.user.username} could not be converted! They were either a werewolf, a Headhunter's target or were protected!`
-                  );
-                  dumbchan.send(`${alive}`);
-                  conversion = "0";
-                  db.subtract(`lives_${kme.id}`, 1);
-                }
-              }
-            }
-          } else {
-            for (let j = 0; j < bg.length; j++) {
-              let kme = message.guild.channels.cache.get(bg[j]);
-              if (db.get(`guard_${kme.id}`) == conversion) {
-                if (db.get(`lives_${kme.id}`) == 2) {
-                  kme.send(
-                    `<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`
-                  );
-                  kme.send(`${alive}`);
-                  dumbchan.send(
-                    `<:guard:744536167109886023> Player **${ST.nickname} ${ST.user.username} could not be converted! They were either a werewolf, a Headhunter's target or were protected!`
-                  );
-                  dumbchan.send(`${alive}`);
-                  conversion = "0";
-                  db.subtract(`lives_${kme.id}`, 1);
-                }
-              }
-            }
-          }
-        }
-
-        // CONVERTING YAY END OF MY PROBLEMS
-        if (conversion != "0") {
-          let ff = await message.guild.channels.create("priv-accomplice", {
-            parent: "748959630520090626",
-            permissionOverwrites: [
-              {
-                id: message.guild.id,
-                deny: ["VIEW_CHANNEL"],
-              },
-              {
-                id: ST.id,
-                allow: [
-                  "SEND_MESSAGES",
-                  "VIEW_CHANNEL",
-                  "READ_MESSAGE_HISTORY",
-                ],
-              },
-              {
-                id: narrator.id,
-                allow: [
-                  "SEND_MESSAGES",
-                  "VIEW_CHANNEL",
-                  "READ_MESSAGE_HISTORY",
-                  "ADD_REACTIONS",
-                  "MANAGE_CHANNELS",
-                ],
-              },
-              {
-                id: mininarr.id,
-                allow: [
-                  "SEND_MESSAGES",
-                  "VIEW_CHANNEL",
-                  "READ_MESSAGE_HISTORY",
-                  "ADD_REACTIONS",
-                  "MANAGE_CHANNELS",
-                ],
-              },
-            ],
-          });
-          let fu = message.guild.channels.cache
-            .filter(
-              (c) =>
-                c.name ===
-                `priv-${db
-                  .get(`role_${ST.id}`)
-                  .toLowerCase()
-                  .replace(" ", "-")}`
-            )
-            .keyArray("id");
-          await ff.send(`${db.get(`roleinfo_accomplice`)}`);
-          let ter = await ff.send(`${alive}`);
-          await ter.delete({ timeout: 3000 });
-          for (let diedie = 0; diedie < fu.length; diedie++) {
-            let kms = message.guild.channels.cache.get(fu[diedie]);
-            if (
-              kms
-                .permissionsFor(ST)
-                .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-            ) {
-              kms.updateOverwrite(ST.id, {
-                VIEW_CHANNEL: false,
-                READ_MESSAGE_HISTORY: false,
-                VIEW_CHANNEL: false,
-              });
-            }
-          }
-          db.get(`role_${ST.id}`, "Accomplice");
-          for (let l = 0; l < bandits.length; l++) {
-            let terminalchan = message.guild.channels.cache.get(bandits[l]);
-            if (
-              terminalchan
-                .permissionsFor(MEBANDIT)
-                .has(["READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])
-            ) {
-              terminalchan.updateOverwrite(ST.id, {
-                SEND_MESSAGES: true,
-                VIEW_CHANNEL: true,
-                READ_MESSAGE_HISTORY: true,
-              });
-              terminalchan.send(
-                `<:kidnap:744575308904267796> The Bandit converted player **${
-                  ST.nickname
-                } ${ST.user.username} (${db.get(
-                  `role_${ST.id}`
-                )})** into their accomplice!`
-              );
-            }
-          }
-        }
       }
     }
-
+    
     //console.log("Hello there Janet")
     //console.log("Oh hi there Bandit Conversion is ok")
     // confirming arsonist's douse
@@ -2960,6 +2874,7 @@ module.exports = {
           }
         }
       }
+      if (thecorrtocorr) {
       if (thecorrtocorr.roles.cache.has(alive.id)) {
         if (glitch != null) {
           let corrupted = message.guild.members.cache.find(
@@ -3194,6 +3109,7 @@ module.exports = {
             }
           }
         }
+      }
       }
     }
 
