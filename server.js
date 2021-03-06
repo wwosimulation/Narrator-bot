@@ -442,6 +442,82 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
             }
           }
         }
+       
+       // disabling everythihng
+       let role = db.get(`newMember.id`)
+       let allchannels = newMember.guild.channels.cache.filter(c => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+       for (let a = 0 ; a < allchannels.length ; a++) {
+         let chan = newMember.guild.channels.cache.get(allchannels[a])
+         if (chan) {
+           if (chan.permissionsFor(newMember).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+             if (role == "Doctor") {
+               db.set(`heal_${chan.id}`, null)
+             } else if (role == "Bodyguard") {
+               db.set(`guard_${chan.id}`, null)
+             } else if (role == "Witch") {
+               db.set(`potion_${chan.id}`, null)
+             } else if (role == "Tough Guy") {
+               db.set(`tough_${chan.id}`, null)
+             } else if (role == "Beast Hunter") {
+               db.set(`setTrap_${chan.id}`, null)
+               db.set(`trapActive_${chan.id}`, false)
+             } else if (role == "Bandit") {
+               db.set(`bandit_${chan.id}`, null)
+               let allbandits = newMember.guild.channels.cache.filter(c => c.name === "bandits").keyArray("id")
+               allbandits.forEach(e => {
+                 if (e.permissionsFor(newMember).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                   db.set(`banditKill_${e.id}`, null)
+                 }
+               })
+             } else if (role == "Accomplice") {
+               let allbandits = newMember.guild.channels.cache.filter(c => c.name === "bandits").keyArray("id")
+               allbandits.forEach(e => {
+                 if (e.permissionsFor(newMember).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                   db.set(`accomplice_${e.id}`, null)
+                 }
+               })
+               alive.members.forEach(e => {
+                 if (db.get(`role_${e.id}`) == "Bandit") {
+                   allbandits.forEach(m => {
+                     if (m.permissionsFor(e).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                       db.set(`banditKill_${m.id}`, null)
+                     }
+                   })
+                 }
+               })
+             } else if (role == "Serial Killer") {
+               db.delete(`stab_${chan.id}`)
+             } else if (role == "Arsonist") {
+               db.delete(`douse_${chan.id}`)
+             } else if (role == "Corruptor") {
+               db.delete(`corrupt_${chan.id}`)
+             } else if (role == "Cannibal") {
+               db.delete(`eat_${chan.id}`)
+             } else if (role == "Illusionist") {
+               db.delete(`disguise_${chan.id}`)
+             } else if (role == "Sect Leader") {
+               db.delete(`sect_${chan.id}`)
+             } else if (role == "Zombie") {
+               db.delete(`bite_${chan.id}`)
+             } else if (role == "Jailer") {
+               db.delete(`jail_${chan.id}`)
+             } else if (role == "Marksman") {
+               db.delete(`mark_${chan.id}`)
+             } else if (role == "Sheriff") {
+               db.delete(`snipe_${chan.id}`)
+             } else if (role == "Kitten Wolf") {
+               db.delete(`scratch_${chan.id}`)
+             } else if (role == "Nightmare Werewolf") {
+               db.delete(`sleepy_${chan.id}`)
+             } else if (role == "Naughty Boy") {
+               db.delete(`switch_${chan.id}`)
+             } else if (role.toLowerCase().includes("wolf")) {
+               db.delete(`wolvesKill_${chan.id}`)
+             }
+           }
+         }
+       }
+       
       }
   }
 })
