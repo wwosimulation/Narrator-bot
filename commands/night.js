@@ -195,6 +195,7 @@ module.exports = {
 
       }
     }
+    setTimeout(async () => {
     let corr = message.guild.channels.cache.filter(c => c.name === "priv-corruptor").keyArray("id")
     let as = message.guild.channels.cache
       .filter(c => c.name === "priv-aura-seer")
@@ -620,6 +621,7 @@ module.exports = {
       db.delete(`bombs_${bb[i]}`)
     }
     }, 60000)
+    }, 3000)
     
     db.set(`isDay_${message.guild.id}`, "no");
     db.set(`isNight_${message.guild.id}`, "yes");
