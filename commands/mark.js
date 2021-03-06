@@ -21,7 +21,7 @@ module.exports = {
             if (arrow < 1) return message.channel.send("You ran out of arrows nutcracker")
             message.channel.send(`<:mark:779292927737200671> You decided to mark **${guy.nickname} ${guy.user.username}**!`)
             db.set(`mark_${message.channel.id}`, guy.nickname)
-            db.set(`markActive_${guy.id}`, false)
+            db.set(`markActive_${message.channel.id}`, false)
         }
     }
 }
