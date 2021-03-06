@@ -444,7 +444,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
         }
        
        // disabling everythihng
-       let role = db.get(`newMember.id`)
+       let role = db.get(`role_${newMember.id}`)
        let allchannels = newMember.guild.channels.cache.filter(c => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
        for (let a = 0 ; a < allchannels.length ; a++) {
          let chan = newMember.guild.channels.cache.get(allchannels[a])
