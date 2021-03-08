@@ -6,7 +6,7 @@ module.exports = {
         if (message.guild.id != '472261911526768642') return message.channel.send("This can only be used when playing a game!")
 
         let roseBouquet = db.get(`roseBouquet_${message.author.id}`) || 0
-        let roses = db.get(`roses_${message.author.id}`) || 0
+        let roses = db.get(`roseG_${message.author.id}`) || 0
         let mininarr = message.guild.roles.cache.find(
             r => r.name === "Narrator Trainee"
           );
@@ -26,8 +26,8 @@ module.exports = {
         if (!guy) return message.channel.send("Player does not exist!")
         if (guy.roles.cache.has(spec.id)) return message.channel.send("You can't give the rose to a spectator!")
         if (guy.roles.cache.has(mininarr.id) || guy.roles.cache.has(narrator.id)) return message.channel.send("You can't give the rose to a narrator!")
-        db.add(`roseG_${guy.id}`, 1)
-        db.subtract(`roses_${message.author.id}`, 1)
+        db.subtract(`roseG_${message.author.id}`, 1)
+        db.add(`roses_${guy.id}`, 1)
         } else if (args[0] == "bouquet") {
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")
             let dead = message.guild.roles.cache.find(r => r.name === "Dead")
