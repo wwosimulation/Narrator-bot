@@ -2785,6 +2785,7 @@ module.exports = {
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
                   });
+                  let thechan = message.guild.channels.cache.filter(c => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
                   for (let k = 0; k < thechan.length; k++) {
                     let chan = message.guild.channels.cache.get(thechan[k]);
                     if (
