@@ -26,6 +26,7 @@ module.exports = {
         if (!guy) return message.channel.send("Player does not exist!")
         if (guy.roles.cache.has(spec.id)) return message.channel.send("You can't give the rose to a spectator!")
         if (guy.roles.cache.has(mininarr.id) || guy.roles.cache.has(narrator.id)) return message.channel.send("You can't give the rose to a narrator!")
+        if (message.member == guy) return message.channel.send("Sure, adding a rose to yourself. Try that one more time and i will suicide you ;)")
         db.subtract(`roseG_${message.author.id}`, 1)
         db.add(`roses_${guy.id}`, 1)
         } else if (args[0] == "bouquet") {
