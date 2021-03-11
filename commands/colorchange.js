@@ -34,6 +34,7 @@ module.exports = {
     
     if (!color.startsWith("#")) return message.channel.send(color + " isn't a vaild color!")
     
+
       client.guilds.cache.get("465795320526274561").roles.cache.get(role).setColor(color).then(() => {
         message.channel.send("Done! Your special role color has been changed!")  
       }).catch(e => {
