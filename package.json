@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@vitalets/google-translate-api": "^4.0.0",
+    "colornames": "^1.1.1",
     "discord-giveaways": "^4.2.1",
     "discord-slash-commands": "^1.0.1",
     "discord-tictactoe": "^2.0.7",
