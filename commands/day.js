@@ -2680,9 +2680,9 @@ module.exports = {
                       let potion = db.get(`potion_${witch[o]}`);
                       if (potion == guy.nickname) {
                         sect = "0"; // makes the serial killer's attack towards the player none
-                        db.set(`potion_${witch[j]}`, null);
-                        db.set(`witchAbil_${witch[j]}`, 1);
-                        let toSend = message.guild.channels.cache.get(witch[j]);
+                        db.set(`potion_${witch[o]}`, null);
+                        db.set(`witchAbil_${witch[o]}`, 1);
+                        let toSend = message.guild.channels.cache.get(witch[o]);
                         sl.send(
                           `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`
                         );
@@ -4223,21 +4223,21 @@ module.exports = {
                     if (killed == true) {
                       chan.send(
                         `<:yeskill:744534212878794863> **${guys[0].nickname} ${guys[0].user.username}** killed someone last night!`
-                      );
+                      ).catch(e => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`));
                     } else {
                       chan.send(
                         `<:nokill:744534142515150979> **${guys[0].nickname} ${guys[0].user.username}** didn't kill anyone last night!`
-                      );
+                      ).catch(e => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`));
                     }
                   } else {
                     if (killed == true) {
                       chan.send(
                         `<:yeskill:744534212878794863> **${guys[0].nickname} ${guys[0].user.username}** or **${guys[1].nickname} ${guys[1].user.username}** killed someone last night!`
-                      );
+                      ).catch(e => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`));
                     } else {
                       chan.send(
                         `<:nokill:744534142515150979> **${guys[0].nickname} ${guys[0].user.username}** and **${guys[1].nickname} ${guys[1].user.username}** didn't kill anyone last night!`
-                      );
+                      ).catch(e => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`));
                     }
                   }
                   chan.send(`${alive}`);
