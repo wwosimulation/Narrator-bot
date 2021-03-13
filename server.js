@@ -8,12 +8,16 @@ const TicTacToe = require('discord-tictactoe');
 
 const client = new Discord.Client();
 
-//Prefix and token from config file
+//Prefix and token from .env
 const prefix = process.env.PREFIX
 const token = process.env.TOKEN
 
 //ShadowAdmin
 //const shadowadmin = require("shadowadmin")
+
+// config file
+const config = require("./config.js")
+client.config = config
 
 //Cooldown
 const cooldowns = new Discord.Collection();
