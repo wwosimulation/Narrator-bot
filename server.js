@@ -1,39 +1,11 @@
-const http = require("http");
-const express = require("express");
-const app = express();
 require("dotenv").config()
-//69 - 5)3)79'6gabidhsnzoz
-app.use(express.static("public"));
-
-app.get("/", function(request, response) {
- response.sendFile(__dirname + "/views/index.html");
-});
-
-app.get("/", (request, response) => {
-  response.sendStatus(200);
-});
-
-app.listen(process.env.PORT);
-
-setInterval(() => {
-  http.get(`https://werewolf-discord.ashishemmanuel.repl.co`);
-}, 2147483647);
-
-//fs for writeFile()
 const fs = require("fs");
-
-//quick.db for gameroles
 const db = require("quick.db");
-
-//discord.js
 const Discord = require("discord.js");
 
 //tictactoe
 const TicTacToe = require('discord-tictactoe');
 
-// DanBot hosting to make the bot online 24/7
-let yyyy
-//Bot client
 const client = new Discord.Client();
 
 //Prefix and token from config file
@@ -42,11 +14,6 @@ const token = process.env.TOKEN
 
 //Cooldown
 const cooldowns = new Discord.Collection();
-
-//Databases
-//let economy = require("./economy.json");
-
-//Sync with commands folder
 
 
 client.commands = new Discord.Collection();
@@ -57,9 +24,6 @@ for (const file of commandFiles) {
   const command = require(`./commands/${file}`)
   client.commands.set(command.name, command);
 }
-
-//Music queue for all servers
-var musicServers = {};
 
 //Bot on startup
 client.on("ready", async () => {
@@ -595,19 +559,12 @@ Gotta make you understand
     return message.author.send(
       `Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`
     );
-
-  //Check if message doesn't start with prefix
-  //if (!message.content.startsWith(prefix)) return;
-
-
   
   if (!message.content.startsWith(prefix)) return 
   if (blacklists.includes(`/${message.author.id}/`) && message.author.id != "552814709963751425") return message.channel.send("Blacklisted users can't use any command!")
 
-  //Out of game commands
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
-  yyyy = commandName  
   const command =
     client.commands.get(commandName) || //DO NOT PUT ;
     client.commands.find(
