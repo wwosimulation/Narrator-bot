@@ -50,32 +50,7 @@ module.exports = {
       console.log(bombPlacements);
       console.log(bombs);
       //console.log(JSON.stringify(bombs) == '123' )
-      if (
-        bombPlacements == "1 2 3" ||
-        bombPlacements == "2 3 4" ||
-        bombPlacements == "5 6 7" ||
-        bombPlacements == "6 7 8" ||
-        bombPlacements == "9 10 11" ||
-        bombPlacements == "10 11 12" ||
-        bombPlacements == "13 14 15" ||
-        bombPlacements == "14 15 16" ||
-        bombPlacements == "1 5 9" ||
-        bombPlacements == "5 9 13" ||
-        bombPlacements == "2 6 10" ||
-        bombPlacements == "6 10 14" ||
-        bombPlacements == "3 7 11" ||
-        bombPlacements == "7 11 15" ||
-        bombPlacements == "4 8 12" ||
-        bombPlacements == "8 12 16" ||
-        bombPlacements == "1 6 11" ||
-        bombPlacements == "2 7 12" ||
-        bombPlacements == "3 6 9" ||
-        bombPlacements == "4 7 10" ||
-        bombPlacements == "5 10 15" ||
-        bombPlacements == "6 11 16" ||
-        bombPlacements == "7 10 13" ||
-        bombPlacements == "8 11 14"
-      ) {
+      if (client.config.bombPlacements.includes(bombPlacements)) {
         //return await message.channel.send(
         // "Honey, you can only place bombs vertically, horizontally or diagonally. Make sure they are in order. \n\n+bomb 7 6 5 - :x:\n+bomb 5 6 7 - :white_check_mark: "
         // );
