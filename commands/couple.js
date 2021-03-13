@@ -5,9 +5,10 @@ module.exports = {
     name: "couple",
     run: async (message, args, client) => {
         if (message.channel.name == "priv-cupid") {
-            let alive = message.guild.roles.cache.find(r => r.name === "Alive")
+            
             let nightCount = db.get(`nightCount_${message.guild.id}`) || 1
             let isNight = db.get(`isNight_${message.guild.id}`)
+<<<<<<< HEAD
             let lovers = message.guild.channels.cache.find(c => c.name === "lovers")
             if (nightCount != 1 || isNight != "yes" || !message.member.roles.cache.has(alive.id)) return message.channel.send("You already used your ability!")
             
@@ -18,6 +19,9 @@ module.exports = {
                 }
             }
             
+=======
+            if (nightCount > 1 || isNight != "yes" || !message.member.roles.cache.has(client.config.ids.alive)) return message.channel.send("You already used your ability!")
+>>>>>>> ids
             if (args.length != 2) return message.channel.send("Bruh, you just need 2 players to be in couple. Not more, not less.")
             let guy1 = message.guild.members.cache.find(m => m.nickname === args[0]) || 
             message.guild.members.cache.find(m => m.id === args[0]) ||  
@@ -31,7 +35,7 @@ module.exports = {
 
             if (!guy1 || !guy2 || guy1.nickname == message.member.nickname || guy2.nickname == message.member.nickname) return message.reply("Invalid Target!")
 
-            if (!guy1.roles.cache.has(alive.id) || !guy2.roles.cache.has(alive.id)) return message.channel.send("You can't couple players that are dead moron...")
+            if (!guy1.roles.cache.has(client.config.ids.alive) || !guy2.roles.cache.has(client.config.ids.alive)) return message.channel.send("You can't couple players that are dead moron...")
 
             if (db.get(`role_${guy1.id}`) == "President" || db.get(`role_${guy2.id}`) == "President") return message.channel.send("You can't make the president in love you snob.")
 

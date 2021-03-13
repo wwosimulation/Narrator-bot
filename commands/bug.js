@@ -6,7 +6,7 @@ module.exports = {
         if (message.attachments.size > 0) {
             message.attachments.forEach(a => t += a.url + '\n')
         } 
-            let lol = client.guilds.cache.get(client.config.logServer)
+            let lol = client.guilds.cache.get(client.config.ids.logServer)
             
             lol.channels.cache.find(c => c.name === "ashishbotreportbug").send(args.join(' ') + `\n${t}`)
         

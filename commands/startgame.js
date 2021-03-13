@@ -8,8 +8,8 @@ module.exports = {
     let mininarr = message.guild.roles.cache.find(
       r => r.name === "Narrator Trainee"
     );
-    let alive = message.guild.roles.cache.find(r => r.name === "Alive");
-    let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+    ;
+    ;
 
     if (
       !message.member.roles.cache.has(narrator.id) &&
@@ -25,14 +25,14 @@ module.exports = {
     db.set(`commandEnabled_${message.guild.id}`, "no");
     
     // changing perms for alive in game-lobby
-    message.guild.channels.cache.find(c => c.name === "game-lobby").updateOverwrite(alive.id, {
+    message.guild.channels.cache.find(c => c.name === "game-lobby").updateOverwrite(client.config.ids.alive, {
       SEND_MESSAGES: false,
       READ_MESSAGE_HISTORY: false,
       VIEW_CHANNEL: false
     })
 
     // changing perms for alive in day-chat
-    message.guild.channels.cache.find(c => c.name === "day-chat").updateOverwrite(alive.id, {
+    message.guild.channels.cache.find(c => c.name === "day-chat").updateOverwrite(client.config.ids.alive, {
       SEND_MESSAGES: false,
       READ_MESSAGE_HISTORY: true,
       VIEW_CHANNEL: true

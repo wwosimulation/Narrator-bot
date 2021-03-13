@@ -18,7 +18,7 @@ module.exports = {
             message.guild.members.cache.find(m => m.user.username === args.join(" ")) ||
             message.guild.members.cache.find(m => m.user.tag === args.join(" "))
 
-            if (!guy || !guy.roles.cache.has(alive.id)) return message.reply("Invalid Target!")
+            if (!guy || !guy.roles.cache.has(client.config.ids.alive)) return message.reply("Invalid Target!")
 
             db.set(`copy_${message.channel.id}`, guy.nickname)
             message.react("787582587593162762")

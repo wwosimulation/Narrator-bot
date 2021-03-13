@@ -77,9 +77,9 @@ module.exports = {
       db.set(`guard_${message.channel.id}`, args[0])
       message.react("475775137434697728") 
     } else if (message.channel.name == "priv-tough-guy") {
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive")
+      
       let isNight = db.get(`isNight_${message.guild.id}`)
-      if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't protect when dead knucklehead")
+      if (!message.member.roles.cache.has(client.config.ids.alive)) return message.channel.send("You can't protect when dead knucklehead")
       if (!args[0]) return message.channel.send("WOW I DIDN'T KNOW THAT YOU WERE SO SMART...")
       if (isNight != "yes") return message.channel.send("Bruh what are you trying to protect from??")
       
@@ -90,7 +90,7 @@ module.exports = {
 
       if (!guy || guy.nickname == message.member.nickname) return message.reply("Invalid Target!")
 
-      if (!guy.roles.cache.has(alive.id)) return message.channel.send("The command you're looking for is `+suicide`...")
+      if (!guy.roles.cache.has(client.config.ids.alive)) return message.channel.send("The command you're looking for is `+suicide`...")
 
       db.set(`tough_${message.channel.id}`, guy.nickname)
       message.react("606429479170080769")

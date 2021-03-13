@@ -6,7 +6,7 @@ module.exports = {
     name: "forge",
     run: async (message, args, client) => {
         if (message.channel.name == "priv-forger") {
-            let alive = message.guild.roles.cache.find(r => r.name === "Alive")
+            
             let isNight = db.get(`isNight_${message.guild.id}`)
             let given = db.get(`given_${message.channel.id}`) || true
 
@@ -16,7 +16,7 @@ module.exports = {
 
             console.log(given)
             let forged = db.get(`forged_${message.channel.id}`)
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("BRUH STOP. I ALREADY HAVE ENOUGH IDIOTS TRYING TO BREAK ME")
+            if (!message.member.roles.cache.has(client.config.ids.alive)) return message.channel.send("BRUH STOP. I ALREADY HAVE ENOUGH IDIOTS TRYING TO BREAK ME")
             
             if (isNight != "yes") return message.channel.send("Oi stupid, its still day...")
 

@@ -19,9 +19,8 @@ module.exports = {
     
     // all the variables
     let dayCount = db.get(`dayCount_${message.guild.id}`) || 0
-    let alive = message.guild.roles.cache.find(r => r.name === "Alive")
-    let dead = message.guild.roles.cache.find(r => r.name === "Dead")
-    let aliveplayers = alive.members.keyArray("id")
+    
+        let aliveplayers = alive.members.keyArray("id")
     let day = getchan("day-chat")
     let wwChat = getchan("werewolves-chat")
     let zombChat = getchan("zombies")

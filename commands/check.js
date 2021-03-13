@@ -188,21 +188,21 @@ module.exports = {
       );
       db.set(`detCheck_${message.channel.id}`, "yes");
     } else if (message.channel.name == "priv-wolf-seer") {
-      let dead = message.guild.roles.cache.find(r => r.name === "Dead");
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive");
+      ;
+      ;
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       let ability = await db.fetch(`wwseer_${message.channel.id}`);
       if (ability == "yes")
         return await message.channel.send(
           "Yup, cheating to win. That's the norm these days rite?"
         );
-      if (message.member.roles.cache.has(dead.id))
+      if (message.member.roles.cache.has(client.config.ids.dead))
         return await message.channel.send(
           "Yes. Checking while dead. Dude, you can't even tell the wolves your check."
         );
       if (message.member == guy || !guy)
         return await message.channel.send("Invalid Target");
-      if (guy.roles.cache.has(dead.id))
+      if (guy.roles.cache.has(client.config.ids.dead))
         return await message.channel.send(
           "Sure, why not? Checking a dead player. You can become the best pro player."
         );
@@ -219,7 +219,7 @@ module.exports = {
           m => m.nickname === message.member.nickname
         );
         let h = message.guild.members.cache.find(m => m.nickname === i.toString());
-        if (h.roles.cache.has(alive.id)) {
+        if (h.roles.cache.has(client.config.ids.alive)) {
           let rolet = await db.fetch(`role_${h.id}`);
           console.log(rolet);
           let roleh = rolet.toLowerCase();
@@ -269,7 +269,7 @@ module.exports = {
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       if (!guy || guy == ownself)
         return await message.channel.send("Invalid Target!");
-      if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id))
+      if (!guy.roles.cache.has(client.config.ids.alive) || !ownself.roles.cache.has(client.config.ids.alive))
         return await message.channel.send("Bruh, I rather you gamethrow");
       if (!isNight == "yes")
         return await message.channel.send(
@@ -313,18 +313,18 @@ module.exports = {
             message.guild.members.cache.find(m => m.id === args[1]) ||  
             message.guild.members.cache.find(m => m.user.username === args[1]) || 
             message.guild.members.cache.find(m => m.user.tag === args[1])
-      if (!message.member.roles.cache.has(alive.id)) return message.channel.send("When you are a ghost, you still can't check other people's spirit smart-ass")
+      if (!message.member.roles.cache.has(client.config.ids.alive)) return message.channel.send("When you are a ghost, you still can't check other people's spirit smart-ass")
       if (isNight != "yes") return message.channel.send("Checking for spirits in the day makes you look dumb.")
       if (args.length < 1 || args.length > 2) return message.channel.send("BRUH YOU NEED TO SELECT AT MOST 2 PEOPLE AND AT LEAST 1 PERSON!")
       let check = []
       for (let i = 0 ; i < args.length ; i++) {
         if (i == 0) {
           if (!guy1 || guy1.id == message.author.id) return message.reply("Invalid Target!")
-          if (!guy1.roles.cache.has(alive.id)) return message.channel.send("You cannot check a dead player's spirit!")
+          if (!guy1.roles.cache.has(client.config.ids.alive)) return message.channel.send("You cannot check a dead player's spirit!")
           check.push(guy1.nickname)
         } else {
           if (!guy2 || guy2.id == message.author.id) return message.reply("Invalid Target!")
-          if (!guy2.roles.cache.has(alive.id)) return message.channel.send("You cannot check a dead player's spirit!")
+          if (!guy2.roles.cache.has(client.config.ids.alive)) return message.channel.send("You cannot check a dead player's spirit!")
           check.push(guy2.nickname)
         }
       }

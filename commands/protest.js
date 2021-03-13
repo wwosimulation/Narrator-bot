@@ -7,8 +7,8 @@ module.exports = {
       message.channel.name == "priv-flower-child" ||
       message.channel.name == "priv-guardian-wolf"
     ) {
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive");
-      let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+      ;
+      ;
       let isDay = await db.fetch(`isDay_${message.guild.id}`);
       let ability = await db.fetch(`protest_${message.channel.id}`);
       let ownself = message.guild.members.cache.find(
@@ -24,7 +24,7 @@ module.exports = {
           "Yes! Protesting in the night. You aren't a doctor that will save the player that the wolves attack."
         );
       if (!guy) return await message.channel.send("Invalid Target!");
-      if (!guy.roles.cache.has(alive.id) ||!ownself.roles.cache.has(alive.id))
+      if (!guy.roles.cache.has(client.config.ids.alive) ||!ownself.roles.cache.has(client.config.ids.alive))
         return await message.channel.send(
           "You probably have brain tumour. Protesting while being dead or protesting for others that are dead won't work."
         );

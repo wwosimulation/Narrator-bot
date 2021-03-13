@@ -6,8 +6,8 @@ module.exports = {
   run: async (message, args, client) => {
     if (message.channel.name == "priv-priest") {
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive");
-      let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+      ;
+      ;
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
       );
@@ -18,7 +18,7 @@ module.exports = {
       if (!guy || guy == ownself) {
         return await message.reply("Invalid target!");
       } else {
-        if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
+        if (!guy.roles.cache.has(client.config.ids.alive) || !ownself.roles.cache.has(client.config.ids.alive)) {
           return await message.reply(`You or your target isn't alive!`);
         } else {
           if (priest != null) {
@@ -38,8 +38,8 @@ module.exports = {
             }
             db.set(`priest_${message.channel.id}`, 1)
             if (toKill.includes("wolf")) {
-              guy.roles.remove(alive.id);
-              guy.roles.add(dead.id);
+              guy.roles.remove(client.config.ids.alive);
+              guy.roles.add(client.config.ids.dead);
               dayChat.send(
                 `**${
                   message.member.nickname
@@ -48,8 +48,8 @@ module.exports = {
                 } (${role})**`
               );
             } else {
-              ownself.roles.remove(alive.id);
-              ownself.roles.add(dead.id);
+              ownself.roles.remove(client.config.ids.alive);
+              ownself.roles.add(client.config.ids.dead);
               dayChat.send(
                 "**" +
                   message.member.nickname +

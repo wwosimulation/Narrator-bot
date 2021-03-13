@@ -31,14 +31,14 @@ module.exports = {
       let med = me.keyArray("id");
       let medi = [];
       let alive = message.guild.roles.cache.find(r => r.name == "Alive");
-      let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+      ;
       let total = parseInt(alive.members.size) + parseInt(dead.members.size);
       for (let y = 1; y <= total; y++) {
         let guy = message.guild.members.cache.find(m => m.nickname === y.toString());
         for (let e = 0; e < med.length; e++) {
           let cha = message.guild.channels.cache.get(med[e]);
           if (cha.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]) &&
-                guy.roles.cache.has(alive.id)) {
+                guy.roles.cache.has(client.config.ids.alive)) {
             medi.push(med[e]);
           }
         }

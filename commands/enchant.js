@@ -5,7 +5,7 @@ module.exports = {
   aliases: ["shaman", "disguise", "delude"],
   run: async (message, args, client) => {
     if (message.channel.name == "priv-wolf-shaman") {
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive");
+      ;
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
@@ -16,7 +16,7 @@ module.exports = {
       if (!guy || guy == ownself) {
         return await message.reply("Invalid target!");
       } else {
-        if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
+        if (!guy.roles.cache.has(client.config.ids.alive) || !ownself.roles.cache.has(client.config.ids.alive)) {
           return await message.reply(`You or your target isn't alive!`);
         } else {
           if (toShaman.includes("wolf")) {
@@ -31,15 +31,15 @@ module.exports = {
       }
     } else if (message.channel.name == "priv-illusionist") {
       let disguised = db.get(`disguised_${message.channel.id}`) || []
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive")
+      
       if (!args[0]) return message.channel.send("You know, doing `+suicide` is better than disguising no one")
-      if (!message.member.roles.cache.has(alive.id)) return message.channel.send("It's about time you know that you are DEAD and can't disguise others noob.")
+      if (!message.member.roles.cache.has(client.config.ids.alive)) return message.channel.send("It's about time you know that you are DEAD and can't disguise others noob.")
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]) || 
                 message.guild.members.cache.find(m => m.id === args[0]) ||  
                 message.guild.members.cache.find(m => m.user.username === args[0]) || 
                 message.guild.members.cache.find(m => m.user.tag === args[0])
       if (!guy || guy == message.member) return message.reply("Invalid Target!")
-      if (!guy.roles.cache.has(alive.id)) return message.channel.send("Disguising a dead player just isn't gonna work.")
+      if (!guy.roles.cache.has(client.config.ids.alive)) return message.channel.send("Disguising a dead player just isn't gonna work.")
       if (disguised.length > 0) {
         if (disguised.includes(guy.nickname)) return message.channel.send("Breaking me won't work. You already disguised this player...")
       }      

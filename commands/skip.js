@@ -6,11 +6,11 @@ module.exports = {
     if (!message.channel.name.includes("priv")) {
       return;
     } else {
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive");
+      ;
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
       );
-      if (!ownself.roles.cache.has(alive.id)) {
+      if (!ownself.roles.cache.has(client.config.ids.alive)) {
         return await message.reply(
           `You cannot skip the discussion phase while dead!`
         );

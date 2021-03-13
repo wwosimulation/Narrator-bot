@@ -5,8 +5,8 @@ module.exports = {
   run: async (message, args, client) => {
     if (message.guild.id != "472261911526768642") return; 
     let sww = message.guild.channels.cache.filter(c => c.name === "priv-shadow-wolf").keyArray("id")
-    let alive = message.guild.roles.cache.find(r => r.name === "Alive");
-    let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+    ;
+    ;
     let votechat = message.guild.channels.cache.find(c => c.name === "vote-chat")
     let narrator = message.guild.roles.cache.find(r => r.name === "Narrator");
     let mininarr = message.guild.roles.cache.find(
@@ -30,7 +30,7 @@ module.exports = {
     /*for (let j = 1 ; j <= alive.members.size + dead.members.size ; j++) {
       let tempguy = message.guild.members.cache.find(m => m.nickname === j.toString())
       if (tempguy) {
-        if (tempguy.roles.cache.has(alive.id)) {
+        if (tempguy.roles.cache.has(client.config.ids.alive)) {
           if (db.get(`vtshadow`) == true) {
             if (db.get(`role_${tempguy.id}`).toLowerCase.includes("wolf") || db.get(`role_${tempguy.id}`) == "Sorcerer") {
               let v = db.get(`vote_${tempguy.id}`) || "0"
@@ -194,8 +194,8 @@ module.exports = {
           db.get(`role_${guy.id}`) +
           ")**!"
         );
-        guy.roles.add(dead.id);
-        guy.roles.remove(alive.id);
+        guy.roles.add(client.config.ids.dead);
+        guy.roles.remove(client.config.ids.alive);
 
       }
     }
@@ -291,11 +291,11 @@ module.exports = {
             for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
               let player = message.guild.members.cache.find(m => m.nickname === c.toString())
               if (corruptor.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
+                if (player.roles.cache.has(client.config.ids.alive) && guy.roles.cache.has(client.config.ids.alive)) {
                   db.set(`corrupt_${corr[a]}`, null)
                   dayChat.send(`<:corrupt:745632706838396989> The Corruptor killed **${guy.nickname} ${guy.user.username}**`)
-                  guy.roles.add(dead.id)
-                  guy.roles.remove(alive.id)
+                  guy.roles.add(client.config.ids.dead)
+                  guy.roles.remove(client.config.ids.alive)
                   guy.roles.add('777400587276255262')
                 }
               }
@@ -322,7 +322,7 @@ module.exports = {
             i = 99
           }
         }
-        if (guy1.roles.cache.has(alive.id) && guy2.roles.cache.has(alive.id) && player.roles.cache.has(alive.id)) {
+        if (guy1.roles.cache.has(client.config.ids.alive) && guy2.roles.cache.has(client.config.ids.alive) && player.roles.cache.has(client.config.ids.alive)) {
           let nbr1 = db.get(`role_${guy1.id}`)
           let nbr2 = db.get(`role_${guy2.id}`)
           db.set(`role_${guy1.id}`, nbr2)
@@ -467,10 +467,10 @@ module.exports = {
           let wolf = message.guild.members.cache.find(m => m.nickname === b.toString())
           if (chan.permissionsFor(wolf).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
             b = 99
-            if (wolf.roles.cache.has(alive.id)) {
+            if (wolf.roles.cache.has(client.config.ids.alive)) {
               let guy = message.guild.members.cache.find(m => m.nickname === sleep)
               if (guy) {
-                if (guy.roles.cache.has(alive.id)) {
+                if (guy.roles.cache.has(client.config.ids.alive)) {
                   if (!nightmares.includes(guy.id)) {
                     nightmares.push(guy.id)
                     if (db.get(`nightmare_${chan.id}`) == null) { db.set(`nightmare_${chan.id}`, 2) }
@@ -536,7 +536,7 @@ module.exports = {
     for (let a = 0; a < nmww.length; a++) {
       db.set(`sleepy_${nmww[a]}`, null)
     }
-    message.guild.channels.cache.find(c => c.name === "vote-chat").updateOverwrite(alive.id, {
+    message.guild.channels.cache.find(c => c.name === "vote-chat").updateOverwrite(client.config.ids.alive, {
       VIEW_CHANNEL: true
     })
 
@@ -557,10 +557,10 @@ module.exports = {
         for (let b = 1; b <= alive.members.size + dead.members.size; b++) {
           let guy = message.guild.members.cache.find(m => m.nickname === b.toString())
           if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-            if (guy.roles.cache.has(alive.id)) {
+            if (guy.roles.cache.has(client.config.ids.alive)) {
               dayChat.send(`<:tough_guy:584182666212016158> Player **${guy.nickname} ${guy.user.username} (Tough Guy)** was wounded last night and has died!`)
-              guy.roles.add(dead.id)
-              guy.roles.remove(alive.id)
+              guy.roles.add(client.config.ids.dead)
+              guy.roles.remove(client.config.ids.alive)
             }
           }
         }
@@ -599,7 +599,7 @@ module.exports = {
     for (let i = 1; i < 17; i++) {
       let tempguy = message.guild.members.cache.find(m => m.nickname === i.toString())
       if (tempguy) {
-        if (tempguy.roles.cache.has(alive.id)) {
+        if (tempguy.roles.cache.has(client.config.ids.alive)) {
           if (zombies.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
             zombies.updateOverwrite(tempguy.id, {
               SEND_MESSAGES: true
@@ -627,7 +627,7 @@ module.exports = {
             if (tempguy) {
             if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL"])) {
                 j = 99
-                if (tempguy.roles.cache.has(dead.id)) {
+                if (tempguy.roles.cache.has(client.config.ids.dead)) {
                      db.delete(`bombs_${chan.id}`)
                 }
             }
@@ -645,10 +645,10 @@ module.exports = {
               bombs.forEach(e => {
                   let goy = message.guild.members.cache.find(m => m.nickname === e.toString()) 
                   if (goy) {
-                      if (goy.roles.cache.has(alive.id)) {
+                      if (goy.roles.cache.has(client.config.ids.alive)) {
                           dayChat.send(`<:explode:745914819353509978> **${goy.nickname} ${goy.user.username} (${db.get(`role_${goy.id}`)})** was killed by an explosion!`)
-                          goy.roles.add(dead.id)
-                          goy.roles.remove(alive.id)
+                          goy.roles.add(client.config.ids.dead)
+                          goy.roles.remove(client.config.ids.alive)
                       }
                   }
               })

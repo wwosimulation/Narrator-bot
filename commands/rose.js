@@ -30,9 +30,8 @@ module.exports = {
         db.subtract(`roseG_${message.author.id}`, 1)
         db.add(`roses_${guy.id}`, 1)
         } else if (args[0] == "bouquet") {
-            let alive = message.guild.roles.cache.find(r => r.name === "Alive")
-            let dead = message.guild.roles.cache.find(r => r.name === "Dead")
-
+            
+            
             if (message.member.roles.cache.has(spec.id)) return message.channel.send("You can't give the rose as a spectator!")
             if (message.member.roles.cache.has(mininarr.id) || message.member.roles.cache.has(narrator.id)) return message.channel.send("You can't give the rose as a narrator!") 
 

@@ -10,8 +10,8 @@ module.exports = {
       let guy = message.guild.members.cache.find(m => m.nickname === args[0])
       let role = db.get(`role_${guy.id}`)
       day.send('The Bandits killed **' + args[0] + ' ' + guy.user.username + ' (' + role + ')**!') 
-      guy.roles.add(dead.id)
-      guy.roles.remove(alive.id) 
+      guy.roles.add(client.config.ids.dead)
+      guy.roles.remove(client.config.ids.alive) 
     } 
   } 
 } 

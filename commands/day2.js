@@ -154,7 +154,7 @@ module.exports = {
       console.log("wwkill1");
       if (tempguy) {
         console.log("wwkill1");
-        if (tempguy.roles.cache.has(alive.id)) {
+        if (tempguy.roles.cache.has(client.config.ids.alive)) {
           console.log("wwkill1");
           if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) {
             console.log(db.get(`wolvesKill_${tempguy.id}`));
@@ -228,7 +228,7 @@ module.exports = {
               .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
           ) {
             j = 99;
-            if (guy.roles.cache.has(alive.id)) {
+            if (guy.roles.cache.has(client.config.ids.alive)) {
               tempchan.send(
                 `<:getshield:744536572556476507> You have recieved a shield from the Forger!`
               );
@@ -258,7 +258,7 @@ module.exports = {
               .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
           ) {
             j = 99;
-            if (guy.roles.cache.has(alive.id)) {
+            if (guy.roles.cache.has(client.config.ids.alive)) {
               tempchan.send(
                 `<:getshield:744536572556476507> You have recieved a sword from the Forger! To use it, do \`+sword [player number]\`!`
               );
@@ -280,7 +280,7 @@ module.exports = {
           (m) => m.nickname === j.toString()
         );
         if (tempGu) {
-          if (tempGu.roles.cache.has(alive.id)) {
+          if (tempGu.roles.cache.has(client.config.ids.alive)) {
             theCanni = tempGu;
           }
         }
@@ -298,7 +298,7 @@ module.exports = {
           let guy = message.guild.members.cache.find(
             (m) => m.nickname === eat[j]
           );
-          if (guy.roles.cache.has(alive.id)) {
+          if (guy.roles.cache.has(client.config.ids.alive)) {
             let role = db.get(`role_${guy.id}`);
             // beast hunter trap
             for (let k = 0; k < bh.length; k++) {
@@ -319,7 +319,7 @@ module.exports = {
                       .permissionsFor(guy)
                       .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
                   ) {
-                    if (ithink.roles.cache.has(alive.id)) {
+                    if (ithink.roles.cache.has(client.config.ids.alive)) {
                       eat[j] = "0"; // makes the cannibal's attack to the player none
                       l = 99;
                       k = 99;
@@ -365,7 +365,7 @@ module.exports = {
                       ])
                   ) {
                     l = 99;
-                    if (isJailer.roles.cache.has(alive.id)) {
+                    if (isJailer.roles.cache.has(client.config.ids.alive)) {
                       cannibal.send(
                         `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
                       );
@@ -483,11 +483,11 @@ module.exports = {
                           "SEND_MESSAGES",
                         ])
                     ) {
-                      if (player.roles.cache.has(alive.id)) {
+                      if (player.roles.cache.has(client.config.ids.alive)) {
                         o = 99;
                         eat[j] = "0";
-                        player.roles.add(dead.id);
-                        player.roles.remove(alive.id);
+                        player.roles.add(client.config.ids.dead);
+                        player.roles.remove(client.config.ids.alive);
                         dayChat.send(
                           `<:eat:744575270102630482> The hunngry Cannibal ate **${player.nickname} ${player.user.username} (Bodyguard)**!`
                         );
@@ -519,8 +519,8 @@ module.exports = {
                     dayChat.send(
                       `<:eat:744575270102630482> The hunngry Cannibal ate **${player.nickname} ${player.user.username} (Bodyguard)**!`
                     );
-                    player.roles.add(dead.id);
-                    player.roles.remove(alive.id);
+                    player.roles.add(client.config.ids.dead);
+                    player.roles.remove(client.config.ids.alive);
                     killedplayers.push(player.id);
                     thekiller.push(theCanni.id);
                   }
@@ -548,7 +548,7 @@ module.exports = {
                         "READ_MESSAGE_HISTORY",
                       ])
                   ) {
-                    if (theCanni.roles.cache.has(alive.id)) {
+                    if (theCanni.roles.cache.has(client.config.ids.alive)) {
                       if (
                         db.get(
                           `role_${
@@ -573,7 +573,7 @@ module.exports = {
                                 (m) => m.nickname === q.toString()
                               );
                               if (the) {
-                                if (the.roles.cache.has(alive.id)) {
+                                if (the.roles.cache.has(client.config.ids.alive)) {
                                   theTg = the;
                                 }
                               }
@@ -606,8 +606,8 @@ module.exports = {
               if (role == "Cupid") {
                 cupidKilled = true;
               }
-              guy.roles.add(dead.id);
-              guy.roles.remove(alive.id);
+              guy.roles.add(client.config.ids.dead);
+              guy.roles.remove(client.config.ids.alive);
               killedplayers.push(guy.id);
               thekiller.push(theCanni.id);
             }
@@ -642,7 +642,7 @@ module.exports = {
           let tehGuy = message.guild.members.cache.find(
             (m) => m.nickname === j.toString()
           );
-          if (tehGuy.roles.cache.has(alive.id)) {
+          if (tehGuy.roles.cache.has(client.config.ids.alive)) {
             if (
               chan
                 .permissionsFor(tehGuy)
@@ -669,8 +669,8 @@ module.exports = {
                 dayChat.send(
                   `**${tehGuy.nickname} ${tehGuy.user.username} (Red Lady)** visited an evil player and died!`
                 );
-                tehGuy.roles.add(dead.id);
-                tehGuy.roles.remove(alive.id);
+                tehGuy.roles.add(client.config.ids.dead);
+                tehGuy.roles.remove(client.config.ids.alive);
               }
             }
           }
@@ -701,7 +701,7 @@ module.exports = {
           }
         }
       }
-      if (kills[i] != "0" && guy.roles.cache.has(alive.id)) {
+      if (kills[i] != "0" && guy.roles.cache.has(client.config.ids.alive)) {
         let toKillRole = db.get(`role_${guy.id}`);
 
         // checking if the beast hunter's trap is active and on the player
@@ -720,7 +720,7 @@ module.exports = {
                   .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
               ) {
                 m = 99;
-                if (!hhhhh.roles.cache.has(alive.id)) {
+                if (!hhhhh.roles.cache.has(client.config.ids.alive)) {
                   trap = null;
                   active = false;
                 }
@@ -766,7 +766,7 @@ module.exports = {
                   ])
               ) {
                 j = 99;
-                if (isJailer.roles.cache.has(alive.id)) {
+                if (isJailer.roles.cache.has(client.config.ids.alive)) {
                   toSK.send(
                     `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
                   );
@@ -893,8 +893,8 @@ module.exports = {
                       `<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${lol.nickname} ${lol.user.username} (Bodyguard)**!`
                     );
                     k = 99;
-                    lol.roles.add(dead.id);
-                    lol.roles.remove(alive.id);
+                    lol.roles.add(client.config.ids.dead);
+                    lol.roles.remove(client.config.ids.alive);
                     db.set(`guard_${thecha.id}`, null);
                     killedplayers.push(lol.id);
                     thekiller.push(THESK.id);
@@ -929,8 +929,8 @@ module.exports = {
                     dayChat.send(
                       `<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (Bodyguard)**!`
                     );
-                    guy.roles.add(dead.id);
-                    guy.roles.remove(alive.id);
+                    guy.roles.add(client.config.ids.dead);
+                    guy.roles.remove(client.config.ids.alive);
                     db.set(`guard_${bg[k]}`, null);
                     killedplayers.push(guy.id);
                     thekiller.push(THESK.id);
@@ -975,7 +975,7 @@ module.exports = {
                   (m) => m.nickname === k.toString()
                 );
                 if (gal) {
-                  if (gal.roles.cache.has(alive.id)) {
+                  if (gal.roles.cache.has(client.config.ids.alive)) {
                     if (
                       chan
                         .permissionsFor(gal)
@@ -1010,8 +1010,8 @@ module.exports = {
           if (role == "Cupid") {
             cupidKilled = true;
           }
-          guy.roles.add(dead.id);
-          guy.roles.remove(alive.id);
+          guy.roles.add(client.config.ids.dead);
+          guy.roles.remove(client.config.ids.alive);
           killedplayers.push(guy.id);
           thekiller.push(THESK.id);
         }
@@ -1034,7 +1034,7 @@ module.exports = {
           let temprole = db.get(`role_${tempguy.id}`);
           if (temprole == "Accomplice") {
             console.log(temprole);
-            if (tempguy.roles.cache.has(alive.id)) {
+            if (tempguy.roles.cache.has(client.config.ids.alive)) {
               if (
                 thechan
                   .permissionsFor(tempguy)
@@ -1061,7 +1061,7 @@ module.exports = {
           (m) => m.nickname === kill
         );
         if (theguy) {
-          if (theguy.roles.cache.has(alive.id)) {
+          if (theguy.roles.cache.has(client.config.ids.alive)) {
             terminal = kill;
           }
         }
@@ -1097,7 +1097,7 @@ module.exports = {
               );
               if (jai) {
                 if (
-                  jai.roles.cache.has(alive.id) &&
+                  jai.roles.cache.has(client.config.ids.alive) &&
                   db.get(`role_${jai.id}`) == "Jailer"
                 )
                   thechan.send(
@@ -1194,7 +1194,7 @@ module.exports = {
                   .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
               ) {
                 x = 99;
-                if (tempguy.roles.cache.has(alive.id)) {
+                if (tempguy.roles.cache.has(client.config.ids.alive)) {
                   if (!db.get(`lives_${thechanne.id}`)) {
                     db.set(`lives_${thechanne.id}`, 2);
                   }
@@ -1214,8 +1214,8 @@ module.exports = {
                     dayChat.send(
                       `<:thieve:745632726639706202> Bandits killed **${theguy.nickname} ${theguy.user.username} (Bodyguard)**!`
                     );
-                    theguy.roles.remove(alive.id);
-                    theguy.roles.add(dead.id);
+                    theguy.roles.remove(client.config.ids.alive);
+                    theguy.roles.add(client.config.ids.dead);
                     killedplayers.push(theguy.id);
                     thekiller.push(THEACC.id);
                   }
@@ -1261,13 +1261,13 @@ module.exports = {
                             "READ_MESSAGE_HISTORY",
                           ])
                       ) {
-                        if (thebg.roles.cache.has(alive.id)) terminal = "0";
+                        if (thebg.roles.cache.has(client.config.ids.alive)) terminal = "0";
                         bored = 99;
                         dayChat.send(
                           `<:thieve:745632726639706202> Bandits killed **${thebg.nickname} ${thebg.user.username} (Bodyguard)**!`
                         );
-                        thebg.roles.add(dead.id);
-                        thebg.roles.remove(alive.id);
+                        thebg.roles.add(client.config.ids.dead);
+                        thebg.roles.remove(client.config.ids.alive);
                         killedplayers.push(thebg.id);
                         thekiller.push(THEACC.id);
                       }
@@ -1379,8 +1379,8 @@ module.exports = {
               theguy.user.username
             } (${db.get(`role_${theguy.id}`)})**!`
           );
-          theguy.roles.remove(alive.id);
-          theguy.roles.add(dead.id);
+          theguy.roles.remove(client.config.ids.alive);
+          theguy.roles.add(client.config.ids.dead);
           killedplayers.push(theguy.id);
           thekiller.push(THEACC.id);
           if (db.get(`role_${theguy.id}`) == "Cupid") {
@@ -1403,7 +1403,7 @@ module.exports = {
                     "READ_MESSAGE_HISTORY",
                   ])
               ) {
-                if (tempguy1.roles.cache.has(alive.id)) {
+                if (tempguy1.roles.cache.has(client.config.ids.alive)) {
                   if (banditkill != null) {
                     db.set(`bandit_${thechan.id}`, banditkill);
                     killedplayers.push(
@@ -1429,7 +1429,7 @@ module.exports = {
           (m) => m.nickname === conversion
         );
         if (guy) {
-          if (guy.roles.cache.has(alive.id)) {
+          if (guy.roles.cache.has(client.config.ids.alive)) {
             let temprole = db.get(`role_${guy.id}`);
             if (
               temprole.toLowerCase().includes("wolf") ||
@@ -1444,8 +1444,8 @@ module.exports = {
               dayChat.send(
                 `<:thieve:745632726639706202> Bandits killed **${guy.nickname} ${guy.user.username} (${temprole})**!`
               );
-              guy.roles.add(dead.id);
-              guy.roles.remove(alive.id);
+              guy.roles.add(client.config.ids.dead);
+              guy.roles.remove(client.config.ids.alive);
             }
           }
         }
@@ -1467,7 +1467,7 @@ module.exports = {
     if (wwKill != "0" && frenzy == true) {
       let kills = [];
       role = db.get(`role_${guy.id}`);
-      if (guy.roles.cache.has(alive.id)) {
+      if (guy.roles.cache.has(client.config.ids.alive)) {
         kills.push(guy);
       }
 
@@ -1478,7 +1478,7 @@ module.exports = {
             let dt = message.guild.members.cache.find(
               (m) => m.nickname === b.toString()
             );
-            if (dt.roles.cache.has(alive.id)) {
+            if (dt.roles.cache.has(client.config.ids.alive)) {
               if (
                 message.guild.channels.cache
                   .get(doc[a])
@@ -1499,7 +1499,7 @@ module.exports = {
             let dt = message.guild.members.cache.find(
               (m) => m.nickname === b.toString()
             );
-            if (dt.roles.cache.has(alive.id)) {
+            if (dt.roles.cache.has(client.config.ids.alive)) {
               if (
                 message.guild.channels.cache
                   .get(witch[a])
@@ -1534,7 +1534,7 @@ module.exports = {
             let dt = message.guild.members.cache.find(
               (m) => m.nickname === b.toString()
             );
-            if (dt.roles.cache.has(alive.id)) {
+            if (dt.roles.cache.has(client.config.ids.alive)) {
               if (
                 message.guild.channels.cache
                   .get(bh[a])
@@ -1559,7 +1559,7 @@ module.exports = {
           let dt = message.guild.members.cache.find(
             (m) => m.nickname === b.toString()
           );
-          if (dt.roles.cache.has(alive.id)) {
+          if (dt.roles.cache.has(client.config.ids.alive)) {
             if (db.get(`role_${guy.id}`) == "Jailer") {
               kills.push(dt);
             }
@@ -1574,7 +1574,7 @@ module.exports = {
             let dt = message.guild.members.cache.find(
               (m) => m.nickname === b.toString()
             );
-            if (dt.roles.cache.has(alive.id)) {
+            if (dt.roles.cache.has(client.config.ids.alive)) {
               if (
                 message.guild.channels.cache
                   .get(bg[a])
@@ -1595,7 +1595,7 @@ module.exports = {
             let dt = message.guild.members.cache.find(
               (m) => m.nickname === b.toString()
             );
-            if (dt.roles.cache.has(alive.id)) {
+            if (dt.roles.cache.has(client.config.ids.alive)) {
               if (
                 message.guild.channels.cache
                   .get(tg[a])
@@ -1616,8 +1616,8 @@ module.exports = {
         if (role == "Cupid") {
           cupidKilled = true;
         }
-        guy.roles.add(dead.id);
-        guy.roles.remove(alive.id);
+        guy.roles.add(client.config.ids.dead);
+        guy.roles.remove(client.config.ids.alive);
         killedplayers.push(guy.id);
         thekiller.push("Werewolf");
       }
@@ -1627,8 +1627,8 @@ module.exports = {
             kills[a].nickname
           } ${kills[a].user.username} (${db.get(`role_${kills[a].id}`)})**!`
         );
-        kills[a].roles.add(dead.id);
-        kills[a].roles.remove(alive.id);
+        kills[a].roles.add(client.config.ids.dead);
+        kills[a].roles.remove(client.config.ids.alive);
         killedplayers.push(kills[a].id);
         thekiller.push("Werewolf");
       }
@@ -1636,7 +1636,7 @@ module.exports = {
     if (wwKill != "0" && frenzy == false) {
       console.log("It is not 0 (1)");
     }
-    if (guy && guy.roles.cache.has(alive.id)) {
+    if (guy && guy.roles.cache.has(client.config.ids.alive)) {
       role = db.get(`role_${guy.id}`);
       // checking if the wolves tried attacking solo killers or wise man
       if (wwKill != "0") {
@@ -1674,7 +1674,7 @@ module.exports = {
                 .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
             ) {
               m = 99;
-              if (!hhhhh.roles.cache.has(alive.id)) {
+              if (!hhhhh.roles.cache.has(client.config.ids.alive)) {
                 trap = null;
                 active = false;
               } else {
@@ -1695,7 +1695,7 @@ module.exports = {
               let rrrr = db.get(`role_${usefull.id}`);
               if (
                 rrrr.toLowerCase().includes("wolf") &&
-                usefull.roles.cache.has(alive.id)
+                usefull.roles.cache.has(client.config.ids.alive)
               ) {
                 allwolves.push(rrrr);
               }
@@ -1712,8 +1712,8 @@ module.exports = {
               dayChat.send(
                 `<:trap:744535154927861761> The Beast Hunter's trap killed **${shush.nickname} ${shush.user.username} (${ro})**!`
               );
-              shush.roles.add(dead.id);
-              shush.roles.remove(alive.id);
+              shush.roles.add(client.config.ids.dead);
+              shush.roles.remove(client.config.ids.alive);
               killedplayers.push(shush.id);
               thekiller.push(THEBH.id);
             }
@@ -1740,7 +1740,7 @@ module.exports = {
               .has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
           ) {
             j = 99;
-            if (isJailer.roles.cache.has(alive.id)) {
+            if (isJailer.roles.cache.has(client.config.ids.alive)) {
               wwChat.send(
                 `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
               );
@@ -1867,8 +1867,8 @@ module.exports = {
                     `<:werewolf:475776038727581697> The Werewolves killed **${lol.nickname} ${lol.user.username} (Bodyguard)**!`
                   );
                   k = 99;
-                  lol.roles.add(dead.id);
-                  lol.roles.remove(alive.id);
+                  lol.roles.add(client.config.ids.dead);
+                  lol.roles.remove(client.config.ids.alive);
                   killedplayers.push(lol.id);
                   thekiller.push("Werewolf");
                   db.set(`guard_${thecha.id}`, null);
@@ -1902,8 +1902,8 @@ module.exports = {
                   dayChat.send(
                     `<:werewolf:475776038727581697> The Werewolves killed **${guy.nickname} ${guy.user.username} (Bodyguard)**!`
                   );
-                  guy.roles.add(dead.id);
-                  guy.roles.remove(alive.id);
+                  guy.roles.add(client.config.ids.dead);
+                  guy.roles.remove(client.config.ids.alive);
                   killedplayers.push(guy.id);
                   thekiller.push("Werewolf");
                   db.set(`guard_${bg[k]}`, null);
@@ -1924,7 +1924,7 @@ module.exports = {
             (m) => m.nickname === x.toString
           );
           if (tempguy) {
-            if (tempguy.roles.cache.has(alive.id)) {
+            if (tempguy.roles.cache.has(client.config.ids.alive)) {
               if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) {
                 allwolves.push(db.get(`role_${tempguy.id}`));
                 wolvesID.push(tempguy.id);
@@ -1986,7 +1986,7 @@ module.exports = {
                   thechan.send(
                     `_ _\n**${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`
                   );
-                  thechan.send(`${alive.id}`);
+                  thechan.send(`${client.config.ids.alive}`);
                   wwChat.send(
                     `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
                   );
@@ -2018,7 +2018,7 @@ module.exports = {
                       "READ_MESSAGE_HISTORY",
                     ])
                 ) {
-                  if (tempguy.roles.cache.has(alive.id)) {
+                  if (tempguy.roles.cache.has(client.config.ids.alive)) {
                     l = 99;
                     for (let n = 0; n < wolvesID.length; n++) {
                       if (db.get(`role_${wolvesID[n]}`) == allwolves[0]) {
@@ -2056,7 +2056,7 @@ module.exports = {
                             thechan.send(
                               `_ _\n**${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`
                             );
-                            thechan.send(`${alive.id}`);
+                            thechan.send(`${client.config.ids.alive}`);
                             wwChat.send(
                               `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
                             );
@@ -2148,8 +2148,8 @@ module.exports = {
           if (role == "Cupid") {
             cupidKilled = true;
           }
-          guy.roles.add(dead.id);
-          guy.roles.remove(alive.id);
+          guy.roles.add(client.config.ids.dead);
+          guy.roles.remove(client.config.ids.alive);
           killedplayers.push(guy.id);
           thekiller.push("Werewolf");
         }
@@ -2165,7 +2165,7 @@ module.exports = {
           (m) => m.nickname === j.toString()
         );
         if (kys) {
-          if (kys.roles.cache.has(alive.id)) {
+          if (kys.roles.cache.has(client.config.ids.alive)) {
             if (
               dumbchan
                 .permissionsFor(kys)
@@ -2208,7 +2208,7 @@ module.exports = {
               );
               if (bruhh) {
                 if (db.get(`role_${bruhh}`) == "Jailer") {
-                  if (bruhh.roles.cache.has(alive.id)) {
+                  if (bruhh.roles.cache.has(client.config.ids.alive)) {
                     dumbchan.send(
                       `<:guard:744536167109886023> Player **${ST.nickname} ${ST.user.username} could not be converted! They were either a werewolf, a Headhunter's target or were protected!`
                     );
@@ -2464,7 +2464,7 @@ module.exports = {
                     .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
                 ) {
                   l = 99;
-                  if (!hhhhh.roles.cache.has(alive.id)) {
+                  if (!hhhhh.roles.cache.has(client.config.ids.alive)) {
                     trap = null;
                     active = false;
                   }
@@ -2511,7 +2511,7 @@ module.exports = {
                   ])
               ) {
                 j = 99;
-                if (isJailer.roles.cache.has(alive.id)) {
+                if (isJailer.roles.cache.has(client.config.ids.alive)) {
                   chan.send(
                     `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be doused!`
                   );
@@ -2525,7 +2525,7 @@ module.exports = {
           // adding the doused players to the list
           if (douses[j] != "0") {
             if (guy != "0") {
-              if (guy.roles.cache.has(alive.id)) {
+              if (guy.roles.cache.has(client.config.ids.alive)) {
                 let allDouses = db.get(`doused_${arso[i]}`) || [];
                 allDouses.push(douses[j]);
                 db.set(`doused_${arso[i]}`, allDouses);
@@ -2574,8 +2574,8 @@ module.exports = {
         dayChat.send(
           `<:revived:744571959550935184> The Medium revived **${guy.nickname} ${guy.user.username}**!`
         );
-        guy.roles.add(alive.id);
-        guy.roles.remove(dead.id);
+        guy.roles.add(client.config.ids.alive);
+        guy.roles.remove(client.config.ids.dead);
         db.set(`med_${med[i]}`, "yes");
       }
     }
@@ -2631,8 +2631,8 @@ module.exports = {
             if (leader) {
               //return; // I FOUND THE PROBLEM
               if (
-                leader.roles.cache.has(alive.id) &&
-                guy.roles.cache.has(alive.id)
+                leader.roles.cache.has(client.config.ids.alive) &&
+                guy.roles.cache.has(client.config.ids.alive)
               ) {
                 if (
                   role.toLowerCase().includes("wolf") ||
@@ -2709,7 +2709,7 @@ module.exports = {
                             .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
                         ) {
                           m = 99;
-                          if (!hhhhh.roles.cache.has(alive.id)) {
+                          if (!hhhhh.roles.cache.has(client.config.ids.alive)) {
                             trap = null;
                             active = false;
                           }
@@ -2915,7 +2915,7 @@ module.exports = {
       let leader;
       if (hunt != "0") {
         let role = db.get(`role_${guy.id}`);
-        if (guy.roles.cache.has(alive.id)) {
+        if (guy.roles.cache.has(client.config.ids.alive)) {
           if (
             role == "Sect Leader" ||
             sected
@@ -2925,8 +2925,8 @@ module.exports = {
             dayChat.send(
               `<:arrow:744571940374708234> The Sect Hunter killed **${guy.nickname} ${guy.user.username} (${role})**`
             );
-            guy.roles.add(dead.id);
-            guy.roles.remove(alive.id);
+            guy.roles.add(client.config.ids.dead);
+            guy.roles.remove(client.config.ids.alive);
           }
         }
       }
@@ -2934,7 +2934,7 @@ module.exports = {
     //console.log("time to f*** you up sect")
 
     // allowing players to speak in #day-chat
-    dayChat.updateOverwrite(alive.id, {
+    dayChat.updateOverwrite(client.config.ids.alive, {
       SEND_MESSAGES: true,
     });
 
@@ -2971,13 +2971,13 @@ module.exports = {
           }
         }
       }
-      if (thecorrtocorr.roles.cache.has(alive.id)) {
+      if (thecorrtocorr.roles.cache.has(client.config.ids.alive)) {
         if (glitch != null) {
           let corrupted = message.guild.members.cache.find(
             (m) => m.nickname === glitch
           );
           let corrrole = db.get(`role_${corrupted.id}`);
-          if (corrupted.roles.cache.has(alive.id)) {
+          if (corrupted.roles.cache.has(client.config.ids.alive)) {
             // beast hunter trap
             for (let b = 0; b < bh.length; b++) {
               let chan = message.guild.channels.cache.get(bh[b]);
@@ -2999,7 +2999,7 @@ module.exports = {
                   ) {
                     c = 99;
                     b = 99;
-                    if (player.roles.cache.has(alive.id)) {
+                    if (player.roles.cache.has(client.config.ids.alive)) {
                       chan.send(
                         `<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`
                       );
@@ -3032,7 +3032,7 @@ module.exports = {
                   );
                   if (db.get(`role_${player.id}`) == "Jailer") {
                     b = 99;
-                    if (player.roles.cache.has(alive.id)) {
+                    if (player.roles.cache.has(client.config.ids.alive)) {
                       corruptor.send(
                         `<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be corrupted!`
                       );
@@ -3217,7 +3217,7 @@ module.exports = {
         let disguise = message.guild.members.cache.find(
           (m) => m.nickname === toDelude
         );
-        if (disguise.roles.cache.has(alive.id)) {
+        if (disguise.roles.cache.has(client.config.ids.alive)) {
           let theroleiwant = db.get(`role_${disguise.id}`);
           // beast hunter trap
           for (let b = 0; b < bh.length; b++) {
@@ -3239,7 +3239,7 @@ module.exports = {
                     .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
                 ) {
                   c = 99;
-                  if (player.roles.cache.has(alive.id)) {
+                  if (player.roles.cache.has(client.config.ids.alive)) {
                     b = 99;
                     chan.send(
                       `<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`
@@ -3275,7 +3275,7 @@ module.exports = {
                 let theRoleIneed = db.get(`role_${player.id}`);
                 if (theRoleIneed == "Jailer") {
                   b = 99;
-                  if (player.roles.cache.has(alive.id)) {
+                  if (player.roles.cache.has(client.config.ids.alive)) {
                     illusionist.send(
                       `<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`
                     );
@@ -3332,7 +3332,7 @@ module.exports = {
                       ])
                   ) {
                     c = 99;
-                    if (player.roles.cache.has(alive.id)) {
+                    if (player.roles.cache.has(client.config.ids.alive)) {
                       db.set(`potion_${witch[b]}`, null);
                       db.set(`witchAbil_${witch[b]}`, "yes");
                       illusionist.send(
@@ -3461,7 +3461,7 @@ module.exports = {
           (m) => m.nickname === conversion
         );
         if (guy) {
-          if (guy.roles.cache.has(alive.id)) {
+          if (guy.roles.cache.has(client.config.ids.alive)) {
             let kwwrole = db.get(`role_${guy.id}`);
             if (
               !kwwrole.toLowerCase().includes("wolf") &&
@@ -3517,7 +3517,7 @@ module.exports = {
                         (c) => c.name === x.toString()
                       );
                       if (db.get(`role_${ja.id}`) == "Jailer") {
-                        if (ja.roles.cache.has(alive.id)) {
+                        if (ja.roles.cache.has(client.config.ids.alive)) {
                           conversion = "0";
                           wwChat.send(
                             `Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`
@@ -3722,8 +3722,8 @@ module.exports = {
             y = 99;
             player = lololololol;
             if (
-              player.roles.cache.has(alive.id) ||
-              (!player.roles.cache.has(alive.id) && cupidKilled == true)
+              player.roles.cache.has(client.config.ids.alive) ||
+              (!player.roles.cache.has(client.config.ids.alive) && cupidKilled == true)
             ) {
               let couple = db.get(`couple_${channel.id}`) || [];
               if (couple.length != 0) {
@@ -3733,7 +3733,7 @@ module.exports = {
                 let guy2 = message.guild.members.cache.find(
                   (m) => m.nickname === couple[1]
                 );
-                if (!guy1.roles.cache.has(alive.id)) {
+                if (!guy1.roles.cache.has(client.config.ids.alive)) {
                   let alivePlayers = [];
                   for (
                     let z = 1;
@@ -3743,7 +3743,7 @@ module.exports = {
                     let guuy = message.guild.members.cache.find(
                       (m) => m.nickname === z.toString()
                     );
-                    if (guuy.roles.cache.has(alive.id)) {
+                    if (guuy.roles.cache.has(client.config.ids.alive)) {
                       if (db.get(`role_${guuy.id}`) != "President") {
                         alivePlayers.push(guuy.id);
                       }
@@ -3761,7 +3761,7 @@ module.exports = {
                     );
                   }
                 }
-                if (!guy2.roles.cache.has(alive.id)) {
+                if (!guy2.roles.cache.has(client.config.ids.alive)) {
                   let alivePlayers = [];
                   for (
                     let z = 1;
@@ -3771,7 +3771,7 @@ module.exports = {
                     let guuy = message.guild.members.cache.find(
                       (m) => m.nickname === z.toString()
                     );
-                    if (guuy.roles.cache.has(alive.id)) {
+                    if (guuy.roles.cache.has(client.config.ids.alive)) {
                       if (
                         db.get(`role_${guuy.id}`) != "President" &&
                         guuy != guy1
@@ -3831,7 +3831,7 @@ module.exports = {
             (m) => m.nickname === j.toString()
           );
           if (tempguy) {
-            if (tempguy.roles.cache.has(alive.id)) {
+            if (tempguy.roles.cache.has(client.config.ids.alive)) {
               if (
                 chan
                   .permissionsFor(tempguy)
@@ -3909,7 +3909,7 @@ module.exports = {
           (m) => m.nickname === bite
         );
         if (tempguy) {
-          if (tempguy.roles.cache.has(alive.id)) {
+          if (tempguy.roles.cache.has(client.config.ids.alive)) {
             brains.push(tempguy.id);
           }
         }
@@ -3982,7 +3982,7 @@ module.exports = {
               );
               if (tempguy) {
                 if (db.get(`role_${tempguy.id}`) == "Jailer") {
-                  if (tempguy.roles.cache.has(alive.id)) {
+                  if (tempguy.roles.cache.has(client.config.ids.alive)) {
                     zombies.send(
                       `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`
                     );
@@ -4190,7 +4190,7 @@ module.exports = {
                     (m) => m.nickname === j.toString()
                   );
                   if (tempguy) {
-                    if (tempguy.roles.cache.has(alive.id)) {
+                    if (tempguy.roles.cache.has(client.config.ids.alive)) {
                       if (
                         db
                           .get(`role_${tempguy.id}`)
@@ -4215,7 +4215,7 @@ module.exports = {
               }
 
               if (KILLME) {
-                if (KILLME.roles.cache.has(alive.id)) {
+                if (KILLME.roles.cache.has(client.config.ids.alive)) {
                   console.log("worked (s2)");
                   // excluding the sheriff and the killer as the second suspect
                   for (
@@ -4236,7 +4236,7 @@ module.exports = {
                             "VIEW_CHANNEL",
                             "READ_MESSAGE_HISTORY",
                           ]) &&
-                        tempguy.roles.cache.has(alive.id)
+                        tempguy.roles.cache.has(client.config.ids.alive)
                       ) {
                         suspects.push(tempguy);
                       }
@@ -4282,7 +4282,7 @@ module.exports = {
                 .permissionsFor(tempguy)
                 .has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
             ) {
-              if (tempguy.roles.cache.has(alive.id)) {
+              if (tempguy.roles.cache.has(client.config.ids.alive)) {
                 let check = db.get(`spirit_${chan.id}`);
                 if (check != null) {
                   let guys = [];
@@ -4292,7 +4292,7 @@ module.exports = {
                       (m) => m.nickname === check[k]
                     );
                     if (guy) {
-                      if (guy.roles.cache.has(alive.id)) {
+                      if (guy.roles.cache.has(client.config.ids.alive)) {
                         guys.push(guy);
                         if (
                           db

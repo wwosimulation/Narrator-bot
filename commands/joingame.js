@@ -100,7 +100,7 @@ module.exports = {
             }
             guy.roles.add(role.id)
             let alive = message.guild.roles.cache.get("606140092213624859")
-            if (guy.roles.cache.has(alive.id) && guy.nickname != alive.members.size) {
+            if (guy.roles.cache.has(client.config.ids.alive) && guy.nickname != alive.members.size) {
               let orang = message.guild.members.cache.find(m => m.nickname === alive.members.size.toString())
               orang.setNickname(guy.nickname) 
             }

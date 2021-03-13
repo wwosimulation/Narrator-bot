@@ -8,12 +8,19 @@ module.exports = {
     let isNight = db.get(`isNight_${message.guild.id}`) || "yes"
     let jtag = await db.fetch(`jwwtag_${message.author.id}`);
     let atag = await db.fetch(`atag_${message.author.id}`) 
+<<<<<<< HEAD
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+=======
+    let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
+    ;
+    ;
+>>>>>>> ids
     let ownself = message.guild.members.cache.find(
       m => m.nickname === message.member.nickname
     );
     if (message.channel.name == "priv-junior-werewolf") {
+<<<<<<< HEAD
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You aren't alive dummy....")
       if (!args[0]) return message.channel.send("Ah yes, being stupid. One of the ingredients for a recipe to suicide.")
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
@@ -21,6 +28,18 @@ module.exports = {
       if (guy == message.member) return message.channel.send("Noob. Tagging yourself is stupid even i feel sorry for you. And i don't even have feelings weirdo.")
       if (!guy.roles.cache.has(alive.id)) return message.channel.send("Stop. Tagging. Dead. Players. It. Makes. You. Look. Stupid. ,. Stupid.")
       let role = db.get(`role_${guy.id}`) 
+=======
+      if (
+        parseInt(args[0]) >
+          parseInt(alive.members.size) + parseInt(dead.members.size) ||
+        parseInt(args[0]) < 1
+      ) {
+        return await message.reply("Invalid target!");
+      } else if (!message.member.roles.cache.has(client.config.ids.alive) || !guy.roles.cache.has(client.config.ids.alive)) {
+        return await message.reply("You or your target isn't alive!");
+      }
+      let role = await db.fetch(`role_${guy.id}`) 
+>>>>>>> ids
       let player = role.toLowerCase()
       
       // check if the player tagged is a wolf or a sorcerer
@@ -46,8 +65,20 @@ module.exports = {
       
     }
     if (message.channel.name == "priv-avenger") {
+<<<<<<< HEAD
       if (night == 1) {
         if (isNight == "yes") return message.channel.send("You can't tag a player on the first night sweetie.")
+=======
+      if (
+        parseInt(args[0]) >
+          parseInt(alive.members.size) + parseInt(dead.members.size) ||
+        parseInt(args[0]) < 1
+      ) {
+        return await message.reply("Invalid Target!");
+      }
+      if (!ownself.roles.cache.has(client.config.ids.alive) || !guy.roles.cache.has(client.config.ids.alive)) {
+        return await message.reply("You or your target isn't alive!");
+>>>>>>> ids
       }
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You aren't alive dummy....")
       if (!args[0]) return message.channel.send("Ah yes, being stupid. One of the ingredients for a recipe to suicide.")
@@ -84,13 +115,18 @@ module.exports = {
       
     }
     if (message.channel.name == "priv-loudmouth") {
+<<<<<<< HEAD
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You know, you can only cry to your mommy when you're alive...")
+=======
+      let nightCount = db.get(`nightCount_${message.guild.id}`) || 1
+      if (!message.member.roles.cache.has(client.config.ids.alive)) return message.channel.send("You know, you can only cry to your mommy when you're alive...")
+>>>>>>> ids
 
       if (!args[0]) return message.channel.send("Congratulations! You are now a certified idiot with a brain tumour!")
 
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]) || message.guild.members.cache.find(m => m.user.username === args[0]) || message.guild.members.cache.find(m => m.id === args[0]) || message.guild.members.cache.find(m => m.user.tag === args[0])
 
-      if (!guy || guy == message.member || !guy.roles.cache.has(alive.id))  
+      if (!guy || guy == message.member || !guy.roles.cache.has(client.config.ids.alive))  
       return message.reply("Invalid Target")
 
       

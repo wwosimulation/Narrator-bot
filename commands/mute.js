@@ -5,8 +5,8 @@ module.exports = {
   aliases: ["quiet", "shush"],
   run: async (message, args, client) => {
     if (message.channel.name == "priv-grumpy-grandma") {
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive");
-      let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+      ;
+      ;
       let night = await db.fetch(`nightCount_${message.guild.id}`);
       let isNight = await db.fetch(`isNight_${message.guild.id}`);
       let guy = message.guild.members.cache.find(m => m.nickname === args[0])

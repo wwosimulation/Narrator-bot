@@ -6,7 +6,7 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name == "priv-fortune-teller") {
             let alive = message.guild.roles.cache.find(c => c.name === "Alive")
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You are not alive smart-A word")
+            if (!message.member.roles.cache.has(client.config.ids.alive)) return message.channel.send("You are not alive smart-A word")
             if (!args[0] || args.length > 1) return message.channel.send("No i don't know who you're talking about...")
             let guy = message.guild.members.cache.find(m => m.nickname === args[0]) ||
                     message.guild.members.cache.find(m => m.id === args[0]) ||
@@ -14,7 +14,7 @@ module.exports = {
                     message.guild.members.cache.find(m => m.user.tag === args[0])
 
             if (!guy || guy == message.member) return message.channel.send("Player does not exist!")
-            if (!guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Player is not alive or you are trying to give a card to yourself!")
+            if (!guy.roles.cache.has(client.config.ids.alive) || guy == message.member) return message.channel.send("Player is not alive or you are trying to give a card to yourself!")
             let cards = db.get(`cards_${message.channel.id}`) || 2
             if (cards == 2) {
                 db.set(`cards_${message.channel.id}`, 2)
@@ -34,16 +34,15 @@ module.exports = {
             message.channel.send(`<:moon:744571127275192394> You gave a card to **${guy.nickname} ${guy.user.username}**`)
             db.subtract(`cards_${message.channel.id}`, 1)
         } else if (message.channel.name == "priv-santa-claus") {
-            let alive = message.guild.roles.cache.find(r => r.name === "Alive")
-            let dead = message.guild.roles.cache.find(r => r.name === "Dead")
-            if (message.member.roles.cache.has(dead.id)) return message.channel.send("No you can't do this")
+            
+                        if (message.member.roles.cache.has(client.config.ids.dead)) return message.channel.send("No you can't do this")
             if (!args[0]) return message.channel.send("You can use it as `+give ho` or `+give [player number]`")
             if (args[0] == "ho") {
                 message.guild.channels.cache.find(c => c.name === "day-chat").send("HO HO HO")
             } else {
                 let guy = message.guild.members.cache.find(m => m.nickname === args[0])
                 if (!guy || guy.nickname == message.member.nickname) return message.reply("Invalid target!")
-                if (!guy.roles.cache.has(dead.id)) return message.channel.send("You can't send a gift to an alive player!")
+                if (!guy.roles.cache.has(client.config.ids.dead)) return message.channel.send("You can't send a gift to an alive player!")
                 if (guy.presence.status === 'offline') return message.channel.send("This player is offline!")
                 guy.send("You have recieved a gift from Santa Claus! Find out what you have received!").catch(e => message.channel.send(`An error occured: ${e.message}`))
                 db.add(`roses_${guy.id}`, 1)
@@ -58,11 +57,11 @@ module.exports = {
             message.guild.members.cache.find(m => m.user.username === args.join(" ")) ||
             message.guild.members.cache.find(m => m.user.tag === args.join(" "))
 
-            if (!message.member.roles.cache.has(alive.id)) return
+            if (!message.member.roles.cache.has(client.config.ids.alive)) return
             if (isNight != "yes") return message.channel.send("Bruh u can only do this during the night moron.")
             if (!args[0]) return message.channel.send("Bruh! You need to stop!")
             if (!guy || guy.id == message.author.id) return message.reply("Invalid Target")
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("BRUH THIS PLAYER IS NOT ALIVE STUPID")
+            if (!guy.roles.cache.has(client.config.ids.alive)) return message.channel.send("BRUH THIS PLAYER IS NOT ALIVE STUPID")
             
             if (forged < 0) return message.channel.send("You already used up all your ability dumb")
             if (db.get(`forging_${message.channel.id}`) == db.get(`nightCount_${message.guild.id}`)) return message.channel.send("YOU JUST FORGED AN ITEM BRUH WAIT A WHILE")

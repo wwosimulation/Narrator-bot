@@ -6,9 +6,8 @@ module.exports = {
     run: async (message, args, client) => {
         let narrator = message.guild.roles.cache.get('606139219395608603')
         let mininarr = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")
-        let alive = message.guild.roles.cache.find(r => r.name === "Alive")
-        let dead = message.guild.roles.cache.find(r => r.name === "Dead")
-        let solokillers = ["Serial Killer", "Arsonist", "Bomber", "Cannibal", "Corruptor", "Illusionist", "Bandit", "Accomplice", "Sect Leader", "Zombie"]
+        
+                let solokillers = ["Serial Killer", "Arsonist", "Bomber", "Cannibal", "Corruptor", "Illusionist", "Bandit", "Accomplice", "Sect Leader", "Zombie"]
         console.log("test")
         console.log(message.member.roles.cache.has(narrator))
         if (message.member.roles.cache.has(narrator.id) || message.member.roles.cache.has(mininarr.id)) {
@@ -19,7 +18,7 @@ module.exports = {
         for (let i = 1 ; i <= dead.members.size ; i++) {
             let guy = message.guild.members.cache.find(m => m.nickname === i.toString())
             if (guy) {
-                if (guy.roles.cache.has(dead.id)) {
+                if (guy.roles.cache.has(client.config.ids.dead)) {
                     allPlayers.push(guy.id)
                 }
             }

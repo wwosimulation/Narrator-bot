@@ -12,7 +12,7 @@ module.exports = {
       let day = await db.fetch(`dayCount_${message.guild.id}`);
       let amtD = day - day * 2 + 1;
       let amtN = night - night * 2 + 1;
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive");
+      ;
       db.set(`dayCount_${message.guild.id}`, 0);
       db.set(`nightCount_${message.guild.id}`, 0);
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);

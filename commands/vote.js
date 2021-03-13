@@ -4,8 +4,8 @@ let voteForwws = ["0"];
 module.exports = {
   name: "vote",
   run: async (message, args, client) => {
-    let alive = message.guild.roles.cache.find(r => r.name === "Alive");
-    let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+    ;
+    ;
     let wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
     let wwsVote = await db.fetch(`wwsVote_${message.guild.id}`);
     let commandEnabled = await db.fetch(`commandEnabled_${message.guild.id}`);
@@ -16,7 +16,7 @@ module.exports = {
         message.guild.members.cache.find(m => m.nickname === args[0]) ||
         message.guild.members.cache.find(m => m.id === args[0]) ||
         message.guild.members.cache.find(m => m.user.username === args[0]);
-        if (message.member.roles.cache.has(dead.id))
+        if (message.member.roles.cache.has(client.config.ids.dead))
         return message.channel.send(
           "I'm not even gonna say what's your problem."
         );
@@ -38,7 +38,7 @@ module.exports = {
 
 
       if (voted == message.member) return message.channel.send("Bruh, you are a wolf, not a fool")
-      if (!voted.roles.cache.has(alive.id))
+      if (!voted.roles.cache.has(client.config.ids.alive))
         return message.channel.send("You can't vote a dead player!");
       
 
@@ -47,7 +47,7 @@ module.exports = {
             for (let j = 1 ; j <= alive.members.size + dead.members.size ; j++) {
               let tempguy = message.guild.members.cache.find(m => m.nickname === j.toString())
               if (tempguy) {
-                if (tempguy.roles.cache.has(alive.id)) {
+                if (tempguy.roles.cache.has(client.config.ids.alive)) {
                   if (db.get(`role_${tempguy}`).toLowerCase().includes("wolf")) {
                     return message.channel.send("You need to resign or be the last wolf alive in order to vote dummy")
                   }
@@ -103,7 +103,7 @@ module.exports = {
         }
         if (
           !votedGuy ||
-          votedGuy.roles.cache.has(dead.id) ||
+          votedGuy.roles.cache.has(client.config.ids.dead) ||
           votedGuy == message.member
         ) {
           return await message.reply(`Target does not exist!`);

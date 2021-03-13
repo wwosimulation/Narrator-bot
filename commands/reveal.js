@@ -135,7 +135,7 @@ module.exports = {
     if (db.get(`card_${message.channel.id}`) == true) {
       if (message.channel.name != "priv-mayor" && message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist") {
          let alive = message.guild.roles.cache.find(r => r.name === 'Alive')
-         if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't reveal when dead!")
+         if (!message.member.roles.cache.has(client.config.ids.alive)) return message.channel.send("You can't reveal when dead!")
          let day = message.guild.channels.cache.find(c => c.name === "day-chat")
          day.send(`<:sun:744571092601012255> **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
          db.set(`card_${message.channel.id}`, false)

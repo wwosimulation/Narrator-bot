@@ -6,11 +6,16 @@ module.exports = {
   run: async (message, args, client) => {
     let isNight = db.get(`isNight_${message.guild.id}`);
     let doused = db.get(`doused_${message.channel.id}`) || [];
+<<<<<<< HEAD
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
     let didCmd = db.get(`dousedAt_${message.channel.id}`) || "-1"
+=======
+    ;
+    ;
+>>>>>>> ids
     if (message.channel.name == "priv-arsonist") {
-      if (!message.member.roles.cache.has(alive.id))
+      if (!message.member.roles.cache.has(client.config.ids.alive))
         return await message.channel.send(
           "Yes. Trying to win as dead. Good Job."
         );
@@ -27,6 +32,7 @@ module.exports = {
   
       for (let i = 0; i < doused.length; i++) {
         let guy = message.guild.members.cache.find(m => m.nickname === doused[i]);
+<<<<<<< HEAD
         if (guy) {
           if (guy.roles.cache.has(alive.id)) {
             let dayChat = message.guild.channels.cache.find(c => c.name === "day-chat");
@@ -37,6 +43,16 @@ module.exports = {
             guy.roles.add(dead.id);
             guy.roles.remove(alive.id)
           }
+=======
+        if (guy.roles.cache.has(client.config.ids.alive)) {
+          let dayChat = message.guild.channels.cache.find(c => c.name === "day-chat");
+          let role = db.get(`role_${guy.id}`);
+          dayChat.send(
+            `<:ignite:744575140032938014> The Arsonist ignited **${guy.nickname} ${guy.user.username} (${role})**!`
+          );
+          guy.roles.add(client.config.ids.dead);
+          guy.roles.remove(client.config.ids.alive)
+>>>>>>> ids
         }
       }
       db.set(`ignitedAt_${message.channel.id}`, db.get(`nightCount_${message.guild.id}`))

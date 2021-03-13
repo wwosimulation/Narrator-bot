@@ -7,9 +7,14 @@ module.exports = {
     if (!message.channel.name == 'priv-arsonist') return
     let doused = await db.fetch(`doused_${message.channel.id}`);
     let isNight = await db.fetch(`isNight_${message.guild.id}`);
+<<<<<<< HEAD
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
     let ignited = db.get(`ignitedAt_${message.channel.id}`) || "-1"
+=======
+    ;
+    ;
+>>>>>>> ids
     if (doused == null) {
       doused = [] 
     } 
@@ -40,9 +45,9 @@ module.exports = {
           );
         }
         if (
-          !guy1.roles.cache.has(alive.id) ||
-          !guy2.roles.cache.has(alive.id) ||
-          !ownself.roles.cache.has(alive.id)
+          !guy1.roles.cache.has(client.config.ids.alive) ||
+          !guy2.roles.cache.has(client.config.ids.alive) ||
+          !ownself.roles.cache.has(client.config.ids.alive)
         ) {
           return await message.channel.send("Generation these days... ");
         }
@@ -74,7 +79,7 @@ module.exports = {
             "Hmm. Dousing non-existent players. Good choice!"
           );
         }
-        if (!guy1.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
+        if (!guy1.roles.cache.has(client.config.ids.alive) || !ownself.roles.cache.has(client.config.ids.alive)) {
           return await message.channel.send("Generation these days... ");
         }
         for (let hhh = 1;hhh<doused.length;hhh++) {

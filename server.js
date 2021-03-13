@@ -98,7 +98,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
                 for (let b = 1 ; b < 17 ; b++) {
                    let um = newMember.guild.members.cache.find(m => m.nickname === b.toString())
                    if (um) {
-                      if (um.roles.cache.has(alive.id)) {
+                      if (um.roles.cache.has(client.config.ids.alive)) {
                          if (chan.permissionsFor(um).has(["VIEW_CHANNEL"])) {
                             guy = um
                             b = 99
@@ -340,7 +340,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
               found1 = "None"
             } else {
               
-              if (guy.roles.cache.has(alive.id)) {
+              if (guy.roles.cache.has(client.config.ids.alive)) {
                 found1 = true
                 guy1 = guy
               } else {
@@ -356,7 +356,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
             } else if (newMember.nickname == guy.nickname) {
               found2 = "None"
             } else {
-              if (guy.roles.cache.has(alive.id)) {
+              if (guy.roles.cache.has(client.config.ids.alive)) {
                 found2 = true
                 guy2 = guy
               } else {
@@ -366,13 +366,13 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
           }
           if (found1 != "None") {
             guild.channels.cache.find(c => c.name === "day-chat").send(`<:toxic:787676985106890752> The Mad Scientist's toxic was exposed and killed **${guy1.nickname} ${guy1.user.username} (${db.get(`role_${guy1.id}`)})**!`)
-            guy1.roles.add(dead.id)
-            guy1.roles.remove(alive.id)
+            guy1.roles.add(client.config.ids.dead)
+            guy1.roles.remove(client.config.ids.alive)
           }
           if (found2 != "None") {
             guild.channels.cache.find(c => c.name === "day-chat").send(`<:toxic:787676985106890752> The Mad Scientist's toxic was exposed and killed **${guy2.nickname} ${guy2.user.username} (${db.get(`role_${guy2.id}`)})**!`)
-            guy2.roles.add(dead.id)
-            guy2.roles.remove(alive.id)
+            guy2.roles.add(client.config.ids.dead)
+            guy2.roles.remove(client.config.ids.alive)
           }
         }
 
@@ -387,11 +387,11 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
             for (let b = 1 ; b < 17 ; b++) {
               let guy = newMember.guild.members.cache.find(m => m.nickname === b.toString())
               if (guy) {
-                if (guy.roles.cache.has(alive.id)) {
+                if (guy.roles.cache.has(client.config.ids.alive)) {
                   if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                    newMember.guild.channels.cache.find(c => c.name === "day-chat").send(`**${guy.nickname} ${guy.user.username} (Red Lady)** visited someone who was attacked and was killed!`)
                     guy.roles.add(dead)
-                    guy.roles.remove(alive.id)
+                    guy.roles.remove(client.config.ids.alive)
                 }
               }
               }
@@ -407,10 +407,10 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
             if (guy) {
               if (cupid.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (guy != newMember) {
-                  if (guy.roles.cache.has(alive.id)) {
+                  if (guy.roles.cache.has(client.config.ids.alive)) {
                     newMember.guild.channels.cache.find(c => c.name === "day-chat").send(`<:couple:744542381206143026> Player **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** lost the love of their live and commited suicide!`)
                     guy.roles.add(dead)
-                    guy.roles.remove(alive.id)
+                    guy.roles.remove(client.config.ids.alive)
                   }
                 }
               } 

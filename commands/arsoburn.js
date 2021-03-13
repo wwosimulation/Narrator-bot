@@ -14,16 +14,16 @@ module.exports = {
         day.send(
           `The Arsonist ignites **${args[i]} ${guy.user.username} (${role})**!`
         );
-        guy.removeRole(alive.id);
-        guy.addRole(dead.id);
+        guy.removeRole(client.config.ids.alive);
+        guy.addRole(client.config.ids.dead);
         if (role == 'Junior Werewolf') {
           let tag = await db.fetch(`jtag_${guy.id}`)
           if (tag.roles.has("606140092213624859") || tag != null) {
             let byebye = message.guild.members.find(m => m.nickname === tag)
             let gg = await db.fetch(`role_${byebye.id}`) 
             day.send(`The Junior Werewolf's death has been avenged! **${tag} ${byebye.username} (${gg})** has died!`)
-            byebye.addRole(dead.id) 
-            byebye.removeRole(alive.id) 
+            byebye.addRole(client.config.ids.dead) 
+            byebye.removeRole(client.config.ids.alive) 
           } 
         } 
       }

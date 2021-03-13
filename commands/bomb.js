@@ -15,8 +15,8 @@ module.exports = {
       let night = await db.fetch(`nightCount_${message.guild.id}`);
       let didCmd = await db.fetch(`didCmd_${message.channel.id}`);
       let isNight = await db.fetch(`isNight_${message.guild.id}`);
-      let alive = message.guild.roles.cache.find(r => r.name === "Alive");
-      let dead = message.guild.roles.cache.find(r => r.name === "Dead");
+      ;
+      ;
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
       );
@@ -34,10 +34,10 @@ module.exports = {
       if (!guy1 || !guy2 || !guy3)
         return await message.channel.send("Invalid Target!");
       if (
-        (!guy1.roles.cache.has(alive.id) &&
-          !guy2.roles.cache.has(alive.id) &&
-          !guy3.roles.cache.has(alive.id)) ||
-        !ownself.roles.cache.has(alive.id)
+        (!guy1.roles.cache.has(client.config.ids.alive) &&
+          !guy2.roles.cache.has(client.config.ids.alive) &&
+          !guy3.roles.cache.has(client.config.ids.alive)) ||
+        !ownself.roles.cache.has(client.config.ids.alive)
       )
         return await message.channel.send(
           "Listen, placing bombs aren't possible when dead or to dead players. Now be a lamb and SHUT UP. "
