@@ -7,7 +7,7 @@ const defaultRole = {
 const addRoleProperty = (rolename, property, value) => {
     let role = module.exports.roles[rolename]
     if (!role) {
-        role = defaultRole
+        role = Object.assign({}, defaultRole)
         module.exports.allRoles.push(rolename)
     }
     role[property] = value
@@ -158,7 +158,7 @@ soloKillers.forEach((role) => {
     addRoleProperty(role, "soloKiller", true)
 })
 
-Object.entries(config.roles).forEach((role) => allRoles.push(role[0]))
+Object.entries(module.exports.roles).forEach((role) => module.exports.allRoles.push(role[0]))
 
 module.exports.bombPlacements = [
 	"1 2 3",
