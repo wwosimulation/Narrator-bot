@@ -27,10 +27,10 @@ module.exports = {
             }
         } else if (buy.includes("colour")) {
             function roleadd(x) {
-                client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add(`${x}`)
+                client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.add(`${x}`)
             }
             function rolehas(x) {
-                return client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(x);
+                return client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.cache.has(x);
             }
             let price = 50
             if (buy.includes("red")) {
@@ -91,31 +91,31 @@ module.exports = {
                 return message.channel.send("Unknown colour! These are the following colours: `Red` `Blue` `Green` `Yellow` `Black` `Salmon` `Pink` `Turquoise` `Crimson`")
             }
         } else if (buy.includes("lootbox")) {
-            let rolehas = client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache
+            let rolehas = client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.cache
             if (buy.includes("premium")) {
                 let price = 100
                 if (rolehas("606123666895274003")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
                 if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
                 db.subtract(`money_${message.author.id}`, 100)
-                client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add("606123666895274003")
+                client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.add("606123666895274003")
                 message.channel.send("You have bought the Premium Lootbox role!")
             } else if (buy.includes("elite")) {
                 let price = 150
                 if (rolehas("606123666257870868")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
                 if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
                 db.subtract(`money_${message.author.id}`, 150)
-                client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add("606123666257870868")
+                client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.add("606123666257870868")
                 message.channel.send("You have bought the Elite Lootbox role!")
             } else {
                 return message.channel.send("Unknown lootbox! Available lootboxes: `Premium` `Elite`")
             }
         } else if (buy.includes("dj")) {
             let price = 450
-            if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has("606123674562723840")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
+            if (client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.cache.has("606123674562723840")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
             if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
             db.subtract(`money_${message.author.id}`, 450)
             message.channel.send("You have bought the DJ role!")
-            client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add("606123674562723840")
+            client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.add("606123674562723840")
         } else if (buy.includes("profile")) { 
             let price = 200
             if (db.get(`profile_${message.author.id}`)) return message.channel.send("You already bought this item! Why are you wasting your gold?")
@@ -125,12 +125,12 @@ module.exports = {
             db.set(`profile_${message.author.id}`, true)
         } else if (buy.includes("special")) {
             let price = 500
-            let specialrolesname = client.guilds.cache.get("465795320526274561").roles.cache.get("606247032553865227")
-            let colorsrolename = client.guilds.cache.get("465795320526274561").roles.cache.get("606247387496972292")
-            let allsprole = client.guilds.cache.get("465795320526274561").roles.cache.filter(r => r.position < specialrolesname.position && r.position > colorsrolename.position)
+            let specialrolesname = client.guilds.cache.get(client.config.simServer).roles.cache.get("606247032553865227")
+            let colorsrolename = client.guilds.cache.get(client.config.simServer).roles.cache.get("606247387496972292")
+            let allsprole = client.guilds.cache.get(client.config.simServer).roles.cache.filter(r => r.position < specialrolesname.position && r.position > colorsrolename.position)
             let hassprole = false
             allsprole.forEach(e => {
-                if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(e.id)) {
+                if (client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.cache.has(e.id)) {
                     hassprole = true
                     if (!db.get(`srole_${message.author.id}`)) {
                         db.set(`srole_${message.author.id}`, e.id)
@@ -141,7 +141,7 @@ module.exports = {
             if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
             db.subtract(`money_${message.author.id}`, 450)
             message.channel.send("You have bought the Special role! To change it's name, just do `+namechange [name]`. To change the colour, just do +colorchange [colour]")
-            client.guilds.cache.get("465795320526274561").roles.create({
+            client.guilds.cache.get(client.config.simServer).roles.create({
                 data: {
                     name: `${message.author.username}'s Special role`, 
                     color: "#007880",
@@ -149,21 +149,21 @@ module.exports = {
                 }
             }).then(role => {
                 db.set(`srole_${message.author.id}`, role.id)
-                client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add(role.id)
+                client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.add(role.id)
             })
         } else if (buy.includes("immun")) {
             let price = 500
-            if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has("691390867822477413")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
+            if (client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.cache.has("691390867822477413")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
             if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
             db.subtract(`money_${message.author.id}`, 500)
-            client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add("691390867822477413")
+            client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.add("691390867822477413")
             message.channel.send("You have bought the Immunity item! You do know you will still be lazy right?")
         } else if (buy.includes("emoji")) {
             let price = 500
-            if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has("663389088354664477")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
+            if (client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.cache.has("663389088354664477")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
             if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
             db.subtract(`money_${message.author.id}`, 500)
-            client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add("663389088354664477")
+            client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.add("663389088354664477")
             message.channel.send("You have bought the Emoji item! Paying just to get some fancy letters isn't a thing.")
         } else if (buy.includes("cmi") || buy.includes("custom")) {
             let price = 1500
@@ -174,11 +174,11 @@ module.exports = {
             message.channel.send("You have bought the Custom Maker Item! To check which roles you have, do `+inv`. To see the role price list, do `+cmi` and to buy roles, do `+cmi buy [role]`!")
         } else if (buy.includes("private")) {
             let price = 2500
-            if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has("627539599862005760")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
+            if (client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.cache.has("627539599862005760")) return message.channel.send("You already bought this item! Why are you wasting your gold?")
             if (balance < price) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
             db.subtract(`money_${message.author.id}`, 2500)
-            client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add("627539599862005760")
-            let t = await client.guilds.cache.get("465795320526274561").channels.create(`${message.author.username}-channel`, {
+            client.guilds.cache.get(client.config.simServer).members.cache.get(message.author.id).roles.add("627539599862005760")
+            let t = await client.guilds.cache.get(client.config.simServer).channels.create(`${message.author.username}-channel`, {
                 parent: "627536301008224275",
                 permissionOverwrites: [
                     {

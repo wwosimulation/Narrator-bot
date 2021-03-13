@@ -44,7 +44,7 @@ module.exports = {
           }
           
           db.set(`role_${guy.id}`, autoRole)
-          let emoji = client.guilds.cache.get('465795320526274561').emojis.cache.find(e => e.name === role);
+          let emoji = client.guilds.cache.get('client.config.simServer').emojis.cache.find(e => e.name === role);
           if (!emoji) emoji = role;
           content += `${emoji} ${guy.nickname}. ${guy.user.tag}\n`;
         }

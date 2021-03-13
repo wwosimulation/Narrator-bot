@@ -7,52 +7,7 @@ module.exports = {
         
         if (message.channel.type != "dm") return message.channel.send("Please try this command in DMs!")
         
-        let allroles = [
-	"Alchemist",
-	"Grave Robber",
-        "Fortune Teller",
-        "Kitten Wolf",
-        "Pacifist",
-        "Spirit Seer",
-        "Sheriff", 
-        "Werewolf Berserk",
-        "Wolf Pacifist", 
-        "Cupid",
-        "President",
-        "Mayor",
-        "Grumpy Grandma",
-        "Seer Apprentice",
-        "Tough Guy",
-        "Loudmouth", 
-        "Sorcerer", 
-        "Flower Child",
-        "Guardian Wolf",
-        "Beast Hunter",
-        "Avenger",
-        "Witch",
-        "Detective",
-        "Forger",
-        "Cursed",
-        "Marksman",
-        "Red Lady",
-        "Junior Werewolf", 
-        "Nightmare Werewolf",
-        "Shadow Wolf",         
-        "Random Regular Villager",
-        "Random Strong Villager", 
-        "Random Werewolf", 
-        "Random Killer", 
-        "Random Voting", 
-        "Random",
-        "Arsonist", 
-        "Sect Leader",
-        "Bomber", 
-        "Zombie",
-        "Corruptor", 
-        "Cannibal",
-        "Illusionist",
-        "Bandit" 
-        ]
+        let allroles = client.config.allroles
         
         let msg = ""
         let boughtroles = db.get(`boughtroles_${message.author.id}`) || []

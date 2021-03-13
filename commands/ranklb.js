@@ -3,8 +3,8 @@ const db = require("quick.db")
 module.exports = {
     name: "ranklb",
     run: async (message, args, client) => {
-        let narr = client.guilds.cache.get("465795320526274561").roles.cache.get("606123619999023114")
-        let mini = client.guilds.cache.get("465795320526274561").roles.cache.get("606123620732895232")
+        let narr = client.guilds.cache.get(client.config.simServer).roles.cache.get("606123619999023114")
+        let mini = client.guilds.cache.get(client.config.simServer).roles.cache.get("606123620732895232")
         if (!message.member.roles.cache.has(narr.id) && !message.member.roles.cache.has(mini.id)) return;
 
         let allrank = db.all().filter(data => data.ID.startsWith("ranked")).sort((a ,b) => b.data - a.data)

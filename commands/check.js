@@ -34,60 +34,9 @@ module.exports = {
             `You have already used your ability for tonight!`
           );
         } else {
-          let aura;
           let role = await db.fetch(`role_${guy.id}`);
-          aura = "Unknown"
-          if (
-            role == "Villager" ||
-            role == "Forger" ||
-            role == "Loudmouth" ||
-            role == "Santa Claus" ||
-            role == "Easter Bunny" ||
-            role == "Doctor" ||
-            role == "Bodyguard" ||
-            role == "Tough Guy" ||
-            role == "Red Lady" ||
-            role == "Priest" ||
-            role == "Seer" ||
-            role == "Aura Seer" ||
-            role == "Spirit Seer" ||
-            role == "Seer Apprentice" ||
-            role == "Detective" ||
-            role == "Sheriff" ||
-            role == "Mayor" ||
-            role == "Avenger" ||
-            role == "Pacifist" ||
-            role == "Flower Child" ||
-            role == "Grumpy Grandma" ||
-            role == "Cupid" ||
-            role == "President" ||
-            role == "Cursed" ||
-            role == "Loudmouth" ||
-            role == "Wise Man" ||
-            role == "Sibling" ||
-            role == "Idiot" ||
-            role == "Handsome Prince" ||
-            role == "Drunk" ||
-            role == "Grave Robber"
-          ) {
-            aura = "Good"
-          } else if (
-            role == "Werewolf" ||
-            role == "Junior Werewolf" ||
-            role == "Wolf Pacifist" ||
-            role == "Wolf Shaman" ||
-            role == "Wolf Seer" ||
-            role == "Shadow Wolf" ||
-            role == "Wolf Pacifist" ||
-            role == "Nightmare Werewolf" ||
-            role == "Werewolf Berserk" ||
-            role == "Kitten Wolf" ||
-            role == "Guardian Wolf" ||
-            role == "Sorcerer"
-          ) {
-            aura = "Evil"
-          } 
-          
+          let aura = client.config.roles[role].aura
+
             for (let i = 0 ; i < illu.length ; i++) {
               let disguised = db.get(`disguised_${illu[i]}`) || []
               if (disguised.length != 0) {
@@ -177,138 +126,19 @@ module.exports = {
 
       let role1 = await db.fetch(`role_${guy1.id}`);
       let role2 = await db.fetch(`role_${guy2.id}`);
-      let team1;
-      let team2;
-      if (
-        role1 == "Villager" ||
-        role1 == "Doctor" ||
-        role1 == "Bodyguard" ||
-        role1 == "Tough Guy" ||
-        role1 == "Red Lady" ||
-        role1 == "Gunner" ||
-        role1 == "Jailer" ||
-        role1 == "Priest" ||
-        role1 == "Marksman" ||
-        role1 == "Seer" ||
-        role1 == "Aura Seer" ||
-        role1 == "Spirit Seer" ||
-        role1 == "Seer Apprentice" ||
-        role1 == "Detective" ||
-        role1 == "Medium" ||
-        role1 == "Mayor" ||
-        role1 == "Witch" ||
-        role1 == "Avenger" ||
-        role1 == "Beast Hunter" ||
-        role1 == "Pacifist" ||
-        role1 == "Grumpy Grandma" ||
-        role1 == "Cupid" ||
-        role1 == "President" ||
-        role1 == "Cursed" ||
-        role1 == "Loudmouth" ||
-        role1 == "Flower Child" ||
-        role1 == "Sheriff" ||
-        role1 == "Fortune Teller" ||
-        role1 == "Forger" ||
-        role1 == "Grave Robber" ||
-        role1 == "Santa Claus" ||
-        role1 == "Easter Bunny" ||
-        role1 == "Sibling" ||
-        role1 == "Drunk" ||
-        role1 == "Mad Scientist" ||
-        role1 == "Idiot" ||
-        role1 == "Wise Man" ||
-        role1 == "Doppelganger" ||
-        role1 == "Naughty Boy" ||
-        role1 == "Handsome Prince" ||
-        role1 == "Sect Hunter"
-      ) {
-        team1 = "Village";
-      } else if (
-        role1 == "Werewolf" ||
-        role1 == "Junior Werewolf" ||
-        role1 == "Wolf Pacifist" ||
-        role1 == "Shadow Wolf" ||
-        role1 == "Wolf Seer" ||
-        role1 == "Kitten Wolf" ||
-        role1 == "Wolf Shaman" ||
-        role1 == "Alpha Werewolf" ||
-        role1 == "Werewolf Berserk" ||
-        role1 == "Nightmare Werewolf" ||
-        role1 == "Guardian Wolf" ||
-        role1 == "Kitten Wolf" ||
-        role1 == "Sorcerer" ||
-        role1 == "Lone Wolf"
-      ) {
-        team1 = "Werewolf";
-      } else {
-        team1 = "Solo";
-      }
+      let team1 = client.config.roles[role1].team
+      let team2 = client.config.roles[role2].team
 
       if (
-        role2 == "Villager" ||
-        role2 == "Doctor" ||
-        role2 == "Bodyguard" ||
-        role2 == "Tough Guy" ||
-        role2 == "Red Lady" ||
-        role2 == "Gunner" ||
-        role2 == "Jailer" ||
-        role2 == "Priest" ||
-        role2 == "Marksman" ||
-        role2 == "Seer" ||
-        role2 == "Aura Seer" ||
-        role2 == "Spirit Seer" ||
-        role2 == "Seer Apprentice" ||
-        role2 == "Detective" ||
-        role2 == "Medium" ||
-        role2 == "Mayor" ||
-        role2 == "Witch" ||
-        role2 == "Avenger" ||
-        role2 == "Beast Hunter" ||
-        role2 == "Pacifist" ||
-        role2 == "Grumpy Grandma" ||
-        role2 == "Cupid" ||
-        role2 == "President" ||
-        role2 == "Cursed" ||
-        role2 == "Loudmouth" ||
-        role2 == "Flower Child" ||
-        role2 == "Sheriff" ||
-        role2 == "Fortune Teller" ||
-        role2 == "Forger" ||
-        role2 == "Grave Robber" ||
-        role2 == "Santa Claus" ||
-        role2 == "Easter Bunny" ||
-        role2 == "Sibling" ||
-        role2 == "Drunk" ||
-        role2 == "Mad Scientist" ||
-        role2 == "Idiot" ||
-        role2 == "Wise Man" ||
-        role2 == "Doppelganger" ||
-        role2 == "Naughty Boy" ||
-        role2 == "Handsome Prince" ||
-        role2 == "Sect Hunter"
+        shaman1 == args[0] ||
+        shaman2 == args[0] ||
+        shaman3 == args[0] ||
+        shaman4 == args[0]
       ) {
-        team2 = "Village";
-      } else if (
-        role2 == "Werewolf" ||
-        role2 == "Junior Werewolf" ||
-        role2 == "Wolf Pacifist" ||
-        role2 == "Wolf Seer" ||
-        role2 == "Kitten Wolf" ||
-        role2 == "Wolf Shaman" ||
-        role2 == "Shadow Wolf" ||
-        role2 == "Alpha Werewolf" ||
-        role2 == "Werewolf Berserk" ||
-        role2 == "Nightmare Werewolf" ||
-        role2 == "Guardian Wolf" ||
-        role2 == "Kitten Wolf" ||
-        role2 == "Sorcerer" ||
-        role2 == "Lone Wolf"
-      ) {
+        team1 = "Werewolf";
         team2 = "Werewolf";
-      } else {
-        team2 = "Solo";
       }
-      
+
       for (let i = 0 ; i < illu.length ; i++) {
         let disguised = db.get(`disguised_${illu[i]}`) || []
         if (disguised.length != 0) {

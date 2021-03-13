@@ -16,6 +16,7 @@ const addRoleProperty = (rolename, property, value) => {
 
 module.exports = {
     logServer: "693157346771468289",
+    simServer: "465795320526274561",
     allRoles: [],
     botadmins: ["552814709963751425", "439223656200273932"],
 }

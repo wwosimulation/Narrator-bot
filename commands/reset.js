@@ -62,7 +62,7 @@ module.exports = {
       let m = await client.channels.cache.find(c => c.name === "game-warning").messages.fetch(db.get(`game`))
       await m.reactions.removeAll().catch(()=>{})
       
-      let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members
+      let t = client.guilds.cache.get(client.config.simServer).roles.cache.get("606123676668133428").members
       
       t.forEach(e => {
         e.roles.remove("606123676668133428")

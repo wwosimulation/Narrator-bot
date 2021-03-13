@@ -5,7 +5,7 @@ module.exports = {
     name: "shop",
     run: async (message, args, client) => {
         if (message.author.id != "552814709963751425") return message.channel.send("Yes trying to get leaks from me huh?")
-        if (message.guild.id != '465795320526274561') return
+        if (message.guild.id != 'client.config.simServer') return
         if (!args[0] || args[0] == '1') {
             message.channel.send(new Discord.MessageEmbed()
             .setTitle("Werewolf Online Simulation Store")

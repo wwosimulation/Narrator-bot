@@ -33,14 +33,14 @@ module.exports = {
         db.add(`softwarn_${guy.id}`, 1)
 
         let softwarns = db.get(`softwarn_${guy.id}`)
-        client.guilds.cache.get("465795320526274561").channels.cache.get("606123769031032863").send(
+        client.guilds.cache.get(client.config.simServer).channels.cache.get("606123769031032863").send(
             new Discord.MessageEmbed()
             .setTitle("Action: Softwarn")
             .setAuthor(guy.user.tag, guy.user.avatarURL())
             .setDescription(`Reason: ${t}\n\nTotal softwarns: ${softwarns}`)
             .setFooter("Softwarned by: ${message.author.tag} (${message.author.id})", message.author.displayAvatarURL())
         )
-        client.guilds.cache.get("465795320526274561").channels.cache.get("606123769031032863").send(avc)
+        client.guilds.cache.get(client.config.simServer).channels.cache.get("606123769031032863").send(avc)
         guy.send(`[Werewolf Online Simulation]\n\nYou have been softwarned for the following reason: ${t}`)
         
         

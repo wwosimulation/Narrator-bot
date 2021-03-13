@@ -197,7 +197,7 @@ module.exports = {
       
       let rolelist = ["Detective", "Wolf Seer", "Doctor", rrv[random(rrv)], fsse2[0], fsse2[1], fsse2[2], fsse2[3], nt[0], nt[1], "Medium", tt[0], tt[1], fourteen[0], "Priest", rrv[random(rrv)]]
       function emote(nama) {
-        return client.guilds.cache.get('465795320526274561').emojis.cache.find(e => e.name === nama)
+        return client.guilds.cache.get('client.config.simServer').emojis.cache.find(e => e.name === nama)
       }
       dayChat.send(
         `RANKED GAME:\n
