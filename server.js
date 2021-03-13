@@ -662,4 +662,6 @@ Gotta make you understand
   }
 });
 
+require("./stafflist.js")(client)
+
 client.login(token);
