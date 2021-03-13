@@ -5,7 +5,7 @@ module.exports = {
   run: async (message, args, client) => {
     if (message.content.includes('TOKEN')) 
       return await message.channel.send('Yeah no, we aren\'t dumb enough to give our token away ok? Now get back to your dumb life')
-    if (message.author.id != '552814709963751425') return
+    if (!["552814709963751425", "439223656200273932"].includes(message.author.id)) return
     if (message.content.toLowerCase().includes("token")) return message.channel.send("I know my owner gave you access to eval but u can't have my token!")
     const clean = text => {
       //if (message.author.id == "524188548815912999") {
