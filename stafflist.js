@@ -20,7 +20,7 @@ const config = {
 
 module.exports = (client) => {
 
-client.on("stafflist", () => {
+client.on("stafflist", async () => {
     let wovsim = client.guilds.cache.get(config.guild)
     let chan = wovsim.channels.cache.get(config.channel), mid = db.get("stafflist")
     let msg = await chan.messages.fetch(mid)
