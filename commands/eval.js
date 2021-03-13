@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const db = require("quick.db")
+const shuffle = require("shuffle-array")
 
 module.exports = {
   name: "eval",
