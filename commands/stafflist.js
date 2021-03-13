@@ -1,5 +1,5 @@
 module.exports = {
-  name: "sow",
+  name: "stafflist",
   run: async (message, args, client) => {
     if (message.member.hasPermission("MANAGE_ROLES")) {
       message.react("👍")
