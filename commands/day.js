@@ -2148,12 +2148,16 @@ module.exports = {
     
     // Bandit conversion
     for (let a = 0 ; a < bandit.length ; a++) {
+      console.log("is this working 1")
       let bchan = message.guild.channels.cache.get(bandit[a])
       let conversion = db.get(`bandit_${bchan.id}`)
       if (conversion) {
+        console.log("is this working 2")
         let pittguy = message.guild.members.cache.get(m => m.nickname === conversion) 
         if (pittguy) {
+          console.log("is this working 3")
           if (pittguy.roles.cache.has(alive.id)) {
+            console.log("is this working 4")
             let pittrole = db.get(`role_${pittguy.id}`)
             
             // beast hunter
