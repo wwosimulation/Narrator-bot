@@ -2505,6 +2505,7 @@ module.exports = {
     let sected = message.guild.channels.cache.find(
       (c) => c.name === "sect-members"
     );
+    setTimeout(async () => {
     for (let q = 0; q < sel.length; q++) {
       let sl = message.guild.channels.cache.get(sel[q]);
       if (sl) {
@@ -2764,7 +2765,7 @@ module.exports = {
                                 "READ_MESSAGE_HISTORY",
                               ])
                           ) {
-                            k = 89;
+                            p = 89;
                             if (db.get(`lives_${bg[p]}`) == 2) {
                               sect = "0"; // makes the serial killer's attack towards the player none
                               thecha.send(
@@ -2775,7 +2776,7 @@ module.exports = {
                                 `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`
                               );
                               sl.send(`${alive}`);
-                              db.subtract(`lives_${bg[k]}`, 1);
+                              db.subtract(`lives_${bg[p]}`, 1);
                             }
                           }
                         }
@@ -2812,32 +2813,46 @@ module.exports = {
         }
       }
     }
+    }, 3500)
 
     //console.log("btw, i am sect leader not SEXT leader")
     // sect hunter killing
+    
+    setTimeout(async () => {
     for (let i = 0; i < shunt.length; i++) {
       let hunt = db.get(`hunt_${shunt[i]}`) || "0";
+      let schan = message.guild.channels.cache.get(shunt[i])
       let guy = message.guild.members.cache.find((m) => m.nickname === hunt);
       let sected = message.guild.channels.cache.get("682617467767357453");
       let leader;
       if (hunt != "0") {
-        let role = db.get(`role_${guy.id}`);
-        if (guy.roles.cache.has(alive.id)) {
-          if (
-            role == "Sect Leader" ||
-            sected
-              .permissionsFor(guy)
-              .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-          ) {
-            dayChat.send(
-              `<:arrow:744571940374708234> The Sect Hunter killed **${guy.nickname} ${guy.user.username} (${role})**`
-            );
-            guy.roles.add(dead.id);
-            guy.roles.remove(alive.id);
+        for (let k = 1 ; k <= 16 ; k++) {
+          let tempguy = message.guild.members.cache.find(m => m.nickname === k.toString())
+          if (tempguy) {
+            if (tempguy.roles.cache.has(alive.id)) {
+              if (schan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])) {
+                let role = db.get(`role_${guy.id}`);
+                if (guy.roles.cache.has(alive.id)) {
+                  if (
+                    role == "Sect Leader" ||
+                    sected
+                      .permissionsFor(guy)
+                      .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
+                  ) {
+                    dayChat.send(
+                      `<:arrow:744571940374708234> The Sect Hunter killed **${guy.nickname} ${guy.user.username} (${role})**`
+                    );
+                    guy.roles.add(dead.id);
+                    guy.roles.remove(alive.id);
+                  }
+                }   
+              }
+            }
           }
         }
       }
     }
+    }, 3750)
     //console.log("time to f*** you up sect")
 
     // allowing players to speak in #day-chat
