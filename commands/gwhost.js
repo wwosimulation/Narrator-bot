@@ -7,7 +7,7 @@ module.exports = {
         
         let narrator = message.guild.roles.cache.find(r => r.name === "Game Narrator")
         let mininarr = message.guild.roles.cache.find(r => r.name === "Mini Narrator")
-        if (!message.member.roles.cache.has(narrator.id) || !message.member.roles.cache.has(mininarr.id)) return
+        if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let sup = ""
         if (message.member.roles.cache.has(mininarr.id)) {
