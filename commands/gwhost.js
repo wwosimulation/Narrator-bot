@@ -4,9 +4,20 @@ const Discord = require("discord.js")
 module.exports = {
     name: "gwhost",
     run: async (message, args, client) => {
-        if (!message.member.hasPermission("MANAGE_ROLES")) return
+        
+        let narrator = message.guild.roles.cache.find(r => r.name === "Game Narrator")
+        let mininarr = message.guild.roles.cache.find(r => r.name === "Mini Narrator")
+        if (!message.member.roles.cache.has(narrator.id) || !message.member.roles.cache.has(mininarr.id)) return
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
-        let m = await message.guild.channels.cache.get("606123818305585167").send("<@&606123686633799680> We are now starting game " + args.join(' ') + '. Our host will be <@' + message.author.id +'>! To join the game, react with :fries:. If you do not wish to get future pings about the game, go to <#606123783605977108> and react with :video_game:')
+        let sup = ""
+        if (message.member.roles.cache.has(mininarr.id)) {
+            let guy = message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(m => m.nickname === args[0]) || message.guild.members.cache.find(m => m.user.username === args[0])  || message.guild.members.cache.find(m => m.user.tag === args[0])
+            if (!guy) return message.channel.send(`Supervisor \`${args[0]}\` was not found!`)
+            let rol = message.guild.roles.cache.find(r => r.name === "Supervisor")
+            if (!guy.roles.cache.has(rol.id)) return message.channel.send(`${guy.user.tag} is not a supervisor!`)
+            sup = `The supervisor for this game is: ${guy}`
+        }
+        let m = await message.guild.channels.cache.get("606123818305585167").send("<@&606123686633799680> We are now starting game " + args.join(' ') + '. Our host will be <@' + message.author.id +'>! To join the game, react with :fries:. If you do not wish to get future pings about the game, go to <#606123783605977108> and react with :video_game:\n\n' + sup)
         await m.react("🍟")
         db.set(`game`, m.id)
         const filter = (reaction, user) => reaction.emoji.name === '🍟'
