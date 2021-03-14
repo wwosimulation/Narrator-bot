@@ -28,6 +28,7 @@ module.exports = {
           } else {
             let role = await db.fetch(`role_${guy.id}`);
             let toKill = role.toLowerCase();
+            if (isDay != "yes") return message.channel.send("Dumb, You can only pray in the morning.")
             if (dayCount == 1) {
               let cmd = await db.fetch(`commandEnabled_${message.guild.id}`);
               if (cmd != "yes")
