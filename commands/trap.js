@@ -13,15 +13,15 @@ module.exports = {
       let setTrap = await db.fetch(`setTrap_${message.channel.id}`) 
       let trapActive = await db.fetch(`trapActive_${message.channel.id}`) 
       let night = await db.fetch(`nightCount_${message.guild.id}`) 
-      if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
-        return await message.reply('You or your target isn\'t alive!')
-      } else if (parseInt(args[0]) > (parseInt(alive.members.size) + parseInt(dead.members.size)) || parseInt(args[0]) < 1) {
-        return await message.reply('Invalid target!')
-      } else {
+      if (!args[0]) return message.reply("Can you please commit suicide. Ty")
+      if (!guy) return await message.reply('Invalid target!')
+      
+      if (!message.member.roles.cache.has(alive.id) || !guy.roles.cache.has(alive.id)) return await message.reply('You or your target isn\'t alive!')
+       
         message.react('475775073475887134')
         db.set(`setTrap_${message.channel.id}`,  args[0]) 
         db.set(`trapActive_${message.channel.id}`, false) 
-      } 
+      
     }
   }
 };
