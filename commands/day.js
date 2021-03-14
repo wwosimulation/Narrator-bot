@@ -21,6 +21,7 @@ module.exports = {
     let jailed = message.guild.channels.cache.find(
       (c) => c.name === "jailed-chat"
     );
+    let jailer = message.guild.channels.cache.filter(c => c.name === "priv-jailer").keyArray("id")
     let sk = message.guild.channels.cache
       .filter((c) => c.name === "priv-serial-killer")
       .keyArray("id");
@@ -4284,6 +4285,9 @@ module.exports = {
 
     for (let i = 0; i < bg.length; i++) {
       db.set(`guard_${bg[i]}`, null);
+    }
+    for (let i = 0 ; i < jailer.length ; i++) {
+      db.delete(`jail_${jailer[i]}`)
     }
     for (let i = 0; i < bandit.length; i++) {
       db.set(`bandit_${bandit[i]}`, null);
