@@ -73,6 +73,9 @@ module.exports = {
       let markActive = db.get(`markActive_${message.channel.id}`) || false
       let mark = db.get(`mark_${message.channel.id}`)
       let arrows = db.get(`arrows_${message.channel.id}`) || 2
+      if (!db.get(`arrows_${message.channel.id}`)) {
+        db.set(`arrows_${message.channel.id}`, 2)
+      }
       if (mark != null) {
         let guy = message.guild.members.cache.find(m => m.nickname === mark)
         if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You are dead. You can't shoot nucklehead")
