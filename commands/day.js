@@ -2549,7 +2549,10 @@ module.exports = {
                   role == "Illusinist" ||
                   role == "Cannibal" ||
                   role == "targetofhh" ||
-                  role == "Cursed"
+                  role == "Cursed" || 
+                  role == "Doppelganger" ||
+                  role == "Alchemist" ||
+                  role == "Grave Robber"
                 ) {
                   sl.send(
                     `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`
@@ -3360,6 +3363,7 @@ module.exports = {
     }
 
     // kitten conversion
+    setTimeout(async () => {
     for (let a = 0; a < kww.length; a++) {
       let conversion = db.get(`scratch_${kww[a]}`);
       if (conversion != null) {
@@ -3367,6 +3371,7 @@ module.exports = {
           (m) => m.nickname === conversion
         );
         if (guy) {
+          db.set(`kitten_${kww[a]}`, "yes")
           if (guy.roles.cache.has(alive.id)) {
             let kwwrole = db.get(`role_${guy.id}`);
             if (
@@ -3580,7 +3585,7 @@ module.exports = {
         }
       }
     }
-
+  }, 3000)
     // unlocking prisoners from their chat
     let prisoner;
     for (let a = 1; a <= alive.members.size + dead.members.size; a++) {
