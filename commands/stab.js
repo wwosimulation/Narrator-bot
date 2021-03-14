@@ -24,20 +24,22 @@ module.exports = {
       let alive = message.guild.roles.cache.find(r => r.name === 'Alive') 
       let dead = message.guild.roles.cache.find(r => r.name === 'Dead') 
       let allBandits = message.guild.channels.cache.filter(c => c.name.startsWith("bandits")).keyArray("id")
-      for (let i = 0 ; i < allBandits.length ; i++) {
-        let channel = message.guild.channels.cache.get(allBandits[i])
-        let playersInChannel = false
-        let ownself = message.guild.members.cache.find(m => m.id === message.author.id)
-        if (channel.permissionsFor(ownself).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-          for (let j = 1 ; j <= alive.members.size + dead.members.size ; j++) {
-            let player = message.guild.members.cache.find(m => m.nickname === j.toString())
-            if (player.roles.cache.has(alive.id) && player != ownself) {
-              if (channel.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                playersInChannel = true
+      if (message.channel.name == "priv-bandit") {
+        for (let i = 0 ; i < allBandits.length ; i++) {
+          let channel = message.guild.channels.cache.get(allBandits[i])
+          let playersInChannel = false
+          let ownself = message.guild.members.cache.find(m => m.id === message.author.id)
+          if (channel.permissionsFor(ownself).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+            for (let j = 1 ; j <= alive.members.size + dead.members.size ; j++) {
+              let player = message.guild.members.cache.find(m => m.nickname === j.toString())
+              if (player.roles.cache.has(alive.id) && player != ownself) {
+                if (channel.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                  playersInChannel = true
+                }
               }
             }
+            if (playersInChannel == false) return message.channel.send("No, you need to convert someone before you can kill dumb.")
           }
-          if (playersInChannel == false) return message.channel.send("No, you need to convert someone before you can kill dumb.")
         }
       }
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't kill players when dead stupid...")
