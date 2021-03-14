@@ -16,6 +16,7 @@ module.exports = {
             let rol = message.guild.roles.cache.find(r => r.name === "Supervisor")
             if (!guy.roles.cache.has(rol.id)) return message.channel.send(`${guy.user.tag} is not a supervisor!`)
             sup = `The supervisor for this game is: ${guy}`
+            args[0] = ""
         }
         let m = await message.guild.channels.cache.get("606123818305585167").send("<@&606123686633799680> We are now starting game " + args.join(' ') + '. Our host will be <@' + message.author.id +'>! To join the game, react with :fries:. If you do not wish to get future pings about the game, go to <#606123783605977108> and react with :video_game:\n\n' + sup)
         await m.react("🍟")
