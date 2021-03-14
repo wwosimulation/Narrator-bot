@@ -3002,7 +3002,7 @@ module.exports = {
                 let tempchan = message.guild.channels.cache.get(chans[k]);
                 if (
                   tempchan
-                    .permissionsFor(guy)
+                    .permissionsFor(corrupted)
                     .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
                 ) {
                   let shield = db.get(`shield_${tempchan.id}`);
@@ -3629,7 +3629,7 @@ module.exports = {
             player = lololololol;
             if (
               player.roles.cache.has(alive.id) ||
-              (!player.roles.cache.has(alive.id) && cupidKilled == true)
+              (!player.roles.cache.has(alive.id))
             ) {
               let couple = db.get(`couple_${channel.id}`) || [];
               if (couple.length != 0) {
@@ -3701,12 +3701,12 @@ module.exports = {
                 lovers.updateOverwrite(guy1.id, {
                   VIEW_CHANNEL: true,
                   READ_MESSAGE_HISTORY: true,
-                  SEND_MESSAGES: true,
+                  SEND_MESSAGES: false,
                 });
                 lovers.updateOverwrite(guy2.id, {
                   VIEW_CHANNEL: true,
                   READ_MESSAGE_HISTORY: true,
-                  SEND_MESSAGES: true,
+                  SEND_MESSAGES: false,
                 });
                 lovers.send(
                   `You are in love with **${guy1.nickname} ${
