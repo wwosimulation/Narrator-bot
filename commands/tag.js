@@ -5,7 +5,7 @@ module.exports = {
   aliases: ["revenge", "avenge", "target"],
   run: async (message, args, client) => {
     let night = db.get(`nightCount_${message.guild.id}`) || 1
-    let isNight = db.get(`nightCount_${message.guild.id}`) || "yes"
+    let isNight = db.get(`isNight_{message.guild.id}`) || "yes"
     let jtag = await db.fetch(`jwwtag_${message.author.id}`);
     let atag = await db.fetch(`atag_${message.author.id}`) 
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
