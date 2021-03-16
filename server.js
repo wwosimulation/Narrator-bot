@@ -427,14 +427,14 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
                db.set(`trapActive_${chan.id}`, false)
              } else if (role == "Bandit") {
                db.set(`bandit_${chan.id}`, null)
-               let allbandits = newMember.guild.channels.cache.filter(c => c.name === "bandits").keyArray("id")
+               let allbandits = newMember.guild.channels.cache.filter(c => c.name === "bandits")
                allbandits.forEach(e => {
                  if (e.permissionsFor(newMember).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                    db.set(`banditKill_${e.id}`, null)
                  }
                })
              } else if (role == "Accomplice") {
-               let allbandits = newMember.guild.channels.cache.filter(c => c.name === "bandits").keyArray("id")
+               let allbandits = newMember.guild.channels.cache.filter(c => c.name === "bandits")
                allbandits.forEach(e => {
                  if (e.permissionsFor(newMember).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                    db.set(`accomplice_${e.id}`, null)
