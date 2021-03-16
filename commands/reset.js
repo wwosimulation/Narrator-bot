@@ -98,7 +98,7 @@ module.exports = {
       
       for (let i = 0; i < witch.length ; i++) {
         db.set(`potion_${witch[i]}`, null)
-        db.set(`witch_${witch[i]}`, 0)
+        db.delete(`ability_${witch[i]}`)
         db.set(`witchAbil_${witch[i]}`, 0)
       }
       
