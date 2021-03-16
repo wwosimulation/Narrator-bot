@@ -3293,7 +3293,7 @@ module.exports = {
               let tempchan = message.guild.channels.cache.get(chans[k]);
               if (
                 tempchan
-                  .permissionsFor(guy)
+                  .permissionsFor(disguise)
                   .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
               ) {
                 let shield = db.get(`shield_${tempchan.id}`);
