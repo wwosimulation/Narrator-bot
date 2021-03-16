@@ -411,22 +411,24 @@ module.exports = {
     let jailers = message.guild.channels.cache.filter(c => c.name === "priv-jailer").keyArray("id")
     for (let q = 0; q < jailers.length; q++) {
       let jailer = message.guild.channels.cache.get(jailers[q])
-      let toJail = db.get(`jail_${jailer.id}`)
+      let toJail = db.get(`jail_${jailer.id}`) || "None"
+      message.channel.send(toJail)
       let prisoner = message.guild.members.cache.find(m => m.nickname === toJail)
+      if (toJail != "None") {
       if (prisoner && db.get(`role_${prisoner.id}`)) {
         jailedchat.updateOverwrite(prisoner.id, {
           SEND_MESSAGES: true,
           VIEW_CHANNEL: true,
           READ_MESSAGE_HISTORY: false
         })
-        if (toJail != null) {
+        
           if (db.get(`role_${prisoner.id}`).toLowerCase().includes('wolf')) {
             wwChat.updateOverwrite(prisoner.id, {
               VIEW_CHANNEL: false
             })
             wwChat.send("Your werewolf teammate **" + prisoner.nickname + " " + prisoner.user.username + " (" + db.get(`role_${prisoner.id}`) + ")** has been jailed!")
           }
-        }
+        
 
         let rolec = message.guild.channels.cache.filter(c => c.name === `priv-` + db.get(`role_${prisoner.id}`).toLowerCase().replace(" ", "-")).keyArray("id")
 
@@ -443,6 +445,7 @@ module.exports = {
         setTimeout(function () {
           jailedchat.send(`${alive} You have been jailed!`)
         }, 2000)
+      }
       }
     }
 
