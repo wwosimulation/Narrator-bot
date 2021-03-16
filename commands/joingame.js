@@ -48,7 +48,7 @@ module.exports = {
             setTimeout(async function() {
             await guy.roles.add("606140092213624859").catch(e => message.channel.send(`Error: ${e.message}`))
             await guy.setNickname((role.members.size).toString()).catch(e => message.channel.send(`Error: ${e.message}`))
-            await message.guild.channels.cache.get("606132299372822582").send(`${user.tag} joined the game!`)
+            await message.guild.channels.cache.get("606132387587293195").send(`${user.tag} joined the game!`)
             })
             } else if (reaction.emoji.name === "👀") {
               reaction.users.remove(user)
