@@ -142,7 +142,7 @@ module.exports = {
         db.set(`stab_${skiller[i]}`, null)
       }
       
-      for (let i = 0; i < arsonist ; i++) {
+      for (let i = 0; i < arsonist.length ; i++) {
         db.delete(`doused_${arsonist[i]}`)
         db.delete(`toDouse_${arsonist[i]}`)
       }
