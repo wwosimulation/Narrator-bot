@@ -205,7 +205,7 @@ module.exports = {
         db.set(`toy_${nb[i]}`, "no")
       }
       for (let i = 0 ; i < jailer.length ; i++) {
-        db.set(`jail_${jailer[i]}`, null)
+        db.delete(`jail_${jailer[i]}`)
         db.set(`bullet_jail`, 1)
       }
 
