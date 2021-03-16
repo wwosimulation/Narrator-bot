@@ -20,7 +20,7 @@ module.exports = {
         if (
           cha
             .permissionsFor(guy)
-            .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])
+            .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
         ) {
           
           let ro = cha.name.replace("priv-", "");
