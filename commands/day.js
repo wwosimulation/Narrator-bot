@@ -848,7 +848,7 @@ module.exports = {
           for (let j = 0; j < bg.length; j++) {
             let toSend = message.guild.channels.cache.get(bg[j]);
             let lives = db.get(`lives_${bg[j]}`);
-            let guard = db.get(`lives_${bg[j]}`);
+            let guard = db.get(`guard_${bg[j]}`);
 
             if (guard == kills[i]) {
               kills[i] = "0"; // makes the serial killer's attack towards the player none
