@@ -144,7 +144,7 @@ module.exports = {
       
       for (let i = 0; i < arsonist ; i++) {
         db.delete(`doused_${arsonist[i]}`)
-        db.delete(`toDouse__${arsonist[i]}`)
+        db.delete(`toDouse_${arsonist[i]}`)
       }
       
       for (let i = 0 ; i < canni.length ;i++) {
