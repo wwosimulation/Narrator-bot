@@ -6,20 +6,16 @@ module.exports = {
   run: async (message, args, client) => {
     if (message.channel.name == "priv-serial-killer") {
       let alive = message.guild.roles.cache.find(r => r.name === 'Alive') 
-      let guy = message.guild.members.cache.find(m => m.nickname === args[0])
-      let ownself = message.guild.members.cache.find(m => m.nickname === message.member.nickname) 
-      if (!guy || guy == ownself) {
-        return await message.reply('Invalid target!') 
-      } else {
-        if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
-          return await message.reply('You or your target isn\'t alive!')
-        } else {
-          let role = await db.fetch(`${guy.id}`)
-          if (role == "President") return await message.channel.send('yup, killing the president for wins. Player these days just take short cuts.') 
-          db.set(`stab_${message.channel.id}`, args[0])
-          message.react('475775821760692225')
-        } 
-      } 
+      let guy = message.guild.members.cache.find(m => m.nickname === args[0]) || message.guild.members.cache.find(m => m.user.username === args[0]) || message.guild.members.cache.find(m => m.user.tag === args[0]) || message.guild.members.cache.find(m => m.id === args[0])
+      let isNight = db.get(`isNight_${message.guild.id}`)
+      if (!args[0]) return message.channel.send("Yes, stabbing the air. Perfect choice.")
+      if (!guy) return message.reply("Invalid target!")
+      if (guy == message.member) return message.channel.send("The Alias for this is `+suicide`. Thanks")
+      if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Yes stabbing while dead. Nice job")
+      if (isNight != "yes") return message.channel.send("Stabbing in broad daylight always makes sense.")
+      if (!guy.roles.cache.has(alive.id)) return message.channel.send("Congrats! You have invented a whole new level of stupidity by killing a dead player.")
+      db.set(`stab_${message.channel.id}`, guy.nickname)
+      message.react("774088736861978666")
     } else if (message.channel.name == "priv-bandit" || message.channel.name == "priv-accomplice") {
       let alive = message.guild.roles.cache.find(r => r.name === 'Alive') 
       let dead = message.guild.roles.cache.find(r => r.name === 'Dead') 
