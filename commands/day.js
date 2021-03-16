@@ -2342,8 +2342,8 @@ module.exports = {
     // confirming arsonist's douse
     for (let i = 0; i < arso.length; i++) {
       let chan = message.guild.channels.cache.get(arso[i]);
-      let douses = db.get(`toDouse_${arso[i]}`);
-      if (douses) {
+      let douses = db.get(`toDouse_${arso[i]}`) || [] ;
+      if (douses.length > 0) {
         for (let j = 0; j < douses.length; j++) {
           if (douses[j] == null) {
             douses[j] = "0";
