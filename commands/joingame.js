@@ -53,7 +53,7 @@ module.exports = {
             } else if (reaction.emoji.name === "👀") {
               reaction.users.remove(user)
               let guy = message.guild.members.cache.get(user.id)
-              if (guy.roles.has(dead.id)) return message.guild.channels.cache.get("606132299372822582").send(`${user} This action is denied!`)
+              if (guy.roles.cache.has(dead.id)) return message.guild.channels.cache.get("606132299372822582").send(`${user} This action is denied!`)
               let role = message.guild.roles.cache.get("606140764682190849")
               if (!guy.roles.cache.has("691298564508352563")) {
                 guy.setNickname("lazy spectatorz")
@@ -92,7 +92,7 @@ module.exports = {
           if (reaction.emoji.name === "👀") {
             reaction.users.remove(user)
             let guy = message.guild.members.cache.get(user.id)
-            if (guy.roles.has(dead.id)) return message.guild.channels.cache.get("606132299372822582").send(`${user} This action is denied!`)
+            if (guy.roles.cache.has(dead.id)) return message.guild.channels.cache.get("606132299372822582").send(`${user} This action is denied!`)
             let role = message.guild.roles.cache.get("606140764682190849")
             if (!guy.roles.cache.has("691298564508352563")) {
               guy.setNickname("lazy spectatorz")
