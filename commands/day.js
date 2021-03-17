@@ -1906,15 +1906,19 @@ module.exports = {
 
       // tough guy
       if (wwKill != "0") {
+        console.log("Tough test 1")
         let allwolves = [];
         let wolvesID = [];
+        
         for (let x = 1; x <= alive.members.size + dead.members.size; x++) {
-          let tempguy = message.guild.members.cache.find(
-            (m) => m.nickname === x.toString
-          );
+          console.log("Tough test 2")
+          let tempguy = message.guild.members.cache.find((m) => m.nickname === x.toString());
           if (tempguy) {
+            console.log("Tough test 3")
             if (tempguy.roles.cache.has(alive.id)) {
+              console.log("Tough test 4")
               if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) {
+                console.log("Tough test 5")
                 allwolves.push(db.get(`role_${tempguy.id}`));
                 wolvesID.push(tempguy.id);
               }
@@ -1924,25 +1928,31 @@ module.exports = {
 
         allwolves.sort((a, b) => strongww.indexOf(a) - strongww.indexOf(b));
         for (let k = 0; k < wolvesID.length; k++) {
+          console.log("Tough test 6")
           if (db.get(`role_${wolvesID[k]}`) == allwolves[0]) {
+            console.log("Tough test 7")
             let thewolf = message.guild.members.cache.get(wolvesID[k]);
           }
         }
         // if wolves attacked the tough guy
         if (role == "Tough Guy") {
+          console.log("Tough test 8")
           let tgc;
           for (let k = 0; k < tg.length; k++) {
+            console.log("Tough test 9")
             let tempchan = message.guild.channels.cache.get(tg[k]);
             if (
               tempchan
                 .permissionsFor(guy)
                 .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
             ) {
+              console.log("Tough test 10")
               tgc = tempchan;
             }
           }
           for (let k = 0; k < wolvesID.length; k++) {
             if (db.get(`role_${wolvesID[k]}`) == allwolves[0]) {
+              console.log("Tough test 11")
               let thewolf = message.guild.members.cache.get(wolvesID[k]);
               tgc.send(
                 `You have been attacked by **${thewolf.nickname} ${
@@ -1970,6 +1980,7 @@ module.exports = {
                     .permissionsFor(guy)
                     .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
                 ) {
+                  console.log("Tough test 12")
                   a = 99;
                   wwKill = "0";
                   thechan.send(
