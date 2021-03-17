@@ -46,8 +46,7 @@ module.exports = {
             if (guy.roles.cache.has("606139219395608603")) guy.roles.remove("606139219395608603") //mininarr
             let role = message.guild.roles.cache.get("606140092213624859") 
             setTimeout(async function() {
-            await guy.roles.add("606140092213624859").catch(e => message.channel.send(`Error: ${e.message}`))
-            await guy.setNickname((role.members.size).toString()).catch(e => message.channel.send(`Error: ${e.message}`))
+            await guy.roles.add("606140092213624859").then(g => g.setNickname((role.members.size).toString()).catch(e => message.channel.send(`Error: ${e.message}`))).catch(e => message.channel.send(`Error: ${e.message}`))
             await message.guild.channels.cache.get("606132387587293195").send(`${user.tag} joined the game!`)
             })
             } else if (reaction.emoji.name === "👀") {
