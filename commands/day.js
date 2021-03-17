@@ -1977,7 +1977,7 @@ module.exports = {
                 let thechan = message.guild.channels.cache.get(gr[a]);
                 if (
                   thechan
-                    .permissionsFor(guy)
+                    .permissionsFor(thewolf)
                     .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
                 ) {
                   console.log("Tough test 12")
