@@ -626,7 +626,7 @@ module.exports = {
     }
     }, 60000)
     }, 3000)
-    
+    dayChat.send(`${alive} Night ${db.get(`nightCount_${message.guild.id}`) + 1} has started!`)
     db.set(`isDay_${message.guild.id}`, "no");
     db.set(`isNight_${message.guild.id}`, "yes");
     db.add(`nightCount_${message.guild.id}`, 1);
