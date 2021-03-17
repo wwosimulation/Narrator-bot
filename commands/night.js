@@ -412,7 +412,6 @@ module.exports = {
     for (let q = 0; q < jailers.length; q++) {
       let jailer = message.guild.channels.cache.get(jailers[q])
       let toJail = db.get(`jail_${jailer.id}`) || "None"
-      message.channel.send(toJail)
       let prisoner = message.guild.members.cache.find(m => m.nickname === toJail)
       if (toJail != "None") {
       if (prisoner && db.get(`role_${prisoner.id}`)) {
