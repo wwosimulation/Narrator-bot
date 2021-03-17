@@ -2575,6 +2575,7 @@ module.exports = {
                     `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`
                   );
                   sl.send(`${alive}`);
+                  sect = "0"
                 } else {
                   let thechan = message.guild.channels.cache
                     .filter(
@@ -2598,6 +2599,7 @@ module.exports = {
                       soloKillers.includes(role) ||
                       role == "Sorcerer" ||
                       role == "Zombie" ||
+                      role == "Doppelganger" ||
                       role == "Accomplice" ||
                       message.guild.channels.cache
                         .get("682617467767357453")
