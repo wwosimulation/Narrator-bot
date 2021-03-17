@@ -1973,7 +1973,7 @@ module.exports = {
                       .replace(" ", "-")}`
                 )
                 .keyArray("id");
-              for (let a = 0; a < k.length; a++) {
+              for (let a = 0; a < gr.length; a++) {
                 let thechan = message.guild.channels.cache.get(gr[a]);
                 if (
                   thechan
