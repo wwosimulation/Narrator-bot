@@ -1986,7 +1986,7 @@ module.exports = {
                   thechan.send(
                     `_ _\n**${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`
                   );
-                  thechan.send(`${alive.id}`);
+                  thechan.send(`${alive}`);
                   wwChat.send(
                     `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
                   );
