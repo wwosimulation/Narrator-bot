@@ -18,7 +18,7 @@ module.exports = {
             sup = `The supervisor for this game is: ${guy}`
             args[0] = ""
         }
-        let m = await message.guild.channels.cache.get("606123818305585167").send("<@&606123686633799680> We are now starting game " + args.join(' ') + '. Our host will be <@' + message.author.id +'>! To join the game, react with :fries:. If you do not wish to get future pings about the game, go to <#606123783605977108> and react with :video_game:\n\n' + sup)
+        let m = await message.guild.channels.cache.get("606123818305585167").send(`<@&606123686633799680> We are now starting game ${args.join(' ')}. Our host will be <@${message.author.id}>! To join the game, react with :fries:. If you do not wish to get future pings about the game, go to <#606123783605977108> and react with 🎮${sup ? `\n\n${sup}` : ""}`)
         await m.react("🍟")
         db.set(`game`, m.id)
         const filter = (reaction, user) => reaction.emoji.name === '🍟'
@@ -34,7 +34,7 @@ module.exports = {
             let guy = message.guild.members.cache.find(m => m.id === user.id)
             guy.roles.add("606123676668133428").catch(e => message.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
             reaction.users.remove(user).catch(e => message.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
-            
+            message.guild.channels.cache.find(x => x.name == "joined").send(`${guy.user.tag} joins match ${args.join(" ")}\nUser ID: ${guy.id}`)
             }
         });
 
