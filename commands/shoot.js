@@ -56,11 +56,13 @@ module.exports = {
       let dayChat = message.guild.channels.cache.find(
         c => c.name === "day-chat"
       );
+      let isDay = db.get(`isDay_${message.guild.id}`)
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You aren't alive")
       let jailed = db.get(`jail_${message.channel.id}`)
       let guy = message.guild.members.cache.find(m =>m.nickname === jailed)
       if (!guy.roles.cache.has(alive.id)) return message.channel.send("This player is already dead -_-")
       let bullet = db.get(`bullet_jail`) || 1
+      if (isDay != "yes") return message.channel.send("Nice, killing in the day when no one is jailed.")
       if (bullet == 0) return message.channel.send("You already used your bullet")
       db.set(`bullet_jail`, 0)
       dayChat.send("The Jailer executed their prisoner last night! **" + guy.nickname + " " + guy.user.username + " (" + db.get(`role_${guy.id}`) + ")** is dead!")
