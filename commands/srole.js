@@ -353,6 +353,58 @@ module.exports = {
             READ_MESSAGE_HISTORY: true
           })
         }
+        
+        if (roles[i] == "Bandit") {
+          let bandits = message.guild.channels.cache.filter(c => c.name.startsWith("bandits"))
+          let qah = 1
+          bandits.forEach(async e => {
+            let occupied = false
+            for (let jj = 1 ; jj < 17 ; jj++) {
+              let gyu = message.guild.members.cache.find(m => m.nickname === jj.toString())
+              if (gyu) {
+                if (e.permissionsFor(gyu).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                  occupied = true
+                }
+              }
+            }
+            if (occupied != true) {
+              e.updateOverwrite(guy.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true
+              })
+            }
+            if (occupied == true) {
+              if (qah == bandits.keyArray("id").length) {
+                let t = await message.guild.channels.create("bandits", {
+                  parent: "606250714355728395",
+                  permissionOverwrites: [
+                    {
+                      id: guy.id,
+                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]
+                    }, 
+                    {
+                      id: message.guild.id,
+                      deny: ["VIEW_CHANNEL"]
+                    },
+                    {
+                      id: narrator.id,
+                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"]
+                    },
+                    {
+                      id: mininarr.id,
+                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"]
+                    }
+                  ]
+                })
+                let a = await t.send(`${alive}`)
+                setTimeout(() => {
+                  a.delete()
+                }, 3000)
+              }
+            }
+          })
+        }
         db.set(`atag_${guy.id}`, null)
         db.set(`jwwtag_${guy.id}`, null)
         db.set(`mouth_${guy.id}`, null)
