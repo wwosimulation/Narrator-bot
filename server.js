@@ -13,7 +13,7 @@ const prefix = process.env.PREFIX
 const token = process.env.TOKEN
 
 //ShadowAdmin
-const shadowadmin = require("shadowadmin")
+//const shadowadmin = require("shadowadmin")
 
 //Cooldown
 const cooldowns = new Discord.Collection();
@@ -34,7 +34,7 @@ client.on("ready", async () => {
   console.log("Connected!");
 
   //ShadowAdmin initialize
-  shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
+  //shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
 
   const { Slash } = require("discord-slash-commands")
   const slash = new Slash(client)
