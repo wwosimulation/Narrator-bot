@@ -3202,7 +3202,7 @@ module.exports = {
                 
                 // forger
                 if (blackpotion != "0") {
-                  let rpiu = message.guild.channels.cache.filter(c => c.name === `priv-${alrole.toLowercase().replace(" ", "-")}`)
+                  let rpiu = message.guild.channels.cache.filter(c => c.name === `priv-${alrole.toLowerCase().replace(" ", "-")}`)
                   rpiu.forEach(bchan => {
                     if (bchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                       if (db.get(`shield_${bchan.id}`) == true) {
