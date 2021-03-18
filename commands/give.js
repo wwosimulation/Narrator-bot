@@ -86,10 +86,10 @@ module.exports = {
             args[0] = args[0].replace("FF0000", "red")
             if (args[0].toLowerCase() == "red") {
                 db.set(`redpotion_${message.channel.id}`, guy.nickname)
-                message.react("")
+                message.react("821915429454741555")
             } else if (args[0].toLowerCase() == "black") {
                 db.set(`blackpotion_${message.channel.id}`, guy.nickname)
-                message.react("")
+                message.react("821915369202647050")
             }
         }
     }
