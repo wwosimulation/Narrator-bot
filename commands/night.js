@@ -221,11 +221,14 @@ module.exports = {
     let healer2 = message.guild.channels.cache
       .filter(c => c.name === "priv-doctor")
       .keyArray("id"); // bodyguard
+    let alchemist = message.guild.channels.cache.filter(c => c.name === "priv-alchemist").keyArray("id")
     let serialkiller = message.guild.channels.cache.filter(c => c.name === "priv-serial-killer").keyArray("id")
     let nb = message.guild.channels.cache.filter(c => c.name === "priv-naughty-boy").keyArray("id")
     let gg = message.guild.channels.cache
       .filter(c => c.name === "priv-grumpy-grandma")
       .keyArray("id");
+      
+      
     for (let i = 0; i < as.length; i++) {
       db.set(`auraCheck_${as[i]}`, "no");
     }
@@ -560,6 +563,32 @@ module.exports = {
       }
     }
 
+    alchemist.forEach(id => {
+      let chan = message.guild.channels.cache.get(id)
+      for (let i = 1 ; i < 17; i++) {
+        let owner = message.guild.members.cache.find(c => c.nickname === i.toString())
+        if (owner) {
+          if (owner.roles.cache.has(alive.id)) {
+            if (chan.permissionsFor(owner).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+              let blackpotion = db.get(`blackpotion_${chan.id}`)
+              if (blackpotion) {
+                let guy = message.guild.members.cache.find(m => m.nickname === blackpotion)
+                if (guy) {
+                  if (guy.roles.cache.has(alive.id)) {
+                    dayChat.send(`<:blackp:821920932989239296> The Alchemist killed **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)}**!`)
+                    guy.roles.add(dead.id)
+                    guy.roles.remove(alive.id)
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      db.delete(`blackpotion_${chan.id}`)
+      db.delete(`redpotion_${chan.id}`)
+    })
+      
     // zombies chat
     let zombies = message.guild.channels.cache.find(c => c.name === "zombies")
 
