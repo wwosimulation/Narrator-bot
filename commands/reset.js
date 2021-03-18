@@ -264,7 +264,6 @@ module.exports = {
         }
       }
 
-      let m = client.channels.cache.get("606123818305585167").messages.fetch(db.get("game"))
 
       message.channel
         .send(

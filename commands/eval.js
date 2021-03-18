@@ -22,12 +22,10 @@ module.exports = {
 
     if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
 
-    /* message.channel.send(new Discord.RichEmbed()
-                         .setColor("#566848")
+    message.channel.send(new Discord.MessageEmbed()
+                         .setColor("#29780D")
                          .addField("Code", `\`\`\`${code}\`\`\``)
-                         .addField("Result", `\`\`\`${clean(evaled)}\`\`\``), {
-      code: "xl"
-    });*/
+                         .addField("Result", `\`\`\`${clean(evaled).length < 1000 ? clean(evaled) : "Result too long to display"}\`\`\``));
     message.delete();
   }
 };
