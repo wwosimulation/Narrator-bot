@@ -107,10 +107,20 @@ module.exports = {
       args[0] = allvotes[votenumber.indexOf(highestvote)]
     }
     */
+    
+     if (message.author.id == "620964363729371137" || message.author.id == "439223656200273932") {
+      let chances = [1, 1, 1, 1, 1, 1, 1, 1, 1, 10]
+      let random = chances[Math.floor(Math.random () * chances.length)]
+      if (random == 1) {
+        message.channel.send("SiNcE yOu aRe a MiNi NaRrAtOr aNd YoU tHiNk YoU aRe bEtTeR tHaN aShiSh, tRy fIguRiNg wHaT iS wRoNg WiTh mE")
+        return ;
+      }
+    }
     dayChat.updateOverwrite(alive.id, {
       SEND_MESSAGES: false
     })
 
+    if (!args[0]) return message.channel.send("This won't work. Add a number....")
     if (args[0] == "0") {
       dayChat.send(
         "<:votingme:744572471079993445> The Villagers couldn't decide on who to lynch!"
