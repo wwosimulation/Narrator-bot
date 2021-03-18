@@ -84,7 +84,7 @@ module.exports = {
         if (arrows < 1) return message.channel.send("You don't have any arrows left to shoot players!")
         let role = db.get(`role_${guy.id}`)
         db.subtract(`arrows_${message.channel.id}`, 1)
-        if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Bandit" || role == "Illusionist" || role == "Corruptor" || role == "Accomplice" || role == "Sorcerer" || role == "Zombie" || role == "Sect Leader") {
+        if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Bandit" || role == "Illusionist" || role == "Corruptor" || role == "Accomplice" || role == "Sorcerer" || role == "Zombie" || role == "Sect Leader" || role == "Cannibal" || role == "Alchemist") {
           guy.roles.add(dead.id)
           guy.roles.remove(alive.id)
           day.send(`<:arrow:744571940374708234> The Marksman shot **${guy.nickname} ${guy.user.username} (${role})**!`)
