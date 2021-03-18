@@ -10,6 +10,14 @@ module.exports = {
       return;
     } else {
       if (message.guild.id != "472261911526768642") return; 
+      if (message.author.id == "620964363729371137" || message.author.id == "439223656200273932") {
+        let chances = [1, 1, 1, 1, 1, 1, 1, 1, 1, 10]
+        let random = chances[Math.floor(Math.random () * chances.length)]
+        if (random == 1) {
+          message.channel.send("SiNcE yOu aRe a MiNi NaRrAtOr aNd YoU tHiNk YoU aRe bEtTeR tHaN aShiSh, tRy fIguRiNg wHaT iS wRoNg WiTh mE")
+          return ;
+        }
+      }
       let wwsVote = await db.fetch(`wwsVote_${message.guild.id}`);
       let commandEnabled = await db.fetch(`commandEnabled_${message.guild.id}`);
       let voteChat = message.guild.channels.cache.find(c => c.name === "vote-chat");
