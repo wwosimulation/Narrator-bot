@@ -28,14 +28,14 @@ module.exports = {
           if (channel.permissionsFor(ownself).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
             for (let j = 1 ; j <= alive.members.size + dead.members.size ; j++) {
               let player = message.guild.members.cache.find(m => m.nickname === j.toString())
-              if (player.roles.cache.has(alive.id) && player != ownself) {
+              if (player && player.roles.cache.has(alive.id) && player != ownself) {
                 if (channel.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                   playersInChannel = true
                 }
               }
             }
-            if (playersInChannel == false) return message.channel.send("No, you need to convert someone before you can kill dumb.")
-          }
+          } 
+          if (playersInChannel == false) return message.channel.send("No, you need to convert someone before you can kill dumb.")
         }
       }
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't kill players when dead stupid...")
@@ -54,19 +54,19 @@ module.exports = {
           if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
             return message.channel.send("There seems to be a bug... Try doing `+suicide` instead...")
           }
-        }
-        i = 99
-        let emoji
-        if (message.channel.name == 'priv-bandit') {
-          emoji = '<:votebandit:744575294051975301>'
-          db.set(`banditkill_${chan.id}`, guy.nickname)
-        }
-        if (message.channel.name == "priv-accomplice") {
-          emoji = '<:thieve:745632726639706202>'
-          db.set(`accomplice_${chan.id}`, guy.nickname)
-        }
-        chan.send(`${emoji} ${message.member.nickname} voted **${guy.nickname} ${guy.user.username}**`)
         
+          i = 99
+          let emoji
+          if (message.channel.name == 'priv-bandit') {
+            emoji = '<:votebandit:744575294051975301>'
+            db.set(`banditkill_${chan.id}`, guy.nickname)
+          }
+          if (message.channel.name == "priv-accomplice") {
+            emoji = '<:thieve:745632726639706202>'
+            db.set(`accomplice_${chan.id}`, guy.nickname)
+          }
+          chan.send(`${emoji} ${message.member.nickname} voted **${guy.nickname} ${guy.user.username}**`)
+        }
       }
     }
   }
