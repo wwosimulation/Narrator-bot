@@ -3152,7 +3152,7 @@ module.exports = {
             let alrole = db.get(`role_${guy.id}`)
             let allch = message.guild.channels.cache.filter(c => c.name === `priv-${alrole.toLowerCase().replace(" ", "-")}`)
             allch.forEach(lol => {
-              if (allch.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+              if (lol.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
                 
                 // beast hunter
                 for (let b = 0 ; b < bh.length ; b++) {
