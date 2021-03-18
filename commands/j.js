@@ -19,7 +19,7 @@ module.exports = {
         for (let k = 1 ; k < 17 ; k++) {
           let guy = message.guild.members.cache.find(m => m.nickname === k.toString())
           if (guy) {
-            if (j.permissionsFor(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+            if (j.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
               j.send("**" + message.member.nickname + " " + message.author.username + "**: " + args.join(' '))
             }
           }
