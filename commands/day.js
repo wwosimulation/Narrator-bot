@@ -133,14 +133,6 @@ module.exports = {
     let thekiller = [];
     let hhtarget = [];
     
-    if (message.author.id == "620964363729371137" || message.author.id == "439223656200273932") {
-      let chances = [1, 1, 1, 1, 1, 1, 1, 1, 1, 10]
-      let random = chances[Math.floor(Math.random () * chances.length)]
-      if (random == 1) {
-        message.channel.send("SiNcE yOu aRe a MiNi NaRrAtOr aNd YoU tHiNk YoU aRe bEtTeR tHaN aShiSh, tRy fIguRiNg wHaT iS wRoNg WiTh mE")
-        return ;
-      }
-    }
     
     // setting the hh target
     for (let x = 0; x < hh.length; x++) {
