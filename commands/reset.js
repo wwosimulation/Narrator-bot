@@ -59,7 +59,8 @@ module.exports = {
         VIEW_CHANNEL: true
       })
 
-      //await client.channels.cache.find(c => c.name === "game-warning").messages.cache.get(db.get(`game`)).delete().catch(e => message.channel.send(`Error: ${e.message}`))
+      let m = await client.channels.cache.find(c => c.name === "game-warning").messages.fetch(db.get(`game`))
+      await m.reactions.removeAll().catch(()=>{})
       
       let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members
       
@@ -262,6 +263,8 @@ module.exports = {
           db.delete(`bitten_${allChannels[i]}`)
         }
       }
+
+      let m = client.channels.cache.get("606123818305585167").messages.fetch(db.get("game"))
 
       message.channel
         .send(
