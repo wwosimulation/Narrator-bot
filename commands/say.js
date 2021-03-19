@@ -1,7 +1,7 @@
 module.exports = {
     name: "say",
     run: async (message, args, client) => {
-        if (message.author.id == "552814709963751425") {
+        if (["552814709963751425", "632294140511518751"].includes(message.author.id)) {
             message.delete()
             let content = ""
             let channel = message.mentions.channels.first() || message.channel
