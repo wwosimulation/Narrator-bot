@@ -18,7 +18,7 @@ module.exports = (client) => {
                 data: {
                     type: 4,
                     data: {
-                        content: `Pong! ${client.ws.ping}`
+                        content: `Pong! ${client.ws.ping} ms`
                     }
                 }
             })
