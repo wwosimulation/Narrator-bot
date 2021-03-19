@@ -15,6 +15,9 @@ const token = process.env.TOKEN
 //ShadowAdmin
 //const shadowadmin = require("shadowadmin")
 
+//config file
+const config = require("./config.js")
+
 //Cooldown
 const cooldowns = new Discord.Collection();
 
@@ -30,6 +33,7 @@ for (const file of commandFiles) {
 
 //Bot on startup
 client.on("ready", async () => {
+  client.config = config
   client.user.setActivity("Werewolf Online!");
   console.log("Connected!");
 
