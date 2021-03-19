@@ -31,7 +31,7 @@ module.exports = {
       .setDescription(`${guy} claimed ${args.join(" ")}!`)
     )
     
-    client.commands.get("updatexp").run(guy.id)
+    client.commands.get("updatexp").run(guy.id, client)
     
   }
 }
