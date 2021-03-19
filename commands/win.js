@@ -171,7 +171,7 @@ module.exports = {
         for (let o = 1 ; o <= 16; o++) {
             let guy = message.guild.members.cache.find(m => m.nickname === o.toString())
             if (guy) {
-                client.commands.get("updatexp").run(guy.id)                
+                client.commands.get("updatexp").run(guy.id, client)                
             }
         }
     }
