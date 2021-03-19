@@ -9,7 +9,7 @@ module.exports = {
         if (args[0].toLowerCase() == "lootbox") {
             let items = ["roses", "coins"]
             let roses = [1, 1, 2, 2, 2, 2, 2, 2, 5, 5]
-            let coins = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 15, 15, 15, 30, 30, 50]
+            let coins = [5, 5, 5, 5, 10, 10, 10, 10, 10, 15, 15, 15, 15, 15, 15, 30, 30, 30, 30, 30, 50, 50, 50, 50, 100, 100, 200, 250]
 
             let quantity = db.get(`lootbox_${message.author.id}`) || 0
             if (quantity == 0) return message.channel.send("You don't have this item dumb.")
