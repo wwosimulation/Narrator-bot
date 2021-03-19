@@ -168,17 +168,10 @@ module.exports = {
         }
 
         // in case if anyone levels up
-        for (let o = 1 ; o <= dead.members.size ; o++) {
+        for (let o = 1 ; o <= 16; o++) {
             let guy = message.guild.members.cache.find(m => m.nickname === o.toString())
             if (guy) {
-                let xp = db.get(`xp_${guy.id}`)
-                let xpreq = db.get(`xpreq_${guy.id}`)
-                if (xp > xpreq) {
-                    db.add(`lootbox_${guy.id}`, 1)
-                    db.add(`xpreq_${guy.id}`, xpreq * 3 + (xpreq / 2))
-                    db.add(`level_${guy.id}`, 1)
-                    guy.send(`Congrats! You have reached level ${db.get(`level_${guy.id}`)}!\n\nYou have recieved a lootbox. To open it, do \`+use lootbox\`.`)
-                }
+                client.commands.get("updatexp").run(guy.id, client)                
             }
         }
     }

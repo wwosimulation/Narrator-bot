@@ -276,6 +276,29 @@ module.exports = {
       if (args.length - 1 != alive.members.size) {
         return message.channel.send("The number of roles do not match the number of players!")
       }
+      
+      // checking if any player has a channel
+      let exists = false
+      let allchan =  message.guild.channels.cache.filter(c => c.name.startsWith("priv"));
+      for (let a = 0 ; a < allchan.keyArray("id").length ; a++) {
+        let chan = message.guild.channels.cache.get(allchan.keyArray("id")[a])
+        if (chan) {
+          for (let b = 1 ; b <= alive.members.size ; b++) {
+            let tt = message.guild.members.cache.find(m => m.nickname === b.toString())
+            if (tt) {
+              if (chan.permissionsFor(tt).has(["VIEW_CHANNEL"])) {
+                 exists = true
+              }
+            }
+          }
+        }
+      }
+      if (exists == true) {
+        message.channel.send("A player has a channel occupied already! Use `+nmanual [player number] [role]` to remove them from their channel!")
+        client.commands.get("playerinfo").run(message, args, client)
+        return ;
+      }
+      
       let roles = []
       for (let i = 1 ; i < args.length ; i++) {
         roles.push(args[i])
@@ -354,6 +377,13 @@ module.exports = {
           })
         }
         
+        if (roles[i] == "President") {
+          setTimeout(() => {
+            dayChat.send(`<:president:583672720932208671> Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
+            dayChat.send(`${alive}`)
+          }, 15000)
+        }
+        
         if (roles[i] == "Bandit") {
           let bandits = message.guild.channels.cache.filter(c => c.name.startsWith("bandits"))
           let qah = 1
@@ -366,7 +396,7 @@ module.exports = {
                   occupied = true
                 }
               }
-            }
+            } 
             if (occupied != true) {
               e.updateOverwrite(guy.id, {
                 SEND_MESSAGES: true,
@@ -439,6 +469,8 @@ module.exports = {
         }
       }*/
       message.channel.send(embed)
+      message.channel.send("I have executed the startgame command myself! You do not need to do it!")
+      client.commands.get("startgame").run(message, args, client)
     }
     await client.channels.cache.find(c => c.name === "game-warning").send("Game is starting. You can no longer join. Feel free to spectate!")
     db.set("started", "yes")
