@@ -58,9 +58,6 @@ module.exports = {
         READ_MESSAGE_HISTORY: true,
         VIEW_CHANNEL: true
       })
-
-      let m = await client.channels.cache.find(c => c.name === "game-warning").messages.fetch(db.get(`game`))
-      await m.reactions.removeAll().catch(()=>{})
       
       let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members
       
