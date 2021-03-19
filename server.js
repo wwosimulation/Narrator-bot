@@ -33,7 +33,7 @@ for (const file of commandFiles) {
 
 //Bot on startup
 client.on("ready", async () => {
-  client.config = config
+  client.config = {}
   client.user.setActivity("Werewolf Online!");
   console.log("Connected!");
 
