@@ -25,7 +25,7 @@ module.exports = {
       if (sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
         if (db.get(`role_${guy.id}`) == "Sect Leader") return message.channel.send("Yes, trying to kill your leader. Dumb, if it wasn't for me, you would be reported for gamethrowing.")
       }
-      message.guild.channels.cache.find(c => c.name === "day-chat").send(`<:poison:744536282889322496> The Witch poisoned **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})`)
+      message.guild.channels.cache.find(c => c.name === "day-chat").send(`<:poison:744536282889322496> The Witch poisoned **${guy.nickname} ${guy.user.username}** (${db.get(`role_${guy.id}`)})`)
       guy.roles.add(dead.id)
       guy.roles.remove(alive.id)
       db.set(`ability_${message.channel.id}`, 1)
