@@ -35,6 +35,7 @@ module.exports = {
             guy.roles.add("606123676668133428").catch(e => message.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
             reaction.users.remove(user).catch(e => message.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
             message.guild.channels.cache.find(x => x.name == "joined").send(`${guy.user.tag} joins match ${args.join(" ")}\nUser ID: ${guy.id}`)
+            message.guild.channels.cache.find(x => x.name == "joined-link").send(`<@${guy.id}>`).then(m => m.delete(5000))
             }
         });
 
