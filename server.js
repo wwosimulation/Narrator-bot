@@ -12,6 +12,9 @@ const client = new Discord.Client();
 const prefix = process.env.PREFIX
 const token = process.env.TOKEN
 
+// Slash commands
+require("./slash.js")(client)
+
 //ShadowAdmin
 //const shadowadmin = require("shadowadmin")
 
@@ -35,27 +38,6 @@ client.on("ready", async () => {
 
   //ShadowAdmin initialize
   //shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
-
-  const { Slash } = require("discord-slash-commands")
-  const slash = new Slash(client)
-  slash.command({
-    guildOnly: false,
-    data: {
-      name: "3061LRTAGSPKJMORMRT",
-      description: "Gets free coins!",
-      type: 4,
-      content: `Benda noob.`
-    }
-  })
-    slash.command({
-      guildOnly: false,
-      data: {
-        name: "ping",
-        description: "3061LRTAGSPKJMORMRT RULES! ASHISH IS DA BEST! This is a ping command!",
-        type: 4,
-        content: `Ping! ${client.ws.ping} ms.`
-      }
-    })
     
 });
 
