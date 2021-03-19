@@ -168,7 +168,7 @@ module.exports = {
         }
 
         // in case if anyone levels up
-        for (let o = 1 ; o <= dead.members.size ; o++) {
+        for (let o = 1 ; o <= 16; o++) {
             let guy = message.guild.members.cache.find(m => m.nickname === o.toString())
             if (guy) {
                 let xp = db.get(`xp_${guy.id}`)
