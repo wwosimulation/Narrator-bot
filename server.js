@@ -18,9 +18,6 @@ require("./slash.js")(client)
 //ShadowAdmin
 //const shadowadmin = require("shadowadmin")
 
-//config file
-const config = require("./config.js")
-
 //Cooldown
 const cooldowns = new Discord.Collection();
 
