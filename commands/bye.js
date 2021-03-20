@@ -17,17 +17,19 @@ module.exports = {
                 spec.members.forEach(e => {e.kick(); console.log(`Kicked ${e.user.tag}`)})
             }, 5000)
             message.channel.send('Players have been kicked, I am now clearing channels. (This may take a while)') 
-            let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat", "game-lobby", "player-commands"]
-            let ingame = message.guild.channels.cache.filter(c => (c.parentID === "606132962752331839" || c.parentID === "606132194175615007") && chans.includes(c.name))
+            let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat"]
+            let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c.name))
             ingame.forEach(async e => {
                 let ashish = await e.messages.fetch()
                 let filt = ashish.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
-                while (filt.size > 1) {
-                    setTimeout(async () => {
-                        e.bulkDelete(filt)
-                        console.log(`Cleared #${e.name}`)
-                        filt = ashish.filter(c => !c.pinned && Date.now() - c.createdTimestamp < (60*60*24*14))
-                    }, 3000)
+                if (filt.size < 100) {
+                    e.bulkDelete(filt)
+                    console.log(`Cleared #${e.name}`)
+                } else {
+                    filt = filt.filter(m => m.size < 101  && (Date.now() - m.createdTimestamp < (60*60*24*14)))
+                    e.bulkDelete(filt)
+                    console.log(`Cleared #${e.name}`)
+                    e.send(`<@${message.author.id}> I could not clear all the messages in this channel! Use \`-c\` here please.`)
                 }
             })
             let tempchannels = message.guild.channels.cache.filter(c => c.parentID === "748959630520090626")
