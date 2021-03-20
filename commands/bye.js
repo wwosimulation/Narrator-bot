@@ -18,7 +18,7 @@ module.exports = {
             }, 5000)
             message.channel.send('Players have been kicked, I am now clearing channels. (This may take a while)') 
             let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat"]
-            let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c))
+            let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c.name))
             ingame.forEach(async e => {
                 let ashish = await e.messages.fetch()
                 let filt = ashish.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
