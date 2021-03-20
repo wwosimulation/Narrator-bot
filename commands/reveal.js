@@ -29,14 +29,14 @@ module.exports = {
     ) {
       let ability = await db.fetch(`paci_${message.channel.id}`);
       let isday = await db.fetch(`isDay_${message.guild.id}`);
-      let day = await db.fetch(`day_${message.guild.id}`);
+      let day = await db.fetch(`dayCount_${message.guild.id}`);
       if (ability == "yes")
         return await message.reply("You already used up all your abilities!");
       let cmd = await db.fetch(`commandEnabled_${message.guild.id}`);
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       let role = await db.fetch(`role_${guy.id}`);
       let nrole = role.toLowerCase();
-      let revealed = await db.fetch(`revealed_${guy.id}`);
+      let revealed = message.guild.roles.cache.find(r => r.name === "Revealed")
       let sected = await db.fetch(`sected_${message.author.id}`);
       let dchat = message.guild.channels.cache.find(c => c.name === "day-chat");
       if (!message.member.roles.cache.has(aliveRole.id) || !guy.roles.cache.has(aliveRole.id)) return message.channel.send("Revealing when dead or revealing a dead player is just not possible.")
@@ -56,7 +56,7 @@ module.exports = {
           return await message.reply(
             "You can only use this ability when voting starts on day 1!"
           );
-        if (!guy || guy == message.member.nickname)
+        if (!guy || guy == message.member)
           return await message.reply("Invalid Target");
         if (role == "President")
           return await message.reply("You can't reveal the President!");
@@ -65,7 +65,7 @@ module.exports = {
           nrole.includes("wolf")
         )
           return await message.reply("You can't reveal your own teammate!");
-        if (revealed == "yes")
+        if (guy.roles.cache.has(revealed.id))
           return await message.reply("You can't reveal a revealed player!");
         if (sected == "yes" && role == "Sect Leader")
           return await message.reply(
