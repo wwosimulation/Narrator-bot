@@ -10,21 +10,13 @@ module.exports = {
                     let guy = message.guild.members.cache.find(m => m.nickname === i.toString())
                     if (guy) {
                         guy.kick()
+                        console.log(`Kicked ${i}`)
                     }
                 }
                 let spec = message.guild.roles.cache.find(r => r.name === "Spectator")
-                spec.members.forEach(e => {e.kick()})
+                spec.members.forEach(e => {e.kick(); console.log(`Kicked ${e.user.tag}`)})
             }, 5000)
             message.channel.send('Players have been kicked, I am now clearing channels. (This may take a while)') 
-            let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv") && c.parentID != "748959630520090626")
-            channels.forEach(async e => {
-                let msgs = await e.messages.fetch()
-                let total = await msgs.filter(m => !m.pinned && (Date.now() - m.createdTimestamp < (60*60*24*14)))
-                
-                if (total.size > 0) {
-                    e.bulkDelete(total)
-                }
-            })
             let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat"]
             let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c))
             ingame.forEach(async e => {
@@ -32,9 +24,11 @@ module.exports = {
                 let filt = ashish.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
                 if (filt.size < 100) {
                     e.bulkDelete(filt)
+                    console.log(`Cleared #${e.name}`)
                 } else {
                     filt = filt.filter(m => m.size < 101  && (Date.now() - m.createdTimestamp < (60*60*24*14)))
                     e.bulkDelete(filt)
+                    console.log(`Cleared #${e.name}`)
                 }
             })
             let tempchannels = message.guild.channels.cache.filter(c => c.parentID === "748959630520090626")
@@ -48,6 +42,17 @@ module.exports = {
                 let hmm = oki.filter(m => !m.pinned && (Date.now() - m.createdTimestamp < (60*60*24*14)))
                 if (hmm.size > 0) {
                     e.bulkDelete(hmm)
+                    console.log(`Cleared #${e.name}`)
+                }
+            })
+            let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv") && c.parentID != "748959630520090626")
+            channels.forEach(async e => {
+                let msgs = await e.messages.fetch()
+                let total = await msgs.filter(m => !m.pinned && (Date.now() - m.createdTimestamp < (60*60*24*14)))
+                
+                if (total.size > 0) {
+                    e.bulkDelete(total)
+                    console.log(`Cleared #${e.name}`)
                 }
             })
             message.channel.send("All channels have been queued to be cleared")
