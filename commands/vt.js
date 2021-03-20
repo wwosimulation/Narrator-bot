@@ -21,7 +21,7 @@ module.exports = {
       db.set(`skippedpl`, 0)
       let votes = Math.floor(parseInt(aliveRole.members.size) / 2);
       voteChat.send(`<@&${aliveRole.id}>`);
-      dayChat.send(`Get ready to vote! (${votes} votes required)`);
+      dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`);
       db.set(`commandEnabled_${message.guild.id}`, `yes`);
       setTimeout(() => {
         if (db.get(`isNight_${message.guild.id}`) != "yes" && args[0] != "nm") {
