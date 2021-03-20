@@ -473,8 +473,6 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
            }
          }
        }
-       
-      }
   }
 })
 //When receiving a message
