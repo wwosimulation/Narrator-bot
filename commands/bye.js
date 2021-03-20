@@ -5,7 +5,6 @@ module.exports = {
         let role = message.guild.roles.cache.find(r => r.name === "Narrator")
         let role2 = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")
         if (message.member.roles.cache.has(role.id) || message.member.roles.cache.has(role2.id)) {
-            message.channel.send('bye bye') 
             setTimeout(function () {
                 for (let i = 1 ; i < 16 ; i++) {
                     let guy = message.guild.members.cache.find(m => m.nickname === i.toString())
@@ -16,6 +15,7 @@ module.exports = {
                 let spec = message.guild.roles.cache.find(r => r.name === "Spectator")
                 spec.members.forEach(e => {e.kick()})
             }, 5000)
+            message.channel.send('Players have been kicked, I am now clearing channels. (This may take a while)') 
             let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv") && c.parentID != "748959630520090626")
             channels.forEach(async e => {
                 let msgs = await e.messages.fetch()
@@ -50,6 +50,7 @@ module.exports = {
                     e.bulkDelete(filt)
                 }
             })
+            message.channel.send("All channels have been queued to be cleared")
         }
     }
 }
