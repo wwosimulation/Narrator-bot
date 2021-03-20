@@ -4195,48 +4195,21 @@ module.exports = {
      
           // checking if beast hunter has the player trapped!
           if (douses[j] != "0") {
-            for (let k = 0; k < bh.length; k++) {
-              let trap = db.get(`setTrap_${bh[k]}`);
-              let active = db.get(`trapActive_${bh[k]}`);
-              for (
-                let l = 1;
-                l <= alive.members.size + dead.members.size;
-                l++
-              ) {
-                let hhhhh = message.guild.members.cache.find(
-                  (me) => me.nickname === l.toString()
-                );
-                let chan = message.guild.channels.cache.get(bh[k]);
-                if (
-                  chan
-                    .permissionsFor(hhhhh)
-                    .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-                ) {
-                  l = 99;
-                  if (!hhhhh.roles.cache.has(alive.id)) {
-                    trap = null;
-                    active = false;
-                  }
-                }
-              }
+            for (let k = 0 ; k < bh.length ; k++) {
+              let bchan = message.guild.channels.cache.get(bh[k])
+              let trap = db.get(`setTrap_${bchan.id}`)
+              let active = db.get(`trapActive_${bchan.id}`)
               if (trap == douses[j] && active == true) {
-                douses[i] = "0"; // makes the arsonist's douse towards the player none
-                let toSend = message.guild.channels.cache.get(bh[j]);
-                chan.send(
-                  `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be doused!`
-                );
+                chan.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be doused!`);
                 chan.send(`${alive}`);
-                toSend.send(
-                  `<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`
-                );
-                toSend.send(`${alive}`);
-                db.set(`setTrap_${bh[j]}`, null);
-                db.set(`trapActive_${bh[j]}`, false);
-                k = 99;
+                bchan.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                bchan.send(`${alive}`)
+                douses[j] = "0"
+                db.set(`setTrap_${bchan.id}`, null)
+                db.set(`trapActive_${bchan.id}`, false)
               }
             }
           }
-
           // checking if the jailer has the user jailed!
           if (
             douses[j] != "0" &&
@@ -4623,6 +4596,9 @@ module.exports = {
     }
     for (let i = 0; i < rl.length; i++) {
       db.set(`visit_${rl[i]}`, null);
+    }
+    for (let i = 0 ; i < arso.length ; i++) {
+      db.delete(`toDouse_${arso[i]}`)
     }
     console.log("The code worked up to here!");
     db.set(`vtshadow`, false);
