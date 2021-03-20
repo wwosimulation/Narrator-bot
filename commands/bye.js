@@ -25,6 +25,18 @@ module.exports = {
                     e.bulkDelete(total)
                 }
             })
+            let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat"]
+            let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c))
+            ingame.forEach(async e => {
+                let ashish = await e.messages.fetch()
+                let filt = ashish.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
+                if (filt.size < 100) {
+                    e.bulkDelete(filt)
+                } else {
+                    filt = filt.filter(m => m.size < 101  && (Date.now() - m.createdTimestamp < (60*60*24*14)))
+                    e.bulkDelete(filt)
+                }
+            })
             let tempchannels = message.guild.channels.cache.filter(c => c.parentID === "748959630520090626")
             tempchannels.forEach(e => e.delete())
             let emsgs = await message.guild.channels.cache.find(c => c.name === "enter-game").messages.fetch()
@@ -36,18 +48,6 @@ module.exports = {
                 let hmm = oki.filter(m => !m.pinned && (Date.now() - m.createdTimestamp < (60*60*24*14)))
                 if (hmm.size > 0) {
                     e.bulkDelete(hmm)
-                }
-            })
-            let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat"]
-            let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c))
-            ingame.forEach(async e => {
-                let ashish = await e.messages.fetch()
-                let filt = ashish.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
-                if (filt.size < 100) {
-                    e.bulkDelete(filt)
-                } else {
-                    filt = filt.filter(m => m.size < 101  && (Date.now() - m.createdTimestamp < (60*60*24*14)))
-                    e.bulkDelete(filt)
                 }
             })
             message.channel.send("All channels have been queued to be cleared")
