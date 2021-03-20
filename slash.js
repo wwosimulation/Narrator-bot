@@ -1,4 +1,4 @@
-const shuffle = require('shuffle-array') 
+const Discord = require("discord.js")
 
 module.exports = (client) => {
   
@@ -15,6 +15,12 @@ module.exports = (client) => {
             description: "Regenerate the staff list"
         }
     });
+    // client.api.applications(client.user.id).guilds("472261911526768642").commands.post({
+    //     data: {
+    //         name: "skip",
+    //         description: "Skip the discussion phase"
+    //     }
+    // });
 
 
     client.ws.on('INTERACTION_CREATE', async interaction => {
@@ -44,6 +50,20 @@ module.exports = (client) => {
                     data: {
                         content: msg
                     }
+                }
+            })
+        }
+
+        if(command == "skip"){
+            let message = new Discord.Message()
+            message.channel = client.channels.cache.get(interaction.channel_id)
+            message.guild = client.guilds.cache.get(interaction.guild_id)
+            message.member = message.guild.members.cache.get(member.user.id)
+            client.commands.get("skip").run(message, args, client)
+            client.api.interactions(interaction.id, interaction.token).callback.post({
+                data: {
+                    type: 1,
+                    data: {}
                 }
             })
         }
