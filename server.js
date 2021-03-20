@@ -45,7 +45,6 @@ client.on("ready", async () => {
 //Bot updating roles
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (newMember.guild.id == "472261911526768642") { 
-      if (newMember.roles.cache.has("606131202814115882")) { // new member having dead role
         console.log("Someone died or just did -narrate")        
         if (newMember.roles.cache.has("606131202814115882") && oldMember.roles.cache.has("606131202814115882")) return;
         if (newMember.roles.cache.has("606140092213624859")) return ;
