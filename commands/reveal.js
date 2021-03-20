@@ -4,10 +4,11 @@ const db = require("quick.db");
 module.exports = {
   name: "reveal",
   gameOnly: true,
-  aliases: ["rev", "show"], 
+  aliases: ["show"], 
   run: async (message, args, client) => {
     let aliveRole = message.guild.roles.cache.find(r => r.name === "Alive");
     let deadRole = message.guild.roles.cache.find(r => r.name === "Dead");
+    let isDay = db.get(`isDay_${message.guild.id}`)
     let dayChat = message.guild.channels.cache.find(c => c.name === "day-chat");
     if (message.channel.name == "priv-mayor") {
       if (args[0] == "card") {
@@ -18,12 +19,9 @@ module.exports = {
         }
       }
       let ability = await db.fetch(`ability_${message.channel.id}`);
-      if (ability == "yes")
-        return await message.reply("You already used up your ability!");
-      dayChat.send(
-        `**${message.member.nickname} (Mayor)** has revealed himself!`
-      );
-      db.set(`mayorrev_${message.author.id}`, true)
+      if (ability == "yes") return await message.channel.send("You already used up your ability!");
+      if (isDay != "yes") return await message.channel.send("Dummy, you didn't get the Fortune Teller's card. You can only reveal during the day :rage:")
+      dayChat.send(`**${message.member.nickname} (Mayor)** has revealed himself!`);
       db.set(`ability_${message.channel.id}`, "yes");
     } else if (
       message.channel.name == "priv-pacifist" ||
