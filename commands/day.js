@@ -4210,44 +4210,32 @@ module.exports = {
               }
             }
           }
+          
           // checking if the jailer has the user jailed!
-          if (
-            douses[j] != "0" &&
-            guy != "0" &&
-            jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])
-          ) {
-            let jailerGuy = message.guild.channels.cache.find(
-              (c) => c.name === "priv-jailer"
-            );
-            for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
-              let isJailer = message.guild.members.cache.find(
-                (m) => m.nickname === j.toString()
-              );
-              if (
-                jailerGuy
-                  .permissionsFor(isJailer)
-                  .has([
-                    "SEND_MESSAGES",
-                    "VIEW_CHANNEL",
-                    "READ_MESSAGE_HISTORY",
-                  ])
-              ) {
-                j = 99;
-                if (isJailer.roles.cache.has(alive.id)) {
-                  chan.send(
-                    `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be doused!`
-                  );
-                  chan.send(`${alive}`);
-                  douses[j] = "0"; // makes the arsonist's douse towards the player none
+          if (douses[j] != "0") {
+            if (jailed.permissionsFor(guy).has(["VIEW_CHANNEL"])) { 
+              for (let k = 1 ; k < 17 ; k++) {
+                let tempguy = message.guild.members.cache.find(m => m.nickname === k.toString())
+                if (tempguy) {
+                  if (tempguy.roles.cache.has(alive.id)) {
+                    if (db.get(`role_${tempguy.id}`) == "Jailer") {
+                      douses[j] = "0"
+                      chan.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be doused!`);
+                      chan.send(`${alive}`);
+                    }
+                  }
                 }
               }
             }
           }
-
+          
           // adding the doused players to the list
           if (douses[j] != "0") {
+            message.channel.send("Arso bypassed douse")
             if (guy != "0") {
+              message.channel.send("Arso guy exists")
               if (guy.roles.cache.has(alive.id)) {
+                message.channel.send("Arso guy is alive")
                 let allDouses = db.get(`doused_${arso[i]}`) || [];
                 allDouses.push(douses[j]);
                 db.set(`doused_${arso[i]}`, allDouses);
@@ -4563,13 +4551,6 @@ module.exports = {
       }
     }
     }, 4625)
-
-    //clear jail chat
-    let jmsg = await client.channels.cache.get("606251143466713174").messages.fetch()
-    let jmsgf = await jmsg.filter(m => !m.pinned)
-    if (jmsgf.size > 0) {
-      await votechat.bulkDelete(jmsgf.size)
-    }
 
     
     // Code for all protectors to nullify their protection
