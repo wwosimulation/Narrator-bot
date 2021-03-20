@@ -22,25 +22,17 @@ module.exports = {
             ingame.forEach(async e => {
                 let ashish = await e.messages.fetch()
                 let filt = ashish.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
-                if (filt.size < 100) {
-                    e.bulkDelete(filt)
-                    console.log(`Cleared #${e.name}`)
-                } else {
-                    filt = filt.filter(m => m.size < 101  && (Date.now() - m.createdTimestamp < (60*60*24*14)))
-                    e.bulkDelete(filt)
-                    console.log(`Cleared #${e.name}`)
-                    e.send(`<@${message.author.id}> I could not clear all the messages in this channel! Use \`-c\` here please.`)
-                }
-                let ashishs = await e.messages.fetch()
-                let filts = ashishs.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
-                if (filts.size < 100) {
-                    e.bulkDelete(filts)
-                    console.log(`Cleared #${e.name}`)
-                } else {
-                    filts = filts.filter(m => m.size < 101  && (Date.now() - m.createdTimestamp < (60*60*24*14)))
-                    e.bulkDelete(filts)
-                    console.log(`Cleared #${e.name}`)
-                    e.send(`<@${message.author.id}> I could not clear all the messages in this channel! Use \`-c\` here please.`)
+                while (filt.size > 1) {
+                    if (filt.size < 100) {
+                        e.bulkDelete(filt)
+                        console.log(`Cleared #${e.name}`)
+                    } else {
+                        filt = filt.filter(m => m.size < 101  && (Date.now() - m.createdTimestamp < (60*60*24*14)))
+                        e.bulkDelete(filt)
+                        console.log(`Cleared #${e.name}`)
+                        e.send(`<@${message.author.id}> I could not clear all the messages in this channel! Use \`-c\` here please.`)
+                    }
+                    filt = ashish.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
                 }
             })
             let tempchannels = message.guild.channels.cache.filter(c => c.parentID === "748959630520090626")
