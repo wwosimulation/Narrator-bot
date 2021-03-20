@@ -5,7 +5,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
     if (!message.channel.name.includes("priv")) {
-      return;
+      return message.channel.send("Use this in your private channel!")
     } else {
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let ownself = message.guild.members.cache.find(
