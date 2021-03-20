@@ -4186,7 +4186,7 @@ module.exports = {
       let douses = db.get(`toDouse_${arso[i]}`) || [] ;
       if (douses.length > 0) {
         for (let j = 0; j < douses.length; j++) {
-          if (douses[j] == null) {
+          if (!douses[j]) {
             douses[j] = "0";
           }
           let guy =
