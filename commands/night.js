@@ -426,7 +426,7 @@ module.exports = {
         jailedchat.updateOverwrite(prisoner.id, {
           SEND_MESSAGES: true,
           VIEW_CHANNEL: true,
-          READ_MESSAGE_HISTORY: false
+          READ_MESSAGE_HISTORY: true
         })
         
           if (db.get(`role_${prisoner.id}`).toLowerCase().includes('wolf')) {

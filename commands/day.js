@@ -4564,6 +4564,13 @@ module.exports = {
     }
     }, 4625)
 
+    //clear jail chat
+    let jmsg = await client.channels.cache.get("606251143466713174").messages.fetch()
+    let jmsgf = await jmsg.filter(m => !m.pinned)
+    if (jmsgf.size > 0) {
+      await votechat.bulkDelete(jmsgf.size)
+    }
+
     
     // Code for all protectors to nullify their protection
     for (let i = 0; i < doc.length; i++) {
