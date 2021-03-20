@@ -1,6 +1,7 @@
 module.exports = {
   name: "end",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.guild.id == "472261911526768642") {
       console.log("5");
       if (message.member.hasPermission("KICK_MEMBERS")) {

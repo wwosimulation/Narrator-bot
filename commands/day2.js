@@ -3,7 +3,8 @@ const shuffle = require("shuffle-array");
 
 module.exports = {
   name: "day2",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.guild.id != "472261911526768642") return;
     // All the variables
     let alive = message.guild.roles.cache.find((r) => r.name === "Alive");

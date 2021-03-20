@@ -2,7 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
   name: "eat",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-cannibal") {
       // getting all the variables
       let isNight = db.get(`isNight_${message.guild.id}`)

@@ -4,7 +4,8 @@ const Discord = require("discord.js");
 module.exports = {
   name: "vt",
   modOnly: true,
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (!message.member.hasPermission("MANAGE_MESSAGES")) {
       // modOnly doesn't work
       return;

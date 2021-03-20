@@ -3,7 +3,8 @@ const db = require("quick.db");
 module.exports = {
   name: "revive",
   aliases: ["rev", "resurrect"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-medium") {
       let jailed = message.guild.channels.cache.find(c => c.name === "jailed-chat")
       if (jailed.permissionsFor(message.author.id).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return message.channel.send("... Jailing and trying to revive does not have logic. Please redo your physics exam. Your parents probably bribed your physics teacher.")

@@ -2,6 +2,7 @@ const db = require("quick.db");
 
 module.exports = {
   name: "poison",
+  gameOnly: true,
   run: async (message, args, client) => {
     if (message.channel.name == "priv-witch") {
       let ability = await db.fetch(`ability_${message.channel.id}`);

@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "trap",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-beast-hunter") {
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");

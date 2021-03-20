@@ -4,7 +4,8 @@ const db = require("quick.db");
 module.exports = {
   name: "heal",
   aliases: ["protect", "save"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     let isNight = await db.fetch(`isNight_${message.guild.id}`);
     if (message.channel.name === "priv-doctor") {
       if (isNight != "yes") {

@@ -1,7 +1,8 @@
 let sentMessage = sentMessage => sentMessage.react;
 module.exports = {
   name: "sow",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (!message.member.hasPermission("MANAGE_CHANNELS")) {
       let randomMessage = [
         "Looks like you have brain tumor. This command can only be executed by Narrators",

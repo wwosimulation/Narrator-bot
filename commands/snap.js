@@ -2,6 +2,7 @@ const db = require("quick.db")
 
 module.exports = {
     name: "snap",
+    gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-illusionist") {
             let disguises = db.get(`disguised_${message.channel.id}`) || []

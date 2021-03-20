@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "manual",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (!message.member.hasPermission("MANAGE_CHANNELS")) {
       return;
     } else {

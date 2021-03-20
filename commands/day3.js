@@ -4,7 +4,8 @@ const shuffle = require("shuffle-array")
 
 module.exports = {
   name: "day3",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     
     if (message.guild.id != "472261911526768642") return
     

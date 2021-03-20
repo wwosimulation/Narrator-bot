@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "reset",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.member.roles.cache.has("606139219395608603") || message.member.roles.cache.has("606276949689499648")) {
       let times = [10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000];
       times = times[Math.floor(Math.random() * times.length)];

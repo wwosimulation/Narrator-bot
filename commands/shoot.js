@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "shoot",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-gunner") {
       if (!db.get(`bullets_${message.channel.id}`)) {
         db.set(`bullets_${message.channel.id}`, 1)

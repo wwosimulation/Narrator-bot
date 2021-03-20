@@ -1,5 +1,6 @@
 module.exports = {
   name: "csr",
+  gameOnly: true,
   description:
     "Pings the alive role and asks which gamemode (Classic or Sandbox or Random)",
 

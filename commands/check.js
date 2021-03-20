@@ -3,7 +3,8 @@ const Discord = require("discord.js");
 
 module.exports = {
   name: "check",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     let shaman1 = await db.fetch(`shaman_606157077705916426`);
     let shaman2 = await db.fetch(`shaman_606156636704473098`);
     let shaman3 = await db.fetch(`shaman_606157075927662741`);

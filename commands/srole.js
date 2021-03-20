@@ -4,7 +4,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "srole",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     function random(x) {
       return Math.floor(Math.random() * x.length)
     }

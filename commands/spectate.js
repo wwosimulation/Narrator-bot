@@ -1,7 +1,8 @@
 module.exports = {
   name: "spectate",
   aliases: ["spectator"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     message.member.roles.add("606140764682190849");
 
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");

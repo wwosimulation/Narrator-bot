@@ -4,6 +4,7 @@ const night = require("./night")
 
 module.exports = {
     name: "forge",
+    gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-forger") {
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")

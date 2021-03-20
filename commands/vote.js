@@ -3,6 +3,7 @@ const db = require("quick.db");
 let voteForwws = ["0"];
 module.exports = {
   name: "vote",
+  gameOnly: true,
   run: async (message, args, client) => {
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");

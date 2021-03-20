@@ -2,7 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
   name: "j",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name === "priv-jailer") {
       let night = db.get(`isNight_${message.guild.id}`)
       if (night != "yes") return message.channel.send("You know, you haven't even jailed anyone yet")

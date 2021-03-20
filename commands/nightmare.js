@@ -3,6 +3,7 @@ const db = require("quick.db")
 
 module.exports = {
     name: "nightmare",
+    gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-nightmare-werewolf") {
             let isDay = db.get(`isDay_${message.guild.id}`)

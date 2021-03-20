@@ -3,6 +3,7 @@ const db = require("quick.db")
 
 module.exports = {
     name: "win",
+    gameOnly: true,
     run: async (message, args, client) => {
         let narrator = message.guild.roles.cache.get('606139219395608603')
         let mininarr = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")

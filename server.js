@@ -567,6 +567,8 @@ Gotta make you understand
     return message.reply("I can't execute that command in DMs!");
   }
 
+  if(command.gameOnly && message.guild.id != "472261911526768642") return message.channel.send("That command can only be used in the game server!")
+
   //Check if that command needs arguments
 
 

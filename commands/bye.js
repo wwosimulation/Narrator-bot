@@ -1,5 +1,6 @@
 module.exports = {
     name: "bye",
+    gameOnly: true,
     run: async (message, args, client) => {
         let role = message.guild.roles.cache.find(r => r.name === "Narrator")
         let role2 = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")

@@ -1,5 +1,6 @@
 module.exports = {
   name: 'nmanual', 
+  gameOnly: true,
   run: async (message, args, client) => {
     if (!message.member.roles.cache.has('606276949689499648') &&  !message.member.roles.cache.has('606139219395608603')) return;
     

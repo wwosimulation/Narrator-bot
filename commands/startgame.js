@@ -3,7 +3,8 @@ const shuffle = require("shuffle-array");
 
 module.exports = {
   name: "startgame",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     let narrator = message.guild.roles.cache.find(r => r.name === "Narrator");
     let mininarr = message.guild.roles.cache.find(
       r => r.name === "Narrator Trainee"

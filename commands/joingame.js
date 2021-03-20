@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "joingame",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.guild.id != "472261911526768642") return; 
     if (
       args[0] == "started" &&

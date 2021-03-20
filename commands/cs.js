@@ -1,5 +1,6 @@
 module.exports = {
   name: 'cs',
+  gameOnly: true,
   description: 'Pings the alive role and asks which gamemode (Classic or Sandbox)', 
   run: async (message, args, client) => {
     if (!message.member.hasPermission('MANAGE_CHANNELS')) return

@@ -1,6 +1,7 @@
 module.exports = {
   name: "hohoho",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
   
      if (message.channel.name === "priv-santa-claus") {
         

@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "night",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.guild.id != "472261911526768642") return; 
     let sww = message.guild.channels.cache.filter(c => c.name === "priv-shadow-wolf").keyArray("id")
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");

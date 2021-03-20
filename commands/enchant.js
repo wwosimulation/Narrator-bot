@@ -3,7 +3,8 @@ const db = require("quick.db");
 module.exports = {
   name: "enchant",
   aliases: ["shaman", "disguise", "delude"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-wolf-shaman") {
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);

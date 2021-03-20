@@ -3,7 +3,8 @@ const db = require("quick.db");
 module.exports = {
   name: "tag",
   aliases: ["revenge", "avenge", "target"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     let night = db.get(`nightCount_${message.guild.id}`) || 1
     let isNight = db.get(`isNight_${message.guild.id}`) || "yes"
     let jtag = await db.fetch(`jwwtag_${message.author.id}`);

@@ -3,7 +3,8 @@ const db = require("quick.db");
 module.exports = {
   name: "douse",
   aliases: ["oil"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (!message.channel.name == 'priv-arsonist') return
     let doused = await db.fetch(`doused_${message.channel.id}`);
     let isNight = await db.fetch(`isNight_${message.guild.id}`);

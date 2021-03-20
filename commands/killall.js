@@ -3,7 +3,8 @@ const db = require("quick.db")
 module.exports = {
   name: "killall",
   aliases: ["suicideall", "gameend", "alldie", "dieall"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     
     if (message.guild.id != "472261911526768642") return ;
     
