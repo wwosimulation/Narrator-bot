@@ -49,7 +49,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
         if (newMember.roles.cache.has("606140092213624859")) return
         if (newMember.roles.cache.has("606131202814115882") && oldMember.roles.cache.has("606131202814115882")) return;
        
-        newMember.roles.remove("")
+        newMember.roles.remove("822806480099999774")
         // canceling frenzy
         if (db.get(`role_${newMember.id}`) == "Werewolf Berserk") {
           let wwb = newMember.guild.channels.cache.filter(c => c.name === "priv-werewolf-berserk").keyArray("id")
