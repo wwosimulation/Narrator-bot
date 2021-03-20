@@ -55,16 +55,18 @@ module.exports = (client) => {
         }
 
         if(command == "skip"){
+            let msg = `You have voted to skip the discussion phase! This does nothing right now lmao`
             // let message = new Discord.Message()
-            // message.channel = client.channels.cache.get(interaction.channel_id)
-            // message.guild = client.guilds.cache.get(interaction.guild_id)
+            let channel = client.channels.cache.get(interaction.channel_id)
+            let guild = client.guilds.cache.get(interaction.guild_id)
+            if(!interaction.member.roles.includes(guild.roles.cache.find(r => r.name === "Alive").id)) msg = `You are not Alive! You cannot use this`
             // message.member = message.guild.members.cache.get(interaction.member.user.id)
             // client.commands.get("skip").run(message, args, client)
             client.api.interactions(interaction.id, interaction.token).callback.post({
                 data: {
                     type: 4,
                     data: {
-                        content: `You have voted to skip the discussion phase! This does nothing right now lmao`,
+                        content: msg,
                         flags: 1 << 6
                     }
                 }
