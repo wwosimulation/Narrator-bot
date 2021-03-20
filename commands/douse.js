@@ -5,7 +5,7 @@ module.exports = {
   aliases: ["oil"],
     gameOnly: true,
     run: async (message, args, client) => {
-    if (!message.channel.name == 'priv-arsonist') return
+    if (message.channel.name != 'priv-arsonist') return
     let doused = await db.fetch(`doused_${message.channel.id}`);
     let isNight = await db.fetch(`isNight_${message.guild.id}`);
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
