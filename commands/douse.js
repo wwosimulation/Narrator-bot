@@ -54,9 +54,8 @@ module.exports = {
         }
         db.delete(`toDouse_${message.channel.id}`);
        
-        db.set(`toDouse_${message.channel.id}`, [args[0]]);
+        db.set(`toDouse_${message.channel.id}`, [args[0], args[1]]);
         console.log(db.get(`toDouse_${message.channel.id}`))
-        db.push(`toDouse_${message.channel.id}`, args[1]);
         message.channel.send(
           "<:douse:744574203025686568> Doused **" +
             args[0] +
@@ -84,7 +83,7 @@ module.exports = {
           } 
         } 
         db.delete(`toDouse_${message.channel.id}`);
-        db.push(`toDouse_${message.channel.id}`, args[0]);
+        db.set(`toDouse_${message.channel.id}`, [args[0]]);
         message.channel.send(
           "<:douse:744574203025686568> Doused **" +
             args[0] +
