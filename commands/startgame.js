@@ -26,11 +26,27 @@ module.exports = {
     db.set(`commandEnabled_${message.guild.id}`, "no");
     
     // changing perms for alive in game-lobby
-    message.guild.channels.cache.find(c => c.name === "game-lobby").updateOverwrite(alive.id, {
-      SEND_MESSAGES: false,
-      READ_MESSAGE_HISTORY: false,
-      VIEW_CHANNEL: false
-    })
+    message.guild.channels.cache.find(c => c.name === "game-lobby").send("Game starting in 5 ...")
+   
+    setTimeout(async () => {
+      message.guild.channels.cache.find(c => c.name === "game-lobby").send("4")
+    }, 1000)
+    setTimeout(async () => {
+      message.guild.channels.cache.find(c => c.name === "game-lobby").send("3")
+    }, 2000)
+    setTimeout(async () => {
+      message.guild.channels.cache.find(c => c.name === "game-lobby").send("2")
+    }, 3000)
+    setTimeout(async () => {
+      message.guild.channels.cache.find(c => c.name === "game-lobby").send("1")
+    }, 4000)
+    setTimeout(async () => {
+      message.guild.channels.cache.find(c => c.name === "game-lobby").updateOverwrite(alive.id, {
+        SEND_MESSAGES: false,
+        READ_MESSAGE_HISTORY: false,
+        VIEW_CHANNEL: false
+      })
+    }, 5000)
 
     // changing perms for alive in day-chat
     message.guild.channels.cache.find(c => c.name === "day-chat").updateOverwrite(alive.id, {
