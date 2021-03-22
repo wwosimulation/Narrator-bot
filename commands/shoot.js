@@ -10,6 +10,7 @@ module.exports = {
       }
       let bullets = db.get(`bullets_${message.channel.id}`) 
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
+      let revealed = message.guild.roles.cache.find(r => r.name === "Revealed");
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");
       let dayChat = message.guild.channels.cache.find(
         c => c.name === "day-chat"
@@ -46,6 +47,7 @@ module.exports = {
             `role_${guy.id}`
           )})**!`
         );
+        message.member.roles.add(revealed.id)
         guy.roles.add(dead.id)
         guy.roles.remove(alive.id)
         db.subtract(`bullets_${message.channel.id}`, 1)
