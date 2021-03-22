@@ -7,6 +7,7 @@ module.exports = {
     run: async (message, args, client) => {
     if (message.channel.name == "priv-priest") {
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
+      let revealed = message.guild.roles.cache.find(r => r.name === "Revealed")
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");
       let ownself = message.guild.members.cache.find(
@@ -48,6 +49,7 @@ module.exports = {
                   args[0]
                 } (${role})**`
               );
+              ownself.roles.add(revealed.id)
             } else {
               ownself.roles.remove(alive.id);
               ownself.roles.add(dead.id);
