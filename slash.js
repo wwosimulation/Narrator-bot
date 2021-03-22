@@ -109,6 +109,7 @@ const baseReply = (msg, interaction, options = {}) => {
                 message.slashGenerate = true
                 message.guild = guild
                 dayChat.send(`Enough players voted to skip the discussion phase!`)
+                commands.send("Starting voting phase due to skips")
                 client.commands.get("vt").run(message, ["nm", process.env.SHADOW], client)
             }
           }
