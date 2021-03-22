@@ -605,7 +605,7 @@ Gotta make you understand
 
   //Execute command if everything is ok
   try {
-    client.channels.cache.get("783013534560419880").send("Command ran: " + commandName + `\nAuthor: ${message.author.tag} (${message.author.id})\n\`\`\`${message.content}\`\`\``)
+    client.channels.cache.get("783013534560419880").send("Command ran: "`Command ran: **${commandName}**\nArguments: **${args.join(" ")}**\nAuthor: ${message.author.tag} (${message.author.id})\n\`\`\`${message.content}\`\`\``)
     command.run(message, args, client);
   } catch (error) {
     console.error(error);
