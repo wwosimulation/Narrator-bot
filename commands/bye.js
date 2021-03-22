@@ -46,9 +46,10 @@ module.exports = {
                     console.log(`Cleared #${e.name}`)
                 }
             })
-            let channels = message.guild.channels.cache.filter(c => c.name.startsWith("priv") && c.parentID != "748959630520090626")
+            let channels = db.get(`${message.guild.id}_usedChannels`)
             channels.forEach(async e => {
-                let msgs = await e.messages.fetch()
+                let chan = message.guild.channels.cache.get(e)
+                let msgs = await chan.messages.fetch()
                 let total = await msgs.filter(m => !m.pinned && (Date.now() - m.createdTimestamp < (60*60*24*14)))
                 
                 if (total.size > 0) {
@@ -56,7 +57,7 @@ module.exports = {
                     console.log(`Cleared #${e.name}`)
                 }
             })
-            message.channel.send("All channels have been queued to be cleared")
+            message.channel.send("All channels have been queued to be cleared. Be sure to check behind me and make sure they actually did clear! If not, use `-c` there to finish the job")
         }
     }
 }

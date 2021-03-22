@@ -28,6 +28,8 @@ module.exports = {
     let bandits = message.guild.channels.cache.find(c => c.name === "bandits")
     let sl = message.guild.channels.cache.find(c => c.name === `sect-members`)
     let zomb = message.guild.channels.cache.find(c => c.name === "zombies")
+    db.set(`${message.guild.id}_usedChannels`, [])
+    let usedChannels = []
 
     if (
       !message.member.roles.cache.has(mininarr.id) &&
@@ -130,11 +132,13 @@ module.exports = {
                         })
                         await uwu.send(`${db.get(`roleinfo_${role.toLowerCase()}`)}`).then(msg => msg.pin())
                         allchan.push(uwu.id)
+                        usedChannels.push(uwu.id)
                         seechan = uwu.id
                     }
                 }
             }
             let thechan = message.guild.channels.cache.get(seechan)
+            usedChannels.push(thechan.id)
             db.set(`role_${guy.id}`, role)
             allchan.splice(allchan.indexOf(seechan), 1)
             thechan.updateOverwrite(guy.id, {
@@ -168,6 +172,7 @@ module.exports = {
           client.commands.get("startgame").run(message, args, client)
       }, 3000)
     } else if (args[0] == "sandbox") {
+      message.channel.send("Sandbox hasn't been implemented yet, use the sandbox list with -srole custom")
     } else if (args[0] == "ranked") {
       let rrv = ["Aura Seer", "Avenger", "Beast Hunter", "Bodyguard", "Doctor", "Flower Child", "Grumpy Grandma", "Loudmouth", "Marksman", "Priest", "Red Lady", "Sheriff", "Spirit Seer", "Tough Guy", "Villager", "Witch"]
       let rww = ["Alpha Werewolf", "Guardian Wolf", "Junior Werewolf", "Nightmare Werewolf", "Shadow Wolf", "Werewolf Berserk", "Wolf Pacifist", "Wolf Seer", "Wolf Shaman"]
@@ -245,6 +250,8 @@ module.exports = {
               }
             ]
           })
+          
+          usedChannels.push(lol.id)
 
           if (newrole[j].toLowerCase().includes("wolf")) {
             wwsChat.updateOverwrite(guy.id, {
@@ -363,6 +370,7 @@ module.exports = {
             ]
           })
           await a.send(db.get(`roleinfo_${roles[i].replace("-", " ")}`))
+          usedChannels.push(a.id)
         } else {
           chan.updateOverwrite(guy.id, {
             SEND_MESSAGES: true,
@@ -428,6 +436,7 @@ module.exports = {
                     }
                   ]
                 })
+                usedChannels.push(a.id)
                 let a = await t.send(`${alive}`)
                 setTimeout(() => {
                   a.delete()
@@ -473,6 +482,7 @@ module.exports = {
       message.channel.send("I have executed the startgame command myself! You do not need to do it!")
       client.commands.get("startgame").run(message, args, client)
     }
+    db.set(`${message.guild.id}_usedChannels`, usedChannels)
     await client.channels.cache.find(c => c.name === "game-warning").send("Game is starting. You can no longer join. Feel free to spectate!")
     db.set("started", "yes")
   }
