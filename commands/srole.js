@@ -131,7 +131,6 @@ module.exports = {
                             ]
                         })
                         await uwu.send(`${db.get(`roleinfo_${role.toLowerCase()}`)}`).then(msg => msg.pin())
-                        allchan.push(uwu.id)
                         usedChannels.push(uwu.id)
                         seechan = uwu.id
                     }
@@ -251,8 +250,6 @@ module.exports = {
             ]
           })
           
-          usedChannels.push(lol.id)
-
           if (newrole[j].toLowerCase().includes("wolf")) {
             wwsChat.updateOverwrite(guy.id, {
               SEND_MESSAGES: true,
@@ -370,7 +367,6 @@ module.exports = {
             ]
           })
           await a.send(db.get(`roleinfo_${roles[i].replace("-", " ")}`))
-          usedChannels.push(a.id)
         } else {
           chan.updateOverwrite(guy.id, {
             SEND_MESSAGES: true,
@@ -436,7 +432,6 @@ module.exports = {
                     }
                   ]
                 })
-                usedChannels.push(a.id)
                 let a = await t.send(`${alive}`)
                 setTimeout(() => {
                   a.delete()
