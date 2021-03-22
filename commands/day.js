@@ -845,7 +845,7 @@ module.exports = {
               } else if (lives == 1) {
                 for (
                   let k = 1;
-                  k <= alive.members.size + dead.members.size;
+                  k <= 16;
                   k++
                 ) {
                   let lol = message.guild.members.cache.find(
@@ -939,7 +939,7 @@ module.exports = {
             if (tough == kills[i] || db.get(`role_${guy.id}`) == "Tough Guy") {
               for (
                 let k = 1;
-                k <= alive.members.size + dead.members.size;
+                k <= 16;
                 k++
               ) {
                 let gal = message.guild.members.cache.find(
