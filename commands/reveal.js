@@ -26,10 +26,7 @@ module.exports = {
       dayChat.send(`**${message.member.nickname} (Mayor)** has revealed himself!`);
       message.member.roles.add(revealed.id)
       db.set(`ability_${message.channel.id}`, "yes");
-    } else if (
-      message.channel.name == "priv-pacifist" ||
-      message.channel.name == "priv-wolf-pacifist"
-    ) {
+    } else if (message.channel.name == "priv-pacifist" || message.channel.name == "priv-wolf-pacifist") {
       let ability = await db.fetch(`paci_${message.channel.id}`);
       let isday = await db.fetch(`isDay_${message.guild.id}`);
       let day = await db.fetch(`dayCount_${message.guild.id}`);
@@ -96,15 +93,16 @@ module.exports = {
         if (message.channel.name == "priv-wolf-pacifist")
           client.channels.get("606135720825847829").send("The Wolf Pacifist<:wolf_pacifist:711948506989985812> has revealed **" + args[0] + " " + guy.user.username + "**!");
       
-    if (db.get(`card_${message.channel.id}`) == true) {
-      if (message.channel.name != "priv-mayor" && message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist") {
-         let alive = message.guild.roles.cache.find(r => r.name === 'Alive')
-         if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't reveal when dead!")
-         let day = message.guild.channels.cache.find(c => c.name === "day-chat")
-         message.member.roles.add(revealed.id)
-         day.send(`<:sun:744571092601012255> **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
-         db.set(`card_${message.channel.id}`, false)
-      }
+        if (db.get(`card_${message.channel.id}`) == true) {
+          if (message.channel.name != "priv-mayor" && message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist") {
+            let alive = message.guild.roles.cache.find(r => r.name === 'Alive')
+            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't reveal when dead!")
+            let day = message.guild.channels.cache.find(c => c.name === "day-chat")
+            message.member.roles.add(revealed.id)
+            day.send(`<:sun:744571092601012255> **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
+            db.set(`card_${message.channel.id}`, false)
+          }
+        }
     }
   }
 };
