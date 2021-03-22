@@ -7,6 +7,7 @@ module.exports = {
     run: async (message, args, client) => {
     let night = db.get(`nightCount_${message.guild.id}`) || 1
     let isNight = db.get(`isNight_${message.guild.id}`) || "yes"
+    let revealed = message.guild.roles.cache.find(r => r.name === "Revealed")
     let jtag = await db.fetch(`jwwtag_${message.author.id}`);
     let atag = await db.fetch(`atag_${message.author.id}`) 
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
@@ -127,7 +128,8 @@ module.exports = {
       
       db.set(`mouth_${message.author.id}`, guy.nickname)
       message.channel.send("<:loudmouthing:744572170507911230> You selected **" + guy.nickname + " " + guy.user.username + "** to be revealed when you die.")
-
+      guy.roles.add(revealed.id)
+      
     }
   }
 };
