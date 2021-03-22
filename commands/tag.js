@@ -103,6 +103,7 @@ module.exports = {
         }
       }
      
+      if (guy.roles.cache.has(revealed.id)) return message.channel.send("That player has already been revealed! Revealing them just is useless.")
       let role = db.get(`role_${guy.id}`)
       
       // check if the player tagged is a President
