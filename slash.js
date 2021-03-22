@@ -17,7 +17,7 @@ const allCommands = [
   },
   {
     command: "skip",
-    description: "Regenerate the staff list",
+    description: "Skip the discussion phase (only after day 5)",
     server: game,
   },
 ];
@@ -75,7 +75,7 @@ module.exports = (client) => {
 
       if (command == "skip") {
         let msg = `You have voted to skip the discussion phase! This does nothing right now lmao`;
-        // let message = new Discord.Message()
+        
         let channel = client.channels.cache.get(interaction.channel_id);
         let guild = client.guilds.cache.get(interaction.guild_id);
         if (
@@ -84,8 +84,16 @@ module.exports = (client) => {
           )
         )
           msg = `You are not Alive! You cannot use this`;
-        // message.member = message.guild.members.cache.get(interaction.member.user.id)
-        // client.commands.get("skip").run(message, args, client)
+          let isDay = await db.fetch(`isDay_${message.guild.id}`);
+          let day = await db.fetch(`dayCount_${message.guild.id}`);
+          let vote = db.get(`commandEnabled_${message.guild.id}`)
+          let skipus = db.get(`skipus_${message.author.id}`)
+          if (day < 5) msg = "You can only skip after Day 5!"
+          if (isDay != "yes" && vote == "yes") {
+            msg = 
+              "You can only skip the discussion phase during the day!"
+          }
+          let alive = message.guild.roles.cache.find(r => r.name === "Alive");
         client.api
           .interactions(interaction.id, interaction.token)
           .callback.post({
