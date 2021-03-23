@@ -8,7 +8,11 @@ module.exports = {
       if (!db.get(`bullets_${message.channel.id}`)) {
         db.set(`bullets_${message.channel.id}`, 1)
       }
-      let bullets = db.get(`bullets_${message.channel.id}`) 
+      let bullets = db.get(`bullets_${message.channel.id}`) ? db.get(`bullets_${message.channel.id}`) : "None"
+      if (bullets == "None") {
+        db.set(`bullets_${message.channel.id}`, 2)
+        bullets = db.get(`bullets_${message.channel.id}`) 
+      }
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let revealed = message.guild.roles.cache.find(r => r.name === "Revealed");
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");
@@ -39,7 +43,8 @@ module.exports = {
               "You can only shoot when voting starts since this is Day 1."
             );
         }
-        if (db.get(`did_${`message.channel.id`}`) == dayCount) return message.channel.send("You already shot today. Get chill pill from dank memer man!")
+        if (db.get(`did_${message.channel.id}`) == dayCount) return message.channel.send("You already shot today. Get chill pill from dank memer man!")
+        if (db.get(`role_${guy.id}`)) return message.channel.send("Even if you are coupled or sected, you can't shoot the President!")
         dayChat.send(
           `**${message.member.nickname} ${
             message.author.username
