@@ -879,74 +879,21 @@ module.exports = {
           }
         }
         
+        // tough guy protections
         if (kills[i] != "0") {
-          // tough guy protections
-          for (let j = 0; j < tg.length; j++) {
-            let chan = message.guild.channels.cache.get(tg[j]);
-            let doctorate;
-            for (let l = 1; l <= alive.members.size + dead.members.size; l++) {
-              let gr = message.guild.members.cache.find(
-                (m) => m.nickname === l.toString()
-              );
-              if (gr) {
-                if (
-                  toSK
-                    .permissionsFor(gr)
-                    .has([
-                      "SEND_MESSAGES",
-                      "VIEW_CHANNEL",
-                      "READ_MESSAGE_HISTORY",
-                    ])
-                ) {
-                  doctorate = gr;
-                  l = 99;
-                }
-              }
+          for (let j = 0 ; j < tg.length ; j++) {
+            let chan = message.guild.channels.cache.get(tg[j])
+            let tough = db.get(`tough_${chan.id}`)
+            if (tough == kills[i]) {
+              
             }
-            let tough = db.get(`tough_${tg[j]}`);
-            if (tough == kills[i] || db.get(`role_${guy.id}`) == "Tough Guy") {
-              for (
-                let k = 1;
-                k <= 16;
-                k++
-              ) {
-                let gal = message.guild.members.cache.find(
-                  (m) => m.nickname === k.toString()
-                );
-                if (gal) {
-                  if (gal.roles.cache.has(alive.id)) {
-                    if (
-                      chan
-                        .permissionsFor(gal)
-                        .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
-                    ) {
-                      k = 99;
-                      toSK.send(
-                        `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
-                      );
-                      toSK.send(
-                        `_ _\n<:tough_guy:606429479170080769> Player **${gal.nickname} ${gal.user.username}** is a tough guy! He now knows your role!`
-                      );
-                      toSK.send(`${alive}`);
-                      if ( db.get(`role_${guy.id}`) == "Tough Guy" ) {
-                        chan.send(
-                          `<:guard:744536167109886023> You have been attacked by **${doctorate.nickname} ${doctorate.user.username} (Serial Killer)**. You have been wounded and will die at the end of the day.`
-                        );
-                      } else {
-                        chan.send(
-                          `<:guard:744536167109886023> You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${doctorate.nickname} ${doctorate.user.username} (Serial Killer)**. You have been wounded and will die at the end of the day.`
-                        )
-                      }
-                      chan.send(`${alive}`);
-                      db.set(`wounded_${tg[j]}`, true);
-                      kills[i] = "0";
-                    }
-                  }
-                }
-              }
-            }
-          }
+          }  
         }
+        
+        if (kills[i] != "0") {
+        
+        }
+        
         if (kills[i] != "0") {
           let role = db.get(`role_${guy.id}`);
           dayChat.send(
