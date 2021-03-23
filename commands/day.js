@@ -822,95 +822,63 @@ module.exports = {
             }
           }
         }
-        // checking if the bodyguard's protection is on the player or if the sk killed the bg
+        
+        // checking if the bodyguard's protection is on the player
         if (kills[i] != "0") {
-          for (let j = 0; j < bg.length; j++) {
-            let toSend = message.guild.channels.cache.get(bg[j]);
-            let lives = db.get(`lives_${bg[j]}`);
-            let guard = db.get(`guard_${bg[j]}`);
-
+          for (let j = 0 ; j < bg.length ; j++) {
+            let chan = message.guild.channels.cache.get(bg[j])
+            let lives = db.get(`lives_${chan.id}`)
+            let guard = db.get(`guard_${chan.id}`)
             if (guard == kills[i]) {
-              kills[i] = "0"; // makes the serial killer's attack towards the player none
-              let thecha = message.guild.channels.cache.get(bg[j]);
               if (lives == 2) {
-                thecha.send(
-                  "<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die."
-                );
-                thecha.send(`${alive}`);
-                toSK.send(
-                  `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
-                );
-                toSK.send(`${alive}`);
-                db.subtract(`lives_${bg[j]}`, 1);
-              } else if (lives == 1) {
-                for (
-                  let k = 1;
-                  k <= 16;
-                  k++
-                ) {
-                  let lol = message.guild.members.cache.find(
-                    (m) => m.nickname === k.toString()
-                  );
-                  if (
-                    thecha
-                      .permissionsFor(lol)
-                      .has([
-                        "SEND_MESSAGES",
-                        "VIEW_CHANNEL",
-                        "READ_MESSAGE_HISTORY",
-                      ])
-                  ) {
-                    dayChat.send(
-                      `<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${lol.nickname} ${lol.user.username} (Bodyguard)**!`
-                    );
-                    k = 99;
-                    lol.roles.add(dead.id);
-                    lol.roles.remove(alive.id);
-                    db.set(`guard_${thecha.id}`, null);
-                    killedplayers.push(lol.id);
-                    thekiller.push(THESK.id);
-                  }
-                }
-              }
-            } else if (toKillRole == "Bodyguard") {
-              kills[i] = "0"; // makes the serial killer's attack towards the player none
-              for (let k = 0; k < bg.length; k++) {
-                let thecha = message.guild.channels.cache.get(bg[k]);
-                if (
-                  thecha
-                    .permissionsFor(guy)
-                    .has([
-                      "SEND_MESSAGES",
-                      "VIEW_CHANNEL",
-                      "READ_MESSAGE_HISTORY",
-                    ])
-                ) {
-                  k = 89;
-                  if (db.get(`lives_${bg[k]}`) == 2) {
-                    thecha.send(
-                      "<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die."
-                    );
-                    thecha.send(`${alive}`);
-                    toSK.send(
-                      `<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`
-                    );
-                    toSK.send(`${alive}`);
-                    db.subtract(`lives_${bg[k]}`, 1);
-                  } else if (lives == 1) {
-                    dayChat.send(
-                      `<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (Bodyguard)**!`
-                    );
-                    guy.roles.add(dead.id);
-                    guy.roles.remove(alive.id);
-                    db.set(`guard_${bg[k]}`, null);
-                    killedplayers.push(guy.id);
-                    thekiller.push(THESK.id);
+                chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                chan.send(`${alive}`)
+                toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                toSK.send(`${alive}`)
+                kills[i] = "0"
+                db.subtract(`lives_${chan.id}`, 1)
+              } else {
+                kills[i] = "0"
+                for (let k = 1 ; k <= 16 ; k++) {
+                  let tempbg = message.guild.members.cache.find(m => m.nickname === k.toString())
+                  if (tempbg) {
+                    if (tempbg.roles.cache.has(alive.id)) {
+                      if (chan.permissionsFor(tempbg).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${tempbg.nickname} ${tempbg.user.username} (Bodyguard)**!`)
+                        tempbg.roles.add(dead.id)
+                        tempbg.roles.remove(alive.id)
+                      }
+                    }
                   }
                 }
               }
             }
           }
         }
+        
+        // serial killer attacking bodyguard
+        if (kills[i] != "0") {
+          let role = db.get(`role_${guy.id}`);
+          if (role == "Bodyguard") {
+            for (let j = 0 ; j < bg.length ; j++) {
+              let chan = message.guild.channels.cache.get(bg[j])
+              if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                if (guy.roles.cache.has(alive.id)) {
+                  let lives = db.get(`lives_${chan.id}`)
+                  if (lives == 2) {
+                    chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                    chan.send(`${alive}`)
+                    toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                    toSK.send(`${alive}`)
+                    db.subtract(`lives_${chan.id}`, 1)
+                    kills[i] = "0"
+                  }
+                }
+              }
+            }
+          }
+        }
+        
         if (kills[i] != "0") {
           // tough guy protections
           for (let j = 0; j < tg.length; j++) {
