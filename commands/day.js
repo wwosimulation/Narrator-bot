@@ -3227,7 +3227,6 @@ module.exports = {
                           }
                         }
                       } else if (guard == blackpotion) {
-                        message.channel.send("tg 3")
                         blackpotion = "0"
                         let theal 
                         let thetg
@@ -3244,10 +3243,10 @@ module.exports = {
                           }
                         }
                         if (theal && thetg) {
-                          message.channel.send("tg 4")
-                           bchan.send(`You were protecting **${guy.nickaname} ${guy.user.username}** who was attacked by **${theal.nickname} ${theal.user.username}**! You will die at the end of the day!`)
+                          
+                           bchan.send(`You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${theal.nickname} ${theal.user.username}**! You will die at the end of the day!`)
                            bchan.send(`${alive}`)
-                           chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                           chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username}** could not be poisoned this night!`)
                            chan.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**. He know knows your role!`)
                            chan.send(`${alive}`)
                            db.set(`wounded_${bchan.id}`, true)
