@@ -3104,6 +3104,7 @@ module.exports = {
                     chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                     chan.send(`${alive}`)
                     blackpotion = "0"
+                    db.delete(`blackpotion_${chan.id}`)
                     db.set(`setTrap_${bchan.id}`, null)
                     db.set(`setTrap_${bchan.id}`, false)
                   }
@@ -3118,6 +3119,7 @@ module.exports = {
                       bchan.send(`${alive}`)
                       chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                       chan.send(`${alive}`)
+                      db.delete(`blackpotion_${chan.id}`)
                       blackpotion = "0"
                     }
                   }
@@ -3133,6 +3135,7 @@ module.exports = {
                       chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                       chan.send(`${alive}`)
                       blackpotion = "0"
+                      db.delete(`blackpotion_${chan.id}`)
                       db.set(`potion_${bchan.id}`, null) 
                       db.set(`witchAbil_${bchan.id}`, 1)
                     }
@@ -3150,6 +3153,7 @@ module.exports = {
                         chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                         chan.send(`${alive}`)
                         blackpotion = "0"
+                        db.delete(`blackpotion_${chan.id}`)
                         db.set(`shield_${bchan.id}`, null) 
                       }
                     }
@@ -3171,6 +3175,7 @@ module.exports = {
                             chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                             chan.send(`${alive}`)
                             blackpotion = "0"
+                            db.delete(`blackpotion_${chan.id}`)
                             db.set(`lives_${bchan.id}`, 1)
                           }
                         }
@@ -3181,6 +3186,7 @@ module.exports = {
                           chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                           chan.send(`${alive}`)
                           blackpotion = "0"
+                          db.delete(`blackpotion_${chan.id}`)
                           db.set(`lives_${bchan.id}`, 1)
                         } else if (lives == 1) {
                           for (let c = 1 ; c < 17 ; c++) {
@@ -3209,15 +3215,16 @@ module.exports = {
                     if (guard == blackpotion || alrole == "Tough Guy") {
                       if (alrole == "Tough Guy") {
                         blackpotion = "0"
+                        db.delete(`blackpotion_${chan.id}`)
                         if (bchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                           for (let c = 1 ; c < 17 ; c++) {
                             let theal = message.guild.members.cache.find(m => m.nickname === c.toString())
                             if (theal) {
                               if (theal.roles.cache.has(alive.id)) {
                                 if (chan.permissionsFor(theal).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                  bchan.send(`You were attacked by **${theal.nickname} ${theal.user.username}**! You will die at the end of the day!`)
+                                  bchan.send(`You were attacked by **${theal.nickname} ${theal.user.username} (Alchemist)**! You will die at the end of the day!`)
                                   bchan.send(`${alive}`)
-                                  chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                                  chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username}** could not be poisoned this night!`)
                                   chan.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**. He know knows your role!`)
                                   chan.send(`${alive}`)
                                   db.set(`wounded_${bchan.id}`, true)
@@ -3228,6 +3235,7 @@ module.exports = {
                         }
                       } else if (guard == blackpotion) {
                         blackpotion = "0"
+                        db.delete(`blackpotion_${chan.id}`)
                         let theal 
                         let thetg
                         for (let c = 1 ; c < 17 ; c++) {
@@ -3244,7 +3252,7 @@ module.exports = {
                         }
                         if (theal && thetg) {
                           
-                           bchan.send(`You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${theal.nickname} ${theal.user.username}**! You will die at the end of the day!`)
+                           bchan.send(`You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${theal.nickname} ${theal.user.username} (Alchemist)**! You will die at the end of the day!`)
                            bchan.send(`${alive}`)
                            chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username}** could not be poisoned this night!`)
                            chan.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**. He know knows your role!`)
