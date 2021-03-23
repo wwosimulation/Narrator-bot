@@ -885,13 +885,42 @@ module.exports = {
             let chan = message.guild.channels.cache.get(tg[j])
             let tough = db.get(`tough_${chan.id}`)
             if (tough == kills[i]) {
-              
+              for (let k = 1 ; k <= 16 ; k++) {
+                let thetg = message.guild.members.cache.find(m => m.nickname === k.toString())
+                if (thetg) {
+                  if (thetg.roles.cache.has(alive.id)) {
+                    if (chan.permissionsFor(thetg).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                      k = 99
+                      chan.send(`<:guard:744536167109886023> You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${THESK.nickname} ${THESK.user.username} (Serial Killer)**! You will die at the end of the day!`)
+                      chan.send(`${alive}`)
+                      toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                      toSK.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**! He now knows your role!`)
+                      toSK.send(`${alive}`)
+                      kills[i] = "0"
+                      db.set(`wounded_${chan.id}`, true)
+                    }
+                  }
+                }
+              } 
             }
           }  
         }
         
         if (kills[i] != "0") {
-        
+          if (db.get(`role_${guy.id}`) == "Tough Guy") {
+            for (let j = 0 ; j < tg.length ; j++) {
+              let chan = message.guild.channels.cache.get(tg[j])
+              if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                chan.send(`<:guard:744536167109886023> You have been attacked by **${toSK.nickname} ${toSK.user.username} (Serial Killer)**! You will die at the end of the day!`)
+                chan.send(`${alive}`)
+                toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                toSK.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**! He now knows your role!`)
+                toSK.send(`${alive}`)
+                db.set(`wounded_${chan.id}`, true)
+                kills[i] = "0"
+              }
+            }
+          }
         }
         
         if (kills[i] != "0") {
