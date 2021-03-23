@@ -129,7 +129,6 @@ module.exports = {
       
       db.set(`mouth_${message.author.id}`, guy.nickname)
       message.channel.send("<:loudmouthing:744572170507911230> You selected **" + guy.nickname + " " + guy.user.username + "** to be revealed when you die.")
-      guy.roles.add(revealed.id)
       
     }
   }
