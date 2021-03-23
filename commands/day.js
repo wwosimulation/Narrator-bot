@@ -3204,9 +3204,11 @@ module.exports = {
                 // tg 
                 if (blackpotion != "0") {
                   for (let b = 0 ; b < tg.length ; b++) {
+                    message.channel.send("tg 1")
                     let bchan = message.guild.channels.cache.get(tg[b])
                     let guard = db.get(`guard_${tg[b]}`)
                     if (guard == blackpotion || alrole == "Tough Guy") {
+                      message.channel.send("tg 2")
                       if (alrole == "Tough Guy") {
                         blackpotion = "0"
                         if (bchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -3227,6 +3229,7 @@ module.exports = {
                           }
                         }
                       } else if (guard == blackpotion) {
+                        message.channel.send("tg 3")
                         blackpotion = "0"
                         let theal 
                         let thetg
@@ -3243,6 +3246,7 @@ module.exports = {
                           }
                         }
                         if (theal && thetg) {
+                          message.channel.send("tg 4")
                            bchan.send(`You were protecting **${guy.nickaname} ${guy.user.username}** who was attacked by **${theal.nickname} ${theal.user.username}**! You will die at the end of the day!`)
                            bchan.send(`${alive}`)
                            chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
