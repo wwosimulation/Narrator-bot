@@ -570,6 +570,7 @@ module.exports = {
                              );
                              iudi.send(`${alive}`);
                              db.set(`wounded_${tg[x]}`, true);
+                             eat[j] = "0"
                            }
                         }
                           
@@ -606,6 +607,7 @@ module.exports = {
                             );
                             chan.send(`${alive}`);
                             db.set(`wounded_${tg[p]}`, true);
+                            eat[j] = "0"
                           }
                         }
                       }
@@ -911,7 +913,7 @@ module.exports = {
             for (let j = 0 ; j < tg.length ; j++) {
               let chan = message.guild.channels.cache.get(tg[j])
               if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                chan.send(`<:guard:744536167109886023> You have been attacked by **${toSK.nickname} ${toSK.user.username} (Serial Killer)**! You will die at the end of the day!`)
+                chan.send(`<:guard:744536167109886023> You have been attacked by **${THESK.nickname} ${THESK.user.username} (Serial Killer)**! You will die at the end of the day!`)
                 chan.send(`${alive}`)
                 toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                 toSK.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**! He now knows your role!`)
@@ -3233,9 +3235,9 @@ module.exports = {
                           if (maybeal) {
                             if (maybeal.roles.cache.has(alive.id)) {
                               if (bchan.permissionsFor(maybeal).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                let thetg = maybeal  
+                                thetg = maybeal  
                               } else if (chan.permissionsFor(maybeal).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                let theal = maybeal
+                                theal = maybeal
                               }
                             }
                           }
