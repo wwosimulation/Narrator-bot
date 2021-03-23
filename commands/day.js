@@ -3196,6 +3196,7 @@ module.exports = {
                                 if (bchan.permissionsFor(alchd).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                   blackpotion = alchd.nickname
                                   guy = alchd
+                                  lol = bchan
                                   db.set(`blackpotion_${chan.id}`, alchd.nickname)
                                 }
                               }
