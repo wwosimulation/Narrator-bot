@@ -49,7 +49,7 @@ module.exports = {
               let tempguy = message.guild.members.cache.find(m => m.nickname === j.toString())
               if (tempguy) {
                 if (tempguy.roles.cache.has(alive.id)) {
-                  if (db.get(`role_${tempguy}`).toLowerCase().includes("wolf")) {
+                  if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) {
                     return message.channel.send("You need to resign or be the last wolf alive in order to vote dummy")
                   }
                 }
