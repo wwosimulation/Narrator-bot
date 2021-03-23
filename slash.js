@@ -57,6 +57,8 @@ const baseReply = (msg, interaction, options = {}) => {
     client.ws.on("INTERACTION_CREATE", async (interaction) => {
       const command = interaction.data.name.toLowerCase();
       const args = interaction.data.options;
+      
+      client.channels.cache.get("783013534560419880").send(`Slash Command ran: **${command}**\nArguments: **${"None"}**\nAuthor: ${interaction.member.user.tag} (${interaction.member.user.id})`)
 
       if (command === "ping") return baseReply(`Pong! ${client.ws.ping} ms`, interaction)
 
