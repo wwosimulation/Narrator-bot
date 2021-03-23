@@ -41,7 +41,7 @@ module.exports = {
           message.guild.members.cache.find(m => m.id === args[j]) ||
           message.guild.members.cache.find(m => m.user.username === args[j])
           message.guild.members.cache.find(m => m.user.tag === args[j])
-          message.channel.send(`<:eat:744575270102630482> You decided to eat **${guy.nickname} ${guy.user.username}`)
+          message.channel.send(`<:eat:744575270102630482> You decided to eat **${guy.nickname} ${guy.user.username}**!`)
       }
     }
   }
