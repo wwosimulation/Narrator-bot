@@ -61,6 +61,7 @@ module.exports = {
                     } else {
                         db.add(`vlose_${guy.id}`, 1)
                     }
+                    db.set(`winstreak_${guy.id}`, 0)
                     if (guy.presence.status != "offline") {
                         db.add(`xp_${guy.id}`, 15)
                         guy.send(
@@ -97,6 +98,9 @@ module.exports = {
                     db.set(`xpreq_${guy.id}`, 1000)
                 }
                 let content = ""
+                let fwotd = db.get(`firstwinoftheday_${guy.id}`) || -1
+                let today = new Date().getDate()
+                let themsg = `Win as ${args}\t\t${xp}xp`
                 db.add(`${won}_${guy.id}`, 1)
                 db.add(`xp_${guy.id}`, xp)
                 db.add(`winstreak_${guy.id}`, 1)
@@ -112,10 +116,10 @@ module.exports = {
                         new Discord.MessageEmbed()
                         .setTitle("Game ended")
                         .setColor("#008800")
-                        .setDescription(`Win as ${args[0]}:\t\t${xp}xp\nFinished Game:\t\t15xp`)
+                        .setDescription(`${themsg}\nFinished Game:\t\t15xp`)
                     )
+                    themsg += `\nFinished Game:\t\t15xp`
                     db.add(`xp_${guy.id}`, 15)
-                    content += "Finished Game:\t15xp\n"
                 }, 1000)
                 setTimeout(async () => {
                     if (db.get(`winstreak_${guy.id}`) > 1) {
@@ -123,11 +127,25 @@ module.exports = {
                             new Discord.MessageEmbed()
                             .setTitle("Game ended")
                             .setColor("#008800")
-                            .setDescription(`Win as ${args[0]}:\t\t${xp}xp\n${content}Win Streak:\t\t25xp`)
+                            .setDescription(`${themsg}\nWin Streak:\t\t25xp`)
                         )
                         db.add(`xp_${guy.id}`, 25)
+                        themsg += `\nWin Streak:\t\t25xp`
                     }
                 }, 2000)
+                setTimeout(async () => {
+                    if (fwotd < today) {
+                        await t.edit(
+                            new Discord.MessageEmbed()
+                            .setTitle("Game Ended")
+                            .setColor("#008800")
+                            .setDescription(`${themsg}\nFirst win of the day:\t100xp`)
+                        )
+                        db.add(`xp_${guy.id}`, 100)
+                        db.set(`firstwinoftheday_${guy.id}`, today)
+                        themsg += `\nFirst win of the day:\t100xp`
+                    }
+                }, 3000)
             }
         }
 
@@ -136,6 +154,7 @@ module.exports = {
         for (let i = 0 ; i < allPlayers.length ; i++) {
             let guy = message.guild.members.cache.get(allPlayers[i])
             if (guy) {
+                db.set(`winstreak_${guy.id}`, 0)
                 if (guy.presence.status !== "offline" ) {
                     if (!db.get(`xpreq_${guy.id}`)) {
                         db.set(`xpreq_${guy.id}`, 1000)
