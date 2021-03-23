@@ -47,7 +47,7 @@ module.exports = {
         let seerdet = ["Seer", "Detective"]
         let jailerwitch = ["Jailer", "Witch"]
         let alphashaman = ["Alpha Werewolf", "Wolf Shaman"]
-        let skcanni = ["Serial Killer", "Cannibal"]
+        let skcanni = ["Illusionist", "Cannibal"]
         let foolhh = ["Fool", "Headhunter"]
         
         let sd = shuffle(seerdet)
@@ -57,7 +57,7 @@ module.exports = {
         let fh = shuffle(foolhh)
       
         let roles = [
-          ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Serial Killer", "Cursed", "Wolf Seer", "Priest"],
+          ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Illusionist", "Cursed", "Wolf Seer", "Priest"],
           ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Beast Hunter", "Gunner", "Wolf Shaman", "Aura Seer", "Bomber", "Cursed", "Wolf Seer", "Avenger"],
           ["Aura Seer", "Medium", jw[0], "Werewolf", "Doctor", as[0], sd[0], fh[0], "Beast Hunter", "Marksman", "Junior Werewolf", "Tough Guy", sc[0], "Cursed", "Wolf Seer", "Priest"],
           ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Cupid", "Gunner", "Wolf Shaman", "Detective", "Cannibal", "Cursed", "Wolf Seer", "Avenger"],
@@ -94,8 +94,8 @@ module.exports = {
       
         for (let k = 0 ; k < allchan.length ; k++) {
           
-          if (allchan[i] == allchan[i + 1]) {
-          allchan.splice(i + 1, 1)
+          if (allchan[k] == allchan[k + 1]) {
+          allchan.splice(k + 1, 1)
           k = k - 1
             
         }
@@ -382,14 +382,14 @@ module.exports = {
           })
         }
         
-        if (roles[i] == "President") {
+        if (content == "President") {
           setTimeout(() => {
             dayChat.send(`<:president:583672720932208671> Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
             dayChat.send(`${alive}`)
           }, 15000)
         }
         
-        if (roles[i] == "Bandit") {
+        if (content == "Bandit") {
           let bandits = message.guild.channels.cache.filter(c => c.name.startsWith("bandits"))
           let qah = 1
           bandits.forEach(async e => {
