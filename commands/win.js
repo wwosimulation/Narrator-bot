@@ -100,7 +100,7 @@ module.exports = {
                 let content = ""
                 let fwotd = db.get(`firstwinoftheday_${guy.id}`) || -1
                 let today = new Date().getDate()
-                let themsg = `Win as ${args}\t\t${xp}xp`
+                let themsg = `Win as ${args[0]}\t\t${xp}xp`
                 db.add(`${won}_${guy.id}`, 1)
                 db.add(`xp_${guy.id}`, xp)
                 db.add(`winstreak_${guy.id}`, 1)
