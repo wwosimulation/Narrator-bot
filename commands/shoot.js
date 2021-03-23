@@ -44,7 +44,7 @@ module.exports = {
             );
         }
         if (db.get(`did_${message.channel.id}`) == dayCount) return message.channel.send("You already shot today. Get chill pill from dank memer man!")
-        if (db.get(`role_${guy.id}`)) return message.channel.send("Even if you are coupled or sected, you can't shoot the President!")
+        if (db.get(`role_${guy.id}`) == "President") return message.channel.send("Even if you are coupled or sected, you can't shoot the President!")
         dayChat.send(
           `**${message.member.nickname} ${
             message.author.username
