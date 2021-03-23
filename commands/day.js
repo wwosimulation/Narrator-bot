@@ -3204,11 +3204,9 @@ module.exports = {
                 // tg 
                 if (blackpotion != "0") {
                   for (let b = 0 ; b < tg.length ; b++) {
-                    message.channel.send("tg 1")
                     let bchan = message.guild.channels.cache.get(tg[b])
-                    let guard = db.get(`guard_${tg[b]}`)
+                    let guard = db.get(`tough_${tg[b]}`)
                     if (guard == blackpotion || alrole == "Tough Guy") {
-                      message.channel.send("tg 2")
                       if (alrole == "Tough Guy") {
                         blackpotion = "0"
                         if (bchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
