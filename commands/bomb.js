@@ -23,7 +23,7 @@ module.exports = {
       let guy1 = message.guild.members.cache.find(m => m.nickname === args[0]);
       let guy2 = message.guild.members.cache.find(m => m.nickname === args[1]);
       let guy3 = message.guild.members.cache.find(m => m.nickname === args[2]);
-      if (!isNight == "yes")
+      if (isNight != "yes")
         return await message.channel.send(
           "Placing bombs in broad day light is good. You should do it often!"
         );
