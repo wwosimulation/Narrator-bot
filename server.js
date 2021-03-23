@@ -3,9 +3,6 @@ const fs = require("fs");
 const db = require("quick.db");
 const Discord = require("discord.js");
 
-//tictactoe
-const TicTacToe = require('discord-tictactoe');
-
 const client = new Discord.Client();
 
 //Prefix and token from config file
@@ -171,6 +168,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
               let guy = newMember.guild.members.cache.find(m => m.nickname === tag)
               if (guy.roles.cache.has("606140092213624859")) {
                 newMember.guild.channels.cache.find(c => c.name === "day-chat").send(`<:loudmouthed:744571429282119770> The Loudmouth's last will was to reveal **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
+                guy.roles.add("822806480099999774")
               }
             }
           }
