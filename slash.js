@@ -21,6 +21,12 @@ const allCommands = [
     server: sim,
   },
   {
+    command: "timer",
+    description: "Set a timer for a certain amount of time",
+    server: both,
+    options: [{type: 3, name: "Time", description: "length of timer", required: true}]
+  },
+  {
     command: "skip",
     description: "Skip the discussion phase (only after day 5)",
     server: game,
@@ -42,21 +48,22 @@ const baseReply = (msg, interaction, options = {}) => {
   client.on("ready", () => {
     allCommands.forEach((cmd) => {
       cmd.server.forEach((x) => {
+        let data = {
+          name: cmd.command,
+          description: cmd.description,
+        }
+        if(cmd.options) data.options = cmd.options
         client.api
           .applications(client.user.id)
           .guilds(x)
-          .commands.post({
-            data: {
-              name: cmd.command,
-              description: cmd.description,
-            },
-          });
+          .commands.post({data});
       });
     });
 
     client.ws.on("INTERACTION_CREATE", async (interaction) => {
       const command = interaction.data.name.toLowerCase();
       const args = interaction.data.options;
+      console.log(`Slash: ${command}`, args)
       
       client.channels.cache.get("783013534560419880").send(`Slash Command ran: **${command}**\nArguments: **${"None"}**\nAuthor: ${interaction.member.user.tag} (${interaction.member.user.id})`)
 
@@ -67,6 +74,10 @@ const baseReply = (msg, interaction, options = {}) => {
         if (!interaction.member.roles.includes("606138123260264488")) baseReply(`Only a staff member can regenerate the staff list!`, interaction)
         client.emit("stafflist");
         baseReply(`Done!`, interaction)
+      }
+
+      if(command == "timer") {
+        baseReply("Timer failed", interaction)
       }
 
       if (command == "skip") {

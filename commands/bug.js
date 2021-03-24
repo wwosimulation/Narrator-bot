@@ -9,6 +9,7 @@ module.exports = {
             let lol = client.guilds.cache.get('693157346771468289')
             
             lol.channels.cache.find(c => c.name === "ashishbotreportbug").send(args.join(' ') + `\n${t}`)
+            message.channel.send("Bug reported")
         
     }
 }
