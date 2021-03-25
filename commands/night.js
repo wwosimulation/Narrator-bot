@@ -155,7 +155,7 @@ module.exports = {
               dayChat.send(
                 `<:votingme:744572471079993445> Player **${guy.nickname} ${guy.user.username}** could not be lynched!`
               );
-              db.set(`protest_${fcss[i]}`, "no");
+              db.set(`protest_${gwwss[i]}`, "no");
               i = 99;
               lynched = "no";
             }
