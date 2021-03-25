@@ -2881,9 +2881,9 @@ module.exports = {
             // witch
             if (glitch != "0") {
               for (let b = 0; b < witch.length; b++) {
+                console.log(b, witch, witch[b])
                 let potion = db.get(`potion_${witch[b]}`);
                 if (potion == glitch) {
-                  b = 99;
                   db.set(`potion_${witch[b]}`, null);
                   db.set(`witchAbil_${witch[b]}`, "yes");
                   let chan = message.guild.channels.cache.get(witch[b]);
@@ -2896,6 +2896,7 @@ module.exports = {
                   );
                   corruptor.send(`${alive}`);
                   glitch = "0";
+                  b = 99;
                 }
               }
             }
