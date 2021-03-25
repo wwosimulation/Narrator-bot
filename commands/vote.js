@@ -45,7 +45,7 @@ module.exports = {
 
         if (db.get(`role_${message.author.id}`) == "Wolf Seer") {
           if (db.get(`resigned_${message.channel.id}`) != true) {
-            for (let j = 1 ; j <= alive.members.size + dead.members.size ; j++) {
+            for (let j = 1 ; j <= 16 ; j++) {
               let tempguy = message.guild.members.cache.find(m => m.nickname === j.toString())
               if (tempguy) {
                 if (tempguy.roles.cache.has(alive.id)) {
