@@ -478,7 +478,7 @@ module.exports = {
       client.commands.get("startgame").run(message, args, client)
     }
     db.set(`${message.guild.id}_usedChannels`, usedChannels)
-    await client.channels.cache.find(c => c.name === "game-warning").send("Game is starting. You can no longer join. Feel free to spectate!")
+    await client.channels.cache.find(c => c.id === '606123818305585167').send("Game is starting. You can no longer join. Feel free to spectate!")
     db.set("started", "yes")
   }
 };
