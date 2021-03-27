@@ -47,10 +47,9 @@ module.exports = {
       let kww = message.guild.channels.cache.filter(c => c.name === "priv-kitten-wolf").keyArray("id")
       let forger = message.guild.channels.cache.filter(c => c.name === "priv-forger").keyArray("id")
       let zombie = message.guild.channels.cache.filter(c => c.name === "priv-zombie").keyArray("id")
-      let allrandoms = ["rk", "rv", "rrv", "rsv", "rww", "general"]
-      allrandoms.forEach(e => {
-        db.delete(`excludes_${e}`)
-      }
+
+      db.delete(`excludes`)
+
       
       message.guild.channels.cache.get('606132999389708330').updateOverwrite(message.guild.roles.cache.get('606140092213624859').id, {
         SEND_MESSAGES: false,
