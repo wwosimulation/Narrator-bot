@@ -613,7 +613,7 @@ module.exports = {
             let makeitsimple
             if (role.includes("-")) {
               let uyeuh = role.split("-")
-              uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = `${e[0].toUpperCase()}${e.split(1).toLowerCase()}`})
+              uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`})
               makeitsimple = uyeuh.join(" ")
             } else {
               makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
@@ -629,7 +629,7 @@ module.exports = {
               if (ex.includes("-")) {
                 duh = ex.split("-")
                 duh.forEach(e => {
-                  duh[duh.indexOf(e)] = `${e[0].toUpperCase()}${e.split(1).toLowerCase()}`
+                  duh[duh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`
                 })
                 allexc.push(duh.join(" "))
               } else {
