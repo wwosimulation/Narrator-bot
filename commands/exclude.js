@@ -40,7 +40,7 @@ module.exports = {
       if (!roles.includes(arg)) return message.channel.send(`Role \`${arg}\` not found!`)
     }
     for (const argumets of args) {
-      rolestoexclude.push(arg)
+      rolestoexclude.push(arguments)
     }
     db.set(`excludes`, rolestoexclude)
     
