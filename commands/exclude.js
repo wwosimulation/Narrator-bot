@@ -42,6 +42,8 @@ module.exports = {
     for (const argumets of args) {
       rolestoexclude.push(arguments)
     }
+    
+    console.log(rolestoexclude)
     db.set("excludes", rolestoexclude)
     
     message.channel.send("Done! Excluded those roles!")
