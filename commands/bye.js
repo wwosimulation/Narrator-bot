@@ -23,15 +23,15 @@ module.exports = {
             let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c.name))
             ingame.forEach(async e => {
                 let ashish = await e.messages.fetch()
-                let filt = ashish.filter(c => !c.pinned && (Date.now() - c.createdTimestamp < (60*60*24*14)))
-                if (filt.size < 100) {
+                let filt = ashish.filter(c => !c.pinned)
+                console.log(filt.size)
+                if (filt.size < 50) {
                     e.bulkDelete(filt)
                     console.log(`Cleared #${e.name}`)
                 } else {
-                    filt = filt.filter(m => m.size < 101  && (Date.now() - m.createdTimestamp < (60*60*24*14)))
+                    for(let i = 0; i < filt.size; i+50) e.bulkDelete(50)
                     e.bulkDelete(filt)
-                    console.log(`Cleared #${e.name}`)
-                    e.send(`<@${message.author.id}> I could not clear all the messages in this channel! Use \`-c\` here please.`)
+                    console.log(`Bulk cleared #${e.name}`)
                 }
             })
             let tempchannels = message.guild.channels.cache.filter(c => c.parentID === "748959630520090626")
