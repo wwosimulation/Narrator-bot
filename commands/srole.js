@@ -343,9 +343,6 @@ module.exports = {
         
         let guy = message.guild.members.cache.get(allusers[i])
         db.set(`role_${guy.id}`, content)
-        let chan = message.guild.channels.cache.get(allchannels[i][i])
-
-       if (!chan) {
           
           let a = await message.guild.channels.create(`priv-${roles[i]}`, {
             parent: '748959630520090626',
@@ -367,13 +364,7 @@ module.exports = {
             ]
           })
           await a.send(db.get(`roleinfo_${roles[i].replace("-", " ")}`))
-        } else {
-          chan.updateOverwrite(guy.id, {
-            SEND_MESSAGES: true,
-            READ_MESSAGE_HISTORY: true,
-            VIEW_CHANNEL: true
-          })
-        }
+        
         if (roles[i].toLowerCase().includes("wolf")) {
           wwsChat.updateOverwrite(guy.id, {
             SEND_MESSAGES: true,
@@ -477,7 +468,6 @@ module.exports = {
       message.channel.send("I have executed the startgame command myself! You do not need to do it!")
       client.commands.get("startgame").run(message, args, client)
     }
-    db.set(`${message.guild.id}_usedChannels`, usedChannels)
     await client.channels.cache.find(c => c.id === '606123818305585167').send("Game is starting. You can no longer join. Feel free to spectate!")
     db.set("started", "yes")
   }
