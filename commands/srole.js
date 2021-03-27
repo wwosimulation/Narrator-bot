@@ -272,7 +272,7 @@ module.exports = {
         }, 5000)
 
     } else if (args[0].includes("custom")) {
-      let rolelist
+      let rolelist = []
       let randoms = ["rrv", "rv", "rsv", "rww", "rk", "ra", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
       let random = [
         "aura-seer", "avenger", "beast-hunter", "bodyguard", 
