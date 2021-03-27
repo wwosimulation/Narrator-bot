@@ -1,4 +1,4 @@
-const db = require("quick.db")
+
 
 module.exports = {
     name: "bye",
@@ -19,8 +19,8 @@ module.exports = {
                 spec.members.forEach(e => {e.kick(); console.log(`Kicked ${e.user.tag}`)})
             }, 5000)
             message.channel.send('Players have been kicked, I am now clearing channels. (This may take a while)') 
-            let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat"]
-            let ingame = message.guild.channels.cache.filter(c => c.parentID === "606132962752331839" && chans.includes(c.name))
+            let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat", "enter-game", "game-lobby"]
+            let ingame = message.guild.channels.cache.filter(c => chans.includes(c.name))
             ingame.forEach(async e => {
                 let ashish = await e.messages.fetch()
                 let filt = ashish.filter(c => !c.pinned)
@@ -36,9 +36,6 @@ module.exports = {
             })
             let tempchannels = message.guild.channels.cache.filter(c => c.parentID === "748959630520090626")
             tempchannels.forEach(e => e.delete())
-            let emsgs = await message.guild.channels.cache.find(c => c.name === "enter-game").messages.fetch()
-            let oki = emsgs.filter(m => !m.pinned && (Date.now() - m.createdTimestamp < (60*60*24*14)))
-            message.guild.channels.cache.find(c => c.name === "enter-game").bulkDelete(oki)
             let settings = message.guild.channels.cache.filter(c => c.parentID === "606250714355728395")
             settings.forEach(async e => {
                 let oki = await e.messages.fetch()
