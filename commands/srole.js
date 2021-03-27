@@ -339,11 +339,11 @@ module.exports = {
         rolelist.push(args[i])
       }
       rolelist = rolelist.join("\n")
-      rolelist = rolelist.replace(/rrv/g, " random-regular-villager ")
-      rolelist = rolelist.replace(/rv/g, " random-voting ")
-      rolelist = rolelist.replace(/rsv/g, " random-strong-villager ")
-      rolelist = rolelist.replace(/rww/g, " random-werewolf ")
-      rolelist = rolelist.replace(/rk/g, "random-killer ")
+      rolelist = rolelist.replace(/rrv/g, "random-regular-villager")
+      rolelist = rolelist.replace(/rv/g, "random-voting")
+      rolelist = rolelist.replace(/rsv/g, "random-strong-villager")
+      rolelist = rolelist.replace(/rww/g, "random-werewolf")
+      rolelist = rolelist.replace(/rk/g, "random-killer")
       
       rolelist = rolelist.split("\n")
       
