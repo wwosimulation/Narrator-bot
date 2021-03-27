@@ -48,17 +48,7 @@ module.exports = {
                     console.log(`Cleared #${e.name}`)
                 }
             })
-            let channels = db.get(`${message.guild.id}_usedChannels`)
-            channels.forEach(async e => {
-                let chan = message.guild.channels.cache.get(e)
-                let msgs = await chan.messages.fetch()
-                let total = await msgs.filter(m => !m.pinned && (Date.now() - m.createdTimestamp < (60*60*24*14)))
-                
-                if (total.size > 0) {
-                    e.bulkDelete(total)
-                    console.log(`Cleared #${e.name}`)
-                }
-            })
+            
             message.channel.send("All channels have been queued to be cleared. Be sure to check behind me and make sure they actually did clear! If not, use `-c` there to finish the job")
         }
     }

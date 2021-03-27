@@ -36,6 +36,9 @@ module.exports = {
       !message.member.roles.cache.has(narrator.id)
     )
       return;
+    args.forEach(arg => {
+      args[args.indexOf(arg)] = arg.toLowerCase()
+    })
     if (args[0] == "quick") {
         let allplayers = []
         for (let x = 0 ; x < alive.members.size ; x++) {
@@ -268,10 +271,36 @@ module.exports = {
           client.commands.get("startgame").run(message, args, client)
         }, 5000)
 
-    } else if (args[0] == "custom") {
+    } else if (args[0].includes("custom")) {
+      let rolelist
+      let randoms = ["rrv", "rv", "rsv", "rww", "rk", "ra", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
+      let random = [
+        "aura-seer", "avenger", "beast-hunter", "bodyguard", 
+        "cupid", "cursed", "doctor", "flower-child", 
+        "grave-robber", "grumpy-grandma", "loudmouth", 
+        "marksman", "mayor", "pacifist", "priest", 
+        "red-lady", "seer-apprentice", "sheriff", "spirit-seer", 
+        "tough-guy", "villager", "witch", "president",
+        "detective", "forger", "fortune-teller", 
+        "gunner", "jailer", "medium", "seer", 
+        "alpha-werewolf", "guardian-wolf", "junior-werewolf",
+        "kitten-wolf", "nightmare-werewolf", "shadow-wolf",
+        "werewolf", "werewolf-berserk", "wolf-pacifist", 
+        "wolf-seer", "wolf-shaman", "sorcerer", 
+        "alchemist", "arsonist", "bandit", "bomber", 
+        "cannibal", "corruptor", "illusionist", 
+        "sect-leader", "serial-killer", "zombie", "fool",
+        "headhunter"]
+      let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch"]
+      let rsv = ["detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer"]
+      let rww = ["alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman"]
+      let rk = ["alchemist", "arsonist", "bandit", "bomber", "cannibal", "corruptor", "illusionist", "sect-leader", "serial-killer", "zombie"]
+      let rv = ["fool", "headhunter"]
       for (let i = 1 ; i < args.length ; i++) {
-        let chan = message.guild.channels.cache.find(c => c.name === `priv-${args[i]}`)
-        if (!chan) return message.channel.send(`Channel ${args[i]} was not found!`)
+        if (!randoms.includes(args[i])) {
+          let chan = message.guild.channels.cache.find(c => c.name === `priv-${args[i]}`)
+          if (!chan) return message.channel.send(`Channel ${args[i]} was not found!`)
+        }
       }
       for (let i = 1 ; i <= alive.members.size ; i++) {
         let guy = message.guild.members.cache.find(m => m.nickname === i.toString())
@@ -306,6 +335,101 @@ module.exports = {
       
       let roles = []
       for (let i = 1 ; i < args.length ; i++) {
+        rolelist.push(args[i])
+        let excludes = db.get(`excludes`) || []
+        // rrv
+        if (["rrv", "random-regular-villager"].includes(args[i])) {
+          
+          excludes.forEach(role => {
+            let indexrole = rrv.indexOf(role)
+            if (indexrole > -1) {
+              rrv.splice(indexrole, 1)
+            }
+            let torole = rrv[Math.floor(Math.random() * rrv.length)]
+            args[i] = torole
+          })
+        }
+        
+        //rsv
+        if (["rsv", "random-strong-villager"].includes(args[i])) {
+          
+          excludes.forEach(role => {
+            let indexrole = rsv.indexOf(role)
+            if (indexrole > -1) {
+              rsv.splice(indexrole, 1)
+            }
+            let torole = rsv[Math.floor(Math.random() * rsv.length)]    
+            if (torole == "jailer") {
+              rsv.splice(rsv.indexOf(torole), 1)
+            }
+            args[i] = torole
+          })
+        }
+        
+       //rww
+        if (["rww", "random-werewolf"].includes(args[i])) {
+          
+          excludes.forEach(role => {
+            let indexrole = rww.indexOf(role)
+            if (indexrole > -1) {
+              rww.splice(indexrole, 1)
+            }
+            let torole = rww[Math.floor(Math.random() * rww.length)]
+            args[i] = torole
+          })
+        }
+        
+        //rk
+        if (["rk", "random-killer"].includes(args[i])) {
+          
+          excludes.forEach(role => {
+            let indexrole = rk.indexOf(role)
+            if (indexrole > -1) {
+              rk.splice(indexrole, 1)
+            }
+            let torole = random[Math.floor(Math.random() * random.length)]    
+            if (torole == "sect-leader") {
+              rk.splice(rk.indexOf(torole), 1)
+            }
+            args[i] = torole
+          })
+        }
+        
+        //rv
+        if (["rv", "random-voting"].includes(args[i])) {
+            
+            excludes.forEach(role => {
+            let indexrole = rv.indexOf(role)
+            if (indexrole > -1) {
+              rv.splice(indexrole, 1)
+            }
+            let torole = rv[Math.floor(Math.random() * rv.length)]
+            args[i] = torole
+          })
+        }
+        
+        //general
+        if (["random"].includes(args[i])) {
+          
+            excludes.forEach(role => {
+            let indexrole = random.indexOf(role)
+            if (indexrole > -1) {
+              random.splice(indexrole, 1)
+            }
+            let torole = random[Math.floor(Math.random() * random.length)]
+            if (["president", "cupid", "jailer", "sect-leader"].includes(torole)) {
+              random.splice(random.indexOf(torole), 1)
+              if (torole == "Jailer") {
+                rsv.splice(rsv.indexOf(torole), 1)
+              }
+              if (torole == "sect-leader") {
+                rk.splice(rk.indexOf(torole), 1)
+              }
+            }
+            args[i] = torole
+          })
+        }
+        
         roles.push(args[i])
       }
       let channeloccupied
@@ -343,9 +467,6 @@ module.exports = {
         
         let guy = message.guild.members.cache.get(allusers[i])
         db.set(`role_${guy.id}`, content)
-        let chan = message.guild.channels.cache.get(allchannels[i][i])
-
-       if (!chan) {
           
           let a = await message.guild.channels.create(`priv-${roles[i]}`, {
             parent: '748959630520090626',
@@ -367,13 +488,7 @@ module.exports = {
             ]
           })
           await a.send(db.get(`roleinfo_${roles[i].replace("-", " ")}`))
-        } else {
-          chan.updateOverwrite(guy.id, {
-            SEND_MESSAGES: true,
-            READ_MESSAGE_HISTORY: true,
-            VIEW_CHANNEL: true
-          })
-        }
+        
         if (roles[i].toLowerCase().includes("wolf")) {
           wwsChat.updateOverwrite(guy.id, {
             SEND_MESSAGES: true,
@@ -443,6 +558,47 @@ module.exports = {
         db.set(`atag_${guy.id}`, null)
         db.set(`jwwtag_${guy.id}`, null)
         db.set(`mouth_${guy.id}`, null)
+        
+        if (args[0].includes("customhid")) {
+          let lol = await dayChat.send(`Role List is Hidden`)
+          lol.pin()
+        } else {
+          let emorole = ""
+          rolelist.forEach(role => {
+            let makeitsimple
+            if (role.includes("-")) {
+              makeitsimple = role.replace(
+                /(\w+)-(\w+)/g,
+                (_, m1, m2) =>
+                  `${m1[0].toUpperCase()}${m1
+                    .slice(1)
+                    .toLowerCase()} ${m2[0].toUpperCase()}${m2
+                    .slice(1)
+                    .toLowerCase()}`
+              );
+            } else {
+              makeitsimple = `${roles[i][0].toUpperCase()}${roles[i].slice(1).toLowerCase()}`
+            }
+            let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace("-", "_")) || ""
+            emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
+          })
+          let excludes = db.get(`excludes`) || []
+          let allexc = []
+          if (excludes.length > 0) {
+            excludes.forEach(ex => {
+              let duh
+              if (ex.includes("-")) {
+                duh = ex.replace(/(\w+)-(\w+)/g, (_, m1, m2) => `${m1[0].toUpperCase}${m1.slice(1).toLowerCase()} ${m2[0].toUpperCase()}${m2.slice(1).toLowerCase()}`)
+                allexc.push(duh)
+              } else {
+                allexc.push(ex.replace(ex[0], ex[0].toUpperCase()))
+              }
+            })
+            emorole += `\n_Roles excluded are: **${allexc.join("**, **")}**_`
+          }
+          let lol = await dayChat.send(emorole)
+          lol.pin()
+        }
       }
       /*for (let i = 0 ; i < allusers.length ; i++) {
         let guy = message.guild.members.cache.get(allusers[i])
@@ -477,7 +633,6 @@ module.exports = {
       message.channel.send("I have executed the startgame command myself! You do not need to do it!")
       client.commands.get("startgame").run(message, args, client)
     }
-    db.set(`${message.guild.id}_usedChannels`, usedChannels)
     await client.channels.cache.find(c => c.id === '606123818305585167').send("Game is starting. You can no longer join. Feel free to spectate!")
     db.set("started", "yes")
   }
