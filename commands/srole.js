@@ -422,7 +422,7 @@ module.exports = {
         }
         
         //general
-        if (["random"].includes(args[i])) {
+        if (["ra", "random"].includes(args[i])) {
           
             excludes.forEach(role => {
             let indexrole = random.indexOf(role)
