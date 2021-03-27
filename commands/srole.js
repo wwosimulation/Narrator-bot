@@ -340,11 +340,11 @@ module.exports = {
       }
       rolelist = rolelist.join("\n")
       rolelist = rolelist.replace(/rrv/g, "random-regular-villager")
-      rolelist.replace(/rv/g, "random-regular-villager")
-      rolelist.replace(/rsv/g, "random-strong-villager")
-      rolelist.replace(/rww/g, "random-werewolf")
-      rolelist.replace(/rk/g, "random-killer")
-      rolelist.replace(/ra/g, "random")
+      rolelist = rolelist.replace(/rv/g, "random-regular-villager")
+      rolelist = rolelist.replace(/rsv/g, "random-strong-villager")
+      rolelist = rolelist.replace(/rww/g, "random-werewolf")
+      rolelist = rolelist.replace(/rk/g, "random-killer")
+      rolelist = rolelist.replace(/ra/g, "random")
       rolelist = rolelist.split("\n")
       
       for (let i = 1 ; i < args.length ; i++) {
@@ -620,6 +620,7 @@ module.exports = {
             }
             let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace(/-/g, "_")) || ""
             emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
+            rolelist[rolelist.indexOf(role)] = `nono${role}`
           })
           let excludes = db.get(`excludes`) || []
           let allexc = []
