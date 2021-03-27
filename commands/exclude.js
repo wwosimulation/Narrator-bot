@@ -8,11 +8,12 @@ module.exports = {
     let narrator = message.guild.roles.cache.find(r => r.name === "Narrator")
     let mininarr = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")
     
+    if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return
+    
+    
     args.forEach(arg => {
       args[args.indexOf(arg)] = arg.toLowerCase()
     })
-    
-    if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return
     
     
     let roles = [
@@ -39,7 +40,7 @@ module.exports = {
     for (const arg of args) {
       if (!roles.includes(arg)) return message.channel.send(`Role \`${arg}\` not found!`)
     }
-    for (const argumets of args) {
+    for (const arguments of args) {
       rolestoexclude.push(arguments)
     }
     
