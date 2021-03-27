@@ -582,7 +582,7 @@ module.exports = {
                     .toLowerCase()}`
               );
             } else {
-              makeitsimple = `${roles[i][0].toUpperCase()}${roles[i].slice(1).toLowerCase()}`
+              makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
             }
             let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace("-", "_")) || ""
             emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
