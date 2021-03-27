@@ -338,6 +338,14 @@ module.exports = {
       for (let i = 1 ; i < args.length ; i++) {
         rolelist.push(args[i])
       }
+      rolelist = rolelist.join("\n")
+      rolelist = rolelist.replace(/rrv/g, "random-regular-villager")
+      rolelist.replace(/rv/g, "random-regular-villager")
+      rolelist.replace(/rsv/g, "random-strong-villager")
+      rolelist.replace(/rww/g, "random-werewolf")
+      rolelist.replace(/rk/g, "random-killer")
+      rolelist.replace(/ra/g, "random")
+      rolelist = rolelist.split("\n")
       
       for (let i = 1 ; i < args.length ; i++) {
         
@@ -605,7 +613,7 @@ module.exports = {
             let makeitsimple
             if (role.includes("-")) {
               let uyeuh = role.split("-")
-              uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = e[0].toUpperCase()})
+              uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = `${e[0].toUpperCase()}${e.split(1).toLowerCase()}`})
               makeitsimple = uyeuh.join(" ")
             } else {
               makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
@@ -621,7 +629,7 @@ module.exports = {
               if (ex.includes("-")) {
                 duh = ex.split("-")
                 duh.forEach(e => {
-                  duh[duh.indexOf(e)] = e[0].toUpperCase
+                  duh[duh.indexOf(e)] = `${e[0].toUpperCase()}${e.split(1).toLowerCase()}`
                 })
                 allexc.push(duh.join(" "))
               } else {
