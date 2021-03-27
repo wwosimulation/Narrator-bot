@@ -273,7 +273,7 @@ module.exports = {
 
     } else if (args[0].includes("custom")) {
       let rolelist = []
-      let randoms = ["rrv", "rv", "rsv", "rww", "rk", "ra", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
+      let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
       let random = [
         "aura-seer", "avenger", "beast-hunter", "bodyguard", 
         "cupid", "cursed", "doctor", "flower-child", 
@@ -339,12 +339,12 @@ module.exports = {
         rolelist.push(args[i])
       }
       rolelist = rolelist.join("\n")
-      rolelist = rolelist.replace(/ rrv /g, " random-regular-villager ")
-      rolelist = rolelist.replace(/ rv /g, " random-voting ")
-      rolelist = rolelist.replace(/ rsv /g, " random-strong-villager ")
-      rolelist = rolelist.replace(/ rww /g, " random-werewolf ")
-      rolelist = rolelist.replace(/ rk /g, " random-killer ")
-      rolelist = rolelist.replace(/ ra /g, " random ")
+      rolelist = rolelist.replace(/rrv/g, " random-regular-villager ")
+      rolelist = rolelist.replace(/rv/g, " random-voting ")
+      rolelist = rolelist.replace(/rsv/g, " random-strong-villager ")
+      rolelist = rolelist.replace(/rww/g, " random-werewolf ")
+      rolelist = rolelist.replace(/rk/g, "random-killer ")
+      
       rolelist = rolelist.split("\n")
       
       for (let i = 1 ; i < args.length ; i++) {
