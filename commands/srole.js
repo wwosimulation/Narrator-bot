@@ -563,12 +563,13 @@ module.exports = {
         db.set(`atag_${guy.id}`, null)
         db.set(`jwwtag_${guy.id}`, null)
         db.set(`mouth_${guy.id}`, null)
-        
+
+                  let emorole = ""
+
         if (args[0].includes("customhid")) {
           let lol = await dayChat.send(`Role List is Hidden`)
           lol.pin()
         } else {
-          let emorole = ""
           rolelist.forEach(role => {
             let makeitsimple
             if (role.includes("-")) {
@@ -584,7 +585,7 @@ module.exports = {
             } else {
               makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
             }
-            let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace("-", "_")) || ""
+            let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace(/-/g, "_")) || ""
             emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
           })
           let excludes = db.get(`excludes`) || []
@@ -593,17 +594,21 @@ module.exports = {
             excludes.forEach(ex => {
               let duh
               if (ex.includes("-")) {
-                duh = ex.replace(/(\w+)-(\w+)/g, (_, m1, m2) => `${m1[0].toUpperCase}${m1.slice(1).toLowerCase()} ${m2[0].toUpperCase()}${m2.slice(1).toLowerCase()}`)
-                allexc.push(duh)
+                duh = ex.split("-")
+                duh.forEach(e => {
+                  duh[duh.indexOf(e)] = e[0].toUpperCase
+                })
+                allexc.push(duh.join(" "))
               } else {
                 allexc.push(ex.replace(ex[0], ex[0].toUpperCase()))
               }
             })
             emorole += `\n_Roles excluded are: **${allexc.join("**, **")}**_`
           }
+        }
+        
           let lol = await dayChat.send(emorole)
           lol.pin()
-        }
       }
       /*for (let i = 0 ; i < allusers.length ; i++) {
         let guy = message.guild.members.cache.get(allusers[i])
