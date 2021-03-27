@@ -2,7 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
   name: "eat",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-cannibal") {
       // getting all the variables
       let isNight = db.get(`isNight_${message.guild.id}`)
@@ -40,7 +41,7 @@ module.exports = {
           message.guild.members.cache.find(m => m.id === args[j]) ||
           message.guild.members.cache.find(m => m.user.username === args[j])
           message.guild.members.cache.find(m => m.user.tag === args[j])
-          message.channel.send(`<:eat:744575270102630482> You decided to eat **${guy.nickname} ${guy.user.username}`)
+          message.channel.send(`<:eat:744575270102630482> You decided to eat **${guy.nickname} ${guy.user.username}**!`)
       }
     }
   }

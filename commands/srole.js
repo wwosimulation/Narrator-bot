@@ -4,7 +4,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "srole",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     function random(x) {
       return Math.floor(Math.random() * x.length)
     }
@@ -27,12 +28,17 @@ module.exports = {
     let bandits = message.guild.channels.cache.find(c => c.name === "bandits")
     let sl = message.guild.channels.cache.find(c => c.name === `sect-members`)
     let zomb = message.guild.channels.cache.find(c => c.name === "zombies")
+    db.set(`${message.guild.id}_usedChannels`, [])
+    let usedChannels = []
 
     if (
       !message.member.roles.cache.has(mininarr.id) &&
       !message.member.roles.cache.has(narrator.id)
     )
       return;
+    args.forEach(arg => {
+      args[args.indexOf(arg)] = arg.toLowerCase()
+    })
     if (args[0] == "quick") {
         let allplayers = []
         for (let x = 0 ; x < alive.members.size ; x++) {
@@ -44,7 +50,7 @@ module.exports = {
         let seerdet = ["Seer", "Detective"]
         let jailerwitch = ["Jailer", "Witch"]
         let alphashaman = ["Alpha Werewolf", "Wolf Shaman"]
-        let skcanni = ["Serial Killer", "Cannibal"]
+        let skcanni = ["Illusionist", "Cannibal"]
         let foolhh = ["Fool", "Headhunter"]
         
         let sd = shuffle(seerdet)
@@ -54,7 +60,7 @@ module.exports = {
         let fh = shuffle(foolhh)
       
         let roles = [
-          ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Serial Killer", "Cursed", "Wolf Seer", "Priest"],
+          ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Illusionist", "Cursed", "Wolf Seer", "Priest"],
           ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Beast Hunter", "Gunner", "Wolf Shaman", "Aura Seer", "Bomber", "Cursed", "Wolf Seer", "Avenger"],
           ["Aura Seer", "Medium", jw[0], "Werewolf", "Doctor", as[0], sd[0], fh[0], "Beast Hunter", "Marksman", "Junior Werewolf", "Tough Guy", sc[0], "Cursed", "Wolf Seer", "Priest"],
           ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Cupid", "Gunner", "Wolf Shaman", "Detective", "Cannibal", "Cursed", "Wolf Seer", "Avenger"],
@@ -91,8 +97,8 @@ module.exports = {
       
         for (let k = 0 ; k < allchan.length ; k++) {
           
-          if (allchan[i] == allchan[i + 1]) {
-          allchan.splice(i + 1, 1)
+          if (allchan[k] == allchan[k + 1]) {
+          allchan.splice(k + 1, 1)
           k = k - 1
             
         }
@@ -128,12 +134,13 @@ module.exports = {
                             ]
                         })
                         await uwu.send(`${db.get(`roleinfo_${role.toLowerCase()}`)}`).then(msg => msg.pin())
-                        allchan.push(uwu.id)
+                        usedChannels.push(uwu.id)
                         seechan = uwu.id
                     }
                 }
             }
             let thechan = message.guild.channels.cache.get(seechan)
+            usedChannels.push(thechan.id)
             db.set(`role_${guy.id}`, role)
             allchan.splice(allchan.indexOf(seechan), 1)
             thechan.updateOverwrite(guy.id, {
@@ -167,6 +174,7 @@ module.exports = {
           client.commands.get("startgame").run(message, args, client)
       }, 3000)
     } else if (args[0] == "sandbox") {
+      message.channel.send("Sandbox hasn't been implemented yet, use the sandbox list with -srole custom")
     } else if (args[0] == "ranked") {
       let rrv = ["Aura Seer", "Avenger", "Beast Hunter", "Bodyguard", "Doctor", "Flower Child", "Grumpy Grandma", "Loudmouth", "Marksman", "Priest", "Red Lady", "Sheriff", "Spirit Seer", "Tough Guy", "Villager", "Witch"]
       let rww = ["Alpha Werewolf", "Guardian Wolf", "Junior Werewolf", "Nightmare Werewolf", "Shadow Wolf", "Werewolf Berserk", "Wolf Pacifist", "Wolf Seer", "Wolf Shaman"]
@@ -244,7 +252,7 @@ module.exports = {
               }
             ]
           })
-
+          
           if (newrole[j].toLowerCase().includes("wolf")) {
             wwsChat.updateOverwrite(guy.id, {
               SEND_MESSAGES: true,
@@ -263,10 +271,36 @@ module.exports = {
           client.commands.get("startgame").run(message, args, client)
         }, 5000)
 
-    } else if (args[0] == "custom") {
+    } else if (args[0].includes("custom")) {
+      let rolelist = []
+      let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
+      let random = [
+        "aura-seer", "avenger", "beast-hunter", "bodyguard", 
+        "cupid", "cursed", "doctor", "flower-child", 
+        "grave-robber", "grumpy-grandma", "loudmouth", 
+        "marksman", "mayor", "pacifist", "priest", 
+        "red-lady", "seer-apprentice", "sheriff", "spirit-seer", 
+        "tough-guy", "villager", "witch", "president",
+        "detective", "forger", "fortune-teller", 
+        "gunner", "jailer", "medium", "seer", 
+        "alpha-werewolf", "guardian-wolf", "junior-werewolf",
+        "kitten-wolf", "nightmare-werewolf", "shadow-wolf",
+        "werewolf", "werewolf-berserk", "wolf-pacifist", 
+        "wolf-seer", "wolf-shaman", "sorcerer", 
+        "alchemist", "arsonist", "bandit", "bomber", 
+        "cannibal", "corruptor", "illusionist", 
+        "sect-leader", "serial-killer", "zombie", "fool",
+        "headhunter"]
+      let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch"]
+      let rsv = ["detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer"]
+      let rww = ["alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman"]
+      let rk = ["alchemist", "arsonist", "bandit", "bomber", "cannibal", "corruptor", "illusionist", "sect-leader", "serial-killer", "zombie"]
+      let rv = ["fool", "headhunter"]
       for (let i = 1 ; i < args.length ; i++) {
-        let chan = message.guild.channels.cache.find(c => c.name === `priv-${args[i]}`)
-        if (!chan) return message.channel.send(`Channel ${args[i]} was not found!`)
+        if (!randoms.includes(args[i])) {
+          let chan = message.guild.channels.cache.find(c => c.name === `priv-${args[i]}`)
+          if (!chan) return message.channel.send(`Channel ${args[i]} was not found!`)
+        }
       }
       for (let i = 1 ; i <= alive.members.size ; i++) {
         let guy = message.guild.members.cache.find(m => m.nickname === i.toString())
@@ -276,8 +310,139 @@ module.exports = {
       if (args.length - 1 != alive.members.size) {
         return message.channel.send("The number of roles do not match the number of players!")
       }
+      
+      // checking if any player has a channel
+      let exists = false
+      let allchan =  message.guild.channels.cache.filter(c => c.name.startsWith("priv"));
+      for (let a = 0 ; a < allchan.keyArray("id").length ; a++) {
+        let chan = message.guild.channels.cache.get(allchan.keyArray("id")[a])
+        if (chan) {
+          for (let b = 1 ; b <= alive.members.size ; b++) {
+            let tt = message.guild.members.cache.find(m => m.nickname === b.toString())
+            if (tt) {
+              if (chan.permissionsFor(tt).has(["VIEW_CHANNEL"])) {
+                 exists = true
+              }
+            }
+          }
+        }
+      }
+      if (exists == true) {
+        message.channel.send("A player has a channel occupied already! Use `+nmanual [player number] [role]` to remove them from their channel!")
+        client.commands.get("playerinfo").run(message, args, client)
+        return ;
+      }
+      
       let roles = []
+      
       for (let i = 1 ; i < args.length ; i++) {
+        rolelist.push(args[i])
+      }
+      rolelist = rolelist.join("\n")
+      rolelist = rolelist.replace(/rrv/g, "random-regular-villager")
+      rolelist = rolelist.replace(/rv/g, "random-voting")
+      rolelist = rolelist.replace(/rsv/g, "random-strong-villager")
+      rolelist = rolelist.replace(/rww/g, "random-werewolf")
+      rolelist = rolelist.replace(/rk/g, "random-killer")
+      
+      rolelist = rolelist.split("\n")
+      
+      for (let i = 1 ; i < args.length ; i++) {
+        
+        let excludes = db.get(`excludes`) || []
+        // rrv
+        if (["rrv", "random-regular-villager"].includes(args[i])) {
+          
+          excludes.forEach(role => {
+            let indexrole = rrv.indexOf(role)
+            if (indexrole > -1) {
+              rrv.splice(indexrole, 1)
+            }
+            let torole = rrv[Math.floor(Math.random() * rrv.length)]
+            args[i] = torole
+          })
+        }
+        
+        //rsv
+        if (["rsv", "random-strong-villager"].includes(args[i])) {
+          
+          excludes.forEach(role => {
+            let indexrole = rsv.indexOf(role)
+            if (indexrole > -1) {
+              rsv.splice(indexrole, 1)
+            }
+            let torole = rsv[Math.floor(Math.random() * rsv.length)]    
+            if (torole == "jailer") {
+              rsv.splice(rsv.indexOf(torole), 1)
+            }
+            args[i] = torole
+          })
+        }
+        
+       //rww
+        if (["rww", "random-werewolf"].includes(args[i])) {
+          
+          excludes.forEach(role => {
+            let indexrole = rww.indexOf(role)
+            if (indexrole > -1) {
+              rww.splice(indexrole, 1)
+            }
+            let torole = rww[Math.floor(Math.random() * rww.length)]
+            args[i] = torole
+          })
+        }
+        
+        //rk
+        if (["rk", "random-killer"].includes(args[i])) {
+          
+          excludes.forEach(role => {
+            let indexrole = rk.indexOf(role)
+            if (indexrole > -1) {
+              rk.splice(indexrole, 1)
+            }
+            let torole = random[Math.floor(Math.random() * random.length)]    
+            if (torole == "sect-leader") {
+              rk.splice(rk.indexOf(torole), 1)
+            }
+            args[i] = torole
+          })
+        }
+        
+        //rv
+        if (["rv", "random-voting"].includes(args[i])) {
+            
+            excludes.forEach(role => {
+            let indexrole = rv.indexOf(role)
+            if (indexrole > -1) {
+              rv.splice(indexrole, 1)
+            }
+            let torole = rv[Math.floor(Math.random() * rv.length)]
+            args[i] = torole
+          })
+        }
+        
+        //general
+        if (["ra", "random"].includes(args[i])) {
+          
+            excludes.forEach(role => {
+            let indexrole = random.indexOf(role)
+            if (indexrole > -1) {
+              random.splice(indexrole, 1)
+            }
+            let torole = random[Math.floor(Math.random() * random.length)]
+            if (["president", "cupid", "jailer", "sect-leader"].includes(torole)) {
+              random.splice(random.indexOf(torole), 1)
+              if (torole == "Jailer") {
+                rsv.splice(rsv.indexOf(torole), 1)
+              }
+              if (torole == "sect-leader") {
+                rk.splice(rk.indexOf(torole), 1)
+              }
+            }
+            args[i] = torole
+          })
+        }
+        
         roles.push(args[i])
       }
       let channeloccupied
@@ -315,9 +480,6 @@ module.exports = {
         
         let guy = message.guild.members.cache.get(allusers[i])
         db.set(`role_${guy.id}`, content)
-        let chan = message.guild.channels.cache.get(allchannels[i][i])
-
-       if (!chan) {
           
           let a = await message.guild.channels.create(`priv-${roles[i]}`, {
             parent: '748959630520090626',
@@ -339,13 +501,7 @@ module.exports = {
             ]
           })
           await a.send(db.get(`roleinfo_${roles[i].replace("-", " ")}`))
-        } else {
-          chan.updateOverwrite(guy.id, {
-            SEND_MESSAGES: true,
-            READ_MESSAGE_HISTORY: true,
-            VIEW_CHANNEL: true
-          })
-        }
+        
         if (roles[i].toLowerCase().includes("wolf")) {
           wwsChat.updateOverwrite(guy.id, {
             SEND_MESSAGES: true,
@@ -353,9 +509,70 @@ module.exports = {
             READ_MESSAGE_HISTORY: true
           })
         }
+        
+        if (content == "President") {
+          setTimeout(() => {
+            dayChat.send(`<:president:583672720932208671> Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
+            dayChat.send(`${alive}`)
+          }, 15000)
+        }
+        
+        if (content == "Bandit") {
+          let bandits = message.guild.channels.cache.filter(c => c.name.startsWith("bandits"))
+          let qah = 1
+          bandits.forEach(async e => {
+            let occupied = false
+            for (let jj = 1 ; jj < 17 ; jj++) {
+              let gyu = message.guild.members.cache.find(m => m.nickname === jj.toString())
+              if (gyu) {
+                if (e.permissionsFor(gyu).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                  occupied = true
+                }
+              }
+            } 
+            if (occupied != true) {
+              e.updateOverwrite(guy.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true
+              })
+            }
+            if (occupied == true) {
+              if (qah == bandits.keyArray("id").length) {
+                let t = await message.guild.channels.create("bandits", {
+                  parent: "606250714355728395",
+                  permissionOverwrites: [
+                    {
+                      id: guy.id,
+                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]
+                    }, 
+                    {
+                      id: message.guild.id,
+                      deny: ["VIEW_CHANNEL"]
+                    },
+                    {
+                      id: narrator.id,
+                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"]
+                    },
+                    {
+                      id: mininarr.id,
+                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"]
+                    }
+                  ]
+                })
+                let a = await t.send(`${alive}`)
+                setTimeout(() => {
+                  a.delete()
+                }, 3000)
+              }
+            }
+          })
+        }
         db.set(`atag_${guy.id}`, null)
         db.set(`jwwtag_${guy.id}`, null)
         db.set(`mouth_${guy.id}`, null)
+
+        
       }
       /*for (let i = 0 ; i < allusers.length ; i++) {
         let guy = message.guild.members.cache.get(allusers[i])
@@ -386,9 +603,52 @@ module.exports = {
           }
         }
       }*/
+      
+      let emorole = ""
+        if (args[0].includes("customhid")) {
+          let lol = await dayChat.send(`Role List is Hidden`)
+          lol.pin()
+        } else {
+          rolelist.forEach(role => {
+            let makeitsimple
+            if (role.includes("-")) {
+              let uyeuh = role.split("-")
+              uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`})
+              makeitsimple = uyeuh.join(" ")
+            } else {
+              makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
+            }
+            let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace(/-/g, "_")) || ""
+            emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
+            rolelist[rolelist.indexOf(role)] = `nono${role}`
+          })
+          let excludes = db.get(`excludes`) || []
+          let allexc = []
+          if (excludes.length > 0) {
+            excludes.forEach(ex => {
+              let duh
+              if (ex.includes("-")) {
+                duh = ex.split("-")
+                duh.forEach(e => {
+                  duh[duh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`
+                })
+                allexc.push(duh.join(" "))
+              } else {
+                allexc.push(ex.replace(ex[0], ex[0].toUpperCase()))
+              }
+            })
+            emorole += `\n_Roles excluded are: **${allexc.join("**, **")}**_`
+          }
+        }
+        let lol = await dayChat.send(emorole)
+        lol.pin()
+    
+    
       message.channel.send(embed)
+      message.channel.send("I have executed the startgame command myself! You do not need to do it!")
+      client.commands.get("startgame").run(message, args, client)
     }
-    await client.channels.cache.find(c => c.name === "game-warning").send("Game is starting. You can no longer join. Feel free to spectate!")
+    await client.channels.cache.find(c => c.id === '606123818305585167').send("Game is starting. You can no longer join. Feel free to spectate!")
     db.set("started", "yes")
   }
 };

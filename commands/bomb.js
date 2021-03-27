@@ -9,7 +9,8 @@ const db = require("quick.db");
 module.exports = {
   name: "bomb",
   aliases: ["explode"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-bomber") {
       let night = await db.fetch(`nightCount_${message.guild.id}`);
       let didCmd = await db.fetch(`didCmd_${message.channel.id}`);
@@ -22,7 +23,7 @@ module.exports = {
       let guy1 = message.guild.members.cache.find(m => m.nickname === args[0]);
       let guy2 = message.guild.members.cache.find(m => m.nickname === args[1]);
       let guy3 = message.guild.members.cache.find(m => m.nickname === args[2]);
-      if (!isNight == "yes")
+      if (isNight != "yes")
         return await message.channel.send(
           "Placing bombs in broad day light is good. You should do it often!"
         );

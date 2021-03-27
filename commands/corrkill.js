@@ -1,5 +1,6 @@
 module.exports = {
     name: "corrkill",
+    gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "commands") {
             let guy = message.guild.members.cache.find(m => m.nickname === args[0])

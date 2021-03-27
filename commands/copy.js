@@ -3,6 +3,7 @@ const Discord = require("discord.js")
 
 module.exports = {
     name: "copy",
+    gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-doppelganger") {
             const night = db.get(`nightCount_${message.guild.id}`) || 1

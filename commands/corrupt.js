@@ -2,6 +2,7 @@ const db = require("quick.db")
 
 module.exports = {
     name: "corrupt",
+    gameOnly: true,
     aliases: ["glitch"],
     run: async (message, args, client) => {
         if (message.channel.name == "priv-corruptor") {

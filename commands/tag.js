@@ -3,9 +3,11 @@ const db = require("quick.db");
 module.exports = {
   name: "tag",
   aliases: ["revenge", "avenge", "target"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     let night = db.get(`nightCount_${message.guild.id}`) || 1
-    let isNight = db.get(`nightCount_${message.guild.id}`) || "yes"
+    let isNight = db.get(`isNight_${message.guild.id}`) || "yes"
+    let revealed = message.guild.roles.cache.find(r => r.name === "Revealed")
     let jtag = await db.fetch(`jwwtag_${message.author.id}`);
     let atag = await db.fetch(`atag_${message.author.id}`) 
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
@@ -101,6 +103,7 @@ module.exports = {
         }
       }
      
+      if (guy.roles.cache.has(revealed.id)) return message.channel.send("That player has already been revealed! Revealing them just is useless.")
       let role = db.get(`role_${guy.id}`)
       
       // check if the player tagged is a President
@@ -126,7 +129,7 @@ module.exports = {
       
       db.set(`mouth_${message.author.id}`, guy.nickname)
       message.channel.send("<:loudmouthing:744572170507911230> You selected **" + guy.nickname + " " + guy.user.username + "** to be revealed when you die.")
-
+      
     }
   }
 };

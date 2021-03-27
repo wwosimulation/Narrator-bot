@@ -1,52 +1,22 @@
-const http = require("http");
-const express = require("express");
-const app = express();
 require("dotenv").config()
-//69 - 5)3)79'6gabidhsnzoz
-app.use(express.static("public"));
-
-app.get("/", function(request, response) {
- response.sendFile(__dirname + "/views/index.html");
-});
-
-app.get("/", (request, response) => {
-  response.sendStatus(200);
-});
-
-app.listen(process.env.PORT);
-
-setInterval(() => {
-  http.get(`https://werewolf-discord.ashishemmanuel.repl.co`);
-}, 2147483647);
-
-//fs for writeFile()
 const fs = require("fs");
-
-//quick.db for gameroles
 const db = require("quick.db");
-
-//discord.js
 const Discord = require("discord.js");
 
-//tictactoe
-const TicTacToe = require('discord-tictactoe');
-
-// DanBot hosting to make the bot online 24/7
-let yyyy
-//Bot client
 const client = new Discord.Client();
 
 //Prefix and token from config file
 const prefix = process.env.PREFIX
 const token = process.env.TOKEN
 
+// Slash commands
+require("./slash.js")(client)
+
+//ShadowAdmin
+//const shadowadmin = require("shadowadmin")
+
 //Cooldown
 const cooldowns = new Discord.Collection();
-
-//Databases
-//let economy = require("./economy.json");
-
-//Sync with commands folder
 
 
 client.commands = new Discord.Collection();
@@ -58,42 +28,27 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-//Music queue for all servers
-var musicServers = {};
-
 //Bot on startup
 client.on("ready", async () => {
+  client.config = {}
   client.user.setActivity("Werewolf Online!");
   console.log("Connected!");
-  const { Slash } = require("discord-slash-commands")
-  const slash = new Slash(client)
-  slash.command({
-    guildOnly: false,
-    data: {
-      name: "3061LRTAGSPKJMORMRT",
-      description: "Gets free coins!",
-      type: 4,
-      content: `Benda noob.`
-    }
-  })
-    slash.command({
-      guildOnly: false,
-      data: {
-        name: "ping",
-        description: "3061LRTAGSPKJMORMRT RULES! ASHISH IS DA BEST! This is a ping command!",
-        type: 4,
-        content: `Ping! ${client.ws.ping} ms.`
-      }
-    })
+
+  //ShadowAdmin initialize
+  //shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
     
 });
 
 //Bot updating roles
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (newMember.guild.id == "472261911526768642") { 
-      if (newMember.roles.cache.has("606131202814115882")) { // new member having dead role
-        if (newMember.roles.cache.has("606140092213624859")) return
-       
+        console.log("Someone died or just did -narrate")        
+        if (newMember.roles.cache.has("606131202814115882") && oldMember.roles.cache.has("606131202814115882")) return;
+        console.log("Someone doesn't has dead role twice")        
+        if (!newMember.roles.cache.has("606131202814115882")) return;
+        console.log("They do have dead role")        
+        console.log("It works!")
+        newMember.roles.remove("822806480099999774")
         // canceling frenzy
         if (db.get(`role_${newMember.id}`) == "Werewolf Berserk") {
           let wwb = newMember.guild.channels.cache.filter(c => c.name === "priv-werewolf-berserk").keyArray("id")
@@ -213,6 +168,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
               let guy = newMember.guild.members.cache.find(m => m.nickname === tag)
               if (guy.roles.cache.has("606140092213624859")) {
                 newMember.guild.channels.cache.find(c => c.name === "day-chat").send(`<:loudmouthed:744571429282119770> The Loudmouth's last will was to reveal **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
+                guy.roles.add("822806480099999774")
               }
             }
           }
@@ -442,7 +398,81 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
             }
           }
         }
-      }
+       
+       // disabling everythihng
+       let role = db.get(`role_${newMember.id}`)
+       let allchannels = newMember.guild.channels.cache.filter(c => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+       for (let a = 0 ; a < allchannels.length ; a++) {
+         let chan = newMember.guild.channels.cache.get(allchannels[a])
+         if (chan) {
+           if (chan.permissionsFor(newMember).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+             if (role == "Doctor") {
+               db.set(`heal_${chan.id}`, null)
+             } else if (role == "Bodyguard") {
+               db.set(`guard_${chan.id}`, null)
+             } else if (role == "Witch") {
+               db.set(`potion_${chan.id}`, null)
+             } else if (role == "Tough Guy") {
+               db.set(`tough_${chan.id}`, null)
+             } else if (role == "Beast Hunter") {
+               db.set(`setTrap_${chan.id}`, null)
+               db.set(`trapActive_${chan.id}`, false)
+             } else if (role == "Bandit") {
+               db.set(`bandit_${chan.id}`, null)
+               let allbandits = newMember.guild.channels.cache.filter(c => c.name === "bandits")
+               allbandits.forEach(e => {
+                 if (e.permissionsFor(newMember).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                   db.set(`banditKill_${e.id}`, null)
+                 }
+               })
+             } else if (role == "Accomplice") {
+               let allbandits = newMember.guild.channels.cache.filter(c => c.name === "bandits")
+               allbandits.forEach(e => {
+                 if (e.permissionsFor(newMember).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                   db.set(`accomplice_${e.id}`, null)
+                 }
+               })
+               alive.members.forEach(e => {
+                 if (db.get(`role_${e.id}`) == "Bandit") {
+                   allbandits.forEach(m => {
+                     if (m.permissionsFor(e).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                       db.set(`banditKill_${m.id}`, null)
+                     }
+                   })
+                 }
+               })
+             } else if (role == "Serial Killer") {
+               db.delete(`stab_${chan.id}`)
+             } else if (role == "Arsonist") {
+               db.delete(`douse_${chan.id}`)
+             } else if (role == "Corruptor") {
+               db.delete(`corrupt_${chan.id}`)
+             } else if (role == "Cannibal") {
+               db.delete(`eat_${chan.id}`)
+             } else if (role == "Illusionist") {
+               db.delete(`disguise_${chan.id}`)
+             } else if (role == "Sect Leader") {
+               db.delete(`sect_${chan.id}`)
+             } else if (role == "Zombie") {
+               db.delete(`bite_${chan.id}`)
+             } else if (role == "Jailer") {
+               db.delete(`jail_${chan.id}`)
+             } else if (role == "Marksman") {
+               db.delete(`mark_${chan.id}`)
+             } else if (role == "Sheriff") {
+               db.delete(`snipe_${chan.id}`)
+             } else if (role == "Kitten Wolf") {
+               db.delete(`scratch_${chan.id}`)
+             } else if (role == "Nightmare Werewolf") {
+               db.delete(`sleepy_${chan.id}`)
+             } else if (role == "Naughty Boy") {
+               db.delete(`switch_${chan.id}`)
+             } else if (role.toLowerCase().includes("wolf")) {
+               db.delete(`wolvesKill_${chan.id}`)
+             }
+           }
+         }
+       }
   }
 })
 //When receiving a message
@@ -519,19 +549,12 @@ Gotta make you understand
     return message.author.send(
       `Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`
     );
-
-  //Check if message doesn't start with prefix
-  //if (!message.content.startsWith(prefix)) return;
-
-
   
   if (!message.content.startsWith(prefix)) return 
   if (blacklists.includes(`/${message.author.id}/`) && message.author.id != "552814709963751425") return message.channel.send("Blacklisted users can't use any command!")
 
-  //Out of game commands
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
-  yyyy = commandName  
   const command =
     client.commands.get(commandName) || //DO NOT PUT ;
     client.commands.find(
@@ -543,6 +566,8 @@ Gotta make you understand
   if (command.guildOnly && message.channel.type !== "text") {
     return message.reply("I can't execute that command in DMs!");
   }
+
+  if(command.gameOnly && message.guild.id != "472261911526768642") return message.channel.send("That command can only be used in the game server!")
 
   //Check if that command needs arguments
 
@@ -578,12 +603,14 @@ Gotta make you understand
 
   //Execute command if everything is ok
   try {
-    client.channels.cache.get("783013534560419880").send("Command ran: " + yyyy + `\nAuthor: ${message.author.tag} (${message.author.id})`)
+    client.channels.cache.get("783013534560419880").send(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`)
     command.run(message, args, client);
   } catch (error) {
     console.error(error);
     message.reply("Something went wrong...");
   }
 });
+
+require("./stafflist.js")(client)
 
 client.login(token);

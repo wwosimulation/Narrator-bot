@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "d",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-medium") {
       let isNight = await db.fetch(`isNight_${message.guild.id}`);
       if (isNight != "yes") return message.channel.send("You can only speak with the dead during the night!");

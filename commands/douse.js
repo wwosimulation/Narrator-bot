@@ -3,8 +3,9 @@ const db = require("quick.db");
 module.exports = {
   name: "douse",
   aliases: ["oil"],
-  run: async (message, args, client) => {
-    if (!message.channel.name == 'priv-arsonist') return
+    gameOnly: true,
+    run: async (message, args, client) => {
+    if (message.channel.name != 'priv-arsonist') return
     let doused = await db.fetch(`doused_${message.channel.id}`);
     let isNight = await db.fetch(`isNight_${message.guild.id}`);
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
@@ -53,9 +54,8 @@ module.exports = {
         }
         db.delete(`toDouse_${message.channel.id}`);
        
-        db.set(`toDouse_${message.channel.id}`, [args[0]]);
+        db.set(`toDouse_${message.channel.id}`, [args[0], args[1]]);
         console.log(db.get(`toDouse_${message.channel.id}`))
-        db.push(`toDouse_${message.channel.id}`, args[1]);
         message.channel.send(
           "<:douse:744574203025686568> Doused **" +
             args[0] +
@@ -83,7 +83,7 @@ module.exports = {
           } 
         } 
         db.delete(`toDouse_${message.channel.id}`);
-        db.push(`toDouse_${message.channel.id}`, args[0]);
+        db.set(`toDouse_${message.channel.id}`, [args[0]]);
         message.channel.send(
           "<:douse:744574203025686568> Doused **" +
             args[0] +

@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "protest",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (
       message.channel.name == "priv-flower-child" ||
       message.channel.name == "priv-guardian-wolf"

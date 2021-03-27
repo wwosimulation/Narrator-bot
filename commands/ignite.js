@@ -3,7 +3,8 @@ const db = require("quick.db");
 module.exports = {
   name: "ignite",
   alises: ["burn", "fire"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     let isNight = db.get(`isNight_${message.guild.id}`);
     let doused = db.get(`doused_${message.channel.id}`) || [];
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");

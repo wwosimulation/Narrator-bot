@@ -5,7 +5,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "playerinfo",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (!message.member.hasPermission("KICK_MEMBERS")) return;
     let content = "";
     let alive = message.guild.roles.cache.find(r => r.name === "Alive").members.size;
@@ -20,7 +21,7 @@ module.exports = {
         if (
           cha
             .permissionsFor(guy)
-            .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])
+            .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
         ) {
           
           let ro = cha.name.replace("priv-", "");

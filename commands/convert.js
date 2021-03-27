@@ -3,6 +3,7 @@ const db = require("quick.db")
 
 module.exports = {
     name: "convert",
+    gameOnly: true,
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find(r => r.name === "Alive")
         let isNight = db.get(`isNight_${message.guild.id}`)

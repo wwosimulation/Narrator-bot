@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "reset",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.member.roles.cache.has("606139219395608603") || message.member.roles.cache.has("606276949689499648")) {
       let times = [10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000];
       times = times[Math.floor(Math.random() * times.length)];
@@ -47,6 +48,9 @@ module.exports = {
       let forger = message.guild.channels.cache.filter(c => c.name === "priv-forger").keyArray("id")
       let zombie = message.guild.channels.cache.filter(c => c.name === "priv-zombie").keyArray("id")
 
+      db.delete(`excludes`)
+
+      
       message.guild.channels.cache.get('606132999389708330').updateOverwrite(message.guild.roles.cache.get('606140092213624859').id, {
         SEND_MESSAGES: false,
         READ_MESSAGE_HISTORY: false,
@@ -58,8 +62,6 @@ module.exports = {
         READ_MESSAGE_HISTORY: true,
         VIEW_CHANNEL: true
       })
-
-      //await client.channels.cache.find(c => c.name === "game-warning").messages.cache.get(db.get(`game`)).delete().catch(e => message.channel.send(`Error: ${e.message}`))
       
       let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members
       
@@ -98,7 +100,7 @@ module.exports = {
       
       for (let i = 0; i < witch.length ; i++) {
         db.set(`potion_${witch[i]}`, null)
-        db.set(`witch_${witch[i]}`, 0)
+        db.delete(`ability_${witch[i]}`)
         db.set(`witchAbil_${witch[i]}`, 0)
       }
       
@@ -142,9 +144,9 @@ module.exports = {
         db.set(`stab_${skiller[i]}`, null)
       }
       
-      for (let i = 0; i < arsonist ; i++) {
+      for (let i = 0; i < arsonist.length ; i++) {
         db.delete(`doused_${arsonist[i]}`)
-        db.delete(`toDouse__${arsonist[i]}`)
+        db.delete(`toDouse_${arsonist[i]}`)
       }
       
       for (let i = 0 ; i < canni.length ;i++) {
@@ -205,7 +207,7 @@ module.exports = {
         db.set(`toy_${nb[i]}`, "no")
       }
       for (let i = 0 ; i < jailer.length ; i++) {
-        db.set(`jail_${jailer[i]}`, null)
+        db.delete(`jail_${jailer[i]}`)
         db.set(`bullet_jail`, 1)
       }
 
@@ -262,6 +264,7 @@ module.exports = {
           db.delete(`bitten_${allChannels[i]}`)
         }
       }
+
 
       message.channel
         .send(

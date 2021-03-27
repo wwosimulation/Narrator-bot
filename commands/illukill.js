@@ -2,7 +2,8 @@ const db = require("quick.db");
 
 module.exports = {
   name: "illukill",
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.member.hasPermission("MANAGE_CHANNELS")) {
       if (!message.member.hasPermission("BAN_MEMBERS"))
         return await message.channel.send(

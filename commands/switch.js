@@ -2,6 +2,7 @@ const db = require("quick.db")
 
 module.exports = {
     name: "switch",
+    gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-naughty-boy") {
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")

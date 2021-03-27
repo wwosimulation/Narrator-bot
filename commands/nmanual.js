@@ -1,5 +1,6 @@
 module.exports = {
   name: 'nmanual', 
+  gameOnly: true,
   run: async (message, args, client) => {
     if (!message.member.roles.cache.has('606276949689499648') &&  !message.member.roles.cache.has('606139219395608603')) return;
     
@@ -9,7 +10,7 @@ module.exports = {
     
     for (let i = 0; i < chann.length;i++) {
       let channe = message.guild.channels.cache.get(chann[i])
-      if (channe.permissionsFor(guy.id).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+      if (channe.permissionsFor(guy.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
         channe.updateOverwrite(guy.id, {
           VIEW_CHANNEL: false, 
           READ_MESSAGE_HISTORY: false, 

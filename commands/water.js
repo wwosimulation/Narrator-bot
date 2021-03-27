@@ -3,9 +3,11 @@ const db = require("quick.db");
 module.exports = {
   name: "water",
   aliases: ["splash", "spray"],
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.channel.name == "priv-priest") {
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
+      let revealed = message.guild.roles.cache.find(r => r.name === "Revealed")
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");
       let ownself = message.guild.members.cache.find(
@@ -28,6 +30,7 @@ module.exports = {
           } else {
             let role = await db.fetch(`role_${guy.id}`);
             let toKill = role.toLowerCase();
+            if (isDay != "yes") return message.channel.send("Dumb, You can only pray in the morning.")
             if (dayCount == 1) {
               let cmd = await db.fetch(`commandEnabled_${message.guild.id}`);
               if (cmd != "yes")
@@ -46,6 +49,7 @@ module.exports = {
                   args[0]
                 } (${role})**`
               );
+              ownself.roles.add(revealed.id)
             } else {
               ownself.roles.remove(alive.id);
               ownself.roles.add(dead.id);

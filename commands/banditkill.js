@@ -2,7 +2,8 @@ const db =require('quick.db')
 
 module.exports = {
   name: 'banditkill' ,
-  run: async (message, args, client) => {
+    gameOnly: true,
+    run: async (message, args, client) => {
     if (message.member.hasPermission('MANAGE_CHANNELS')) {
       let dead = message.guild.roles.cache.find(r => r.name === 'Dead')
       let alive = message.guild.roles.cache.find(r => r.name === 'Alive')

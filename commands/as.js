@@ -3,6 +3,7 @@ const db = require("quick.db")
 module.exports = {
   name: "as",
   run: async (message, args, client) => {
+     return
      let arg = ""
      for (let i = 0 ; i < args.length - 1 ; i++) {
         if (i == args.length - 2) {
