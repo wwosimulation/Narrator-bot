@@ -334,8 +334,13 @@ module.exports = {
       }
       
       let roles = []
+      
       for (let i = 1 ; i < args.length ; i++) {
         rolelist.push(args[i])
+      }
+      
+      for (let i = 1 ; i < args.length ; i++) {
+        
         let excludes = db.get(`excludes`) || []
         // rrv
         if (["rrv", "random-regular-villager"].includes(args[i])) {
