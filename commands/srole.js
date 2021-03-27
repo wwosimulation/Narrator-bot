@@ -604,7 +604,9 @@ module.exports = {
           rolelist.forEach(role => {
             let makeitsimple
             if (role.includes("-")) {
-              makeitsimple = `${role.split("-").forEach(e => {role[role.indexOf(e)] = e[0].toUpperCase()}).join(" ")}`
+              let uyeuh = role.split("-")
+              makeitsimple = uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = e[0].toUpperCase()})
+              makeitsimple = makeitsimple.join(" ")
             } else {
               makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
             }
