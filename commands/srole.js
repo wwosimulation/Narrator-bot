@@ -36,6 +36,9 @@ module.exports = {
       !message.member.roles.cache.has(narrator.id)
     )
       return;
+    args.forEach(arg => {
+      args[args.indexOf(arg)] = arg.toLowerCase()
+    })
     if (args[0] == "quick") {
         let allplayers = []
         for (let x = 0 ; x < alive.members.size ; x++) {
