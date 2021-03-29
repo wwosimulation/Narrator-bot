@@ -20,6 +20,8 @@ module.exports = {
     }
     
     let color = args.join(" ")
+
+    if(!color) return message.channel.send("Idiot, you need to give me a color")
     
     
     if (role == "0") return message.channel.send("I cannot find your special role! In case this doesn't make sense, try DMing Ashish#0540 with the proof it's not working.")
