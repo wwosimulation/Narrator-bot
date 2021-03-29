@@ -11,7 +11,7 @@ module.exports = {
     await sleep(3000)
     await clearMainChannels(message)
     await sleep(1000)
-    await clearTempChannels(message)
+    message.guild.channels.cache.filter((c) => c.parentID === "748959630520090626").forEach(x => x.delete())
     await sleep(1000)
     await clearSettings(message)
     message.channel.send("All channels have been queued to be cleared. Be sure to check behind me and make sure they actually did clear! If not, use `-c` there to finish the job")
@@ -46,15 +46,10 @@ const kickSpectators = async (message) => {
   })
 }
 
-const clearTempChannels = async (message) => {
-  let tempchannels = message.guild.channels.cache.filter((c) => c.parentID === "748959630520090626")
-  asyncForEach(tempchannels, async (e) => await e.delete())
-}
-
 const clearMainChannels = async (message) => {
   let chans = ["vote-chat", "music-commands", "shadow-votes", "jailed-chat", "werewolves-chat", "time", "dead-chat", "day-chat", "enter-game", "game-lobby"]
   let ingame = message.guild.channels.cache.filter((c) => chans.includes(c.name))
-  asyncForEach(ingame, async (e) => {
+  asyncForEach(ingame, async (e, a, b) => {
     let ashish = await e.messages.fetch()
     let filt = ashish.filter((c) => !c.pinned)
     if (filt.size < 50) {
