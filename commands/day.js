@@ -371,6 +371,26 @@ module.exports = {
                 }
               }
             }
+            
+            // red lady
+            if (eat[j] != "0") {
+              if (role == "Red Lady") {
+                for (let k = 0 ; k < rl.length ; k++) {
+                  let chan = message.guild.channels.cache.get(rl[k])
+                  if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])) {
+                    let visit = db.get(`visit_${chan.id}`)
+                    if (visit) {
+                      chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                      chan.send(`${alive}`)
+                      cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                      cannibal.send(`${alive}`)
+                      eat[j] = "0"
+                    }
+                  }
+                }
+              }
+            }
+            
             // killing players
             if (eat[j] != "0") {
               dayChat.send(`<:eat:744575270102630482> The hungry Cannibal ate **${guy.nickname} ${guy.user.username} (${role})**!`)
@@ -621,7 +641,26 @@ module.exports = {
             }
           }
         }
-
+        
+        // red lady protection
+        if (kills[i] != "0") {
+          if (db.get(`role_${guy.id}`) == "Red Lady") {
+            for (let j = 0 ; j < rl.length ; j++) {
+              let chan = message.guild.channels.cache.get(rl[j])
+              if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                if (db.get(`visit_${chan.id}`)) {
+                  chan.send(`<:guard:744536167109886023> Someone tried attacking you while you were away!`)
+                  chan.send(`${alive}`)
+                  toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                  toSK.send(`${alive}`)
+                  kills[i] = "0"
+                }
+              }
+            }
+          }
+        }
+        
+        // serial killer attacking
         if (kills[i] != "0") {
           let role = db.get(`role_${guy.id}`)
           dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
@@ -874,6 +913,24 @@ module.exports = {
             }
           }
 
+          // red lady protection
+          if (kill != "0") {
+            if (lolrole == "Red Lady") {
+              for (let b = 0 ; b < tg.length ; b++) {
+                let chan = message.guild.channels.cache.get(tg[b])
+                if (chan.permissionsFor(byebyea).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                  if (db.get(`visit_${chan.id}`)) {
+                    chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                    chan.send(`${alive}`)
+                    bchan.send(`<:guard:744536167109886023> Player **${byebyea.nickname} ${byebyea.user.username}** could not be killed!`)
+                    bchan.send(`${alive}`)
+                    kill = "0"
+                  }
+                }
+              }
+            }
+          }
+          
           // killing the player
           if (kill != "0") {
             dayChat.send(`<:thieve:745632726639706202> Bandits killed **${byebyea.nickname} ${byebyea.user.username} (${lolrole})**!`)
@@ -1055,6 +1112,25 @@ module.exports = {
                     }
                   }
                 }
+                
+                // red lady protection
+                if (conversion != "0") {
+                  if (uwurole == "Red Lady") {
+                    for (let b = 0 ; b < rl.length ; b++) {
+                      let chan = message.guild.channels.cache.get(rl[b])
+                      if (chan.permissionsFor(theaccsoon).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        if (db.get(`visit_${chan.id}`)) {
+                          chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                          chan.send(`${alive}`)
+                          bchan.send(`<:guard:744536167109886023> You could not turn player **${theaccsoon.nickname} ${theaccsoon.user.username}** into your accomplice!`)
+                          bchan.send(`${alive}`)
+                          conversion = "0"
+                        }
+                      }
+                    }
+                  }
+                }
+                
                 // killing the player
                 if (conversion != "0") {
                   dayChat.send(`<:thieve:745632726639706202> Bandits killed **${theaccsoon.nickname} ${theaccsoon.user.username} (${uwurole})**!`)
@@ -1216,7 +1292,7 @@ module.exports = {
       // checking if the wolves tried attacking solo killers or wise man
       if (wwKill != "0") {
         console.log("It is not 0 (2)")
-        if (role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Wise Man" || role == "Corruptor" || role == "Bandit") {
+        if (role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Wise Man" || role == "Corruptor" || role == "Bandit" || role == "Cannibal" || role == "Alchemist" || role == "Illusionist") {
           wwKill = "0"
           wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
         }
@@ -1501,6 +1577,26 @@ module.exports = {
           }
         }
       }
+      
+      
+      // red lady protection
+      if (wwKill != "0") {
+        if (role == "Red Lady") {
+          for (let z = 0 ; z < rl.length ; z++) {
+            let chan = message.guild.channels.cache.get(rl[z])
+            if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+              if (db.get(`visit_${chan.id}`)) {
+                wwKill = "0"
+                wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                wwChat.send(`${alive}`)
+                chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                chan.send(`${alive}`)
+              }
+            }
+          }
+        }
+      }
+      
       // killing the player
       if (wwKill != "0") {
         console.log("It is not 0 (8)")
@@ -1714,6 +1810,24 @@ module.exports = {
               }
             }
 
+            // red lady conversion
+            if (conversion != "0") {
+              if (pittrole == "Red Lady") {
+                for (let z = 0 ; z < rl.length ; z++) {
+                  let chan = message.guild.channels.cache.get(rl[z])
+                  if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    if (db.get(`visit_${chan.id}`)) {
+                      chan.send(`<:guard:744536167109886023> Somebody tried to attack you while you were away!`)
+                      chan.send(`${alive}`)
+                      bchan.send(`<:guard:744536167109886023> Player **${pittguy.nickname} ${pittguy.user.username}** could not be an accomplice!`)
+                      bchan.send(`${alive}`)
+                      conversion = "0"
+                    }
+                  }
+                }
+              }
+            }
+            
             // converting
             if (conversion != "0") {
               for (let b = 1; b <= alive.members.size + dead.members.size; b++) {
@@ -2002,6 +2116,24 @@ module.exports = {
                       }
                     }
                   }
+                  
+                  // red lady
+                  if (sect != "0") {
+                    if (db.get(`role_${guy.id}`) == "Red Lady") {
+                      for (let k = 0 ; k < rl.length ; k++) {
+                        let chan = message.guild.channels.cache.get(rl[k])
+                        if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                          if (db.get(`visit_${chan.id}`)) {
+                            sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                            sl.send(`${alive}`)
+                            sect = "0"
+                            chan.send(`<:guard:744536167109886023> Somebody tried to attack you while you were away!`)
+                            chan.send(`${alive}`)
+                        }
+                      }
+                    }
+                  }
+                  
                   if (sect != "0") {
                     sected.updateOverwrite(guy.id, {
                       VIEW_CHANNEL: true,
@@ -2265,6 +2397,24 @@ module.exports = {
               }
             }
 
+            // red lady
+            if (glitch != "0") {
+              if (corrrole == "Red Lady") {
+                for (let b = 0 ; b < rl.length ; b++) {
+                  let chan = message.guild.channels.cache.get(rl[b])
+                  if (chan.permissionsFor(corrupted).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    if (db.get(`visit_${chan.id}`)) {
+                      glitch = "0"
+                      chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                      chan.send(`${alive}`)
+                      corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be corrupted!`)
+                      corruptor.send(`${alive}`)
+                    }
+                  }
+                }
+              }
+            }
+            
             // corrupting the player
             if (glitch != "0") {
               corruptor.send(`<:corrupt:745632706838396989> Player **${corrupted.nickname} ${corrupted.user.username}** has successfully been corrupted!`)
@@ -2280,6 +2430,27 @@ module.exports = {
                   chan.updateOverwrite(corrupted, {
                     SEND_MESSAGES: false,
                   })
+                }
+              }
+              for (let b = 0 ; b < rl.length ; b++) {
+                let rlchan = message.guild.channels.cache.get(rl[b])
+                if (db.get(`visit_${rlchan.id}`) == glitch) {
+                  for (let c = 1 ; c < 17 ; c++) {
+                    let rlguy = message.guild.members.cache.find(m => m.nickname === c.toString())
+                    if (rlguy) {
+                      if (rlguy.roles.cache.has(alive.id)) {
+                        if (rlchan.permissionsFor(rlguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                          corruptor.send(`<:corrupt:745632706838396989> Player **${rlguy.nickname} ${rlguy.user.username}** has successfully been corrupted!`)
+                          rlchan.updateOverwrite(rlguy.id, {
+                            SEND_MESSAGES: false
+                          })
+                          rlchan.send(`<:corrupt:745632706838396989> You have been glitched! No one will hear you scream! You cannot vote or use your abilities today and will die at the end of the day.`)
+                          rlchan.send(`${alive}`)
+                          db.set(`rlcorrupted_${rlguy.nickname}`, true)
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -2667,6 +2838,23 @@ module.exports = {
             }
           }
 
+          // red lady
+          if (toDelude != "0") {
+            if (theroleiwant == "Red Lady") {
+              for (let b = 0 ; b < rl.length ; b++) {
+                let chan = message.guild.channels.cache.get(rl[b])
+                if (chan.permissionsFor(disguise).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                  if (db.get(`visit_${chan.id}`)) {
+                    chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                    chan.send(`${alive}`)
+                    illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                    illusionist.send(`${alive}`
+                  }
+                }
+              }
+            }
+          }
+          
           if (toDelude != "0") {
             let alldisguised = db.get(`disguised_${illusionist.id}`) || []
             alldisguised.push(disguise.nickname)
@@ -2780,6 +2968,23 @@ module.exports = {
                       }
                     }
                   }
+                  
+                  // red lady
+                  if (conversion != "0") {
+                    if (db.get(`role_${guy.id}`) == "Red Lady") {
+                      for (let x = 0 ; x < rl.length ; x++) {
+                        let chan = message.guild.channels.cache.get(rl[x])
+                        if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                          if (db.get(`visit_${chan.id}`)) {
+                            chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                            chan.send(`${alive}`)
+                            wwChat.send(`Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`)
+                          }
+                        }
+                      }
+                    }
+                  }
+                  
                   if (conversion != "0") {
                     wwChat.updateOverwrite(guy.id, {
                       SEND_MESSAGES: false,
@@ -2789,6 +2994,16 @@ module.exports = {
                     wwChat.send(`The Kitten Wolf converted **${guy.nickname} ${guy.user.username}**!`)
                     wwChat.send(`Player **${guy.nickname} ${guy.user.username}** has been converted! Welcome them to the team!`)
                     db.set(`role_${guy.id}`, "Werewolf")
+                    let whwqye = message.guild.channels.cache.filter(c => c.name === `priv-${role.replace(" ", "-").toLowerCase()}`)
+                    whwqye.forEach(async element => {
+                      if (element.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        element.updateOverwrite(guy.id, {
+                          VIEW_CHANNEL: false,
+                          READ_MESSAGE_HISTORY: false,
+                          SEND_MESSAGES: false
+                        })
+                      }
+                    })
                     let ff = await message.guild.channels.create("priv-werewolf", {
                       parent: "748959630520090626",
                       permissionOverwrites: [
@@ -2814,7 +3029,65 @@ module.exports = {
                     await ff.send(db.get(`roleinfo_werewolf`))
                     await ff.send(`_ _\n\n_ _\n\nYou have been converted into a Werewolf!`)
                     let sos = await ff.send(`${alive}`)
-                    await sos.delete({ timeout: 10000 })
+                    setTimeout(async () => {
+                      await sos.delete()
+                    }, 3000)
+                    
+                    // rl
+                    for (let x = 0 ; x < rl.length ; x++) {
+                      let chan = message.guild.channels.cache.get(rl[x])
+                      if (db.get(`visit_${chan.id}`) == conversion) {
+                        for (let y = 1 ; y < 17 ; y++) {
+                          let rlguy = message.guild.members.cache.find(m => m.nickname === y.toString())
+                          if (rlguy) {
+                            if (rlguy.roles.cache.has(alive.id)) {
+                              if (chan.permissionsFor(rlguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                let eij = await message.guild.channels.create("priv-werewolf",  {
+                                  parent: "748959630520090626",
+                                  permissionOverwrites: [
+                                    {
+                                      id: message.guild.id,
+                                      deny: ["VIEW_CHANNEL"],
+                                    },
+                                    {
+                                      id: rlguy.id,
+                                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
+                                    },
+                                    {
+                                      id: narrator.id,
+                                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
+                                    },
+                                    {
+                                      id: mininarr.id,
+                                      allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
+                                    },
+                                  ],
+                                })
+                                await eij.send(db.get(`roleinfo_werewolf`))
+                                await eij.semd(`_ _\n\nYou have been converted into a Werewolf!`)
+                                let iwq = await eij.send(`${alive}`)
+                                setTimeout(async () => {
+                                  await iwq.delete()
+                                }, 3000)
+                                wwChat.updateOverwrite(rlguy.id, {
+                                  VIEW_CHANNEL: true,
+                                  SEND_MESSAGES: false,
+                                  READ_MESSAGE_HISTORY: true
+                                })
+                                wwChat.send(`The Kitten Wolf converted **${rlguy.nickname} ${rlguy.user.username}**!`)
+                                wwChat.send(`Player **${rlguy.nickname} ${rlguy.user.username}** has been converted! Welcome them to the team!`)
+                                chan.updateOverwrite(rlguy.id, {
+                                  SEND_MESSAGES: false,
+                                  VIEW_CHANNEL: false,
+                                  READ_MESSAGE_HISTORY: false
+                                })
+                                db.set(`role_${rlguy.id}`, "Werewolf")
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -3053,6 +3326,23 @@ module.exports = {
             }
           }
         }
+        
+        // red lady
+        if (brains[i] != "0") {
+          if (role == "Red Lady") {
+            for (let j = 0 ; j < rl.length ; j++) {
+              let chan = message.guild.channels.cache.get(rl[j])
+              if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                if (db.get(`visit_${chan.id}`)) {
+                  brains[i] = "0"
+                  chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                  chan.send(`${alive}`)
+                  zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                }
+              }
+            }
+          }
+        }
 
         // biting the player
         if (brains[i] != "0") {
@@ -3062,6 +3352,23 @@ module.exports = {
             let tempchan = message.guild.channels.cache.get(chan[j])
             if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
               db.set(`bitten_${tempchan.id}`, true)
+            }
+          }
+          for (let j = 0 ; j < rl.length ; j++) {
+            let rlchan = message.guild.channels.cache.get(rl[j])
+            if (db.get(`visit_${rlchan.id}`) == guy.nickname) {
+              for (let k = 1 ; k < 17 ; k++) {
+                let rlguy = message.guild.members.cache.find(m => m.nickname === k.toString())
+                if (rlguy) {
+                  if (rlguy.roles.cache.has(alive.id)) {
+                    if (rlchan.permissionsFor(rlguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                      db.set(`bitten_${rlchan.id}`, true)
+                      zombies.send(`<:bitten:745632614442074223> Player **${rlguy.nickname} ${rlguy.user.username}** has been bitten!`)
+                      k = 99
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -3146,16 +3453,27 @@ module.exports = {
 
           // adding the doused players to the list
           if (douses[j] != "0") {
-            message.channel.send("Arso bypassed douse")
             if (guy != "0") {
-              message.channel.send("Arso guy exists")
               if (guy.roles.cache.has(alive.id)) {
-                message.channel.send("Arso guy is alive")
                 let allDouses = db.get(`doused_${arso[i]}`) || []
                 allDouses.push(douses[j])
-                db.set(`doused_${arso[i]}`, allDouses)
                 let arsoguy = message.guild.members.cache.find((m) => m.nickname === douses[j])
                 message.guild.channels.cache.get(arso[i]).send(`<:douse:744574203025686568> Player **${douses[j]} ${arsoguy.user.username}** has been doused!`)
+                for (let k = 0 ; k < rl.length ; k++) {
+                  let chan = message.guild.channels.cache.get(rl[k])
+                  if (db.get(`visit_${chan.id}`) == guy.nickname) {
+                    for (let l = 1 ; l < 17 ; l++) {
+                      let rlguy = message.guild.members.cache.find(m => m.nickname === l.toString())
+                      if (rlguy) {
+                        if (rlguy.roles.cache.has(alive.id)) {
+                          message.guild.channels.cache.get(arso[i]).send(`<:douse:744574203025686568> Player **${l.toString()} ${rlguy.user.username}** has been doused!`)
+                          allDouses.push(rlguy.nickname)
+                        }
+                      }
+                    }
+                  }
+                }
+                db.set(`doused_${arso[i]}`, allDouses)
               }
             }
           }
