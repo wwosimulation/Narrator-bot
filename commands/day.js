@@ -2848,7 +2848,7 @@ module.exports = {
                     chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
                     chan.send(`${alive}`)
                     illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
-                    illusionist.send(`${alive}`
+                    illusionist.send(`${alive}`)
                   }
                 }
               }
