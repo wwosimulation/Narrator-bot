@@ -460,7 +460,7 @@ module.exports = {
         allchannels.push(role)
       }
 
-
+      let allwolves = []
       for (let i = 0 ; i < allusers.length ; i++) {
         let content = roles[i]
         if (content.includes("-")) {
@@ -508,6 +508,8 @@ module.exports = {
             VIEW_CHANNEL: true,
             READ_MESSAGE_HISTORY: true
           })
+          
+          allwolves.push(`**${client.guilds.cache.get("").emojis.cache.find(emoji => emoji.name === roles[i].replace(/-/g, "_"))} ${i+1}. is ${content}**!`)
         }
         
         if (content == "President") {
@@ -574,75 +576,49 @@ module.exports = {
 
         
       }
-      /*for (let i = 0 ; i < allusers.length ; i++) {
-        let guy = message.guild.members.cache.get(allusers[i])
-        let role = message.guild.channels.cache.filter(c => c.name === `priv-${roles[i]}`).keyArray("id")
-        for (let j = 0 ; j < role.length ; j++) {
-          let chan = message.guild.channels.cache.get(role[j])
-          let channeloccupied = false
-          for (k = 0 ; k < allusers.length ; k++) {
-            let player = message.guild.members.cache.get(allusers[k])
-            if (chan.permissionsFor(player).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-              console.log("yes")
-              channeloccupied = true
-              k = 99
-            }
-            if (channeloccupied == true && j == role.length - 1) {
-              message.guild.channels.create(chan.name, {
-                parent: '748959630520090626'
-              })
-            }
-            if (channeloccupied == false && k == allusers.length - 1) {
-              chan.updateOverwrite(guy.id, {
-                VIEW_CHANNEL: true,
-                SEND_MESSAGES: true,
-                READ_MESSAGE_HISTORY: true
-              })
-              j = 99
-            }
-          }
-        }
-      }*/
+      if (allwolves.length > 1) {
+        wwsChat.send(allwolves.join("\n"))
+      }
       
       let emorole = ""
-        if (args[0].includes("customhid")) {
-          let lol = await dayChat.send(`Role List is Hidden`)
-          lol.pin()
-        } else {
-          rolelist.forEach(role => {
-            let makeitsimple
-            if (role.includes("-")) {
-              let uyeuh = role.split("-")
-              uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`})
-              makeitsimple = uyeuh.join(" ")
-            } else {
-              makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
-            }
-            let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace(/-/g, "_")) || ""
-            emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
-            rolelist[rolelist.indexOf(role)] = `nono${role}`
-          })
-          let excludes = db.get(`excludes`) || []
-          let allexc = []
-          if (excludes.length > 0) {
-            excludes.forEach(ex => {
-              let duh
-              if (ex.includes("-")) {
-                duh = ex.split("-")
-                duh.forEach(e => {
-                  duh[duh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`
-                })
-                allexc.push(duh.join(" "))
-              } else {
-                allexc.push(ex.replace(ex[0], ex[0].toUpperCase()))
-              }
-            })
-            emorole += `\n_Roles excluded are: **${allexc.join("**, **")}**_`
-          }
-        }
-        let lol = await dayChat.send(emorole)
+      if (args[0].includes("customhid")) {
+        let lol = await dayChat.send(`Role List is Hidden`)
         lol.pin()
-    
+      } else {
+        rolelist.forEach(role => {
+          let makeitsimple
+          if (role.includes("-")) {
+            let uyeuh = role.split("-")
+            uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`})
+            makeitsimple = uyeuh.join(" ")
+          } else {
+            makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
+          }
+          let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace(/-/g, "_")) || ""
+          emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
+          rolelist[rolelist.indexOf(role)] = `nono${role}`
+        })
+        let excludes = db.get(`excludes`) || []
+        let allexc = []
+        if (excludes.length > 0) {
+          excludes.forEach(ex => {
+            let duh
+            if (ex.includes("-")) {
+              duh = ex.split("-")
+              duh.forEach(e => {
+                duh[duh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`
+              })
+              allexc.push(duh.join(" "))
+            } else {
+              allexc.push(ex.replace(ex[0], ex[0].toUpperCase()))
+            }
+          })
+          emorole += `\n_Roles excluded are: **${allexc.join("**, **")}**_`
+        }
+      }
+      let lol = await dayChat.send(emorole)
+      lol.pin()
+   
     
       message.channel.send(embed)
       message.channel.send("I have executed the startgame command myself! You do not need to do it!")
