@@ -85,7 +85,7 @@ module.exports = (client) => {
         let day = await db.fetch(`dayCount_${guild.id}`)
         let vote = db.get(`commandEnabled_${guild.id}`)
         let skipus = db.get(`skipus_${interaction.member.user.id}`)
-        if (day < 5) return baseReply("You can only skip after Day 5!", interaction)
+        if (day < 5) return baseReply("You can only skip after Day 5!", interaction, { private: true })
         if (isDay != "yes" || vote == "yes") {
           return baseReply("You can only skip the discussion phase during the day!", interaction, { private: true })
         }
