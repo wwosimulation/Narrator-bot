@@ -271,7 +271,7 @@ module.exports = {
           client.commands.get("startgame").run(message, args, client)
         }, 5000)
 
-    } else if (args[0].includes("custom")) {
+    } else if (args[0].includes("")) {
       let rolelist = []
       let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
       let random = [
@@ -344,7 +344,7 @@ module.exports = {
       rolelist = rolelist.replace(/rsv/g, "random-strong-villager")
       rolelist = rolelist.replace(/rww/g, "random-werewolf")
       rolelist = rolelist.replace(/rk/g, "random-killer")
-      
+      message.channel.send(rolelist)
       rolelist = rolelist.split("\n")
       
       for (let i = 1 ; i < args.length ; i++) {
@@ -358,9 +358,9 @@ module.exports = {
             if (indexrole > -1) {
               rrv.splice(indexrole, 1)
             }
-            let torole = rrv[Math.floor(Math.random() * rrv.length)]
-            args[i] = torole
           })
+          let torole = rrv[Math.floor(Math.random() * rrv.length)]
+          args[i] = torole
         }
         
         //rsv
@@ -371,12 +371,12 @@ module.exports = {
             if (indexrole > -1) {
               rsv.splice(indexrole, 1)
             }
-            let torole = rsv[Math.floor(Math.random() * rsv.length)]    
-            if (torole == "jailer") {
-              rsv.splice(rsv.indexOf(torole), 1)
-            }
-            args[i] = torole
           })
+          let torole = rsv[Math.floor(Math.random() * rsv.length)]    
+          if (torole == "jailer") {
+            rsv.splice(rsv.indexOf(torole), 1)
+          }
+          args[i] = torole
         }
         
        //rww
@@ -387,9 +387,9 @@ module.exports = {
             if (indexrole > -1) {
               rww.splice(indexrole, 1)
             }
-            let torole = rww[Math.floor(Math.random() * rww.length)]
-            args[i] = torole
           })
+          let torole = rww[Math.floor(Math.random() * rww.length)]
+          args[i] = torole
         }
         
         //rk
@@ -400,12 +400,12 @@ module.exports = {
             if (indexrole > -1) {
               rk.splice(indexrole, 1)
             }
-            let torole = random[Math.floor(Math.random() * random.length)]    
-            if (torole == "sect-leader") {
-              rk.splice(rk.indexOf(torole), 1)
-            }
-            args[i] = torole
           })
+          let torole = random[Math.floor(Math.random() * random.length)]    
+          if (torole == "sect-leader") {
+            rk.splice(rk.indexOf(torole), 1)
+          }
+          args[i] = torole
         }
         
         //rv
@@ -416,31 +416,31 @@ module.exports = {
             if (indexrole > -1) {
               rv.splice(indexrole, 1)
             }
-            let torole = rv[Math.floor(Math.random() * rv.length)]
-            args[i] = torole
           })
+          let torole = rv[Math.floor(Math.random() * rv.length)]
+          args[i] = torole
         }
         
         //general
-        if (["ra", "random"].includes(args[i])) {
+        if (["random"].includes(args[i])) {
           
             excludes.forEach(role => {
             let indexrole = random.indexOf(role)
             if (indexrole > -1) {
               random.splice(indexrole, 1)
             }
-            let torole = random[Math.floor(Math.random() * random.length)]
-            if (["president", "cupid", "jailer", "sect-leader"].includes(torole)) {
-              random.splice(random.indexOf(torole), 1)
-              if (torole == "Jailer") {
-                rsv.splice(rsv.indexOf(torole), 1)
-              }
-              if (torole == "sect-leader") {
-                rk.splice(rk.indexOf(torole), 1)
-              }
-            }
-            args[i] = torole
           })
+          let torole = random[Math.floor(Math.random() * random.length)]
+          if (["president", "cupid", "jailer", "sect-leader"].includes(torole)) {
+            random.splice(random.indexOf(torole), 1)
+            if (torole == "Jailer") {
+              rsv.splice(rsv.indexOf(torole), 1)
+            }
+            if (torole == "sect-leader") {
+              rk.splice(rk.indexOf(torole), 1)
+            }
+          }
+          args[i] = torole
         }
         
         roles.push(args[i])
