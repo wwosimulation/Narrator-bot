@@ -73,7 +73,12 @@ module.exports = (client) => {
       }
 
       if (command == "timer") {
-        baseReply("Timer failed", interaction)
+        let timer = ms(args[0].value)
+        if (!timer) return message.channel.send("Invalid time format!")
+        baseReply(`Setting the time for ${ms(timer)}`, interaction)
+        setTimeout(function () {
+            client.channels.cache.get(interaction.channel_id).send(`Time is up! <@${interaction.member.user.id}>`)
+        }, timer)//.catch(e => message.channel.send(`Error: ${e.message}`))
       }
 
       if (command == "skip") {
