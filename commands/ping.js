@@ -6,5 +6,6 @@ module.exports = {
   show: true,
   run: async (message, args) => {
     message.channel.send(`Pong! ${Math.ceil(message.client.ws.ping)} ms.`);
+    message.channel.send("Yeet")
   }
 };
