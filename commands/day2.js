@@ -549,7 +549,7 @@ module.exports = {
                 for (let k = 1; k <= alive.members.size + dead.members.size; k++) {
                   let lol = message.guild.members.cache.find((m) => m.nickname === k.toString())
                   if (thecha.permissionsFor(lol).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${lol.nickname} ${lol.user.username} (Bodyguard)**!`)
+                    dayChat.send(`<:PikaThink:812761504260161546> The Serial Killer stabbed **${lol.nickname} ${lol.user.username} (Bodyguard)**!`)
                     k = 99
                     lol.roles.add(dead.id)
                     lol.roles.remove(alive.id)
@@ -572,7 +572,7 @@ module.exports = {
                     toSK.send(`${alive}`)
                     db.subtract(`lives_${bg[k]}`, 1)
                   } else if (lives == 1) {
-                    dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (Bodyguard)**!`)
+                    dayChat.send(`<:PikaThink:812761504260161546> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (Bodyguard)**!`)
                     guy.roles.add(dead.id)
                     guy.roles.remove(alive.id)
                     db.set(`guard_${bg[k]}`, null)
@@ -622,7 +622,7 @@ module.exports = {
         }
         if (kills[i] != "0") {
           let role = db.get(`role_${guy.id}`)
-          dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
+          dayChat.send(`<:PikaThink:812761504260161546> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
           if (role == "Cupid") {
             cupidKilled = true
           }

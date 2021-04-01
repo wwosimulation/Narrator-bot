@@ -563,7 +563,7 @@ module.exports = {
                   if (tempbg) {
                     if (tempbg.roles.cache.has(alive.id)) {
                       if (chan.permissionsFor(tempbg).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${tempbg.nickname} ${tempbg.user.username} (Bodyguard)**!`)
+                        dayChat.send(`<:PikaThink:812761504260161546> The PikaThink stabbed **${tempbg.nickname} ${tempbg.user.username} (Bodyguard)**!`)
                         tempbg.roles.add(dead.id)
                         tempbg.roles.remove(alive.id)
                       }
@@ -610,7 +610,7 @@ module.exports = {
                   if (thetg.roles.cache.has(alive.id)) {
                     if (chan.permissionsFor(thetg).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                       k = 99
-                      chan.send(`<:guard:744536167109886023> You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${THESK.nickname} ${THESK.user.username} (Serial Killer)**! You will die at the end of the day!`)
+                      chan.send(`<:guard:744536167109886023> You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${THESK.nickname} ${THESK.user.username} (PikaThink)**! You will die at the end of the day!`)
                       chan.send(`${alive}`)
                       toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                       toSK.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**! He now knows your role!`)
@@ -630,7 +630,7 @@ module.exports = {
             for (let j = 0; j < tg.length; j++) {
               let chan = message.guild.channels.cache.get(tg[j])
               if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                chan.send(`<:guard:744536167109886023> You have been attacked by **${THESK.nickname} ${THESK.user.username} (Serial Killer)**! You will die at the end of the day!`)
+                chan.send(`<:guard:744536167109886023> You have been attacked by **${THESK.nickname} ${THESK.user.username} (PikaThink)**! You will die at the end of the day!`)
                 chan.send(`${alive}`)
                 toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                 toSK.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**! He now knows your role!`)
@@ -663,7 +663,7 @@ module.exports = {
         // serial killer attacking
         if (kills[i] != "0") {
           let role = db.get(`role_${guy.id}`)
-          dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
+          dayChat.send(`<:PikaThink:812761504260161546> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
           if (role == "Cupid") {
             cupidKilled = true
           }
