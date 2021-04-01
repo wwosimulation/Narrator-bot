@@ -40,9 +40,13 @@ client.on("ready", async () => {
 client.on("messageReactionAdd", (reaction, user) => {
   let ids = ["606123800253431808", "606123801750798346", "606123804850257920", "606123806490230784", "606296380989767680", "606123821656702987"]
   if (reaction.message.guild.id == "465795320526274561") {
+    reaction.message.channel.send("Test 1")
     if (!ids.includes(reaction.message.channel.id)) return;
+    reaction.message.channel.send("Test 2")
     if (reaction.emoji.id == "770660481500708894") {
+      reaction.message.channel.send("Test 3")
       if (reaction.message.author != user) {
+        reaction.message.channel.send("Test 4")
         db.add(`pikamsg_${reaction.message.id}`, 1)
       }
       if (db.get(`pikamsg_${reaction.message.id}`) == 5) {
