@@ -271,7 +271,7 @@ module.exports = {
           client.commands.get("startgame").run(message, args, client)
         }, 5000)
 
-    } else if (args[0].includes("")) {
+    } else if (args[0].includes("custom")) {
       let rolelist = []
       let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
       let random = [
@@ -346,6 +346,24 @@ module.exports = {
       rolelist = rolelist.replace(/rk/g, "random-killer")
       message.channel.send(rolelist)
       rolelist = rolelist.split("\n")
+      
+      for (let i = 1 ; i < args.length ; i++) {
+        if (args[i].toLowerCase() == "president") {
+          random.splice(random.indexOf("President"), 1)
+        }
+        if (args[i].toLowerCase() == "cupid") {
+          random.splice(random.indexOf("cupid"), 1)
+        }
+        if (args[i].toLowerCase() == "jailer") {
+          random.splice(random.indexOf("jailer"), 1)
+          rsv.splice(random.indexOf("jailer"), 1)
+        }
+        if (args[i].toLowerCase() == "sect-leader") {
+          random.splice(random.indexOf("sect-leader"), 1)
+          rk.splice(random.indexOf("sect-leader"), 1)
+        }
+        
+      }
       
       for (let i = 1 ; i < args.length ; i++) {
         
