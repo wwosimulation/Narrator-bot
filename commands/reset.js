@@ -70,7 +70,7 @@ module.exports = {
       })
         
         
-      client.channels.cache.find(c => c.name === "game-warning").send(`Game ended! ${db.get(`winner`)} won the match!`)
+      client.channels.cache.get("606123818305585167").send(`Game ended! ${db.get(`winner`)} won the match!`)
       db.set(`game`, null)
       for (let i = 0; i < gunner.length ; i++) {
         db.set(`bullets_${gunner[i]}`, 2)

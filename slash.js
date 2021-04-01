@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
+const ms = require("ms")
 
 const sim = ["465795320526274561"]
 const game = ["472261911526768642"]
