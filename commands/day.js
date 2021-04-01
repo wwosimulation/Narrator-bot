@@ -2115,39 +2115,41 @@ module.exports = {
                         }
                       }
                     }
-                  }
                   
-                  // red lady
-                  if (sect != "0") {
-                    if (db.get(`role_${guy.id}`) == "Red Lady") {
-                      for (let k = 0 ; k < rl.length ; k++) {
-                        let chan = message.guild.channels.cache.get(rl[k])
-                        if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                          if (db.get(`visit_${chan.id}`)) {
-                            sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                            sl.send(`${alive}`)
-                            sect = "0"
-                            chan.send(`<:guard:744536167109886023> Somebody tried to attack you while you were away!`)
-                            chan.send(`${alive}`)
+                  
+                  	// red lady
+                  	if (sect != "0") {
+                    	if (db.get(`role_${guy.id}`) == "Red Lady") {
+                      	for (let k = 0 ; k < rl.length ; k++) {
+	                        let chan = message.guild.channels.cache.get(rl[k])
+    	                    if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+        	                  if (db.get(`visit_${chan.id}`)) {
+            	                sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                	            sl.send(`${alive}`)
+                    	        sect = "0"
+                        	    chan.send(`<:guard:744536167109886023> Somebody tried to attack you while you were away!`)
+	                            chan.send(`${alive}`)
+    	                    }
+        	              }
+            	        }
+                	  }
+                  
+                  	if (sect != "0") {
+                  	  sected.updateOverwrite(guy.id, {
+                  		VIEW_CHANNEL: true,
+                  		READ_MESSAGE_HISTORY: true,
+                   	  })
+                      let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
+                      for (let k = 0; k < thechan.length; k++) {
+                        let chan = message.guild.channels.cache.get(thechan[k])
+                    	  if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
+                            chan.send(`You have been converted by the Sect Leader! The leader is **${leader.nickname} ${leader.user.username}**!`)
+                      	  }
                         }
-                      }
+                  	  }
                     }
-                  }
-                  
-                  if (sect != "0") {
-                    sected.updateOverwrite(guy.id, {
-                      VIEW_CHANNEL: true,
-                      READ_MESSAGE_HISTORY: true,
-                    })
-                    let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
-                    for (let k = 0; k < thechan.length; k++) {
-                      let chan = message.guild.channels.cache.get(thechan[k])
-                      if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
-                        chan.send(`You have been converted by the Sect Leader! The leader is **${leader.nickname} ${leader.user.username}**!`)
-                      }
-                    }
-                  }
-                }
+                  }           
+              	}
               }
             }
           }
