@@ -104,6 +104,7 @@ client.on("messageDelete", async message => {
       let starboard = message.guild.channels.cache.get("716980668961128478")
       let msg = await starboard.messages.fetch(db.get(`starboard_${message.id}`))
       await msg.delete()
+      db.set(`pikamsg_${message.id}`, 0)
     } catch (e) {
       console.log("An error occured")
     }
