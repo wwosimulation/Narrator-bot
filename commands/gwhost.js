@@ -5,8 +5,8 @@ module.exports = {
     name: "gwhost",
     run: async (message, args, client) => {
         
-        let narrator = message.guild.roles.cache.find(r => r.name === "Game Narrator")
-        let mininarr = message.guild.roles.cache.find(r => r.name === "Mini Narrator")
+        let narrator = message.guild.roles.cache.get("606123619999023114")
+        let mininarr = message.guild.roles.cache.get("606123620732895232")
         if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let sup = ""
