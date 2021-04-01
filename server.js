@@ -35,6 +35,46 @@ client.on("ready", async () => {
   //shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
 })
 
+
+// starboard
+client.on("messageReactionAdd", (reaction, user) => {
+  let ids = ["606123800253431808", "606123801750798346", "606123804850257920", "606123806490230784", "606296380989767680", "606123821656702987"]
+  if (reaction.message.guild.id == "465795320526274561") {
+    if (!ids.includes(reaction.message.channel.id)) return;
+    if (reaction.emoji.id == "770660481500708894") {
+      if (reaction.message.author != user) {
+        db.add(`pikamsg_${reaction.message.id}`, 1)
+      }
+      if (db.get(`pikamsg_${reaction.message.id}`) == 5) {
+        let embed = new Discord.MessageEmbed()
+          .setAuthor(reaction.message.author.tag, reaction.message.author.displayAvatarURL())
+          .setDescription((reaction.message.content.length > 0) ? reaction.message.content : "_No message provided_")
+          .addField("Source", `[Jump!](https://discord.com/channels/{reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id})`)
+        if (reaction.message.attachments.size > 0) {
+          embed.setImage(reaction.message.attachments.first().url)
+        }
+        reaction.message.guild.channels.cache.get("716980668961128478").send(`:star: ${db.get(`pikamsg_${reaction.message.id}`)} ${reaction.message.channel}`, embed)
+      }
+    }
+  }
+})
+
+client.on("messageReactionRemove", (reaction, user) => {
+  let ids = ["606123800253431808", "606123801750798346", "606123804850257920", "606123806490230784", "606296380989767680", "606123821656702987"]
+  if (reaction.message.guild.id == "465795320526274561") {
+    if (ids.includes(reaction.message.channel.id)) {
+      if (reaction.emoji.id == "770660481500708894") {
+        if (reaction.message.author != user) {
+          db.subtract(`pikamsg_${reaction.message.id}`, 1)
+        }
+        if (db.get(`pikamsg_${reaction.message.id}`) == 4) {
+          reaction.message.delete()
+        }
+      }
+    }
+  }
+})
+
 //Bot updating roles
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (newMember.guild.id == "472261911526768642") {
