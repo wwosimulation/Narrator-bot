@@ -40,13 +40,9 @@ client.on("ready", async () => {
 client.on("messageReactionAdd", (reaction, user) => {
   let ids = ["606123800253431808", "606123801750798346", "606123804850257920", "606123806490230784", "606296380989767680", "606123821656702987"]
   if (reaction.message.guild.id == "465795320526274561") {
-    reaction.message.channel.send("Test 1")
     if (!ids.includes(reaction.message.channel.id)) return;
-    reaction.message.channel.send("Test 2")
     if (reaction.emoji.id == "770660481500708894") {
-      reaction.message.channel.send("Test 3")
       if (reaction.message.author != user) {
-        reaction.message.channel.send("Test 4")
         db.add(`pikamsg_${reaction.message.id}`, 1)
       }
       if (db.get(`pikamsg_${reaction.message.id}`) == 5) {
@@ -57,7 +53,8 @@ client.on("messageReactionAdd", (reaction, user) => {
         if (reaction.message.attachments.size > 0) {
           embed.setImage(reaction.message.attachments.first().url)
         }
-        reaction.message.guild.channels.cache.get("716980668961128478").send(`:star: ${db.get(`pikamsg_${reaction.message.id}`)} ${reaction.message.channel}`, embed)
+        let abc = reaction.message.guild.channels.cache.get("716980668961128478").send(`:star: ${db.get(`pikamsg_${reaction.message.id}`)} ${reaction.message.channel}`, embed)
+        db.set(`starboardmsg_${reaction.message.id}`, abc.id)
       }
     }
   }
@@ -75,6 +72,19 @@ client.on("messageReactionRemove", (reaction, user) => {
           reaction.message.delete()
         }
       }
+    }
+  }
+})
+
+// deleting starboard
+client.on("messageDelete", async message => {
+  if (db.get(`pikamsg_${message.id}`) >= 5) {
+    try {
+      let starboard = message.guild.channels.cache.get("716980668961128478")
+      let msg = await starboard.messages.fetch(db.get(`starboard_${message.id}`))
+      await msg.delete()
+    } catch (e) {
+      console.log("An error occured")
     }
   }
 })
