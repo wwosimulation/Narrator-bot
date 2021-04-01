@@ -37,7 +37,7 @@ client.on("ready", async () => {
 
 
 // starboard
-client.on("messageReactionAdd", (reaction, user) => {
+client.on("messageReactionAdd", async (reaction, user) => {
   let ids = ["606123800253431808", "606123801750798346", "606123804850257920", "606123806490230784", "606296380989767680", "606123821656702987"]
   if (reaction.message.guild.id == "465795320526274561") {
     if (!ids.includes(reaction.message.channel.id)) return;
@@ -55,6 +55,27 @@ client.on("messageReactionAdd", (reaction, user) => {
         }
         let abc = reaction.message.guild.channels.cache.get("716980668961128478").send(`:star: ${db.get(`pikamsg_${reaction.message.id}`)} ${reaction.message.channel}`, embed)
         db.set(`starboardmsg_${reaction.message.id}`, abc.id)
+      } else if (db.get(`pikamsg_${reaction.message.id}`) > 5) {
+        let emoji
+        if (db.get(`pikamsg_${reaction.message.id}`) > 4 && db.get(`pikamsg_${reaction.message.id}`) < 8) {
+          emoji = ":star:"
+        } else if (db.get(`pikamsg_${reaction.message.id}`) > 7 && db.get(`pikamsg_${reaction.message.id}`) < 12) {
+          emoji = ":star2:"
+        } else if (db.get(`pikamsg_${reaction.message.id}`) > 11 && db.get(`pikamsg_${reaction.message.id}`) < 20) {
+          emoji = ":dizzly:"
+        } else if (db.get(`pikamsg_${reaction.message.id}`) > 19) {
+          emoji = ":sparkles:"
+        }
+        let embed = new Discord.MessageEmbed()
+         .setAuthor(reaction.message.author.tag, reaction.message.author.displayAvatarURL())
+         .setDescription((reaction.message.content.length > 0) ? reaction.message.content : "_No message provided_")
+         .addField("Source", `[Jump!](https://discord.com/channels/{reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id})`)
+        if (reaction.message.attachments.size > 0) {
+          embed.setImage(reaction.message.attachments.first().url)
+        }
+        let lol = await reaction.message.guild.channels.cache.get("716980668961128478").messages.fetch(db.get(`starboardmsg_${reaction.message.id}`))
+        await lol.edit(`${emoji} ${db.get(`pikamsg_${reaction.message.id}`)} ${reaction.message.channel}`, embed)
+        
       }
     }
   }
