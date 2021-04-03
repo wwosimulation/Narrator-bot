@@ -527,7 +527,7 @@ module.exports = {
             READ_MESSAGE_HISTORY: true
           })
           
-          allwolves.push(`**${client.guilds.cache.get("").emojis.cache.find(emoji => emoji.name === roles[i].replace(/-/g, "_"))} ${i+1}. is ${content}**!`)
+          allwolves.push(`**${client.guilds.cache.get("465795320526274561").emojis.cache.find(emoji => emoji.name === roles[i].replace(/-/g, "_"))} ${i+1}. is ${content}**!`)
         }
         
         if (content == "President") {
