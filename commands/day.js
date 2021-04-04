@@ -3098,7 +3098,12 @@ module.exports = {
         }
       }
     }, 3000)
-    // unlocking prisoners from their chat
+    // unlocking prisoners from their chat and clearing jailer chat
+    let alljmsg = await jailed.messages.fetch()
+    let clearjbmsg = alljmsg.filter(messages => !messages.pinned && messages.author == client.user)
+    let clearjmmsg = alljmsg.filter(messages => !messages.pinned && messages.author != client.user)
+    jailed.bulkDelete(clearjbmsg)
+    jailed.bulkDelete(clearjmmsg)
     let prisoner
     for (let a = 1; a <= alive.members.size + dead.members.size; a++) {
       let guy = message.guild.members.cache.find((m) => m.nickname === a.toString())
