@@ -28,22 +28,28 @@ module.exports = {
     } else {
      
       if (date == 0) {
+        amount = 10
         item = "coins"
         db.add(`money_${message.author.id}`, 10)
       } else if (date == 1) {
         item = "rose"
+        amount = 1
         db.add(`roseG_${message.author.id}`, 1)
       } else if (date == 2) {
+        amount = 1
         item = "rose bouquet"
         db.add(`roseBouquet_${message.author.id}`, 1)
       } else if (date == 3) {
+        amount = 1
         item = "lootbox!\n\nTo use it, do `+use lootbox`"
         db.add(`lootbox_${message.author.id}`, 1)
       } else if (date == 4) {
         item = "coins"
+        amount = 20
         db.add(`money_${message.author.id}`, 20)
       } else if (date == 5) {
         item = "roses"
+        amount = 5
         db.add(`rosesG_${message.author.id}`, 5)
       } else if (date == 6) {
         amount = 30
