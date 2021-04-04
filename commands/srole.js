@@ -339,11 +339,11 @@ module.exports = {
         rolelist.push(args[i])
       }
       rolelist = rolelist.join("\n")
-      rolelist = rolelist.replace(/rrv/g, "random-regular-villager")
-      rolelist = rolelist.replace(/rv/g, "random-voting")
-      rolelist = rolelist.replace(/rsv/g, "random-strong-villager")
-      rolelist = rolelist.replace(/rww/g, "random-werewolf")
-      rolelist = rolelist.replace(/rk/g, "random-killer")
+      rolelist = rolelist.replace(/\nrrv/g, "\nrandom-regular-villager")
+      rolelist = rolelist.replace(/\nrv/g, "\nrandom-voting")
+      rolelist = rolelist.replace(/\nrsv/g, "\nrandom-strong-villager")
+      rolelist = rolelist.replace(/\nrww/g, "\nrandom-werewolf")
+      rolelist = rolelist.replace(/\nrk/g, "\nrandom-killer")
       message.channel.send(rolelist)
       rolelist = rolelist.split("\n")
       
@@ -600,8 +600,7 @@ module.exports = {
       
       let emorole = ""
       if (args[0].includes("customhid")) {
-        let lol = await dayChat.send(`Role List is Hidden`)
-        lol.pin()
+        emorole = "Role list is hidden"
       } else {
         rolelist.forEach(role => {
           let makeitsimple
