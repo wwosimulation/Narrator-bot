@@ -32,8 +32,10 @@ const kickPlayers = async (message) => {
   for (let i = 1; i <= 16; i++) {
     let guy = await message.guild.members.cache.find((m) => m.nickname === i.toString())
     if (guy) {
-      await guy.kick()
-      console.log(`Kicked ${i}`)
+      if (guy.id != "552814709963751425" && guy.id != "439223656200273932") {
+        await guy.kick()
+        console.log(`Kicked ${i}`)
+      }
     }
   }
 }
@@ -41,8 +43,10 @@ const kickPlayers = async (message) => {
 const kickSpectators = async (message) => {
   let spec = await message.guild.roles.cache.find((r) => r.name === "Spectator")
   await spec.members.forEach(async (e) => {
-    await e.kick()
-    console.log(`Kicked ${e.user.tag}`)
+    if (e.id != "552814709963751425" && e.id != "439223656200273932") {
+      await e.kick()
+      console.log(`Kicked ${e.user.tag}`)
+    }
   })
 }
 
