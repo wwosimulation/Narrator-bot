@@ -8,7 +8,7 @@ module.exports = {
     
     if (!db.get(`cmi_${message.author.id}`)) return message.reply("You do not have the Custom Maker Item")
     
-    
+    message.channel.send("Please insert 16 roles, one by one!")
         let allroles = [
 	  "Alchemist",
 	  "Grave Robber",
