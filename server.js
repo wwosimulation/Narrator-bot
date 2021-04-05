@@ -36,81 +36,6 @@ client.on("ready", async () => {
 })
 
 
-// starboard
-client.on("messageReactionAdd", async (reaction, user) => {
-  let ids = ["606123800253431808", "606123801750798346", "606123804850257920", "606123806490230784", "606296380989767680", "606123821656702987"]
-  if (reaction.message.guild.id == "465795320526274561") {
-    if (!ids.includes(reaction.message.channel.id)) return;
-    if (reaction.emoji.id == "770660481500708894") {
-      if (reaction.message.author != user) {
-        db.add(`pikamsg_${reaction.message.id}`, 1)
-      }
-      if (db.get(`pikamsg_${reaction.message.id}`) == 5) {
-        let embed = new Discord.MessageEmbed()
-          .setAuthor(reaction.message.author.tag, reaction.message.author.displayAvatarURL())
-          .setDescription((reaction.message.content.length > 0) ? reaction.message.content : "_No message provided_")
-          .addField("Source", `[Jump!](https://discord.com/channels/{reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id})`)
-        if (reaction.message.attachments.size > 0) {
-          embed.setImage(reaction.message.attachments.first().url)
-        }
-        let abc = reaction.message.guild.channels.cache.get("716980668961128478").send(`:star: ${db.get(`pikamsg_${reaction.message.id}`)} ${reaction.message.channel}`, embed)
-        db.set(`starboardmsg_${reaction.message.id}`, abc.id)
-      } else if (db.get(`pikamsg_${reaction.message.id}`) > 5) {
-        let emoji
-        if (db.get(`pikamsg_${reaction.message.id}`) > 4 && db.get(`pikamsg_${reaction.message.id}`) < 8) {
-          emoji = ":star:"
-        } else if (db.get(`pikamsg_${reaction.message.id}`) > 7 && db.get(`pikamsg_${reaction.message.id}`) < 12) {
-          emoji = ":star2:"
-        } else if (db.get(`pikamsg_${reaction.message.id}`) > 11 && db.get(`pikamsg_${reaction.message.id}`) < 20) {
-          emoji = ":dizzly:"
-        } else if (db.get(`pikamsg_${reaction.message.id}`) > 19) {
-          emoji = ":sparkles:"
-        }
-        let embed = new Discord.MessageEmbed()
-         .setAuthor(reaction.message.author.tag, reaction.message.author.displayAvatarURL())
-         .setDescription((reaction.message.content.length > 0) ? reaction.message.content : "_No message provided_")
-         .addField("Source", `[Jump!](https://discord.com/channels/{reaction.message.guild.id}/${reaction.message.channel.id}/${reaction.message.id})`)
-        if (reaction.message.attachments.size > 0) {
-          embed.setImage(reaction.message.attachments.first().url)
-        }
-        let lol = await reaction.message.guild.channels.cache.get("716980668961128478").messages.fetch(db.get(`starboardmsg_${reaction.message.id}`))
-        await lol.edit(`${emoji} ${db.get(`pikamsg_${reaction.message.id}`)} ${reaction.message.channel}`, embed)
-        
-      }
-    }
-  }
-})
-
-client.on("messageReactionRemove", (reaction, user) => {
-  let ids = ["606123800253431808", "606123801750798346", "606123804850257920", "606123806490230784", "606296380989767680", "606123821656702987"]
-  if (reaction.message.guild.id == "465795320526274561") {
-    if (ids.includes(reaction.message.channel.id)) {
-      if (reaction.emoji.id == "770660481500708894") {
-        if (reaction.message.author != user) {
-          db.subtract(`pikamsg_${reaction.message.id}`, 1)
-        }
-        if (db.get(`pikamsg_${reaction.message.id}`) == 4) {
-          reaction.message.delete()
-        }
-      }
-    }
-  }
-})
-
-// deleting starboard
-client.on("messageDelete", async message => {
-  if (db.get(`pikamsg_${message.id}`) >= 5) {
-    try {
-      let starboard = message.guild.channels.cache.get("716980668961128478")
-      let msg = await starboard.messages.fetch(db.get(`starboard_${message.id}`))
-      await msg.delete()
-      db.set(`pikamsg_${message.id}`, 0)
-    } catch (e) {
-      console.log("An error occured")
-    }
-  }
-})
-
 //Bot updating roles
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (newMember.guild.id == "472261911526768642") {
@@ -551,12 +476,75 @@ client.on("message", (message) => {
 
   //let guy = message.member.nickname;
   if (message.author.bot) return //Ignore bots and dms
+  
+  if (message.guild.id == "472261911526768642") {
+    if (db.get(`rolecmitime_${message.author.id}`)) {
+      let allroles = [
+	  "Alchemist",
+	  "Grave Robber",
+          "Fortune Teller",
+          "Kitten Wolf",
+          "Pacifist",
+          "Spirit Seer",
+          "Sheriff", 
+          "Werewolf Berserk",
+          "Wolf Pacifist", 
+          "Cupid",
+          "President",
+          "Mayor",
+          "Grumpy Grandma",
+          "Seer Apprentice",
+          "Tough Guy",
+          "Loudmouth", 
+          "Sorcerer", 
+          "Flower Child",
+          "Guardian Wolf",
+          "Beast Hunter",
+          "Avenger",
+          "Witch",
+          "Detective",
+          "Forger",
+          "Cursed",
+          "Marksman",
+          "Red Lady",
+          "Junior Werewolf", 
+          "Nightmare Werewolf",
+          "Shadow Wolf",         
+          "Random Regular Villager",
+          "Random Strong Villager", 
+          "Random Werewolf", 
+          "Random Killer", 
+          "Random Voting", 
+          "Random",
+          "Arsonist", 
+          "Sect Leader",
+          "Bomber", 
+          "Zombie",
+          "Corruptor", 
+          "Cannibal",
+          "Illusionist",
+          "Bandit" 
+        ]
+      
+        let rolesPlayerHas ["Villager", "Gunner", "Doctor", "Bodyguard", "Seer", "Jailer", "Priest", "Aura Seer", "Medium", "Werewolf", "Alpha Werewolf", "Wolf Shaman", "Wolf Seer", "Fool", "Headhunter", "Serial Killer"]
+    
+        let boughtroles = db.get(`boughtroles_${message.author.id}`) || []
+        
+        boughtroles.forEach(role => {
+          rolesPlayerHas.push(role)
+        })
+      
+        if (!allroles.includes(message.content)) return message.channel.send("Role not found!")
+        if (!rolesPlayerHas(message.content)) return message.channel.send("You did not buy this role!")
+    }
+  }
+  
   // blacklists
   let blacklists = db.get(`blacklistss`) || []
   //console.log(blacklists)
   if (message.channel.type != "dm") {
     if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat") {
-      if (message.content.includes("#priv") || message.content.includes("<#")) {
+      if ((message.content.includes("#priv") || message.content.includes("<#")) && !message.member.permissions.has(["MANAGE_ROLES"])) {
         message.delete()
         message.channel.send(`${message.author} This is a warning! Do not mention your channel!`)
       }
