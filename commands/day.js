@@ -3387,14 +3387,16 @@ module.exports = {
       let chan = message.guild.channels.cache.get(bandits[i])
       for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
         let tom = message.guild.members.cache.find((m) => m.nickname === j.toString())
-        if (chan.permissionsFor(tom).has(["READ_MESSAGE_HISTORY"])) {
-          chan.updateOverwrite(tom.id, {
-            SEND_MESSAGES: false,
-            READ_MESSAGE_HISTORY: true,
-            VIEW_CHANNEL: true,
-          })
-          db.set(`banditKill_${chan.id}`, null)
-          db.set(`accomplice_${chan.id}`, null)
+	if (tom) {
+        	if (chan.permissionsFor(tom).has(["READ_MESSAGE_HISTORY"])) {
+          		chan.updateOverwrite(tom.id, {
+            			SEND_MESSAGES: false,
+            			READ_MESSAGE_HISTORY: true,
+            			VIEW_CHANNEL: true,
+          		})
+          		db.set(`banditKill_${chan.id}`, null)
+          		db.set(`accomplice_${chan.id}`, null)
+	  	}
         }
       }
     }
