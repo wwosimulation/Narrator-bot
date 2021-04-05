@@ -64,15 +64,11 @@ module.exports = {
           rolesPlayerHas.push(role)
         })
     
-        args.forEach(role => {
-          args[args.indexOf(role)] = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
-        })
     
         let rolelist = []
     
-	console.log(args)
 	console.log(rolesPlayerHas)
-        let filter = m => m.author.id == message.author.id && rolesPlayerHas.includes(args.join(" "))
+        let filter = m => m.author.id == message.author.id && rolesPlayerHas.includes(`${m.content[0].toUpperCase()}${m.content.slice(1).toLowerCase()}`))
         const collector = message.channel.createMessageCollector(filter, {time: 120000, limit: 16})
         db.set(`rolecmitime_${message.author.id}`, true)
         
