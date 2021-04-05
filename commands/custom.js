@@ -10,8 +10,8 @@ module.exports = {
     
     
         let allroles = [
-	        "Alchemist",
-	        "Grave Robber",
+	  "Alchemist",
+	  "Grave Robber",
           "Fortune Teller",
           "Kitten Wolf",
           "Pacifist",
