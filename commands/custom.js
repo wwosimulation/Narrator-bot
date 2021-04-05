@@ -68,7 +68,7 @@ module.exports = {
         let rolelist = []
     
 	console.log(rolesPlayerHas)
-        let filter = m => m.author.id == message.author.id && rolesPlayerHas.includes(`${m.content[0].toUpperCase()}${m.content.slice(1).toLowerCase()}`))
+        let filter = m => m.author.id == message.author.id && rolesPlayerHas.includes(`${m.content[0].toUpperCase()}${m.content.slice(1).toLowerCase()}`)
         const collector = message.channel.createMessageCollector(filter, {time: 120000, limit: 16})
         db.set(`rolecmitime_${message.author.id}`, true)
         
