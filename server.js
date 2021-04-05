@@ -477,65 +477,67 @@ client.on("message", (message) => {
   //let guy = message.member.nickname;
   if (message.author.bot) return //Ignore bots and dms
   
-  if (message.guild.id == "472261911526768642") {
-    if (db.get(`rolecmitime_${message.author.id}`)) {
-      let allroles = [
-	  "Alchemist",
-	  "Grave Robber",
-          "Fortune Teller",
-          "Kitten Wolf",
-          "Pacifist",
-          "Spirit Seer",
-          "Sheriff", 
-          "Werewolf Berserk",
-          "Wolf Pacifist", 
-          "Cupid",
-          "President",
-          "Mayor",
-          "Grumpy Grandma",
-          "Seer Apprentice",
-          "Tough Guy",
-          "Loudmouth", 
-          "Sorcerer", 
-          "Flower Child",
-          "Guardian Wolf",
-          "Beast Hunter",
-          "Avenger",
-          "Witch",
-          "Detective",
-          "Forger",
-          "Cursed",
-          "Marksman",
-          "Red Lady",
-          "Junior Werewolf", 
-          "Nightmare Werewolf",
-          "Shadow Wolf",         
-          "Random Regular Villager",
-          "Random Strong Villager", 
-          "Random Werewolf", 
-          "Random Killer", 
-          "Random Voting", 
-          "Random",
-          "Arsonist", 
-          "Sect Leader",
-          "Bomber", 
-          "Zombie",
-          "Corruptor", 
-          "Cannibal",
-          "Illusionist",
-          "Bandit" 
-        ]
+  if (!message.content.startsWith("+")) {
+  	if (message.guild.id == "472261911526768642") {
+    		if (db.get(`rolecmitime_${message.author.id}`)) {
+      			let allroles = [
+	  			"Alchemist",
+	  			"Grave Robber",
+          			"Fortune Teller",
+          			"Kitten Wolf",
+          			"Pacifist",
+          			"Spirit Seer",
+          			"Sheriff", 
+          			"Werewolf Berserk",
+          			"Wolf Pacifist", 
+          			"Cupid",
+          			"President",
+          			"Mayor",
+          			"Grumpy Grandma",
+          			"Seer Apprentice",
+          			"Tough Guy",
+          			"Loudmouth", 
+          			"Sorcerer", 
+          			"Flower Child",
+          			"Guardian Wolf",
+          			"Beast Hunter",
+          			"Avenger",
+          			"Witch",
+          			"Detective",
+	          		"Forger",
+        		  	"Cursed",
+          			"Marksman",
+          			"Red Lady",
+          			"Junior Werewolf", 
+          			"Nightmare Werewolf",
+          			"Shadow Wolf",         
+          			"Random Regular Villager",
+          			"Random Strong Villager", 
+          			"Random Werewolf", 
+          			"Random Killer", 
+          			"Random Voting", 
+          			"Random",
+          			"Arsonist", 
+          			"Sect Leader",
+          			"Bomber", 
+          			"Zombie",
+          			"Corruptor", 
+          			"Cannibal",
+          			"Illusionist",
+          			"Bandit" 
+        		]
       
-        let rolesPlayerHas = ["Villager", "Gunner", "Doctor", "Bodyguard", "Seer", "Jailer", "Priest", "Aura Seer", "Medium", "Werewolf", "Alpha Werewolf", "Wolf Shaman", "Wolf Seer", "Fool", "Headhunter", "Serial Killer"]
+        		let rolesPlayerHas = ["Villager", "Gunner", "Doctor", "Bodyguard", "Seer", "Jailer", "Priest", "Aura Seer", "Medium", "Werewolf", "Alpha Werewolf", "Wolf Shaman", "Wolf Seer", "Fool", "Headhunter", "Serial Killer"]
     
-        let boughtroles = db.get(`boughtroles_${message.author.id}`) || []
-        
-        boughtroles.forEach(role => {
-          rolesPlayerHas.push(role)
-        })
+		        let boughtroles = db.get(`boughtroles_${message.author.id}`) || []
+		        
+        		boughtroles.forEach(role => {
+          			rolesPlayerHas.push(role)
+        		})
       
-        if (!allroles.includes(message.content)) return message.channel.send("Role not found!")
-        if (!rolesPlayerHas(message.content)) return message.channel.send("You did not buy this role!")
+        		if (!allroles.includes(`${message.content[0].toUpperCase()}${message.content.slice(1).toLowerCase()}`)) return message.channel.send("Role not found!")
+        		if (!rolesPlayerHas.includes(`${message.content[0].toUpperCase()}${message.content.slice(1).toLowerCase()}`)) return message.channel.send("You did not buy this role!")
+		}
     }
   }
   
