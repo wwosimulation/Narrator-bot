@@ -75,6 +75,7 @@ module.exports = {
         collector.on("collect", async m => {
           
           // collecting wohoo
+	  console.log(m.content)
           let therole = m.content
           rolelist.push(therole.toLowerCase().replace(/\s/g, "-"))
           
