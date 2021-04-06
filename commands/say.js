@@ -5,7 +5,7 @@ module.exports = {
          message.delete()
          let idsendreply = args[0]
          let reply = ""
-         let channel = await client.channels.cache.get(idsendreply).catch(e=>{})
+         let channel = await client.channels.cache.get(idsendreply)
          if(!channel) {
             let sf = parseInt(idsendreply)
             reply = sf ? await message.channel.messages.fetch(sf) : null
