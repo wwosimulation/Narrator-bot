@@ -7,7 +7,8 @@ module.exports = {
          let reply = ""
          let channel = await client.channels.cache.get(idsendreply).catch(e=>{})
          if(!channel) {
-            reply = await message.channel.messages.fetch(idsendreply).catch(e=>{})
+            let sf = parseInt(idsendreply)
+            reply = sf ? await message.channel.messages.fetch(sf) : null
             if(reply) {
                args.shift()
                return reply.inlineReply(args.join(''))
