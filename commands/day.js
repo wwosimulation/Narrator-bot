@@ -44,7 +44,6 @@ module.exports = {
     let zombies = message.guild.channels.cache.find((c) => c.name === "zombies")
     let sheriff = message.guild.channels.cache.filter((c) => c.name === "priv-sheriff").keyArray("id")
     let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").keyArray("id")
-
     let cupidKilled = false
     let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist"]
     let strongww = ["Werewolf", "Junior Werewolf", "Nightmare Werewolf", "Kitten Wolf", "Wolf Shaman", "Wolf Pacifist", "Shadow Wolf", "Guardian Wolf", "Werewolf Berserk", "Alpha Werewolf", "Wolf Seer", "Lone Wolf"]
@@ -3673,7 +3672,27 @@ module.exports = {
                     SEND_MESSAGES: false,
                   })
                   lovers.send(`You are in love with **${guy1.nickname} ${guy1.user.username} (${db.get(`role_${guy1.id}`)})** and **${guy2.nickname} ${guy2.user.username} (${db.get(`role_${guy2.id}`)})**. You win if you stay alive together until the end of the game. You die if your lover dies.\n\n_ _\n\n_ _\n\n${alive}`)
-                }
+                } else {
+		  let aliveplayers = []
+		  alive.members.forEach(play => {
+		  	aliveplayers.push(play)
+		  })
+		  let couple = []
+		  if (player.roles.cache.has(alive.id)) {
+		  	aliveplayers.slice(aliveplayers.indexOf(player), 1)
+		  }
+		  if (aliveplayers.length > 1) {
+		  	let couple1 = aliveplayers[Math.floor(Math.random() * aliveplayers.length)]
+		  	aliveplayers.splice(aliveplayers.indexOf(couple1), 1)
+		  	couple[0] = couple1
+			couple[1] = aliveplayers[Math.floor(Math.random() * aliveplayers.length)]
+			lovers.send(`You are in love with **${couple[0].nickname} ${couple[0].user.username} (${db.get(`role_${couple[0].id}`)})** and **${couple[1].nickname} ${couple[1].user.username} (${db.get(`role_${couple[1].id}`)})**. You win if you stay alive together until the end of the game. You die if your lover dies.\n\n_ _\n\n_ _\n\n${alive}`)
+		  } else {
+		  	channel.send(`There aren't enough players for the couple to happen! The action has been canceled!`)
+		  }
+		  
+		
+		}
               }
             }
           }
