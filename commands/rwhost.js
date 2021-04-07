@@ -28,7 +28,7 @@ module.exports = {
             if(guy.roles.cache.has("606123628693684245")) return message.author.send("You are ranked banned!")
             guy.roles.add("606123676668133428").catch(e => message.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
             message.guild.channels.cache.find(x => x.name == "joined").send(`${guy.user.tag} joins match RS.${rs}[${args.join(" ")}]\nUser ID: ${guy.id}`)
-            message.guild.channels.cache.find(x => x.name == "joined-link").send(`<@${guy.id}>`).then(m => m.delete({timeout: 5000}))
+            message.guild.channels.cache.find(x => x.name == "joined-link").send(`<@${guy.id}>, join the server above to join the game!`).then(m => m.delete({timeout: 5000}))
             }
         });
 
