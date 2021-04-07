@@ -11,13 +11,13 @@ module.exports = {
             reply = sf ? await message.channel.messages.fetch(sf) : null
             if(reply) {
                args.shift()
-               return await message.channel.messages.fetch(sf).then(m => m.inlineReply(args.join('')))
+               return await message.channel.messages.fetch(sf).then(m => m.inlineReply(args.join(' ')))
             } else {
-               return message.channel.send(args.join())
+               return message.channel.send(args.join(' '))
             }
          } else {
             args.shift()
-            channel.send(args.join())
+            channel.send(args.join(' '))
          }
         
     }
