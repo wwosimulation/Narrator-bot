@@ -51,6 +51,7 @@ module.exports = {
     let thekiller = []
     let hhtarget = []
 
+    
     // setting the hh target
     for (let x = 0; x < hh.length; x++) {
       let target = db.get(`hhtarget_${hh[x]}`)
@@ -1283,6 +1284,7 @@ module.exports = {
         thekiller.push("Werewolf")
       }
     }
+    wwKill = "0"
     if (wwKill != "0" && frenzy == false) {
       console.log("It is not 0 (1)")
     }
@@ -1423,7 +1425,7 @@ module.exports = {
         console.log("It is not 0 (7)")
         for (let j = 0; j < bg.length; j++) {
           let guard = db.get(`guard_${bg[j]}`)
-          let lives = db.get(`lives_${bg[j]}`)
+          let lives = db.get(`lives_${bg[j]}`) || 2
           if (guard == wwKill) {
             let thecha = message.guild.channels.cache.get(bg[j])
             if (lives == 2) {
@@ -1432,7 +1434,7 @@ module.exports = {
               thecha.send(`${alive}`)
               wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
               wwChat.send(`${alive}`)
-              db.subtract(`lives_${bg[j]}`, 1)
+              db.set(`lives_${bg[j]}`, 1)
             } else if (lives == 1) {
               wwKill = "0" // makes the werewolves' attack towards the player none
               for (let k = 1; k <= alive.members.size + dead.members.size; k++) {
@@ -1453,19 +1455,12 @@ module.exports = {
             for (let k = 0; k < bg.length; k++) {
               let thecha = message.guild.channels.cache.get(bg[k])
               if (thecha.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                if (db.get(`lives_${bg[k]}`) == 2) {
+                if (!db.get(`lives_${bg[k]}`) || db.get(`lives_${bg[k]}`) == 2) {
                   thecha.send("<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.")
                   thecha.send(`${alive}`)
                   wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                   wwChat.send(`${alive}`)
-                  db.subtract(`lives_${bg[k]}`, 1)
-                } else if (lives == 1) {
-                  dayChat.send(`<:werewolf:475776038727581697> The Werewolves killed **${guy.nickname} ${guy.user.username} (Bodyguard)**!`)
-                  guy.roles.add(dead.id)
-                  guy.roles.remove(alive.id)
-                  killedplayers.push(guy.id)
-                  thekiller.push("Werewolf")
-                  db.set(`guard_${bg[k]}`, null)
+                  db.set(`lives_${bg[k]}`, 1)
                 }
                 k = 89
               }
@@ -1544,9 +1539,9 @@ module.exports = {
             let theChannel = message.guild.channels.cache.get(tg[k])
             let tough = db.get(`tough_${tg[k]}`)
             if (tough == args[0]) {
-              for (let l = 1; k <= alive.members.size + dead.members.size; k++) {
+              for (let l = 1; l <= 16; l++) {
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === l.toString())
-                if (theChannel.permissionsFor(tempguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                if (tempguy && theChannel.permissionsFor(tempguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                   if (tempguy.roles.cache.has(alive.id)) {
                     l = 99
                     for (let n = 0; n < wolvesID.length; n++) {
