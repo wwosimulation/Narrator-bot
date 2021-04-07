@@ -1461,8 +1461,9 @@ module.exports = {
                   wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                   wwChat.send(`${alive}`)
                   db.set(`lives_${bg[k]}`, 1)
+	 	  k = 89
                 }
-                k = 89
+                
               }
             }
           }
