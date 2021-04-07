@@ -1267,6 +1267,7 @@ module.exports = {
       }
 
       if (kills[0] != "0") {
+	wwKill = "0"
         dayChat.send(`<:werewolf:475776038727581697> The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
         if (role == "Cupid") {
           cupidKilled = true
@@ -1284,7 +1285,6 @@ module.exports = {
         thekiller.push("Werewolf")
       }
     }
-    wwKill = "0"
     if (wwKill != "0" && frenzy == false) {
       console.log("It is not 0 (1)")
     }
