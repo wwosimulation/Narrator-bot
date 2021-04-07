@@ -1525,11 +1525,16 @@ module.exports = {
                 if (thechan.permissionsFor(thewolf).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                   console.log("Tough test 12")
                   a = 99
-                  wwKill = "0"
-                  thechan.send(`_ _\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
-		  thechan.send(`${alive}`)
-		  wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                  wwChat.send(`${alive}`)
+		  for (let b = 1 ; b < 17 ; b++) {
+			let thtg = message.guild.members.cache.find(m => m.nickname === b.toString())
+			if (thtg && thtg.roles.cache.has(alive.id) && tgc.permissionsFor(thtg).has(["READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
+				wwKill = "0"
+                  		thechan.send(`_ _\n<:tough_guy:606429479170080769> Player **${thtg.nickname} ${thtg.user.username}** is a tough guy! He now knows your role!`)
+		  		thechan.send(`${alive}`)
+		  		wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                  		wwChat.send(`${alive}`)
+			}
+		  }	
                 }
               }
             }
