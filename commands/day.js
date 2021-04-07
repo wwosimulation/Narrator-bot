@@ -1558,7 +1558,7 @@ module.exports = {
                         let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
                         for (let a = 0; a < gr.length; a++) {
                           let thechan = message.guild.channels.cache.get(gr[a])
-                          if (thechan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                          if (thechan.permissionsFor(thewolf).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
 				  console.log("Shadow nub 5")
                             a = 99
                             wwKill = "0"
