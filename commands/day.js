@@ -1527,8 +1527,8 @@ module.exports = {
                   a = 99
                   wwKill = "0"
                   thechan.send(`_ _\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
-                  thechan.send(`${alive}`)
-                  wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+		  thechan.send(`${alive}`)
+		  wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                   wwChat.send(`${alive}`)
                 }
               }
