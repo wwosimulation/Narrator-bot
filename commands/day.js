@@ -1537,16 +1537,20 @@ module.exports = {
         } else {
           // otherwise check if the wolves killed the player that the Tough guy protected
           for (let k = 0; k < tg.length; k++) {
+		console.log("Shadow nub 1")
             let theChannel = message.guild.channels.cache.get(tg[k])
             let tough = db.get(`tough_${tg[k]}`)
             if (tough == args[0]) {
+		    console.log("Shadow nub 2")
               for (let l = 1; l <= 16; l++) {
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === l.toString())
                 if (tempguy && theChannel.permissionsFor(tempguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                   if (tempguy.roles.cache.has(alive.id)) {
+			  console.log("Shadow nub 3")
                     l = 99
                     for (let n = 0; n < wolvesID.length; n++) {
                       if (db.get(`role_${wolvesID[n]}`) == allwolves[0]) {
+			      console.log("Shadow nub 4")
                         let thewolf = message.guild.members.cache.get(wolvesID[n])
                         theChannel.send(`You have been attacked by **${thewolf.nickname} ${thewolf.user.username} (${db.get(`role_${thewolf.id}`)})**. You have been wounded and will die at the end of the day.`)
                         theChannel.send(`${alive}`)
@@ -1555,6 +1559,7 @@ module.exports = {
                         for (let a = 0; a < gr.length; a++) {
                           let thechan = message.guild.channels.cache.get(gr[a])
                           if (thechan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+				  console.log("Shadow nub 5")
                             a = 99
                             wwKill = "0"
                             thechan.send(`_ _\n**${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
