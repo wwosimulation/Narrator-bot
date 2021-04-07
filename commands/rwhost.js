@@ -2,7 +2,7 @@ const db = require("quick.db")
 const Discord = require("discord.js")
 
 module.exports = {
-    name: "gwhost",
+    name: "rwhost",
     run: async (message, args, client) => {
         
         let narrator = message.guild.roles.cache.get("606123619999023114")
