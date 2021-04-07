@@ -3568,8 +3568,8 @@ module.exports = {
           if (tempguy) {
             if (chan.permissionsFor(tempguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
               if (tempguy.roles.cache.has(alive.id)) {
-                let check = db.get(`spirit_${chan.id}`)
-                if (check != null) {
+                let check = db.get(`spirit_${chan.id}`) || []
+                if (check.length > 0) {
                   let guys = []
                   let killed = false
                   for (let k = 0; k < check.length; k++) {
@@ -3690,8 +3690,6 @@ module.exports = {
 		  } else {
 		  	channel.send(`There aren't enough players for the couple to happen! The action has been canceled!`)
 		  }
-		  
-		
 		}
               }
             }
