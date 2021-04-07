@@ -1552,7 +1552,7 @@ module.exports = {
                         theChannel.send(`${alive}`)
                         db.set(`wounded_${theChannel.id}`, true)
                         let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
-                        for (let a = 0; a < k.length; a++) {
+                        for (let a = 0; a < gr.length; a++) {
                           let thechan = message.guild.channels.cache.get(gr[a])
                           if (thechan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             a = 99
