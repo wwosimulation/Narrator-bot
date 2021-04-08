@@ -105,6 +105,7 @@ module.exports = (client) => {
           dayChat.send(`Someone voted to skip the discussion phase!`)
           commands.send(`${interaction.member.nick} decided to skip the discussion phase!`)
           db.add(`skippedpl`, 1)
+          db.set(`skipus_${interaction.member.user.id}`, true)
           if (db.get(`skippedpl`) == alive.members.size - 1) {
             let message = new Discord.Message()
             message.slashGenerate = true
