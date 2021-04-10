@@ -677,7 +677,7 @@ bot.on("ready", () => {
 	
 })
 
-require("./slash.js")(bot)
+require("./testslash.js")(bot)
 
 bot.on("message", async message => {
 	if (message.content == "Hola") {
