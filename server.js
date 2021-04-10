@@ -507,9 +507,6 @@ client.on("message", (message) => {
     client.commands.get(x).run(message)
   }
 
-	if (message.author.id == "801726595378315264" && message.guild.id  == "472261911526768642") {
-		message.channel.send("Omaigod look! It's groot the dumbo")
-	}
   //let guy = message.member.nickname;
   if (message.author.bot) return //Ignore bots and dms
   
