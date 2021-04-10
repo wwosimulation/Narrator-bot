@@ -38,15 +38,21 @@ const client = new Discord.Client()
 const bot = new Discord.Client()
 
 client.on("messageReactionAdd", async (reaction, user) => {
+	console.log("Ticket close 1")
 	if (reaction.message.channel.name.startsWith("ticket-") && reaction.message.channel.parentID == "606230513103142932") {
+		console.log("Ticket close 2")
 		if (reaction.emoji.name == "🔒") {
+			console.log("Ticket close 3")
 			if (reaction.message.author.id == client.user.id) {
+				console.log("Ticket close 4")
 				if (reaction.message.embeds[0].title.startsWith("Ticket")) {
+					console.log("Ticket close 5")
 					let t = await reaction.message.channel.send("You are about to close the ticket. Confirm?")
 					await t.react("✅")
 					const collector = t.createReactionCollector(true, {time: 30000, max: 1})
 					collector.on("collect", async (react, us) => {
 						if (react.emoji.name == "✅") {
+							console.log("Ticket close 6")
 							await reaction.channel.delete()
 						}
 					})
