@@ -35,6 +35,7 @@ class Message extends Structures.get("Message") {
 Structures.extend("Message", () => Message);
 
 const client = new Discord.Client()
+const bot = new Discord.Bot()
 
 //Prefix and token from config file
 const prefix = process.env.PREFIX
@@ -670,4 +671,15 @@ Gotta make you understand
 
 require("./stafflist.js")(client)
 
+bot.on("ready", () => {
+	console.log("Bot is ready!")
+})
+
+bot.on("message", async message => {
+	if (message.content == "Hola") {
+		message.reply("Hello")
+	}
+})
+
+bot.login("ODMwMjUxOTAwODY2OTIwNTA4.YHD-Vg.KwIkPJNGiodenHw8VyhR3m9OSAo")
 client.login(token)
