@@ -34,7 +34,7 @@ class Message extends Structures.get("Message") {
 
 Structures.extend("Message", () => Message);
 
-const client = new Discord.Client()
+const client = new Discord.Client({ws: {intents: ["MESSAGE", "MESSAGE_REACTION_ADD"]}})
 const bot = new Discord.Client()
 
 //Prefix and token from config file
