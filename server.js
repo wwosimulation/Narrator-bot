@@ -674,8 +674,10 @@ require("./stafflist.js")(client)
 
 bot.on("ready", () => {
 	console.log("Bot is ready!")
-	require("./slash.js")(bot, [bot.guilds.cache.keyArray()])
+	
 })
+
+require("./slash.js")(bot)
 
 bot.on("message", async message => {
 	if (message.content == "Hola") {
