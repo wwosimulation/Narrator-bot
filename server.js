@@ -693,7 +693,7 @@ bot.on("message", async message => {
 						    .setTitle("Games")
 						    .setDescription("1. **Tic Tac Toe**\n - Classic game\n\n2. **Checkers**\n - Now that's some good shit\n\n3. **Chess**\n - DO you think you are smart enough?")
 						    .setColor("YELLOW")
-						    .addTimestamp()
+						    .setTimestamp()
 						    ).catch(e => message.author.send(`I do not have the \`SEND MESSAGES\` permission in ${message.channel}`).catch(e => console.log(e.message)))
 			}
 		}
