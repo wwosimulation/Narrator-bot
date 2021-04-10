@@ -180,55 +180,42 @@ module.exports = {
       let rww = ["Alpha Werewolf", "Guardian Wolf", "Junior Werewolf", "Nightmare Werewolf", "Shadow Wolf", "Werewolf Berserk", "Wolf Pacifist", "Wolf Seer", "Wolf Shaman"]
       let rv = ["Fool", "Headhunter"]
 
-      let gfmh = [["Gunner", "Fool"], ["Marksman", "Headhunter"]]
-
-      let d = gfmh[random(gfmh)]
-
-      let fsse1 = [["Aura Seer", "Wolf Shaman", d[0], d[1]], ["Spirit Seer", "Nightmare Werewolf", "Gunner", rv[random(rv)]]]
-      let fsse2 = fsse1[random(fsse1)]
-      let eight = [d[1], "Random Voting"]
-      if (fsse2.includes("Wolf Shaman")) {
-        eight = eight[0]
-      } else {
-        eight = eight[1]
+      if (alive.members.size < 9) {
+        rww.splice(rww.indexOf("Shadow Wolf"), 1)
+        rww.splice(rww.indexOf("Werewolf Berserk"), 1)
+        rww.splice(rww.indexOf("Junior Werewolf"), 1)
+        rww.splice(rww.indexOf("Guardian Wolf"), 1)
       }
-      let sr = ["Sheriff", "Red Lady"]
-      sr = sr[random(sr)]
-      let nt = [["Flower Child", "Guardian Wolf"], [sr, "Wolf Pacifist"]]
-      nt = nt[random(nt)]
-      let fourteen = ["Junior Werewolf", "Shadow Wolf"]
-      fourteen = fourteen[random(fourteen)]
-      let ac = ["Arsonist", "Cannibal"]
-      let sc = ["Serial Killer", "Corruptor"]
-      let tt = [[ac[random(ac)], "Jailer"], [sc[random(sc)], "Witch"], ["Illusionist", "Forger"]]
-      tt = tt[random(tt)]
       
-      let rolelist = ["Detective", "Wolf Seer", "Doctor", rrv[random(rrv)], fsse2[0], fsse2[1], fsse2[2], fsse2[3], nt[0], nt[1], "Medium", tt[0], tt[1], fourteen[0], "Priest", rrv[random(rrv)]]
+      let rolelist1 = ["Aura Seer", rww[Math.floor(Math.random() * rww.length)], rrv[Math.floor(Math.random() * rrv.length)], "Doctor", rrv[Math.floor(Math.random() * rrv.length)], "Wolf Seer", "Marksman", "Headhunter", "Junior Werewolf", "Medium", "Jailer", "Arsonist", "Detective", rww[Math.floor(Math.random() * rww.length)], "Priest", rrv[Math.floor(Math.random() * rrv.length)]]
+      let rolelist2 = ["Spirit Seer", rww[Math.floor(Math.random() * rww.length)], rrv[Math.floor(Math.random() * rrv.length)], "Doctor", rrv[Math.floor(Math.random() * rrv.length)], "Wolf Seer", "Gunner", "Fool", "Junior Werewolf", "Medium", "Witch", "Cannibal", "Detective", rww[Math.floor(Math.random() * rww.length)], "Priest", rrv[Math.floor(Math.random() * rrv.length)]]
+      let roles = [rolelist1, rolelist2]
+      let rolelist = roles[Math.floor(Math.random() * 2)]
       function emote(nama) {
-        return client.guilds.cache.get('465795320526274561').emojis.cache.find(e => e.name === nama)
+        return client.guilds.cache.get('465795320526274561').emojis.cache.find(e => e.name === nama.replace(" ", "_")))
       }
       dayChat.send(
         `RANKED GAME:\n
-        ${emote('detective')} 1. Detective
-        ${emote('wolf_seer')} 2. Wolf Seer
-        ${emote('doctor')} 3. Doctor
-        ${emote('random_regular_villager')} 4. Random Regular Villager
-        ${emote(fsse2[0].replace(" ", "_").toLowerCase())} 5. ${fsse2[0]}
-        ${emote(fsse2[1].replace(" ", "_").toLowerCase())} 6. ${fsse2[1]}
-        ${emote(fsse2[2].replace(" ", "_").toLowerCase())} 7. ${fsse2[2]}
-        ${emote(eight.replace(" ", "_").toLowerCase())} 8. ${eight}
-        ${emote(nt[0].replace(" ", "_").toLowerCase())} 9. ${nt[0]}
-        ${emote(nt[1].replace(" ", "_").toLowerCase())} 10. ${nt[1]}
-        ${emote('medium')} 11. Medium
-        ${emote(tt[0].replace(" ", "_").toLowerCase())} 12. ${tt[0]}
-        ${emote(tt[1].replace(" ", "_").toLowerCase())} 13. ${tt[1]}
-        ${emote(fourteen.replace(' ', '_').toLowerCase())} 14. ${fourteen}
+        ${emote(rolelist[0].toLowerCase())} 1. ${rolelist[0]}
+        ${emote('random-werewolf')} 2. Random Werewolf
+        ${emote('random_regular_villager')} 3. Random Regular Villager
+        ${emote('doctor')} 4. Doctor
+        ${emote('random_regular_villager')} 5. Random Regular Villager
+        ${emote('wolf_seer')} 6. Wolf Seer
+        ${emote(rolelist[6].toLowerCase())} 7. ${rolelist[6]}
+        ${emote(rolelist[7].toLowerCase())} 8. ${rolelist[7]}
+        ${emote('junior_werewolf')} 9. Junior Werewolf
+        ${emote('medium')} 10. Medium
+        ${emote(rolelist[10].toLowerCase())} 11. ${rolelist[10]}
+        ${emote(rolelist[11].toLowerCase())} 12. ${rolelist[11]}
+        ${emote(rolelist[12])} 13. ${rolelist[12]}
+        ${emote('random_regular_villager')} 14. Random Regular Villager
         ${emote('priest')} 15. Priest
         ${emote('random_regular_villager')} 16. Random Regular Villager`
         )
       let newrole = []
       for (let k = 0 ; k < alive.members.size ; k++) {
-        newrole.push(rolelist[k])
+        newrole.push(rolelist[k].toLowerCase())
       }
       shuffle(newrole)
         for (let j = 0 ; j < alive.members.size ; j++) {
