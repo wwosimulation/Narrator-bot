@@ -45,7 +45,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
 					let t = await reaction.message.channel.send("You are about to close the ticket. Confirm?")
 					await t.react("✅")
 					const collector = t.createReactionCollector(true, {time: 30000, max: 1})
-					collector.on("collect", (react, us) => {
+					collector.on("collect", async (react, us) => {
 						if (react == "✅") {
 							await reaction.channel.delete()
 						}
