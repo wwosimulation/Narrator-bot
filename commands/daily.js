@@ -6,7 +6,7 @@ const db = require('quick.db')
 module.exports = {
   name: "daily",
   run: async (message, args, client) => {
-    if (message.author.id != "552814709963751425") return
+    if (!["552814709963751425", "439223656200273932"].includes(message.author.id)) return
     let item = ""
     let amount = ""
     let cooldown = 86400000
