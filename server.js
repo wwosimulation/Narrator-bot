@@ -37,6 +37,30 @@ Structures.extend("Message", () => Message);
 const client = new Discord.Client()
 const bot = new Discord.Client()
 
+client.on("messageReactionAdd", async (reaction, user) => {
+	if (reaction.message.channel.name.startsWith("ticket-") && reaction.message.channel.parentID == "606230513103142932") {
+		if (reaction.emoji.name == "🔒") {
+			if (reaction.message.author.id == client.user.id) {
+				if (reaction.message.embeds[0].title.toLowerCase() == reaction.message.channel.name.replace("-", " ")) {
+					let t = await reaction.message.channel.send("You are about to close the ticket. Confirm?")
+					await t.react("✅")
+					const collector = t.createReactionCollector(true, {time: 30000, max: 1})
+					collector.on("collect", (react, us) => {
+						if (react == "✅") {
+							await reaction.channel.delete()
+						}
+					})
+					collector.on("end", async (collected, reason) => {
+						if (reason == "time") {
+							reaction.channel.send("This action has been canceled!")
+						}
+					})
+				}
+			}
+		}
+	}
+})
+
 //Prefix and token from config file
 const prefix = process.env.PREFIX
 const token = process.env.TOKEN
