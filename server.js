@@ -41,12 +41,12 @@ client.on("messageReactionAdd", async (reaction, user) => {
 	if (reaction.message.channel.name.startsWith("ticket-") && reaction.message.channel.parentID == "606230513103142932") {
 		if (reaction.emoji.name == "🔒") {
 			if (reaction.message.author.id == client.user.id) {
-				if (reaction.message.embeds[0].title.toLowerCase() == reaction.message.channel.name.replace("-", " ")) {
+				if (reaction.message.embeds[0].title.startsWith("Ticket")) {
 					let t = await reaction.message.channel.send("You are about to close the ticket. Confirm?")
 					await t.react("✅")
 					const collector = t.createReactionCollector(true, {time: 30000, max: 1})
 					collector.on("collect", async (react, us) => {
-						if (react == "✅") {
+						if (react.emoji.name == "✅") {
 							await reaction.channel.delete()
 						}
 					})
