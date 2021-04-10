@@ -45,7 +45,7 @@ module.exports = {
       let msg = await t.send(`<@&606138123260264488>`)
       setTimeout(async () => {
         await msg.delete()
-        await t.send(new Discord.MessageEmbed().setTitle(`Ticket ${ticket}`).setColor("BLUE").setDescription(`This ticket was created by ${message.member}`).addField(`Subject:`, args ? args.join(" ") : "None given"))
+        await t.send(new Discord.MessageEmbed().setTitle(`Ticket ${ticket}`).setColor("BLUE").setDescription(`This ticket was created by ${message.member}`).addField(`Subject:`, args ? args.join(" ") : "None given")).then(ms => ms.react("🔒"))
       }, 3000)
     }
   }
