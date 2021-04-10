@@ -37,6 +37,36 @@ Structures.extend("Message", () => Message);
 const client = new Discord.Client()
 const bot = new Discord.Client()
 
+//Prefix and token from config file
+const prefix = process.env.PREFIX
+const token = process.env.TOKEN
+
+// Slash commands
+require("./slash.js")(client)
+
+
+//ShadowAdmin
+//const shadowadmin = require("shadowadmin")
+
+//Cooldown
+const cooldowns = new Discord.Collection()
+
+client.commands = new Discord.Collection()
+const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`)
+  client.commands.set(command.name, command)
+}
+
+//Bot on startup
+client.on("ready", async () => {
+  client.config = {}
+  client.user.setActivity("Werewolf Online!")
+  console.log("Connected!")
+  //ShadowAdmin initialize
+  //shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
+})
+
 client.on("messageReactionAdd", async (reaction, user) => {
 	console.log("Ticket close 1")
 	if (reaction.message.channel.name.startsWith("ticket-") && reaction.message.channel.parentID == "606230513103142932") {
@@ -67,35 +97,6 @@ client.on("messageReactionAdd", async (reaction, user) => {
 	}
 })
 
-//Prefix and token from config file
-const prefix = process.env.PREFIX
-const token = process.env.TOKEN
-
-// Slash commands
-require("./slash.js")(client)
-
-
-//ShadowAdmin
-//const shadowadmin = require("shadowadmin")
-
-//Cooldown
-const cooldowns = new Discord.Collection()
-
-client.commands = new Discord.Collection()
-const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`)
-  client.commands.set(command.name, command)
-}
-
-//Bot on startup
-client.on("ready", async () => {
-  client.config = {}
-  client.user.setActivity("Werewolf Online!")
-  console.log("Connected!")
-  //ShadowAdmin initialize
-  //shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
-})
 
 
 
