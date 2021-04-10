@@ -192,7 +192,7 @@ module.exports = {
       let roles = [rolelist1, rolelist2]
       let rolelist = roles[Math.floor(Math.random() * 2)]
       function emote(nama) {
-        return client.guilds.cache.get('465795320526274561').emojis.cache.find(e => e.name === nama.replace(" ", "_")))
+        return client.guilds.cache.get('465795320526274561').emojis.cache.find(e => e.name === nama.replace(" ", "_"))
       }
       dayChat.send(
         `RANKED GAME:\n
