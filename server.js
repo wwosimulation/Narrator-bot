@@ -35,7 +35,7 @@ class Message extends Structures.get("Message") {
 Structures.extend("Message", () => Message);
 
 const client = new Discord.Client()
-const bot = new Discord.Bot()
+const bot = new Discord.Client()
 
 //Prefix and token from config file
 const prefix = process.env.PREFIX
