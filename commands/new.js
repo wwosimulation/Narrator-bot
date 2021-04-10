@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const Discord = require("discord.js")
 
 module.exports = {
   name: "new",
