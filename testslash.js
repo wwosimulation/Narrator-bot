@@ -12,6 +12,10 @@ const allCommands = [
     description: "See the bot's ping",
   },
   {
+    command: "serverinfo",
+    description: "Test"
+  },
+  {
     command: "timer",
     description: "Set a timer for a certain amount of time",
     options: [{ type: 3, name: "Time", description: "length of timer", required: true }],
@@ -58,7 +62,7 @@ module.exports = (client, guildIDS) => {
       }
 
       if (command == "serverinfo") {
-        baseReply("Test")
+        baseReply("Test", interaction)
       }
     })
   })
