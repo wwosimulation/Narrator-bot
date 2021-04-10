@@ -3000,7 +3000,8 @@ module.exports = {
                     READ_MESSAGE_HISTORY: true,
                     SEND_MESSAGES: false,
                   })
-                  lovers.send(`You are in love with **${guy1.nickname} ${guy1.user.username} (${db.get(`role_${guy1.id}`)})** and **${guy2.nickname} ${guy2.user.username} (${db.get(`role_${guy2.id}`)})**. You win if you stay alive together until the end of the game. You die if your lover dies.\n\n_ _\n\n_ _\n\n${alive}`)
+                  lovers.send(`<:couple:744542381206143026> You are in love with **${guy1.nickname} ${guy1.user.username} (${db.get(`role_${guy1.id}`)})** and **${guy2.nickname} ${guy2.user.username} (${db.get(`role_${guy2.id}`)})**. You win if you stay alive together until the end of the game. You die if your lover dies.\n\n_ _\n\n_ _\n\n${alive}`)
+		  channel.send(`<:couple:744542381206143026> Player **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}** are in love!`)
                 } else {
 		  let aliveplayers = []
 		  alive.members.forEach(play => {
@@ -3016,6 +3017,8 @@ module.exports = {
 		  	couple[0] = couple1
 			couple[1] = aliveplayers[Math.floor(Math.random() * aliveplayers.length)]
 			lovers.send(`You are in love with **${couple[0].nickname} ${couple[0].user.username} (${db.get(`role_${couple[0].id}`)})** and **${couple[1].nickname} ${couple[1].user.username} (${db.get(`role_${couple[1].id}`)})**. You win if you stay alive together until the end of the game. You die if your lover dies.\n\n_ _\n\n_ _\n\n${alive}`)
+			channel.send(`<:couple:744542381206143026> Player **${couple[0].nickname} ${couple[0].user.username}** and **${couple[1].nickname} ${couple[1].user.username}** are in love!`)
+			
 		  } else {
 		  	channel.send(`There aren't enough players for the couple to happen! The action has been canceled!`)
 		  }
