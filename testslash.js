@@ -22,7 +22,7 @@ const allCommands = [
   }
 ]
 
-module.exports = (client, guildIDS) => {
+module.exports = (client) => {
   const baseReply = (msg, interaction, options = {}) => {
     for (let o in defaultOptions) {
       if (!options[o]) options[o] = defaultOptions[o]
@@ -35,7 +35,7 @@ module.exports = (client, guildIDS) => {
 
   client.on("ready", () => {
     allCommands.forEach((cmd) => {
-      guildIDS.forEach((x) => {
+      client.guilds.cache.keyArray("id").forEach((x) => {
         let data = {
           name: cmd.command,
           description: cmd.description,
