@@ -8,6 +8,7 @@ const config = {
     content: "606138315845926912",
     afk: "612750104973017207",
     mininarr: "606123620732895232",
+    supervisor: "762061739848106024",
     narr: "606123619999023114",
     helper: "606123621252988931",
     minimod: "606123618849521674",
@@ -62,6 +63,8 @@ module.exports = (client) => {
       .filter((x) => x.roles.cache.has(config.roles.narr))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
       .join("\n")}\n`
+      m += `**Supervisors**\n${wovsim.members.cache
+      .filter((x) => x.roles.cache.has(config.roles.supervisor)).map((x) => `<@${x.id}> - ${x.user.tag}`).join("\n")}\n`
     m += `**Mini Narrators**\n${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.mininarr))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
