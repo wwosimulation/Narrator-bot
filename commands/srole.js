@@ -181,7 +181,7 @@ module.exports = {
           let guy = message.guild.members.cache.find(m => m.nickname === (i+1).toString())
           if (!guy) return message.channel.send(`Player ${i} was not found!`)
         }
-        if (alive.members.size != 6 && != alive.members.size != 8 && != alive.members.size != 10 && != alive.members.size != 13 && != alive.members.size != 16 )
+        if (alive.members.size != 6 && != alive.members.size != 8 && != alive.members.size != 10 && != alive.members.size != 13 && != alive.members.size != 16 ) return message.channel.send("Uhh no. Imbanlanced game")
       }
       let rrv = ["Aura Seer", "Avenger", "Beast Hunter", "Bodyguard", "Doctor", "Flower Child", "Grumpy Grandma", "Loudmouth", "Marksman", "Priest", "Red Lady", "Sheriff", "Spirit Seer", "Tough Guy", "Villager", "Witch"]
       let rww = ["Alpha Werewolf", "Guardian Wolf", "Junior Werewolf", "Nightmare Werewolf", "Shadow Wolf", "Werewolf Berserk", "Wolf Pacifist", "Wolf Seer", "Wolf Shaman"]
