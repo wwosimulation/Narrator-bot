@@ -219,7 +219,7 @@ module.exports = {
       }
       shuffle(newrole)
         for (let j = 0 ; j < alive.members.size ; j++) {
-          let guy = message.guild.members.cache.find(m => m.nickname === (j+1).toString())
+          let guy = message.guild.members.cache.find(m => m.nickname == (j+1).toString())
           let lol = await message.guild.channels.create(`priv-${newrole[j].replace(' ', '-')}`, {
             parent: '748959630520090626',
             permissionOverwrites: [
