@@ -51,6 +51,25 @@ module.exports = {
     let thekiller = []
     let hhtarget = []
 
+    // changing perms for allplayers
+    for (let x = 1 ;x < 17 ; x++) {
+      let guy = message.guild.members.cache.find(m => m.nickname === x.toString())
+      if (guy) {
+	  if (guy.roles.cache.has(alive.id)) {
+ 	    let role = db.get(`role_${guy.id}`)
+	    let allchans = message.guild.channels.cache.filter(c => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`)
+	    allchans.forEach(chan => {
+	    	if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+		  chan.updateOverwrite(guy.id, {
+		  	SEND_MESSAGES: true,
+			READ_MESSAGE_HISTORY: true,
+			VIEW_CHANNEL: true
+		  })
+		}
+	    })
+	  }
+	}
+    }
     
     // setting the hh target
     for (let x = 0; x < hh.length; x++) {
