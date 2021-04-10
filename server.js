@@ -680,8 +680,23 @@ bot.on("ready", () => {
 require("./testslash.js")(bot)
 
 bot.on("message", async message => {
-	if (message.content == "Hola") {
-		message.reply("Hello")
+	let pr = "3061!"
+	
+	if (message.author.bot) return;
+	if (message.content.startsWith("3061!")) {
+		let cmd = message.content.slice(5).split(" ")[0].toLowerCase()
+		if (cmd) {
+			let input = message.content.slice(5 + cmd.length + 1).split(" ")
+			
+			if (cmd == "games") {
+				message.channel.send(new Discord.MessageEmbed()
+						    .setTitle("Games")
+						    .setDescription("1. **Tic Tac Toe**\n - Classic game\n\n2. **Checkers**\n - Now that's some good shit\n\n3. **Chess**\n - DO you think you are smart enough?")
+						    .setColor("YELLOW")
+						    .addTimestamp()
+						    ).catch(e => message.author.send(`I do not have the \`SEND MESSAGES\` permission in ${message.channel}`).catch(e => console.log(e.message)))
+			}
+		}
 	}
 })
 
