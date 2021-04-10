@@ -41,6 +41,7 @@ module.exports = (client) => {
     }
     let sendData = { content: msg }
     if (options.private) sendData.flags = 1 << 6
+    if(options.embeds) sendData.embeds = options.embeds
     let data = { type: 4, data: sendData }
     client.api.interactions(interaction.id, interaction.token).callback.post({ data })
   }
