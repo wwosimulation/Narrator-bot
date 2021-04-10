@@ -44,6 +44,7 @@ const token = process.env.TOKEN
 // Slash commands
 require("./slash.js")(client)
 
+
 //ShadowAdmin
 //const shadowadmin = require("shadowadmin")
 
@@ -62,10 +63,10 @@ client.on("ready", async () => {
   client.config = {}
   client.user.setActivity("Werewolf Online!")
   console.log("Connected!")
-
   //ShadowAdmin initialize
   //shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
 })
+
 
 
 //Bot updating roles
@@ -673,6 +674,7 @@ require("./stafflist.js")(client)
 
 bot.on("ready", () => {
 	console.log("Bot is ready!")
+	require("./slash.js")(bot, [bot.guilds.cache.keyArray()])
 })
 
 bot.on("message", async message => {
