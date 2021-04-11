@@ -333,12 +333,14 @@ module.exports = {
         rolelist.push(args[i])
       }
       rolelist = rolelist.join("\n")
+      rolelist = `\n${rolelist}`
       rolelist = rolelist.replace(/\nrrv/g, "\nrandom-regular-villager")
       rolelist = rolelist.replace(/\nrv/g, "\nrandom-voting")
       rolelist = rolelist.replace(/\nrsv/g, "\nrandom-strong-villager")
       rolelist = rolelist.replace(/\nrww/g, "\nrandom-werewolf")
       rolelist = rolelist.replace(/\nrk/g, "\nrandom-killer")
       message.channel.send(rolelist)
+      rolelist = rolelist.replace("\nr", "r")
       rolelist = rolelist.split("\n")
       
       for (let i = 1 ; i < args.length ; i++) {
