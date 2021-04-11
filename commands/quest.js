@@ -8,8 +8,8 @@ module.exports = {
       
     if (message.guild.id != "465795320526274561") return;
     
-    let narrator = message.guild.roles.cache.find(r => r.name === "Game Narrator")
-    let mininarr = message.guild.roles.cache.find(r => r.name === "Mini Narrator")
+    let narrator = message.guild.roles.cache.get("606123619999023114")
+    let mininarr = message.guild.roles.cache.get("606123620732895232")
     
     if (args.length < 3) return message.channel.send("Bruh. How do you expect me to do this if the arguments are not sufficent? I am a Bot, not a Mind Reader.")
     

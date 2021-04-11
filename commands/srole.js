@@ -176,63 +176,57 @@ module.exports = {
     } else if (args[0] == "sandbox") {
       message.channel.send("Sandbox hasn't been implemented yet, use the sandbox list with -srole custom")
     } else if (args[0] == "ranked") {
+      if (args[1] != "force") {
+        for (let i = 0 ; i < alive.members.size ; i++) {
+          let guy = message.guild.members.cache.find(m => m.nickname === (i+1).toString())
+          if (!guy) return message.channel.send(`Player ${i} was not found!`)
+        }
+        if (alive.members.size != 6 && alive.members.size != 8 && alive.members.size != 10 && alive.members.size != 13 && alive.members.size != 16 ) return message.channel.send("Uhh no. Imbanlanced game")
+      }
       let rrv = ["Aura Seer", "Avenger", "Beast Hunter", "Bodyguard", "Doctor", "Flower Child", "Grumpy Grandma", "Loudmouth", "Marksman", "Priest", "Red Lady", "Sheriff", "Spirit Seer", "Tough Guy", "Villager", "Witch"]
       let rww = ["Alpha Werewolf", "Guardian Wolf", "Junior Werewolf", "Nightmare Werewolf", "Shadow Wolf", "Werewolf Berserk", "Wolf Pacifist", "Wolf Seer", "Wolf Shaman"]
       let rv = ["Fool", "Headhunter"]
 
-      let gfmh = [["Gunner", "Fool"], ["Marksman", "Headhunter"]]
-
-      let d = gfmh[random(gfmh)]
-
-      let fsse1 = [["Aura Seer", "Wolf Shaman", d[0], d[1]], ["Spirit Seer", "Nightmare Werewolf", "Gunner", rv[random(rv)]]]
-      let fsse2 = fsse1[random(fsse1)]
-      let eight = [d[1], "Random Voting"]
-      if (fsse2.includes("Wolf Shaman")) {
-        eight = eight[0]
-      } else {
-        eight = eight[1]
+      if (alive.members.size < 9) {
+        rww.splice(rww.indexOf("Shadow Wolf"), 1)
+        rww.splice(rww.indexOf("Werewolf Berserk"), 1)
+        rww.splice(rww.indexOf("Junior Werewolf"), 1)
+        rww.splice(rww.indexOf("Guardian Wolf"), 1)
       }
-      let sr = ["Sheriff", "Red Lady"]
-      sr = sr[random(sr)]
-      let nt = [["Flower Child", "Guardian Wolf"], [sr, "Wolf Pacifist"]]
-      nt = nt[random(nt)]
-      let fourteen = ["Junior Werewolf", "Shadow Wolf"]
-      fourteen = fourteen[random(fourteen)]
-      let ac = ["Arsonist", "Cannibal"]
-      let sc = ["Serial Killer", "Corruptor"]
-      let tt = [[ac[random(ac)], "Jailer"], [sc[random(sc)], "Witch"], ["Illusionist", "Forger"]]
-      tt = tt[random(tt)]
       
-      let rolelist = ["Detective", "Wolf Seer", "Doctor", rrv[random(rrv)], fsse2[0], fsse2[1], fsse2[2], fsse2[3], nt[0], nt[1], "Medium", tt[0], tt[1], fourteen[0], "Priest", rrv[random(rrv)]]
+      let rolelist1 = ["Aura Seer", rww[Math.floor(Math.random() * rww.length)], rrv[Math.floor(Math.random() * rrv.length)], "Doctor", rrv[Math.floor(Math.random() * rrv.length)], "Wolf Seer", "Marksman", "Headhunter", "Junior Werewolf", "Medium", "Jailer", "Arsonist", "Detective", rww[Math.floor(Math.random() * rww.length)], "Priest", rrv[Math.floor(Math.random() * rrv.length)]]
+      let rolelist2 = ["Spirit Seer", rww[Math.floor(Math.random() * rww.length)], rrv[Math.floor(Math.random() * rrv.length)], "Doctor", rrv[Math.floor(Math.random() * rrv.length)], "Wolf Seer", "Gunner", "Fool", "Junior Werewolf", "Medium", "Witch", "Cannibal", "Detective", rww[Math.floor(Math.random() * rww.length)], "Priest", rrv[Math.floor(Math.random() * rrv.length)]]
+      let roles = [rolelist1, rolelist2]
+      let rolelist = roles[Math.floor(Math.random() * 2)]
       function emote(nama) {
-        return client.guilds.cache.get('465795320526274561').emojis.cache.find(e => e.name === nama)
+        return client.guilds.cache.get('465795320526274561').emojis.cache.find(e => e.name === nama.replace(" ", "_"))
       }
       dayChat.send(
         `RANKED GAME:\n
-        ${emote('detective')} 1. Detective
-        ${emote('wolf_seer')} 2. Wolf Seer
-        ${emote('doctor')} 3. Doctor
-        ${emote('random_regular_villager')} 4. Random Regular Villager
-        ${emote(fsse2[0].replace(" ", "_").toLowerCase())} 5. ${fsse2[0]}
-        ${emote(fsse2[1].replace(" ", "_").toLowerCase())} 6. ${fsse2[1]}
-        ${emote(fsse2[2].replace(" ", "_").toLowerCase())} 7. ${fsse2[2]}
-        ${emote(eight.replace(" ", "_").toLowerCase())} 8. ${eight}
-        ${emote(nt[0].replace(" ", "_").toLowerCase())} 9. ${nt[0]}
-        ${emote(nt[1].replace(" ", "_").toLowerCase())} 10. ${nt[1]}
-        ${emote('medium')} 11. Medium
-        ${emote(tt[0].replace(" ", "_").toLowerCase())} 12. ${tt[0]}
-        ${emote(tt[1].replace(" ", "_").toLowerCase())} 13. ${tt[1]}
-        ${emote(fourteen.replace(' ', '_').toLowerCase())} 14. ${fourteen}
+        ${emote(rolelist[0].toLowerCase())} 1. ${rolelist[0]}
+        ${emote('random-werewolf')} 2. Random Werewolf
+        ${emote('random_regular_villager')} 3. Random Regular Villager
+        ${emote('doctor')} 4. Doctor
+        ${emote('random_regular_villager')} 5. Random Regular Villager
+        ${emote('wolf_seer')} 6. Wolf Seer
+        ${emote(rolelist[6].toLowerCase())} 7. ${rolelist[6]}
+        ${emote(rolelist[7].toLowerCase())} 8. ${rolelist[7]}
+        ${emote('junior_werewolf')} 9. Junior Werewolf
+        ${emote('medium')} 10. Medium
+        ${emote(rolelist[10].toLowerCase())} 11. ${rolelist[10]}
+        ${emote(rolelist[11].toLowerCase())} 12. ${rolelist[11]}
+        ${emote(rolelist[12])} 13. ${rolelist[12]}
+        ${emote('random_regular_villager')} 14. Random Regular Villager
         ${emote('priest')} 15. Priest
         ${emote('random_regular_villager')} 16. Random Regular Villager`
         )
       let newrole = []
       for (let k = 0 ; k < alive.members.size ; k++) {
-        newrole.push(rolelist[k])
+        newrole.push(rolelist[k].toLowerCase())
       }
       shuffle(newrole)
         for (let j = 0 ; j < alive.members.size ; j++) {
-          let guy = message.guild.members.cache.find(m => m.nickname === (j+1).toString())
+          let guy = message.guild.members.cache.find(m => m.nickname == (j+1).toString())
           let lol = await message.guild.channels.create(`priv-${newrole[j].replace(' ', '-')}`, {
             parent: '748959630520090626',
             permissionOverwrites: [
@@ -339,13 +333,33 @@ module.exports = {
         rolelist.push(args[i])
       }
       rolelist = rolelist.join("\n")
-      rolelist = rolelist.replace(/rrv/g, "random-regular-villager")
-      rolelist = rolelist.replace(/rv/g, "random-voting")
-      rolelist = rolelist.replace(/rsv/g, "random-strong-villager")
-      rolelist = rolelist.replace(/rww/g, "random-werewolf")
-      rolelist = rolelist.replace(/rk/g, "random-killer")
-      
+      rolelist = `\n${rolelist}`
+      rolelist = rolelist.replace(/\nrrv/g, "\nrandom-regular-villager")
+      rolelist = rolelist.replace(/\nrv/g, "\nrandom-voting")
+      rolelist = rolelist.replace(/\nrsv/g, "\nrandom-strong-villager")
+      rolelist = rolelist.replace(/\nrww/g, "\nrandom-werewolf")
+      rolelist = rolelist.replace(/\nrk/g, "\nrandom-killer")
+      message.channel.send(rolelist)
+      rolelist = rolelist.replace("\nr", "r")
       rolelist = rolelist.split("\n")
+      
+      for (let i = 1 ; i < args.length ; i++) {
+        if (args[i].toLowerCase() == "president") {
+          random.splice(random.indexOf("President"), 1)
+        }
+        if (args[i].toLowerCase() == "cupid") {
+          random.splice(random.indexOf("cupid"), 1)
+        }
+        if (args[i].toLowerCase() == "jailer") {
+          random.splice(random.indexOf("jailer"), 1)
+          rsv.splice(random.indexOf("jailer"), 1)
+        }
+        if (args[i].toLowerCase() == "sect-leader") {
+          random.splice(random.indexOf("sect-leader"), 1)
+          rk.splice(random.indexOf("sect-leader"), 1)
+        }
+        
+      }
       
       for (let i = 1 ; i < args.length ; i++) {
         
@@ -358,9 +372,9 @@ module.exports = {
             if (indexrole > -1) {
               rrv.splice(indexrole, 1)
             }
-            let torole = rrv[Math.floor(Math.random() * rrv.length)]
-            args[i] = torole
           })
+          let torole = rrv[Math.floor(Math.random() * rrv.length)]
+          args[i] = torole
         }
         
         //rsv
@@ -371,12 +385,12 @@ module.exports = {
             if (indexrole > -1) {
               rsv.splice(indexrole, 1)
             }
-            let torole = rsv[Math.floor(Math.random() * rsv.length)]    
-            if (torole == "jailer") {
-              rsv.splice(rsv.indexOf(torole), 1)
-            }
-            args[i] = torole
           })
+          let torole = rsv[Math.floor(Math.random() * rsv.length)]    
+          if (torole == "jailer") {
+            rsv.splice(rsv.indexOf(torole), 1)
+          }
+          args[i] = torole
         }
         
        //rww
@@ -387,9 +401,9 @@ module.exports = {
             if (indexrole > -1) {
               rww.splice(indexrole, 1)
             }
-            let torole = rww[Math.floor(Math.random() * rww.length)]
-            args[i] = torole
           })
+          let torole = rww[Math.floor(Math.random() * rww.length)]
+          args[i] = torole
         }
         
         //rk
@@ -400,12 +414,12 @@ module.exports = {
             if (indexrole > -1) {
               rk.splice(indexrole, 1)
             }
-            let torole = random[Math.floor(Math.random() * random.length)]    
-            if (torole == "sect-leader") {
-              rk.splice(rk.indexOf(torole), 1)
-            }
-            args[i] = torole
           })
+          let torole = rk[Math.floor(Math.random() * rk.length)]    
+          if (torole == "sect-leader") {
+            rk.splice(rk.indexOf(torole), 1)
+          }
+          args[i] = torole
         }
         
         //rv
@@ -416,31 +430,31 @@ module.exports = {
             if (indexrole > -1) {
               rv.splice(indexrole, 1)
             }
-            let torole = rv[Math.floor(Math.random() * rv.length)]
-            args[i] = torole
           })
+          let torole = rv[Math.floor(Math.random() * rv.length)]
+          args[i] = torole
         }
         
         //general
-        if (["ra", "random"].includes(args[i])) {
+        if (["random"].includes(args[i])) {
           
             excludes.forEach(role => {
             let indexrole = random.indexOf(role)
             if (indexrole > -1) {
               random.splice(indexrole, 1)
             }
-            let torole = random[Math.floor(Math.random() * random.length)]
-            if (["president", "cupid", "jailer", "sect-leader"].includes(torole)) {
-              random.splice(random.indexOf(torole), 1)
-              if (torole == "Jailer") {
-                rsv.splice(rsv.indexOf(torole), 1)
-              }
-              if (torole == "sect-leader") {
-                rk.splice(rk.indexOf(torole), 1)
-              }
-            }
-            args[i] = torole
           })
+          let torole = random[Math.floor(Math.random() * random.length)]
+          if (["president", "cupid", "jailer", "sect-leader"].includes(torole)) {
+            random.splice(random.indexOf(torole), 1)
+            if (torole == "Jailer") {
+              rsv.splice(rsv.indexOf(torole), 1)
+            }
+            if (torole == "sect-leader") {
+              rk.splice(rk.indexOf(torole), 1)
+            }
+          }
+          args[i] = torole
         }
         
         roles.push(args[i])
@@ -460,7 +474,7 @@ module.exports = {
         allchannels.push(role)
       }
 
-
+      let allwolves = []
       for (let i = 0 ; i < allusers.length ; i++) {
         let content = roles[i]
         if (content.includes("-")) {
@@ -508,6 +522,8 @@ module.exports = {
             VIEW_CHANNEL: true,
             READ_MESSAGE_HISTORY: true
           })
+          
+          allwolves.push(`**${client.guilds.cache.get("465795320526274561").emojis.cache.find(emoji => emoji.name === roles[i].replace(/-/g, "_"))} ${i+1}. is ${content}**!`)
         }
         
         if (content == "President") {
@@ -574,75 +590,48 @@ module.exports = {
 
         
       }
-      /*for (let i = 0 ; i < allusers.length ; i++) {
-        let guy = message.guild.members.cache.get(allusers[i])
-        let role = message.guild.channels.cache.filter(c => c.name === `priv-${roles[i]}`).keyArray("id")
-        for (let j = 0 ; j < role.length ; j++) {
-          let chan = message.guild.channels.cache.get(role[j])
-          let channeloccupied = false
-          for (k = 0 ; k < allusers.length ; k++) {
-            let player = message.guild.members.cache.get(allusers[k])
-            if (chan.permissionsFor(player).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-              console.log("yes")
-              channeloccupied = true
-              k = 99
-            }
-            if (channeloccupied == true && j == role.length - 1) {
-              message.guild.channels.create(chan.name, {
-                parent: '748959630520090626'
-              })
-            }
-            if (channeloccupied == false && k == allusers.length - 1) {
-              chan.updateOverwrite(guy.id, {
-                VIEW_CHANNEL: true,
-                SEND_MESSAGES: true,
-                READ_MESSAGE_HISTORY: true
-              })
-              j = 99
-            }
-          }
-        }
-      }*/
+      if (allwolves.length > 1) {
+        wwsChat.send(allwolves.join("\n"))
+      }
       
       let emorole = ""
-        if (args[0].includes("customhid")) {
-          let lol = await dayChat.send(`Role List is Hidden`)
-          lol.pin()
-        } else {
-          rolelist.forEach(role => {
-            let makeitsimple
-            if (role.includes("-")) {
-              let uyeuh = role.split("-")
-              uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`})
-              makeitsimple = uyeuh.join(" ")
-            } else {
-              makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
-            }
-            let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace(/-/g, "_")) || ""
-            emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
-            rolelist[rolelist.indexOf(role)] = `nono${role}`
-          })
-          let excludes = db.get(`excludes`) || []
-          let allexc = []
-          if (excludes.length > 0) {
-            excludes.forEach(ex => {
-              let duh
-              if (ex.includes("-")) {
-                duh = ex.split("-")
-                duh.forEach(e => {
-                  duh[duh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`
-                })
-                allexc.push(duh.join(" "))
-              } else {
-                allexc.push(ex.replace(ex[0], ex[0].toUpperCase()))
-              }
-            })
-            emorole += `\n_Roles excluded are: **${allexc.join("**, **")}**_`
+      if (args[0].includes("customhid")) {
+        emorole = "Role list is hidden"
+      } else {
+        rolelist.forEach(role => {
+          let makeitsimple
+          if (role.includes("-")) {
+            let uyeuh = role.split("-")
+            uyeuh.forEach(e => {uyeuh[uyeuh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`})
+            makeitsimple = uyeuh.join(" ")
+          } else {
+            makeitsimple = `${role[0].toUpperCase()}${role.slice(1).toLowerCase()}`
           }
+          let emoji = client.guilds.cache.get("465795320526274561").emojis.cache.find(e => e.name === role.replace(/-/g, "_")) || ""
+          emorole += `${emoji} ${rolelist.indexOf(role)+1}. ${makeitsimple}\n`
+          rolelist[rolelist.indexOf(role)] = `nono${role}`
+        })
+        let excludes = db.get(`excludes`) || []
+        let allexc = []
+        if (excludes.length > 0) {
+          excludes.forEach(ex => {
+            let duh
+            if (ex.includes("-")) {
+              duh = ex.split("-")
+              duh.forEach(e => {
+                duh[duh.indexOf(e)] = `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`
+              })
+              allexc.push(duh.join(" "))
+            } else {
+              allexc.push(ex.replace(ex[0], ex[0].toUpperCase()))
+            }
+          })
+          emorole += `\n_Roles excluded are: **${allexc.join("**, **")}**_`
         }
-        let lol = await dayChat.send(emorole)
-        lol.pin()
-    
+      }
+      let lol = await dayChat.send(emorole)
+      lol.pin()
+   
     
       message.channel.send(embed)
       message.channel.send("I have executed the startgame command myself! You do not need to do it!")

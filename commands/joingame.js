@@ -111,7 +111,7 @@ module.exports = {
           } else if (reaction.emoji.name === "👤") {
             reaction.users.remove(user)
             let guy = message.guild.members.cache.get(user.id)
-            if (!guy.roles.cache.has("606140995897393164") && !guy.roles.cache.has("606132387587293195")) return message.guild.channels.cache.get("606132387587293195").send(`${guy}, You are not a narrator! Do not try to fool me!`)
+            if (!guy.roles.cache.has("606140995897393164") && !guy.roles.cache.has("606155761286119425")) return message.guild.channels.cache.get("606132387587293195").send(`${guy}, You are not a narrator! Do not try to fool me!`)
             if (guy.roles.cache.has("606140092213624859")) guy.roles.remove("606140092213624859") //alive
             guy.setNickname(guy.user.username)
             if (guy.roles.cache.has("606140764682190849")) guy.roles.remove("606140764682190849") //spec

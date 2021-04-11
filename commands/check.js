@@ -40,7 +40,6 @@ module.exports = {
           aura = "Unknown"
           if (
             role == "Villager" ||
-            role == "Forger" ||
             role == "Loudmouth" ||
             role == "Santa Claus" ||
             role == "Easter Bunny" ||

@@ -5,8 +5,8 @@ module.exports = {
     name: "gwhost",
     run: async (message, args, client) => {
         
-        let narrator = message.guild.roles.cache.find(r => r.name === "Game Narrator")
-        let mininarr = message.guild.roles.cache.find(r => r.name === "Mini Narrator")
+        let narrator = message.guild.roles.cache.get("606123619999023114")
+        let mininarr = message.guild.roles.cache.get("606123620732895232")
         if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let sup = ""
@@ -31,11 +31,12 @@ module.exports = {
             //console.log(reaction.emoji.name)
             if (reaction.emoji.name == "🍟") {
             //console.log(reaction.emoji.name)
-            let guy = message.guild.members.cache.find(m => m.id === user.id)
-            guy.roles.add("606123676668133428").catch(e => message.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
             reaction.users.remove(user).catch(e => message.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
+            let guy = message.guild.members.cache.find(m => m.id === user.id)
+            if(guy.roles.cache.has("606123628693684245")) return message.author.send("You are game banned!")
+            guy.roles.add("606123676668133428").catch(e => message.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
             message.guild.channels.cache.find(x => x.name == "joined").send(`${guy.user.tag} joins match ${args.join(" ")}\nUser ID: ${guy.id}`)
-            message.guild.channels.cache.find(x => x.name == "joined-link").send(`<@${guy.id}>`).then(m => m.delete({timeout: 5000}))
+            message.guild.channels.cache.find(x => x.name == "joined-link").send(`<@${guy.id}>, use the link above to join the game!`).then(m => m.delete({timeout: 5000}))
             }
         });
 

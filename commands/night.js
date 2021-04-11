@@ -294,10 +294,28 @@ module.exports = {
               if (corruptor.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                   db.set(`corrupt_${corr[a]}`, null)
-                  dayChat.send(`<:corrupt:745632706838396989> The Corruptor killed **${guy.nickname} ${guy.user.username}**`)
+                  dayChat.send(`<:corrupt:745632706838396989> The Corruptor killed **${guy.nickname} ${guy.user.username}**!`)
                   guy.roles.add(dead.id)
                   guy.roles.remove(alive.id)
                   guy.roles.add('777400587276255262')
+                } 
+                if (player.roles.cache.has(alive.id)) {
+                  for (let d = 1 ; d < 17 ; d++) {
+                    let cguy = message.guild.members.cache.find(m => m.nickname === d.toString())
+                    if (cguy) {
+                      if (cguy.roles.cache.has(alive.id)) {
+                        if (db.get(`role_${cguy.id}`) == "Red Lady") {
+                          let corruptedornot = db.get(`rlcorrupted_${cguy.nickname}`)
+                          if (corruptedornot == true) {
+                            dayChat.send(`<:corrupt:745632706838396989> The Corruptor killed **${cguy.nickname} ${cguy.user.username}**!`)
+                            cguy.roles.add(dead.id)
+                            cguy.roles.remove(alive.id)
+                            cguy.roles.add('777400587276255262')
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
