@@ -164,7 +164,7 @@ module.exports = {
           if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
             j = 99
             if (guy.roles.cache.has(alive.id)) {
-              tempchan.send(`<:getshield:744536572556476507> You have recieved a sword from the Forger! To use it, do \`+sword [player number]\`!`)
+              tempchan.send(`<:getsword:744536585906683975> You have recieved a sword from the Forger! To use it, do \`+sword [player number]\`!`)
               db.set(`given_${forg.id}`, true)
               db.set(`toGiveK_${forg.id}`, null)
               db.set(`sword_${tempchan.id}`, true)
