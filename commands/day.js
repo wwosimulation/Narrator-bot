@@ -156,7 +156,7 @@ module.exports = {
       }
 
       if (sword != null) {
-        let guy = message.guild.members.cache.find((m) => m.nickname === shield)
+        let guy = message.guild.members.cache.find((m) => m.nickname === sword)
         let role = db.get(`role_${guy.id}`)
         let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
         for (let j = 0; j < chan.length; j++) {
