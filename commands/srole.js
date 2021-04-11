@@ -413,7 +413,7 @@ module.exports = {
               rk.splice(indexrole, 1)
             }
           })
-          let torole = random[Math.floor(Math.random() * random.length)]    
+          let torole = rk[Math.floor(Math.random() * rk.length)]    
           if (torole == "sect-leader") {
             rk.splice(rk.indexOf(torole), 1)
           }
