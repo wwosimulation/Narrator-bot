@@ -58,7 +58,7 @@ module.exports = {
             message.guild.members.cache.find(m => m.user.username === args.join(" ")) ||
             message.guild.members.cache.find(m => m.user.tag === args.join(" "))
 
-            if (!message.member.roles.cache.has(alive.id)) return
+            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Lmao, being stupid af")
             if (isNight != "yes") return message.channel.send("Bruh u can only do this during the night moron.")
             if (!args[0]) return message.channel.send("Bruh! You need to stop!")
             if (!guy || guy.id == message.author.id) return message.reply("Invalid Target")
