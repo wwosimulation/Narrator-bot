@@ -4,6 +4,7 @@ module.exports = {
   name: "skip",
     gameOnly: true,
     run: async (message, args, client) => {
+      return message.channel.send("Use the slash command!") //so we aren't updating in two locations
     if (!message.channel.name.includes("priv")) {
       return message.channel.send("Use this in your private channel!")
     } else {

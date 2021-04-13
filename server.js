@@ -34,7 +34,8 @@ class Message extends Structures.get("Message") {
 
 Structures.extend("Message", () => Message);
 
-const client = new Discord.Client()
+const client = new Discord.Client({ws: {intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"]}})
+const bot = new Discord.Client()
 
 //Prefix and token from config file
 const prefix = process.env.PREFIX
@@ -42,6 +43,7 @@ const token = process.env.TOKEN
 
 // Slash commands
 require("./slash.js")(client)
+
 
 //ShadowAdmin
 //const shadowadmin = require("shadowadmin")
@@ -62,10 +64,41 @@ client.on("ready", async () => {
   client.user.setActivity("Werewolf Online!")
   client.user.setStatus("DND")
   console.log("Connected!")
-
   //ShadowAdmin initialize
   //shadowadmin.init(client, {prefix, owners: ["552814709963751425", "439223656200273932"]})
 })
+
+client.on("messageReactionAdd", async (reaction, user) => {
+	console.log("Ticket close 1")
+	if (reaction.message.channel.name.startsWith("ticket-") && reaction.message.channel.parentID == "606230513103142932") {
+		console.log("Ticket close 2")
+		if (reaction.emoji.name == "🔒") {
+			console.log("Ticket close 3")
+			if (reaction.message.author.id == client.user.id) {
+				console.log("Ticket close 4")
+				if (reaction.message.embeds[0].title.startsWith("Ticket")) {
+					console.log("Ticket close 5")
+					let t = await reaction.message.channel.send("You are about to close the ticket. Confirm?")
+					await t.react("✅")
+					const collector = t.createReactionCollector(true, {time: 30000, max: 1})
+					collector.on("collect", async (react, us) => {
+						if (react.emoji.name == "✅") {
+							console.log("Ticket close 6")
+							await reaction.channel.delete()
+						}
+					})
+					collector.on("end", async (collected, reason) => {
+						if (reason == "time") {
+							reaction.channel.send("This action has been canceled!")
+						}
+					})
+				}
+			}
+		}
+	}
+})
+
+
 
 
 //Bot updating roles
@@ -673,4 +706,33 @@ Gotta make you understand
 
 require("./stafflist.js")(client)
 
+bot.on("ready", () => {
+	console.log("Bot is ready!")
+	
+})
+
+require("./testslash.js")(bot)
+
+bot.on("message", async message => {
+	let pr = "3061!"
+	
+	if (message.author.bot) return;
+	if (message.content.startsWith("3061!")) {
+		let cmd = message.content.slice(5).split(" ")[0].toLowerCase()
+		if (cmd) {
+			let input = message.content.slice(5 + cmd.length + 1).split(" ")
+			
+			if (cmd == "games") {
+				message.channel.send(new Discord.MessageEmbed()
+						    .setTitle("Games")
+						    .setDescription("1. **Tic Tac Toe**\n - Classic game\n\n2. **Checkers**\n - Now that's some good shit\n\n3. **Chess**\n - DO you think you are smart enough?")
+						    .setColor("YELLOW")
+						    .setTimestamp()
+						    ).catch(e => message.author.send(`I do not have the \`SEND MESSAGES\` permission in ${message.channel}`).catch(e => console.log(e.message)))
+			}
+		}
+	}
+})
+
+bot.login("ODMwMjUxOTAwODY2OTIwNTA4.YHD-Vg.KwIkPJNGiodenHw8VyhR3m9OSAo")
 client.login(token)
