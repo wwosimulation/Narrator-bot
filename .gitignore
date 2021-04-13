@@ -2,3 +2,4 @@ node_modules/
 .git
 .npm
 json.sqlite
+.env
