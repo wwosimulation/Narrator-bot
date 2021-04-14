@@ -103,7 +103,6 @@ client.on("messageReactionAdd", async (reaction, user) => {
 
 //Bot updating roles
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
-  return
   if (newMember.guild.id == "472261911526768642") {
     console.log("Someone died or just did -narrate")
     if (newMember.roles.cache.has("606131202814115882") && oldMember.roles.cache.has("606131202814115882")) return
@@ -536,7 +535,6 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
 })
 //When receiving a message
 client.on("message", (message) => {
-  if (!["439223656200273932"].includes(message.author.id)) return
   function yaises(x) {
     client.commands.get(x).run(message)
   }
