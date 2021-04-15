@@ -14,6 +14,11 @@ module.exports = {
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
     if (message.channel.name == "priv-aura-seer") {
+      let isNight = await db.fetch(`isNight_${message.guild.id}`);
+      if (isNight == "no")
+        return await message.channel.send(
+          "Hmm, i think you should be a bot. You will 100% not fail this job. ||Not||"
+        );
       if (!args[0]) return message.channel.send("Hey stupid, maybe try inserting an argument for once?")
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       let ownself = message.guild.members.cache.find(
@@ -111,6 +116,11 @@ module.exports = {
         }
       }
     } else if (message.channel.name == "priv-seer") {
+      let isNight = await db.fetch(`isNight_${message.guild.id}`);
+      if (isNight == "no")
+        return await message.channel.send(
+          "Hmm, i think you should be a bot. You will 100% not fail this job. ||Not||"
+        );
       if (!args[0]) return message.channel.send("Woah, i discovered a whole new level of stupid...")
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       let ownself = message.guild.members.cache.find(
@@ -150,6 +160,11 @@ module.exports = {
       );
       db.set(`seer_${message.channel.id}`, "yes");
     } else if (message.channel.name == "priv-detective") {
+      let isNight = await db.fetch(`isNight_${message.guild.id}`);
+      if (isNight == "no")
+        return await message.channel.send(
+          "Hmm, i think you should be a bot. You will 100% not fail this job. ||Not||"
+        );
       if (args.length != 2)
         return await message.channel.send(
           "Honey, as Detective you need to select 2 players. This won't work. Come back to me when you have learned the basics."
@@ -358,6 +373,11 @@ module.exports = {
       );
       db.set(`detCheck_${message.channel.id}`, "yes");
     } else if (message.channel.name == "priv-wolf-seer") {
+      let isNight = await db.fetch(`isNight_${message.guild.id}`);
+      if (isNight == "no")
+        return await message.channel.send(
+          "Hmm, i think you should be a bot. You will 100% not fail this job. ||Not||"
+        );
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);

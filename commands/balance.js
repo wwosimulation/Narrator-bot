@@ -5,6 +5,7 @@ module.exports = {
   name: "balance",
   aliases: ["bal", "coins", "money"],
   run: async (message, args) => {
-   return message.channel.send("This command no longer exists. Another command will be a substitute instead.")
+    let bal = db.get(`money_${message.author.id}`) || 0
+   return message.channel.send(`You currently have ${bal} coins <:coin:606434686931173377>`)
   }
 };

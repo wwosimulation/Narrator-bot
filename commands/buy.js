@@ -4,34 +4,38 @@ const db = require("quick.db")
 module.exports = {
     name: "buy",
     run: async (message, args, client) => {
-        if (message.author.id != "552814709963751425") return
+        if (!client.botAdmin(message.author.id)) return
         if (args.length < 1) return message.channel.send("Now i want you to think really hard about this one.")
         
         let buy = args.join(" ").toLowerCase()
-        let balance = db.get(`money_${message.author.id}`) || 0        
+        let balance = db.get(`money_${message.author.id}`) || 0     
         
-        if (buy.includes("roses")) {
+        function roleadd(x) {
+            client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add(`${x}`)
+        }
+        function rolehas(x) {
+            return client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(x);
+        }   
+        
+        if (buy.includes("roses") || buy.includes("rose")) {
             if (buy.includes("single")) {
                 let price = 25
                 if (price > balance) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
                 db.subtract(`money_${message.author.id}`, 25)
+                db.add(`roseG_${message.author.id}`, 1)
                 message.channel.send("You have bought 1 rose!")
+        let roses = db.get(`roses_${message.author.id}`) || 0
             } else if (buy.includes("bouquet")) {
                 let price = 250
                 let balance = db.get(`money_${message.author.id}`) || 0
                 if (price > balance) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
                 db.subtract(`money_${message.author.id}`, 250)
+                db.add(`roseBouquet_${message.author.id}`, 1)
                 message.channel.send("You have bought 1 bouquet of rose!")
             } else {
                 return message.channel.send("I am not sure which rose do you want! `+buy rose single` or `+buy rose bouquet`")
             }
         } else if (buy.includes("colour")) {
-            function roleadd(x) {
-                client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add(`${x}`)
-            }
-            function rolehas(x) {
-                return client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(x);
-            }
             let price = 50
             if (buy.includes("red")) {
                 if (rolehas("606123651900899345")) return message.channel.send("You have already bought this role!")
@@ -91,7 +95,6 @@ module.exports = {
                 return message.channel.send("Unknown colour! These are the following colours: `Red` `Blue` `Green` `Yellow` `Black` `Salmon` `Pink` `Turquoise` `Crimson`")
             }
         } else if (buy.includes("lootbox")) {
-            let rolehas = client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache
             if (buy.includes("premium")) {
                 let price = 100
                 if (rolehas("606123666895274003")) return message.channel.send("You already bought this item! Why are you wasting your gold?")

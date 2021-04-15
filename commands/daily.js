@@ -6,7 +6,7 @@ const db = require('quick.db')
 module.exports = {
   name: "daily",
   run: async (message, args, client) => {
-    if (!["552814709963751425", "439223656200273932"].includes(message.author.id)) return
+    if (!client.botAdmin(message.author.id)) return message.channel.send("This command isn't released yet!")
     let item = ""
     let amount = ""
     let cooldown = 86400000

@@ -50,6 +50,7 @@ module.exports = {
         let roseBouquet = db.get(`roseBouquet_${guy.id}`) || 0 // bouquets 
         let winstreak = db.get(`winstreak_${guy.id}`) || 0
 
+        // TODO: reformat this
         message.channel.send(
             new Discord.MessageEmbed()
             .setTitle(`Profile - ${guy.user.username}`)

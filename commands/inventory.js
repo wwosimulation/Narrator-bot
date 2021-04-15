@@ -5,7 +5,7 @@ module.exports = {
     name: "inventory",
     aliases: ["inv"], 
     run: async (message, args, client) => {
-        if (message.channel.type != "dm") return message.channel.send("This command only works in DMs as it contains private information!")
+        //if (message.channel.type != "dm") return message.channel.send("This command only works in DMs as it contains private information!")
 
         let lootbox = db.get(`lootbox_${message.author.id}`) || 0
         let roseG = db.get(`roseG_${message.author.id}`) || 0
@@ -18,8 +18,8 @@ module.exports = {
                     .setTitle("Inventory")
                     .setAuthor(message.author.tag, message.author.avatarURL())
                     .setDescription("Here is where all your good stuff are!")
-                    .addField("Coins", coins + "<:coin:606434686931173377>")
-                    .addField("Roses", `Roses (Bought): ${roseG}<:rosesingle:807256844191793158>\nRoses: ${roses}<:rosesingle:807256844191793158>\nBouquets: ${roseB}<:rosebouquet:808545517209387008>`)
+                    .addField("Coins", `${coins} <:coin:606434686931173377>`)
+                    .addField("Roses", `Roses (Bought): ${roseG} <:rosesingle:807256844191793158>\nRoses: ${roses} <:rosesingle:807256844191793158>\nBouquets: ${roseB} <:rosebouquet:808545517209387008>`)
                     .addField("Lootboxes", `${lootbox} <:lootbox:808548473548963861>`)
 
         if (custom != "None") {
