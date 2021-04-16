@@ -1,12 +1,12 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
 
-const {shop, emojis} = require("../config.js")
+const {shop, emojis, isBeta} = require("../config.js")
 
 module.exports = {
   name: "shop",
   run: async (message, args, client) => {
-    if (!client.botAdmin(message.author.id)) return message.channel.send("Sorry, the shop is currently closed. Check back later!")
+    if (!isBeta(message.author.id)) return message.channel.send("Sorry, the shop is currently closed. Check back later!")
     let embeds = [new Discord.MessageEmbed().setTitle("Werewolf Online Simulation Store").setColor("#1FFF43")]
     let addFooter = false
 
