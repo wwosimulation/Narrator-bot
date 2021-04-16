@@ -1,25 +1,39 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
+const config = require("../config.js")
 
 module.exports = {
     name: "buy",
     run: async (message, args, client) => {
-        if (!client.botAdmin(message.author.id)) return
-        if (args.length < 1) return message.channel.send("Now i want you to think really hard about this one.")
+        if (!client.botAdmin(message.author.id)) return message.inlineReply("Command isn't finished!")
+        if (args.length < 1) return message.channel.send("Please specify an item from the shop to buy!")
         
+        let item = args[0]
+        let price = 0
+        let msg = "An error has occured"
+        switch (args[0]){
+            case "roses":
+                args[0] = "rose"
+                break;
+            case "rose":
+                if(args[1] == "bouquet") item = shop.items.find(x => x.name == "Bouquet")
+                break;
+            case "color": 
+                let color = args[1]
+                let item = shop.items.find(x => x.name == "Color Roles")
+                break;
+
+        }
+        price = item.price || 0
+
+        return
         let buy = args.join(" ").toLowerCase()
         let balance = db.get(`money_${message.author.id}`) || 0     
-        
-        function roleadd(x) {
-            client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.add(`${x}`)
-        }
-        function rolehas(x) {
-            return client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(x);
-        }   
+          
         
         if (buy.includes("roses") || buy.includes("rose")) {
             if (buy.includes("single")) {
-                let price = 25
+                let price = config.shop.items["Rose"]
                 if (price > balance) return message.channel.send("You do not have enough gold in your hands! Come back to me when you have more!")
                 db.subtract(`money_${message.author.id}`, 25)
                 db.add(`roseG_${message.author.id}`, 1)
@@ -194,3 +208,11 @@ module.exports = {
         }
     }
 }
+
+
+const roleadd = (x) => {
+    client.guilds.cache.get(config.ids.sim).members.cache.get(message.author.id).roles.add(`${x}`)
+}
+const rolehas = (x) => {
+    return client.guilds.cache.get(config.ids.sim).members.cache.get(message.author.id).roles.cache.has(x);
+} 

@@ -13,7 +13,7 @@ module.exports = {
     if (["color", "colors", "colour", "colours"].includes(args[0])) {
       embeds[0].setDescription("Available colors:\n\n")
       shop.colors.forEach((x) => {
-        embeds[0].description += `${x} Role\n`
+        embeds[0].description += `${x.name} Role\n`
       })
       embeds[0].description += `\nUse \`+buy <color> role\` to purchase a color`
     } else if (false) {
@@ -32,7 +32,7 @@ module.exports = {
         .setColor("#1FFF43")
     }
 
-    let m = await message.channel.send(embeds[0])
+    let m = await message.inlineReply(embeds[0])
     client.paginator(message.author.id, m, embeds, 0)
 
     // if (!args[0] || args[0] == '1') {

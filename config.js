@@ -30,21 +30,21 @@ module.exports.ids = {
 }
 
 module.exports.shop = {
-  colors: ["Blue, White, Orange, Yellow, Turquoise, Red, Crimson, Black, Pink, Green, Salmon"]
+  colors: [{name: "Blue", id: "606123652861394965"}, {name: "White", id: "710659352804982866"}, {name: "Orange", id: "665044536178769931"}, {name: "Yellow", id: "606123653469569084"}, {name: "Turquoise", id: "606123656535474187"}, {name: "Red", id: "606123651900899345"}, {name: "Crimson", id: "606123658016063507"}, {name: "Black", id: "606123654438453269"}, {name: "Pink", id: "606123655289634826"}, {name: "Green", id: "606123654106841088"}, {name: "Salmon", id: "606123655931494411"}]
 }
 module.exports.emojis.coin = `<:coin:606434686931173377>`
 module.exports.emojis.rose = `<:rosesingle:807256844191793158>`
 
 module.exports.shop.items = [
-  { name: "Color Roles", price: 50, currency: "coins", description: "See all the available colors by using `+shop colors`" },
-  { name: "DJ Role", price: 450, currency: "coins", description: "Gain the ability to use the music bots both here and in a game!" },
-  { name: "Immunity", price: 10, currency: "roses", description: "When spectating, I will not change your name to lazy spectator" },
-  { name: "Profile Command", price: 200, currency: "coins", description: "Gain the ability to use +profile" },
-  { name: "Ranked Pass", price: 1500, currency: "coins", description: "Gain access to play ranked games!" },
-  { name: "Emoji", price: 450, currency: "coins", description: "Gain access to the `-write` command" },
-  { name: "Rose", price: 25, currency: "coins", description: "Buy these to send someone a rose" },
-  { name: "Rose Bouquet", price: 250, currency: "coins", description: "Use these to give everyone in the game a rose, including yourself!" },
-  { name: "Gray Color Role", price: 200, currency: "coins", description: "Gain the very rare Gray Color role" },
-  { name: "Custom Maker Item", price: 1500, currency: "coins", description: "You can use this to create your own role list when playing.\nThis does not give you the full set of role list. You need to buy the rest of the roles using coins or roses. To check the list, do `+cmi`!"},
-  { name: "Private Channel", price: 100, currency: "roses", description: "Create your own private channel in this server!"},
+  { id: "color", name: "Color Roles", price: 50, currency: "coins", description: "See all the available colors by using `+shop colors`" },
+  { id: "dj", name: "DJ Role", price: 450, currency: "coins", description: "Gain the ability to use the music bots both here and in a game!" },
+  { id: "immunity", name: "Immunity", price: 10, currency: "roses", description: "When spectating, I will not change your name to lazy spectator" },
+  { id: "profile", name: "Profile Command", price: 200, currency: "coins", description: "Gain the ability to use +profile" },
+  { id: "ranked", name: "Ranked Pass", price: 1500, currency: "coins", description: "Gain access to play ranked games!" },
+  { id: "emoji", name: "Emoji", price: 450, currency: "coins", description: "Gain access to the `-write` command" },
+  { id: "rose", name: "Rose", price: 25, currency: "coins", description: "Buy these to send someone a rose" },
+  { id: "bouquet", name: "Rose Bouquet", price: 250, currency: "coins", description: "Use these to give everyone in the game a rose, including yourself!" },
+  { id: "graycolor", name: "Gray Color Role", price: 200, currency: "coins", description: "Gain the very rare Gray Color role" },
+  { id: "cmi", name: "Custom Maker Item", price: 1500, currency: "coins", description: "You can use this to create your own role list when playing.\nThis does not give you the full set of role list. You need to buy the rest of the roles using coins or roses. To check the list, do `+cmi`!"},
+  { id: "private", name: "Private Channel", price: 100, currency: "roses", description: "Create your own private channel in this server!"},
 ]
