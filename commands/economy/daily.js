@@ -7,7 +7,7 @@ const config = require("../../config.js")
 module.exports = {
   name: "daily",
   run: async (message, args, client) => {
-    if (!config.isBeta(message.author.id)) return message.channel.send("This command isn't released yet!")
+    if (!config.fn.isBeta(message.author.id)) return message.channel.send("This command isn't released yet!")
     let item = ""
     let amount = ""
     let cooldown = 86400000

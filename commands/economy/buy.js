@@ -25,7 +25,7 @@ module.exports = {
       roleadd(roleID)
     }
 
-    if (!config.isBeta(message.author.id)) return message.channel.send("Command isn't finished!")
+    if (!config.fn.isBeta(message.author.id)) return message.channel.send("Command isn't finished!")
     if (args.length < 1) return message.channel.send("Please specify an item from the shop to buy!")
 
     args.map((x) => x.toLowerCase())
