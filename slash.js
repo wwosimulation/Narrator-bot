@@ -4,7 +4,7 @@ const ms = require("ms")
 
 const sim = ["465795320526274561"]
 const game = ["472261911526768642"]
-const both = ["465795320526274561", "472261911526768642"]
+const both = [sim[0], game[0]]
 
 const defaultOptions = {
   private: false,
