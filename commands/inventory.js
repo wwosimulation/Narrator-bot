@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
+const {emojis} = require("../config.js")
 
 module.exports = {
     name: "inventory",
@@ -11,15 +12,16 @@ module.exports = {
         let roseG = db.get(`roseG_${message.author.id}`) || 0
         let roses = db.get(`roses_${message.author.id}`) || 0
         let roseB = db.get(`roseBouquet_${message.author.id}`) || 0
+        let gems = db.get(`gems_${message.author.id}`) || 0
         let custom = db.get(`cmi_${message.author.id}`) || "None"
         let coins = db.get(`money_${message.author.id}`) || 0
 
         let embed = new Discord.MessageEmbed()
                     .setTitle("Inventory")
                     .setAuthor(message.author.tag, message.author.avatarURL())
-                    .setDescription("Here is where all your good stuff are!")
-                    .addField("Coins", `${coins} <:coin:606434686931173377>`)
-                    .addField("Roses", `Roses (Bought): ${roseG} <:rosesingle:807256844191793158>\nRoses: ${roses} <:rosesingle:807256844191793158>\nBouquets: ${roseB} <:rosebouquet:808545517209387008>`)
+                    .addField("Coins", `${coins} ${emojis.coins}`, true)
+                    .addField("Gems", `${gems} ${emojis.gems}`, true)
+                    .addField("Roses", `Roses (Bought): ${roseG} ${emojis.roses}\nRoses: ${roses} ${emojis.roses}\nBouquets: ${roseB} ${emojis.bouquet}`)
                     .addField("Lootboxes", `${lootbox} <:lootbox:808548473548963861>`)
 
         if (custom != "None") {

@@ -27,52 +27,52 @@ module.exports = (client) => {
       mid = db.get("stafflist")
     let msg = await chan.messages.fetch(mid).catch(() => {})
     console.log("Message: " + mid)
-    let m = `**Managers**\n${wovsim.members.cache
+    let m = `**Managers**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.manager))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
-    m += `**Bot Developers**\n${wovsim.members.cache
+      .join("\n> ")}\n`
+    m += `**Bot Developers**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.botdev))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
-    m += `**Mega Moderators**\n${wovsim.members.cache
+      .join("\n> ")}\n`
+    m += `**Mega Moderators**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.megamod))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
+      .join("\n> ")}\n`
     if (m.length > 1000) {
       m1 = m
       m = ""
     }
-    m += `**Moderators**\n${wovsim.members.cache
+    m += `**Moderators**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.mod))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
-    m += `**Mini Moderators**\n${wovsim.members.cache
+      .join("\n> ")}\n`
+    m += `**Mini Moderators**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.minimod))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
-    m += `**Helpers**\n${wovsim.members.cache
+      .join("\n> ")}\n`
+    m += `**Helpers**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.helper))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
+      .join("\n> ")}\n`
     if (m.length > 1000) {
       m2 = m
       m = ""
     }
-    m += `\n**Game Narrators**\n${wovsim.members.cache
+    m += `\n**Game Narrators**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.narr))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
-      m += `**Supervisors**\n${wovsim.members.cache
-      .filter((x) => x.roles.cache.has(config.roles.supervisor)).map((x) => `<@${x.id}> - ${x.user.tag}`).join("\n")}\n`
-    m += `**Mini Narrators**\n${wovsim.members.cache
+      .join("\n> ")}\n`
+      m += `**Supervisors**\n> ${wovsim.members.cache
+      .filter((x) => x.roles.cache.has(config.roles.supervisor)).map((x) => `<@${x.id}> - ${x.user.tag}`).join("\n> ")}\n`
+    m += `**Mini Narrators**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.mininarr))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
-    m += `\n\n**AFK Staff/Content**\nThis includes less active staff members.\n${wovsim.members.cache
+      .join("\n> ")}\n`
+    m += `\n\n**AFK Staff/Content**\nThis includes less active staff members.\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.afk))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
-      .join("\n")}\n`
+      .join("\n> ")}\n`
     if (!msg) {
       msg = await chan.send("Generating staff list...")
       db.set("stafflist", msg.id)

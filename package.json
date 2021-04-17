@@ -12,6 +12,7 @@
   "author": "Ashish",
   "license": "ISC",
   "dependencies": {
+    "canvas": "^2.6.0",
     "colornames": "^1.1.1",
     "discord-giveaways": "^4.2.1",
     "discord-tictactoe": "^2.0.7",
@@ -25,9 +26,9 @@
     "node-gyp": "^7.1.2",
     "parse": "^2.17.0",
     "parse-ms": "^2.1.0",
+    "pluralize": "^8.0.0",
     "quick.db": "^7.1.3",
     "shadowadmin": "0.0.4",
-    "shuffle-array": "^1.0.1",
-    "canvas": "^2.6.0"
+    "shuffle-array": "^1.0.1"
   }
 }
