@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
-const { getRole } = require("../config.js")
+const { getRole } = require("../../config.js")
 
 module.exports = {
   name: "roleinfo",

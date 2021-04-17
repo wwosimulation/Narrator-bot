@@ -1,5 +1,5 @@
 const db = require("quick.db");
-const config = require("../config");
+const config = require("../../config");
 /*
 01 02 03 04
 05 06 07 08

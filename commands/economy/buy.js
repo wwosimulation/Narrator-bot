@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
-const config = require("../config.js")
+const config = require("../../config.js")
 const pluralize = require("pluralize")
 
 module.exports = {

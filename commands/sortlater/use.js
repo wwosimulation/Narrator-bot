@@ -14,7 +14,7 @@ module.exports = {
             let quantity = db.get(`lootbox_${message.author.id}`) || 0
             if (quantity == 0) return message.channel.send("You don't have this item dumb.")
             db.subtract(`lootbox_${message.author.id}`, 1)
-            let t = await message.author.send("Opening Lootbox...").catch(e => {
+            let t = await message.channel.send("Opening Lootbox...").catch(e => {
                 return message.channel.send(`Error: ${e.message}.\nPlease enable DMs with me.`)
             })
             setTimeout(async () => {

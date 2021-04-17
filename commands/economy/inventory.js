@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
-const {emojis} = require("../config.js")
+const {emojis} = require("../../config.js")
 
 module.exports = {
     name: "inventory",

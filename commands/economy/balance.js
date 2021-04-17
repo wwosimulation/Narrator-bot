@@ -1,4 +1,3 @@
-const fs = require("fs");
 const db = require("quick.db")
 
 module.exports = {
@@ -6,6 +5,6 @@ module.exports = {
   aliases: ["bal", "coins", "money"],
   run: async (message, args) => {
     let bal = db.get(`money_${message.author.id}`) || 0
-   return message.channel.send(`You currently have ${bal} coins <:coin:606434686931173377>`)
-  }
-};
+    return message.channel.send(`You currently have ${bal} coins <:coin:606434686931173377>`)
+  },
+}
