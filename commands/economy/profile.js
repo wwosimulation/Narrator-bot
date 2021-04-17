@@ -6,7 +6,7 @@ module.exports = {
     run: async (message, args, client) => {
         let inventory = db.get(`profile_${message.author.id}`)
 
-        if (inventory != true && message.author.id != "552814709963751425") return message.channel.send("You need to buy the profile command in order to use it!")
+        //if (inventory != true && message.author.id != "552814709963751425") return message.channel.send("You need to buy the profile command in order to use it!")
         let guy
         if (args[0]) {
         guy = message.guild.members.cache.find(m => m.nickname === args[0]) || 

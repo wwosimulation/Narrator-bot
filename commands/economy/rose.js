@@ -24,18 +24,22 @@ module.exports = {
       if (!guy) return message.channel.send("Player does not exist!")
       if (guy.roles.cache.has(spec.id)) return message.channel.send("You can't give the rose to a spectator!")
       if (guy.roles.cache.has(mininarr.id) || guy.roles.cache.has(narrator.id)) return message.channel.send("You can't give the rose to a narrator!")
-      if (message.member == guy) return message.channel.send("Sure, adding a rose to yourself. Try that one more time and i will suicide you ;)")
+      if (message.member == guy) return message.channel.send("You cannot give a rose to yourself!")
       db.subtract(`roseG_${message.author.id}`, 1)
       db.add(`roses_${guy.id}`, 1)
+      return message.channel.send(`You have successfully given ${args[1]} a rose!`)
     } else if (args[0] == "bouquet") {
       if (roseBouquet == 0) return message.channel.send("You don't have any bouquet!")
       for (let i = 0; i <= alive.members.size + dead.members.size; i++) {
-        let guy = message.guild.channels.cache.find((m) => m.nickname === i.toString())
+        console.log(i)
+        let guy = message.guild.members.cache.find((m) => m.nickname === i.toString())
         if (guy) {
+          console.log(guy.id)
           db.add(`roses_${guy.id}`, 1)
         }
       }
       db.subtract(`roseBouquet_${message.author.id}`, 1)
+      return message.channel.send(`You have successfully given a rose to every player in the server!`)
     }
   },
 }

@@ -10,7 +10,6 @@ module.exports = {
     
     let alive = message.guild.roles.cache.find(r => r.name === "Alive")
     let dead = message.guild.roles.cache.find(r => r.name === "Dead")
-    if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return;
     
     if (dead.members.size == 0) return message.channel.send("There is no one to revive!")
     

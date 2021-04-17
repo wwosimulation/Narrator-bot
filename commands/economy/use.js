@@ -4,7 +4,7 @@ const Discord = require("discord.js")
 module.exports = {
     name: "use",
     run: async (message, args, client) => {
-        if (!args[0]) return message.channel.send("Get a freaking life dude")
+        if (!args[0]) return message.channel.send("Please specify an item!")
         
         if (args[0].toLowerCase() == "lootbox") {
             let items = ["roses", "coins"]
@@ -12,9 +12,9 @@ module.exports = {
             let coins = [5, 5, 5, 5, 10, 10, 10, 10, 10, 15, 15, 15, 15, 15, 15, 30, 30, 30, 30, 30, 50, 50, 50, 50, 100, 100, 200, 250]
 
             let quantity = db.get(`lootbox_${message.author.id}`) || 0
-            if (quantity == 0) return message.channel.send("You don't have this item dumb.")
+            if (quantity == 0) return message.channel.send("You don't have this item")
             db.subtract(`lootbox_${message.author.id}`, 1)
-            let t = await message.channel.send("Opening Lootbox...").catch(e => {
+            let t = await message.inlineReply("Opening Lootbox...").catch(e => {
                 return message.channel.send(`Error: ${e.message}.\nPlease enable DMs with me.`)
             })
             setTimeout(async () => {
@@ -37,9 +37,9 @@ module.exports = {
                     db.add(`money_${message.author.id}`, amt)
                 }
                 await t.edit(`${emoji} You recieved ${amt} ${item} from the lootbox!`)
-            }, 7000)
+            }, 5000)
         } else {
-            return message.channel.send("You are lost and dumb. This item does not exist!")
+            return message.channel.send("This item does not exist!")
         }
     }
 }
