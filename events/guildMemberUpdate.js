@@ -5,12 +5,8 @@ module.exports = (client) => {
     let maint = db.get("maintenance")
     if(maint) return 
     if (newMember.guild.id == "472261911526768642") {
-      console.log("Someone died or just did -narrate")
       if (newMember.roles.cache.has("606131202814115882") && oldMember.roles.cache.has("606131202814115882")) return
-      console.log("Someone doesn't has dead role twice")
       if (!newMember.roles.cache.has("606131202814115882")) return
-      console.log("They do have dead role")
-      console.log("It works!")
       newMember.roles.remove("822806480099999774")
       // canceling frenzy
       if (db.get(`role_${newMember.id}`) == "Werewolf Berserk") {
