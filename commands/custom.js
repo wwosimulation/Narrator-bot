@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
+const config = require("../config")
 
 module.exports = {
   name: "custom",
@@ -9,52 +10,7 @@ module.exports = {
     if (!db.get(`cmi_${message.author.id}`)) return message.reply("You do not have the Custom Maker Item")
     
     message.channel.send("Please insert 16 roles, one by one!")
-        let allroles = [
-	  "Alchemist",
-	  "Grave Robber",
-          "Fortune Teller",
-          "Kitten Wolf",
-          "Pacifist",
-          "Spirit Seer",
-          "Sheriff", 
-          "Werewolf Berserk",
-          "Wolf Pacifist", 
-          "Cupid",
-          "President",
-          "Mayor",
-          "Grumpy Grandma",
-          "Seer Apprentice",
-          "Tough Guy",
-          "Loudmouth", 
-          "Sorcerer", 
-          "Flower Child",
-          "Guardian Wolf",
-          "Beast Hunter",
-          "Avenger",
-          "Witch",
-          "Detective",
-          "Forger",
-          "Cursed",
-          "Marksman",
-          "Red Lady",
-          "Junior Werewolf", 
-          "Nightmare Werewolf",
-          "Shadow Wolf",         
-          "Random Regular Villager",
-          "Random Strong Villager", 
-          "Random Werewolf", 
-          "Random Killer", 
-          "Random Voting", 
-          "Random",
-          "Arsonist", 
-          "Sect Leader",
-          "Bomber", 
-          "Zombie",
-          "Corruptor", 
-          "Cannibal",
-          "Illusionist",
-          "Bandit" 
-        ]
+        let allroles = config.allRoles
         
         let rolesPlayerHas = ["Villager", "Gunner", "Doctor", "Bodyguard", "Seer", "Jailer", "Priest", "Aura Seer", "Medium", "Werewolf", "Alpha Werewolf", "Wolf Shaman", "Wolf Seer", "Fool", "Headhunter", "Serial Killer"]
     

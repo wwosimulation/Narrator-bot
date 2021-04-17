@@ -1,4 +1,5 @@
 const Discord = require("discord.js")
+const config = require("../config.js")
 const db = require("quick.db")
 
 const cooldowns = new Discord.Collection()
@@ -9,9 +10,6 @@ module.exports = (client) => {
   client.on("message", (message) => {
     let maint = db.get("maintenance")
     if(maint && !client.botAdmin(message.author.id)) return message.channel.send("Sorry! The bot is currently in maintenance mode!")
-    function yaises(x) {
-      client.commands.get(x).run(message)
-    }
 
     //let guy = message.member.nickname;
     if (message.author.bot) return //Ignore bots and dms
@@ -93,6 +91,7 @@ module.exports = (client) => {
     }
 
     if (command.gameOnly && message.guild.id != "472261911526768642") return message.channel.send("That command can only be used in the game server!")
+    if (command.narratorOnly && !config.isNarrator(message.member)) return
 
     //Check if that command needs arguments
 

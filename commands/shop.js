@@ -13,7 +13,7 @@ module.exports = {
     if (["color", "colors", "colour", "colours"].includes(args[0])) {
       embeds[0].setDescription("Available colors:\n\n")
       shop.colors.forEach((x) => {
-        embeds[0].description += `${x.name} Role\n`
+        embeds[0].description += `${x.name} Color\n`
       })
       embeds[0].description += `\nUse \`+buy <color> role\` to purchase a color`
     } else if (false) {
@@ -21,7 +21,7 @@ module.exports = {
       for (let shopitem in shop.items) {
         let item = shop.items[shopitem]
         if (embeds[embeds.length - 1].fields.length == 5) embeds.push(new Discord.MessageEmbed())
-        embeds[embeds.length - 1].addField(`${item.name} - ${item.price} ${item.currency == "coins" ? emojis.coin : emojis.rose}`, item.description)
+        embeds[embeds.length - 1].addField(`${item.name} - ${item.price} ${emojis[item.currency]}`, item.description)
       }
       addFooter = true
     }

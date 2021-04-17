@@ -3,16 +3,13 @@ const db = require("quick.db")
 module.exports = {
   name: "revall",
   aliases: ["reviveall", "wolfmed", "allrev"],
+  narratorOnly: true,
     gameOnly: true,
     run: async (message, args, client) => {
     
-    if (message.guild.id != "472261911526768642") return ;
     
     let alive = message.guild.roles.cache.find(r => r.name === "Alive")
     let dead = message.guild.roles.cache.find(r => r.name === "Dead")
-    let narrator = message.guild.roles.cache.find(r => r.name === "Narrator")
-    let mininarr = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")
-    
     if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return;
     
     if (dead.members.size == 0) return message.channel.send("There is no one to revive!")

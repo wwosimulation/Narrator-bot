@@ -2,9 +2,9 @@ const db = require("quick.db")
 
 module.exports = {
   name: "rose",
+  gameOnly: true,
   run: async (message, args, client) => {
-    if (message.guild.id != "472261911526768642") return message.channel.send("This can only be used when playing a game!")
-
+    
     let roseBouquet = db.get(`roseBouquet_${message.author.id}`) || 0
     let roses = db.get(`roseG_${message.author.id}`) || 0
     let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
