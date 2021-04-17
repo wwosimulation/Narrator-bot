@@ -1,5 +1,9 @@
 const db = require("quick.db");
+<<<<<<< HEAD:commands/game/bomb.js
 const config = require("../../config");
+=======
+const config = require("../config");
+>>>>>>> 8f5397f16adbf691a32c7f6ed0263bbc00b03dc0:commands/bomb.js
 /*
 01 02 03 04
 05 06 07 08

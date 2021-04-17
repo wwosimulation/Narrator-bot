@@ -21,7 +21,11 @@ module.exports = {
                     .setAuthor(message.author.tag, message.author.avatarURL())
                     .addField("Coins", `${coins} ${emojis.coin}`, true)
                     .addField("Gems", `${gems} ${emojis.gem}`, true)
+<<<<<<< HEAD:commands/economy/inventory.js
                     .addField("Roses", `Roses (Bought): ${roseG} ${emojis.rose}\nRoses: ${roses} ${emojis.rose}\nBouquets: ${roseB} ${emojis.bouquet}`)
+=======
+                    .addField("Roses", `Roses (Bought): ${roseG} ${emojis.rose}\nRoses: ${rose} ${emojis.rose}\nBouquets: ${roseB} ${emojis.bouquet}`)
+>>>>>>> 8f5397f16adbf691a32c7f6ed0263bbc00b03dc0:commands/inventory.js
                     .addField("Lootboxes", `${lootbox} <:lootbox:808548473548963861>`)
 
         if (custom != "None") {
