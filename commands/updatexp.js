@@ -2,6 +2,7 @@ const db = require("quick.db")
 
 module.exports = {
   name: "updatexp",
+  narratorOnly: true,
   run: async (id, client) => {
     let guy = client.users.cache.get(id)
     let req = db.get(`xpreq_${id}`)

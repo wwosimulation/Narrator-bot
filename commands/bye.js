@@ -1,10 +1,8 @@
 module.exports = {
   name: "bye",
   gameOnly: true,
+  narratorOnly: true,
   run: async (message, args, client) => {
-    let role = message.guild.roles.cache.find((r) => r.name === "Narrator")
-    let role2 = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
-    if (!message.member.roles.cache.has(role.id) && !message.member.roles.cache.has(role2.id)) return
     await kickPlayers(message)
     await kickSpectators(message)
     message.channel.send("Players have been kicked, I am now clearing channels. (This may take a while)")

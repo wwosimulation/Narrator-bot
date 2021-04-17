@@ -4,19 +4,11 @@ const shuffle = require("shuffle-array");
 module.exports = {
   name: "startgame",
     gameOnly: true,
+    narratorOnly: true,
     run: async (message, args, client) => {
-    let narrator = message.guild.roles.cache.find(r => r.name === "Narrator");
-    let mininarr = message.guild.roles.cache.find(
-      r => r.name === "Narrator Trainee"
-    );
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
 
-    if (
-      !message.member.roles.cache.has(narrator.id) &&
-      !message.member.roles.cache.has(mininarr.id)
-    )
-      return;
 
     db.set(`isDay_${message.guild.id}`, "no");
     db.set(`nightCount_${message.guild.id}`, 1);

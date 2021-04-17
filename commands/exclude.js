@@ -3,14 +3,8 @@ const db = require("quick.db")
 module.exports = {
   name: "exclude",
   gameOnly: true,
+  narratorOnly: true,
   run: async (message, args, client) => {
-    
-    let narrator = message.guild.roles.cache.find(r => r.name === "Narrator")
-    let mininarr = message.guild.roles.cache.find(r => r.name === "Narrator Trainee")
-    
-    if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return
-    
-    
     args.forEach(arg => {
       args[args.indexOf(arg)] = arg.toLowerCase()
     })

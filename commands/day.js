@@ -4,8 +4,8 @@ const shuffle = require("shuffle-array")
 module.exports = {
   name: "day",
   gameOnly: true,
+  narratorOnly: true,
   run: async (message, args, client) => {
-    if (message.guild.id != "472261911526768642") return
     // All the variables
     let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
     let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
@@ -78,9 +78,7 @@ module.exports = {
         hhtarget.push(target)
       }
     }
-    // Seeing if the author has the narrator role
-    if (!message.member.roles.cache.has(narrator.id) && !message.member.roles.cache.has(mininarr.id)) return
-
+    
     // getting ww attack
     /*let wvotes = []
     let wnum = []

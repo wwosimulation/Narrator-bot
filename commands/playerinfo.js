@@ -6,8 +6,8 @@ const db = require("quick.db");
 module.exports = {
   name: "playerinfo",
     gameOnly: true,
+    narratorOnly: true,
     run: async (message, args, client) => {
-    if (!message.member.hasPermission("KICK_MEMBERS")) return;
     let content = "";
     let alive = message.guild.roles.cache.find(r => r.name === "Alive").members.size;
     let dead = message.guild.roles.cache.find(r => r.name === "Dead").members.size;

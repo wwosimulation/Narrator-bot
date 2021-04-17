@@ -1,7 +1,9 @@
+const config = require("../config.js")
+
 module.exports = {
     name: "say",
     run: async (message, args, client) => {
-        if (!["552814709963751425", "439223656200273932", "406412325973786624", "620964363729371137"].includes(message.author.id)) return 
+        if (!client.botAdmin(message.author.id) && !config.isNarrator(message.member)) return 
          message.delete()
          let idsendreply = args[0]
          let reply = ""

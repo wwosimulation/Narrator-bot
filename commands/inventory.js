@@ -19,9 +19,9 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
                     .setTitle("Inventory")
                     .setAuthor(message.author.tag, message.author.avatarURL())
-                    .addField("Coins", `${coins} ${emojis.coins}`, true)
-                    .addField("Gems", `${gems} ${emojis.gems}`, true)
-                    .addField("Roses", `Roses (Bought): ${roseG} ${emojis.roses}\nRoses: ${roses} ${emojis.roses}\nBouquets: ${roseB} ${emojis.bouquet}`)
+                    .addField("Coins", `${coins} ${emojis.coin}`, true)
+                    .addField("Gems", `${gems} ${emojis.gem}`, true)
+                    .addField("Roses", `Roses (Bought): ${roseG} ${emojis.rose}\nRoses: ${roses} ${emojis.rose}\nBouquets: ${roseB} ${emojis.bouquet}`)
                     .addField("Lootboxes", `${lootbox} <:lootbox:808548473548963861>`)
 
         if (custom != "None") {

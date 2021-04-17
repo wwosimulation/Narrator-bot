@@ -6,8 +6,7 @@ module.exports = {
     run: async (message, args, client) => {
         
         let narrator = message.guild.roles.cache.get("606123619999023114")
-        let mininarr = message.guild.roles.cache.get("606123620732895232")
-        if (!message.member.roles.cache.has(narrator.id)) return
+         if (!message.member.roles.cache.has(narrator.id)) return
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let rs = db.get("rankedseason")
         let m = await message.guild.channels.cache.get("606123818305585167").send(`<@&606123691889393705> We are now starting game RS.${rs}[${args.join(' ')}]. Our host will be <@${message.author.id}>! To join the game, react with 💰. If you do not wish to get future pings about the game, go to <#606123783605977108> and react with 🏆`)

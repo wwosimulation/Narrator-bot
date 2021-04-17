@@ -1,8 +1,8 @@
 module.exports = {
   name: 'nmanual', 
   gameOnly: true,
+  narratorOnly: true,
   run: async (message, args, client) => {
-    if (!message.member.roles.cache.has('606276949689499648') &&  !message.member.roles.cache.has('606139219395608603')) return;
     
     let chann = message.guild.channels.cache.filter(c => c.name === `priv-${args[1]}`).keyArray("id")
     

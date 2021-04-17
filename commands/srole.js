@@ -5,6 +5,7 @@ const db = require("quick.db")
 module.exports = {
   name: "srole",
   gameOnly: true,
+  narratorOnly: true,
   run: async (message, args, client) => {
     if(!["quick", "ranked", "custom", "customhide", "sandbox"].includes(args[0])) return message.channel.send("Invalid gamemode!")
     let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
@@ -22,7 +23,7 @@ module.exports = {
     db.set(`${message.guild.id}_usedChannels`, [])
     let usedChannels = []
 
-    if (!message.member.roles.cache.has(mininarr.id) && !message.member.roles.cache.has(narrator.id)) return
+    
     args.forEach((arg) => {
       args[args.indexOf(arg)] = arg.toLowerCase()
     })
