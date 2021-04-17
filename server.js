@@ -5,7 +5,6 @@ const db = require("quick.db")
 const Discord = require("discord.js")
 const client = new Discord.Client({ ws: { intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] } })
 
-require("./slash.js")(client)
 //const shadowadmin = require("shadowadmin")
 
 client.commands = new Discord.Collection()
@@ -107,7 +106,6 @@ client.on("ready", async () => {
   //shadowadmin.init(client, {prefix, owners: config.botAdmin})
 })
 
-require("./stafflist.js")(client)
 client.login(process.env.TOKEN)
 
 const { APIMessage, Structures } = require("discord.js")
