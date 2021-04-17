@@ -1,4 +1,5 @@
 const { GuildMember } = require("discord.js")
+const ids = require("./ids.js")
 
 module.exports = {
     isBeta: (id) => {
@@ -6,9 +7,9 @@ module.exports = {
       },
 }
 
-module.exports.isNarrator = (user, guildid = module.exports.ids.server.sim) => {
+module.exports.isNarrator = (user) => {
     if (!user instanceof GuildMember) return
-    let narroles = [module.exports.ids.mini, module.exports.ids.minisim, module.exports.ids.narrator, module.exports.ids.narratorsim]
+    let narroles = [ids.mini, ids.minisim, ids.narrator, ids.narratorsim]
     let isNarr = user.roles.cache.filter((x) => narroles.includes(x.id))
     if (isNarr.map((x) => x.id).length > 0) return true
     return false
