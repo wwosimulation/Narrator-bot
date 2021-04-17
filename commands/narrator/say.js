@@ -1,8 +1,4 @@
-<<<<<<< HEAD:commands/narrator/say.js
 const config = require("../../config.js")
-=======
-const config = require("../config.js")
->>>>>>> 8f5397f16adbf691a32c7f6ed0263bbc00b03dc0:commands/say.js
 
 module.exports = {
     name: "say",
