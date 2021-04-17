@@ -91,7 +91,7 @@ module.exports = (client) => {
     }
 
     if (command.gameOnly && message.guild.id != "472261911526768642") return message.channel.send("That command can only be used in the game server!")
-    if (command.narratorOnly && !config.isNarrator(message.member)) return
+    if (command.narratorOnly && !config.fn.isNarrator(message.member)) return
 
     //Check if that command needs arguments
 

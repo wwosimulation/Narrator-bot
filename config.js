@@ -1,4 +1,3 @@
-const { DiscordAPIError, GuildMember, Guild } = require("discord.js")
 const { allRoles, roles } = require("./config/roles.js")
 const getRole = (rolename) => {
   rolename = rolename.toLowerCase()
@@ -13,9 +12,7 @@ module.exports = {
   allRoles,
   roles,
   botadmins: ["406412325973786624", "439223656200273932"],
-  isBeta: (id) => {
-    return ["801726595378315264", "719564153072910407", "406412325973786624", "439223656200273932", "159717599993790464", "452632560795648000"].includes(id) ? true : false
-  },
+  fn: require("./config/fn.js")
 }
 
 module.exports.bombPlacements = ["1 2 3", "2 3 4", "5 6 7", "6 7 8", "9 10 11", "10 11 12", "13 14 15", "14 15 16", "1 5 9", "5 9 13", "2 6 10", "6 10 14", "3 7 11", "7 11 15", "4 8 12", "8 12 16", "1 6 11", "2 7 12", "3 6 9", "4 7 10", "5 10 15", "6 11 16", "7 10 13", "8 11 14"]
@@ -34,15 +31,6 @@ module.exports.ids = {
     game: "472261911526768642",
   },
 }
-
-module.exports.isNarrator = (user, guildid = module.exports.ids.server.sim) => {
-  if (!user instanceof GuildMember) return
-  let narroles = [module.exports.ids.mini, module.exports.ids.minisim, module.exports.ids.narrator, module.exports.ids.narratorsim]
-  let isNarr = user.roles.cache.filter((x) => narroles.includes(x.id))
-  if (isNarr.map((x) => x.id).length > 0) return true
-  return false
-}
-
 module.exports.shop = {
   colors: [
     { name: "Blue", id: "606123652861394965" },

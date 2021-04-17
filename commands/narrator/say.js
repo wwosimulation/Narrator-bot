@@ -3,7 +3,7 @@ const config = require("../../config.js")
 module.exports = {
     name: "say",
     run: async (message, args, client) => {
-        if (!client.botAdmin(message.author.id) && !config.isNarrator(message.member)) return 
+        if (!client.botAdmin(message.author.id) && !config.fn.isNarrator(message.member)) return 
          message.delete()
          let idsendreply = args[0]
          let reply = ""
