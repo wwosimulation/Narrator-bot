@@ -21,7 +21,6 @@ module.exports.shop = {
   colors: [
     { name: "Blue", id: "606123652861394965" },
     { name: "White", id: "710659352804982866" },
-    { name: "Orange", id: "665044536178769931" },
     { name: "Yellow", id: "606123653469569084" },
     { name: "Turquoise", id: "606123656535474187" },
     { name: "Red", id: "606123651900899345" },
