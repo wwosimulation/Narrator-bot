@@ -4,7 +4,7 @@ const Discord = require("discord.js")
 module.exports = {
     name: "use",
     run: async (message, args, client) => {
-        if (!args[0]) return message.channel.send("Please specify an item!")
+        if (!args[0]) return message.channel.send("Get a freaking life dude! You gotta specify an item!")
         
         if (args[0].toLowerCase() == "lootbox") {
             let items = ["roses", "coins"]
