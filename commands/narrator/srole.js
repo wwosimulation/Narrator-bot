@@ -588,6 +588,8 @@ module.exports = {
       message.channel.send(embed)
       message.channel.send("I have executed the startgame command myself! Do not run it yourself!")
       client.commands.get("startgame").run(message, args, client)
+    } else {
+      return message.channel.send("Please specify a valid gamemode!")
     }
     await client.channels.cache.find((c) => c.id === "606123818305585167").send("Game is starting. You can no longer join. Feel free to spectate!")
     db.set("started", "yes")

@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
+const {fn} = require("../../config.js")
 
 module.exports = {
   name: "win",
@@ -148,7 +149,7 @@ module.exports = {
     for (let o = 1; o <= 16; o++) {
       let guy = message.guild.members.cache.find((m) => m.nickname === o.toString())
       if (guy) {
-        client.commands.get("updatexp").run(guy.id, client)
+        fn.updateXP(guy.id, client)
       }
     }
   },
