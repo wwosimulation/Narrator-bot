@@ -54,7 +54,7 @@ module.exports = (client) => {
           description: cmd.description,
         }
         if (cmd.options) data.options = cmd.options
-        client.api.applications(client.user.id).guilds(x).commands.put({ data })
+        client.api.applications(client.user.id).guilds(x).commands.post({ data })
       })
     })
 
