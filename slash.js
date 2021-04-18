@@ -63,7 +63,7 @@ module.exports = (client) => {
       const args = interaction.data.options
       console.log(`Slash: ${command}`, args)
 
-      client.channels.cache.get("783013534560419880").send(`Slash Command ran: **${command}**\nArguments: **${"None"}**\nAuthor: ${interaction.member.user.username}#${interaction.member.user.discriminator} (${interaction.member.user.id})`)
+      client.channels.cache.get("832884582315458570").send(`Slash Command ran: **${command}**\nArguments: **${"None"}**\nAuthor: ${interaction.member.user.username}#${interaction.member.user.discriminator} (${interaction.member.user.id})`)
 
       if (command === "ping") return baseReply(`Pong! ${client.ws.ping} ms`, interaction)
 

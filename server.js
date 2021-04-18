@@ -106,6 +106,8 @@ client.on("ready", async () => {
   //shadowadmin.init(client, {prefix, owners: config.botAdmin})
 })
 
+require("./slash.js")(client)
+
 client.login(process.env.TOKEN)
 
 const { APIMessage, Structures } = require("discord.js")
