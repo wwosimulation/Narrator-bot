@@ -24,9 +24,9 @@ module.exports = {
     if(!color) return message.channel.send("Idiot, you need to give me a color")
     
     
-    if (role == "0") return message.channel.send("I cannot find your special role! In case this doesn't make sense, try DMing Ashish#0540 with the proof it's not working.")
+    if (role == "0") return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using +bug.")
     
-    if (color.length < 1) return message.channel.send("Stop. being. stupid. you. dumb. weirdo.")
+    if (color.length < 1) return message.channel.send("Stop. being. stupid. you. dumb. weirdo. Give me a color!")
     
     if (color.length > 99) return message.channel.send("Too many characters!")
     

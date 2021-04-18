@@ -9,7 +9,6 @@ module.exports = {
     client.channels.cache
       .get("810682397150543892")
       .send(`Suggestion by ${message.author.tag}:\n${args.join(" ")}\n${t}`)
-      .send(args.join(" ") + `\n${t}`)
     message.channel.send("Your suggestion has been sent")
   },
 }
