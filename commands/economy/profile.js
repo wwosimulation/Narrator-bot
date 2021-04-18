@@ -17,7 +17,7 @@ module.exports = {
 
     if (db.get(`profile_${guy.id}`) != true && !client.isNarrator(message.author.id)) return message.channel.send("This player does not have their profile unlocked from the shop!")
 
-    let icon = db.get(`icon_${message.author.id}`) || client.user.avatarURL({ dynamic: true })
+    let icon = db.get(`icon_${message.author.id}`) || ""
     let desc = db.get(`profiledesc_${message.author.id}`) || "A really cool user!"
     let villagewin = db.get(`vwin_${guy.id}`) || 0
     let villagelost = db.get(`vlose_${guy.id}`) || 0
