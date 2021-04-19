@@ -6,7 +6,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find(r => r.name === "Alive")
-        let isNight = db.get(`isNight_${message.guild.id}`)
+        let isNight = db.get(`isNight`)
         let dead = message.guild.roles.cache.find(r => r.name === "Dead")
 
         if (message.channel.name == "priv-sect-leader") {

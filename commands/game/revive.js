@@ -45,7 +45,7 @@ module.exports = {
         return await message.channel.send(
           "Hmm reviving an alive player or reviving while dead, HEY THAT'S A GREAT IDEA! Now let's just...... SIKE you can't do this..."
         );
-      let night = await db.fetch(`isNight_${message.guild.id}`)
+      let night = await db.fetch(`isNight`)
       if (night != "yes") return await message.channel.send("SuRe LeT'S rEvIvE iN tHe MoRninG.")
       let role = db.get(`role_${guy.id}`)
       if (role.toLowerCase().includes('wolf') || role == "Fool" || role == "Headhunter" || role == "Sorcerer" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber") return message.channel.send("You can't revive non-villagers. Wait till a 'Wolf Medium' arrives...")

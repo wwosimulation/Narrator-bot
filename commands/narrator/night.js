@@ -677,12 +677,12 @@ module.exports = {
     }
     }, 60000)
     }, 3000)
-    dayChat.send(`${alive} Night ${db.get(`nightCount_${message.guild.id}`) + 1} has started!`)
-    db.set(`isDay_${message.guild.id}`, "no");
-    db.set(`isNight_${message.guild.id}`, "yes");
-    db.add(`nightCount_${message.guild.id}`, 1);
-    db.set(`wwsVote_${message.guild.id}`, "yes");
-    db.set(`commandEnabled_${message.guild.id}`, "no");
-    console.log(`Night: ${db.get(`nightCount_${message.guild.id}`)}`)
+    dayChat.send(`${alive} Night ${db.get(`nightCount`) + 1} has started!`)
+    db.set(`isDay`, "no");
+    db.set(`isNight`, "yes");
+    db.add(`nightCount`, 1);
+    db.set(`wwsVote`, "yes");
+    db.set(`commandEnabled`, "no");
+    console.log(`Night: ${db.get(`nightCount`)}`)
   }
 };

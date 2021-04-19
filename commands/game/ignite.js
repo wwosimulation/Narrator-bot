@@ -5,7 +5,7 @@ module.exports = {
   alises: ["burn", "fire"],
     gameOnly: true,
     run: async (message, args, client) => {
-    let isNight = db.get(`isNight_${message.guild.id}`);
+    let isNight = db.get(`isNight`);
     let doused = db.get(`doused_${message.channel.id}`) || [];
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
@@ -20,7 +20,7 @@ module.exports = {
           "Burning in broad day light just makes you look stupid"
         );
       
-      if (didCmd == db.get(`nightCount_${message.guild.id}`)) return message.channel.send("Bruh, you just doused dummy...")
+      if (didCmd == db.get(`nightCount`)) return message.channel.send("Bruh, you just doused dummy...")
       if (doused.length == 0)
         return await message.channel.send(
           "Are you dumb? Don't try to think i'm stupid! You haven't even doused anyone yet! "
@@ -40,7 +40,7 @@ module.exports = {
           }
         }
       }
-      db.set(`ignitedAt_${message.channel.id}`, db.get(`nightCount_${message.guild.id}`))
+      db.set(`ignitedAt_${message.channel.id}`, db.get(`nightCount`))
       db.delete(`doused_${message.channel.id}`)
     }
   }

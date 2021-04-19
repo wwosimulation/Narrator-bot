@@ -8,8 +8,8 @@ module.exports = {
     if (message.channel.name == "priv-grumpy-grandma") {
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");
-      let night = await db.fetch(`nightCount_${message.guild.id}`);
-      let isNight = await db.fetch(`isNight_${message.guild.id}`);
+      let night = await db.fetch(`nightCount`);
+      let isNight = await db.fetch(`isNight`);
       let guy = message.guild.members.cache.find(m => m.nickname === args[0])
       let ownself = message.guild.members.cache.find(m => m.nickname === message.member.nickname) 
       if (parseInt(args[0]) > (parseInt(alive.members.size) + parseInt(dead.members.size)) || parseInt(args[0]) < 1) {

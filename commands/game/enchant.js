@@ -11,7 +11,7 @@ module.exports = {
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname
       );
-      let isDay = db.get(`isDay_${message.guild.id}`)
+      let isDay = db.get(`isDay`)
       if (!args[0]) return message.channel.send("You are an as\*h\*\*\*")
       let role = await db.fetch(`role_${guy.id}`);
       let toShaman = role.toLowerCase();
@@ -35,7 +35,7 @@ module.exports = {
     } else if (message.channel.name == "priv-illusionist") {
       let disguised = db.get(`disguised_${message.channel.id}`) || []
       let alive = message.guild.roles.cache.find(r => r.name === "Alive")
-      let isNight = db.get(`isNight_${message.guild.id}`)
+      let isNight = db.get(`isNight`)
       if (!args[0]) return message.channel.send("You know, doing `+suicide` is better than disguising no one")
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("It's about time you know that you are DEAD and can't disguise others noob.")
       if (isNight != "yes") return message.channel.send("Disguising during the day is for the Wolf Shaman. You are the Illusionist smh. Open your eyes pls")

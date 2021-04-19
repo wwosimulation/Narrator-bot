@@ -7,7 +7,7 @@ module.exports = {
     if (message.channel.name == 'priv-sect-hunter') {
       let alive = message.guild.roles.cache.find(r =>r.name === 'Alive') 
       let sect = message.guild.channels.cache.find(c => c.name === "sect-members")
-      let isNight = db.get(`isNight_${message.guild.id}`) 
+      let isNight = db.get(`isNight`) 
       let ownself = message.guild.members.cache.find (m => m.nickname === message.member.nickname) 
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]) 
       if (!isNight == "yes") return await message.channel.send('Listen, you can\'t go hunting for the sect in broad day light.') 

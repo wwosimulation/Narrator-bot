@@ -6,7 +6,7 @@ module.exports = {
     run: async (message, args, client) => {
     if (message.channel.name == "priv-cannibal") {
       // getting all the variables
-      let isNight = db.get(`isNight_${message.guild.id}`)
+      let isNight = db.get(`isNight`)
       let hunger = db.get(`hunger_${message.channel.id}`) || 1
       let alive = message.guild.roles.cache.find(r => r.name === "Alive")
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`Eating when dead just doesn't make any sense`)

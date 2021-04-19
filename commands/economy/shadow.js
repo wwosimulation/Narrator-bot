@@ -7,7 +7,7 @@ module.exports = {
         if (message.channel.name == "priv-shadow-wolf") {
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")
             let abil = db.get(`shadow_${message.channel.id}`) 
-            let isDay = db.get(`isDay_${message.guild.id}`)
+            let isDay = db.get(`isDay`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't manipulate voting when dead, dumb.")
             if (abil == "yes") return message.channel.send("YOU ALREADY ENABLED MANIPULATING STUPID.")
             if (isDay != "yes") return message.channel.send("Yup, trying to manipulate during the night.")

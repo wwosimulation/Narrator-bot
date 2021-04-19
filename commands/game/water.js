@@ -14,8 +14,8 @@ module.exports = {
         m => m.nickname === message.member.nickname
       );
       let priest = await db.fetch(`priest_${message.channel.id}`);
-      let isDay = await db.fetch(`isDay_${message.guild.id}`);
-      let dayCount = await db.fetch(`dayCount_${message.guild.id}`);
+      let isDay = await db.fetch(`isDay`);
+      let dayCount = await db.fetch(`dayCount`);
       let dayChat = message.guild.channels.cache.find(c => c.name === "day-chat");
       if (!guy || guy == ownself) {
         return await message.reply("Invalid target!");
@@ -32,7 +32,7 @@ module.exports = {
             let toKill = role.toLowerCase();
             if (isDay != "yes") return message.channel.send("Dumb, You can only pray in the morning.")
             if (dayCount == 1) {
-              let cmd = await db.fetch(`commandEnabled_${message.guild.id}`);
+              let cmd = await db.fetch(`commandEnabled`);
               if (cmd != "yes")
                 return await message.reply(
                   "You can only throw holy water on a player after voting starts on day 1!"

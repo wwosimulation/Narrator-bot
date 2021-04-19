@@ -9,10 +9,11 @@ module.exports = (client) => {
   //When receiving a message
   client.on("message", (message) => {
     let maint = db.get("maintenance")
-    if(maint && !client.botAdmin(message.author.id)) return message.channel.send("Sorry! The bot is currently in maintenance mode!")
-
+    
     //let guy = message.member.nickname;
     if (message.author.bot) return //Ignore bots and dms
+    
+
 
     if (!message.content.startsWith("+")) {
       if (message.guild.id == "472261911526768642") {
@@ -76,6 +77,7 @@ module.exports = (client) => {
     if (message.content === "<@!549402544066002955>") return message.author.send(`Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`)
 
     if (!message.content.startsWith(prefix)) return
+    if(maint && !client.botAdmin(message.author.id)) return message.channel.send("Sorry! The bot is currently in maintenance mode!")
     if (blacklists.includes(`/${message.author.id}/`) && message.author.id != "552814709963751425") return message.channel.send("Blacklisted users can't use any command!")
 
     const args = message.content.slice(prefix.length).split(/ +/)

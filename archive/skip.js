@@ -17,9 +17,9 @@ module.exports = {
           `You cannot skip the discussion phase while dead!`
         );
       } else {
-        let isDay = await db.fetch(`isDay_${message.guild.id}`);
-        let day = await db.fetch(`dayCount_${message.guild.id}`);
-        let vote = db.get(`commandEnabled_${message.guild.id}`)
+        let isDay = await db.fetch(`isDay`);
+        let day = await db.fetch(`dayCount`);
+        let vote = db.get(`commandEnabled`)
         let skipus = db.get(`skipus_${message.author.id}`)
         if (day < 5) return message.channel.send("You can only skip after Day 5!")
         if (isDay != "yes" && vote == "yes") {

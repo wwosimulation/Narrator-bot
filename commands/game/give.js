@@ -50,8 +50,8 @@ module.exports = {
             }
         } else if (message.channel.name == "priv-forger") {
             let alive = message.guild.roles.cache.find(m => m.name === "Alive")
-            let isNight = db.get(`isNight_${message.guild.id}`)            
-            let night = db.get(`nightCount_${message.guild.id}`)
+            let isNight = db.get(`isNight`)            
+            let night = db.get(`nightCount`)
             let forged = db.get(`forged_${message.channel.id}`)
             let guy = message.guild.members.cache.find(m => m.nickname === args[0]) ||
             message.guild.members.cache.get(args[0]) ||
@@ -65,7 +65,7 @@ module.exports = {
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("BRUH THIS PLAYER IS NOT ALIVE STUPID")
             
             if (forged < 0) return message.channel.send("You already used up all your ability dumb")
-            if (db.get(`forging_${message.channel.id}`) == db.get(`nightCount_${message.guild.id}`)) return message.channel.send("YOU JUST FORGED AN ITEM BRUH WAIT A WHILE")
+            if (db.get(`forging_${message.channel.id}`) == db.get(`nightCount`)) return message.channel.send("YOU JUST FORGED AN ITEM BRUH WAIT A WHILE")
 
             if (forged == 2 || forged == 1) {
                 db.set(`toGiveS_${message.channel.id}`, guy.nickname)

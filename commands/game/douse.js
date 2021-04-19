@@ -7,7 +7,7 @@ module.exports = {
     run: async (message, args, client) => {
     if (message.channel.name != 'priv-arsonist') return
     let doused = await db.fetch(`doused_${message.channel.id}`);
-    let isNight = await db.fetch(`isNight_${message.guild.id}`);
+    let isNight = await db.fetch(`isNight`);
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
     let ignited = db.get(`ignitedAt_${message.channel.id}`) || "-1"
@@ -19,7 +19,7 @@ module.exports = {
         "Sure dousing in broad daylight. Might as well suicide bruh."
       );
     }
-    if (ignited == db.get(`nightCount_${message.guild.id}`)) return message.channel.send("Yea no. You just ignited literally a few seconds ago.")
+    if (ignited == db.get(`nightCount`)) return message.channel.send("Yea no. You just ignited literally a few seconds ago.")
     if (args.length == 0) {
       return await message.channel.send(
         "Yes, dousing no one. A wonderful choice!"

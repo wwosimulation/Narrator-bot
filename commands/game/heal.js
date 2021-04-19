@@ -6,7 +6,7 @@ module.exports = {
   aliases: ["protect", "save"],
     gameOnly: true,
     run: async (message, args, client) => {
-    let isNight = await db.fetch(`isNight_${message.guild.id}`);
+    let isNight = await db.fetch(`isNight`);
     if (message.channel.name === "priv-doctor") {
       if (isNight != "yes") {
         return await message.reply("You can only use this during the night!");
@@ -79,7 +79,7 @@ module.exports = {
       message.react("475775137434697728") 
     } else if (message.channel.name == "priv-tough-guy") {
       let alive = message.guild.roles.cache.find(r => r.name === "Alive")
-      let isNight = db.get(`isNight_${message.guild.id}`)
+      let isNight = db.get(`isNight`)
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't protect when dead knucklehead")
       if (!args[0]) return message.channel.send("WOW I DIDN'T KNOW THAT YOU WERE SO SMART...")
       if (isNight != "yes") return message.channel.send("Bruh what are you trying to protect from??")

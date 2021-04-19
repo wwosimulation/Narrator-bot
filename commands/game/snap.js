@@ -8,8 +8,8 @@ module.exports = {
             let disguises = db.get(`disguised_${message.channel.id}`) || []
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")
             let dead = message.guild.roles.cache.find(r => r.name === "Dead")
-            let isDay = db.get(`isDay_${message.guild.id}`)
-            let commandEnabled = db.get(`commandEnabled_${message.guild.id}`)
+            let isDay = db.get(`isDay`)
+            let commandEnabled = db.get(`commandEnabled`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You need to be alive to do this dumb.")
             if (disguises.length == 0) return message.channel.send("You did not disguise anyone yet sike.")
             if (isDay != "yes") return message.channel.send("You only can kill players during the day, when it's the discussion time...")

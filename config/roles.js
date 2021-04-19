@@ -1,5 +1,6 @@
 const { Collection } = require("discord.js")
 const descriptions = require("./descriptions.js")
+const icons = require("./icons.js")
 const defaultRole = {
   name: "Error! Please inform Shadow about this!",
   icon: "https://cdn.discordapp.com/emojis/424929422190182422.png?v=1",
@@ -40,7 +41,9 @@ for (let aura in auras) {
 }
 
 for (let desc in descriptions) {
-  addRoleProperty(desc, "description", descriptions)
+  let name = desc.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
+  addRoleProperty(name, "description", descriptions[desc])
+  addRoleProperty(name, "icon", icons[desc])
 }
 
 for (let team in teams) {
@@ -56,5 +59,4 @@ soloKillers.forEach((role) => {
 
 module.exports.roles.forEach((role) => {
   module.exports.allRoles.push(role.name)
-  addRoleProperty(role.name, "icon", "https://cdn.discordapp.com/emojis/682559541962997783.png?v=1")
 })
