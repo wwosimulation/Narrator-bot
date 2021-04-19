@@ -68,7 +68,7 @@ module.exports = {
         },
       ],
     })
-    await uwu.send(getRole("alpha werewolf").description).then((msg) => msg.pin())
+    await uwu.send(getRole(real).description).then((msg) => msg.pin())
 
     uwu.updateOverwrite(guy.id, {
       SEND_MESSAGES: true,

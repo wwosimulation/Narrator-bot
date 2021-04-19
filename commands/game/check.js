@@ -32,7 +32,7 @@ module.exports = {
           return await message.reply(`You have already used your ability for tonight!`)
         } else {
           let role = await db.fetch(`role_${guy.id}`)
-          let aura = roles.get(role).aura
+          let aura = getRole(role).aura
 
           for (let i = 0; i < illu.length; i++) {
             let disguised = db.get(`disguised_${illu[i]}`) || []
