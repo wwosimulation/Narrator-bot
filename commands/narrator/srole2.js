@@ -2,79 +2,113 @@ const shuffle = require("shuffle-array")
 const Discord = require("discord.js")
 const db = require("quick.db")
 
+const emote = (name) => {
+  return client.guilds.cache.get("465795320526274561").emojis.cache.find((e) => e.name === name.replace(" ", "_"))
+}
+
 module.exports = {
   name: "srole",
   gameOnly: true,
   narratorOnly: true,
   run: async (message, args, client) => {
-    return message.channel.send("This command is under construction! Use `+manual <number> <role>` in the meantime, and when all the roles are given, use `-startgame`")
-    // if (!["quick", "ranked", "custom", "customhide", "sandbox"].includes(args[0])) return message.channel.send("Invalid gamemode!")
-    // let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-    // let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
-    // let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
-    // let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
-    // let bot = message.guild.roles.cache.find((r) => r.name === "Bots")
-    // let wwsChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
-    // let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
-    // let gamlobi = message.guild.channels.cache.find((c) => c.name === "game-lobby")
-    // let sib = message.guild.channels.cache.find((c) => c.name === "sibling-chat")
-    // let bandits = message.guild.channels.cache.find((c) => c.name === "bandits")
-    // let sl = message.guild.channels.cache.find((c) => c.name === `sect-members`)
-    // let zomb = message.guild.channels.cache.find((c) => c.name === "zombies")
-
-    // db.set(`${message.guild.id}_usedChannels`, [])
-    // let usedChannels = []
-
-    // args.forEach((arg) => {
-    //   args[args.indexOf(arg)] = arg.toLowerCase()
-    // })
-    // let rolelist = []
-    // let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
-    // let random = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "cupid", "cursed", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "president", "detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer", "alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman", "sorcerer", "alchemist", "arsonist", "bandit", "bomber", "cannibal", "corruptor", "illusionist", "sect-leader", "serial-killer", "zombie", "fool", "headhunter"]
-    // let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch"]
-    // let rsv = ["detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer"]
-    // let rww = ["alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman"]
-    // let rk = ["alchemist", "arsonist", "bandit", "bomber", "cannibal", "corruptor", "illusionist", "sect-leader", "serial-killer", "zombie"]
-    // let rv = ["fool", "headhunter"]
-    // let allplayers = []
-    //   for (let x = 0; x < alive.members.size; x++) {
-    //     let guy = message.guild.members.cache.find((m) => m.nickname === (x + 1).toString())
-    //     if (!guy) return message.channel.send(`Player ${x + 1} could not be found!`)
-    //     allplayers.push(guy.id)
-    //   }
-
-    // if (args[0] == "quick") {
+    let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+    let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
+    let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
+    
+    for (let i = 0; i < alive.members.size; i++) {
+      let guy = message.guild.members.cache.find((m) => m.nickname === (i + 1).toString())
+      if (!guy) return message.channel.send(`Player ${i} was not found!`)
+    }
+    let gamemode = args[0]
+    if (!["quick", "ranked", "custom", "customhide", "sandbox"].includes(gamemode)) return message.channel.send("Invalid gamemode!")
+    if (args[1] != "force" && !["custom", "customhide"].includes(gamemode)) {
       
+      if (alive.members.size != 6 && alive.members.size != 8 && alive.members.size != 10 && alive.members.size != 13 && alive.members.size != 16) return message.channel.send("The game is currently unbalanced! If you want to bypass this, use `+srole ranked force`")
+    }
+    let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
+    let bot = message.guild.roles.cache.find((r) => r.name === "Bots")
+    let wwsChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+    let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
+    let gamlobi = message.guild.channels.cache.find((c) => c.name === "game-lobby")
+    let sib = message.guild.channels.cache.find((c) => c.name === "sibling-chat")
+    let bandits = message.guild.channels.cache.find((c) => c.name === "bandits")
+    let sl = message.guild.channels.cache.find((c) => c.name === `sect-members`)
+    let zomb = message.guild.channels.cache.find((c) => c.name === "zombies")
 
-    //   let seerdet = ["Seer", "Detective"]
-    //   let jailerwitch = ["Jailer", "Witch"]
-    //   let alphashaman = ["Alpha Werewolf", "Wolf Shaman"]
-    //   let skcanni = ["Illusionist", "Cannibal"]
-    //   let foolhh = ["Fool", "Headhunter"]
+    
+    
 
-    //   let sd = shuffle(seerdet)
-    //   let jw = shuffle(jailerwitch)
-    //   let as = shuffle(alphashaman)
-    //   let sc = shuffle(skcanni)
-    //   let fh = shuffle(foolhh)
+    db.set(`usedChannels`, [])
+    let usedChannels = []
 
-    //   let roles = [
-    //     ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Illusionist", "Cursed", "Wolf Seer", "Priest"],
-    //     ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Beast Hunter", "Gunner", "Wolf Shaman", "Aura Seer", "Bomber", "Cursed", "Wolf Seer", "Avenger"],
-    //     ["Aura Seer", "Medium", jw[0], "Werewolf", "Doctor", as[0], sd[0], fh[0], "Beast Hunter", "Marksman", "Junior Werewolf", "Tough Guy", sc[0], "Cursed", "Wolf Seer", "Priest"],
-    //     ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Cupid", "Gunner", "Wolf Shaman", "Detective", "Cannibal", "Cursed", "Wolf Seer", "Avenger"],
-    //     ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Junior Werewolf", "Detective", "Arsonist", "Cursed", "Wolf Seer", "Priest"],
-    //     ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", fh[0], "Bodyguard", "Gunner", "Wolf Shaman", "Mayor", "Corruptor", "Cursed", "Wolf Seer", "Avenger"],
-    //   ]
+    args.forEach((arg) => {
+      args[args.indexOf(arg)] = arg.toLowerCase()
+    })
+    let rolelist = []
+    let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
+    let random = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "cupid", "cursed", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "president", "detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer", "alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman", "sorcerer", "alchemist", "arsonist", "bandit", "bomber", "cannibal", "corruptor", "illusionist", "sect-leader", "serial-killer", "zombie", "fool", "headhunter"]
+    let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch"]
+    let rsv = ["detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer"]
+    let rww = ["alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman"]
+    let rk = ["alchemist", "arsonist", "bandit", "bomber", "cannibal", "corruptor", "illusionist", "sect-leader", "serial-killer", "zombie"]
+    let rv = ["fool", "headhunter"]
+    let seerdet = ["seer", "detective"]
+    let auraspirit = ["aura-seer", "spirit-seer"]
+    let beastbunny = ["beast-hunter"] // , "easter-bunny"]
+    let jailerwitch = ["jailer", "witch"]
+    let alphashaman = ["alpha-werewolf", "wolf-shaman"]
+    let skcanni = ["illusionist", "cannibal"]
+    let foolhh = ["fool", "headhunter"]
+    let docbg = ["doctor", "bodyguard"]
+    let allplayers = []
+    for (let x = 0; x < alive.members.size; x++) {
+      let guy = message.guild.members.cache.find((m) => m.nickname === (x + 1).toString())
+      if (!guy) return message.channel.send(`Player ${x + 1} could not be found!`)
+      allplayers.push(guy.id)
+    }
+    let roleOptions = []
 
-    //   shuffle(roles)
+    // Set roleOptions to an array containing arrays of possible rolelists
+    if (args[0] == "quick") {
+      let sd = shuffle(seerdet)
+      let jw = shuffle(jailerwitch)
+      let as = shuffle(alphashaman)
+      let sc = shuffle(skcanni)
+      rv = shuffle(rv)
+      roleOptions = [
+        ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Illusionist", "Cursed", "Wolf Seer", "Priest"],
+        ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Beast Hunter", "Gunner", "Wolf Shaman", "Aura Seer", "Bomber", "Cursed", "Wolf Seer", "Avenger"],
+        ["Aura Seer", "Medium", jw[0], "Werewolf", "Doctor", as[0], sd[0], rv[0], "Beast Hunter", "Marksman", "Junior Werewolf", "Tough Guy", sc[0], "Cursed", "Wolf Seer", "Priest"],
+        ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Cupid", "Gunner", "Wolf Shaman", "Detective", "Cannibal", "Cursed", "Wolf Seer", "Avenger"],
+        ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Bodyguard", "Gunner", "Junior Werewolf", "Detective", "Arsonist", "Cursed", "Wolf Seer", "Priest"],
+        ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Bodyguard", "Gunner", "Wolf Shaman", "Mayor", "Corruptor", "Cursed", "Wolf Seer", "Avenger"],
+      ]
+    } else if (args[0] == "ranked") {
+      if (alive.members.size < 9) {
+        rww.splice(rww.indexOf("Shadow Wolf"), 1)
+        rww.splice(rww.indexOf("Werewolf Berserk"), 1)
+        rww.splice(rww.indexOf("Junior Werewolf"), 1)
+        rww.splice(rww.indexOf("Guardian Wolf"), 1)
+      }
 
-    //   let newrole = []
-    //   let gr = ""
-    //   for (let k = 0; k < alive.members.size; k++) {
-    //     newrole.push(roles[0][k])
-    //     gr += `${client.emojis.cache.find((e) => e.name === roles[0][k].toLowerCase().replace(" ", "_"))} ${k + 1}. ${roles[0][k]}\n`
-    //   }
+      roleOptions = [
+        ["Aura Seer", rww[Math.floor(Math.random() * rww.length)], rrv[Math.floor(Math.random() * rrv.length)], "Doctor", rrv[Math.floor(Math.random() * rrv.length)], "Wolf Seer", "Marksman", "Headhunter", "Junior Werewolf", "Medium", "Jailer", "Arsonist", "Detective", rww[Math.floor(Math.random() * rww.length)], "Priest", rrv[Math.floor(Math.random() * rrv.length)]],
+        ["Spirit Seer", rww[Math.floor(Math.random() * rww.length)], rrv[Math.floor(Math.random() * rrv.length)], "Doctor", rrv[Math.floor(Math.random() * rrv.length)], "Wolf Seer", "Gunner", "Fool", "Junior Werewolf", "Medium", "Witch", "Cannibal", "Detective", rww[Math.floor(Math.random() * rww.length)], "Priest", rrv[Math.floor(Math.random() * rrv.length)]]
+      ]
+    } else if (args[0] == "sandbox") {
+
+    }
+
+    shuffle(roleOptions) // shuffle and use the first roleList
+    let dcMessage = ""
+    for (let k = 0; k < alive.members.size; k++) {
+      rolelist.push(roleOptions[0][k])
+      dcMessage = dcMessage + `${emote(rolelist[i])} ${i+1}. ${rolelist[i]}`
+    }
+
+    let dcSent = await dayChat.send(`${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())} Game:\n${dcMessage}`)
+    dcSent.pin()
+
     // } else if (args[0] == "sandbox") {
     //   message.channel.send("Sandbox hasn't been implemented yet, use the sandbox list with -srole custom")
     // } else if (args[0] == "ranked") {
@@ -459,8 +493,6 @@ module.exports = {
     //     wwsChat.send(allwolves.join("\n"))
     //   }
 
-      
-
     //   let daychat = message.guild.channels.cache.find((c) => c.name === "day-chat")
     //   daychat.send(gr).then((msg) => msg.pin())
 
@@ -588,7 +620,7 @@ module.exports = {
     // } else {
     //   return message.channel.send("Please specify a valid gamemode!")
     // }
-    
+
     // await client.channels.cache.find((c) => c.id === "606123818305585167").send("Game is starting. You can no longer join. Feel free to spectate!")
     // db.set("started", "yes")
   },

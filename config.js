@@ -1,6 +1,7 @@
 const { allRoles, roles } = require("./config/roles.js")
 const getRole = (rolename) => {
   rolename = rolename.toLowerCase()
+  rolename = rolename.replace("-", " ")
   let foundRole = roles.find((x) => x.name.toLowerCase() == rolename)
   if (!foundRole) return { name: "Unknown Role", description: "Unable to find that role!", icon: "https://cdn.discordapp.com/emojis/424929422190182422.png?v=1" }
   return foundRole

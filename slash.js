@@ -35,6 +35,8 @@ const allCommands = [
 ]
 
 module.exports = (client) => {
+  if(client.user.tag.toLowerCase().includes("beta")) return console.log("Beta bot detected... not loading slash commands")
+
   const baseReply = (msg, interaction, options = {}) => {
     for (let o in defaultOptions) {
       if (!options[o]) options[o] = defaultOptions[o]

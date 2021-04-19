@@ -8,6 +8,7 @@ const client = new Discord.Client({ ws: { intents: ["GUILD_MESSAGES", "GUILD_MES
 
 //const shadowadmin = require("shadowadmin")
 
+
 client.commands = new Discord.Collection()
 // const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
 // for (const file of commandFiles) {
