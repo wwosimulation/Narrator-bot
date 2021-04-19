@@ -145,5 +145,8 @@ module.exports = {
   "easter bunny": "https://cdn.discordapp.com/emojis/825184519907966996.png?v=1",
   "random regular villager": "https://cdn.discordapp.com/emojis/612982749334208517.png",
   "rrv": "https://cdn.discordapp.com/emojis/612982749334208517.png",
-  "pikathink": "https://cdn.discordapp.com/emojis/770660481500708894.png?v=1"
+  "pikathink": "https://cdn.discordapp.com/emojis/770660481500708894.png?v=1",
+  "werewolf berserk": "https://cdn.discordapp.com/emojis/606431125476212737.png?v=1",
+  "kitten wolf": "https://cdn.discordapp.com/emojis/701195174956498945.png?v=1",
+
 }
