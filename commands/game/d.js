@@ -5,7 +5,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
     if (message.channel.name == "priv-medium") {
-      let isNight = await db.fetch(`isNight_${message.guild.id}`);
+      let isNight = await db.fetch(`isNight`);
       if (isNight != "yes") return message.channel.send("You can only speak with the dead during the night!");
       if (message.member.roles.cache.has("606131202814115882"))
         return await message.channel.send(
@@ -22,7 +22,7 @@ module.exports = {
       }
       de.send("**Medium**: " + content);
     } else if (message.channel.name == "dead-chat") {
-      let isNight = db.get(`isNight_${message.guild.id}`);
+      let isNight = db.get(`isNight`);
       if (isNight != "yes") return message.channel.send("You can only chat with the medium during the night!");
       if (!args)
         return await message.channel.send(

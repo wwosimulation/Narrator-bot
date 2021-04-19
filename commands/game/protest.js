@@ -10,7 +10,7 @@ module.exports = {
     ) {
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");
-      let isDay = await db.fetch(`isDay_${message.guild.id}`);
+      let isDay = await db.fetch(`isDay`);
       let ability = await db.fetch(`protest_${message.channel.id}`);
       let ownself = message.guild.members.cache.find(
         m => m.nickname === message.member.nickname

@@ -15,7 +15,7 @@ message.channel.send(ban)
 const mongoose = require("mongoose")
 const fs = require("fs")
 
-mongoose.connect(process.env.MONGO, {
+mongoose.connect(process.env.MONGODB, {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false,
@@ -26,7 +26,7 @@ module.exports = {}
 
 const routeFiles = fs.readdirSync(__dirname + '/schemas').filter(file => file.endsWith('.js'))
 for (const file of routeFiles) {
-	const route = require(`./routes/${file}`)
+	const route = require(`./schemas/${file}`)
 	module.exports[`${file.split(`.`).shift()}`] = route
 }
 

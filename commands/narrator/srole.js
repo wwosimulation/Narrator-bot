@@ -11,6 +11,7 @@ module.exports = {
     let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
     let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
     let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
+    let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
     let bot = message.guild.roles.cache.find((r) => r.name === "Bots")
     let wwsChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
     let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
@@ -480,6 +481,7 @@ module.exports = {
         }
 
         if (content == "President") {
+          guy.roles.add(revealed)
           setTimeout(() => {
             dayChat.send(`<:president:583672720932208671> Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
             dayChat.send(`${alive}`)

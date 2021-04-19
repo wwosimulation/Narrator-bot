@@ -2,6 +2,7 @@ console.log("Booting bot...")
 require("dotenv").config()
 const fs = require("fs")
 const db = require("quick.db")
+//const mongo = require("./db.js")
 const Discord = require("discord.js")
 const client = new Discord.Client({ ws: { intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] } })
 

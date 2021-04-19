@@ -8,8 +8,8 @@ module.exports = {
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
     let wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
-    let wwsVote = await db.fetch(`wwsVote_${message.guild.id}`);
-    let commandEnabled = await db.fetch(`commandEnabled_${message.guild.id}`);
+    let wwsVote = await db.fetch(`wwsVote`);
+    let commandEnabled = await db.fetch(`commandEnabled`);
     if (wwsVote == "yes") {
       if (!message.channel.name.includes("wolf")) return;
     

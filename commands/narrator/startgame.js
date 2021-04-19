@@ -10,12 +10,12 @@ module.exports = {
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
 
 
-    db.set(`isDay_${message.guild.id}`, "no");
-    db.set(`nightCount_${message.guild.id}`, 1);
-    db.set(`isNight_${message.guild.id}`, "yes");
-    db.set(`dayCount_${message.guild.id}`, 0);
-    db.set(`wwsVote_${message.guild.id}`, "yes");
-    db.set(`commandEnabled_${message.guild.id}`, "no");
+    db.set(`isDay`, "no");
+    db.set(`nightCount`, 1);
+    db.set(`isNight`, "yes");
+    db.set(`dayCount`, 0);
+    db.set(`wwsVote`, "yes");
+    db.set(`commandEnabled`, "no");
     
     // changing perms for alive in game-lobby
     message.guild.channels.cache.find(c => c.name === "game-lobby").send("Game starting in 5 ...")

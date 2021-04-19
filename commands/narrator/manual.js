@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const {getRole} = require("../../config.js")
 
 module.exports = {
   name: "manual",
@@ -7,13 +8,13 @@ module.exports = {
   run: async (message, args, client) => {
     message.react("💋")
     let content = args[1]
-    let night = await db.fetch(`nightCount_${message.guild.id}`)
-    let day = await db.fetch(`dayCount_${message.guild.id}`)
+    let night = await db.fetch(`nightCount`)
+    let day = await db.fetch(`dayCount`)
     let amtD = day - day * 2 + 1
     let amtN = night - night * 2 + 1
     let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-    db.set(`dayCount_${message.guild.id}`, 0)
-    db.set(`nightCount_${message.guild.id}`, 0)
+    db.set(`dayCount`, 0)
+    db.set(`nightCount`, 0)
     let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
     let role = await db.fetch(`role_${guy.id}`, args[1])
     let real = args[1].toLowerCase()
@@ -67,7 +68,7 @@ module.exports = {
         },
       ],
     })
-    await uwu.send(`${db.get(`roleinfo_${real}`)}`).then((msg) => msg.pin())
+    await uwu.send(getRole("alpha werewolf").description).then((msg) => msg.pin())
 
     uwu.updateOverwrite(guy.id, {
       SEND_MESSAGES: true,

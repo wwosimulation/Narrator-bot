@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
+const ms = require("ms")
 
 module.exports = {
   name: "vt",
@@ -12,13 +13,13 @@ module.exports = {
     let voteChat = message.guild.channels.cache.find((c) => c.name === "vote-chat")
     let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
     let aliveRole = message.guild.roles.cache.find((r) => r.name === "Alive")
-    db.set(`wwsVote_${message.guild.id}`, "NO")
+    db.set(`wwsVote`, "NO")
     db.set(`skippedpl`, 0)
     let votes = Math.floor(parseInt(aliveRole.members.size) / 2)
     voteChat.send(`<@&${aliveRole.id}>`)
     dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
-    db.set(`commandEnabled_${message.guild.id}`, `yes`)
-    message.channel.send(`Setting the vote time for ${timer}`)
+    db.set(`commandEnabled`, `yes`)
+    message.channel.send(`Setting the vote time for ${ms(timer)}`)
     setTimeout(() => {
       voteChat.send(`Time is up!`)
     }, timer)

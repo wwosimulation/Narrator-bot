@@ -13,7 +13,7 @@ module.exports = {
       let guy = message.guild.members.cache.find(m => m.nickname === args[0])
       let setTrap = await db.fetch(`setTrap_${message.channel.id}`) 
       let trapActive = await db.fetch(`trapActive_${message.channel.id}`) 
-      let night = await db.fetch(`nightCount_${message.guild.id}`) 
+      let night = await db.fetch(`nightCount`) 
       if (!args[0]) return message.reply("Can you please commit suicide. Ty")
       if (!guy) return await message.reply('Invalid target!')
       

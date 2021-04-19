@@ -19,9 +19,9 @@ module.exports = {
       let dayChat = message.guild.channels.cache.find(
         c => c.name === "day-chat"
       );
-      let dayCount = db.get(`dayCount_${message.guild.id}`);
-      let isDay = db.get(`isDay_${message.guild.id}`);
-      let voting = db.get(`commandEnabled_${message.guild.id}`);
+      let dayCount = db.get(`dayCount`);
+      let isDay = db.get(`isDay`);
+      let voting = db.get(`commandEnabled`);
       console.log("tets")
       if (message.member.roles.cache.has(dead.id))
         return message.channel.send(
@@ -64,7 +64,7 @@ module.exports = {
       let dayChat = message.guild.channels.cache.find(
         c => c.name === "day-chat"
       );
-      let isDay = db.get(`isDay_${message.guild.id}`)
+      let isDay = db.get(`isDay`)
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You aren't alive")
       let jailed = db.get(`jail_${message.channel.id}`)
       let guy = message.guild.members.cache.find(m =>m.nickname === jailed)

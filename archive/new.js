@@ -7,7 +7,7 @@ module.exports = {
     if (message.guild.id != "465795320526274561") return;
     
     if (message.channel.id == "606230556832825481") {
-      let ticket = db.get(`tickets_${message.guild.id}`) || 1
+      let ticket = db.get(`tickets`) || 1
       
       let t = await message.guild.channels.create(`ticket-${ticket}`, {
         parent: "606230513103142932",

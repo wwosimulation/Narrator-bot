@@ -9,7 +9,7 @@ module.exports = {
     let aliveRole = message.guild.roles.cache.find(r => r.name === "Alive");
     let deadRole = message.guild.roles.cache.find(r => r.name === "Dead");
     let revealed = message.guild.roles.cache.find(r => r.name === "Revealed")
-    let isDay = db.get(`isDay_${message.guild.id}`)
+    let isDay = db.get(`isDay`)
     let dayChat = message.guild.channels.cache.find(c => c.name === "day-chat");
     if (message.channel.name == "priv-mayor") {
       if (args[0] == "card") {
@@ -28,11 +28,11 @@ module.exports = {
       db.set(`ability_${message.channel.id}`, "yes");
     } else if (message.channel.name == "priv-pacifist" || message.channel.name == "priv-wolf-pacifist") {
       let ability = await db.fetch(`paci_${message.channel.id}`);
-      let isday = await db.fetch(`isDay_${message.guild.id}`);
-      let day = await db.fetch(`dayCount_${message.guild.id}`);
+      let isday = await db.fetch(`isDay`);
+      let day = await db.fetch(`dayCount`);
       if (ability == "yes")
         return await message.reply("You already used up all your abilities!");  
-      let cmd = await db.fetch(`commandEnabled_${message.guild.id}`);
+      let cmd = await db.fetch(`commandEnabled`);
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
       let role = await db.fetch(`role_${guy.id}`);
       let nrole = role.toLowerCase();

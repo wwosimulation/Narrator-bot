@@ -8,9 +8,9 @@ module.exports = {
       let ability = await db.fetch(`ability_${message.channel.id}`);
       let alive = message.guild.roles.cache.find(r => r.name === "Alive");
       let dead = message.guild.roles.cache.find(r => r.name === "Dead");
-      let day = await db.fetch(`isDay_${message.guild.id}`);
-      let night = await db.fetch(`nightCount_${message.guild.id}`);
-      let isNight = await db.fetch(`isNight_${message.guild.id}`);
+      let day = await db.fetch(`isDay`);
+      let night = await db.fetch(`nightCount`);
+      let isNight = await db.fetch(`isNight`);
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]) || message.guild.members.cache.find(m => m.user.username === args[0]) || message.guild.members.cache.find(m => m.user.tag === args[0]) || message.guild.members.cache.find(m => m.id === args[0])
       let sected = message.guild.channels.cache.find(c => c.name === "sect-members")
       if (!args[0]) return message.channel.send("Yes, you expect me to poison the air")

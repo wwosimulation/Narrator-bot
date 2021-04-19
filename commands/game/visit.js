@@ -7,7 +7,7 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name === "priv-red-lady") {
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")
-            let isNight = db.get(`isNight_${message.guild.id}`)
+            let isNight = db.get(`isNight`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Umm no. Listen to yourself stupid..")
             if (!args[0]) return message.channel.send("I am not even gonna tell what's going on")
 

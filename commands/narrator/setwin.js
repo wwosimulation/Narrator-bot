@@ -6,8 +6,8 @@ module.exports = {
   run: async (message, args, client) => {
     db.set(`winner`, args.join(" "))
     message.channel.send("Done!")
-    db.set(`isDay_${message.guild.id}`, "yes")
-    db.set(`isNight_${message.guild.id}`, "yes")
-    db.set(`commandEnabled_${message.guild.id}`, "yes")
+    db.set(`isDay`, "yes")
+    db.set(`isNight`, "yes")
+    db.set(`commandEnabled`, "yes")
   },
 }

@@ -6,7 +6,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-nightmare-werewolf") {
-            let isDay = db.get(`isDay_${message.guild.id}`)
+            let isDay = db.get(`isDay`)
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")
             let wolfChat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
             let guy = 

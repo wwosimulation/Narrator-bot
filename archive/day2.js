@@ -22,7 +22,7 @@ module.exports = {
     let bh = message.guild.channels.cache.filter((c) => c.name === "priv-beast-hunter").keyArray("id")
     let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").keyArray("id")
     let med = message.guild.channels.cache.filter((c) => c.name === "priv-medium").keyArray("id")
-    let day = db.get(`dayCount_${message.guild.id}`)
+    let day = db.get(`dayCount`)
     let arso = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").keyArray("id")
     let shunt = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").keyArray("id")
     let sel = message.guild.channels.cache.filter((c) => c.name === "priv-sect-leader").keyArray("id")
@@ -1654,8 +1654,8 @@ module.exports = {
     }
 
     dayChat.send(`Day ${day + 1} has started! Get ready to discuss!`)
-    db.add(`dayCount_${message.guild.id}`, 1)
-    db.set(`isDay_${message.guild.id}`, "yes")
+    db.add(`dayCount`, 1)
+    db.set(`isDay`, "yes")
 
     console.log("Ok so it is day")
     // lock werewolves from their chat
@@ -2439,7 +2439,7 @@ module.exports = {
         }
       }
     }
-    if (db.get(`nightCount_${message.guild.id}`) == 1) {
+    if (db.get(`nightCount`) == 1) {
       for (let x = 0; x < cupid.length; x++) {
         let channel = message.guild.channels.cache.get(cupid[x])
         let player
@@ -2910,14 +2910,14 @@ module.exports = {
     }
     console.log("The code worked up to here!")
     db.set(`vtshadow`, false)
-    db.set(`isDay_${message.guild.id}`, "yes")
-    db.set(`isNight_${message.guild.id}`, "no")
+    db.set(`isDay`, "yes")
+    db.set(`isNight`, "no")
     if (args[1] == "test") {
       dayChat.send(`${alive}`)
     }
-    console.log(`Day: ${db.get(`dayCount_${message.guild.id}`)}`)
+    console.log(`Day: ${db.get(`dayCount`)}`)
     setTimeout(() => {
-      if (db.get(`commandEnabled_${message.guild.id}`) != "yes") {
+      if (db.get(`commandEnabled`) != "yes") {
         client.commands.get("vt").run(message, args, client)
       }
     }, 90000)

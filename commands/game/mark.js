@@ -5,7 +5,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-marksman") {
-            let isNight = db.get(`isNight_${message.guild.id}`)
+            let isNight = db.get(`isNight`)
             let alive = message.guild.roles.cache.find(r => r.name === 'Alive')
             let arrow = db.get(`arrows_${message.channel.id}`) || 2
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't mark when your dead punk.")

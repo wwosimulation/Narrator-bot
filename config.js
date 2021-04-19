@@ -49,7 +49,7 @@ module.exports.shop.items = [
   { id: "bouquet", name: "Rose Bouquet", price: 250, currency: "coin", description: "Use these to give everyone in the game a rose, including yourself!" },
   { id: "grey", name: "Grey Color Role", price: 200, currency: "coin", description: "Gain the very rare Grey Color role" },
   { id: "cmi", name: "Custom Maker Item", price: 1500, currency: "coin", description: "You can use this to create your own role list when playing.\nThis does not give you the full set of role list. You need to buy the rest of the roles using coins or roses. To check the list, do `+cmi`!" },
-  { id: "private", name: "Private Channel", price: 100, currency: "rose", description: "Create your own private channel in this server!" },
-  { id: "icon", name: "Profile Icon", price: 20, currency: "rose", description: "Add an icon to your profile!" },
-  { id: "description", name: "Profile Description", price: 25, currency: "rose", description: "Customize your profile description!" },
+  { id: "channel", name: "Private Channel", price: 100, currency: "rose", description: "Create your own private channel in this server!" },
+  { id: "icon", name: "Icon", price: 20, currency: "rose", description: "Add an icon to your profile!" },
+  { id: "description", name: "Description", price: 25, currency: "rose", description: "Customize your profile description!" },
 ]
