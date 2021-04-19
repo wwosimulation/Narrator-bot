@@ -106,9 +106,10 @@ client.on("ready", async () => {
   console.log("Connected!")
   //ShadowAdmin initialize
   //shadowadmin.init(client, {prefix, owners: config.botAdmin})
+  require("./slash.js")(client)
 })
 
-require("./slash.js")(client)
+
 
 client.login(process.env.TOKEN)
 

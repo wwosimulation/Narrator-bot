@@ -11,6 +11,7 @@
   "author": "Wolvesville Simulation",
   "license": "ISC",
   "dependencies": {
+    "array-pull": "^0.2.1",
     "colornames": "^1.1.1",
     "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
