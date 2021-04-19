@@ -19,7 +19,11 @@ module.exports = {
     voteChat.send(`<@&${aliveRole.id}>`)
     dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
     db.set(`commandEnabled`, `yes`)
+<<<<<<< HEAD
     message.channel.send(`Setting the vote time for ${ms(timer)}`)
+=======
+    message.channel.send(`Setting the vote time for ${timer}`)
+>>>>>>> 2ee6c2e2fa73971906ab248d214ed31393041a4c
     setTimeout(() => {
       voteChat.send(`Time is up!`)
     }, timer)
