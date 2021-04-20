@@ -102,7 +102,7 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
 //Bot on startup
 client.on("ready", async () => {
   client.config = {}
-  client.user.setActivity("Wolvesville Simulation!")
+  client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae and beta testes" : "Wolvesville Simulation!")
   console.log("Connected!")
   //ShadowAdmin initialize
   //shadowadmin.init(client, {prefix, owners: config.botAdmin})
