@@ -3,4 +3,4 @@ node_modules/
 .npm
 json.sqlite
 .env
-.envbeta
+pnpm-lock.yaml
