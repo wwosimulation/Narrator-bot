@@ -6,6 +6,7 @@ const db = require("quick.db")
 const Discord = require("discord.js")
 const client = new Discord.Client({ ws: { intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] } })
 
+require("./slash.js")(client)
 //const shadowadmin = require("shadowadmin")
 
 
@@ -106,7 +107,6 @@ client.on("ready", async () => {
   console.log("Connected!")
   //ShadowAdmin initialize
   //shadowadmin.init(client, {prefix, owners: config.botAdmin})
-  require("./slash.js")(client)
 })
 
 

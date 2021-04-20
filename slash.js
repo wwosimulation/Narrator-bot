@@ -35,7 +35,6 @@ const allCommands = [
 ]
 
 module.exports = (client) => {
-  if(client.user.tag.toLowerCase().includes("beta")) return console.log("Beta bot detected... not loading slash commands")
 
   const baseReply = (msg, interaction, options = {}) => {
     for (let o in defaultOptions) {
@@ -49,6 +48,8 @@ module.exports = (client) => {
   }
 
   client.on("ready", () => {
+    if(client.user.tag.toLowerCase().includes("beta")) return console.log("Beta bot detected... not loading slash commands")
+    console.log("Loading slash commands...")
     allCommands.forEach((cmd) => {
       cmd.server.forEach((x) => {
         let data = {
