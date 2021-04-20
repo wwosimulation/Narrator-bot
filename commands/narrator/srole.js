@@ -7,7 +7,7 @@ module.exports = {
   gameOnly: true,
   narratorOnly: true,
   run: async (message, args, client) => {
-    return message.channel.send("This command is under construction! Use `+manual <number> <role>` in the meantime, and when all the roles are given, use `-startgame`")
+    return message.channel.send("This command is under construction! Use `+manual <number> <role>` in the meantime, and when all the roles are given, use `+startgame`")
     // if (!["quick", "ranked", "custom", "customhide", "sandbox"].includes(args[0])) return message.channel.send("Invalid gamemode!")
     // let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
     // let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
