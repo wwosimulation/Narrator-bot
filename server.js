@@ -5,8 +5,7 @@ const db = require("quick.db")
 //const mongo = require("./db.js")
 const Discord = require("discord.js")
 const client = new Discord.Client({ ws: { intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] } })
-
-require("./slash.js")(client)
+const config = require("./config.js")
 //const shadowadmin = require("shadowadmin")
 client.db = db
 
@@ -114,6 +113,10 @@ client.on("ready", async () => {
     client.channels.cache.get(maint.split("-")[1]).send("Config has successfully been reloaded!")
     db.set("maintenance", false)
   }
+  require("./slash.js")(client)
+
+  client.userEmojis = client.emojis.cache.filter(x => config.ids.emojis.includes(x.guild.id))
+
 })
 
 
