@@ -8,6 +8,7 @@ const client = new Discord.Client({ ws: { intents: ["GUILD_MESSAGES", "GUILD_MES
 
 require("./slash.js")(client)
 //const shadowadmin = require("shadowadmin")
+client.db = db
 
 
 client.commands = new Discord.Collection()
@@ -107,6 +108,12 @@ client.on("ready", async () => {
   console.log("Connected!")
   //ShadowAdmin initialize
   //shadowadmin.init(client, {prefix, owners: config.botAdmin})
+
+  let maint = db.get("maintenance")
+  if(typeof maint == "string" && maint.startsWith("config-")) {
+    client.channels.cache.get(maint.split("-")[1]).send("Config has successfully been reloaded!")
+    db.set("maintenance", false)
+  }
 })
 
 
