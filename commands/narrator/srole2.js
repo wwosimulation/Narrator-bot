@@ -145,6 +145,8 @@ module.exports = {
       if (juniorrww == "rww") juniorrww = shuffle(rww)
       roleOptions.push([auraspirit[0], "alpha-werewolf", docbg[0], rrv[0], beastbunny[0], "wolf-seer", gunnermarks[0], rv[0], jailerftwitch[0], alcrk[0], "medium", "seer", pacishadownmber[0], rrv[0], juniorrww[0], cupidgr[0]])
     } else if (gamemode == "custom" || gamemode == "customhide") {
+      args.shift()
+      roleOptions.push(args)
     }
 
     shuffle(roleOptions) // shuffle and use the first roleList
@@ -153,11 +155,19 @@ module.exports = {
       allWolves = []
 
     finalRoleList = roleOptions[0].splice(0, alive.members.size)
+    let cancel = false
+    finalRoleList.forEach((x) => {
+      let role = getRole(x)
+      if (!role || role.name == "Unknown Role") {
+        cancel = true
+        return message.channel.send(`Unable to find the ${x} role!`)
+      }
+    })
+    if (cancel) return message.channel.send("srole canceled")
     shuffle(finalRoleList)
     for (let k = 0; k < alive.members.size; k++) {
       let theirRole = finalRoleList[k]
       let role = getRole(theirRole)
-      console.log(theirRole, role)
       rolelist.push(theirRole)
       let guy = message.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
       dcMessage.push(`${emote(role.name)} ${role.name}`)
@@ -203,7 +213,6 @@ module.exports = {
         guy.roles.add(revealed)
         setTimeout(() => {
           dayChat.send(`<:president:583672720932208671> Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
-          dayChat.send(`${alive}`)
         }, 15000)
       }
 

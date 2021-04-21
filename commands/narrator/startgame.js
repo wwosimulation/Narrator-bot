@@ -172,6 +172,8 @@ module.exports = {
         db.delete(`atag_${guy.id}`)
       }
     }
-    message.channel.send("All the actions worked!")
+    message.channel.send("The game has started! Ping @Alive in #day-chat when you are ready to start Night 1")
+    await client.channels.cache.find((c) => c.id === "606123818305585167").send("Game is starting. You can no longer join. Feel free to spectate!")
+    db.set("started", "yes")
   }
 };
