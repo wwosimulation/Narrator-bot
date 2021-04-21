@@ -60,17 +60,9 @@ module.exports = {
     let gems = db.get(`gems_${message.author.id}`)
     let userHas = item.currency == "coin" ? balance : item.currency == "rose" ? roses : gems
 
-    if (item.id == "color") {
-      if (!color) return message.channel.send(`Sorry, I don't recognize the color ${args[1]}.\nMake sure you choose a proper color from \`+shop colors\`!`)
-      buyRole(color.id)
-    }
+    if (item.id == "color" && !color) return message.channel.send(`Sorry, I don't recognize the color ${args[1]}.\nMake sure you choose a proper color from \`+shop colors\`!`)
 
-    if (item.id == "grey") buyRole("606123657210757136")
-    if (item.id == "immunity") buyRole("691390867822477413")
-    if (item.id == "dj") buyRole("606123674562723840")
-    if (item.id == "ranked") buyRole("832845602009645116")
-    if (item.id == "emoji") buyRole("663389088354664477")
-    if (item.id == "channel") buyRole("627539599862005760")
+    if(item.role) buyRole(item.role)
 
     if (item.id == "cmi") {
       let cmicheck = db.get(`cmi_${message.author.id}`)
@@ -131,6 +123,8 @@ module.exports = {
         })
     } else if (["rose", "bouquet"].includes(item.id)) {
       db.add(`${item.id}${item.id == "rose" ? "G" : ""}_${message.author.id}`, amount)
+    } else if (item.id == "icon" || item.id == "description"){
+      message.channel.send("The feature to add these to your profile hasn't been implemented yet. Please send your " + item.id + " that you want to TheShadow#8124!")
     } else if (item.id == "private") {
       let t = await sim.channels.create(`${message.author.username}-channel`, {
         parent: "627536301008224275",
