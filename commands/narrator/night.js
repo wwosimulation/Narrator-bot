@@ -598,7 +598,7 @@ module.exports = {
                 let guy = message.guild.members.cache.find(m => m.nickname === blackpotion)
                 if (guy) {
                   if (guy.roles.cache.has(alive.id)) {
-                    dayChat.send(`<:blackp:821920932989239296> The Alchemist killed **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)}**!`)
+                    dayChat.send(`<:blackp:821920932989239296> The Alchemist killed **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
                     guy.roles.add(dead.id)
                     guy.roles.remove(alive.id)
                   }

@@ -28,9 +28,11 @@ module.exports = {
     if (!config.fn.isBeta(message.author.id)) return message.channel.send("Command isn't finished!")
     if (args.length < 1) return message.channel.send("Please specify an item from the shop to buy!")
 
-    args.map((x) => x.toLowerCase())
+    args.forEach((x, i) => {
+      args[i] = x.toLowerCase()
+    })
 
-    if (args[1] == "color" && ["gray", "grey"].includes(args[0])) args.reverse()
+    if (["color", "colour"].includes(args[1]) && !["gray", "grey"].includes(args[0])) args.reverse()
 
     let item = config.shop.items.find((x) => x.id == args[0])
     switch (args[0]) {
@@ -63,6 +65,7 @@ module.exports = {
     if (item.id == "color" && !color) return message.channel.send(`Sorry, I don't recognize the color ${args[1]}.\nMake sure you choose a proper color from \`+shop colors\`!`)
 
     if(item.role) buyRole(item.role)
+    if(item.id == "color") buyRole(color.id)
 
     if (item.id == "cmi") {
       let cmicheck = db.get(`cmi_${message.author.id}`)

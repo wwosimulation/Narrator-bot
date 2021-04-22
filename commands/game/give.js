@@ -76,17 +76,15 @@ module.exports = {
                 message.channel.send(`<:getsword:744536585906683975> You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
             }
         } else if (message.channel.name == "priv-alchemist") {
+            let isNight = db.get(`isNight`)            
+            if (isNight != "yes") return message.channel.send("You can only do this at night!")
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")
             let guy = message.guild.members.cache.find(m => m.nickname === args[1]) || message.guild.members.cache.find(m => m.user.username === args[1]) || message.guild.members.cache.find(m => m.user.tag === args[1]) || message.guild.members.cache.find(m => m.id === args[1])
             if (args.length != 2) return message.channel.send("So you expect me to give no potion to the air? I am a killer, not a reviver dimwit")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Bruh. No. Look at your roles before you do this command.")
             if (!guy || guy == message.member) return message.reply("Invalid Target!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("Stop . Just stop doing this to the Dead.")
-            if (!["red", "black", "#000000", "#FF0000", "000000", "FF0000"].includes(args[0].toLowerCase())) return message.channel.send("Bruh, it is `red` or `black`. You are probably colour blind.")
-            args[0] = args[0].replace("#000000", "black")
-            args[0] = args[0].replace("000000", "black")
-            args[0] = args[0].replace("#FF0000", "red")
-            args[0] = args[0].replace("FF0000", "red")
+            if (!["red", "black"].includes(args[0].toLowerCase())) return message.channel.send("Bruh, it is `red` or `black`. You are probably colour blind.")
             if (args[0].toLowerCase() == "red") {
                 db.set(`redpotion_${message.channel.id}`, guy.nickname)
                 message.react("821920816596910100")
