@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
-const {fn} = require("../../config.js")
+const { winStreak } = require("../../../config/src/xp.js")
+const {fn, xp} = require("../../config.js")
 
 module.exports = {
   name: "win",
@@ -22,26 +23,23 @@ module.exports = {
       }
     }
     console.log(allPlayers)
-    let xp = 0
+    let giveXP = 0
     let won = ""
+    let winTeam = args[0].toLowerCase()
+    giveXP = xp.team[winTeam]
+    
 
     if (args[0].toLowerCase() == "couple") {
-      xp = 95
       won = "cwin"
     } else if (args[0].toLowerCase() == "werewolf") {
-      xp = 75
       won = "wwin"
     } else if (args[0].toLowerCase() == "village") {
-      xp = 55
       won = "vwin"
     } else if (args[0].toLowerCase() == "fool") {
-      xp = 150
       won = "svwin"
     } else if (args[0].toLowerCase() == "headhunter") {
-      xp = 150
       won = "svwin"
     } else if (args[0].toLowerCase() == "solo") {
-      xp = 175
       won = "skwin"
     } else if (args[0].toLowerCase() == "tie") {
       for (let i = 1; i <= dead.members.size; i++) {
@@ -59,7 +57,7 @@ module.exports = {
           }
           db.set(`winstreak_${guy.id}`, 0)
           if (guy.presence.status != "offline") {
-            db.add(`xp_${guy.id}`, 15)
+            db.add(`xp_${guy.id}`, xp.team.tie)
             guy.send(new Discord.MessageEmbed().setTitle("Game Over - Tie").setDescription("Finished Game:\t\t15xp").setColor("#FF0000").setFooter("You lost!"))
           }
         }
@@ -92,19 +90,19 @@ module.exports = {
         setTimeout(async () => {
           if (guy.presence.status !== "offline") await t.edit(new Discord.MessageEmbed().setTitle("Game ended").setColor("#008800").setDescription(`${themsg}\nFinished Game:\t\t15xp`))
           themsg += `\nFinished Game:\t\t15xp`
-          db.add(`xp_${guy.id}`, 15)
+          db.add(`xp_${guy.id}`, xp[finishGame])
         }, 1000)
         setTimeout(async () => {
           if (db.get(`winstreak_${guy.id}`) > 1) {
             await t.edit(new Discord.MessageEmbed().setTitle("Game ended").setColor("#008800").setDescription(`${themsg}\nWin Streak:\t\t25xp`))
-            db.add(`xp_${guy.id}`, 25)
+            db.add(`xp_${guy.id}`, xp[winStreak])
             themsg += `\nWin Streak:\t\t25xp`
           }
         }, 2000)
         setTimeout(async () => {
           if (fwotd < today) {
             await t.edit(new Discord.MessageEmbed().setTitle("Game Ended").setColor("#008800").setDescription(`${themsg}\nFirst win of the day:\t100xp`))
-            db.add(`xp_${guy.id}`, 100)
+            db.add(`xp_${guy.id}`, xp[firstWinOfTheDay])
             db.set(`firstwinoftheday_${guy.id}`, today)
             themsg += `\nFirst win of the day:\t100xp`
           }
@@ -112,7 +110,7 @@ module.exports = {
       }
     }
 
-    // giving xp to dead players
+    // giving giveXP to dead players
     console.log(allPlayers)
     for (let i = 0; i < allPlayers.length; i++) {
       let guy = message.guild.members.cache.get(allPlayers[i])
