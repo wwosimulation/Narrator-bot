@@ -162,6 +162,10 @@ module.exports = {
         cancel = true
         return message.channel.send(`Unable to find the ${x} role!`)
       }
+      if (!role.description) {
+        cancel = true
+        return message.channel.send(`The information for the ${x} role is missing! Please report this using \`+bug\``)
+      }
       if(["zombie", "bandit", "accomplice"].includes(role.name)) {
         cancel = true 
         return message.channel.send(`The ${role.name} role is currently not available`)
