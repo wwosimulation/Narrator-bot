@@ -107,7 +107,7 @@ module.exports = {
     }
 
     if (item.id == "cmi") {
-      db.set(`cmi_${message.author.id}`, "yes")
+      db.set(`cmi_${message.author.id}`, true)
     } else if (item.id == "profile") {
       db.set(`profile_${message.author.id}`, true)
     } else if (item.id == "special") {
