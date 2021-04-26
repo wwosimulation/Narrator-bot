@@ -70,7 +70,7 @@ module.exports = {
             }
             let zombies = message.guild.channels.cache.find(c => c.name === "zombies")
             if (zombies.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                return message.channel.send("WOW. JUST WOW. PLS. SPARE ME.")
+                return message.channel.send("You aren't a bitten zombie!")
             }
             message.guild.channels.cache.find(c => c.name === "zombies").send(`<:zombvote:745632486733905962> ${message.member.nickname} ${message.author.username} voted **${guy.nickname} ${guy.user.username}**!`)
             db.set(`bite_${message.channel.id}`, guy.nickname)
