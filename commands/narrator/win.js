@@ -1,6 +1,5 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
-const { winStreak } = require("../../../config/src/xp.js")
 const {fn, xp} = require("../../config.js")
 
 module.exports = {
@@ -11,7 +10,7 @@ module.exports = {
     let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
     let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
     let solokillers = ["Serial Killer", "Arsonist", "Bomber", "Cannibal", "Corruptor", "Illusionist", "Bandit", "Accomplice", "Sect Leader", "Zombie"]
-    if (alive.members.size != "0") return message.channel.send('To use this command, everyone must have the "Dead" role!')
+    if (alive.members.size != "0") return message.channel.send('To use this command, everyone must have the "Dead" role! Use `+suicideall` if you need to kill everyone at once.')
 
     let allPlayers = []
     for (let i = 1; i <= dead.members.size; i++) {
@@ -27,6 +26,7 @@ module.exports = {
     let won = ""
     let winTeam = args[0].toLowerCase()
     giveXP = xp.team[winTeam]
+    if(!giveXP) return message.channel.send("Error! XP not found for that team")
     
 
     if (args[0].toLowerCase() == "couple") {
@@ -50,7 +50,7 @@ module.exports = {
             db.add(`wlose_${guy.id}`, 1)
           } else if (role == "Headhunter" || role == "Fool") {
             db.add(`svlose_${guy.id}`, 1)
-          } else if (solokillers.includes(role)) {
+          } else if (config. solokillers.includes(role)) {
             db.add(`sklose_${guy.id}`, 1)
           } else {
             db.add(`vlose_${guy.id}`, 1)
@@ -79,7 +79,6 @@ module.exports = {
         if (!db.get(`xpreq_${guy.id}`)) {
           db.set(`xpreq_${guy.id}`, 1000)
         }
-        let content = ""
         let fwotd = db.get(`firstwinoftheday_${guy.id}`) || -1
         let today = new Date().getDate()
         let themsg = `Win as ${args[0]}\t\t${xp}xp`
