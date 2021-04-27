@@ -50,7 +50,7 @@ module.exports = {
               if (tempguy) {
                 if (tempguy.roles.cache.has(alive.id)) {
                   if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) {
-                    return message.channel.send("You need to resign or be the last wolf alive in order to vote dummy")
+                    return message.channel.send("You need to resign in order to vote")
                   }
                 }
               }

@@ -5,7 +5,7 @@ const pull = require("array-pull")
 const { getRole, fn } = require("../../config.js")
 
 module.exports = {
-  name: "srole2",
+  name: "srole",
   gameOnly: true,
   narratorOnly: true,
   run: async (message, args, client) => {
