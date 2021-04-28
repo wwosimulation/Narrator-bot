@@ -53,7 +53,7 @@ module.exports = {
         let ownself = message.guild.members.cache.find(m => m.id === message.author.id)
         if (chan.permissionsFor(ownself).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
           if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-            return message.channel.send("There seems to be a bug... Try doing `+suicide` instead...")
+            return message.channel.send("Imagine trying to kill the person who made you who you are today")
           }
         
           i = 99
