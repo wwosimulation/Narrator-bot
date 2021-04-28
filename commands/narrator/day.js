@@ -3071,6 +3071,10 @@ module.exports = {
       db.set(`potion_${witch[i]}`, null)
     }
 
+    for (let i = 0; i < zombie.length; i++) {
+      db.set(`bite_${zombie[i]}`, null)
+    }
+
     for (let i = 0; i < bg.length; i++) {
       db.set(`guard_${bg[i]}`, null)
     }
