@@ -94,6 +94,13 @@ module.exports = {
     let juniorrww = ["junior-werewolf", "rw"]
     let cupidgr = ["cupid"] //, "grave-robber"]
 
+    random = shuffle(random)
+    rrv = shuffle(rrv)
+    rsv = shuffle(rsv)
+    rww = shuffle(rww)
+    rk = shuffle(rk)
+    rv = shuffle(rv)
+
     if (gamemode == "ranked") excludes = ["grave-robber", "villager", "mayor", "pacifist", "seer-apprentice", "werewolf", "kitten-wolf", "wolf-pacifist"]
     excludes.forEach((role) => {
       random = pull(random, role)
@@ -110,7 +117,6 @@ module.exports = {
       let jw = shuffle(jailerwitch)
       let as = shuffle(alphashaman)
       let sc = shuffle(skcanni)
-      rv = shuffle(rv)
       roleOptions = [
         ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Illusionist", "Cursed", "Wolf Seer", "Priest"],
         ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Beast Hunter", "Gunner", "Wolf Shaman", "Aura Seer", "Bomber", "Cursed", "Wolf Seer", "Avenger"],
@@ -146,6 +152,14 @@ module.exports = {
       roleOptions.push([auraspirit[0], "alpha-werewolf", docbg[0], rrv[0], beastbunny[0], "wolf-seer", gunnermarks[0], rv[0], jailerftwitch[0], alcrk[0], "medium", "seer", pacishadownmber[0], rrv[0], juniorrww[0], cupidgr[0]])
     } else if (gamemode == "custom" || gamemode == "customhide") {
       args.shift()
+      args.forEach((x, i) => {
+        if(x == "rk") args[i] == rk[0]
+        if(x == "rrv") args[i] == rrv[0]
+        if(x == "rsv") args[i] == rsv[0]
+        if(x == "rv") args[i] == rv[0]
+        if(x == "rww") args[i] == rww[0]
+        if(x == "random") args[i] == random[0]
+      })
       roleOptions.push(args)
     }
 

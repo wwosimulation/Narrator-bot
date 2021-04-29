@@ -8,7 +8,7 @@ module.exports = {
   gameOnly: true,
   run: async (message, args, client) => {
     if(args[0] == "nm") return message.channel.send("Invalid format! The way you use this command has changed, check the pins in <#606123759514025985>")
-    let timer = ms(args[0])
+    let timer = ms(args.join(" "))
     if (!timer) return message.channel.send("Invalid time!")
     let voteChat = message.guild.channels.cache.find((c) => c.name === "vote-chat")
     let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")

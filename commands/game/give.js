@@ -77,7 +77,7 @@ module.exports = {
             }
         } else if (message.channel.name == "priv-alchemist") {
             let isNight = db.get(`isNight`)            
-            if (isNight != "yes") return message.channel.send("You can only do this at night!")
+            if (isNight == "no") return message.channel.send("You can only do this at night!")
             let alive = message.guild.roles.cache.find(r => r.name === "Alive")
             let guy = message.guild.members.cache.find(m => m.nickname === args[1]) || message.guild.members.cache.find(m => m.user.username === args[1]) || message.guild.members.cache.find(m => m.user.tag === args[1]) || message.guild.members.cache.find(m => m.id === args[1])
             if (args.length != 2) return message.channel.send("So you expect me to give no potion to the air? I am a killer, not a reviver dimwit")
