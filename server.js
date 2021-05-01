@@ -114,7 +114,7 @@ client.on("ready", async () => {
     db.set("maintenance", false)
   }
   require("./slash.js")(client)
-
+  client.olddb = require("/home/sd/wwosim/oldbot.json")
   client.userEmojis = client.emojis.cache.filter(x => config.ids.emojis.includes(x.guild.id))
 
 })
