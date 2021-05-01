@@ -143,7 +143,6 @@ module.exports = {
         }
       }
     }
-
     // in case if anyone levels up
     for (let o = 1; o <= 16; o++) {
       let guy = message.guild.members.cache.find((m) => m.nickname === o.toString())
@@ -151,5 +150,6 @@ module.exports = {
         fn.updateXP(guy.id, client)
       }
     }
+    message.channel.send("Done!")
   },
 }

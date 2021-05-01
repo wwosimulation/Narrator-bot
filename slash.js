@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
 const ms = require("ms")
+const {ids} = require("./config.js")
 
 const sim = ["465795320526274561"]
 const game = ["472261911526768642"]
@@ -72,7 +73,7 @@ module.exports = (client) => {
 
       if (command === "stafflist") {
         let msg = `Only a staff member can regenerate the staff list!`
-        if (!interaction.member.roles.includes("606138123260264488")) baseReply(`Only a staff member can regenerate the staff list!`, interaction)
+        if (!interaction.member.roles.includes(ids.staff) && !interaction.member.roles.includes(ids.afkstaff)) baseReply(`Only a staff member can regenerate the staff list!`, interaction)
         client.emit("stafflist")
         baseReply(`Done!`, interaction)
       }

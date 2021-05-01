@@ -25,7 +25,6 @@ module.exports = {
       roleadd(roleID)
     }
 
-    if (!config.fn.isBeta(message.author.id)) return message.channel.send("Command isn't finished!")
     if (args.length < 1) return message.channel.send("Please specify an item from the shop to buy!")
 
     args.forEach((x, i) => {
@@ -141,6 +140,6 @@ module.exports = {
       await message.channel.send(`You have purchased a private channel! You can edit your channel at: ${t}`)
     }
 
-    message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${config.emojis[item.currency]}!`)
+    message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${config.emojis[item.currency]}!${item.response ? `\n${item.response}` : ""}`)
   },
 }

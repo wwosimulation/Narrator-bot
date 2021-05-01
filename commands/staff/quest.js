@@ -7,9 +7,9 @@ module.exports = {
   aliases: ["quests"],
   narratorOnly: true,
   run: async (message, args, client) => {
-    if (args.length < 3) return message.channel.send("Bruh. How do you expect me to do this if the arguments are not sufficent? I am a Bot, not a Mind Reader.")
+    if (args.length < 3) return message.channel.send("Invalid format! Use `+quest [user] [xp] [quest]`")
 
-    let guy = message.guild.members.cache.find((c) => c.user.username.startsWith(args[0])) || message.guild.members.cache.find((c) => c.user.tag.startsWith(args[0])) || message.guild.members.cache.find((c) => c.nickname && c.nickname.startsWith(args[0])) || message.guild.members.cache.get(args[0]) || message.mentions.members.first()
+    let guy = fn.getUser(args[0], message)
 
     if (!guy) return message.channel.send(`Invalid member! Please use it as \`+quest [user] [xp] [quest]\`!`)
 

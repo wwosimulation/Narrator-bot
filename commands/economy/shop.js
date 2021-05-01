@@ -6,8 +6,7 @@ const {shop, emojis, fn} = require("../../config.js")
 module.exports = {
   name: "shop",
   run: async (message, args, client) => {
-    if (!fn.isBeta(message.author.id)) return message.channel.send("Sorry, the shop is currently closed. Check back later!")
-    let embeds = [new Discord.MessageEmbed().setTitle("Werewolf Online Simulation Store").setColor("#1FFF43")]
+    let embeds = [new Discord.MessageEmbed().setTitle("Wolvesville Simulation Store").setColor("#1FFF43")]
     let addFooter = false
 
     if (["color", "colors", "colour", "colours"].includes(args[0])) {
@@ -28,7 +27,7 @@ module.exports = {
 
     for (let [i, embed] of embeds.entries()) {
       if(addFooter == true) embed.setFooter(`Page ${i + 1}/${embeds.length}`)
-      embed.setTitle("Werewolf Online Simulation Store")
+      embed.setTitle("Wolvesville Simulation Store")
         .setColor("#1FFF43")
     }
 
@@ -37,7 +36,7 @@ module.exports = {
 
     // if (!args[0] || args[0] == '1') {
     //     message.channel.send(new Discord.MessageEmbed()
-    //     .setTitle("Werewolf Online Simulation Store")
+    //     .setTitle("Wolvesville Simulation Store")
     //     .setColor("#1FFF43")
     //     .setAuthor(message.author.tag, message.author.avatarURL())
     //     .setFooter("Page [1/2]")
@@ -47,7 +46,7 @@ module.exports = {
 
     //     message.channel.send(
     //         new Discord.MessageEmbed()
-    //         .setTitle("Werewolf Online Simulation Store")
+    //         .setTitle("Wolvesville Simulation Store")
     //         .setColor("#1FFF43")
     //         .setFooter("Page [2/2]")
     //         .setAuthor(message.author.tag, message.author.avatarURL())

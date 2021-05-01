@@ -1,7 +1,7 @@
 {
   "name": "narrator-bot",
   "version": "1.0.0",
-  "description": "A discord bot that simulates the game Werewolf Online",
+  "description": "A discord bot that simulates the game Wolvesville",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
