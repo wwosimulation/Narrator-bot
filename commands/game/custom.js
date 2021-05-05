@@ -6,6 +6,7 @@ module.exports = {
   name: "custom",
   gameOnly: true,
   run: async (message, args, client) => {
+    return;
     
     if (!db.get(`cmi_${message.author.id}`)) return message.reply("You do not have the Custom Maker Item")
     
