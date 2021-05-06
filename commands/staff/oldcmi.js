@@ -11,9 +11,9 @@ module.exports = {
       let user = fn.getUser(x, message)
       if (user) {
         if(db.get(`oldcmi_${user.id}`)) {
-            msg += `${user.user.tag} has the old CMI\n`
+            msg += `✅ ${user.user.tag} has the old CMI\n`
         } else {
-            msg += `${user.user.tag} does not have the old CMI\n`
+            msg += `❌ ${user.user.tag} does not have the old CMI\n`
         }
         console.log(user)
       } else {

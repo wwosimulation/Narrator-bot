@@ -11,10 +11,11 @@ module.exports = {
     if (inventory != true && !client.botAdmin(message.author.id)) return message.channel.send("You need to buy the profile command in order to use it!")
     let guy
     if (args[0]) {
-      guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.mentions.members.first()
+      guy = fn.getUser(args[0], message)
     } else {
       guy = message.author
     }
+    if(!guy) return message.channel.send("Unable to find that user")
     if(guy.author) guy = guy.author
 
     if (db.get(`profile_${guy.id}`) != true && !config.fn.isNarrator(message.member)) return message.channel.send("This player does not have their profile unlocked from the shop!")
@@ -44,7 +45,7 @@ module.exports = {
 
     // TODO: reformat this
     let embed = new Discord.MessageEmbed()
-      .setTitle(`${guy.tag}'s Profile`)
+      .setTitle(`${guy.user ? guy.user.tag : guy.tag}'s Profile`)
       .setDescription(desc)
       .setThumbnail(icon)
       .addField("Coins", `${coins} ${emojis.coin}`, true)
