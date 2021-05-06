@@ -24,9 +24,10 @@ module.exports = (client) => {
     console.log("Generating staff list")
     let wovsim = client.guilds.cache.get(config.guild)
     let chan = wovsim.channels.cache.get(config.channel),
-      mid = db.get("stafflist")
+      mid = db.get("stafflist"), mid2 = db.get("stafflist2")
     let msg = await chan.messages.fetch(mid).catch(() => {})
     console.log("Message: " + mid)
+    let m2 = ""
     let m = `**Managers**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.manager))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
@@ -39,10 +40,6 @@ module.exports = (client) => {
       .filter((x) => x.roles.cache.has(config.roles.megamod))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
       .join("\n> ")}\n`
-    if (m.length > 1000) {
-      m1 = m
-      m = ""
-    }
     m += `**Moderators**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.mod))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
@@ -55,29 +52,29 @@ module.exports = (client) => {
       .filter((x) => x.roles.cache.has(config.roles.helper))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
       .join("\n> ")}\n`
-    if (m.length > 1000) {
-      m2 = m
-      m = ""
-    }
-    m += `\n**Game Narrators**\n> ${wovsim.members.cache
+    
+    m2 += `\n**Game Narrators**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.narr))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
       .join("\n> ")}\n`
       m += `**Supervisors**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.supervisor)).map((x) => `<@${x.id}> - ${x.user.tag}`).join("\n> ")}\n`
-    m += `**Mini Narrators**\n> ${wovsim.members.cache
+    m2 += `**Mini Narrators**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.mininarr))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
       .join("\n> ")}\n`
-    m += `\n\n**AFK Staff/Content**\nThis includes less active staff members.\n> ${wovsim.members.cache
+    m2 += `\n\n**AFK Staff/Content**\nThis includes less active staff members.\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.afk))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
       .join("\n> ")}\n`
     if (!msg) {
       msg = await chan.send("Generating staff list...")
+      msg2 = await chan.send("...")
       db.set("stafflist", msg.id)
+      db.set("stafflist2", msg2.id)
     }
     msg.edit(m)
+    msg2.edit(m2)
     console.log("Stafflist complete!")
   })
 }
