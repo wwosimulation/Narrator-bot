@@ -8,39 +8,17 @@ module.exports = {
         if (!args[0]) return message.channel.send("Get a freaking life dude! You gotta specify an item!")
         
         if (args[0].toLowerCase() == "lootbox") {
-            // let items = ["roses", "coins"]
-            // let roses = [1, 1, 2, 2, 2, 2, 2, 2, 5, 5]
-            // let coins = [5, 5, 5, 5, 10, 10, 10, 10, 10, 15, 15, 15, 15, 15, 15, 30, 30, 30, 30, 30, 50, 50, 50, 50, 100, 100, 200, 250]
-
             let quantity = db.get(`lootbox_${message.author.id}`) || 0
             if (quantity == 0) return message.channel.send("You don't have this item")
-            message.channel.send("Lootboxes are currently disabled right now, as the RNG was found to be flawed. Enjoy saving them up for the release in a couple days, and keep an eye on <#606123881824256000> for when they will be available to use!")
+            return message.channel.send("Lootboxes are currently disabled right now, as the RNG was found to be flawed. Enjoy saving them up for the release in a couple days, and keep an eye on <#606123881824256000> for when they will be available to use!")
             
-            // db.subtract(`lootbox_${message.author.id}`, 1)
-            // let t = await message.inlineReply("Opening Lootbox...").catch(e => {
-            //     return message.channel.send(`Error: ${e.message}.\nPlease enable DMs with me.`)
-            // })
-            // setTimeout(async () => {
-            //     let item = items[Math.floor(Math.random() * 2)]
-            //     let amt 
-            //     let emoji = ""
-            //     if (item == "roses") {
-            //         amt = roses[Math.floor(Math.random() * 2)]
-            //         if (amt == 1) {
-            //             item = "bouquet of roses"
-            //             emoji = "<:rosebouquet:808545517209387008>"
-            //             db.add(`roseBouquet_${message.author.id}`, 1)
-            //         } else {
-            //             db.add(`rosesG_${message.author.id}`, amt)
-            //             emoji = "<:rosesingle:807256844191793158>"
-            //         }
-            //     } else {
-            //         amt = coins[Math.floor(Math.random() * coins.length)]
-            //         emoji = "<:coin:606434686931173377>"
-            //         db.add(`money_${message.author.id}`, amt)
-            //     }
-            //     await t.edit(`${emoji} You recieved ${amt} ${item} from the lootbox!`)
-            // }, 5000)
+            db.subtract(`lootbox_${message.author.id}`, 1)
+            let t = await message.inlineReply("Opening Lootbox...")
+            setTimeout(async () => {
+              let item = shuffle(config.lootbox)[0]
+
+              await t.edit(`${emoji} You recieved ${amt} ${item} from the lootbox!`)
+            }, 5000)
         } else {
             return message.channel.send("This item does not exist!")
         }
