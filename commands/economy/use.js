@@ -22,6 +22,10 @@ module.exports = {
                 if (item.id != "other") db.add(`${item.id == "coin" ? "money" : item.id}_${message.author.id}`, item.amount)
                 
             }, 3000)
+        } else if (args[0].toLowerCase() == "icon") {
+            let quantity = db.get(`iconinv_${message.author.id}`) || 0
+            if (quantity == 0) return message.channel.send("You don't have this item!")
+            return message.channel.send("Icons are currently unavailable!")
         } else {
             return message.channel.send("This item does not exist!")
         }

@@ -14,9 +14,10 @@ module.exports = {
     let roseB = db.get(`roseBouquet_${message.author.id}`) || 0
     let gems = db.get(`gems_${message.author.id}`) || 0
     let custom = db.get(`cmi_${message.author.id}`) || "None"
+    let icon = db.get(`iconinv_${message.author.id}`) || 0
     let coins = db.get(`money_${message.author.id}`) || 0
 
-    let embed = new Discord.MessageEmbed().setTitle("Inventory").setAuthor(message.author.tag, message.author.avatarURL()).addField("Coins", `${coins} ${emojis.coin}`, true).addField("Gems", `${gems} ${emojis.gem}`, true).addField("Roses", `Roses (Bought): ${roseG} ${emojis.rose}\nRoses: ${roses} ${emojis.rose}\nBouquets: ${roseB} ${emojis.bouquet}`).addField("Lootboxes", `${lootbox} <:lootbox:808548473548963861>`)
+    let embed = new Discord.MessageEmbed().setTitle("Inventory").setAuthor(message.author.tag, message.author.avatarURL()).addField("Coins", `${coins} ${emojis.coin}`, true).addField("Gems", `${gems} ${emojis.gem}`, true).addField("Roses", `Roses (Bought): ${roseG} ${emojis.rose}\nRoses: ${roses} ${emojis.rose}\nBouquets: ${roseB} ${emojis.bouquet}`).addField("Lootboxes", `${lootbox} <:lootbox:808548473548963861>`).addField("Icon Credits", `${icon}`)
 
     if (custom != "None") {
       let roles = db.get(`boughtroles_${message.author.id}`) || []
