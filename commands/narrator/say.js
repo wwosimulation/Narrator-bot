@@ -5,7 +5,7 @@ module.exports = {
     name: "say",
     run: async (message, args, client) => {
         if (!client.botAdmin(message.author.id) && !config.fn.isNarrator(message.member)) return 
-        if(db.get("settings.disableSay", true)) return
+        if(db.get("settings.disableSay")) return
          message.delete()
          let idsendreply = args[0]
          let reply = ""
