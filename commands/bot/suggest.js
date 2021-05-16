@@ -7,7 +7,7 @@ module.exports = {
       message.attachments.forEach((a) => (t += a.url + "\n"))
     }
     client.channels.cache
-      .get("810682397150543892")
+      .get("608673032361345034")
       .send(`Suggestion by ${message.author.tag}:\n${args.join(" ")}\n${t}`)
     message.channel.send("Your suggestion has been sent")
   },

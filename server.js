@@ -113,8 +113,7 @@ client.on("ready", async () => {
     client.channels.cache.get(maint.split("-")[1]).send("Config has successfully been reloaded!")
     db.set("maintenance", false)
   }
-  require("./slash.js")(client)
-  client.olddb = require("/home/sd/wwosim/oldbot.json")
+  //require("./slash.js")(client)
   client.userEmojis = client.emojis.cache.filter(x => config.ids.emojis.includes(x.guild.id))
 
 })

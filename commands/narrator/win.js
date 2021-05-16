@@ -30,10 +30,7 @@ module.exports = {
 
         let embed = new Discord.MessageEmbed().setColor("#008800")
 
-        for (let i = 1; i < args.length; i++) {
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[i]) || message.guild.members.cache.find((m) => m.user.username == args[i]) || message.guild.members.cache.get(args[i]) || message.guild.members.cache.find((m) => m.user.tag === args[i])
-            if (!guy) return message.channel.send(`Player ${args[i]} could not be found!`)
-        }
+        for (let i = 1; i < args.length; i++) {}
 
         if (args[0].toLowerCase() == "tie") {
             for (let i = 1; i <= dead.members.size; i++) {
@@ -74,41 +71,40 @@ module.exports = {
         }
 
         for (let i = 1; i < args.length; i++) {
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[i]) || message.guild.members.cache.find((m) => m.user.username == args[i]) || message.guild.members.cache.get(args[i]) || message.guild.members.cache.find((m) => m.user.tag === args[i])
-            if (guy) {
-                console.log(guy.id, i)
-                allPlayers[allPlayers.indexOf(guy.id)] = null
-                if (!db.get(`xpreq_${guy.id}`)) {
-                    db.set(`xpreq_${guy.id}`, 1000)
-                }
-                let fwotd = db.get(`firstwinoftheday_${guy.id}`) || -1
-                let today = new Date().getDate()
-                let themsg = `Win as ${args[0]} ${giveXP}xp`
-                db.add(`${won}_${guy.id}`, 1)
-                db.add(`xp_${guy.id}`, giveXP)
-                db.add(`winstreak_${guy.id}`, 1)
-                let t = await guy.send(embed.setTitle("Game Over").setColor("#008800").setDescription(`Win as ${args[0]}: ${giveXP}xp`)).catch((e) => message.channel.send("I could not send the details to " + guy.user.tag + "!"))
-                setTimeout(async () => {
-                    if (guy.presence.status !== "offline") await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nFinished Game: ${xp.finishGame}xp`))
-                    themsg += `\nFinished Game: ${xp.finishGame}xp`
-                    db.add(`xp_${guy.id}`, xp.finishGame)
-                }, 1000)
-                setTimeout(async () => {
-                    if (db.get(`winstreak_${guy.id}`) > 1) {
-                        await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nWin Streak: ${xp.winStreak}xp`))
-                        db.add(`xp_${guy.id}`, xp.winStreak)
-                        themsg += `\nWin Streak: ${xp.winStreak}xp`
-                    }
-                }, 2000)
-                setTimeout(async () => {
-                    if (fwotd < today) {
-                        await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`))
-                        db.add(`xp_${guy.id}`, xp.firstWinOfTheDay)
-                        db.set(`firstwinoftheday_${guy.id}`, today)
-                        themsg += `\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`
-                    }
-                }, 3000)
+            let guy = fn.getUser(args[i], message)
+            if (!guy) return message.channel.send(`Player ${args[i]} could not be found!`)
+            console.log(guy.id, i)
+            allPlayers[allPlayers.indexOf(guy.id)] = null
+            if (!db.get(`xpreq_${guy.id}`)) {
+                db.set(`xpreq_${guy.id}`, 1000)
             }
+            let fwotd = db.get(`firstwinoftheday_${guy.id}`) || -1
+            let today = new Date().getDate()
+            let themsg = `Win as ${args[0]} ${giveXP}xp`
+            db.add(`${won}_${guy.id}`, 1)
+            db.add(`xp_${guy.id}`, giveXP)
+            db.add(`winstreak_${guy.id}`, 1)
+            let t = await guy.send(embed.setTitle("Game Over").setColor("#008800").setDescription(`Win as ${args[0]}: ${giveXP}xp`)).catch((e) => message.channel.send("I could not send the details to " + guy.user.tag + "!"))
+            setTimeout(async () => {
+                if (guy.presence.status !== "offline") await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nFinished Game: ${xp.finishGame}xp`))
+                themsg += `\nFinished Game: ${xp.finishGame}xp`
+                db.add(`xp_${guy.id}`, xp.finishGame)
+            }, 1000)
+            setTimeout(async () => {
+                if (db.get(`winstreak_${guy.id}`) > 1) {
+                    await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nWin Streak: ${xp.winStreak}xp`))
+                    db.add(`xp_${guy.id}`, xp.winStreak)
+                    themsg += `\nWin Streak: ${xp.winStreak}xp`
+                }
+            }, 2000)
+            setTimeout(async () => {
+                if (fwotd < today) {
+                    await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`))
+                    db.add(`xp_${guy.id}`, xp.firstWinOfTheDay)
+                    db.set(`firstwinoftheday_${guy.id}`, today)
+                    themsg += `\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`
+                }
+            }, 3000)
         }
 
         // giving giveXP to dead players
