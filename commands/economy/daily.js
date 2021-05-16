@@ -57,7 +57,7 @@ module.exports = {
         item = "roses"
         emote = "<:rosesingle:807256844191793158>"
         amount = 5
-        db.add(`rosesG_${message.author.id}`, 5)
+        db.add(`roseG_${message.author.id}`, 5)
       } else if (date == 6) {
         amount = 30
         item = "coins"
