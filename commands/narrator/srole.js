@@ -9,10 +9,6 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        const emote = (name) => {
-            name.replace("-", " ")
-            return client.guilds.cache.get("465795320526274561").emojis.cache.find((e) => e.name.toLowerCase() === name.replace(" ", "_").toLowerCase())
-        }
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
@@ -164,43 +160,42 @@ module.exports = {
         let cancel = false
         let showrole = []
         finalRoleList.forEach((x, i) => {
+            let adddc = false
           if (x == "rk") {
                 shuffle(rk)
                 x = rk[0]
                 finalRoleList[i] = x
-                dcMessage.push(`${emote(`Random Killer`)} Random Killer`)
-            }
-            if (x == "rrv") {
+                dcMessage.push(`${fn.emote(`Random Killer`, client)} Random Killer`)
+            } else if (x == "rrv") {
                 shuffle(rrv)
                 x = rrv[0]
                 finalRoleList[i] = x
-                dcMessage.push(`${emote(`Random Regular Villager`)} Random Regular Villager`)
-            }
-            if (x == "rsv") {
+                dcMessage.push(`${fn.emote(`Random Regular Villager`, client)} Random Regular Villager`)
+            } else if (x == "rsv") {
                 shuffle(rsv)
                 x = rsv[0]
                 finalRoleList[i] = x
-                dcMessage.push(`${emote(`Random Strong Villager`)} Random Strong Villager`)
-            }
-            if (x == "rv") {
+                dcMessage.push(`${fn.emote(`Random Strong Villager`, client)} Random Strong Villager`)
+            } else if (x == "rv") {
                 shuffle(rv)
                 x = rv[0]
                 finalRoleList[i] = x
-                dcMessage.push(`${emote(`Random Voting`)} Random Voting`)
-            }
-            if (x == "rww") {
+                dcMessage.push(`${fn.emote(`Random Voting`, client)} Random Voting`)
+            } else if (x == "rww") {
                 shuffle(rww)
                 x = rww[0]
                 finalRoleList[i] = x
-                dcMessage.push(`${emote(`Random Werewolf`)} Random Werewolf`)
-            }
-            if (x == "random") {
+                dcMessage.push(`${fn.emote(`Random Werewolf`, client)} Random Werewolf`)
+            } else if (x == "random") {
                 shuffle(random)
                 x = random[0]
                 finalRoleList[i] = x
-                dcMessage.push(`${emote(`Random`)} Random`)
+                dcMessage.push(`${fn.emote(`Random`, client)} Random`)
+            } else {
+                adddc = true
             }
             console.log(x)
+            
             let role = getRole(x)
             if (!role || role.name == "Unknown Role") {
                 cancel = true
@@ -214,6 +209,8 @@ module.exports = {
                 cancel = true
                 return message.channel.send(`The ${role.name} role is currently not available`)
             }
+            console.log(role)
+            if(adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
         if (cancel) return message.channel.send("srole canceled")
         shuffle(finalRoleList)
