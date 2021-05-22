@@ -209,7 +209,6 @@ module.exports = {
                 cancel = true
                 return message.channel.send(`The ${role.name} role is currently not available`)
             }
-            console.log(role)
             if(adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
         if (cancel) return message.channel.send("srole canceled")

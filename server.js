@@ -28,6 +28,7 @@ fs.readdir("./commands/", (err, files) => {
       }
       jsfile.forEach((f, i) => {
         let props = require(`./commands/${file}/${f}`)
+        props.category = file
         try {
           client.commands.set(props.name, props)
           if (props.alias) props.alias.forEach((alias) => client.commands.set(alias, props))

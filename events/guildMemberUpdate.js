@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const {getRole} = require("../config.js")
 module.exports = (client) => {
   //Bot updating roles
   client.on("guildMemberUpdate", async (oldMember, newMember) => {
@@ -67,7 +68,8 @@ module.exports = (client) => {
                   },
                 ],
               })
-              await abc.send(db.get(`roleinfo_${role.toLowerCase()}`))
+              let role = getRole(role.toLowerCase())
+              await abc.send(role.description)
               let t = await abc.send(alive)
               await t.delete({ timeout: 5000 })
               chan.updateOverwrite(guy.id, { VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: false, SEND_MESSAGES: false })
