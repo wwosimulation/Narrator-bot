@@ -6,8 +6,8 @@ These schemas are then exported from this file in an object.
 
 Usage: 
 
-const db = require("./db.js")
-let ban = await db.botban.findOne({user: message.author.id}).exec()
+const { botban } = require("./db.js")
+let ban = await botban.findOne({user: message.author.id}).exec()
 message.channel.send(ban)
 
 */
