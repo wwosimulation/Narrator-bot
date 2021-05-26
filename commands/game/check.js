@@ -195,7 +195,7 @@ module.exports = {
       if (!guy || guy == ownself) return await message.channel.send("Invalid Target!")
       if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("Bruh, I rather you gamethrow")
       if (!isNight == "yes") return await message.channel.send("Hmm, i think you should be a bot. You will 100% not fail this job. ||Not||")
-      if (!ability == "no") return await message.channel.send("Yes, why not check every time... ")
+      if (ability == "yes") return await message.channel.send("Yes, why not check every time... ")
       let rol = await db.fetch(`role_${guy.id}`)
       let role = rol.toLowerCase()
       if (role.includes("wolf")) return await message.channel.send("I know you are a type of seer, but stop checking your teammates dumb.")

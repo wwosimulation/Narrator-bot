@@ -195,7 +195,7 @@ module.exports = (client) => {
           let guy = newMember.guild.members.cache.find((m) => m.nickname === b.toString())
           if (guy) {
             if (guy.roles.cache.has("606140092213624859")) {
-              if (sectMember.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+              if (sectMember.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) != "Sect Leader") {
                 newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`<:sect_member:774556759523590154> Sect Member **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** commited suicide!`)
                 guy.roles.add("606131202814115882")
                 guy.roles.remove("606140092213624859")

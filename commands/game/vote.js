@@ -8,6 +8,7 @@ module.exports = {
     let alive = message.guild.roles.cache.find(r => r.name === "Alive");
     let dead = message.guild.roles.cache.find(r => r.name === "Dead");
     let wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
+    let wwvote = message.guild.channels.cache.find(c => c.name === "ww-vote")
     let wwsVote = await db.fetch(`wwsVote`);
     let commandEnabled = await db.fetch(`commandEnabled`);
     if (wwsVote == "yes") {
@@ -26,7 +27,7 @@ module.exports = {
       if (args[0] == "cancel") {
         let tmtd = db.get(`wwkillmsg_${message.channel.id}`)
         if (tmtd) {
-          let a = await wwchat.messages.fetch(tmtd)
+          let a = await wwvote.messages.fetch(tmtd)
           if (a) {
             await a.delete()
 	    db.delete(`wolvesKill_${message.author.id}`)
@@ -57,17 +58,17 @@ module.exports = {
             }
           }
         }
-      if (db.get(`role_${voted.id}`).toLowerCase().includes("wolf"))
+      if (db.get(`role_${voted.id}`).toLowerCase().includes("wolf") || db.get(`role_${voted.id}`).toLowerCase().includes("sorcerer"))
         return message.channel.send("Voting your teammates causes gamethrowing you know");
       
       let bv = db.get(`wwkillmsg_${message.channel.id}`)
       if (bv) {
-        let thems = await wwchat.messages.fetch(bv).catch(e => console.log(e.message))
+        let thems = await wwvote.messages.fetch(bv).catch(e => console.log(e.message))
         if (thems) {
           await thems.delete()
         }
       }
-      let vb = await wwchat.send(`${message.member.nickname} voted ${args[0]}`);
+      let vb = await wwvote.send(`${message.member.nickname} voted ${args[0]}`);
       let mid = vb.id
       db.set(`wwkillmsg_${message.channel.id}`, mid)
       db.set(`wolvesKill_${message.author.id}`, voted.nickname)

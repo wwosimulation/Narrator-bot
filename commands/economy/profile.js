@@ -20,8 +20,8 @@ module.exports = {
 
     if (db.get(`profile_${guy.id}`) != true && !config.fn.isNarrator(message.member)) return message.channel.send("This player does not have their profile unlocked from the shop!")
 
-    let icon = db.get(`icon_${message.author.id}`) || ""
-    let desc = db.get(`profiledesc_${message.author.id}`) || "A really cool user!"
+    let icon = db.get(`icon_${guy.id}`) || ""
+    let desc = db.get(`profiledesc_${guy.id}`) || "A really cool user!"
     let villagewin = db.get(`vwin_${guy.id}`) || 0
     let villagelost = db.get(`vlose_${guy.id}`) || 0
     let wwwin = db.get(`wwin_${guy.id}`) || 0

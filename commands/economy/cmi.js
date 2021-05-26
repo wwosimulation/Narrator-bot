@@ -5,6 +5,7 @@ const { cmi, emojis } = require("../../config.js")
 module.exports = {
   name: "cmi",
   run: async (message, args, client) => {
+    return;
     //if (message.channel.type != "dm") return message.channel.send("Please try this command in DMs!")
 
     let msg = ""

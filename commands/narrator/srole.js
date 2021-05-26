@@ -49,6 +49,7 @@ module.exports = {
         let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
         let bot = message.guild.roles.cache.find((r) => r.name === "Bots")
         let wwsChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+        let wwsVote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
         let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let gamlobi = message.guild.channels.cache.find((c) => c.name === "game-lobby")
         let sib = message.guild.channels.cache.find((c) => c.name === "sibling-chat")
@@ -114,12 +115,12 @@ module.exports = {
             let as = shuffle(alphashaman)
             let sc = shuffle(skcanni)
             roleOptions = [
-                ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Illusionist", "Cursed", "Wolf Seer", "Priest"],
-                ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Beast Hunter", "Gunner", "Wolf Shaman", "Aura Seer", "Bomber", "Cursed", "Wolf Seer", "Avenger"],
-                ["Aura Seer", "Medium", jw[0], "Werewolf", "Doctor", as[0], sd[0], rv[0], "Beast Hunter", "Marksman", "Junior Werewolf", "Tough Guy", sc[0], "Cursed", "Wolf Seer", "Priest"],
-                ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Cupid", "Gunner", "Wolf Shaman", "Detective", "Cannibal", "Cursed", "Wolf Seer", "Avenger"],
-                ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Bodyguard", "Gunner", "Junior Werewolf", "Detective", "Arsonist", "Cursed", "Wolf Seer", "Priest"],
-                ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", rv[0], "Bodyguard", "Gunner", "Wolf Shaman", "Mayor", "Corruptor", "Cursed", "Wolf Seer", "Avenger"],
+                ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", "rv", "Bodyguard", "Gunner", "Wolf Shaman", "Aura Seer", "Illusionist", "Cursed", "Wolf Seer", "Priest"],
+                ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", "rv", "Beast Hunter", "Gunner", "Wolf Shaman", "Aura Seer", "Bomber", "Cursed", "Wolf Seer", "Avenger"],
+                ["Aura Seer", "Medium", jw[0], "Werewolf", "Doctor", as[0], sd[0], "rv", "Beast Hunter", "Marksman", "Junior Werewolf", "Tough Guy", sc[0], "Cursed", "Wolf Seer", "Priest"],
+                ["Aura Seer", "Medium", "Witch", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", "rv", "Cupid", "Gunner", "Wolf Shaman", "Detective", "Cannibal", "Cursed", "Wolf Seer", "Avenger"],
+                ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", "rv", "Bodyguard", "Gunner", "Junior Werewolf", "Detective", "Arsonist", "Cursed", "Wolf Seer", "Priest"],
+                ["Aura Seer", "Medium", "Jailer", "Werewolf", "Doctor", "Alpha Werewolf", "Seer", "rv", "Bodyguard", "Gunner", "Wolf Shaman", "Mayor", "Corruptor", "Cursed", "Wolf Seer", "Avenger"],
             ]
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
@@ -130,8 +131,8 @@ module.exports = {
             }
 
             roleOptions = [
-                ["Aura Seer", rww[Math.floor(Math.random() * rww.length)], rrv[Math.floor(Math.random() * rrv.length)], "Doctor", rrv[Math.floor(Math.random() * rrv.length)], "Wolf Seer", "Marksman", "Headhunter", "Junior Werewolf", "Medium", "Jailer", "Arsonist", "Detective", rww[Math.floor(Math.random() * rww.length)], "Priest", rrv[Math.floor(Math.random() * rrv.length)]],
-                ["Spirit Seer", rww[Math.floor(Math.random() * rww.length)], rrv[Math.floor(Math.random() * rrv.length)], "Doctor", rrv[Math.floor(Math.random() * rrv.length)], "Wolf Seer", "Gunner", "Fool", "Junior Werewolf", "Medium", "Witch", "Cannibal", "Detective", rww[Math.floor(Math.random() * rww.length)], "Priest", rrv[Math.floor(Math.random() * rrv.length)]],
+                ["Aura Seer", "rww", "rrv", "Doctor", "rrv", "Wolf Seer", "Marksman", "Headhunter", "Junior Werewolf", "Medium", "Jailer", "Arsonist", "Detective", "rww", "Priest", "rrv"],
+                ["Spirit Seer", "rww", "rrv", "Doctor", "rrv", "Wolf Seer", "Gunner", "Fool", "Junior Werewolf", "Medium", "Witch", "Cannibal", "Detective", "rww", "Priest", "rrv"],
             ]
         } else if (gamemode == "sandbox") {
             shuffle(auraspirit)
@@ -143,9 +144,7 @@ module.exports = {
             shuffle(pacishadownmber)
             shuffle(juniorrww)
             shuffle(cupidgr)
-            if (alcrk == "rk") alcrk = shuffle(rk)
-            if (juniorrww == "rww") juniorrww = shuffle(rww)
-            roleOptions.push([auraspirit[0], "alpha-werewolf", docbg[0], rrv[0], beastbunny[0], "wolf-seer", gunnermarks[0], rv[0], jailerftwitch[0], alcrk[0], "medium", "seer", pacishadownmber[0], rrv[0], juniorrww[0], cupidgr[0]])
+            roleOptions.push([auraspirit[0], "alpha-werewolf", docbg[0], "rrv", beastbunny[0], "wolf-seer", gunnermarks[0], "rv", jailerftwitch[0], alcrk[0], "medium", "seer", pacishadownmber[0], "rrv", juniorrww[0], cupidgr[0]])
         } else if (gamemode == "custom" || gamemode == "customhide") {
             args.shift()
             roleOptions.push(args)
@@ -213,6 +212,7 @@ module.exports = {
         })
         if (cancel) return message.channel.send("srole canceled")
         shuffle(finalRoleList)
+        let sorcChats = []
         for (let k = 0; k < alive.members.size; k++) {
             let theirRole = finalRoleList[k]
             let role = getRole(theirRole)
@@ -247,13 +247,20 @@ module.exports = {
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
                 })
-                allWolves.push(`**${guy.nickname} ${guy.user.username}** is the ${role.name}!`)
-            } else if (role.name == "Sorcerer") {
-                wwchat.updateOverwrite(guy.id, {
+                wwsVote.updateOverwrite(guy.id, {
                     SEND_MESSAGES: false,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
                 })
+                allWolves.push(`**${guy.nickname} ${guy.user.username}** is the ${role.name}!`)
+            }
+            if (role.name == "Sorcerer") {
+                wwsVote.updateOverwrite(guy.id, {
+                    SEND_MESSAGES: false,
+                    VIEW_CHANNEL: true,
+                    READ_MESSAGE_HISTORY: true,
+                })
+                sorcChats.push(lol)
                 allWolves.push(`**${guy.nickname} ${guy.user.username}** is the ${role.name}!`)
             }
             if (role.name == "President") {
@@ -333,6 +340,7 @@ module.exports = {
 
         if (allWolves.length > 0) {
             wwsChat.send(allWolves.join("\n"))
+            sorcChats.forEach(x => x.send(allWolves.join("\n")))
         }
 
         let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}`)

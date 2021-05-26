@@ -103,6 +103,12 @@ module.exports = {
       case "coin":
         db.subtract(`money_${message.author.id}`, totalPrice)
         break
+      case "rose":
+        db.subtract(`roses_${message.author.id}`, totalPrice)
+        break
+      case "gem":
+        db.subtract(`gems_${message.author.id}`, totalPrice)
+        break
     }
 
     if (item.id == "cmi") {
