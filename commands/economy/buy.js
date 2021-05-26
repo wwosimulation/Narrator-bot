@@ -2,10 +2,12 @@ const Discord = require("discord.js")
 const db = require("quick.db")
 const config = require("../../config.js")
 const pluralize = require("pluralize")
+const { players } = require("../../db.js")
 
 module.exports = {
   name: "buy",
   run: async (message, args, client) => {
+    let data = await players.findOne({ user: message.author.id })
     const sim = client.guilds.cache.get(config.ids.server.sim)
     const roleadd = (x) => {
       sim.members.cache.get(message.author.id).roles.add(`${x}`)
@@ -84,9 +86,7 @@ module.exports = {
       allsprole.forEach((e) => {
         if (sim.members.cache.get(message.author.id).roles.cache.has(e.id)) {
           hassprole = true
-          if (!db.get(`srole_${message.author.id}`)) {
-            db.set(`srole_${message.author.id}`, e.id)
-          }
+          if (!data.customRole) data.customRole = e.id
         }
       })
       if (hassprole == true) return message.channel.send("You already purchased this item! Why are you wasting your gold?")
@@ -101,26 +101,16 @@ module.exports = {
     let totalPrice = (amount ? amount : 1) * item.price
     console.log(userHas, totalPrice)
     if (totalPrice > userHas) return message.channel.send(`Sorry, you don't have enough ${pluralize(item.currency)} for that!`)
-    switch (item.currency) {
-      case "coin":
-        db.subtract(`money_${message.author.id}`, totalPrice)
-        break
-      case "rose":
-        db.subtract(`roses_${message.author.id}`, totalPrice)
-        break
-      case "gem":
-        db.subtract(`gems_${message.author.id}`, totalPrice)
-        break
-    }
+    if(item.currency) data[item.currency] = data[item.currency] - totalPrice
 
     if (item.id == "cmi") {
-      db.set(`cmi_${message.author.id}`, true)
+      data.cmi = true
     } else if (item.role) {
       roleadd(item.role)
     } else if (item.color) {
       roleadd(color.id)
     } else if (item.id == "profile") {
-      db.set(`profile_${message.author.id}`, true)
+      data.profile = true
     } else if (item.id == "special") {
       let colorsrolename = sim.roles.cache.get("606247387496972292")
       sim.roles
@@ -132,13 +122,11 @@ module.exports = {
           },
         })
         .then((role) => {
-          db.set(`srole_${message.author.id}`, role.id)
-          sim.members.cache.get(message.author.id).roles.add(role.id)
+          data.customRole = role.id
+          roleadd(role.id)
         })
-    } else if (["rose", "bouquet"].includes(item.id)) {
-      db.add(`${item.id}${item.id == "rose" ? "G" : ""}_${message.author.id}`, amount)
-    } else if (item.id == "icon" || item.id == "description"){
-      message.channel.send("The feature to add these to your profile hasn't been implemented yet. Please send your " + item.id + " that you want to TheShadow#8124!")
+    } else if (["rose", "bouquet", "description"].includes(item.id)) {
+      data.inventory[item.id] += 1
     } else if (item.id == "private") {
       let t = await sim.channels.create(`${message.author.username}-channel`, {
         parent: "627536301008224275",
@@ -150,8 +138,9 @@ module.exports = {
         ],
       })
       await message.channel.send(`You have purchased a private channel! You can edit your channel at: ${t}`)
+      data.privateChannel = t.id
     }
-
-    message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${config.emojis[item.currency]}!${item.response ? `\n${item.response}` : ""}`)
+    data.save()
+    message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${fn.emote[item.currency]}!${item.response ? `\n${item.response}` : ""}`)
   },
 }
