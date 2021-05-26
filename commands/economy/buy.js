@@ -50,10 +50,7 @@ module.exports = {
     if (!item) return message.channel.send("Sorry, I don't recognise that item!")
     //message.channel.send(JSON.stringify(item, null, 2), { code: "js" })
     let price = item.price || 0
-    let balance = db.get(`money_${message.author.id}`)
-    let roses = db.get(`roses_${message.author.id}`)
-    let gems = db.get(`gems_${message.author.id}`)
-    let userHas = item.currency == "coin" ? balance : item.currency == "rose" ? roses : gems
+    let userHas = item.currency == "coin" ? data.coins : item.currency == "rose" ? data.roses : data.gems
 
     if (item.id == "color" && !color) return message.channel.send(`Sorry, I don't recognize the color ${args[1]}.\nMake sure you choose a proper color from \`+shop colors\`!`)
 
@@ -141,6 +138,6 @@ module.exports = {
       data.privateChannel = t.id
     }
     data.save()
-    message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${fn.emote[item.currency]}!${item.response ? `\n${item.response}` : ""}`)
+    message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${config.fn.emote[item.currency]}!${item.response ? `\n${item.response}` : ""}`)
   },
 }

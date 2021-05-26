@@ -16,7 +16,7 @@ const schema = new mongoose.Schema({
         description: { type: Number, default: 0}, // description credits
         rose: { type: Number, default: 0 }, // inventory roses
         bouquet: { type: Number, default: 0 }, // number of bouquets
-        lootbox: { type: String, default: "" }, // custom role id
+        lootbox: { type: Number, default: 0 }, // number of lootboxes
     },
     stats: {
         
