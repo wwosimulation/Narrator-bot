@@ -1,11 +1,11 @@
-const db = require("quick.db")
+const { players } = require("../../db.js")
 const Discord = require("discord.js")
 const { emojis, fn } = require("../../config.js")
-const config = require("../../../config/index.js")
 
 module.exports = {
   name: "profile",
   run: async (message, args, client) => {
+    let data = await players.findOne({user: message.author.id})
     let inventory = db.get(`profile_${message.author.id}`)
 
     if (inventory != true && !client.botAdmin(message.author.id)) return message.channel.send("You need to buy the profile command in order to use it!")
@@ -22,16 +22,6 @@ module.exports = {
 
     let icon = db.get(`icon_${guy.id}`) || ""
     let desc = db.get(`profiledesc_${guy.id}`) || "A really cool user!"
-    let villagewin = db.get(`vwin_${guy.id}`) || 0
-    let villagelost = db.get(`vlose_${guy.id}`) || 0
-    let wwwin = db.get(`wwin_${guy.id}`) || 0
-    let wwlost = db.get(`wlose_${guy.id}`) || 0
-    let solovwin = db.get(`svwin_${guy.id}`) || 0
-    let solovlost = db.get(`svlose_${guy.id}`) || 0
-    let solokwin = db.get(`skwin_${guy.id}`) || 0
-    let soloklost = db.get(`sklose_${guy.id}`) || 0
-    let couplewin = db.get(`cwin_${guy.id}`) || 0
-    let couplelost = db.get(`close_${guy.id}`) || 0
     let xp = db.get(`xp_${guy.id}`) || 0
     let level = db.get(`level_${guy.id}`) || 0
     let xpreq = fn.nextLevel(level)
