@@ -4,7 +4,7 @@ const fs = require("fs")
 const db = require("quick.db")
 //const mongo = require("./db.js")
 const Discord = require("discord.js")
-const client = new Discord.Client({ ws: { intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] } })
+const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] } )
 const config = require("./config.js")
 //const shadowadmin = require("shadowadmin")
 client.db = db
@@ -12,10 +12,6 @@ client.db = db
 const { Octokit } = require("@octokit/core");
 const octokit = new Octokit();
 client.octokit = octokit;
-
-const disbut = require('discord-buttons')(client);
-client.disbut = disbut
-
 
 client.commands = new Discord.Collection()
 // const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
