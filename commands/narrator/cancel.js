@@ -7,10 +7,10 @@ module.exports = {
     run: async (message, client, args) => {
         if (db.get(`game`) == null) return message.channel.send("No game is being hosted")
 
-        message.guild.channels.cache.find((c) => c.name === "gwtest").send(`Game was canceled. Sorry for the inconvenience!`)
+        message.guild.channels.cache.find((c) => c.name === "game-warning").send(`Game was canceled. Sorry for the inconvenience!`)
         let mid = db.get("game")
         message.guild.channels.cache
-            .get("848405794319368223")
+            .get("606123818305585167")
             .messages.fetch(mid)
             .then((m) => {
                 let allc = m.components

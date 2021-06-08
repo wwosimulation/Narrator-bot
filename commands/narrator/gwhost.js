@@ -19,7 +19,7 @@ module.exports = {
         let button = new MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomID("gwjoin")
         const row = new MessageActionRow().addComponents(button)
         const embed = new MessageEmbed().setTitle("Player and Spectator List:").setDescription("** **").setColor(0x327210)
-        let m = await message.guild.channels.cache.get("848405794319368223").send(`We are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#606123783605977108> and react with 🎮${sup ? `\n\n${sup}` : ""}`, { embed, components: [row] })
+        let m = await message.guild.channels.cache.get("606123818305585167").send(`We are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#606123783605977108> and react with 🎮${sup ? `\n\n${sup}` : ""}`, { embed, components: [row] })
         db.set(`game`, m.id)
     },
 }

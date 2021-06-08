@@ -69,11 +69,11 @@ module.exports = {
                 e.roles.remove("606123676668133428")
             })
 
-            client.channels.cache.get("848405794319368223").send(`Game ended! ${db.get(`winner`)} won the match!`)
+            client.channels.cache.get("606123818305585167").send(`Game ended! ${db.get(`winner`)} won the match!`)
             let mid = db.get("game")
             async () => {
                 client.channels.cache
-                    .get("848405794319368223")
+                    .get("606123818305585167")
                     .messages.fetch(mid)
                     .then((m) => {
                         let allc = m.components
