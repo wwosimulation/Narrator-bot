@@ -71,16 +71,19 @@ module.exports = {
 
             client.channels.cache.get("848405794319368223").send(`Game ended! ${db.get(`winner`)} won the match!`)
             let mid = db.get("game")
-            client.channels.cache
-                .get("848405794319368223")
-                .messages.fetch(mid)
-                .then((m) => {
-                    let allc = m.components
-                    let row = allc[0]
-                    let button = row.components[0]
-                    button.disabled = true
-                    m.edit({ components: [new MessageActionRow().addComponents(button)] })
-                })
+            async () => {
+                client.channels.cache
+                    .get("848405794319368223")
+                    .messages.fetch(mid)
+                    .then((m) => {
+                        let allc = m.components
+                        if (!allc) return
+                        let row = allc[0]
+                        let button = row.components[0]
+                        button.disabled = true
+                        m.edit({ components: [new MessageActionRow().addComponents(button)] })
+                    })
+            }
             db.set(`game`, null)
             for (let i = 0; i < gunner.length; i++) {
                 db.set(`bullets_${gunner[i]}`, 2)
