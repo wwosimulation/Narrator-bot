@@ -37,8 +37,8 @@ module.exports = (client) => {
             let guy = interaction.member
             if (guy.roles.cache.has("606123628693684245")) return interaction.reply("You are game banned! You cannot join any games", { ephemeral: true })
             if (guy.roles.cache.has("606123676668133428")) return interaction.reply("You have already joined the game! Check <#606123823074377740> for the link!", { ephemeral: true })
-            //guy.roles.add("606123676668133428").catch(e => interaction.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
-            //interaction.guild.channels.cache.find(x => x.name == "joined").send(`${guy.user.tag} joins match ${gameName}\nUser ID: ${guy.id}`)
+            guy.roles.add("606123676668133428").catch(e => interaction.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
+            interaction.guild.channels.cache.find(x => x.name == "joined").send(`${guy.user.tag} joins match ${gameName}\nUser ID: ${guy.id}`)
             let jl = await interaction.guild.channels.cache.find((x) => x.name == "joined-link")
             jl.send(`<@${guy.id}>, use the link above to join the game!`).then((m) => setTimeout(() => {m.delete()}, 5000))
             let embed = interaction.message.embeds[0]
