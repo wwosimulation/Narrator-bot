@@ -1,5 +1,6 @@
 const { MessageActionRow } = require("discord.js")
 const db = require("quick.db")
+const { ids } = require("../../config.js")
 
 module.exports = {
     name: "reset",
@@ -71,19 +72,18 @@ module.exports = {
 
             client.channels.cache.get("606123818305585167").send(`Game ended! ${db.get(`winner`)} won the match!`)
             let mid = db.get("game")
-            async () => {
-                client.channels.cache
-                    .get("606123818305585167")
-                    .messages.fetch(mid)
-                    .then((m) => {
-                        let allc = m.components
-                        if (!allc) return
-                        let row = allc[0]
-                        let button = row.components[0]
-                        button.disabled = true
-                        m.edit({ components: [new MessageActionRow().addComponents(button)] })
-                    })
-            }
+            let s = client.guilds.cache.get(ids.server.sim)
+            s.channels.cache
+                .get("606123818305585167")
+                .messages.fetch(mid)
+                .then((m) => {
+                    let allc = m.components
+                    let row = allc[0]
+                    let button = row.components[0]
+                    button.disabled = true
+                    m.edit({ components: [new MessageActionRow().addComponents(button)] })
+                })
+
             db.set(`game`, null)
             for (let i = 0; i < gunner.length; i++) {
                 db.set(`bullets_${gunner[i]}`, 2)

@@ -1,4 +1,4 @@
-const db = require("quick.db")
+/*const db = require("quick.db")
 const Discord = require("discord.js")
 
 module.exports = {
@@ -32,12 +32,7 @@ module.exports = {
         });
 
         collector.on('end', collected => {
-            message.channel.send("Done!")
-        })
-    }
-}
-
-
+*/
 const db = require("quick.db")
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
 

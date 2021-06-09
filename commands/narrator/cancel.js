@@ -19,7 +19,6 @@ module.exports = {
                 button.disabled = true
                 m.edit({ components: [new MessageActionRow().addComponents(button)] })
             })
-        db.set(`game`, null)
         db.delete(`game`)
     },
 }
