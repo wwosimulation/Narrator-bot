@@ -1532,9 +1532,9 @@ module.exports = {
     //console.log("time to f*** you up sect")
 
     // allowing players to speak in #day-chat
-    dayChat.updateOverwrite(alive.id, {
-      SEND_MESSAGES: true,
-    })
+    // dayChat.updateOverwrite(alive.id, {
+    //   SEND_MESSAGES: true,
+    // })
 
     // drunk not being able to speak
     for (let i = 1; i <= alive.members.size + dead.members.size; i++) {
@@ -3096,9 +3096,9 @@ module.exports = {
     db.set(`vtshadow`, false)
     db.set(`isDay`, "yes")
     db.set(`isNight`, "no")
-    if (args[1] == "test") {
-      dayChat.send(`${alive}`)
-    }
+    // if (args[1] == "test") {
+    //   dayChat.send(`${alive}`)
+    // }
     console.log(`Day: ${db.get(`dayCount`)}`)
   },
 }
