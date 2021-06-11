@@ -9,9 +9,12 @@ const config = require("./config.js")
 //const shadowadmin = require("shadowadmin")
 client.db = db
 
-const { Octokit } = require("@octokit/core");
-const octokit = new Octokit();
-client.octokit = octokit;
+const axios = require("axios")
+client.github = axios.create({
+    baseURL: `https://api.github.com/repos/${config.github.org}/${config.github.repo}`,
+    timeout: 1000,
+    headers: {'Content-Type': 'application/json', 'Authorization': `token ${process.env.GITHUB}`}
+  });
 
 client.commands = new Discord.Collection()
 // const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
