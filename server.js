@@ -4,17 +4,25 @@ const fs = require("fs")
 const db = require("quick.db")
 //const mongo = require("./db.js")
 const Discord = require("discord.js")
-const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] } )
+const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] })
 const config = require("./config.js")
 //const shadowadmin = require("shadowadmin")
 client.db = db
 
+const { createAppAuth } = require("@octokit/auth-app")
+const { Octokit } = require("@octokit/core")
 const axios = require("axios")
-client.github = axios.create({
-    baseURL: `https://api.github.com/repos/${config.github.org}/${config.github.repo}`,
-    timeout: 1000,
-    headers: {'Content-Type': 'application/json', 'Authorization': `token ${process.env.GITHUB}`}
-  });
+
+let privateKey = fs.readFileSync("/home/sd/wwosim/ghnb.pem")
+client.github = new Octokit({
+    authStrategy: createAppAuth,
+    auth: {
+        appId: 120523,
+        privateKey,
+        clientSecret: process.env.GITHUB,
+        installationId: 17541999,
+    },
+})
 
 client.commands = new Discord.Collection()
 // const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))

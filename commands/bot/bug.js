@@ -1,4 +1,4 @@
-const { ids } = require("../../config.js")
+const { ids, github } = require("../../config.js")
 
 module.exports = {
     name: "bug",
@@ -17,9 +17,11 @@ module.exports = {
             title: `Bug report ${message.id}`,
             body: `${args.join(" ")}\n\n** **\nThe above bug was reported by ${message.author.tag}\nUser ID: ${message.author.id}\nLocation: #${message.channel.name} (${message.channel.id}) in ${message.guild.name}`,
             labels: ["Bug", "Unverified"],
+            owner: github.org,
+            repo: github.repo
         }
-        let done = await client.github.post("/issues", issue)
+        
+        let done = await client.github.request(`POST /repos/${github.org}/${github.repo}/issues`, issue);
         message.channel.send(`The bug has successfully been reported! Please provide any screenshots or more information here:\n<${done.data.html_url}>`)
-        console.log(done)
     },
 }
