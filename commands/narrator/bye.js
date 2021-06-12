@@ -12,7 +12,7 @@ module.exports = {
     message.guild.channels.cache.filter((c) => c.parentID === "748959630520090626").forEach(x => x.delete())
     await sleep(1000)
     await clearSettings(message)
-    message.channel.send("All channels have been queued to be cleared. Be sure to check behind me and make sure they actually did clear! If not, use `-c` there to finish the job")
+    message.channel.send("The role channels I created have been cleared.")
   },
 }
 
@@ -30,7 +30,9 @@ const kickPlayers = async (message) => {
   for (let i = 1; i <= 16; i++) {
     let guy = await message.guild.members.cache.find((m) => m.nickname === i.toString())
     if (guy) {
-      if (guy.id != "306566013791633408") {
+      if (guy.roles.cache.has("639210646826647592")) {
+        message.channel.send(`I cannot kick ${guy.user.tag} because they are a booster. Please remove their nickname, Alive role, and their Dead role manually.`)
+      } else {
         await guy.kick()
         console.log(`Kicked ${i}`)
       }
