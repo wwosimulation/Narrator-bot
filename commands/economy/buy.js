@@ -17,14 +17,6 @@ module.exports = {
       amount = 0,
       dontbuy = false
 
-    const buyRole = (roleID) => {
-      if (rolehas(roleID)) {
-        dontbuy = true
-        return message.channel.send(`Hey, you've already purchased that role!`)
-      }
-      roleadd(roleID)
-    }
-
     if (args.length < 1) return message.channel.send("Please specify an item from the shop to buy!")
 
     args.forEach((x, i) => {
@@ -63,8 +55,18 @@ module.exports = {
 
     if (item.id == "color" && !color) return message.channel.send(`Sorry, I don't recognize the color ${args[1]}.\nMake sure you choose a proper color from \`+shop colors\`!`)
 
-    if(item.role) buyRole(item.role)
-    if(item.id == "color") buyRole(color.id)
+    if(item.role) {
+      if (rolehas(roleID)) {
+        dontbuy = true
+        return message.channel.send(`Hey, you've already purchased that role!`)
+      }
+    }
+    if(item.id == "color") {
+      if (rolehas(color.id)) {
+        dontbuy = true
+        return message.channel.send(`Hey, you've already purchased that color!`)
+      }
+    }
 
     if (item.id == "cmi") {
       let cmicheck = db.get(`cmi_${message.author.id}`)
@@ -113,6 +115,10 @@ module.exports = {
 
     if (item.id == "cmi") {
       db.set(`cmi_${message.author.id}`, true)
+    } else if (item.role) {
+      roleadd(item.role)
+    } else if (item.color) {
+      roleadd(color.id)
     } else if (item.id == "profile") {
       db.set(`profile_${message.author.id}`, true)
     } else if (item.id == "special") {
