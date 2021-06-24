@@ -32,6 +32,27 @@ module.exports = (client) => {
             if (guy.roles.cache.has("606138907817672714")) guy.roles.remove("606138907817672714") //yoloofwwo
             interaction.deferUpdate()
         }
+        if (interaction.customID == "ashish-ignarr") {
+            
+            let guild = client.guilds.cache.get("465795320526274561")
+            let member = await guild.members.fetch({user: interaction.member.id, force: true}).catch(e => e)            
+            if (!member.id) return interaction.reply("You aren't a narrator! Error: 404 Not found", { ephemeral: true })
+            let mininarr = guild.roles.cache.get("606123620732895232")
+            let narrator = guild.roles.cache.get("606123619999023114")
+            if (!member.roles.cache.has(mininarr.id) && !member.roles.cache.has(narrator.id)) return interaction.reply("You aren't a narrator! Error: 500 Access blocked", { ephemeral: true })
+            if (member.roles.cache.has(mininarr.id)) {
+                if (interaction.member.roles.cache.has("606276949689499648")) return interaction.reply("You already have this role!", { ephemeral: true })
+                if (db.get(`game`)) return interaction.reply("A game is already being hosted, and as per the staff rules, minis can't \"narrate specate\"!", { ephemeral: true })
+                if (db.get(`hoster`) != interaction.member.id && db.get(`game`)) return interaction.reply("Unfortunately, you aren't the host, and because you're a narrator in traning, you aren't allowed to narrate spectate!", { ephemeral: true })
+                interaction.member.roles.add("606276949689499648")
+            }
+            if (member.roles.cache.has(narrator.id)) {
+                if (interaction.member.roles.cache.has("606139219395608603")) return interaction.reply("You already have this role!", { ephemeral: true })
+                interaction.member.roles.add("606139219395608603")
+            }
+            interaction.deferUpdate()
+        
+        }
         if (interaction.customID.startsWith("gwjoin")) {
             let gameName = interaction.customID.split("-")[1]
             let guy = interaction.member

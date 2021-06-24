@@ -2967,7 +2967,7 @@ module.exports = {
               y = 99
               player = lololololol
               if (player.roles.cache.has(alive.id) || player.roles.cache.has(dead.id)) {
-                let couple = db.get(`couple_${channel.id}`) || []
+                let couple = []
                 if (couple.length != 0) {
                   let guy1 = message.guild.members.cache.find((m) => m.nickname === couple[0])
                   let guy2 = message.guild.members.cache.find((m) => m.nickname === couple[1])
