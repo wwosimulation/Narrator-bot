@@ -48,5 +48,6 @@ module.exports = {
         const embed = new MessageEmbed().setTitle("Player and Spectator List:").setDescription("** **").setColor(0x327210)
         let m = await message.guild.channels.cache.get("606123818305585167").send(`<@&606123691889393705>, we are now starting game RS.${rs}[${args.join(" ")}]. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#606123783605977108> and react with 🏆`, { embed, components: [row] })
         db.set(`game`, m.id)
+        db.set(`hoster`, message.author.id)
     },
 }
