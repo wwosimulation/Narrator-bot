@@ -26,6 +26,6 @@ module.exports = {
                 .addField("Code", `\`\`\`${code}\`\`\``)
                 .addField("Result", `\`\`\`${clean(evaled).length < 1000 ? clean(evaled) : "Result too long to display"}\`\`\``)
         )
-        message.delete()
+        message.delete().catch(()=>{})
     },
 }
