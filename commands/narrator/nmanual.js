@@ -25,6 +25,14 @@ module.exports = {
           VIEW_CHANNEL: null
         })
       } 
+      if (channe.name.includes("wolf")) {
+        let wwvote = message.guild.channels.cache.find(c => c.name === "ww-vote")
+        wwvote.updateOverwrite(guy.id, {
+          READ_MESSAGE_HISTORY: null,
+          SEND_MESSAGES: null,
+          VIEW_CHANNEL: null
+        })
+      } 
 
       if (channe.name.includes("sibling")) {
         let wolfchat = message.guild.channels.cache.find(c => c.name === "sibling-chat")
