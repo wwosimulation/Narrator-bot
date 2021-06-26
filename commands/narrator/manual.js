@@ -20,6 +20,7 @@ module.exports = {
     let real = args[1].toLowerCase()
     let channel = message.guild.channels.cache.find((c) => c.name === `priv-${real}`)
     let wwchat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+    let wwvote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
 
     // let channels = message.guild.channels.cache.filter((c) => c.name === `priv-${real}`)
     // //console.log(channels)
@@ -78,6 +79,11 @@ module.exports = {
 
     if (real.includes("wolf") || real == "sorcerer") {
       wwchat.updateOverwrite(guy.id, {
+        SEND_MESSAGES: true,
+        VIEW_CHANNEL: true,
+        READ_MESSAGE_HISTORY: true,
+      })
+      wwvote.updateOverwrite(guy.id, {
         SEND_MESSAGES: true,
         VIEW_CHANNEL: true,
         READ_MESSAGE_HISTORY: true,
