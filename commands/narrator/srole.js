@@ -255,11 +255,6 @@ module.exports = {
                 allWolves.push(`**${guy.nickname} ${guy.user.username}** is the ${role.name}!`)
             }
             if (role.name == "Sorcerer") {
-                wwsVote.updateOverwrite(guy.id, {
-                    SEND_MESSAGES: false,
-                    VIEW_CHANNEL: true,
-                    READ_MESSAGE_HISTORY: true,
-                })
                 sorcChats.push(lol)
                 allWolves.push(`**${guy.nickname} ${guy.user.username}** is the ${role.name}!`)
             }
