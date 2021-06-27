@@ -12,8 +12,8 @@ client.db = db
 const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
 const axios = require("axios")
-/*
-let privateKey = fs.readFileSync("/home/sd/wwosim/ghnb.pem")
+
+let privateKey = fs.readFileSync("/home/ubuntu/wwosim/ghnb.pem")
 client.github = new Octokit({
     authStrategy: createAppAuth,
     auth: {
@@ -23,7 +23,7 @@ client.github = new Octokit({
         installationId: 17541999,
     },
 })
-*/
+
 
 client.commands = new Discord.Collection()
 // const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
