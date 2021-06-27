@@ -83,12 +83,16 @@ module.exports = {
         VIEW_CHANNEL: true,
         READ_MESSAGE_HISTORY: true,
       })
+    }
+    
+    if (real.includes("wolf")) {
       wwvote.updateOverwrite(guy.id, {
         SEND_MESSAGES: true,
         VIEW_CHANNEL: true,
         READ_MESSAGE_HISTORY: true,
       })
     }
+    
     if (real == "sibling") {
       let sibling = message.guild.channels.cache.find((c) => c.name === "sibling-chat")
       sibling.updateOverwrite(guy.id, {
