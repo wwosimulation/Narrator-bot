@@ -4,7 +4,7 @@ module.exports = {
   name: "suicide",
     gameOnly: true,
     run: async (message, args, client) => {
-    if (message.member.hasPermission("MANAGE_CHANNELS")) {
+    if (message.member.permissions.has("MANAGE_CHANNELS")) {
       if (args[0]) {
         let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
         if (guy) {
