@@ -31,6 +31,7 @@ module.exports = (client) => {
             if (guy.roles.cache.has("606139219395608603")) guy.roles.remove("606139219395608603") //mininarr
             if (guy.roles.cache.has("606138907817672714")) guy.roles.remove("606138907817672714") //yoloofwwo
             interaction.deferUpdate()
+            await interaction.guild.channels.cache.get("606132387587293195").send(`${interaction.member.user.tag} is now spectating the game!`)
         }
         if (interaction.customID == "ashish-ignarr") {
             
