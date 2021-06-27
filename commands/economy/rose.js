@@ -22,15 +22,14 @@ module.exports = {
     if (!args[0]) return message.channel.send("You need to state if you want to give a rose to a player or as a bouquet!\n\nOptions: `single [player number]` or `bouquet`")
 
     if (args[0] == "single") {
-      if (roses == 0) return message.channel.send("You can't give roses to anyone if you don't have any.")
+      let amount = parseInt(args[2])
+      if (roses == 0) return message.channel.send(`You can't give ${amount} roses if you don't have that many in your inventory!`)
       let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.id === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1])
       if (!guy) return message.channel.send("Player does not exist!")
-      if (guy.roles.cache.has(spec.id)) return message.channel.send("You can't give the rose to a spectator!")
-      if (guy.roles.cache.has(mininarr.id) || guy.roles.cache.has(narrator.id)) return message.channel.send("You can't give the rose to a narrator!")
       if (message.member == guy) return message.channel.send("You cannot give a rose to yourself!")
-      db.subtract(`roseG_${message.author.id}`, 1)
-      db.add(`roses_${guy.id}`, 1)
-      return message.channel.send(`You have successfully given ${args[1]} a rose!`)
+      db.subtract(`roseG_${message.author.id}`, amount)
+      db.add(`roses_${guy.id}`, amount)
+      return message.channel.send(`You have successfully given ${args[1]} ${amount} rose${amount == 1 ? "" : "s"}!`)
     } else if (args[0] == "bouquet") {
       if (roseBouquet == 0) return message.channel.send("You don't have any bouquet!")
       for (let i = 0; i <= alive.members.size + dead.members.size; i++) {
