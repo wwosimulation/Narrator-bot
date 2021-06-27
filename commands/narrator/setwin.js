@@ -9,5 +9,6 @@ module.exports = {
     db.set(`isDay`, "yes")
     db.set(`isNight`, "yes")
     db.set(`commandEnabled`, "yes")
+    message.guild.channels.cache.find(x => x.name == "day-chat").send(`Game over! ${args.join(" ")} has won!`)
   },
 }
