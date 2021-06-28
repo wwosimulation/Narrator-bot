@@ -3,8 +3,8 @@ const db = require("quick.db")
 const {players} = require("../../db.js")
 
 module.exports = {
-  name: "am",
-  aliases: ["addmoney"],
+  name: "rm",
+  aliases: ["removemoney"],
   staffOnly: true,
   run: async (message, args, client) => {
     let amount = parseInt(args[0])
@@ -16,7 +16,7 @@ module.exports = {
       let user = fn.getUser(x, message)
       if (user) {
         let data = players.findOneAndUpdate({user: user.id}, {$inc : {coins: amount}}).exec()
-        msg += `Removed ${amount} ${emojis.coin} from ${user.user.tag}\n`
+        msg += `Removed ${amount + amount + amount} ${emojis.coin} from ${user.user.tag}\n`
       } else {
         msg += `Unable to find the user ${x}\n`
       }
