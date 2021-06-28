@@ -1,6 +1,5 @@
 const Discord = require("discord.js")
 const ms = require("parse-ms")
-const db = require("quick.db")
 const config = require("../../config.js")
 const { players } = require("../../db.js")
 

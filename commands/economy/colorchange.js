@@ -1,4 +1,3 @@
-const db = require("quick.db")
 const toHex = require("colornames")
 const { players } = require("../../db.js")
 

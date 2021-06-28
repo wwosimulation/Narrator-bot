@@ -1,5 +1,3 @@
-const Discord = require("discord.js")
-const db = require("quick.db")
 const config = require("../../config.js")
 const pluralize = require("pluralize")
 const { players } = require("../../db.js")
@@ -55,7 +53,7 @@ module.exports = {
     if (item.id == "color" && !color) return message.channel.send(`Sorry, I don't recognize the color ${args[1]}.\nMake sure you choose a proper color from \`+shop colors\`!`)
 
     if(item.role) {
-      if (rolehas(roleID)) {
+      if (rolehas(item.role)) {
         dontbuy = true
         return message.channel.send(`Hey, you've already purchased that role!`)
       }
@@ -68,7 +66,7 @@ module.exports = {
     }
 
     if (item.id == "cmi") {
-      let cmicheck = db.get(`cmi_${message.author.id}`)
+      let cmicheck = data.cmi
       if (cmicheck) {
         dontbuy = true
         return message.channel.send(`Hey, you've already purchased the ${item.name}!`)
@@ -99,6 +97,18 @@ module.exports = {
     console.log(userHas, totalPrice)
     if (totalPrice > userHas) return message.channel.send(`Sorry, you don't have enough ${pluralize(item.currency)} for that!`)
     if(item.currency) data[item.currency] = data[item.currency] - totalPrice
+    switch(item.currency) {
+      case "coin":
+        data.coins -= totalPrice
+        break
+      case "rose":
+        data.roses -= totalPrice
+        break
+      case "gem":
+        data.gems -= totalPrice
+        break
+      
+    }
 
     if (item.id == "cmi") {
       data.cmi = true
@@ -123,7 +133,7 @@ module.exports = {
           roleadd(role.id)
         })
     } else if (["rose", "bouquet", "description"].includes(item.id)) {
-      data.inventory[item.id] += 1
+      data.inventory[item.id] += amount
     } else if (item.id == "private") {
       let t = await sim.channels.create(`${message.author.username}-channel`, {
         parent: "627536301008224275",

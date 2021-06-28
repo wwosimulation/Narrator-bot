@@ -1,4 +1,3 @@
-const db = require("quick.db")
 const { players } = require("../../db.js")
 
 module.exports = {
@@ -23,12 +22,12 @@ module.exports = {
 
     if (args[0] == "single") {
       let amount = parseInt(args[2])
-      if (roses == 0) return message.channel.send(`You can't give ${amount} roses if you don't have that many in your inventory!`)
+      if (data.inventory.roses < amount) return message.channel.send(`You can't give ${amount} roses if you don't have that many in your inventory!`)
       let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.id === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1])
       if (!guy) return message.channel.send("Player does not exist!")
       if (message.member == guy) return message.channel.send("You cannot give a rose to yourself!")
-      data.inventory.rose = data.inventory.rose - 1
-      players.findOneAndUpdate({user: guy.id}, {$inc : {roses: 1}}).exec()
+      data.inventory.rose = data.inventory.rose - amount
+      players.findOneAndUpdate({user: guy.id}, {$inc : {roses: amount}}).exec()
       return message.channel.send(`You have successfully given ${args[1]} ${amount} rose${amount == 1 ? "" : "s"}!`)
     } else if (args[0] == "bouquet") {
       if (data.inventory.bouquet == 0) return message.channel.send("You don't have any bouquet!")

@@ -1,4 +1,3 @@
-const db = require("quick.db")
 const {fn, emojis} = require("../../config.js")
 const { players } = require("../../db")
 

@@ -9,20 +9,20 @@ const config = require("./config.js")
 //const shadowadmin = require("shadowadmin")
 client.db = db
 
-const { createAppAuth } = require("@octokit/auth-app")
-const { Octokit } = require("@octokit/core")
-const axios = require("axios")
+// const { createAppAuth } = require("@octokit/auth-app")
+// const { Octokit } = require("@octokit/core")
+// const axios = require("axios")
 
-let privateKey = fs.readFileSync("/home/ubuntu/wwosim/ghnb.pem")
-client.github = new Octokit({
-    authStrategy: createAppAuth,
-    auth: {
-        appId: 120523,
-        privateKey,
-        clientSecret: process.env.GITHUB,
-        installationId: 17541999,
-    },
-})
+// let privateKey = fs.readFileSync("/home/ubuntu/wwosim/ghnb.pem")
+// client.github = new Octokit({
+//     authStrategy: createAppAuth,
+//     auth: {
+//         appId: 120523,
+//         privateKey,
+//         clientSecret: process.env.GITHUB,
+//         installationId: 17541999,
+//     },
+// })
 
 
 client.commands = new Discord.Collection()
@@ -77,7 +77,7 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     if (!reaction) return msg.reactions.removeAll().catch(() => {})
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
-    if (msg.channel.type == "dm" || !msg.guild.me.hasPermission("MANAGE_MESSAGES")) {
+    if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
         if (reaction.emoji.name == "◀️") {
             let m = await msg.channel.send(embeds[Math.max(pageNow - 1, 0)])
             msg.delete()

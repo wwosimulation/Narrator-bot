@@ -1,5 +1,3 @@
-const db = require("quick.db")
-
 module.exports = {
   name: "namechange",
   run: async (message, args, client) => {

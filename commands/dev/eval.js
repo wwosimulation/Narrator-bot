@@ -23,10 +23,11 @@ module.exports = {
             out = out.replace(process.env.TOKEN, "[TOKEN REDACTED]").replace(process.env.MONGODB, "[DB URI REDACTED]")
 
             message.channel.send(`Typeof output: **${typeof out}**`)
-            message.channel.send(out, { split: true, code: "js" })
+            message.channel.send(out ? out : "null", { split: true, code: "js" })
         } catch (err) {
             message.channel.send("An error occurred when trying to execute this command.")
-            return message.channel.send(err, { code: "js" })
+            console.log(err)
+            return message.channel.send(`${err}`, { code: "js" })
         }
     },
 }
