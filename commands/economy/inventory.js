@@ -16,9 +16,8 @@ module.exports = {
           .addField("Coins", `${data.coins} ${emojis.coin}`, true)
           .addField("Gems", `${data.gems} ${emojis.gem}`, true)
           .addField("Roses", `${data.roses} ${emojis.rose}`, true)
-          .addField("Inventory:", `Roses: ${data.inventory.rose} ${emojis.rose}\nLootboxes: ${data.inventory.lootbox} ${emojis.lootbox}`)
+          .addField("Inventory:", `Roses: ${data.inventory.rose} ${emojis.rose}\nBouquets: ${data.inventory.bouquet}\nLootboxes: ${data.inventory.lootbox} ${emojis.lootbox}`)
 
         message.channel.send(embed)
-        console.log("end")
     },
 }
