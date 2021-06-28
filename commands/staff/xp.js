@@ -1,6 +1,7 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
 const { fn } = require("../../config.js")
+const { players } = require("../../db.js")
 
 module.exports = {
     name: "xp",
@@ -10,13 +11,14 @@ module.exports = {
         let run = args[0]
         let user = fn.getUser(args[1], message)
         let amount = parseInt(args[2])
-
+        let data = await players.findOne({user: user.id})
         if (!user || !amount) return message.channel.send("Invalid arguments! Use `+xp <add/remove/set> <user> <amount>`")
 
-        if(run == "add") db.add(`xp_${user.id}`, amount)
-        if(run == "remove") db.subtract(`xp_${user.id}`, amount)
-        if(run == "set") db.set(`xp_${user.id}`, amount)
-
+        if(run == "add") data.xp += amount
+        if(run == "remove") data.xp = data.xp - amount
+        if(run == "set") data.xp = amount
+        
+        data.save()
         message.channel.send(`Successfully ran \`${run} ${amount}\` on ${user.id}`)
     },
 }

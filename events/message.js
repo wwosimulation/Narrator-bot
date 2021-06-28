@@ -2,38 +2,23 @@ const Discord = require("discord.js")
 const config = require("../config.js")
 const db = require("quick.db")
 //const mongo = require("../roles.find(x => x.name.toLowerCase() == role2.replace("-", " "))")
-
+const { players, botbans } = require("../db.js")
 const cooldowns = new Discord.Collection()
 const prefix = process.env.PREFIX
 
 module.exports = (client) => {
   //When receiving a message
-  client.on("message", (message) => {
+  client.on("message", async (message) => {
+    if(!message.author?.id == "439223656200273932") return
     let maint = db.get("maintenance")
     
     //let guy = message.member.nickname;
     if (message.author.bot) return //Ignore bots and dms
-    
-
-
-    // if (!message.content.startsWith("+")) {
-    //   if (message.guild.id == "472261911526768642") {
-    //     if (db.get(`rolecmitime_${message.author.id}`)) {
-    //       let allroles = ["Alchemist", "Grave Robber", "Fortune Teller", "Kitten Wolf", "Pacifist", "Spirit Seer", "Sheriff", "Werewolf Berserk", "Wolf Pacifist", "Cupid", "President", "Mayor", "Grumpy Grandma", "Seer Apprentice", "Tough Guy", "Loudmouth", "Sorcerer", "Flower Child", "Guardian Wolf", "Beast Hunter", "Avenger", "Witch", "Detective", "Forger", "Cursed", "Marksman", "Red Lady", "Junior Werewolf", "Nightmare Werewolf", "Shadow Wolf", "Random Regular Villager", "Random Strong Villager", "Random Werewolf", "Random Killer", "Random Voting", "Random", "Arsonist", "Sect Leader", "Bomber", "Zombie", "Corruptor", "Cannibal", "Illusionist", "Bandit"]
-
-    //       let rolesPlayerHas = ["Villager", "Gunner", "Doctor", "Bodyguard", "Seer", "Jailer", "Priest", "Aura Seer", "Medium", "Werewolf", "Alpha Werewolf", "Wolf Shaman", "Wolf Seer", "Fool", "Headhunter", "Serial Killer"]
-
-    //       let boughtroles = db.get(`boughtroles_${message.author.id}`) || []
-
-    //       boughtroles.forEach((role) => {
-    //         rolesPlayerHas.push(role)
-    //       })
-
-    //       if (!allroles.includes(`${message.content[0].toUpperCase()}${message.content.slice(1).toLowerCase()}`)) return message.channel.send("Role not found!")
-    //       if (!rolesPlayerHas.includes(`${message.content[0].toUpperCase()}${message.content.slice(1).toLowerCase()}`)) return message.channel.send("You did not buy this role!")
-    //     }
-    //   }
-    // }
+    let pdb = await players.findOne({ user: message.author.id }).exec()
+    if(!pdb){
+        pdb = {user: message.author.id}
+        players(pdb).save()
+    }
 
     // blacklists
     let blacklists = db.get(`blacklistss`) || []

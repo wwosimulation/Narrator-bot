@@ -1,12 +1,11 @@
-const db = require("quick.db")
+const { players } = require("../../db.js")
 
 module.exports = {
   name: "rose",
   gameOnly: true,
   run: async (message, args, client) => {
     
-    let roseBouquet = db.get(`roseBouquet_${message.author.id}`) || 0
-    let roses = db.get(`roseG_${message.author.id}`) || 0
+    let data = await players.findOne({user: message.author.id})
     let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
     let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
     let spec = message.guild.roles.cache.find((r) => r.name === "Spectator")
@@ -23,24 +22,24 @@ module.exports = {
 
     if (args[0] == "single") {
       let amount = parseInt(args[2])
-      if (roses == 0) return message.channel.send(`You can't give ${amount} roses if you don't have that many in your inventory!`)
+      if (data.inventory.roses < amount) return message.channel.send(`You can't give ${amount} roses if you don't have that many in your inventory!`)
       let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.id === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1])
       if (!guy) return message.channel.send("Player does not exist!")
       if (message.member == guy) return message.channel.send("You cannot give a rose to yourself!")
-      db.subtract(`roseG_${message.author.id}`, amount)
-      db.add(`roses_${guy.id}`, amount)
+      data.inventory.rose = data.inventory.rose - amount
+      players.findOneAndUpdate({user: guy.id}, {$inc : {roses: amount}}).exec()
       return message.channel.send(`You have successfully given ${args[1]} ${amount} rose${amount == 1 ? "" : "s"}!`)
     } else if (args[0] == "bouquet") {
-      if (roseBouquet == 0) return message.channel.send("You don't have any bouquet!")
+      if (data.inventory.bouquet == 0) return message.channel.send("You don't have any bouquet!")
       for (let i = 0; i <= alive.members.size + dead.members.size; i++) {
         console.log(i)
         let guy = message.guild.members.cache.find((m) => m.nickname === i.toString())
         if (guy) {
           console.log(guy.id)
-          db.add(`roses_${guy.id}`, 1)
+          players.findOneAndUpdate({user: guy.id}, {$inc : {roses: 1}}).exec()
         }
       }
-      db.subtract(`roseBouquet_${message.author.id}`, 1)
+      data.inventory.bouquet = data.inventory.bouquet - 1
       return message.channel.send(`You have successfully given a rose to every player in the server!`)
     }
   },

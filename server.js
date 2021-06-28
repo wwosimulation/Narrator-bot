@@ -11,19 +11,6 @@ client.db = db
 
 const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
-const axios = require("axios")
-
-let privateKey = fs.readFileSync("/home/ubuntu/wwosim/ghnb.pem")
-client.github = new Octokit({
-    authStrategy: createAppAuth,
-    auth: {
-        appId: 120523,
-        privateKey,
-        clientSecret: process.env.GITHUB,
-        installationId: 17541999,
-    },
-})
-
 
 client.commands = new Discord.Collection()
 // const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
@@ -69,20 +56,20 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     if (embeds.length === 1) return
     if (addReactions) {
         await msg.react("⏪")
-        await msg.react("◀")
-        await msg.react("▶")
+        await msg.react("◀️")
+        await msg.react("▶️")
         await msg.react("⏩")
     }
-    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
-    if (!reaction) return msg.reactions.removeAll().catch(() => {})
+    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => { })
+    if (!reaction) return msg.reactions.removeAll().catch(() => { })
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
-    if (msg.channel.type == "dm" || !msg.guild.me.hasPermission("MANAGE_MESSAGES")) {
-        if (reaction.emoji.name == "◀") {
+    if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
+        if (reaction.emoji.name == "◀️") {
             let m = await msg.channel.send(embeds[Math.max(pageNow - 1, 0)])
             msg.delete()
             client.paginator(author, m, embeds, Math.max(pageNow - 1, 0))
-        } else if (reaction.emoji.name == "▶") {
+        } else if (reaction.emoji.name == "▶️") {
             let m = await msg.channel.send(embeds[Math.min(pageNow + 1, embeds.length - 1)])
             msg.delete()
             client.paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1))
@@ -96,11 +83,11 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
             client.paginator(author, m, embeds, embeds.length - 1)
         }
     } else {
-        if (reaction.emoji.name == "◀") {
+        if (reaction.emoji.name == "◀️") {
             await reaction.users.remove(author)
             let m = await msg.edit(embeds[Math.max(pageNow - 1, 0)])
             client.paginator(author, m, embeds, Math.max(pageNow - 1, 0), false)
-        } else if (reaction.emoji.name == "▶") {
+        } else if (reaction.emoji.name == "▶️") {
             await reaction.users.remove(author)
             let m = await msg.edit(embeds[Math.min(pageNow + 1, embeds.length - 1)])
             client.paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1), false)
@@ -123,15 +110,28 @@ client.on("ready", async () => {
     console.log("Connected!")
     //ShadowAdmin initialize
     //shadowadmin.init(client, {prefix, owners: config.botAdmin})
-
-    let maint = db.get("maintenance")
-    if (typeof maint == "string" && maint.startsWith("config-")) {
-        client.channels.cache.get(maint.split("-")[1]).send("Config has successfully been reloaded!")
-        db.set("maintenance", false)
+    if (!client.user.username.includes("Beta")) {
+        let privateKey = fs.readFileSync("/home/ubuntu/wwosim/ghnb.pem")
+        client.github = new Octokit({
+            authStrategy: createAppAuth,
+            auth: {
+                appId: 120523,
+                privateKey,
+                clientSecret: process.env.GITHUB,
+                installationId: 17541999,
+            },
+        })
     }
-    //require("./slash.js")(client)
-    client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
 })
+
+let maint = db.get("maintenance")
+if (typeof maint == "string" && maint.startsWith("config-")) {
+    client.channels.cache.get(maint.split("-")[1]).send("Config has successfully been reloaded!")
+    db.set("maintenance", false)
+}
+//require("./slash.js")(client)
+client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
+
 
 client.login(process.env.TOKEN)
 
