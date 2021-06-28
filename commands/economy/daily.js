@@ -14,6 +14,7 @@ module.exports = {
         let date = data.daily.day // say that 5 times fast xD
 
         let lastDaily = data.daily.last
+        let extra = ""
 
         if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
             let time = ms(cooldown - (Date.now() - lastDaily))
@@ -63,8 +64,12 @@ module.exports = {
                 data.daily.day = -1
                 data.coins += 30
             }
+            if(client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).premiumSinceTimestamp > 0) {
+                amount = amount * 2
+                extra = "\nBecause you are a booster, you received double the normal rewards amount!"
+            }
 
-            message.channel.send(new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have recieved ${amount} ${item}!`))
+            message.channel.send(new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have recieved ${amount} ${item}!${extra}`))
             data.daily.dau += 1
             data.daily.last = Date.now()
         }
