@@ -9,21 +9,8 @@ const config = require("./config.js")
 //const shadowadmin = require("shadowadmin")
 client.db = db
 
-// const { createAppAuth } = require("@octokit/auth-app")
-// const { Octokit } = require("@octokit/core")
-// const axios = require("axios")
-
-// let privateKey = fs.readFileSync("/home/ubuntu/wwosim/ghnb.pem")
-// client.github = new Octokit({
-//     authStrategy: createAppAuth,
-//     auth: {
-//         appId: 120523,
-//         privateKey,
-//         clientSecret: process.env.GITHUB,
-//         installationId: 17541999,
-//     },
-// })
-
+const { createAppAuth } = require("@octokit/auth-app")
+const { Octokit } = require("@octokit/core")
 
 client.commands = new Discord.Collection()
 // const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
@@ -73,8 +60,8 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
         await msg.react("▶️")
         await msg.react("⏩")
     }
-    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
-    if (!reaction) return msg.reactions.removeAll().catch(() => {})
+    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => { })
+    if (!reaction) return msg.reactions.removeAll().catch(() => { })
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
     if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
@@ -123,15 +110,28 @@ client.on("ready", async () => {
     console.log("Connected!")
     //ShadowAdmin initialize
     //shadowadmin.init(client, {prefix, owners: config.botAdmin})
-
-    let maint = db.get("maintenance")
-    if (typeof maint == "string" && maint.startsWith("config-")) {
-        client.channels.cache.get(maint.split("-")[1]).send("Config has successfully been reloaded!")
-        db.set("maintenance", false)
+    if (!client.user.username.includes("Beta")) {
+        let privateKey = fs.readFileSync("/home/ubuntu/wwosim/ghnb.pem")
+        client.github = new Octokit({
+            authStrategy: createAppAuth,
+            auth: {
+                appId: 120523,
+                privateKey,
+                clientSecret: process.env.GITHUB,
+                installationId: 17541999,
+            },
+        })
     }
-    //require("./slash.js")(client)
-    client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
 })
+
+let maint = db.get("maintenance")
+if (typeof maint == "string" && maint.startsWith("config-")) {
+    client.channels.cache.get(maint.split("-")[1]).send("Config has successfully been reloaded!")
+    db.set("maintenance", false)
+}
+//require("./slash.js")(client)
+client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
+
 
 client.login(process.env.TOKEN)
 
