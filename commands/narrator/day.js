@@ -351,7 +351,7 @@ module.exports = {
                           if (iudi.permissionsFor(message.guild.members.cache.find((m) => m.nickname === eat[j])).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                             cannibal.send(`_ _\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
-                            cannibal.send(`${alive}`)
+                            cannibal.send(`<&${alive}>`)
 
                             iudi.send(`<:guard:744536167109886023> You have been attacked by **${theCanni.nickname} ${theCanni.user.username} (Cannibal)**. You have been wounded and will die at the end of the day.`)
                             iudi.send(`${alive}`)
