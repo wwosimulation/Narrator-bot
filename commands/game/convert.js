@@ -41,6 +41,7 @@ module.exports = {
                 }
             }
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You aren't alive! Now here's a great idea: Act like a medium or Wolf Medium as you may, and try reviving wolves...")
+            if (isNight != "yes") return message.channel.send("Converting is only available during the night big brain.")
             if (!args[0]) return message.channel.send("How do you think you're gonna convert someone if you don't tell me who to convert...")
             let guy = 
             message.guild.members.cache.find(m => m.nickname === args[0]) || 
