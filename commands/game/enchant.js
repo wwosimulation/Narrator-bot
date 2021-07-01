@@ -38,7 +38,7 @@ module.exports = {
       let isNight = db.get(`isNight`)
       if (!args[0]) return message.channel.send("You know, doing `+suicide` is better than disguising no one")
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send("It's about time you know that you are DEAD and can't disguise others noob.")
-      if (args[0] == disguised) return message.channel.send("Why would you disguise the same person you already disguised before? I guess you just have 0 skill.")
+      if (disguised.includes(args[0])) return message.channel.send("Why would you disguise the same person you already disguised before? I guess you just have 0 skill.")
       if (isNight != "yes") return message.channel.send("Disguising during the day is for the Wolf Shaman. You are the Illusionist smh. Open your eyes pls")
       let guy = message.guild.members.cache.find(m => m.nickname === args[0]) || 
                 message.guild.members.cache.find(m => m.id === args[0]) ||  
