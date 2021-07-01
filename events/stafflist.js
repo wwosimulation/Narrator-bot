@@ -86,7 +86,7 @@ module.exports = (client) => {
     if (!msg) {
       msg = await chan.send("Generating staff list...")
       msg2 = await chan.send("...")
-      msg2 = await chan.send("...")
+      msg3 = await chan.send("...")
       db.set("stafflist", msg.id)
       db.set("stafflist2", msg2.id)
       db.set("stafflist3", msg3.id)
