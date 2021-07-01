@@ -10,7 +10,7 @@ module.exports = {
       let hunger = db.get(`hunger_${message.channel.id}`) || 1
       let alive = message.guild.roles.cache.find(r => r.name === "Alive")
       if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`Eating when dead just doesn't make any sense`)
-      if (!isNight == "yes") return message.channel.send("This is Wolvesville. There is no Lunch or Dinner. Only breakfast")
+      if (isNight != "yes") return message.channel.send("This is Wolvesville. There is no Lunch or Dinner. Only breakfast")
       if (!args[0]) return message.channel.send("Nice eating no one i see")
       if (hunger < args.length) return message.channel.send("Eating more than you can just makes you feel nauseated")
 
