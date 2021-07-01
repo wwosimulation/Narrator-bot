@@ -23,7 +23,7 @@ module.exports = {
       let ability = await db.fetch(`ability_${message.channel.id}`);
       if (ability == "yes") return await message.channel.send("You already used up your ability!");
       if (isDay != "yes") return await message.channel.send("Dummy, you didn't get the Fortune Teller's card. You can only reveal during the day :rage:")
-      dayChat.send(`**${message.member.nickname} (Mayor)** has revealed himself!`);
+      dayChat.send(`<:mayoring:744571394947416128> **${message.member.nickname} ${message.author.username} (Mayor)** has revealed himself!`);
       message.member.roles.add(revealed.id)
       db.set(`ability_${message.channel.id}`, "yes");
     } else if (message.channel.name == "priv-pacifist" || message.channel.name == "priv-wolf-pacifist") {
@@ -80,18 +80,10 @@ module.exports = {
           }
         }
         db.set(`paci_${message.channel.id}`, "yes");
-        dchat.send(
-          "The Pacifist<:pacifist:583672644965236736> revealed **" +
-            args[0] +
-            " " +
-            guy.user.username +
-            " (" +
-            role +
-            ")**!"
-        );
+        dchat.send(`<:revealed:744572010801266793> The Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`);
         guy.roles.add(revealed.id)
         if (message.channel.name == "priv-wolf-pacifist")
-          client.channels.get("606135720825847829").send("The Wolf Pacifist<:wolf_pacifist:711948506989985812> has revealed **" + args[0] + " " + guy.user.username + "**!");
+          message.guild.channels.cache.get("606135720825847829").send(`<:revealed:744572010801266793> The Wolf Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`);
       
         if (db.get(`card_${message.channel.id}`) == true) {
           if (message.channel.name != "priv-mayor" && message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist") {
