@@ -42,31 +42,12 @@ module.exports = {
             if (toKill.includes("wolf")) {
               guy.roles.remove(alive.id);
               guy.roles.add(dead.id);
-              dayChat.send(
-                `**${
-                  message.member.nickname
-                } (Priest)** has thrown holy water at and killed **${
-                  args[0]
-                } (${role})**`
-              );
+              dayChat.send(`<:water:744571479986798622> **${message.member.nickname} ${message.author.username} (Priest)** has thrown holy water at and killed **${args[0]} ${guy.user.username} (${role})**`);
               ownself.roles.add(revealed.id)
             } else {
               ownself.roles.remove(alive.id);
               ownself.roles.add(dead.id);
-              dayChat.send(
-                "**" +
-                  message.member.nickname +
-                  " " +
-                  message.author.username +
-                  " (Priest)** tried to throw holy water on **" +
-                  args[0] + "" + 
-                  guy.user.username +
-                  "** and killed themselves! **" +
-                  args[0] +
-                  " " +
-                  guy.user.username +
-                  "** is not a werewolf!"
-              );
+              dayChat.send(`<:water:744571479986798622> **${message.member.nickname} ${message.author.username} (Priest)** tried to throw holy water on **${args[0]} ${guy.user.username}** and killed themselves! **${args[0]} ${guy.user.username}** is not a werewolf!`);
             }
           }
         }
