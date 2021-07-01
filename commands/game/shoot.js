@@ -45,13 +45,7 @@ module.exports = {
         }
         if (db.get(`did_${message.channel.id}`) == dayCount) return message.channel.send("You already shot today. Get chill pill from dank memer man!")
         if (db.get(`role_${guy.id}`) == "President") return message.channel.send("Even if you are coupled or sected, you can't shoot the President!")
-        dayChat.send(
-          `**${message.member.nickname} ${
-            message.author.username
-          } (Gunner)** shot **${guy.nickname} ${guy.user.username} (${db.get(
-            `role_${guy.id}`
-          )})**!`
-        );
+        dayChat.send(`<:bullet:744571767204478996> **${message.member.nickname} ${message.author.username} (Gunner)** shot **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`);
         message.member.roles.add(revealed.id)
         guy.roles.add(dead.id)
         guy.roles.remove(alive.id)
@@ -73,7 +67,7 @@ module.exports = {
       if (isDay == "yes") return message.channel.send("Nice, killing in the day when no one is jailed.")
       if (bullet == 0) return message.channel.send("You already used your bullet")
       db.set(`bullet_jail`, 0)
-      dayChat.send("The Jailer executed their prisoner last night! **" + guy.nickname + " " + guy.user.username + " (" + db.get(`role_${guy.id}`) + ")** is dead!")
+      dayChat.send(`<:bullet:744571767204478996> The Jailer executed their prisoner last night! **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** is dead!`)
       guy.roles.add(dead.id)
       guy.roles.remove(alive.id)
     } else if (message.channel.name == "priv-marksman") {
