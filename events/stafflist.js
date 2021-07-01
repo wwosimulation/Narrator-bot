@@ -31,6 +31,8 @@ module.exports = (client) => {
     let msg2 = await chan.messages.fetch(mid2).catch(() => {})
     let msg3 = await chan.messages.fetch(mid3).catch(() => {})
     console.log("Message: " + mid)
+    console.log("Message 2: " + mid2)
+    console.log("Message 3: " + mid3)
     let m3 = ""
     let m2 = ""
     let m = `**Managers**\n> ${wovsim.members.cache
