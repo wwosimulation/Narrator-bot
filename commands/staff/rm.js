@@ -16,7 +16,7 @@ module.exports = {
       let user = fn.getUser(x, message)
       if (user) {
         let data = players.findOneAndUpdate({user: user.id}, {$inc : {coins: amount}}).exec()
-        msg += `Removed ${amount + amount + amount} ${emojis.coin} from ${user.user.tag}\n`
+        msg += `Removed ${Math.abs(amount)} ${emojis.coin} from ${user.user.tag}\n`
       } else {
         msg += `Unable to find the user ${x}\n`
       }
