@@ -635,7 +635,22 @@ module.exports = {
     if (md.size > 0) {
       await votechat.bulkDelete(md)
     }
-
+    // deleting shamaned if shaman is dead
+    let shaman = message.guild.channels.cache.filter(c => c.name === "priv-wolf-shaman").keyArray("id")
+    for (let i = 0; i < shaman.length; i++) {
+      let chan = message.guild.channels.cache.get(shaman[i])
+      for (let j = 1; j <= 16; j++) {
+        let tempguy = message.guild.members.cache.find(m => m.nickname === j.toString())
+        if (tempguy) {
+          if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL"])) {
+            j = 99
+            if (tempguy.roles.cache.has(dead.id)) {
+              db.delete(`shaman_${chan.id}`)
+            }
+          }
+        }
+      }
+    }
     // deleting bomber bombs if dead
     setTimeout(async function () {
     let bb = message.guild.channels.cache.filter(c => c.name === "priv-bomber").keyArray("id")
