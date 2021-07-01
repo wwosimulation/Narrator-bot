@@ -16,6 +16,8 @@ const config = {
     megamod: "606123616987512853",
     botdev: "606123616228343812",
     manager: "606123615645204490",
+    devassist: "859099415515627540",
+    quest: "606123622192381982",
   },
 }
 
@@ -24,10 +26,12 @@ module.exports = (client) => {
     console.log("Generating staff list")
     let wovsim = client.guilds.cache.get(config.guild)
     let chan = wovsim.channels.cache.get(config.channel),
-      mid = db.get("stafflist"), mid2 = db.get("stafflist2")
+      mid = db.get("stafflist"), mid2 = db.get("stafflist2"), mid3 = db.get("stafflist3")
     let msg = await chan.messages.fetch(mid).catch(() => {})
     let msg2 = await chan.messages.fetch(mid2).catch(() => {})
+    let msg3 = await chan.messages.fetch(mid3).catch(() => {})
     console.log("Message: " + mid)
+    let m3 = ""
     let m2 = ""
     let m = `**Managers**\n> ${wovsim.members.cache
       .filter((x) => x.roles.cache.has(config.roles.manager))
@@ -68,14 +72,26 @@ module.exports = (client) => {
       .filter((x) => x.roles.cache.has(config.roles.afk))
       .map((x) => `<@${x.id}> - ${x.user.tag}`)
       .join("\n> ")}\n`
+    m3 += "** **\n\n\n**Non-Staff Teams**\n\n"
+    m3 += `**Quest Makers**\n> ${wovsim.members.cache
+      .filter((x) => x.roles.cache.has(config.roles.quest))
+      .map((x) => `<@${x.id}> - ${x.user.tag}`)
+      .join("\n> ")}\n`
+    m3 += `**Dev Assistants**\n> ${wovsim.members.cache
+      .filter((x) => x.roles.cache.has(config.roles.devassist))
+      .map((x) => `<@${x.id}> - ${x.user.tag}`)
+      .join("\n> ")}\n`
     if (!msg) {
       msg = await chan.send("Generating staff list...")
       msg2 = await chan.send("...")
+      msg2 = await chan.send("...")
       db.set("stafflist", msg.id)
       db.set("stafflist2", msg2.id)
+      db.set("stafflist3", msg3.id)
     }
     msg.edit(m)
     msg2.edit(m2)
+    msg3.edit(m3)
     console.log("Stafflist complete!")
   })
 }
