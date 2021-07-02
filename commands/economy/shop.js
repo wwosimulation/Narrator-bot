@@ -31,7 +31,57 @@ module.exports = {
     }
 
     let m = await message.inlineReply(embeds[0])
-    client.paginator(message.author.id, m, embeds, 0)
+    //client.paginator(message.author.id, m, embeds, 0)
+    const filter = (reaction, user) => user.id === message.author.id && ["⏪", "⬅️", "➡️", "⏩"].includes(reaction.emoji.name)
+    let currentEmbed = embeds[0]
+    await m.react("⏪")
+    await m.react("️️️️⬅️")
+    await m.react("➡️")
+    await m.react("⏩")
+    
+    const collector = m.createReactionCollector(filter, {time: 30000})
+    collector.on("collect", async (reaction, user) => {
+      collector.time += 15000 // adds another 15 seconds to the collector i think
+      if (reaction.emoji.name === "⏪") {
+        
+        if (currentEmbed !== embeds[0]) {
+          currentEmbed = embeds[0]
+          await m.edit(embeds[0])
+        }
+      
+      } else if (reaction.emoji.name === "⬅️") {
+        
+        if (currentEmbed !== embeds[0]) {
+          currentEmbed = embeds[embeds.indexOf(currentEmbed)-1]
+          await m.edit(currentEmbed)
+        } 
+      
+      } else if (reaction.emoji.name === "➡️") {
+        
+        if (currentEmbed !== embeds[embeds.length - 1]) {
+          currentEmbed = embeds[embeds.indexOf(currentEmbed)+1]
+          await m.edit(currentEmbed)
+        }
+      
+      } else {
+        
+        if (currentEmbed !== embeds[embeds.length - 1]) {
+          currentEmbed = embeds[embeds.length-1]
+          await m.edit(currentEmbed)
+        }
+      
+      }
+    })
+    
+    collector.on("end", async (_collected, reason) => {
+      if (reason == "time") {
+        await m.reactions.removeAll()
+      }
+    })
+    
+    
+    // --- TEMPORARY FIX ---
+    
 
     // if (!args[0] || args[0] == '1') {
     //     message.channel.send(new Discord.MessageEmbed()
