@@ -9,6 +9,7 @@ module.exports = {
         let guy = message.guild.members.cache.find(m => m.nickname === args[0]);
         if (guy) {
           let role = db.get(`role_${guy.id}`);
+          db.set(`suicided_${guy.id}`, true)
           let day = message.guild.channels.cache.find(c => c.name === "day-chat");
           day.send("**" + guy.nickname + " " + guy.user.username + " (" + role +")** has commited suicide!");
           guy.roles.add("606131202814115882");
@@ -20,6 +21,7 @@ module.exports = {
       message.channel.name == "day-chat"
     ) {
       if (!message.member.roles.cache.has("606140092213624859")) return 
+      db.set(`suicided_${message.author.id}`, true)
       let day = message.guild.channels.cache.find(c => c.name === "day-chat");
       let role = await db.fetch(`role_${message.author.id}`);
       day.send(
