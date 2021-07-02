@@ -22,6 +22,14 @@ module.exports = (client) => {
           }
         }
       }
+      
+      // prisoner died
+      let jailed = newMember.guild.channels.cache.find(c => c.name === "jailed-chat")
+      if (jailed.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
+        jailed.updateOverwrite(newMember, {
+          VIEW_CHANNEL: false
+        })
+      }
 
       // grave robber
       let alive = newMember.guild.roles.cache.find((r) => r.name === "Alive")
@@ -345,7 +353,7 @@ module.exports = (client) => {
           if (guy) {
             if (cupid.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
               if (guy != newMember) {
-                if (guy.roles.cache.has(alive.id)) {
+                if (guy.roles.cache.has(alive.id) && newMember.presence.status != "offline" && !db.get(`suicided_${newMember.id}`)) {
                   newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`<:couple:744542381206143026> Player **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** lost the love of their live and commited suicide!`)
                   guy.roles.add(dead)
                   guy.roles.remove(alive.id)
