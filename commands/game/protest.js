@@ -20,7 +20,7 @@ module.exports = {
         return await message.channel.send(
           "Stop protesting dumb. Once is enough."
         );
-      if (!isDay == "yes")
+      if (isDay != "yes")
         return await message.channel.send(
           "Yes! Protesting in the night. You aren't a doctor that will save the player that the wolves attack."
         );
