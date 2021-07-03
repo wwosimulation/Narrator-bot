@@ -9,7 +9,7 @@ module.exports = {
         let isNight = db.get(`isNight`)
         let dead = message.guild.roles.cache.find(r => r.name === "Dead")
 
-        if (message.channel.name == "priv-sect-leader") {
+        if (message.channel.name == "priv-sect-leader" || message.channel.name == "priv-sl") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You have a yarn for a brain")
             if (isNight != "yes") return message.channel.send("Secting is only available during the night smartass")
             if (!args[0]) return message.channel.send("Nice converting someone who will never exist in the universe")
