@@ -212,7 +212,7 @@ module.exports = {
             rolelist.push(theirRole)
             let guy = message.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
             db.delete(`suicided_${guy.id}`)
-            let lol = await message.guild.channels.create(`priv-${theirRole.replace(" ", "-")}`, {
+            let lol = await message.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
                 parent: "748959630520090626",
                 permissionOverwrites: [
                     {
