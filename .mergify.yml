@@ -9,7 +9,7 @@ pull_request_rules:
     conditions:
       - base=main
       - -closed
-      - updated-at<7 days ago
+      - updated-at<3 days ago
     actions:
       close:
         message: |
