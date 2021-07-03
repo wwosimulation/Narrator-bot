@@ -69,6 +69,7 @@ module.exports = {
 
             if (forged == 2 || forged == 1) {
                 db.set(`toGiveS_${message.channel.id}`, guy.nickname)
+                db.set(`given_${message.channel.id}`, true)
                 message.channel.send(`<:getshield:744536572556476507> You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
             } else {
                 db.subtract(`forged_${message.channel.id}`, 1)
