@@ -207,11 +207,10 @@ module.exports = {
         shuffle(finalRoleList)
         let sorcChats = []
         for (let k = 0; k < alive.members.size; k++) {
-            let theirRole = finalRoleList[k]
+            let theirRole = finalRoleList[k].name
             let role = getRole(theirRole)
             rolelist.push(theirRole)
             let guy = message.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
-            db.delete(`suicided_${guy.id}`)
             let lol = await message.guild.channels.create(`priv-${theirRole.replace(" ", "-")}`, {
                 parent: "748959630520090626",
                 permissionOverwrites: [
