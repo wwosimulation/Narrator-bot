@@ -454,7 +454,23 @@ module.exports = {
                                 }
                             }
                         }
-
+                        // jailer jailed
+                        if (eat[j] != "0") {
+                    if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+                        let jailerGuy = message.guild.channels.cache.find((c) => c.name === "priv-jailer")
+                        for (let i = 1; i <= alive.members.size + dead.members.size; i++) {
+                            let isJailer = message.guild.members.cache.find((m) => m.nickname === i.toString())
+                            if (jailerGuy.permissionsFor(isJailer).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                i = 99
+                                if (isJailer.roles.cache.has(alive.id)) {
+                                    cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    cannibal.send(`${alive}`)
+                                    eat[j] = "0" // makes the cannibal attack towards the player none
+                                }
+                            }
+                        }
+                    }
+                }
                         // killing players
                         if (eat[j] != "0") {
                             dayChat.send(`<:eat:744575270102630482> The hungry Cannibal ate **${guy.nickname} ${guy.user.username} (${role})**!`)
