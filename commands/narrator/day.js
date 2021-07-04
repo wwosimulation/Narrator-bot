@@ -1158,26 +1158,32 @@ module.exports = {
                         if (thecurse.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
                             z = 99
                             let t = await message.guild.channels.create("priv-werewolf", {
-                                parent: "748959630520090626",
-                                permissionOverwrites: [
-                                    {
-                                        id: message.guild.id,
-                                        deny: ["VIEW_CHANNEL"],
-                                    },
-                                    {
-                                        id: guy.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-                                    },
-                                    {
-                                        id: narrator.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-                                    },
-                                    {
-                                        id: mininarr.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-                                    },
-                                ],
+                                parent: "748959630520090626"
                             })
+                                t.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true, 
+                                  })
+                                t.permissionOverwrites.create(message.guild.id, {
+                                  VIEW_CHANNEL: false,
+                                    })
+                                t.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
+                                t.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
                             await t.send(db.get(`roleinfo_werewolf`))
                             await t.send("You have been bitten! You are a werewolf now!")
                             thecurse.permissionOverwrites.edit(guy.id, {
@@ -2349,26 +2355,32 @@ module.exports = {
                                             }
                                         })
                                         let ff = await message.guild.channels.create("priv-werewolf", {
-                                            parent: "748959630520090626",
-                                            permissionOverwrites: [
-                                                {
-                                                    id: message.guild.id,
-                                                    deny: ["VIEW_CHANNEL"],
-                                                },
-                                                {
-                                                    id: guy.id,
-                                                    allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-                                                },
-                                                {
-                                                    id: narrator.id,
-                                                    allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-                                                },
-                                                {
-                                                    id: mininarr.id,
-                                                    allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-                                                },
-                                            ],
+                                            parent: "748959630520090626"
                                         })
+                                            ff.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true, 
+                                  })
+                                ff.permissionOverwrites.create(message.guild.id, {
+                                  VIEW_CHANNEL: false,
+                                    })
+                                ff.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
+                              ff.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
 
                                         await ff.send(db.get(`roleinfo_werewolf`))
                                         await ff.send(`_ _\n\n_ _\n\nYou have been converted into a Werewolf!`)
@@ -2387,26 +2399,32 @@ module.exports = {
                                                         if (rlguy.roles.cache.has(alive.id)) {
                                                             if (chan.permissionsFor(rlguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                                 let eij = await message.guild.channels.create("priv-werewolf", {
-                                                                    parent: "748959630520090626",
-                                                                    permissionOverwrites: [
-                                                                        {
-                                                                            id: message.guild.id,
-                                                                            deny: ["VIEW_CHANNEL"],
-                                                                        },
-                                                                        {
-                                                                            id: rlguy.id,
-                                                                            allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-                                                                        },
-                                                                        {
-                                                                            id: narrator.id,
-                                                                            allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-                                                                        },
-                                                                        {
-                                                                            id: mininarr.id,
-                                                                            allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-                                                                        },
-                                                                    ],
+                                                                    parent: "748959630520090626"
                                                                 })
+                                                                    eij.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true, 
+                                  })
+                                eij.permissionOverwrites.create(message.guild.id, {
+                                  VIEW_CHANNEL: false,
+                                    })
+                                eij.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
+                                eij.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
                                                                 await eij.send(db.get(`roleinfo_werewolf`))
                                                                 await eij.semd(`_ _\n\nYou have been converted into a Werewolf!`)
                                                                 let iwq = await eij.send(`${alive}`)
@@ -2495,26 +2513,32 @@ module.exports = {
                                 })
 
                                 let ff = await message.guild.channels.create("priv-zombie", {
-                                    parent: "748959630520090626",
-                                    permissionOverwrites: [
-                                        {
-                                            id: message.guild.id,
-                                            deny: ["VIEW_CHANNEL"],
-                                        },
-                                        {
-                                            id: tempguy.id,
-                                            allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-                                        },
-                                        {
-                                            id: narrator.id,
-                                            allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-                                        },
-                                        {
-                                            id: mininarr.id,
-                                            allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-                                        },
-                                    ],
+                                    parent: "748959630520090626"
                                 })
+                                    ff.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true, 
+                                  })
+                                ff.permissionOverwrites.create(message.guild.id, {
+                                  VIEW_CHANNEL: false,
+                                    })
+                                ff.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
+                                ff.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
                                 await ff.send(db.get(`roleinfo_zombie`))
                                 let tee = await ff.send(`${alive}`)
                                 await tee.delete({ timeout: 3000 })
