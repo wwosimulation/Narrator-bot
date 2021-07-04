@@ -6,7 +6,7 @@ module.exports = {
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find((x) => x.name == "Alive")
         let dayChat = message.guild.channels.cache.find((x) => x.name == "day-chat") // allowing players to speak in #day-chat
-        dayChat.updateOverwrite(alive.id, {
+        dayChat.permissionOverwrites.edit(alive.id, {
             SEND_MESSAGES: true,
         })
         dayChat.send(`<@&${alive.id}>`)

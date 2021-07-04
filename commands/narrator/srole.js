@@ -213,35 +213,40 @@ module.exports = {
             let guy = message.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
             db.delete(`suicided_${guy.id}`)
             let lol = await message.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
-                parent: "748959630520090626",
-                permissionOverwrites: [
-                    {
-                        id: message.guild.id,
-                        deny: ["VIEW_CHANNEL"],
-                    },
-                    {
-                        id: guy.id,
-                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-                    },
-                    {
-                        id: narrator.id,
-                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"],
-                    },
-                    {
-                        id: mininarr.id,
-                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"],
-                    },
-                ],
+                parent: "748959630520090626"
             })
+            lol.permissionOverwrites.create(message.guild.id, {
+                  VIEW_CHANNEL: false,
+                    })
+            lol.permissionOverwrites.create(guy.id, {
+                  SEND_MESSAGES: true,
+                  VIEW_CHANNEL: true,
+                  READ_MESSAGE_HISTORY: true,
+                    })
+            lol.permissionOverwrites.create(narrator.id, {                         SEND_MESSAGES: true,
+                  VIEW_CHANNEL: true,
+                  READ_MESSAGE_HISTORY: true,
+                  MANAGE_CHANNELS: true,
+                  MENTION_EVERYONE: true,
+                  ATTACH_FILES: true,
+                    })
+            
+            lol.permissionOverwrites.create(narrator.id, {                         SEND_MESSAGES: true,
+                  VIEW_CHANNEL: true,
+                  READ_MESSAGE_HISTORY: true,
+                  MANAGE_CHANNELS: true,
+                  MENTION_EVERYONE: true,
+                  ATTACH_FILES: true,
+                    })
 
             allChannels.push(lol)
             if (role.name.toLowerCase().includes("wolf")) {
-                wwsChat.updateOverwrite(guy.id, {
+                wwsChat.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: true,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
                 })
-                wwsVote.updateOverwrite(guy.id, {
+                wwsVote.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: false,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
@@ -260,7 +265,7 @@ module.exports = {
             }
 
             if (role.name.toLowerCase().includes("zombie")) {
-                zomb.updateOverwrite(guy.id, {
+                zomb.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: true,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
@@ -281,7 +286,7 @@ module.exports = {
                         }
                     }
                     if (occupied != true) {
-                        e.updateOverwrite(guy.id, {
+                        e.permissionOverwrites.edit(guy.id, {
                             SEND_MESSAGES: true,
                             VIEW_CHANNEL: true,
                             READ_MESSAGE_HISTORY: true,
@@ -290,26 +295,32 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == bandits.keyArray("id").length) {
                             let t = await message.guild.channels.create("bandits", {
-                                parent: "606250714355728395",
-                                permissionOverwrites: [
-                                    {
-                                        id: guy.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-                                    },
-                                    {
-                                        id: message.guild.id,
-                                        deny: ["VIEW_CHANNEL"],
-                                    },
-                                    {
-                                        id: narrator.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"],
-                                    },
-                                    {
-                                        id: mininarr.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"],
-                                    },
-                                ],
+                                parent: "606250714355728395"
                             })
+                                t.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true, 
+                                  })
+                                t.permissionOverwrites.create(message.guild.id, {
+                                  VIEW_CHANNEL: false,
+                                    })
+                                t.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
+                                t.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
                             let a = await t.send(`${alive}`)
                             setTimeout(() => {
                                 a.delete()
@@ -333,7 +344,7 @@ module.exports = {
                         }
                     }
                     if (occupied != true) {
-                        e.updateOverwrite(guy.id, {
+                        e.permissionOverwrites.edit(guy.id, {
                             SEND_MESSAGES: true,
                             VIEW_CHANNEL: true,
                             READ_MESSAGE_HISTORY: true,
@@ -342,26 +353,32 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == sect.keyArray("id").length) {
                             let t = await message.guild.channels.create("sect-members", {
-                                parent: "606250714355728395",
-                                permissionOverwrites: [
-                                    {
-                                        id: guy.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
-                                    },
-                                    {
-                                        id: message.guild.id,
-                                        deny: ["VIEW_CHANNEL"],
-                                    },
-                                    {
-                                        id: narrator.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"],
-                                    },
-                                    {
-                                        id: mininarr.id,
-                                        allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "MANAGE_CHANNELS", "MENTION_EVERYONE", "ATTACH_FILES"],
-                                    },
-                                ],
+                                parent: "606250714355728395"
                             })
+                                t.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true, 
+                                  })
+                                t.permissionOverwrites.create(message.guild.id, {
+                                  VIEW_CHANNEL: false,
+                                    })
+                                t.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
+                                t.permissionOverwrites.create(narrator.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true,
+                                  MANAGE_CHANNELS: true,
+                                  MENTION_EVERYONE: true,
+                                  ATTACH_FILES: true,
+                                    })
                             let a = await t.send(`${alive}`)
                             setTimeout(() => {
                                 a.delete()
@@ -386,7 +403,7 @@ module.exports = {
 
         let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}`)
         dcSent.pin()
-        dayChat.updateOverwrite(alive, {
+        dayChat.permissionOverwrites.edit(alive, {
             SEND_MESSAGES: false,
             VIEW_CHANNEL: true,
             READ_MESSAGE_HISTORY: true,
