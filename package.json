@@ -4,6 +4,7 @@
     "description": "A discord bot that simulates the game Wolvesville",
     "main": "server.js",
     "scripts": {
+        "addconfig": "cd .. && git clone https://github.com/wwosimulation/config",
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "pm2 start server.js --name sim-bot",
         "prettier": "npx prettier --check ."
