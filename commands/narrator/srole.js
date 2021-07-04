@@ -236,12 +236,12 @@ module.exports = {
 
             allChannels.push(lol)
             if (role.name.toLowerCase().includes("wolf")) {
-                wwsChat.updateOverwrite(guy.id, {
+                wwsChat.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: true,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
                 })
-                wwsVote.updateOverwrite(guy.id, {
+                wwsVote.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: false,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
@@ -260,7 +260,7 @@ module.exports = {
             }
 
             if (role.name.toLowerCase().includes("zombie")) {
-                zomb.updateOverwrite(guy.id, {
+                zomb.permissionOverwrites(guy.id, {
                     SEND_MESSAGES: true,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true,
@@ -281,7 +281,7 @@ module.exports = {
                         }
                     }
                     if (occupied != true) {
-                        e.updateOverwrite(guy.id, {
+                        e.permissionOverwrites.edit(guy.id, {
                             SEND_MESSAGES: true,
                             VIEW_CHANNEL: true,
                             READ_MESSAGE_HISTORY: true,
@@ -333,7 +333,7 @@ module.exports = {
                         }
                     }
                     if (occupied != true) {
-                        e.updateOverwrite(guy.id, {
+                        e.permissionOverwrites.edit(guy.id, {
                             SEND_MESSAGES: true,
                             VIEW_CHANNEL: true,
                             READ_MESSAGE_HISTORY: true,
@@ -386,7 +386,7 @@ module.exports = {
 
         let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}`)
         dcSent.pin()
-        dayChat.updateOverwrite(alive, {
+        dayChat.permissionOverwrites.edit(alive, {
             SEND_MESSAGES: false,
             VIEW_CHANNEL: true,
             READ_MESSAGE_HISTORY: true,
