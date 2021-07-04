@@ -47,9 +47,56 @@ module.exports = {
         let cupidKilled = false
         let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist"]
         let strongww = ["Werewolf", "Junior Werewolf", "Nightmare Werewolf", "Kitten Wolf", "Wolf Shaman", "Wolf Pacifist", "Shadow Wolf", "Guardian Wolf", "Werewolf Berserk", "Alpha Werewolf", "Wolf Seer", "Lone Wolf"]
+        let village = ["Villager", "Doctor", "Bodyguard", "Tough Guy", "Red Lady", "Gunner", "Jailer", "Priest", "Marksman", "Seer", "Aura Seer", "Spirit Seer", "Seer Apprentice", "Detective", "Medium", "Mayor", "Witch", "Avenger", "Beast Hunter", "Pacifist", "Grumpy Grandma", "Cupid", "President", "Cursed", "Loudmouth", "Flower Child", "Sheriff", "Fortune Teller", "Forger", "Grave Robber", "Santa Claus", "Easter Bunny", "Sibling", "Drunk", "Mad Scientist", "Idiot", "Wise Man", "Doppelganger", "Naughty Boy", "Handsome Prince", "Sect Hunter"]
         let killedplayers = []
         let thekiller = []
         let hhtarget = []
+
+        // checks if a team has won
+        let wws = 0
+        let zomb = 0
+        let sect = 
+        newSoloKillers = []
+        newVillage = []
+        let vil = 0
+        let solo = 0
+        let winner = ""
+        narratorChat = 606131703357898778
+        for (let j = 0; j < village; j++) {
+          if (j < soloKillers) {
+           let solokiller = soloKillers[j].toLowerCase()
+           newSoloKillers.push(solokiller.replace(' ', '_'))
+           }
+           let villager = village[j].toLowerCase()
+           newVillage.push(villager.replace(' ', '_'))
+        }
+         for (let j = 1; j <= alive.members.size + dead.members.size; j++) { 
+          let tempguy = message.guild.members.cache.find((m) => m.nickname === x.toString())
+          if (tempguy) {
+            if (tempguy.roles.cache.has(alive.id)) {
+              if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) wws++
+              if (db.get(`role_${tempguy.id}`).toLowerCase() == "zombie") zomb++
+              if (newVillage.includes(db.get(`role_${tempguy}`).toLowerCase())) vil++
+              if (newSoloKillers.includes(db.get(`role_${tempguy}`).toLowerCase())) solo++
+            }
+          }
+        }
+        
+        if (vil <= wws) {
+           narratorChat.send(`<@&606139219395608603> <@&606276949689499648> The Werewolves have won!`)
+        } else if (wws == 0) {
+          if (solo == 0) {
+            narratorChat.send(`<@&606139219395608603> <@&606276949689499648> The Villagers have won!`)
+           } else if (vil = 0) {
+             if (solo == 1) {
+               narratorChat.send(`<@&606139219395608603> <@&606276949689499648> A solo has won!`)
+             } else if (zomb == 0) {
+               narratorChat.send(`<@&606139219395608603> <@&606276949689499648> It's a tie!`)
+             } else {
+               narratorChat.send(`<@&606139219395608603> <@&606276949689499648> The Zombies have won!`)
+             }
+           }
+        }
 
         // changing perms for allplayers
         for (let x = 1; x < 17; x++) {
