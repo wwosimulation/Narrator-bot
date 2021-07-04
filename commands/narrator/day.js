@@ -71,7 +71,7 @@ module.exports = {
            newVillage.push(villager.replace(' ', '_'))
         }
          for (let j = 1; j <= alive.members.size + dead.members.size; j++) { 
-          let tempguy = message.guild.members.cache.find((m) => m.nickname === x.toString())
+          let tempguy = message.guild.members.cache.find((m) => m.nickname === j.toString())
           if (tempguy) {
             if (tempguy.roles.cache.has(alive.id)) {
               if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) wws++
