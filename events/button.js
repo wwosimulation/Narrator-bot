@@ -1,6 +1,7 @@
 const db = require("quick.db")
+const { shop } = require("../config")
 module.exports = (client) => {
-    client.on("interaction", async (interaction) => {
+    client.on("interactionCreate", async (interaction) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
         console.log(interaction.customID)
         if (interaction.customID == "igjoin") {
@@ -68,6 +69,13 @@ module.exports = (client) => {
             let embed = interaction.message.embeds[0]
             embed.description += `\n${guy.user.tag}`
             interaction.update({ embeds: [embed] })
+        }
+
+        if (interaction.customID.startsWith("shoppage")) {
+            let page = parseInt(interaction.customID.split("-")[1])
+            interaction.update({
+                embeds: [shop.embeds[page - 1]]
+            })
         }
     })
 }

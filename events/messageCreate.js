@@ -8,8 +8,7 @@ const prefix = process.env.PREFIX
 
 module.exports = (client) => {
     //When receiving a message
-    client.on("message", async (message) => {
-        if (!message.author?.id == "439223656200273932") return
+    client.on("messageCreate", async (message) => {
         let maint = db.get("maintenance")
 
         //let guy = message.member.nickname;
