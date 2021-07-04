@@ -57,21 +57,21 @@ module.exports = {
          })
       permissionOverwrites.create(message.guild.id, {
           VIEW_CHANNEL: false
-        }
+        })
       permissionOverwrites.create(narrator.id, {
           SEND_MESSAGES: true,
           VIEW_CHANNEL: true,
           READ_MESSAGE_HISTORY: true,
           ADD_REACTIONS: true, 
           MANAGE_CHANNELS: true
-        }
+        })
         permissionOverwrites.create(mininarr.id, {
           SEND_MESSAGES: true,
           VIEW_CHANNEL: true,
           READ_MESSAGE_HISTORY: true,
           ADD_REACTIONS: true, 
           MANAGE_CHANNELS: true
-        }
+        })
     await uwu.send(getRole(real).description).then((msg) => msg.pin())
 
     uwu.permissionOverwrites.edit(guy.id, {
