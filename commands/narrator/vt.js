@@ -45,6 +45,10 @@ module.exports = {
         setTimeout(() => {
             voteChat.send(`Time is up!`)
             db.set(`commandEnabled`, `no`)
+            for (let j = 1 ; j <= 17 ; j++) {
+                let guy = message.guild.members.cache.find(m => m.nickname === j.toString())
+                db.delete(`votemsgid_${guy.id}`)
+            }
         }, timer)
     },
 }
