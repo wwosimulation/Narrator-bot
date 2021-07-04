@@ -52,13 +52,13 @@ module.exports = {
 
             db.delete(`excludes`)
 
-            message.guild.channels.cache.get("606132999389708330").updateOverwrite(message.guild.roles.cache.get("606140092213624859").id, {
+            message.guild.channels.cache.get("606132999389708330").PermissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
                 SEND_MESSAGES: false,
                 READ_MESSAGE_HISTORY: false,
                 VIEW_CHANNEL: false,
             })
 
-            message.guild.channels.cache.get("606132387587293195").updateOverwrite(message.guild.roles.cache.get("606140092213624859").id, {
+            message.guild.channels.cache.get("606132387587293195").PermissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
                 SEND_MESSAGES: true,
                 READ_MESSAGE_HISTORY: true,
                 VIEW_CHANNEL: true,
