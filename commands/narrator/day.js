@@ -60,7 +60,7 @@ module.exports = {
                     let allchans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`)
                     allchans.forEach((chan) => {
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            chan.updateOverwrite(guy.id, {
+                            chan.permissionOverwrites.edit(guy.id, {
                                 SEND_MESSAGES: true,
                                 READ_MESSAGE_HISTORY: true,
                                 VIEW_CHANNEL: true,
@@ -1180,14 +1180,14 @@ module.exports = {
                             })
                             await t.send(db.get(`roleinfo_werewolf`))
                             await t.send("You have been bitten! You are a werewolf now!")
-                            thecurse.updateOverwrite(guy.id, {
+                            thecurse.permissionOverwrites.edit(guy.id, {
                                 SEND_MESSAGES: false,
                                 VIEW_CHANNEL: false,
                                 READ_MESSAGE_HISTORY: false,
                             })
                         }
                         wwChat.send(`**${guy.nickname} ${guy.user.username}** was cursed and has been converted into a werewolf!`)
-                        wwChat.updateOverwrite(guy.id, {
+                        wwChat.permissionOverwrites.edit(guy.id, {
                             SEND_MESSAGES: true,
                             READ_MESSAGE_HISTORY: true,
                             VIEW_CHANNEL: true,
@@ -1244,7 +1244,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === i.toString())
             let role = db.get(`role_${guy.id}`).toLowerCase()
             if (role.includes("wolf")) {
-                wwChat.updateOverwrite(guy.id, {
+                wwChat.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: false,
                 })
             }
@@ -1273,7 +1273,7 @@ module.exports = {
             if (mute) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === mute)
                 dayChat.send(`<:ggmute:766684344647417936> The Grumpy Grandma muted **${guy.nickname} ${guy.user.username}**!`)
-                dayChat.updateOverwrite(guy.id, {
+                dayChat.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: false,
                 })
             }
@@ -1476,7 +1476,7 @@ module.exports = {
                                             }
 
                                             if (sect != "0") {
-                                                sected.updateOverwrite(guy.id, {
+                                                sected.permissionOverwrites.edit(guy.id, {
                                                     VIEW_CHANNEL: true,
                                                     READ_MESSAGE_HISTORY: true,
                                                 })
@@ -1533,7 +1533,7 @@ module.exports = {
         //console.log("time to f*** you up sect")
 
         // allowing players to speak in #day-chat
-        // dayChat.updateOverwrite(alive.id, {
+        // dayChat.permissionOverwrites.edit(alive.id, {
         //   SEND_MESSAGES: true,
         // })
 
@@ -1542,7 +1542,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === i.toString())
             let role = db.get(`role_${guy.id}`)
             if (role == "Drunk") {
-                dayChat.updateOverwrite(guy.id, {
+                dayChat.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: false,
                 })
             }
@@ -1762,7 +1762,7 @@ module.exports = {
                         // corrupting the player
                         if (glitch != "0") {
                             corruptor.send(`<:corrupt:745632706838396989> Player **${corrupted.nickname} ${corrupted.user.username}** has successfully been corrupted!`)
-                            dayChat.updateOverwrite(corrupted.id, {
+                            dayChat.permissionOverwrites.edit(corrupted.id, {
                                 SEND_MESSAGES: false,
                             })
                             let allchan = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.replace(" ", "-").toLowerCase()}`).keyArray("id")
@@ -1771,7 +1771,7 @@ module.exports = {
                                 if (chan.permissionsFor(corrupted).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                     chan.send(`<:corrupt:745632706838396989> You have been glitched! No one will hear you scream! You cannot vote or use your abilities today and will die at the end of the day.`)
                                     chan.send(`${alive}`)
-                                    chan.updateOverwrite(corrupted, {
+                                    chan.permissionOverwrites.edit(corrupted, {
                                         SEND_MESSAGES: false,
                                     })
                                 }
@@ -1785,7 +1785,7 @@ module.exports = {
                                             if (rlguy.roles.cache.has(alive.id)) {
                                                 if (rlchan.permissionsFor(rlguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                     corruptor.send(`<:corrupt:745632706838396989> Player **${rlguy.nickname} ${rlguy.user.username}** has successfully been corrupted!`)
-                                                    rlchan.updateOverwrite(rlguy.id, {
+                                                    rlchan.permissionOverwrites.edit(rlguy.id, {
                                                         SEND_MESSAGES: false,
                                                     })
                                                     rlchan.send(`<:corrupt:745632706838396989> You have been glitched! No one will hear you scream! You cannot vote or use your abilities today and will die at the end of the day.`)
@@ -2330,7 +2330,7 @@ module.exports = {
                                     }
 
                                     if (conversion != "0") {
-                                        wwChat.updateOverwrite(guy.id, {
+                                        wwChat.permissionOverwrites.edit(guy.id, {
                                             SEND_MESSAGES: false,
                                             VIEW_CHANNEL: true,
                                             READ_MESSAGE_HISTORY: true,
@@ -2341,7 +2341,7 @@ module.exports = {
                                         let whwqye = message.guild.channels.cache.filter((c) => c.name === `priv-${role.replace(" ", "-").toLowerCase()}`)
                                         whwqye.forEach(async (element) => {
                                             if (element.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                element.updateOverwrite(guy.id, {
+                                                element.(guy.id, {
                                                     VIEW_CHANNEL: false,
                                                     READ_MESSAGE_HISTORY: false,
                                                     SEND_MESSAGES: false,
@@ -2413,14 +2413,14 @@ module.exports = {
                                                                 setTimeout(async () => {
                                                                     await iwq.delete()
                                                                 }, 3000)
-                                                                wwChat.updateOverwrite(rlguy.id, {
+                                                                wwChat.permissionOverwrites.edit(rlguy.id, {
                                                                     VIEW_CHANNEL: true,
                                                                     SEND_MESSAGES: false,
                                                                     READ_MESSAGE_HISTORY: true,
                                                                 })
                                                                 wwChat.send(`The Kitten Wolf converted **${rlguy.nickname} ${rlguy.user.username}**!`)
                                                                 wwChat.send(`Player **${rlguy.nickname} ${rlguy.user.username}** has been converted! Welcome them to the team!`)
-                                                                chan.updateOverwrite(rlguy.id, {
+                                                                chan.permissionOverwrites.edit(rlguy.id, {
                                                                     SEND_MESSAGES: false,
                                                                     VIEW_CHANNEL: false,
                                                                     READ_MESSAGE_HISTORY: false,
@@ -2459,14 +2459,14 @@ module.exports = {
             let role = db.get(`role_${prisoner.id}`)
             let role2 = role.toLowerCase().replace(" ", "-")
             let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role2}`).keyArray("id")
-            jailed.updateOverwrite(prisoner.id, {
+            jailed.permissionOverwrites.edit(prisoner.id, {
                 VIEW_CHANNEL: false,
                 SEND_MESSAGES: false,
             })
             for (let i = 0; i < chan.length; i++) {
                 let channe = message.guild.channels.cache.get(chan[i])
                 if (channe.permissionsFor(prisoner).has(["VIEW_CHANNEL"])) {
-                    channe.updateOverwrite(prisoner.id, {
+                    channe.permissionOverwrites.edit(prisoner.id, {
                         SEND_MESSAGES: true,
                     })
                 }
@@ -2488,7 +2488,7 @@ module.exports = {
                             if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 db.set(`role_${tempguy.id}`, "Zombie")
                                 db.delete(`bitten_${chan.id}`)
-                                chan.updateOverwrite(tempguy.id, {
+                                chan.permissionOverwrites.edit(tempguy.id, {
                                     VIEW_CHANNEL: false,
                                     READ_MESSAGE_HISTORY: false,
                                     SEND_MESSAGES: false,
@@ -2518,7 +2518,7 @@ module.exports = {
                                 await ff.send(db.get(`roleinfo_zombie`))
                                 let tee = await ff.send(`${alive}`)
                                 await tee.delete({ timeout: 3000 })
-                                zombies.updateOverwrite(tempguy.id, {
+                                zombies.permissionOverwrites.edit(tempguy.id, {
                                     SEND_MESSAGES: true,
                                     VIEW_CHANNEL: true,
                                     READ_MESSAGE_HISTORY: true,
@@ -2731,7 +2731,7 @@ module.exports = {
                 let tom = message.guild.members.cache.find((m) => m.nickname === j.toString())
                 if (tom) {
                     if (chan.permissionsFor(tom).has(["READ_MESSAGE_HISTORY"])) {
-                        chan.updateOverwrite(tom.id, {
+                        chan.permissionOverwrites.edit(tom.id, {
                             SEND_MESSAGES: false,
                             READ_MESSAGE_HISTORY: true,
                             VIEW_CHANNEL: true,
@@ -2748,7 +2748,7 @@ module.exports = {
             let tempguy = message.guild.members.cache.find((m) => m.nickname === i.toString())
             if (tempguy) {
                 if (zombies.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    zombies.updateOverwrite(tempguy.id, {
+                    zombies.permissionOverwrites.edit(tempguy.id, {
                         SEND_MESSAGES: false,
                     })
                 }
@@ -3004,12 +3004,12 @@ module.exports = {
                                             guy2 = message.guild.members.cache.get(alivePlayers[Math.floor(Math.random() * alivePlayers.length)])
                                         }
                                     }
-                                    lovers.updateOverwrite(guy1.id, {
+                                    lovers.permissionOverwrites.edit(guy1.id, {
                                         VIEW_CHANNEL: true,
                                         READ_MESSAGE_HISTORY: true,
                                         SEND_MESSAGES: false,
                                     })
-                                    lovers.updateOverwrite(guy2.id, {
+                                    lovers.permissionOverwrites.edit(guy2.id, {
                                         VIEW_CHANNEL: true,
                                         READ_MESSAGE_HISTORY: true,
                                         SEND_MESSAGES: false,
@@ -3030,13 +3030,13 @@ module.exports = {
                                         aliveplayers.splice(aliveplayers.indexOf(couple1), 1)
                                         couple[0] = couple1
                                         couple[1] = aliveplayers[Math.floor(Math.random() * aliveplayers.length)]
-                                        lovers.updateOverwrite(couple[0].id, {
+                                        lovers.permissionOverwrites.edit(couple[0].id, {
                                             VIEW_CHANNEL: true,
                                             READ_MESSAGE_HISTORY: true,
                                             SEND_MESSAGES: false,
                                         })
 
-                                        lovers.updateOverwrite(couple[1].id, {
+                                        lovers.permissionOverwrites.edit(couple[1].id, {
                                             VIEW_CHANNEL: true,
                                             READ_MESSAGE_HISTORY: true,
                                             SEND_MESSAGES: false,
