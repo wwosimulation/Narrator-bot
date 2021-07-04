@@ -34,7 +34,7 @@ module.exports = {
                 }
             }
         }
-        
+        voteobject.push({ label: "Cancel", value: "0" })
         votemenu.addOptions(voteobject)
         
         let row = new Discord.MessageActionRow(votemenu)
