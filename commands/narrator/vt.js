@@ -37,7 +37,7 @@ module.exports = {
         voteobject.push({ label: "Cancel", value: "0" })
         votemenu.addOptions(voteobject)
         
-        let row = new Discord.MessageActionRow(votemenu)
+        let row = new Discord.MessageActionRow().addComponents(votemenu)
         voteChat.send({ content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row]})
         dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
         db.set(`commandEnabled`, `yes`)
