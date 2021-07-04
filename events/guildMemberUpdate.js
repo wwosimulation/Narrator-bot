@@ -26,7 +26,7 @@ module.exports = (client) => {
             // prisoner died
             let jailed = newMember.guild.channels.cache.find((c) => c.name === "jailed-chat")
             if (jailed.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
-                jailed.updateOverwrite(newMember, {
+                jailed.permissionOverwrites.edit(newMember, {
                     VIEW_CHANNEL: false,
                 })
             }
@@ -80,11 +80,11 @@ module.exports = (client) => {
                             await abc.send(role.description)
                             let t = await abc.send(alive)
                             await t.delete({ timeout: 5000 })
-                            chan.updateOverwrite(guy.id, { VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: false, SEND_MESSAGES: false })
+                            chan.permissionOverwrites.edit(guy.id, { VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: false, SEND_MESSAGES: false })
                             await t.send(`You have stolen the role from **${newMember.nickname} ${newMember.user.username}**!`)
                             db.set(`role_${guy.id}`, role)
                             if (role.toLowerCase().includes("wolf")) {
-                                newMember.guild.channels.cache.find((c) => c.name === "werewolves-chat").updateOverwrite(guy.id, { VIEW_CHANNEL: true, SEND_MESSAGES: true, READ_MESSAGE_HISTORY: true })
+                                newMember.guild.channels.cache.find((c) => c.name === "werewolves-chat").permissionOverwrites.edit(guy.id, { VIEW_CHANNEL: true, SEND_MESSAGES: true, READ_MESSAGE_HISTORY: true })
                             }
                         }
                     }
@@ -182,7 +182,7 @@ module.exports = (client) => {
                                         ],
                                     })
                                     db.set(`role_${guy.id}`, role)
-                                    chan.updateOverwrite(guy.id, {
+                                    chan.permissionOverwrites.edit(guy.id, {
                                         VIEW_CHANNEL: false,
                                         READ_MESSAGE_HISTORY: false,
                                         SEND_MESSAGES: false,
@@ -207,7 +207,7 @@ module.exports = (client) => {
                                 newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`<:sect_member:774556759523590154> Sect Member **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** commited suicide!`)
                                 guy.roles.add("606131202814115882")
                                 guy.roles.remove("606140092213624859")
-                                sectMember.updateOverwrite(guy.id, { VIEW_CHANNEL: false })
+                                sectMember.permissionOverwrites.edit(guy.id, { VIEW_CHANNEL: false })
                             }
                         }
                     }
@@ -217,7 +217,7 @@ module.exports = (client) => {
             // if someone from the sect dies
             let sectMember = newMember.guild.channels.cache.find((c) => c.name === "sect-members")
             if (sectMember.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
-                sectMember.updateOverwrite(newMember.id, { VIEW_CHANNEL: false })
+                sectMember.permissionOverwrites.edit(newMember.id, { VIEW_CHANNEL: false })
             }
 
             // seer apprentice
@@ -253,7 +253,7 @@ module.exports = (client) => {
                                 for (let b = 0; b < seerapp.length; b++) {
                                     let chan = newMember.guild.channels.cache.get(seerapp[b])
                                     if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                        chan.updateOverwrite(guy.id, {
+                                        chan.permissionOverwrites.edit(guy.id, {
                                             SEND_MESSAGES: false,
                                             VIEW_CHANNEL: false,
                                             READ_MESSAGE_HISTORY: false,
