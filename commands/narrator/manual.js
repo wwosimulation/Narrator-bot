@@ -53,32 +53,35 @@ module.exports = {
     let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
     let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
     let uwu = await message.guild.channels.create(`priv-${real}`, {
-      parent: "748959630520090626",
-      permissionOverwrites: [
-        {
-          id: message.guild.id,
-          deny: ["VIEW_CHANNEL"],
-        },
-        {
-          id: narrator.id,
-          allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-        },
-        {
-          id: mininarr.id,
-          allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "MANAGE_CHANNELS"],
-        },
-      ],
-    })
+      parent: "748959630520090626"
+         })
+      permissionOverwrites.create(message.guild.id, {
+          VIEW_CHANNEL: false
+        }
+      permissionOverwrites.create(narrator.id, {
+          SEND_MESSAGES: true,
+          VIEW_CHANNEL: true,
+          READ_MESSAGE_HISTORY: true,
+          ADD_REACTIONS: true, 
+          MANAGE_CHANNELS: true
+        }
+        permissionOverwrites.create(mininarr.id, {
+          SEND_MESSAGES: true,
+          VIEW_CHANNEL: true,
+          READ_MESSAGE_HISTORY: true,
+          ADD_REACTIONS: true, 
+          MANAGE_CHANNELS: true
+        }
     await uwu.send(getRole(real).description).then((msg) => msg.pin())
 
-    uwu.updateOverwrite(guy.id, {
+    uwu.permissionOverwrites.edit(guy.id, {
       SEND_MESSAGES: true,
       VIEW_CHANNEL: true,
       READ_MESSAGE_HISTORY: true,
     })
 
     if (real.includes("wolf") || real == "sorcerer") {
-      wwchat.updateOverwrite(guy.id, {
+      wwchat.permissionOverwrite.edit(guy.id, {
         SEND_MESSAGES: true,
         VIEW_CHANNEL: true,
         READ_MESSAGE_HISTORY: true,
@@ -86,7 +89,7 @@ module.exports = {
     }
     
     if (real.includes("wolf")) {
-      wwvote.updateOverwrite(guy.id, {
+      wwvote.permissionOverwrites.edit(guy.id, {
         SEND_MESSAGES: true,
         VIEW_CHANNEL: true,
         READ_MESSAGE_HISTORY: true,
