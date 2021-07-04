@@ -7,7 +7,7 @@ module.exports = {
         if (message.channel.name == "priv-forger") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let isNight = db.get(`isNight`)
-            let given = db.get(`given_${message.channel.id}`) ? false : true
+            let given = db.get(`given_${message.channel.id}`)
 
             if (!db.get(`forged_${message.channel.id}`)) {
                 db.set(`forged_${message.channel.id}`, 3)
