@@ -51,11 +51,10 @@ module.exports = {
         }
       }
     }
-    message.channel.send(
-      new Discord.MessageEmbed()
+   let embed = new Discord.MessageEmbed()
         .setTitle("Playerinfo")
         .setDescription(content)
         .setColor("#648620")
-    ).catch(e => message.channel.send(`An error occured: ${e.message}`));
+    message.channel.send({ embeds: [embed] }).catch(e => message.channel.send(`An error occured: ${e.message}`));
   }
 };
