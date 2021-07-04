@@ -2401,7 +2401,7 @@ module.exports = {
                                                                 let eij = await message.guild.channels.create("priv-werewolf", {
                                                                     parent: "748959630520090626"
                                                                 })
-                                                                    eij.permissionOverwrites.create(guy.id, {
+                                                                    eij.permissionOverwrites.create(rlguy.id, {
                                   SEND_MESSAGES: true,
                                   VIEW_CHANNEL: true,
                                   READ_MESSAGE_HISTORY: true, 
@@ -2515,7 +2515,7 @@ module.exports = {
                                 let ff = await message.guild.channels.create("priv-zombie", {
                                     parent: "748959630520090626"
                                 })
-                                    ff.permissionOverwrites.create(guy.id, {
+                                    ff.permissionOverwrites.create(tempguy.id, {
                                   SEND_MESSAGES: true,
                                   VIEW_CHANNEL: true,
                                   READ_MESSAGE_HISTORY: true, 
