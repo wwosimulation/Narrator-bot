@@ -29,5 +29,8 @@
         "shadowadmin": "0.0.4",
         "shuffle-array": "^1.0.1",
         "ws": ">=7.4.6"
+    },
+    "devDependencies": {
+        "prettier": "^2.3.2"
     }
 }
