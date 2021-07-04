@@ -13,6 +13,7 @@ module.exports = {
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+        let wwVote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
         let jailed = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
         let jailer = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").keyArray("id")
         let sk = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").keyArray("id")
@@ -54,7 +55,7 @@ module.exports = {
 
         // checks if a team has won
         let wws = 0
-        let zomb = 0
+        let zombs = 0
         let sect = (newSoloKillers = [])
         newVillage = []
         let vil = 0
@@ -74,7 +75,7 @@ module.exports = {
             if (tempguy) {
                 if (tempguy.roles.cache.has(alive.id)) {
                     if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) wws++
-                    if (db.get(`role_${tempguy.id}`).toLowerCase() == "zombie") zomb++
+                    if (db.get(`role_${tempguy.id}`).toLowerCase() == "zombie") zombs++
                     if (newVillage.includes(db.get(`role_${tempguy}`).toLowerCase())) vil++
                     if (newSoloKillers.includes(db.get(`role_${tempguy}`).toLowerCase())) solo++
                 }
@@ -1302,6 +1303,9 @@ module.exports = {
             }
         }
         console.log("Nice! I have locked players from ww chat")
+        
+        // remove werewolf votes
+        await wwVote.bulkDelete( (await message.channel.messages.fetch({limit: 100})) .filter(m => !m.pinned) )
 
         // medium reviving
         for (let i = 0; i < med.length; i++) {
