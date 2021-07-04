@@ -218,7 +218,7 @@ module.exports = {
             lol.permissionOverwrites.create(message.guild.id, {
                   VIEW_CHANNEL: false,
                     })
-            lol.permissionsOverwrites.create(guy.id, {
+            lol.permissionOverwrites.create(guy.id, {
                   SEND_MESSAGES: true,
                   VIEW_CHANNEL: true,
                   READ_MESSAGE_HISTORY: true,
