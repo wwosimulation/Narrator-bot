@@ -13,13 +13,13 @@ module.exports = {
         let createdAt = message.guild.createdAt
         let url = message.guild.iconURL()
 
-        message.channel.send(
-            new Discord.MessageEmbed()
+        const embed = new Discord.MessageEmbed()
                 .setTitle(name + "'s server")
                 .addField("Members", message.guild.members.cache.size)
                 .addField("Channels", channels)
                 .addField("Roles", roles)
                 .addField("Owner", owner)
+        message.channel.send({ embeds: [embed] })
         )
     },
 }
