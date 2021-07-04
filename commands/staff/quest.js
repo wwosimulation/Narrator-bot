@@ -23,7 +23,7 @@ module.exports = {
 
         let questchan = message.guild.channels.cache.find((c) => c.name === "paid-quest")
 
-        questchan.send(`${guy}`, new Discord.MessageEmbed().setTitle("Quest Claimed").setDescription(`${guy} claimed ${args.join(" ")}!`))
+        questchan.send({ content: `${guy}`, embeds: [new Discord.MessageEmbed().setTitle("Quest Claimed").setDescription(`${guy} claimed ${args.join(" ")}!`)])
 
         fn.updateXP(guy.id, client)
     },
