@@ -2341,7 +2341,7 @@ module.exports = {
                                         let whwqye = message.guild.channels.cache.filter((c) => c.name === `priv-${role.replace(" ", "-").toLowerCase()}`)
                                         whwqye.forEach(async (element) => {
                                             if (element.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                element.(guy.id, {
+                                                element.permissionOverwrites.edit(guy.id, {
                                                     VIEW_CHANNEL: false,
                                                     READ_MESSAGE_HISTORY: false,
                                                     SEND_MESSAGES: false,
