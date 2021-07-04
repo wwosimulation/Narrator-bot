@@ -18,6 +18,6 @@ module.exports = {
           .addField("Roses", `${data.roses} ${emojis.rose}`, true)
           .addField("Inventory:", `Roses: ${data.inventory.rose} ${emojis.rose}\nBouquets: ${data.inventory.bouquet}\nLootboxes: ${data.inventory.lootbox} ${emojis.lootbox}`)
 
-        message.channel.send(embed)
+        message.channel.send({embeds: [embed]})
     },
 }
