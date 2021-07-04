@@ -16,12 +16,35 @@ module.exports = {
         db.set(`wwsVote`, "NO")
         db.set(`skippedpl`, 0)
         let votes = Math.floor(parseInt(aliveRole.members.size) / 2)
-        voteChat.send(`Timer set to ${ms(timer)} <@&${aliveRole.id}>`)
+        
+        let voteobject = []
+        let votemenu = new Discord.MessageSelectMenu()
+            .setCustomID("ig-voting")
+            .setPlaceholder("Select a player to vote!")
+        
+        for (let i = 1 ; i <= 16 ; i++) {
+            let guy = message.guild.members.cache.find(m => m.nickname === i.toString())
+            if (guy) {
+                if (guy.roles.cache.has(aliveRole.id)) {
+                    let tempobject = {
+                        label: `${i} ${guy.user.username}`,
+                        value: i.toString()
+                    }
+                    voteobject.push(tempobject)
+                }
+            }
+        }
+        
+        votemenu.addOptions(voteobject)
+        
+        let row = new Discord.MessageActionRow(votemenu)
+        voteChat.send({ content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row]})
         dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
         db.set(`commandEnabled`, `yes`)
         message.channel.send(`Setting the vote time for ${ms(timer)}`)
         setTimeout(() => {
             voteChat.send(`Time is up!`)
+            db.set(`commandEnabled`, `no`)
         }, timer)
     },
 }
