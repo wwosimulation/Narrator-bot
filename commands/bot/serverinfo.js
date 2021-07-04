@@ -20,6 +20,5 @@ module.exports = {
                 .addField("Roles", roles)
                 .addField("Owner", owner)
         message.channel.send({ embeds: [embed] })
-        )
     },
 }
