@@ -34,76 +34,75 @@ module.exports = {
         //   message.channel.send(content)
         // }
 
-    // const { Permissions } = require("discord.js")
-    // let permissions
-    // console.log(tomato.length)
-    // for (let y = 0; y < tomato.length; y++) {
-    //   let guy
-    //   for (let o = 1; o <= alive.members.size; o++) {
-    //     guy = message.guild.members.cache.find((m) => m.nickname === o.toString())
-    //     permissions = channel.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"])
-    //     if (permissions) {
-    //       channel = message.guild.channels.cache.find((c) => c.id === tomato[y + 1])
-    //       if (!channel) return await message.channel.send("All the channels for this role are occupied!")
-    //     }
-    //   }
-    // }
-    
-    
-    let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
-    let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
-    let uwu = await message.guild.channels.create(`priv-${real}`, {
-      parent: "748959630520090626"
-         })
-      permissionOverwrites.create(message.guild.id, {
-          VIEW_CHANNEL: false
+        // const { Permissions } = require("discord.js")
+        // let permissions
+        // console.log(tomato.length)
+        // for (let y = 0; y < tomato.length; y++) {
+        //   let guy
+        //   for (let o = 1; o <= alive.members.size; o++) {
+        //     guy = message.guild.members.cache.find((m) => m.nickname === o.toString())
+        //     permissions = channel.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"])
+        //     if (permissions) {
+        //       channel = message.guild.channels.cache.find((c) => c.id === tomato[y + 1])
+        //       if (!channel) return await message.channel.send("All the channels for this role are occupied!")
+        //     }
+        //   }
+        // }
+
+        let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
+        let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
+        let uwu = await message.guild.channels.create(`priv-${real}`, {
+            parent: "748959630520090626",
         })
-      permissionOverwrites.create(narrator.id, {
-          SEND_MESSAGES: true,
-          VIEW_CHANNEL: true,
-          READ_MESSAGE_HISTORY: true,
-          ADD_REACTIONS: true, 
-          MANAGE_CHANNELS: true
+        permissionOverwrites.create(message.guild.id, {
+            VIEW_CHANNEL: false,
+        })
+        permissionOverwrites.create(narrator.id, {
+            SEND_MESSAGES: true,
+            VIEW_CHANNEL: true,
+            READ_MESSAGE_HISTORY: true,
+            ADD_REACTIONS: true,
+            MANAGE_CHANNELS: true,
         })
         permissionOverwrites.create(mininarr.id, {
-          SEND_MESSAGES: true,
-          VIEW_CHANNEL: true,
-          READ_MESSAGE_HISTORY: true,
-          ADD_REACTIONS: true, 
-          MANAGE_CHANNELS: true
+            SEND_MESSAGES: true,
+            VIEW_CHANNEL: true,
+            READ_MESSAGE_HISTORY: true,
+            ADD_REACTIONS: true,
+            MANAGE_CHANNELS: true,
         })
-    await uwu.send(getRole(real).description).then((msg) => msg.pin())
+        await uwu.send(getRole(real).description).then((msg) => msg.pin())
 
-    uwu.permissionOverwrites.edit(guy.id, {
-      SEND_MESSAGES: true,
-      VIEW_CHANNEL: true,
-      READ_MESSAGE_HISTORY: true,
-    })
+        uwu.permissionOverwrites.edit(guy.id, {
+            SEND_MESSAGES: true,
+            VIEW_CHANNEL: true,
+            READ_MESSAGE_HISTORY: true,
+        })
 
-    if (real.includes("wolf") || real == "sorcerer") {
-      wwchat.permissionOverwrite.edit(guy.id, {
-        SEND_MESSAGES: true,
-        VIEW_CHANNEL: true,
-        READ_MESSAGE_HISTORY: true,
-      })
-    }
-    
-    if (real.includes("wolf")) {
-      wwvote.permissionOverwrites.edit(guy.id, {
-        SEND_MESSAGES: true,
-        VIEW_CHANNEL: true,
-        READ_MESSAGE_HISTORY: true,
-      })
-    }
-    
-    if (real == "sibling") {
-      let sibling = message.guild.channels.cache.find((c) => c.name === "sibling-chat")
-      sibling.updateOverwrite(guy.id, {
-        SEND_MESSAGES: true,
-        VIEW_CHANNEL: true,
-        READ_MESSAGE_HISTORY: true,
-      })
-    }
-    db.set(`role_${guy.id}`, content)
-  },
+        if (real.includes("wolf") || real == "sorcerer") {
+            wwchat.permissionOverwrite.edit(guy.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true,
+            })
+        }
+
+        if (real.includes("wolf")) {
+            wwvote.permissionOverwrites.edit(guy.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true,
+            })
+        }
+
+        if (real == "sibling") {
+            let sibling = message.guild.channels.cache.find((c) => c.name === "sibling-chat")
+            sibling.updateOverwrite(guy.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true,
+            })
+        }
+        db.set(`role_${guy.id}`, content)
+    },
 }
