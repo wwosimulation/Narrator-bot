@@ -317,7 +317,7 @@ module.exports = {
                         let nbrole1 = await message.guild.channels.create(`priv-${nbr2.replace(" ", "-").toLowerCase()}`, {
                             parent: "748959630520090626"
                         })
-                            t.permissionOverwrites.create(guy.id, {
+                            nbrole1.permissionOverwrites.create(guy1.id, {
                                   SEND_MESSAGES: true,
                                   VIEW_CHANNEL: true,
                                   READ_MESSAGE_HISTORY: true, 
@@ -348,7 +348,7 @@ module.exports = {
                         let nbrole2 = await message.guild.channels.create(`priv-${nbr1.replace(" ", "-").toLowerCase()}`, {
                             parent: "748959630520090626"
                         })
-                            nbrole2.permissionOverwrites.create(guy.id, {
+                            nbrole2.permissionOverwrites.create(guy2.id, {
                                   SEND_MESSAGES: true,
                                   VIEW_CHANNEL: true,
                                   READ_MESSAGE_HISTORY: true, 
