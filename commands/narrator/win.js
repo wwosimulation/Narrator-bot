@@ -84,7 +84,7 @@ module.exports = {
             db.add(`${won}_${guy.id}`, 1)
             db.add(`xp_${guy.id}`, giveXP)
             db.add(`winstreak_${guy.id}`, 1)
-            embed.setTitle("Game Over").setColor("#008800").setDescription(`Win as ${args[0]}: ${giveXP}xp`))
+            embed.setTitle("Game Over").setColor("#008800").setDescription(`Win as ${args[0]}: ${giveXP}xp`)
             let t = await guy.send({embeds: [embed]}).catch((e) => message.channel.send("I could not send the details to " + guy.user.tag + "!"))
             setTimeout(async () => {
                 embed.setTitle("Game Ended").setDescription(`${themsg}\nFinished Game: ${xp.finishGame}xp`)
