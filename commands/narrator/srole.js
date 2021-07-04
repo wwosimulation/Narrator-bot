@@ -153,7 +153,7 @@ module.exports = {
         let showrole = []
         finalRoleList.forEach((x, i) => {
             let adddc = false
-          if (x == "rk") {
+            if (x == "rk") {
                 shuffle(rk)
                 x = rk[0]
                 finalRoleList[i] = x
@@ -187,7 +187,7 @@ module.exports = {
                 adddc = true
             }
             console.log(x)
-            
+
             let role = getRole(x)
             if (!role || role.name == "Unknown Role") {
                 cancel = true
@@ -201,7 +201,7 @@ module.exports = {
                 cancel = true
                 return message.channel.send(`The ${role.name} role is currently not available`)
             }
-            if(adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
+            if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
         if (cancel) return message.channel.send("srole canceled")
         shuffle(finalRoleList)
@@ -319,7 +319,7 @@ module.exports = {
                 })
             }
 
-              if (role.name == "Sect Leader") {
+            if (role.name == "Sect Leader") {
                 let sect = message.guild.channels.cache.filter((c) => c.name.startsWith("sect-members"))
                 let qah = 1
                 sect.forEach(async (e) => {
@@ -381,7 +381,7 @@ module.exports = {
 
         if (allWolves.length > 0) {
             wwsChat.send(allWolves.join("\n"))
-            sorcChats.forEach(x => x.send(allWolves.join("\n")))
+            sorcChats.forEach((x) => x.send(allWolves.join("\n")))
         }
 
         let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}`)

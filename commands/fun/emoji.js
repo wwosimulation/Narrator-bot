@@ -10,12 +10,13 @@ module.exports = {
         if (!emoji) return message.author.send("Unable to find that emoji!")
         if (message.channel.permissionsFor(message.guild.me).has("MANAGE_WEBHOOKS")) {
             let allHooks = await message.channel.fetchWebhooks()
-            let hook = allHooks.find(x => x.owner.id == client.user.id)
-            if(!hook) hook = await message.channel.createWebhook(client.user.username, {
-                avatar: client.user.avatarURL(),
-                reason: `${process.env.PREFIX}emoji command`
-              })
-            hook.send(`${emoji}`, {username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL()})
+            let hook = allHooks.find((x) => x.owner.id == client.user.id)
+            if (!hook)
+                hook = await message.channel.createWebhook(client.user.username, {
+                    avatar: client.user.avatarURL(),
+                    reason: `${process.env.PREFIX}emoji command`,
+                })
+            hook.send(`${emoji}`, { username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
         } else {
             let userEmbed = new Discord.MessageEmbed().setDescription(`<@${message.author.id}>`).setColor("#1FFF43")
             message.channel.send(`${emoji}`, userEmbed)
