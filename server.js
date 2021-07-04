@@ -126,7 +126,7 @@ client.on("ready", async () => {
 
 let maint = db.get("maintenance")
 if (typeof maint == "string" && maint.startsWith("config-")) {
-    client.channels.cache.get(maint.split("-")[1]).send("Config has successfully been reloaded!")
+    client.channels.cache.get(maint.split("-")[1])?.send("Config has successfully been reloaded!")
     db.set("maintenance", false)
 }
 //require("./slash.js")(client)
