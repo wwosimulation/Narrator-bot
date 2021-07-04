@@ -33,6 +33,6 @@ Thank you to all the Staff who come up with new ideas for the bot, and to everyo
 
 `
             )
-        message.channel.send(embed)
+        message.channel.send({embeds: [embed]})
     },
 }
