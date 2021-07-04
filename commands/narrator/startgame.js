@@ -48,7 +48,7 @@ module.exports = {
         setTimeout(async () => {
             message.guild.channels.cache
                 .find((c) => c.name === "game-lobby")
-                .updateOverwrite(alive.id, {
+                .permissionOverwrites.edit(alive.id, {
                     SEND_MESSAGES: false,
                     READ_MESSAGE_HISTORY: false,
                     VIEW_CHANNEL: false,
@@ -58,7 +58,7 @@ module.exports = {
         // changing perms for alive in day-chat
         message.guild.channels.cache
             .find((c) => c.name === "day-chat")
-            .updateOverwrite(alive.id, {
+            .permissionOverwrites.edit(alive.id, {
                 SEND_MESSAGES: false,
                 READ_MESSAGE_HISTORY: true,
                 VIEW_CHANNEL: true,
