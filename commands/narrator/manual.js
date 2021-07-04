@@ -1,38 +1,38 @@
 const db = require("quick.db")
-const {getRole} = require("../../config.js")
+const { getRole } = require("../../config.js")
 
 module.exports = {
-  name: "manual",
-  gameOnly: true,
-  narratorOnly: true,
-  run: async (message, args, client) => {
-    message.react("💋")
-    let content = args[1]
-    let night = await db.fetch(`nightCount`)
-    let day = await db.fetch(`dayCount`)
-    let amtD = day - day * 2 + 1
-    let amtN = night - night * 2 + 1
-    let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-    db.set(`dayCount`, 0)
-    db.set(`nightCount`, 0)
-    let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-    let role = await db.fetch(`role_${guy.id}`, args[1])
-    let real = args[1].toLowerCase()
-    let channel = message.guild.channels.cache.find((c) => c.name === `priv-${real}`)
-    let wwchat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
-    let wwvote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
+    name: "manual",
+    gameOnly: true,
+    narratorOnly: true,
+    run: async (message, args, client) => {
+        message.react("💋")
+        let content = args[1]
+        let night = await db.fetch(`nightCount`)
+        let day = await db.fetch(`dayCount`)
+        let amtD = day - day * 2 + 1
+        let amtN = night - night * 2 + 1
+        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        db.set(`dayCount`, 0)
+        db.set(`nightCount`, 0)
+        let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+        let role = await db.fetch(`role_${guy.id}`, args[1])
+        let real = args[1].toLowerCase()
+        let channel = message.guild.channels.cache.find((c) => c.name === `priv-${real}`)
+        let wwchat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+        let wwvote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
 
-    // let channels = message.guild.channels.cache.filter((c) => c.name === `priv-${real}`)
-    // //console.log(channels)
-    // let tomato = channels.keyArray("id")
-    // let ch = await db.fetch(`channels_${real}`)
-    // console.log(tomato)
-    // if (content.includes("-")) {
-    //   content = content.replace(/(\w+)-(\w+)/g, (_, m1, m2) => `${m1[0].toUpperCase()}${m1.slice(1).toLowerCase()} ${m2[0].toUpperCase()}${m2.slice(1).toLowerCase()}`)
-    // } else {
-    //   content = `${args[1][0].toUpperCase()}${args[1].slice(1).toLowerCase()}`
-    //   message.channel.send(content)
-    // }
+        // let channels = message.guild.channels.cache.filter((c) => c.name === `priv-${real}`)
+        // //console.log(channels)
+        // let tomato = channels.keyArray("id")
+        // let ch = await db.fetch(`channels_${real}`)
+        // console.log(tomato)
+        // if (content.includes("-")) {
+        //   content = content.replace(/(\w+)-(\w+)/g, (_, m1, m2) => `${m1[0].toUpperCase()}${m1.slice(1).toLowerCase()} ${m2[0].toUpperCase()}${m2.slice(1).toLowerCase()}`)
+        // } else {
+        //   content = `${args[1][0].toUpperCase()}${args[1].slice(1).toLowerCase()}`
+        //   message.channel.send(content)
+        // }
 
     // const { Permissions } = require("discord.js")
     // let permissions

@@ -7,12 +7,13 @@ module.exports = {
         if (!client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).roles.cache.has("663389088354664477")) return console.log("No perms for emojis")
         message.delete()
         let newz = ""
-        args.join(" ").toLowerCase()
+        args.join(" ")
+            .toLowerCase()
             .split("")
             .forEach((letter) => {
                 let e = client.guilds.cache.get("850035156445298768").emojis.cache.find((x) => x.name == letter + "_")
                 if (e) {
-                  newz += `${e}`
+                    newz += `${e}`
                 } else newz += `${letter}`
             })
         if (message.channel.permissionsFor(message.guild.me).has("MANAGE_WEBHOOKS")) {

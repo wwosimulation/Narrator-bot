@@ -1,12 +1,11 @@
 const db = require("quick.db")
 
-
 module.exports = {
     name: "forge",
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-forger") {
-            let alive = message.guild.roles.cache.find(r => r.name === "Alive")
+            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let isNight = db.get(`isNight`)
             let given = db.get(`given_${message.channel.id}`) ? false : true
 
@@ -17,7 +16,7 @@ module.exports = {
             console.log(given)
             let forged = db.get(`forged_${message.channel.id}`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("BRUH STOP. I ALREADY HAVE ENOUGH IDIOTS TRYING TO BREAK ME")
-            
+
             if (isNight != "yes") return message.channel.send("Oi stupid, its still day...")
 
             if (given == false) return message.channel.send("You have to give an item before you can forge another item....dumb")
@@ -36,5 +35,5 @@ module.exports = {
                 return message.channel.send("Bruh just shut up. You already lost your forged items.")
             }
         }
-    }
+    },
 }

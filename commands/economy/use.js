@@ -8,7 +8,7 @@ module.exports = {
     name: "use",
     run: async (message, args, client) => {
         if (!args[0]) return message.channel.send("Get a freaking life dude! You gotta specify an item!")
-        let data = players.findOne({user: message.author.id})
+        let data = players.findOne({ user: message.author.id })
 
         if (args[0].toLowerCase() == "lootbox") {
             let quantity = db.get(`lootbox_${message.author.id}`) || 0
@@ -22,7 +22,6 @@ module.exports = {
                 await t.edit(`${emojis[item.id] ? `${emojis[item.id]} ` : ""}You recieved ${item.name} from the lootbox!${item.id == "other" ? "\nPlease contact Shadow for your prize!" : ""}`)
                 db.subtract(`lootbox_${message.author.id}`, 1)
                 if (item.id != "other") db.add(`${item.id == "coin" ? "money" : item.id}_${message.author.id}`, item.amount)
-                
             }, 3000)
         } else if (args[0].toLowerCase() == "icon") {
             let quantity = db.get(`iconinv_${message.author.id}`) || 0
