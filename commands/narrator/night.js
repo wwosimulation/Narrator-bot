@@ -101,7 +101,7 @@ module.exports = {
     }
     */
 
-        dayChat.updateOverwrite(alive.id, {
+        dayChat.permissionOverwrites.edit(alive.id, {
             SEND_MESSAGES: false,
         })
 
@@ -220,7 +220,7 @@ module.exports = {
                 if (guy) {
                     let role = db.get(`role_${guy.id}`)
                     if (role != "Drunk") {
-                        dayChat.updateOverwrite(guy.id, {
+                        dayChat.permissionOverwrites.edit(guy.id, {
                             SEND_MESSAGES: null,
                             READ_MESSAGE_HISTORY: null,
                             VIEW_CHANNEL: null,
@@ -299,7 +299,7 @@ module.exports = {
                         for (let d = 0; d < chan1.length; d++) {
                             let chan = message.guild.channels.cache.get(chan1[d])
                             if (chan.permissionsFor(player).has(["VIEW_CHANNEL"])) {
-                                chan.updateOverwrite(guy1.id, {
+                                chan.permissionOverwrites.edit(guy1.id, {
                                     VIEW_CHANNEL: false,
                                 })
                             }
@@ -308,7 +308,7 @@ module.exports = {
                         for (let d = 0; d < chan2.length; d++) {
                             let chan = message.guild.channels.cache.get(chan2[d])
                             if (chan.permissionsFor(player).has(["VIEW_CHANNEL"])) {
-                                chan2.updateOverwrite(guy2.id, {
+                                chan2.permissionOverwrites.edit(guy2.id, {
                                     VIEW_CHANNEL: false,
                                 })
                             }
@@ -372,11 +372,11 @@ module.exports = {
                     let rrrr = db.get(`role_${who.id}`).toLowerCase()
                     if (rrrr.includes("wolf")) {
                         if (who.roles.cache.has(alive.id)) {
-                            wwChat.updateOverwrite(who.id, {
+                            wwChat.permissionOverwrites.edit(who.id, {
                                 SEND_MESSAGES: true,
                             })
                         } else {
-                            wwChat.updateOverwrite(who.id, {
+                            wwChat.permissionOverwrites.edit(who.id, {
                                 SEND_MESSAGES: false,
                                 VIEW_CHANNEL: false,
                             })
@@ -393,14 +393,14 @@ module.exports = {
                 let prisoner = message.guild.members.cache.find((m) => m.nickname === toJail)
                 if (toJail != "None") {
                     if (prisoner && db.get(`role_${prisoner.id}`)) {
-                        jailedchat.updateOverwrite(prisoner.id, {
+                        jailedchat.permissionOverwrites.edit(prisoner.id, {
                             SEND_MESSAGES: true,
                             VIEW_CHANNEL: true,
                             READ_MESSAGE_HISTORY: true,
                         })
 
                         if (db.get(`role_${prisoner.id}`).toLowerCase().includes("wolf")) {
-                            wwChat.updateOverwrite(prisoner.id, {
+                            wwChat.permissionOverwrites.edit(prisoner.id, {
                                 VIEW_CHANNEL: false,
                             })
                             wwChat.send("Your werewolf teammate **" + prisoner.nickname + " " + prisoner.user.username + " (" + db.get(`role_${prisoner.id}`) + ")** has been jailed!")
@@ -411,7 +411,7 @@ module.exports = {
                         for (let jailsch = 0; jailsch < rolec.length; jailsch++) {
                             let tolock = message.guild.channels.cache.get(rolec[jailsch])
                             if (tolock.permissionsFor(prisoner.id).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                tolock.updateOverwrite(prisoner.id, {
+                                tolock.permissionOverwrites.edit(prisoner.id, {
                                     SEND_MESSAGES: false,
                                 })
                                 tolock.send("You have been jailed! You can't do your actions for tonight! Head to <#606251143466713174> to talk with the jailer!")
@@ -454,7 +454,7 @@ module.exports = {
                                                 let tempchan = message.guild.channels.cache.get(temp[c])
                                                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                     tempchan.send(`You are in a deep sleep! You cannot use your abilities this night!`)
-                                                    tempchan.updateOverwrite(guy.id, {
+                                                    tempchan.permissionOverwrites.edit(guy.id, {
                                                         SEND_MESSAGES: false,
                                                     })
                                                     c = 99
@@ -464,7 +464,7 @@ module.exports = {
                                             setTimeout(function () {
                                                 // if jailed in chat
                                                 if (jailedchat.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                                                    jailedchat.updateOverwrite(guy.id, {
+                                                    jailedchat.permissionOverwrites.edit(guy.id, {
                                                         SEND_MESSAGES: false,
                                                     })
                                                     jailedchat.send(`You are in a deep sleep! You cannot use your abilities this night!`)
@@ -474,14 +474,14 @@ module.exports = {
                                             // zombies
                                             let zc = message.guild.channels.cache.find((c) => c.name === "zombies-chat")
                                             if (role == "Zombie") {
-                                                zc.updateOverwrite(guy.id, {
+                                                zc.permissionOverwrites.edit(guy.id, {
                                                     SEND_MESSAGES: false,
                                                 })
                                             }
                                             // siblings
                                             let sib = message.guild.channels.cache.find((c) => c.name === "siblings-chat")
                                             if (role == "Sibling") {
-                                                sib.updateOverwrite(guy.id, {
+                                                sib.permissionOverwrites.edit(guy.id, {
                                                     SEND_MESSAGES: false,
                                                 })
                                             }
@@ -490,7 +490,7 @@ module.exports = {
                                             for (let d = 0; d < bandits.length; d++) {
                                                 let thechan = message.guild.channels.cache.get(bandits[d])
                                                 if (thechan.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY"])) {
-                                                    thechan.updateOverwrite(guy.id, {
+                                                    thechan.permissionOverwrites.edit(guy.id, {
                                                         SEND_MESSAGES: false,
                                                     })
                                                 }
@@ -509,7 +509,7 @@ module.exports = {
             }
             message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
-                .updateOverwrite(alive.id, {
+                .permissionOverwrites.edit(alive.id, {
                     VIEW_CHANNEL: true,
                 })
 
@@ -574,7 +574,7 @@ module.exports = {
                 if (tempguy) {
                     if (tempguy.roles.cache.has(alive.id)) {
                         if (zombies.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            zombies.updateOverwrite(tempguy.id, {
+                            zombies.permissionOverwrites.edit(tempguy.id, {
                                 SEND_MESSAGES: true,
                             })
                         }
