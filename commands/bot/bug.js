@@ -18,10 +18,10 @@ module.exports = {
             body: `${args.join(" ")}\n\n** **\nThe above bug was reported by ${message.author.tag}\nUser ID: ${message.author.id}\nLocation: #${message.channel.name} (${message.channel.id}) in ${message.guild.name}`,
             labels: ["Bug", "Unverified"],
             owner: github.org,
-            repo: github.repo
+            repo: github.repo,
         }
-        
-        let done = await client.github.request(`POST /repos/${github.org}/${github.repo}/issues`, issue);
+
+        let done = await client.github.request(`POST /repos/${github.org}/${github.repo}/issues`, issue)
         message.channel.send(`The bug has successfully been reported! Please provide any screenshots or more information here:\n<${done.data.html_url}>`)
     },
 }

@@ -41,7 +41,7 @@ const schema = new mongoose.Schema({
         last: { type: Number, default: 0 },
         day: { type: Number, default: 0 },
     },
-    winStreak: { type: Number, default: 0 }
+    winStreak: { type: Number, default: 0 },
 })
 
 module.exports = mongoose.model(`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`, schema)
