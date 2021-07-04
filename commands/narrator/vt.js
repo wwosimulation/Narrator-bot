@@ -16,8 +16,14 @@ module.exports = {
         db.set(`wwsVote`, "NO")
         db.set(`skippedpl`, 0)
         let votes = Math.floor(parseInt(aliveRole.members.size) / 2)
-        voteChat.send(`Timer set to ${ms(timer)} <@&${aliveRole.id}>`)
         dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
+        let droppy = new MessageSelectMenu().setCustomID("votephase")
+        for(let i = 1; i <= aliveRole.members.size; i++) {
+            let player = message.guild.members.cache.find(x => x.nickname == `${i}`)
+            droppy.addOptions({label: `${i}`, value: `votefor-${i}`, description: `${player.user.tag}`})
+        }
+        let row = new MessageActionRow().addComponents(droppy)
+        let m = voteChat.send({content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row]})
         db.set(`commandEnabled`, `yes`)
         message.channel.send(`Setting the vote time for ${ms(timer)}`)
         setTimeout(() => {
