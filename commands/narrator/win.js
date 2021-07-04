@@ -49,7 +49,8 @@ module.exports = {
                     db.set(`winstreak_${guy.id}`, 0)
                     if (guy.presence.status != "offline") {
                         db.add(`xp_${guy.id}`, xp.team.tie)
-                        guy.send(embed.setTitle("Game Over - Tie").setDescription(`Finished Game: ${xp.finishGame}xp`).setFooter("You lost!").setColor(0xff0000))
+                        embed.setTitle("Game Over - Tie").setDescription(`Finished Game: ${xp.finishGame}xp`).setFooter("You lost!").setColor(0xff0000)
+                        guy.send({embeds: [embed]})
                     }
                 }
             }
@@ -84,22 +85,26 @@ module.exports = {
             db.add(`${won}_${guy.id}`, 1)
             db.add(`xp_${guy.id}`, giveXP)
             db.add(`winstreak_${guy.id}`, 1)
-            let t = await guy.send(embed.setTitle("Game Over").setColor("#008800").setDescription(`Win as ${args[0]}: ${giveXP}xp`)).catch((e) => message.channel.send("I could not send the details to " + guy.user.tag + "!"))
+            embed.setTitle("Game Over").setColor("#008800").setDescription(`Win as ${args[0]}: ${giveXP}xp`))
+            let t = await guy.send({embeds: [embed]}).catch((e) => message.channel.send("I could not send the details to " + guy.user.tag + "!"))
             setTimeout(async () => {
-                if (guy.presence.status !== "offline") await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nFinished Game: ${xp.finishGame}xp`))
+                embed.setTitle("Game Ended").setDescription(`${themsg}\nFinished Game: ${xp.finishGame}xp`)
+                if (guy.presence.status !== "offline") await t.edit({embeds: [embed]})
                 themsg += `\nFinished Game: ${xp.finishGame}xp`
                 db.add(`xp_${guy.id}`, xp.finishGame)
             }, 1000)
             setTimeout(async () => {
                 if (db.get(`winstreak_${guy.id}`) > 1) {
-                    await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nWin Streak: ${xp.winStreak}xp`))
+                    embed.setTitle("Game Ended").setDescription(`${themsg}\nWin Streak: ${xp.winStreak}xp`)
+                    await t.edit({embeds: [embed]})
                     db.add(`xp_${guy.id}`, xp.winStreak)
                     themsg += `\nWin Streak: ${xp.winStreak}xp`
                 }
             }, 2000)
             setTimeout(async () => {
                 if (fwotd < today) {
-                    await t.edit(embed.setTitle("Game Ended").setDescription(`${themsg}\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`))
+                    embed.setTitle("Game Ended").setDescription(`${themsg}\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`)
+                    await t.edit({embeds: [embed]})
                     db.add(`xp_${guy.id}`, xp.firstWinOfTheDay)
                     db.set(`firstwinoftheday_${guy.id}`, today)
                     themsg += `\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`
