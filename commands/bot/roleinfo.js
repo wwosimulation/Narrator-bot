@@ -10,6 +10,6 @@ module.exports = {
         .setTitle(role.name)
         .setDescription(role.description)
         .setThumbnail(role.icon)
-        message.channel.send({ embeds: [embed])
+        message.channel.send({ embeds: [embed]})
     },
 }
