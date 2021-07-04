@@ -14,7 +14,7 @@ module.exports = {
             message.guild.channels.cache.find(c => c.name === "day-chat").send("<:shadow:744573018147127394> The Shadow Wolf has manipulated voting today!")
             db.set(`vtshadow`, true)
             db.set(`shadow_${message.channel.id}`, "yes")
-            message.guild.channels.cache.find(c => c.name === "vote-chat").updateOverwrite(alive.id, {
+            message.guild.channels.cache.find(c => c.name === "vote-chat").permissionOverwrites.edit(alive.id, {
                 VIEW_CHANNEL: false
             })
         }
