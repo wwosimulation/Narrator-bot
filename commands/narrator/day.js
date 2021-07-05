@@ -54,7 +54,6 @@ module.exports = {
         let hhtarget = []
 
         // checks if a team has won
-        
 
         // changing perms for allplayers
         for (let x = 1; x < 17; x++) {
