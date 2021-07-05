@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const Discord = require("discord.js")
+const {MessageSelectMenu, MessageActionRow} = require("discord.js")
 const ms = require("ms")
 
 module.exports = {
@@ -18,7 +18,9 @@ module.exports = {
         let votes = Math.floor(parseInt(aliveRole.members.size) / 2)
         dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
         let droppy = new MessageSelectMenu().setCustomID("votephase")
+        droppy.addOptions({label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote`})
         for(let i = 1; i <= aliveRole.members.size; i++) {
+            console.log(i)
             let player = message.guild.members.cache.find(x => x.nickname == `${i}`)
             droppy.addOptions({label: `${i}`, value: `votefor-${i}`, description: `${player.user.tag}`})
         }
