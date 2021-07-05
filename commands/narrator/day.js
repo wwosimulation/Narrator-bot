@@ -62,7 +62,7 @@ module.exports = {
         let solo = 0
         let winner = ""
         narratorChat = 606131703357898778
-        for (let j = 0; j < village; j++) {
+        for (let j = 0; j < village.length; j++) {
             if (j < soloKillers) {
                 let solokiller = soloKillers[j].toLowerCase()
                 newSoloKillers.push(solokiller.replace(" ", "_"))
