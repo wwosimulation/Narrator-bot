@@ -23,7 +23,6 @@ module.exports = {
             for (let i = 0; i < channel.length; i++) {
                 let iChan = message.guild.channels.cache.get(channel[i])
                 if (iChan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    if (db.get(`card_${iChan.id}`) == true) return message.channel.send("This player already has a card!")
                     iChan.send("<:moon:744571127275192394> You have recieved a card from the Fortune Teller! To use it, do `+reveal`")
                     db.set(`card_${iChan.id}`, true)
                 }
