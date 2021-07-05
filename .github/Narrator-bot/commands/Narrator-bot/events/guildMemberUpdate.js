@@ -56,34 +56,30 @@ module.exports = (client) => {
                         }
                         if (guy) {
                             let abc = await newMember.guild.channels.create(`priv-${role.toLowerCase().replace(" ", "-")}`, {
-                                parent: "748959630520090626",
+                                parent: "748959630520090626"
                             })
-                            abc.permissionOverwrites.create(guy.id, {
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                READ_MESSAGE_HISTORY: true,
-                            })
-                            abc.permissionOverwrites.create(newMember.guild.id, {
-                                VIEW_CHANNEL: false,
-                            })
-                            abc.permissionOverwrites.create("606139219395608603", {
-                                READ_MESSAGE_HISTORY: true,
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                USE_EXTERNAL_EMOJIS: true,
-                                ATTACH_FILES: true,
-                                ADD_REACTIONS: true,
-                                EMBED_LINKS: true,
-                            })
-                            abc.permissionOverwrites.create("606276949689499648", {
-                                READ_MESSAGE_HISTORY: true,
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                USE_EXTERNAL_EMOJIS: true,
-                                ATTACH_FILES: true,
-                                ADD_REACTIONS: true,
-                                EMBED_LINKS: true,
-                            })
+                                abc.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true
+                                    })
+                                    abc.permissionOverwrites.create(newMember.guild.id, {
+                                      VIEW_CHANNEL: false
+                                    })
+                                    abc.permissionOverwrites.create("606139219395608603", {
+                                      READ_MESSAGE_HISTORY: true,
+                                      SEND_MESSAGES: true,
+                                      VIEW_CHANNEL: true, USE_EXTERNAL_EMOJIS: true, 
+                                      ATTACH_FILES: true,
+                                      ADD_REACTIONS: true, EMBED_LINKS: true
+                                    })
+                                    abc.permissionOverwrites.create("606276949689499648", {
+                                      READ_MESSAGE_HISTORY: true,
+                                      SEND_MESSAGES: true,
+                                      VIEW_CHANNEL: true, USE_EXTERNAL_EMOJIS: true, 
+                                      ATTACH_FILES: true,
+                                      ADD_REACTIONS: true, EMBED_LINKS: true
+                                    })
                             let role = getRole(role.toLowerCase())
                             await abc.send(role.description)
                             let t = await abc.send(alive)
@@ -169,33 +165,29 @@ module.exports = (client) => {
                                 if (chan.permissionsFor(toGuy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                     guy = toGuy
                                     let ff = await newMember.guild.channels.create(`priv-${role.toLowerCase().replace(" ", "-")}`, {
-                                        parent: "748959630520090626",
+                                        parent: "748959630520090626"
                                     })
-                                    ff.permissionOverwrites.create(guy.id, {
-                                        SEND_MESSAGES: true,
-                                        VIEW_CHANNEL: true,
-                                        READ_MESSAGE_HISTORY: true,
+                                        ff.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true
                                     })
                                     ff.permissionOverwrites.create(newMember.guild.id, {
-                                        VIEW_CHANNEL: false,
+                                      VIEW_CHANNEL: false
                                     })
                                     ff.permissionOverwrites.create("606139219395608603", {
-                                        READ_MESSAGE_HISTORY: true,
-                                        SEND_MESSAGES: true,
-                                        VIEW_CHANNEL: true,
-                                        USE_EXTERNAL_EMOJIS: true,
-                                        ATTACH_FILES: true,
-                                        ADD_REACTIONS: true,
-                                        EMBED_LINKS: true,
+                                      READ_MESSAGE_HISTORY: true,
+                                      SEND_MESSAGES: true,
+                                      VIEW_CHANNEL: true, USE_EXTERNAL_EMOJIS: true, 
+                                      ATTACH_FILES: true,
+                                      ADD_REACTIONS: true, EMBED_LINKS: true
                                     })
                                     ff.permissionOverwrites.create("606276949689499648", {
-                                        READ_MESSAGE_HISTORY: true,
-                                        SEND_MESSAGES: true,
-                                        VIEW_CHANNEL: true,
-                                        USE_EXTERNAL_EMOJIS: true,
-                                        ATTACH_FILES: true,
-                                        ADD_REACTIONS: true,
-                                        EMBED_LINKS: true,
+                                      READ_MESSAGE_HISTORY: true,
+                                      SEND_MESSAGES: true,
+                                      VIEW_CHANNEL: true, USE_EXTERNAL_EMOJIS: true, 
+                                      ATTACH_FILES: true,
+                                      ADD_REACTIONS: true, EMBED_LINKS: true
                                     })
                                     db.set(`role_${guy.id}`, role)
                                     chan.permissionOverwrites.edit(guy.id, {
@@ -245,34 +237,30 @@ module.exports = (client) => {
                             if (db.get(`role_${guy.id}`) == "Seer Apprentice") {
                                 a = 99
                                 let ff = await newMember.guild.channels.create("priv-seer", {
-                                    parent: "748959630520090626",
+                                    parent: "748959630520090626"
                                 })
-                                ff.permissionOverwrites.create(guy.id, {
-                                    SEND_MESSAGES: true,
-                                    VIEW_CHANNEL: true,
-                                    READ_MESSAGE_HISTORY: true,
-                                })
-                                ff.permissionOverwrites.create(newMember.guild.id, {
-                                    VIEW_CHANNEL: false,
-                                })
-                                ff.permissionOverwrites.create("606139219395608603", {
-                                    READ_MESSAGE_HISTORY: true,
-                                    SEND_MESSAGES: true,
-                                    VIEW_CHANNEL: true,
-                                    USE_EXTERNAL_EMOJIS: true,
-                                    ATTACH_FILES: true,
-                                    ADD_REACTIONS: true,
-                                    EMBED_LINKS: true,
-                                })
-                                ff.permissionOverwrites.create("606276949689499648", {
-                                    READ_MESSAGE_HISTORY: true,
-                                    SEND_MESSAGES: true,
-                                    VIEW_CHANNEL: true,
-                                    USE_EXTERNAL_EMOJIS: true,
-                                    ATTACH_FILES: true,
-                                    ADD_REACTIONS: true,
-                                    EMBED_LINKS: true,
-                                })
+                                    ff.permissionOverwrites.create(guy.id, {
+                                  SEND_MESSAGES: true,
+                                  VIEW_CHANNEL: true,
+                                  READ_MESSAGE_HISTORY: true
+                                    })
+                                    ff.permissionOverwrites.create(newMember.guild.id, {
+                                      VIEW_CHANNEL: false
+                                    })
+                                    ff.permissionOverwrites.create("606139219395608603", {
+                                      READ_MESSAGE_HISTORY: true,
+                                      SEND_MESSAGES: true,
+                                      VIEW_CHANNEL: true, USE_EXTERNAL_EMOJIS: true, 
+                                      ATTACH_FILES: true,
+                                      ADD_REACTIONS: true, EMBED_LINKS: true
+                                    })
+                                    ff.permissionOverwrites.create("606276949689499648", {
+                                      READ_MESSAGE_HISTORY: true,
+                                      SEND_MESSAGES: true,
+                                      VIEW_CHANNEL: true, USE_EXTERNAL_EMOJIS: true, 
+                                      ATTACH_FILES: true,
+                                      ADD_REACTIONS: true, EMBED_LINKS: true
+                                    })
                                 let seerapp = newMember.guild.channels.cache.filter((c) => c.name === "priv-seer-apprentice").keyArray("id")
                                 for (let b = 0; b < seerapp.length; b++) {
                                     let chan = newMember.guild.channels.cache.get(seerapp[b])
