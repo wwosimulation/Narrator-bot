@@ -227,12 +227,12 @@ module.exports = {
                         if (eat[j] != "0") {
                             // jailer's protection
                             if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                                        if (guy.roles.cache.has(alive.id)) {
-                                            cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                            cannibal.send(`${alive}`)
-                                            eat[j] = "0" // makes the cannibal's attack towards the player none
-                                        }
-                                    }
+                                if (guy.roles.cache.has(alive.id)) {
+                                    cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    cannibal.send(`${alive}`)
+                                    eat[j] = "0" // makes the cannibal's attack towards the player none
+                                }
+                            }
                         }
 
                         // doc's protection
