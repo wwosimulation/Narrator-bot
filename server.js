@@ -134,3 +134,5 @@ if (typeof maint == "string" && maint.startsWith("config-")) {
 client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
 
 client.login(process.env.TOKEN)
+
+client.on("error", (e) => console.error)

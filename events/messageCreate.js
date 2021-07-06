@@ -108,13 +108,28 @@ module.exports = (client) => {
         timestamps.set(message.author.id, now)
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
 
-        //Execute command if everything is ok
-        try {
-            client.channels.cache.get("832884582315458570").send(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`)
-            command.run(message, args, client)
-        } catch (error) {
+        // //Execute command if everything is ok
+        // try {
+        //     command.run(message, args, client)
+        // } catch (error) {
+        //     console.error(error)
+        //     message.reply("Something went wrong...")
+        // }
+
+        client.channels.cache.get("832884582315458570").send(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`)
+        await command.run(message, args, client).catch(error => {
             console.error(error)
-            message.reply("Something went wrong...")
-        }
+            let emsg = `\`\`\`js\n${error.stack}\`\`\``
+            client.channels.cache.get("861979564514082876").send({
+                embeds: [
+                    new Discord.MessageEmbed()
+                        .setDescription(
+                            `An error occured when ${message.author} attempted the following command: \`${message.content.replace(/(`)/g, "\$1")}\`\n\n**Error Description**${emsg.length > 3500 ? "See below" : emsg}`
+                        )]
+            }
+            )
+            if (emsg.length > 3500) client.channels.cache.get("861979564514082876").send(emsg)
+            message.channel.send(`❌ An error occurred when trying to execute this command. Please contact a dev assistant.`)
+        })
     })
 }
