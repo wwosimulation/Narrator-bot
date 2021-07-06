@@ -74,7 +74,7 @@ module.exports = (client) => {
         if (interaction.customID.startsWith("shoppage")) {
             let page = parseInt(interaction.customID.split("-")[1])
             interaction.update({
-                embeds: [shop.embeds[page - 1]]
+                embeds: [shop.embeds[page - 1]],
             })
         }
     })
