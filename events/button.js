@@ -72,7 +72,6 @@ module.exports = (client) => {
         }
 
         if (interaction.customID.startsWith("shoppage")) {
-            if(interaction.message.author.id != interaction.member.id) return
             let page = parseInt(interaction.customID.split("-")[1])
             interaction.update({
                 embeds: [shop.embeds[page - 1]]
