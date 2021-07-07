@@ -13,7 +13,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy == message.member) return message.reply("Inavlid Target!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("Converting dead players is all the rage isn't it? You are really smart, A-word hole.")
-            if (!wwsChat.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY"])) return message.channel.send("HEY SMART-A WORD DID YOU KNOW YOU CAN CONVERT EVERYONE BY DOING `+suicide`? Everyone is doing that right now!")
+            //if (!wwsChat.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY"])) return message.channel.send("HEY SMART-A WORD DID YOU KNOW YOU CAN CONVERT EVERYONE BY DOING `+suicide`? Everyone is doing that right now!")
             if (ability == "yes")
                 return message.channel.send("Let me see if i hack that...").then((msg) => {
                     setTimeout(function () {
