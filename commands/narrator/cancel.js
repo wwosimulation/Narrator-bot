@@ -8,6 +8,11 @@ module.exports = {
         if (db.get(`game`) == null) return message.channel.send("No game is being hosted")
 
         message.guild.channels.cache.find((c) => c.name === "game-warning").send(`Game was canceled. Sorry for the inconvenience!`)
+        let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members
+
+        t.forEach((e) => {
+            e.roles.remove("606123676668133428")
+        })
         let mid = db.get("game")
         message.guild.channels.cache
             .get("606123818305585167")
