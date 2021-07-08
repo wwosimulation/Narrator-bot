@@ -3078,6 +3078,13 @@ module.exports = {
             }
         }, 4625)
 
+        // deleting the ww-vote
+        let ms = await wwVote.messages.fetch()
+        let md = await ms.filter((m) => m.author.id === "744538701522010174")
+        if (md.size > 0) {
+            await wwVote.bulkDelete(md)
+        }
+
         // Code for all protectors to nullify their protection
         for (let i = 0; i < doc.length; i++) {
             db.set(`heal_${doc[i]}`, null)

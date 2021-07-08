@@ -20,7 +20,7 @@ module.exports = (client) => {
         }
         if (interaction.customID == "igspec") {
             let guy = interaction.member
-            if (guy.roles.cache.has("606131202814115882")) return interaction.reply(`Sorry, you're dead! You can't spectate after you've already played!`, { ephremal: true })
+            if (guy.roles.cache.has("606131202814115882")) return interaction.reply({ content: `Sorry, you're dead! You can't spectate after you've already played!`, ephemeral: true })
             if (!guy.roles.cache.has("691298564508352563")) {
                 guy.setNickname("lazy spectatorz")
             } else {
@@ -37,18 +37,17 @@ module.exports = (client) => {
         if (interaction.customID == "ashish-ignarr") {
             let guild = client.guilds.cache.get("465795320526274561")
             let member = await guild.members.fetch({ user: interaction.member.id, force: true }).catch((e) => e)
-            if (!member.id) return interaction.reply("You aren't a narrator! Error: 404 Not found", { ephemeral: true })
+            if (!member.id) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
             let mininarr = guild.roles.cache.get("606123620732895232")
             let narrator = guild.roles.cache.get("606123619999023114")
-            if (!member.roles.cache.has(mininarr.id) && !member.roles.cache.has(narrator.id)) return interaction.reply("You aren't a narrator! Error: 500 Access blocked", { ephemeral: true })
+            if (!member.roles.cache.has(mininarr.id) && !member.roles.cache.has(narrator.id)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
             if (member.roles.cache.has(mininarr.id)) {
-                if (interaction.member.roles.cache.has("606276949689499648")) return interaction.reply("You already have this role!", { ephemeral: true })
-                if (db.get(`game`)) return interaction.reply('A game is already being hosted, and as per the staff rules, minis can\'t "narrate specate"!', { ephemeral: true })
-                if (db.get(`hoster`) != interaction.member.id && db.get(`game`)) return interaction.reply("Unfortunately, you aren't the host, and because you're a narrator in traning, you aren't allowed to narrate spectate!", { ephemeral: true })
+                if (interaction.member.roles.cache.has("606276949689499648")) return interaction.reply({ content: "You already have this role!", ephemeral: true })
+                if (db.get(`hoster`) != interaction.member.id && db.get(`game`)) return interaction.reply({ content: "Unfortunately, you aren't the host, and because you're a narrator in training, you aren't allowed to narrate spectate!", ephemeral: true })
                 interaction.member.roles.add("606276949689499648")
             }
             if (member.roles.cache.has(narrator.id)) {
-                if (interaction.member.roles.cache.has("606139219395608603")) return interaction.reply("You already have this role!", { ephemeral: true })
+                if (interaction.member.roles.cache.has("606139219395608603")) return interaction.reply({ content: "You already have this role!", ephemeral: true })
                 interaction.member.roles.add("606139219395608603")
             }
             interaction.deferUpdate()
@@ -56,8 +55,8 @@ module.exports = (client) => {
         if (interaction.customID.startsWith("gwjoin")) {
             let gameName = interaction.customID.split("-")[1]
             let guy = interaction.member
-            if (guy.roles.cache.has("606123628693684245")) return interaction.reply("You are game banned! You cannot join any games", { ephemeral: true })
-            if (guy.roles.cache.has("606123676668133428")) return interaction.reply("You have already joined the game! Check <#606123823074377740> for the link!", { ephemeral: true })
+            if (guy.roles.cache.has("606123628693684245")) return interaction.reply({ content: "You are game banned! You cannot join any games", ephemeral: true })
+            if (guy.roles.cache.has("606123676668133428")) return interaction.reply({ content: "You have already joined the game! Check <#606123823074377740> for the link!", ephemeral: true })
             guy.roles.add("606123676668133428").catch((e) => interaction.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
             interaction.guild.channels.cache.find((x) => x.name == "joined").send(`${guy.user.tag} joins match ${gameName}\nUser ID: ${guy.id}`)
             let jl = await interaction.guild.channels.cache.find((x) => x.name == "joined-link")
