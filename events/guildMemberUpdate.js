@@ -155,7 +155,7 @@ module.exports = (client) => {
                     if (guyCheck && guyCheck.roles.cache.has("606140092213624859") && chan.permissionsFor(toGuy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         // mortician reveal here. target is the player number
                         let targetUser = newMember.guild.members.cache.find((m) => m.nickname === target.toString())
-                        let teams = { village: [], werewolf: [] }
+                        let teams = { village: [], werewolf: [], solo: [] }
                         for (let g = 1; g < 17; g++) {
                             let user = newMember.guild.members.cache.filter((m) => m.nickname === b.toString() && !m.roles.cache.has(ids.alive))
                             if (user) {
@@ -166,9 +166,14 @@ module.exports = (client) => {
                         }
                         let targetRole = db.get(`role_${targetUser.id}`)
                         let targetTeam = getRole(role).team
-                        let result = shuffle(teams[targetTeam.toLowerCase()])
-                        let resultUser = newMember.guild.members.cache.get(result)
-                        chan.send(`Your target (**${targetUser.nickname} ${targetUser.user.username}**) has died! **${resultUser.nickname} ${resultUser.user.username}** is on the same team as them!`)
+                        let findTeam = teams[targetTeam.toLowerCase()]
+                        if (findTeam.length < 1) {
+                            chan.send(`Your target (**${targetUser.nickname} ${targetUser.user.username}**) has died! They had no teammates!`)
+                        } else {
+                            let result = shuffle(teams[targetTeam.toLowerCase()])
+                            let resultUser = newMember.guild.members.cache.get(result)
+                            chan.send(`Your target (**${targetUser.nickname} ${targetUser.user.username}**) has died! **${resultUser.nickname} ${resultUser.user.username}** is on the same team as them!`)
+                        }
                     }
                 }
             }
