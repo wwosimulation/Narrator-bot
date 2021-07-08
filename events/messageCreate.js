@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const config = require("../config.js")
+const config = require("../config")
 const db = require("quick.db")
 //const mongo = require("../roles.find(x => x.name.toLowerCase() == role2.replace("-", " "))")
 const { players, botbans } = require("../db.js")

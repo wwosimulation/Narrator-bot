@@ -1,6 +1,6 @@
 const { MessageActionRow } = require("discord.js")
 const db = require("quick.db")
-const { ids } = require("../../config.js")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "reset",

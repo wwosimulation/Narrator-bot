@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { fn } = require("../../config.js")
+const { fn } = require("../../config")
 
 module.exports = {
     name: "updatexp",

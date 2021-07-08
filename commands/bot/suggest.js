@@ -1,4 +1,4 @@
-const { ids, github } = require("../../config.js")
+const { ids, github } = require("../../config")
 
 module.exports = {
     name: "suggest",

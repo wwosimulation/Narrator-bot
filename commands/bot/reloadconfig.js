@@ -6,7 +6,8 @@ module.exports = {
         if (!client.botAdmin(message.author.id)) return
         db.set("maintenance", "config-" + message.channel.id)
         message.channel.send("Updating config... please stand by...")
-        await cmd.run("cd ~/wwosim/config && git pull")
-        await cmd.run(`pm2 restart ${process.env.pm_id}`)
+        let one = cmd.get(`cd ${process.cwd()} && git pull && git submodule update --remote`)
+        console.log(one)
+        let two = cmd.get(`pm2 restart ${process.env.pm_id}`)
     },
 }

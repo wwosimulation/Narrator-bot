@@ -1,4 +1,4 @@
-const config = require("../../config.js")
+const config = require("../../config")
 const db = require("quick.db")
 
 module.exports = {

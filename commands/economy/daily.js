@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const ms = require("parse-ms")
-const config = require("../../config.js")
+const config = require("../../config")
 const { players } = require("../../db.js")
 
 module.exports = {

@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getRole } = require("../config.js")
+const { getRole } = require("../config")
 module.exports = (client) => {
     //Bot updating roles
     client.on("guildMemberUpdate", async (oldMember, newMember) => {

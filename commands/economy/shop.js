@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 
-const { shop, emojis, fn } = require("../../config.js")
+const { shop, emojis, fn } = require("../../config")
 
 module.exports = {
     name: "shop",
