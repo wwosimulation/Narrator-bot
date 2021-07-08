@@ -103,7 +103,7 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     }
 }
 
-client.debug = async (options = {game: false}) => {
+client.debug = async (options = { game: false }) => {
     let data = {}
     data.night = db.get(`nightCount`)
     data.isNight = db.get(`isNight`)
@@ -111,8 +111,8 @@ client.debug = async (options = {game: false}) => {
     let alive = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Alive")
     let dead = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Dead")
     let players = []
-    alive.members.forEach(x => players.push({status: "alive", id: x.id, tag: x.user.tag, role: db.get(`role_${x.id}`)}))
-    dead.members.forEach(x => players.push({status: "dead", id: x.id, tag: x.user.tag, role: db.get(`role_${x.id}`)}))
+    alive.members.forEach((x) => players.push({ status: "alive", id: x.id, tag: x.user.tag, role: db.get(`role_${x.id}`) }))
+    dead.members.forEach((x) => players.push({ status: "dead", id: x.id, tag: x.user.tag, role: db.get(`role_${x.id}`) }))
     data.players = players
     return data
 }
@@ -120,7 +120,7 @@ client.debug = async (options = {game: false}) => {
 //Bot on startup
 client.on("ready", async () => {
     client.config = {}
-    let commit = require('child_process').execSync('git rev-parse --short HEAD').toString().trim()
+    let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae and beta testes on commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
     //ShadowAdmin initialize
