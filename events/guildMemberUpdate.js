@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const { getRole, ids } = require("../config")
+const shuffle = require("shuffle-array")
 module.exports = (client) => {
     //Bot updating roles
     client.on("guildMemberUpdate", async (oldMember, newMember) => {
@@ -152,26 +153,34 @@ module.exports = (client) => {
                 for (let b = 1; b < 17; b++) {
                     let guyCheck = newMember.guild.members.cache.find((m) => m.nickname === b.toString())
                     //console.log(toGuy.nickname)
-                    if (guyCheck && guyCheck.roles.cache.has("606140092213624859") && chan.permissionsFor(toGuy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    if (guyCheck && guyCheck.roles.cache.has("606140092213624859") && chan.permissionsFor(guyCheck).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         // mortician reveal here. target is the player number
                         let targetUser = newMember.guild.members.cache.find((m) => m.nickname === target.toString())
-                        let teams = { village: [], werewolf: [], solo: [] }
+                        let teams = { village: [], werewolf: [], solo: [], zombie: [], sect: [] }
                         for (let g = 1; g < 17; g++) {
-                            let user = newMember.guild.members.cache.filter((m) => m.nickname === b.toString() && !m.roles.cache.has(ids.alive))
-                            if (user) {
+                            let user = newMember.guild.members.cache.filter((m) => m.nickname === g.toString() && m.roles.cache.has(ids.alive)).first()
+                            if (user && user.id != targetUser.id && user.id != guyCheck.id) {
+                                console.log(user.id)
                                 let role = db.get(`role_${user.id}`)
                                 let team = getRole(role).team
-                                if (!team == "Solo") teams[team.toLowerCase()].push(user.id)
+                                console.log(role, team, user.id)
+                                if (team == "Werewolf") teams.werewolf.push(user.id)
+                                if (team == "Village") teams.village.push(user.id)
+                                if (team == "Zombie") teams.zombie.push(user.id)
+                                if (team == "Sect") teams.sect.push(user.id)
                             }
                         }
+                        console.log(teams)
                         let targetRole = db.get(`role_${targetUser.id}`)
                         let targetTeam = getRole(targetRole).team
                         let findTeam = teams[targetTeam.toLowerCase()]
+                        console.log(findTeam)
                         if (findTeam.length < 1) {
                             chan.send(`Your target (**${targetUser.nickname} ${targetUser.user.username}**) has died! They had no teammates!`)
                         } else {
-                            let result = shuffle(teams[targetTeam.toLowerCase()])
+                            let result = shuffle(teams[targetTeam.toLowerCase()])[0]
                             let resultUser = newMember.guild.members.cache.get(result)
+                            console.log(result, resultUser.id)
                             chan.send(`Your target (**${targetUser.nickname} ${targetUser.user.username}**) has died! **${resultUser.nickname} ${resultUser.user.username}** is on the same team as them!`)
                         }
                     }
