@@ -54,17 +54,17 @@ module.exports = {
         let uwu = await message.guild.channels.create(`priv-${real}`, {
             parent: "748959630520090626",
         })
-        permissionOverwrites.create(message.guild.id, {
+        uwu.permissionOverwrites.create(message.guild.id, {
             VIEW_CHANNEL: false,
         })
-        permissionOverwrites.create(narrator.id, {
+        uwu.permissionOverwrites.create(narrator.id, {
             SEND_MESSAGES: true,
             VIEW_CHANNEL: true,
             READ_MESSAGE_HISTORY: true,
             ADD_REACTIONS: true,
             MANAGE_CHANNELS: true,
         })
-        permissionOverwrites.create(mininarr.id, {
+        uwu.permissionOverwrites.create(mininarr.id, {
             SEND_MESSAGES: true,
             VIEW_CHANNEL: true,
             READ_MESSAGE_HISTORY: true,
@@ -80,7 +80,7 @@ module.exports = {
         })
 
         if (real.includes("wolf") || real == "sorcerer") {
-            wwchat.permissionOverwrite.edit(guy.id, {
+            wwchat.permissionOverwrites.edit(guy.id, {
                 SEND_MESSAGES: true,
                 VIEW_CHANNEL: true,
                 READ_MESSAGE_HISTORY: true,
@@ -97,7 +97,7 @@ module.exports = {
 
         if (real == "sibling") {
             let sibling = message.guild.channels.cache.find((c) => c.name === "sibling-chat")
-            sibling.updateOverwrite(guy.id, {
+            sibling.permissionOverwrites.edit(guy.id, {
                 SEND_MESSAGES: true,
                 VIEW_CHANNEL: true,
                 READ_MESSAGE_HISTORY: true,

@@ -49,6 +49,7 @@ module.exports = {
             let kww = message.guild.channels.cache.filter((c) => c.name === "priv-kitten-wolf").keyArray("id")
             let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").keyArray("id")
             let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").keyArray("id")
+            let mortician = message.guild.channels.cache.filter((c) => c.name === "priv-mortician").keyArray("id")
 
             db.delete(`excludes`)
 
@@ -124,6 +125,10 @@ module.exports = {
 
             for (let i = 0; i < det.length; i++) {
                 db.set(`detCheck_${det[i]}`, null)
+            }
+
+            for (let i = 0; i < mortician.length; i++) {
+                db.set(`mortician_${det[i]}`, null)
             }
 
             for (let i = 0; i < priest.length; i++) {
