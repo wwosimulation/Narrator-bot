@@ -103,6 +103,20 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     }
 }
 
+client.debug = async (options = {game: false}) => {
+    let data = {}
+    data.night = db.get(`nightCount`)
+    data.isNight = db.get(`isNight`)
+    data.isDay = db.get(`isDay`)
+    let alive = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Alive")
+    let dead = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Dead")
+    let players = []
+    alive.members.forEach(x => players.push({status: "alive", id: x.id, tag: x.user.tag, role: db.get(`role_${x.id}`)}))
+    dead.members.forEach(x => players.push({status: "dead", id: x.id, tag: x.user.tag, role: db.get(`role_${x.id}`)}))
+    data.players = players
+    return data
+}
+
 //Bot on startup
 client.on("ready", async () => {
     client.config = {}
