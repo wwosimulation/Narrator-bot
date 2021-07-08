@@ -165,7 +165,7 @@ module.exports = (client) => {
                             }
                         }
                         let targetRole = db.get(`role_${targetUser.id}`)
-                        let targetTeam = getRole(role).team
+                        let targetTeam = getRole(targetRole).team
                         let findTeam = teams[targetTeam.toLowerCase()]
                         if (findTeam.length < 1) {
                             chan.send(`Your target (**${targetUser.nickname} ${targetUser.user.username}**) has died! They had no teammates!`)
