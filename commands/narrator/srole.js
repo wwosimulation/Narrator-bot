@@ -2,7 +2,7 @@ const shuffle = require("shuffle-array")
 const Discord = require("discord.js")
 const db = require("quick.db")
 const pull = require("array-pull")
-const { getRole, fn } = require("../../config.js")
+const { getRole, fn } = require("../../config")
 
 module.exports = {
     name: "srole",

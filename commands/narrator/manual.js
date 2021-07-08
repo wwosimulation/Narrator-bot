@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getRole } = require("../../config.js")
+const { getRole } = require("../../config")
 
 module.exports = {
     name: "manual",

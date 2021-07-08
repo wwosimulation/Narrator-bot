@@ -1,4 +1,4 @@
-const { fn, emojis } = require("../../config.js")
+const { fn, emojis } = require("../../config")
 const { players } = require("../../db")
 
 module.exports = {

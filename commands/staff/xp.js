@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
-const { fn } = require("../../config.js")
+const { fn } = require("../../config")
 const { players } = require("../../db.js")
 
 module.exports = {

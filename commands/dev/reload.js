@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
-const config = require("../../config.js")
+const config = require("../../config")
 const fs = require("fs")
 
 module.exports = {

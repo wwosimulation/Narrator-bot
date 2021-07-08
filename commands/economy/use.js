@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
-const { lootbox, emojis } = require("../../config.js")
+const { lootbox, emojis } = require("../../config")
 const shuffle = require("shuffle-array")
 const { players } = require("../../db.js")
 

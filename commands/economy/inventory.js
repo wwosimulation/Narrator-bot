@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const { emojis, fn } = require("../../config.js")
+const { emojis, fn } = require("../../config")
 const { players } = require("../../db")
 
 module.exports = {

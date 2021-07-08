@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const { cmi, emojis } = require("../../config.js")
+const { cmi, emojis } = require("../../config")
 
 module.exports = {
     name: "cmi",

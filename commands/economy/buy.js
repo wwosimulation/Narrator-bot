@@ -1,4 +1,4 @@
-const config = require("../../config.js")
+const config = require("../../config")
 const pluralize = require("pluralize")
 const { players } = require("../../db.js")
 

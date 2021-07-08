@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
-const { fn, xp, roles, soloKillers } = require("../../config.js")
+const { fn, xp, roles, soloKillers } = require("../../config")
 
 module.exports = {
     name: "win",
