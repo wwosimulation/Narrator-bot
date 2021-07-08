@@ -23,7 +23,6 @@ module.exports = (client) => {
             }
         }
 
-
         // prisoner died
         let jailed = newMember.guild.channels.cache.find((c) => c.name === "jailed-chat")
         if (jailed.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
@@ -159,7 +158,6 @@ module.exports = (client) => {
                 }
             }
         }
-
 
         // doppelganger
         let dp = newMember.guild.channels.cache.filter((c) => c.name === "priv-doppelganger").keyArray("id")
@@ -455,7 +453,6 @@ module.exports = (client) => {
                     }
                 }
             }
-
         }
     })
 }
