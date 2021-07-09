@@ -1546,11 +1546,13 @@ module.exports = {
         // drunk not being able to speak
         for (let i = 1; i <= alive.members.size + dead.members.size; i++) {
             let guy = message.guild.members.cache.find((m) => m.nickname === i.toString())
+            if(guy) {
             let role = db.get(`role_${guy.id}`)
             if (role == "Drunk") {
                 dayChat.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: false,
                 })
+            }
             }
         }
 
