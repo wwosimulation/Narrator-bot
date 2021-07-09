@@ -26,7 +26,7 @@ module.exports = {
             }
             if (channe.name.includes("wolf")) {
                 let wwvote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
-                wwsVote.permissionOverwrites.edit(guy.id, {
+                wwvote.permissionOverwrites.edit(guy.id, {
                     READ_MESSAGE_HISTORY: null,
                     SEND_MESSAGES: null,
                     VIEW_CHANNEL: null,
