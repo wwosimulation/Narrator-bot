@@ -17,7 +17,7 @@ module.exports = {
         db.set(`skippedpl`, 0)
         let votes = Math.floor(parseInt(aliveRole.members.size) / 2)
         dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
-        let droppy = new MessageSelectMenu().setCustomID("votephase")
+        let droppy = new MessageSelectMenu().setCustomId("votephase")
         droppy.addOptions({ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` })
         for (let i = 1; i <= aliveRole.members.size; i++) {
             console.log(i)

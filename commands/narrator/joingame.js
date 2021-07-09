@@ -13,8 +13,8 @@ module.exports = {
             db.set("started", "no")
             message.react("👍")
             // } else if (args[0] == "code") {
-            //   let join = new MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomID("igjoin")
-            //   let spec = new MessageButton().setStyle("PRIMARY").setLabel("Spectate").setCustomID("igspec")
+            //   let join = new MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomId("igjoin")
+            //   let spec = new MessageButton().setStyle("PRIMARY").setLabel("Spectate").setCustomId("igspec")
             //   const enterbtn = new MessageActionRow().addComponents(join,spec)
             //   const lobbybtn = new MessageActionRow().addComponents(spec)
             //   let enter = await message.guild.channels.cache.get("606132299372822582").send("Welcome to the game! Select an option below.", {components: [enterbtn]})
@@ -26,8 +26,8 @@ module.exports = {
 }
 
 /* 
-+eval let join = new Discord.MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomID("igjoin");
-let spec = new Discord.MessageButton().setStyle("PRIMARY").setLabel("Spectate").setCustomID("igspec");
++eval let join = new Discord.MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomId("igjoin");
+let spec = new Discord.MessageButton().setStyle("PRIMARY").setLabel("Spectate").setCustomId("igspec");
 const enterbtn = new Discord.MessageActionRow().addComponents(join,spec);
 const lobbybtn = new Discord.MessageActionRow().addComponents(spec);
 message.channel.messages.fetch("853192704333840414").then(m => m.edit({content: m.content, components: [lobbybtn]}))
