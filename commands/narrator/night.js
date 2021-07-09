@@ -315,63 +315,63 @@ module.exports = {
                         }
 
                         let nbrole1 = await message.guild.channels.create(`priv-${nbr2.replace(" ", "-").toLowerCase()}`, {
-                            parent: "748959630520090626"
+                            parent: "748959630520090626",
                         })
-                            nbrole1.permissionOverwrites.create(guy1.id, {
-                                  SEND_MESSAGES: true,
-                                  VIEW_CHANNEL: true,
-                                  READ_MESSAGE_HISTORY: true, 
-                                  })
-                                nbrole1.permissionOverwrites.create(message.guild.id, {
-                                  VIEW_CHANNEL: false,
-                                    })
-                                nbrole1.permissionOverwrites.create(narrator.id, {
-                                  SEND_MESSAGES: true,
-                                  VIEW_CHANNEL: true,
-                                  READ_MESSAGE_HISTORY: true,
-                                  MANAGE_CHANNELS: true,
-                                  MENTION_EVERYONE: true,
-                                  ATTACH_FILES: true,
-                                    })
-                                nbrole1.permissionOverwrites.create(narrator.id, {
-                                  SEND_MESSAGES: true,
-                                  VIEW_CHANNEL: true,
-                                  READ_MESSAGE_HISTORY: true,
-                                  MANAGE_CHANNELS: true,
-                                  MENTION_EVERYONE: true,
-                                  ATTACH_FILES: true,
-                                    })
+                        nbrole1.permissionOverwrites.create(guy1.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                        })
+                        nbrole1.permissionOverwrites.create(message.guild.id, {
+                            VIEW_CHANNEL: false,
+                        })
+                        nbrole1.permissionOverwrites.create(narrator.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                            MANAGE_CHANNELS: true,
+                            MENTION_EVERYONE: true,
+                            ATTACH_FILES: true,
+                        })
+                        nbrole1.permissionOverwrites.create(narrator.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                            MANAGE_CHANNELS: true,
+                            MENTION_EVERYONE: true,
+                            ATTACH_FILES: true,
+                        })
                         await nbrole1.send(db.get(`roleinfo_${nbr2.toLowerCase()}`))
                         await nbrole1.send(`_ _\n\nYou have been switched by the naugty boy!`)
                         await nbrole1.send(`${alive}`)
 
                         let nbrole2 = await message.guild.channels.create(`priv-${nbr1.replace(" ", "-").toLowerCase()}`, {
-                            parent: "748959630520090626"
+                            parent: "748959630520090626",
                         })
-                            nbrole2.permissionOverwrites.create(guy2.id, {
-                                  SEND_MESSAGES: true,
-                                  VIEW_CHANNEL: true,
-                                  READ_MESSAGE_HISTORY: true, 
-                                  })
-                                nbrole2.permissionOverwrites.create(message.guild.id, {
-                                  VIEW_CHANNEL: false,
-                                    })
-                                nbrole2.permissionOverwrites.create(narrator.id, {
-                                  SEND_MESSAGES: true,
-                                  VIEW_CHANNEL: true,
-                                  READ_MESSAGE_HISTORY: true,
-                                  MANAGE_CHANNELS: true,
-                                  MENTION_EVERYONE: true,
-                                  ATTACH_FILES: true,
-                                    })
-                                nbrole2.permissionOverwrites.create(narrator.id, {
-                                  SEND_MESSAGES: true,
-                                  VIEW_CHANNEL: true,
-                                  READ_MESSAGE_HISTORY: true,
-                                  MANAGE_CHANNELS: true,
-                                  MENTION_EVERYONE: true,
-                                  ATTACH_FILES: true,
-                                    })
+                        nbrole2.permissionOverwrites.create(guy2.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                        })
+                        nbrole2.permissionOverwrites.create(message.guild.id, {
+                            VIEW_CHANNEL: false,
+                        })
+                        nbrole2.permissionOverwrites.create(narrator.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                            MANAGE_CHANNELS: true,
+                            MENTION_EVERYONE: true,
+                            ATTACH_FILES: true,
+                        })
+                        nbrole2.permissionOverwrites.create(narrator.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                            MANAGE_CHANNELS: true,
+                            MENTION_EVERYONE: true,
+                            ATTACH_FILES: true,
+                        })
                         await nbrole2.send(db.get(`roleinfo_${nbr1.toLowerCase()}`))
                         await nbrole2.send(`_ _\n\nYou have been switched by the naugty boy!`)
                         await nbrole2.send(`${alive}`)
