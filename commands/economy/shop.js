@@ -19,7 +19,7 @@ module.exports = {
                     new MessageButton()
                         .setStyle("SUCCESS")
                         .setLabel(`Page ${i + 1}`)
-                        .setCustomId(`shoppage-${i + 1}`)
+                        .setcustomId(`shoppage-${i + 1}`)
                 )
             }
             let m = await message.reply({ embeds: [shop.embeds[0]], components: [row] })

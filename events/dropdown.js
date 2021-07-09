@@ -1,10 +1,13 @@
 const db = require("quick.db")
-const { shop } = require("../config")
+const { shop, ids } = require("../config")
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isSelectMenu()) return
-        if (interaction.customID.startsWith("votephase")) {
+        if (interaction.customId.startsWith("votephase")) {
+            console.log(interaction)
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
+            if (interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
+            console.log(interaction.values[0].split("-")[1])
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
@@ -25,10 +28,10 @@ module.exports = (client) => {
                         await tmestodel.delete()
                     }
                 }
+                let omg = await interaction.message.channel.send(`${interaction.member.nickname} voted ${interaction.values[0].split("-")[1]}`)
+                db.set(`vote_${interaction.member.id}`, interaction.values[0].split("-")[1])
+                db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
-            let omg = await interaction.message.channel.send(`${interaction.member.nickname} voted ${interaction.values[0].split("-")[1]}`)
-            db.set(`vote_${interaction.member.id}`, interaction.values[0].split("-")[1])
-            db.set(`votemsgid_${interaction.member.id}`, omg.id)
         }
     })
 }

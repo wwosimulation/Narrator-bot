@@ -180,7 +180,6 @@ module.exports = (client) => {
                         console.log(result, resultUser.id)
                         chan.send(`<@&${ids.alive}>\nYour target (**${newMember.nickname} ${newMember.user.username}**) has died! **${resultUser.nickname} ${resultUser.user.username}** is on the same team as them!`)
                     }
-                    db.delete(`mortician_${chan.id}`)
                 }
             }
         }
