@@ -25,7 +25,7 @@ module.exports = {
             embed.setTitle("CMI Store").setColor("#1FFF43")
         }
 
-        let m = await message.inlineReply(embeds[0])
+        let m = await message.reply({embeds: [embeds[0]]})
         client.paginator(message.author.id, m, embeds, 0)
 
         // if (boughtroles.length > 0) {

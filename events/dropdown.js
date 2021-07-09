@@ -4,9 +4,9 @@ module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isSelectMenu()) return
         if (interaction.customID.startsWith("votephase")) {
-            if (interaction.values[0].split("-")[1] == interaction.member.nickname) {
-                return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
-            } else if (interaction.values[0].split("-")[1] == "cancel") {
+
+            if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
+            if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
                 let voted = db.get(`votemsgid_${interaction.message.channel.id}`)
                 if (voted) {
