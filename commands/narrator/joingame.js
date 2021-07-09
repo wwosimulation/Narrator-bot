@@ -25,16 +25,3 @@ module.exports = {
     },
 }
 
-/* 
-<<<<<<< Updated upstream
-+eval let join = new Discord.MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomID("igjoin");
-let spec = new Discord.MessageButton().setStyle("PRIMARY").setLabel("Spectate").setCustomID("igspec");
-=======
-+eval let join = new Discord.MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomId("igjoin");
-let spec = new Discord.MessageButton().setStyle("PRIMARY").setLabel("Spectate").setCustomId("igspec");
->>>>>>> Stashed changes
-const enterbtn = new Discord.MessageActionRow().addComponents(join,spec);
-const lobbybtn = new Discord.MessageActionRow().addComponents(spec);
-message.channel.messages.fetch("853192704333840414").then(m => m.edit({content: m.content, components: [lobbybtn]}))
-
-*/

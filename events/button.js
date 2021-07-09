@@ -3,8 +3,8 @@ const { shop } = require("../config")
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
-        console.log(interaction.customID)
-        if (interaction.customID == "igjoin") {
+        console.log(interaction.customId)
+        if (interaction.customId == "igjoin") {
             if (db.get("started") == "yes") return interaction.reply(`The game has already started!`, { ephemeral: true })
             let guy = interaction.member
             if (guy.roles.cache.has("606140764682190849")) guy.roles.remove("606140764682190849") //spec
@@ -18,7 +18,7 @@ module.exports = (client) => {
             await interaction.guild.channels.cache.get("606132387587293195").send(`${interaction.member.user.tag} joined the game!`)
             interaction.deferUpdate()
         }
-        if (interaction.customID == "igspec") {
+        if (interaction.customId == "igspec") {
             let guy = interaction.member
             if (guy.roles.cache.has("606131202814115882")) return interaction.reply({ content: `Sorry, you're dead! You can't spectate after you've already played!`, ephemeral: true })
             if (!guy.roles.cache.has("691298564508352563")) {
@@ -34,7 +34,7 @@ module.exports = (client) => {
             interaction.deferUpdate()
             await interaction.guild.channels.cache.get("606132387587293195").send(`${interaction.member.user.tag} is now spectating the game!`)
         }
-        if (interaction.customID == "ashish-ignarr") {
+        if (interaction.customId == "ashish-ignarr") {
             let guild = client.guilds.cache.get("465795320526274561")
             let member = await guild.members.fetch({ user: interaction.member.id, force: true }).catch((e) => e)
             if (!member.id) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
@@ -52,8 +52,8 @@ module.exports = (client) => {
             }
             interaction.deferUpdate()
         }
-        if (interaction.customID.startsWith("gwjoin")) {
-            let gameName = interaction.customID.split("-")[1]
+        if (interaction.customId.startsWith("gwjoin")) {
+            let gameName = interaction.customId.split("-")[1]
             let guy = interaction.member
             if (guy.roles.cache.has("606123628693684245")) return interaction.reply({ content: "You are game banned! You cannot join any games", ephemeral: true })
             if (guy.roles.cache.has("606123676668133428")) return interaction.reply({ content: "You have already joined the game! Check <#606123823074377740> for the link!", ephemeral: true })
@@ -70,8 +70,8 @@ module.exports = (client) => {
             interaction.update({ embeds: [embed] })
         }
 
-        if (interaction.customID.startsWith("shoppage")) {
-            let page = parseInt(interaction.customID.split("-")[1])
+        if (interaction.customId.startsWith("shoppage")) {
+            let page = parseInt(interaction.customId.split("-")[1])
             interaction.update({
                 embeds: [shop.embeds[page - 1]],
             })
