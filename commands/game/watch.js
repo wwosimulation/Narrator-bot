@@ -14,7 +14,7 @@ module.exports = {
             if (!guy || guy == ownself) return await message.reply("Invalid target!")
             if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) return await message.reply(`You or your target isn't alive!`)
             if (target != null) return await message.reply(`You are already watching ${target}!`)
-            if (dayCount <= 1) return message.channel.send("You can only start watching a player after day 1!")
+            if (dayCount < 1) return message.channel.send("You can only start watching a player after day 1!")
             db.set(`mortician_${message.channel.id}`, args[0])
             message.react("✅")
         }

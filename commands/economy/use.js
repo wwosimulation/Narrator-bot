@@ -15,7 +15,7 @@ module.exports = {
             if (quantity == 0) return message.channel.send("You don't have this item!")
             //return message.channel.send("Lootboxes are currently disabled right now, as the RNG was found to be flawed. Enjoy saving them up for the release in a couple days, and keep an eye on <#606123881824256000> for when they will be available to use!")
 
-            let t = await message.inlineReply("Opening Lootbox...")
+            let t = await message.reply("Opening Lootbox...")
 
             let item = shuffle(lootbox)[0]
             setTimeout(async () => {

@@ -5,14 +5,13 @@ const { shop, emojis, fn } = require("../../config")
 module.exports = {
     name: "shop",
     run: async (message, args, client) => {
-
         if (["color", "colors", "colour", "colours"].includes(args[0])) {
             let embed = new MessageEmbed().setDescription("Available colors:\n\nUse `+buy <color> role` to purchase a color")
             shop.colors.forEach((x) => {
                 embed.description += `${x.name} Color\n`
             })
             embed.setTitle("Wolvesville Simulation Store").setColor("#1FFF43")
-            return message.channel.send({embeds: [embed]})
+            return message.channel.send({ embeds: [embed] })
         } else {
             let row = new MessageActionRow()
             for (let i = 0; i < shop.embeds.length; i++) {
@@ -20,7 +19,7 @@ module.exports = {
                     new MessageButton()
                         .setStyle("SUCCESS")
                         .setLabel(`Page ${i + 1}`)
-                        .setCustomID(`shoppage-${i + 1}`)
+                        .setcustomId(`shoppage-${i + 1}`)
                 )
             }
             let m = await message.reply({ embeds: [shop.embeds[0]], components: [row] })

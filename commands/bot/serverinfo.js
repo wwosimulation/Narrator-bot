@@ -14,11 +14,11 @@ module.exports = {
         let url = message.guild.iconURL()
 
         const embed = new Discord.MessageEmbed()
-                .setTitle(name + "'s server")
-                .addField("Members", message.guild.members.cache.size)
-                .addField("Channels", channels)
-                .addField("Roles", roles)
-                .addField("Owner", owner)
+            .setTitle(name + "'s server")
+            .addField("Members", message.guild.members.cache.size)
+            .addField("Channels", channels)
+            .addField("Roles", roles)
+            .addField("Owner", owner)
         message.channel.send({ embeds: [embed] })
     },
 }
