@@ -1,3 +1,5 @@
+const { players } = require("../../db")
+
 module.exports = {
     name: "namechange",
     run: async (message, args, client) => {
