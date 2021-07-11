@@ -19,6 +19,7 @@ module.exports = {
         let sk = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").keyArray("id")
         let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").keyArray("id")
         let canni = message.guild.channels.cache.filter((c) => c.name === "priv-cannibal").keyArray("id")
+        let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").keyArray("id")
         let doc = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").keyArray("id")
         let bg = message.guild.channels.cache.filter((c) => c.name === "priv-bodyguard").keyArray("id")
         let witch = message.guild.channels.cache.filter((c) => c.name === "priv-witch").keyArray("id")
@@ -443,12 +444,12 @@ module.exports = {
 
         // checking the defences against the player
         for (let i = 0; i < kills.length; i++) {
-            let toSK = message.guild.channels.cache.get(sk[i])
+            let chan1 = message.guild.channels.cache.get(sk[i])
             let guy = message.guild.members.cache.find((m) => m.nickname === kills[i])
             for (let x = 1; x <= alive.members.size + dead.members.size; x++) {
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === x.toString())
                 if (tempguy) {
-                    if (toSK.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    if (chan1.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         THESK = tempguy
                     }
                 }
@@ -2981,6 +2982,272 @@ module.exports = {
                 }
             }
         }, 4500)
+
+        //hacker
+        let THEHACKER = []
+        for (let z = 0; z < hacker.length; z++) {
+            let chan1 = message.guild.channnels.cache.get(hacker[z])
+            for (let y = 1; y < 17; y++) {
+                let tempguy = message.guild.members.cache.find((m) => m.nickname === y.toString())
+                if (tempguy) {
+                    THEHACKER = tempguy
+                    if (chan1.permissionsFor(tempguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        if (tempguy.roles.cache.has(alive.id)) {
+                            let hack = db.get(`hacker_${chan.id}`) || []
+                            if (hack.length > 0) {
+                                let guys = []
+                                let roles = []
+                                for (let i = 0; i < hack.length; i++) {
+                                    let guy = message.guild.members.cache.find((m) => m.nickname === check[x])
+                                    if (guy) {
+                                        if (guy.roles.cache.has(alive.id)) {
+                                            guys.push(guy)
+                                            let hacked = db.get(`hacked_${guy.id}`) || false
+                                            if (hacked == false) {
+                                                let role = db.get(`role_${guy.id}`)
+                                                chan1.send(`${guy.nickname} ${guy.username} is ${role}`)
+                                                db.set(`hacked_${guy.id}`, true)
+                                            } else {
+                                                if (hack[i] != "0") {
+                                                    for (let j = 0; j < bh.length; j++) {
+                                                        let trap = db.get(`setTrap_${bh[j]}`)
+                                                        let active = db.get(`trapActive_${bh[j]}`)
+                                                        for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
+                                                            let hhhhh = message.guild.members.cache.find((me) => me.nickname === m.toString())
+                                                            let chan = message.guild.channels.cache.get(bh[j])
+                                                            if (chan.permissionsFor(hhhhh).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                                m = 99
+                                                                if (!hhhhh.roles.cache.has(alive.id)) {
+                                                                    trap = null
+                                                                    active = false
+                                                                }
+                                                            }
+                                                        }
+                                                        if (trap == hack[i] && active == true) {
+                                                            hack[i] = "0" // makes the serial killer's attack towards the player none
+                                                            let toSend = message.guild.channels.cache.get(bh[j])
+                                                            chan.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                            chan.send(`${alive}`)
+                                                            toSend.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                                                            toSend.send(`${alive}`)
+                                                            db.set(`setTrap_${bh[j]}`, null)
+                                                            db.set(`trapActive_${bh[j]}`, false)
+                                                            j = 99
+                                                        }
+                                                    }
+                                                }
+                                
+                                                // checks if the user being killed is jailed
+                                                if (hack[i] != "0") {
+                                                    if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+                                                        let jailerGuy = message.guild.channels.cache.find((c) => c.name === "priv-jailer")
+                                                        for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
+                                                            let isJailer = message.guild.members.cache.find((m) => m.nickname === j.toString())
+                                                            if (jailerGuy.permissionsFor(isJailer).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                                j = 99
+                                                                if (isJailer.roles.cache.has(alive.id)) {
+                                                                    chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                                    chan1.send(`${alive}`)
+                                                                    hack[i] = "0" // makes the serial killer's attack towards the player none
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                
+                                                if (hack[i] != "0") {
+                                                    // checking if the doc's protection exists
+                                                    for (let j = 0; j < doc.length; j++) {
+                                                        let protection = db.get(`heal_${doc[j]}`)
+                                                        if (protection == guy.nickname) {
+                                                            hack[i] = "0" // makes the serial killer's attack towards the player none
+                                                            chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                            chan1.send(`${alive}`)
+                                                            let toSend = message.guild.channels.cache.get(doc[j])
+                                                            toSend.send(`${alive}`)
+                                                            toSend.send(`<:heal:744536259673718894> Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                                                            j = 99
+                                                        }
+                                                    }
+                                                }
+                                
+                                                // checking if the witch's potion is on the player
+                                                if (hack[i] != "0") {
+                                                    for (let j = 0; j < witch.length; j++) {
+                                                        let potion = db.get(`potion_${witch[j]}`)
+                                                        if (potion == hack[i]) {
+                                                            hack[i] = "0" // makes the serial killer's attack towards the player none
+                                                            db.set(`potion_${witch[j]}`, null)
+                                                            db.set(`witchAbil_${witch[j]}`, 1)
+                                                            let toSend = message.guild.channels.cache.get(witch[j])
+                                                            chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                            chan1.send(`${alive}`)
+                                                            toSend.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                                                            toSend.send(`${alive}`)
+                                                            j = 99
+                                                        }
+                                                    }
+                                                }
+                                
+                                                // checking if the forger's shield is on the player
+                                                // forger
+                                                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
+                                                for (let k = 0; k < chans.length; k++) {
+                                                    let tempchan = message.guild.channels.cache.get(chans[k])
+                                                    if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                        let shield = db.get(`shield_${tempchan.id}`)
+                                                        if (shield == true) {
+                                                            tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
+                                                            tempchan.send(`${alive}`)
+                                                            chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                            chan1.send(`${alive}`)
+                                                            hack[i] = "0"
+                                                            db.set(`shield_${tempchan.id}`, false)
+                                                        }
+                                                    }
+                                                }
+                                
+                                                // checking if the bodyguard's protection is on the player
+                                                if (hack[i] != "0") {
+                                                    for (let j = 0; j < bg.length; j++) {
+                                                        let chan = message.guild.channels.cache.get(bg[j])
+                                                        let lives = db.get(`lives_${chan.id}`)
+                                                        let guard = db.get(`guard_${chan.id}`)
+                                                        if (guard == hack[i]) {
+                                                            if (lives == 2) {
+                                                                chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                                                chan.send(`${alive}`)
+                                                                chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                                chan1.send(`${alive}`)
+                                                                hack[i] = "0"
+                                                                db.subtract(`lives_${chan.id}`, 1)
+                                                            } else {
+                                                                hack[i] = "0"
+                                                                for (let k = 1; k <= 16; k++) {
+                                                                    let tempbg = message.guild.members.cache.find((m) => m.nickname === k.toString())
+                                                                    if (tempbg) {
+                                                                        if (tempbg.roles.cache.has(alive.id)) {
+                                                                            if (chan.permissionsFor(tempbg).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                                                dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${tempbg.nickname} ${tempbg.user.username} (Bodyguard)**!`)
+                                                                                tempbg.roles.add(dead.id)
+                                                                                tempbg.roles.remove(alive.id)
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                
+                                                // serial killer attacking bodyguard
+                                                if (hack[i] != "0") {
+                                                    let role = db.get(`role_${guy.id}`)
+                                                    if (role == "Bodyguard") {
+                                                        for (let j = 0; j < bg.length; j++) {
+                                                            let chan = message.guild.channels.cache.get(bg[j])
+                                                            if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                                if (guy.roles.cache.has(alive.id)) {
+                                                                    let lives = db.get(`lives_${chan.id}`)
+                                                                    if (lives == 2) {
+                                                                        chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                                                        chan.send(`${alive}`)
+                                                                        chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                                        chan1.send(`${alive}`)
+                                                                        db.subtract(`lives_${chan.id}`, 1)
+                                                                        hack[i] = "0"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                
+                                                // tough guy protections
+                                                if (hack[i] != "0") {
+                                                    for (let j = 0; j < tg.length; j++) {
+                                                        let chan = message.guild.channels.cache.get(tg[j])
+                                                        let tough = db.get(`tough_${chan.id}`)
+                                                        if (tough == hack[i]) {
+                                                            for (let k = 1; k <= 16; k++) {
+                                                                let thetg = message.guild.members.cache.find((m) => m.nickname === k.toString())
+                                                                if (thetg) {
+                                                                    if (thetg.roles.cache.has(alive.id)) {
+                                                                        if (chan.permissionsFor(thetg).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                                            k = 99
+                                                                            chan.send(`<:guard:744536167109886023> You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${THEHACKER.nickname} ${THEHACKER.user.username} (Hacker)**! You will die at the end of the day!`)
+                                                                            chan.send(`${alive}`)
+                                                                            chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                                            chan1.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**! He now knows your role!`)
+                                                                            chan1.send(`${alive}`)
+                                                                            hack[i] = "0"
+                                                                            db.set(`wounded_${chan.id}`, true)
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                
+                                                if (hack[i] != "0") {
+                                                    if (db.get(`role_${guy.id}`) == "Tough Guy") {
+                                                        for (let j = 0; j < tg.length; j++) {
+                                                            let chan = message.guild.channels.cache.get(tg[j])
+                                                            if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                                                                chan.send(`<:guard:744536167109886023> You have been attacked by **${THEHACKER.nickname} ${THEHACKER.user.username} (Hacker)**! You will die at the end of the day!`)
+                                                                chan.send(`${alive}`)
+                                                                chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                                chan1.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**! He now knows your role!`)
+                                                                chan1.send(`${alive}`)
+                                                                db.set(`wounded_${chan.id}`, true)
+                                                                hack[i] = "0"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                
+                                                // red lady protection
+                                                if (hack[i] != "0") {
+                                                    if (db.get(`role_${guy.id}`) == "Red Lady") {
+                                                        for (let j = 0; j < rl.length; j++) {
+                                                            let chan = message.guild.channels.cache.get(rl[j])
+                                                            if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                                if (db.get(`visit_${chan.id}`)) {
+                                                                    chan.send(`<:guard:744536167109886023> Someone tried attacking you while you were away!`)
+                                                                    chan.send(`${alive}`)
+                                                                    chan1.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                                    chan1.send(`${alive}`)
+                                                                    hack[i] = "0"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                
+                                                // hacker attacking
+                                                if (hack[i] != "0") {
+                                                    let role = db.get(`role_${guy.id}`)
+                                                    dayChat.send(`The hacker deleted **${guy.nickname} ${guy.user.username} (${role})**!`)
+                                                    if (role == "Cupid") {
+                                                        cupidKilled = true
+                                                    }
+                                                    guy.roles.add(dead.id)
+                                                    guy.roles.remove(alive.id)
+                                                    killedplayers.push(guy.id)
+                                                    thekiller.push(THEHACKER.id)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
 
         // lovers
         setTimeout(async () => {
