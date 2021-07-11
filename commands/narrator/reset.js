@@ -133,7 +133,7 @@ module.exports = {
             }
 
             for (let i = 0; i < hacker.length; i++) {
-                db.set(`hacker_${det[i]}`, null)
+                db.set(`hack_${det[i]}`, null)
             }
 
             for (let i = 0; i < priest.length; i++) {
