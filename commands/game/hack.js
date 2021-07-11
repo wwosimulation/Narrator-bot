@@ -5,7 +5,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-hacker") {
-            let isNight = db.get('isNight')
+            let isNight = db.get("isNight")
             let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0])
             let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You are dead")
@@ -26,5 +26,5 @@ module.exports = {
                 message.react("👍")
             }
         }
-    }
+    },
 }
