@@ -3036,7 +3036,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 // checks if the user being killed is jailed
                                                 if (hack[i] != "0") {
                                                     if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
@@ -3054,7 +3054,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 if (hack[i] != "0") {
                                                     // checking if the doc's protection exists
                                                     for (let j = 0; j < doc.length; j++) {
@@ -3070,7 +3070,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 // checking if the witch's potion is on the player
                                                 if (hack[i] != "0") {
                                                     for (let j = 0; j < witch.length; j++) {
@@ -3088,7 +3088,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 // checking if the forger's shield is on the player
                                                 // forger
                                                 let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
@@ -3106,7 +3106,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 // checking if the bodyguard's protection is on the player
                                                 if (hack[i] != "0") {
                                                     for (let j = 0; j < bg.length; j++) {
@@ -3139,7 +3139,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 // serial killer attacking bodyguard
                                                 if (hack[i] != "0") {
                                                     let role = db.get(`role_${guy.id}`)
@@ -3162,7 +3162,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 // tough guy protections
                                                 if (hack[i] != "0") {
                                                     for (let j = 0; j < tg.length; j++) {
@@ -3189,7 +3189,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 if (hack[i] != "0") {
                                                     if (db.get(`role_${guy.id}`) == "Tough Guy") {
                                                         for (let j = 0; j < tg.length; j++) {
@@ -3206,7 +3206,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 // red lady protection
                                                 if (hack[i] != "0") {
                                                     if (db.get(`role_${guy.id}`) == "Red Lady") {
@@ -3224,7 +3224,7 @@ module.exports = {
                                                         }
                                                     }
                                                 }
-                                
+
                                                 // hacker attacking
                                                 if (hack[i] != "0") {
                                                     let role = db.get(`role_${guy.id}`)
@@ -3242,7 +3242,6 @@ module.exports = {
                                     }
                                 }
                             }
-
                         }
                     }
                 }
