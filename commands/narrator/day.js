@@ -187,7 +187,7 @@ module.exports = {
                     THEHACKER = tempguy
                     if (chan1.permissionsFor(tempguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (tempguy.roles.cache.has(alive.id)) {
-                            let hack = db.get(`hacker_${chan.id}`) || []
+                            let hack = db.get(`hack_${chan.id}`) || []
                             if (hack.length > 0) {
                                 let guys = []
                                 let roles = []
@@ -430,6 +430,7 @@ module.exports = {
                                                     guy.roles.remove(alive.id)
                                                     killedplayers.push(guy.id)
                                                     thekiller.push(THEHACKER.id)
+                                                    db.set(`hack_${chan.id}`)
                                                 }
                                             }
                                         }
