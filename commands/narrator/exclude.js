@@ -17,7 +17,7 @@ module.exports = {
         for (let arg of args) {
             arg = arg.toLowerCase().replace("-", " ")
             if (!roles.includes(arg)) return message.channel.send(`Role \`${arg}\` not found!`)
-            rolestoexclude.push(arguments)
+            rolestoexclude.push(arg)
         }
 
         console.log(rolestoexclude)
