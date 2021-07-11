@@ -16,7 +16,7 @@ module.exports = {
                 if (i == 0) {
                     if (!guy1 || guy1.id == message.author.id) return message.reply("Invalid Target!")
                     if (!guy1.roles.cache.has(alive.id)) return message.channel.send("You cannot hack a dead player!")
-                    check.push(guy1.nickname)
+                    hack.push(guy1.nickname)
                 } else {
                     if (!guy2 || guy2.id == message.author.id) return message.reply("Invalid Target!")
                     if (!guy2.roles.cache.has(alive.id)) return message.channel.send("You cannot hack a dead player!")

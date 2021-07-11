@@ -50,6 +50,7 @@ module.exports = {
             let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").keyArray("id")
             let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").keyArray("id")
             let mortician = message.guild.channels.cache.filter((c) => c.name === "priv-mortician").keyArray("id")
+            let hacker = message.guild.channels.cache.filter((c) => c.name === "hacker").keyArray("id")
 
             db.delete(`excludes`)
 
@@ -129,6 +130,10 @@ module.exports = {
 
             for (let i = 0; i < mortician.length; i++) {
                 db.set(`mortician_${det[i]}`, null)
+            }
+
+            for (let i = 0; i < hacker.length; i++) {
+                db.set(`hacker_${det[i]}`, null)
             }
 
             for (let i = 0; i < priest.length; i++) {
@@ -266,7 +271,7 @@ module.exports = {
             for (let i = 0; i < zombie.length; i++) {
                 db.set(`bite_${zombie[i]}`, null)
             }
-            // removing cards, shield and sword from players
+            // removing cards, shield, hack and sword from players
             let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).keyArray("id")
             for (let i = 0; i < allChannels.length; i++) {
                 if (db.get(`card_${allChannels[i]}`) == true) {
@@ -280,6 +285,9 @@ module.exports = {
                 }
                 if (db.get(`bitten_${allChannels[i]}`) == true) {
                     db.delete(`bitten_${allChannels[i]}`)
+                }
+                if (db.get(`hacked_${allChannels[i]}`) == true) {
+                    db.delete(`hacked_${allChannels[i]}`)
                 }
             }
 
