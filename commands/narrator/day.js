@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
+const { getRole } = require("../../config")
 
 module.exports = {
     name: "day",
@@ -1181,7 +1182,7 @@ module.exports = {
                                 MENTION_EVERYONE: true,
                                 ATTACH_FILES: true,
                             })
-                            await t.send(getRole("erewolf").description)
+                            await t.send(getRole("werewolf").description)
                             await t.send("You have been bitten! You are a werewolf now!")
                             thecurse.permissionOverwrites.edit(guy.id, {
                                 SEND_MESSAGES: false,
