@@ -1181,7 +1181,7 @@ module.exports = {
                                 MENTION_EVERYONE: true,
                                 ATTACH_FILES: true,
                             })
-                            await t.send(db.get(`roleinfo_werewolf`))
+                            await t.send(getRole("erewolf").description)
                             await t.send("You have been bitten! You are a werewolf now!")
                             thecurse.permissionOverwrites.edit(guy.id, {
                                 SEND_MESSAGES: false,
@@ -2384,7 +2384,7 @@ module.exports = {
                                             ATTACH_FILES: true,
                                         })
 
-                                        await ff.send(db.get(`roleinfo_werewolf`))
+                                        await ff.send(getRole("werewolf").description)
                                         await ff.send(`_ _\n\n_ _\n\nYou have been converted into a Werewolf!`)
                                         let sos = await ff.send(`${alive}`)
                                         setTimeout(async () => {
@@ -2427,7 +2427,7 @@ module.exports = {
                                                                     MENTION_EVERYONE: true,
                                                                     ATTACH_FILES: true,
                                                                 })
-                                                                await eij.send(db.get(`roleinfo_werewolf`))
+                                                                await eij.send(getRole("werewolf").description)
                                                                 await eij.semd(`_ _\n\nYou have been converted into a Werewolf!`)
                                                                 let iwq = await eij.send(`${alive}`)
                                                                 setTimeout(async () => {
@@ -2541,7 +2541,7 @@ module.exports = {
                                     MENTION_EVERYONE: true,
                                     ATTACH_FILES: true,
                                 })
-                                await ff.send(db.get(`roleinfo_zombie`))
+                                await ff.send(getRole("zombie").description)
                                 let tee = await ff.send(`${alive}`)
                                 await tee.delete({ timeout: 3000 })
                                 zombies.permissionOverwrites.edit(tempguy.id, {
