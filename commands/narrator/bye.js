@@ -82,6 +82,6 @@ const clearSettings = async (message) => {
 }
 
 const removeRoles = async (message) => {
-  const temproles = message.guild.channels.cache.get('748959630520090626')
-  temproles.children.forEach(channel => channel.delete())
+    const temproles = message.guild.channels.cache.get("748959630520090626")
+    temproles.children.forEach((channel) => channel.delete())
 }
