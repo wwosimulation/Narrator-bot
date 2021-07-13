@@ -57,8 +57,8 @@ module.exports = {
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
             jailedchat.permissionOverwrites.edit(guy.id, {
-                            SEND_MESSAGES: false,
-                        })
+                SEND_MESSAGES: false,
+            })
         } else if (message.channel.name == "priv-marksman") {
             let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
