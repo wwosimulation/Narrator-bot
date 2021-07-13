@@ -43,6 +43,7 @@ module.exports = {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
+            let jailedchat = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
             let isDay = db.get(`isDay`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You aren't alive")
             let jailed = db.get(`jail_${message.channel.id}`)
@@ -55,6 +56,9 @@ module.exports = {
             dayChat.send(`<:bullet:744571767204478996> The Jailer executed their prisoner last night! **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** is dead!`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
+            jailedchat.permissionOverwrites.edit(guy.id, {
+                            SEND_MESSAGES: false,
+                        })
         } else if (message.channel.name == "priv-marksman") {
             let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
