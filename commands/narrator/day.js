@@ -1,6 +1,5 @@
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
-const { getRole } = require("../../config")
 
 module.exports = {
     name: "day",
@@ -20,6 +19,7 @@ module.exports = {
         let sk = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").keyArray("id")
         let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").keyArray("id")
         let canni = message.guild.channels.cache.filter((c) => c.name === "priv-cannibal").keyArray("id")
+        let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").keyArray("id")
         let doc = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").keyArray("id")
         let bg = message.guild.channels.cache.filter((c) => c.name === "priv-bodyguard").keyArray("id")
         let witch = message.guild.channels.cache.filter((c) => c.name === "priv-witch").keyArray("id")
@@ -47,7 +47,7 @@ module.exports = {
         let sheriff = message.guild.channels.cache.filter((c) => c.name === "priv-sheriff").keyArray("id")
         let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").keyArray("id")
         let cupidKilled = false
-        let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist"]
+        let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker"]
         let strongww = ["Werewolf", "Junior Werewolf", "Nightmare Werewolf", "Kitten Wolf", "Wolf Shaman", "Wolf Pacifist", "Shadow Wolf", "Guardian Wolf", "Werewolf Berserk", "Alpha Werewolf", "Wolf Seer", "Lone Wolf"]
         let village = ["Villager", "Doctor", "Bodyguard", "Tough Guy", "Red Lady", "Gunner", "Jailer", "Priest", "Marksman", "Seer", "Aura Seer", "Spirit Seer", "Seer Apprentice", "Detective", "Medium", "Mayor", "Witch", "Avenger", "Beast Hunter", "Pacifist", "Grumpy Grandma", "Cupid", "President", "Cursed", "Loudmouth", "Flower Child", "Sheriff", "Fortune Teller", "Forger", "Grave Robber", "Santa Claus", "Easter Bunny", "Sibling", "Drunk", "Mad Scientist", "Idiot", "Wise Man", "Doppelganger", "Naughty Boy", "Handsome Prince", "Sect Hunter"]
         let killedplayers = []
@@ -197,7 +197,6 @@ module.exports = {
                             if (guy.roles.cache.has(alive.id)) {
                                 guys.push(guy)
                                 let hacked = db.get(`hacked_${guy.id}`) || false
-                                let role = db.get(`role_${guy.id}`)
                                 if (hacked == false) {
                                     chan1.send(`${guy.nickname} ${guy.user.username} is ${role}`)
                                     db.set(`hacked_${guy.id}`, true)
@@ -708,12 +707,12 @@ module.exports = {
 
         // checking the defences against the player
         for (let i = 0; i < kills.length; i++) {
-            let toSK = message.guild.channels.cache.get(sk[i])
+            let chan1 = message.guild.channels.cache.get(sk[i])
             let guy = message.guild.members.cache.find((m) => m.nickname === kills[i])
             for (let x = 1; x <= alive.members.size + dead.members.size; x++) {
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === x.toString())
                 if (tempguy) {
-                    if (toSK.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    if (chan1.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         THESK = tempguy
                     }
                 }
@@ -1103,7 +1102,7 @@ module.exports = {
             // checking if the wolves tried attacking solo killers or wise man
             if (wwKill != "0") {
                 console.log("It is not 0 (2)")
-                if (role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Wise Man" || role == "Corruptor" || role == "Bandit" || role == "Cannibal" || role == "Alchemist" || role == "Illusionist") {
+                if (role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Wise Man" || role == "Corruptor" || role == "Bandit" || role == "Cannibal" || role == "Alchemist" || role == "Illusionist" || role == "Hacker") {
                     wwKill = "0"
                     wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                 }
@@ -1446,7 +1445,7 @@ module.exports = {
                                 MENTION_EVERYONE: true,
                                 ATTACH_FILES: true,
                             })
-                            await t.send(getRole("werewolf").description)
+                            await t.send(db.get(`roleinfo_werewolf`))
                             await t.send("You have been bitten! You are a werewolf now!")
                             thecurse.permissionOverwrites.edit(guy.id, {
                                 SEND_MESSAGES: false,
@@ -2649,7 +2648,7 @@ module.exports = {
                                             ATTACH_FILES: true,
                                         })
 
-                                        await ff.send(getRole("werewolf").description)
+                                        await ff.send(db.get(`roleinfo_werewolf`))
                                         await ff.send(`_ _\n\n_ _\n\nYou have been converted into a Werewolf!`)
                                         let sos = await ff.send(`${alive}`)
                                         setTimeout(async () => {
@@ -2692,7 +2691,7 @@ module.exports = {
                                                                     MENTION_EVERYONE: true,
                                                                     ATTACH_FILES: true,
                                                                 })
-                                                                await eij.send(getRole("werewolf").description)
+                                                                await eij.send(db.get(`roleinfo_werewolf`))
                                                                 await eij.semd(`_ _\n\nYou have been converted into a Werewolf!`)
                                                                 let iwq = await eij.send(`${alive}`)
                                                                 setTimeout(async () => {
@@ -2806,7 +2805,7 @@ module.exports = {
                                     MENTION_EVERYONE: true,
                                     ATTACH_FILES: true,
                                 })
-                                await ff.send(getRole("zombie").description)
+                                await ff.send(db.get(`roleinfo_zombie`))
                                 let tee = await ff.send(`${alive}`)
                                 await tee.delete({ timeout: 3000 })
                                 zombies.permissionOverwrites.edit(tempguy.id, {
