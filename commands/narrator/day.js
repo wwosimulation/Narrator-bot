@@ -342,7 +342,7 @@ module.exports = {
                                                         iudi.send(`<:guard:744536167109886023> You have been attacked by **${theHacker.nickname} ${theHacker.user.username} (Hacker)**. You have been wounded and will die at the end of the day.`)
                                                         iudi.send(`${alive}`)
                                                         db.set(`wounded_${tg[x]}`, true)
-                                                        secondhack[j] = "0"
+                                                        secondhack[j] = guy.nickname
                                                     }
                                                 }
                                             } else {
