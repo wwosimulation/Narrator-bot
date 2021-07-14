@@ -22,7 +22,9 @@ module.exports = {
         for (let i = 1; i <= 16; i++) {
             console.log(i)
             let player = message.guild.members.cache.find((x) => x.nickname == `${i}`)
+            if (player) {
             droppy.addOptions({ label: `${i}`, value: `votefor-${i}`, description: `${player.user.tag}` })
+                {
         }
         let row = new MessageActionRow().addComponents(droppy)
         let m = voteChat.send({ content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row] })
