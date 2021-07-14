@@ -40,21 +40,16 @@ module.exports = {
                 return await message.reply("Invalid target!")
             } else if (args[0] === message.member.nickname) {
                 return await message.reply("You can't mute yourself!")
-            } else {
-                if (isNight != "yes") {
+            } else if (isNight != "yes") {
                     return await message.reply("You can only do this during the night!")
-                } else {
-                    if (hacked == null) {
+            } else if (hacked == null) {
                         return await message.reply("You haven't hacked anyone!")
-                } else {
-                if (hacked.includes(guy.nickname)) {
+            } else if (hacked.includes(guy.nickname)) {
                     return await message.reply("You can only mute people hacked!")
-                }
-                    } else {
+            } else {
                         db.set(`mute_${message.channel.id}`, args[0])
                         message.react("475775342007549962")
-        }else {
-            return
+           }
         }
     },
 }
