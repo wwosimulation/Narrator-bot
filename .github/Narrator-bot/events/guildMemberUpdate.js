@@ -453,7 +453,7 @@ module.exports = (client) => {
                         let guy = newMember.guild.members.cache.find((m) => m.nickname === corrupt.toString())
                         let allchannel = newMember.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
         for (let b = 0; b < allchannel.length; b++) {
-            let chan1 = newMember.guild.channels.cache.get(allchannels[a])
+            let chan1 = newMember.guild.channels.cache.get(allchannels[b])
             if (chan1) {
                 if (chan1.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                   dayChat.permissionOverwrites.edit({guy.id,
