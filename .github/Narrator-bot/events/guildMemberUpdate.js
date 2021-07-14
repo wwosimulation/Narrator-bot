@@ -377,31 +377,10 @@ module.exports = (client) => {
                 }
             }
         }
-
+        
         // corruptor
-        let corr = newMember.guild.channels.cache.filter((c) => c.name === "priv-corruptor").keyArray("id")
-        for (let a = 0; a < corr.length; a++) {
-            let chan = newMember.guild.channels.cache.get(corr[a])
-            let corrupt = db.fetch(`corrupt_${chan.id}`)
-            let corrupted = message.guild.members.cache.find((m) => m.nickname === corrupt)
-            if (chan.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
-                dayChat.permissionOverwrites.edit(corrupted.id, {
-                    SEND_MESSAGES: true,
-                })
-                role = db.fetch(`role_${corrupted.id}`)
-                let allchannels = newMember.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
-                for (let b = 0; b < allchannels.length; b++) {
-                    let chan1 = newMember.guild.channels.cache.get(allchannels[a])
-                    if (chan1) {
-                        if (chan1.permissionsFor(corrupted.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            chan1.permissionOverwrites.edit(corrupted.id, {
-                                SEND_MESSAGES: true,
-                            })
-                        }
-                    }
-                }
-            }
-        }
+      
+        
 
         // couple
         let cupid = newMember.guild.channels.cache.find((c) => c.name === "lovers")
@@ -469,7 +448,21 @@ module.exports = (client) => {
                     } else if (role == "Arsonist") {
                         db.delete(`douse_${chan.id}`)
                     } else if (role == "Corruptor") {
+                      let corrupt = db.fetch(`corrupt_${chan.id}`)
                         db.delete(`corrupt_${chan.id}`)
+                        let guy = newMember.guild.members.cache.find((m) => m.nickname === corrupt.toString())
+                        let allchannel = newMember.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+        for (let b = 0; b < allchannel.length; b++) {
+            let chan1 = newMember.guild.channels.cache.get(allchannels[a])
+            if (chan1) {
+                if (chan1.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                  dayChat.permissionOverwrites.edit({guy.id,
+                    SEND_MESSAGES: true,
+                  })
+                  chan1.permissionOverwrites.edit({guy.id,
+                    SEND_MESSAGES: true,
+                  })
+                        
                     } else if (role == "Cannibal") {
                         db.delete(`eat_${chan.id}`)
                     } else if (role == "Illusionist") {
