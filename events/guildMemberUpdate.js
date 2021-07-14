@@ -444,7 +444,22 @@ module.exports = (client) => {
                     } else if (role == "Arsonist") {
                         db.delete(`douse_${chan.id}`)
                     } else if (role == "Corruptor") {
-                        db.delete(`corrupt_${chan.id}`)
+                      let corrupt = db.fetch(`corrupt_${chan.id}`)
+                      db.delete(`corrupt_${chan.id}`)
+                      let corrupted = message.guild.members.cache.find((m) => m.nickname === corrupt)
+                      for (let b = 0; b < allchannels.length; b++) {
+                        let hhh = newMember.guild.channels.cache.get(allchannels[a])
+                        if (hhh) {
+                          if (hhh.permissionsFor(corrupted).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        dayChat.permissionOverwrites.edit(corrupted.id, {
+                                SEND_MESSAGES: true,
+                            })
+                            chan.permissionOverwrites.edit(corrupted.id, {
+                                        SEND_MESSAGES: false,
+                                    })
+                          }
+                        }
+                      }
                     } else if (role == "Cannibal") {
                         db.delete(`eat_${chan.id}`)
                     } else if (role == "Illusionist") {
