@@ -50,6 +50,7 @@ module.exports = {
             let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").keyArray("id")
             let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").keyArray("id")
             let mortician = message.guild.channels.cache.filter((c) => c.name === "priv-mortician").keyArray("id")
+            let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").keyArray("id")
 
             db.delete(`excludes`)
 
@@ -129,6 +130,12 @@ module.exports = {
 
             for (let i = 0; i < mortician.length; i++) {
                 db.set(`mortician_${det[i]}`, null)
+            }
+            
+            for (let i = 0; i < hacker.length; i++) {
+                db.set(`hashacked_${message.channel.id}`, null)
+                db.set(`firsthack_${message.channel.id}`, null)
+                db.set(`secondhack_${message.channel.id}`, null)
             }
 
             for (let i = 0; i < priest.length; i++) {
