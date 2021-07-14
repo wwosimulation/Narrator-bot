@@ -180,9 +180,9 @@ module.exports = {
         // getting kills from hacker
         for (let i = 0; i < hacker.length; i++) {
             let tempchan = message.guild.channels.cache.get(hacker[i])
-            
+
             let theHacker
-             for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
+            for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
                 let tempGu = message.guild.members.cache.find((m) => m.nickname === j.toString())
                 if (tempGu) {
                     if (tempGu.roles.cache.has(alive.id)) {
@@ -218,7 +218,7 @@ module.exports = {
                                 }
                             }
                         }
-                       if (secondhack[j] != "0") {
+                        if (secondhack[j] != "0") {
                             // jailer's protection
                             if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                                 if (guy.roles.cache.has(alive.id)) {
@@ -228,7 +228,7 @@ module.exports = {
                                 }
                             }
                         }
-                         // doc's protection
+                        // doc's protection
                         if (secondhack[j] != "0") {
                             for (let k = 0; k < doc.length; k++) {
                                 if (protection == secondhack[j]) {
@@ -256,7 +256,7 @@ module.exports = {
                                 }
                             }
                         }
-                         // forger
+                        // forger
                         if (secondhack[j] != "0") {
                             let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
                             for (let k = 0; k < chans.length; k++) {
@@ -324,7 +324,7 @@ module.exports = {
                                 }
                             }
                         }
-                         // tough guy
+                        // tough guy
                         if (secondhack[j] != "0") {
                             for (let o = 1; o <= alive.members.size + dead.members.size; o++) {
                                 let theHacker = message.guild.members.cache.find((m) => m.nickname === o.toString())
