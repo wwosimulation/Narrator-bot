@@ -377,10 +377,8 @@ module.exports = (client) => {
                 }
             }
         }
-        
+
         // corruptor
-      
-        
 
         // couple
         let cupid = newMember.guild.channels.cache.find((c) => c.name === "lovers")
