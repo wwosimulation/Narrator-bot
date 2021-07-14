@@ -131,7 +131,7 @@ module.exports = {
             for (let i = 0; i < mortician.length; i++) {
                 db.set(`mortician_${det[i]}`, null)
             }
-            
+
             for (let i = 0; i < hacker.length; i++) {
                 db.set(`hashacked_${message.channel.id}`, null)
                 db.set(`firsthack_${message.channel.id}`, null)
