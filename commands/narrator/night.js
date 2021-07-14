@@ -403,16 +403,15 @@ module.exports = {
                 let jailer = message.guild.channels.cache.get(jailers[q])
                 for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
                     let who = message.guild.members.cache.find((m) => m.nickname === j.toString())
-                        if (who) {
-                            let rrrr = db.get(`role_${who.id}`).toLowerCase()
-                            if (rrrr.includes("jailer")) {
-                                if (who.roles.cache.has(alive.id)) {
-                 
+                    if (who) {
+                        let rrrr = db.get(`role_${who.id}`).toLowerCase()
+                        if (rrrr.includes("jailer")) {
+                            if (who.roles.cache.has(alive.id)) {
                             } else {
                                 db.delete(`jail_${jailer.id}`)
                             }
                         }
-                   }
+                    }
                 }
                 let toJail = db.get(`jail_${jailer.id}`) || "None"
                 let prisoner = message.guild.members.cache.find((m) => m.nickname === toJail)
