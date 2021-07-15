@@ -35,7 +35,7 @@ module.exports = {
             let isNight = await db.fetch(`isNight`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
-            let hacked = await db.fetch(`firsthacked_${message.channel.id}`)
+            let hacked = await db.fetch(`hack_${message.channel.id}`)
             if (parseInt(args[0]) > parseInt(alive.members.size) + parseInt(dead.members.size) || parseInt(args[0]) < 1) {
                 return await message.reply("Invalid target!")
             } else if (args[0] === message.member.nickname) {
