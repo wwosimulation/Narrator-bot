@@ -192,7 +192,7 @@ module.exports = {
             for (let i = 0; i < s.length; i++) {
                 db.set(`seer_${s[i]}`, "no")
             }
-             for (let i = 0; i < hacker.length; i++) {
+            for (let i = 0; i < hacker.length; i++) {
                 db.set(`hashacked_${hacker[i]}`, "no")
             }
             for (let i = 0; i < det.length; i++) {
