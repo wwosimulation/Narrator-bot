@@ -184,12 +184,16 @@ module.exports = {
             let serialkiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").keyArray("id")
             let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").keyArray("id")
             let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").keyArray("id")
+            let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").keyArray("id")
 
             for (let i = 0; i < as.length; i++) {
                 db.set(`auraCheck_${as[i]}`, "no")
             }
             for (let i = 0; i < s.length; i++) {
                 db.set(`seer_${s[i]}`, "no")
+            }
+             for (let i = 0; i < hacker.length; i++) {
+                db.set(`hashacked_${hacker[i]}`, "no")
             }
             for (let i = 0; i < det.length; i++) {
                 db.set(`detCheck_${det[i]}`, "no")
