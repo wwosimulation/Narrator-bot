@@ -10,7 +10,7 @@ module.exports = {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").keyArray("id")
             let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").keyArray("id")
-            let firsthack = db.get(`hack_${message.channel.id}`)
+            let firsthack = db.get(`hack_${message.channel.id}`) || []
             let guy
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You flew right through the computer.`)
             if (!args[0]) return message.channel.send("Nice hacking no one i see")
