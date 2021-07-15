@@ -136,6 +136,7 @@ module.exports = {
                 db.set(`hashacked_${message.channel.id}`, null)
                 db.set(`firsthack_${message.channel.id}`, null)
                 db.set(`secondhack_${message.channel.id}`, null)
+                db.set(`usedmute_${message.channel.id}`, null)
             }
 
             for (let i = 0; i < priest.length; i++) {
