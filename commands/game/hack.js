@@ -34,7 +34,7 @@ module.exports = {
                 for (let j = 0; j < args.length; j++) {
                     lol.push(guy.nickname)
                 }
-                firsthack.foreach(person => lol.push(person))
+                firsthack.foreach((person) => lol.push(person))
                 for (let j = 0; j < args.length; j++) {
                     let role = db.get(`role_${guy.id}`)
 
