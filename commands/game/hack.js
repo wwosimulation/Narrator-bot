@@ -1,7 +1,7 @@
 const db = require("quick.db")
 
 module.exports = {
-    name: "watch",
+    name: "hack",
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-hacker") {
