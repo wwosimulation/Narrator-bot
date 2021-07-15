@@ -122,7 +122,8 @@ client.debug = async (options = { game: false }) => {
 client.on("ready", async () => {
     client.config = {}
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
-    client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae and beta testes on commit " + commit : "Wolvesville Simulation!")
+    let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
+    client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
     //ShadowAdmin initialize
     //shadowadmin.init(client, {prefix, owners: config.botAdmin})
