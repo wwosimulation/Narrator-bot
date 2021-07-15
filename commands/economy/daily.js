@@ -73,7 +73,7 @@ module.exports = {
             let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have recieved ${amount} ${item}!${extra}`)
             message.channel.send({ embeds: [dailymsg] })
 
-            data.daily.dau += 1
+            data.daily.day++
             data.daily.last = Date.now()
         }
         data.save()
