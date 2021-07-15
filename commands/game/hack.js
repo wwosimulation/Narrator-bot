@@ -24,7 +24,7 @@ module.exports = {
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send(`Player **${guy.nickname} ${guy.user.username}** is dead!`)
                 if (guy == message.member) return message.channel.send(`Hacking yourself isn't just gonna work!`)
             }
-            if (firsthack.toLowerCase().includes(guy.nickname)) {
+            if (firsthack.includes(guy.nickname)) {
                 let lol = []
                 for (let j = 0; j < args.length; j++) {
                     lol.push(guy.nickname)
