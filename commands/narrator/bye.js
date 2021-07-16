@@ -12,9 +12,9 @@ module.exports = {
         message.guild.channels.cache.filter((c) => c.parentID === "748959630520090626").forEach((x) => x.delete())
         await sleep(1000)
         await clearSettings(message)
-        message.channel.send("The role channels I created have been cleared.")
         await sleep(1000)
         await removeRoles(message)
+        message.channel.send("The role channels I created have been cleared.")
     },
 }
 
