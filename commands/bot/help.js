@@ -17,7 +17,7 @@ Use following commands with <@744538701522010174>'s prefix (+).
 `
             )
             .addField("Economy", "`shop` Buy different items in the shop.\n" + "`daily` Get coins, roses, items as a daily reward.\n" + "`inventory` Find the roses, coins, items in your inventory.\n" + "`balance` Check how many narrator bot coins you got.\n" + "`namechange` Give your custom role a new name.\n" + "`colorchange` Give your custom role a new color.\n" + "`profile` Checkout your exclusive profile. Available in the shop!\n" + "`use` Use this command with the item name such as lootbox, icon to use them.")
-            .addField("Fun", "`emoji` use emojis from different servers available from `emojilist`.\n" + "`write` Write something with fancy letters.\n")
+            .addField("Fun", "`emoji` use emojis from different servers available from `emojilist`.\n" + "`write` Write something with fancy letters and numbers.\n")
             .addField("Bot", "`botinfo` Get to know more about the bot.\n" + "`bug` Report a bug to the development team.\n" + "`suggest` Suggest a improvement, enhancement for the simulation.\n" + "`roleinfo` Know more about the in game roles and interactions.\n")
         message.channel.send({ embeds: [embed] })
     },
