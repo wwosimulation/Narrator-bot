@@ -2,18 +2,18 @@ const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "help",
-    run: async (message, args, client) => {
+    run: async (message) => {
         let embed = new MessageEmbed()
-            .setTitle("What do I got?")
+            .setTitle("About Narrator Bot")
             .setColor(0x7419b4)
-            .addDescription(
+            .setDescription(
                 `**__How to join a simulation game?__**
 When a game is live, it will be announced in <#606123818305585167>. Click on the join game button to join a game server.
 Read more about how to play in <#859001588617445436>. Ranked games will be announced in <#860552178095882240>.
 
 For any questions head over to the <#606123788257591297>.
 
-
+Use following commands with <@744538701522010174>'s prefix (+).
 `
             )
             .addField(
