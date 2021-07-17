@@ -26,10 +26,10 @@ Beta Testers: <@!159717599993790464> <@!719564153072910407> <@!80172659537831526
 Economy Designers: <@!801726595378315264> <@!406412325973786624>
 
 __Special thanks to the following:__
-<@!719564153072910407> for helping with many testing games, bug finding, organizing suggestions, and testing everything
-<@!620964363729371137> for organizing basically everything about the bot and GitHub, starting the bug tracker, keeping everything neat
+<@!719564153072910407> for helping with many testing games, bug finding, organizing suggestions, and testing everything.
+<@!620964363729371137> for organizing basically everything about the bot and GitHub, starting the bug tracker, keeping everything neat.
 
-Thank you to all the Staff who come up with new ideas for the bot, and to everyone who has joined a Testes Gae or a Beta Testes game
+Thank you to all the Staff who come up with new ideas for the bot, and to everyone who has joined a Testes Gae or a Beta Testes game.
 
 `
             )
