@@ -1,5 +1,5 @@
 const { fn, emojis } = require("../../config")
-// const { players } = require("../../db.js")
+const { players } = require("../../db.js")
 
 module.exports = {
     name: "rm",
@@ -14,7 +14,7 @@ module.exports = {
         args.forEach(async (x) => {
             let user = fn.getUser(x, message)
             if (user) {
-                // let data = players.findOneAndUpdate({ user: user.id }, { $inc: { coins: amount } }).exec()
+                let data = players.findOneAndUpdate({ user: user.id }, { $inc: { coins: amount } }).exec()
                 msg += `Removed ${Math.abs(amount)} ${emojis.coin} from ${user.user.tag}\n`
             } else {
                 msg += `Unable to find the user ${x}\n`
