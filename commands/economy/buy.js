@@ -17,7 +17,7 @@ module.exports = {
             amount = 0,
             dontbuy = false
 
-        if (args.length < 1) return message.channel.send("Please specify an item from the shop to buy!")
+        if (args.length < 1) return message.channel.send("Which item you are looking for?")
 
         args.forEach((x, i) => {
             args[i] = x.toLowerCase()
@@ -45,23 +45,23 @@ module.exports = {
                 item = config.shop.items.find((x) => x.id == "cmi")
         }
         console.log(item, args)
-        if (!item) return message.channel.send("Sorry, I don't recognise that item!")
-        //message.channel.send(JSON.stringify(item, null, 2), { code: "js" })
+        if (!item) return message.channel.send("The item doesnot exist!")
+
         let price = item.price || 0
         let userHas = item.currency == "coin" ? data.coins : item.currency == "rose" ? data.roses : data.gems
 
-        if (item.id == "color" && !color) return message.channel.send(`Sorry, I don't recognize the color ${args[1]}.\nMake sure you choose a proper color from \`+shop colors\`!`)
+        if (item.id == "color" && !color) return message.channel.send(`${args[1]} is not in the available colors.\nMake sure you choose a proper color from \`+shop colors\`!`)
 
         if (item.role) {
             if (rolehas(item.role)) {
                 dontbuy = true
-                return message.channel.send(`Hey, you've already purchased that role!`)
+                return message.channel.send(`Hey, you have already purchased that role!`)
             }
         }
         if (item.id == "color") {
             if (rolehas(color.id)) {
                 dontbuy = true
-                return message.channel.send(`Hey, you've already purchased that color!`)
+                return message.channel.send(`Hey, you have already purchased that color!`)
             }
         }
 
@@ -69,7 +69,7 @@ module.exports = {
             let cmicheck = data.cmi
             if (cmicheck) {
                 dontbuy = true
-                return message.channel.send(`Hey, you've already purchased the ${item.name}!`)
+                return message.channel.send(`Hey, you have already purchased the ${item.name}!`)
             }
         }
 
@@ -84,7 +84,7 @@ module.exports = {
                     if (!data.customRole) data.customRole = e.id
                 }
             })
-            if (hassprole == true) return message.channel.send("You've already purchased this item! Why are you wasting your gold?")
+            if (hassprole == true) return message.channel.send("You have already purchased this item! Why are you wasting your gold?")
         }
 
         if (["rose", "bouquet"].includes(item.id)) {
