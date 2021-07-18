@@ -84,7 +84,7 @@ module.exports = {
                     if (!data.customRole) data.customRole = e.id
                 }
             })
-            if (hassprole == true) return message.channel.send("You already purchased this item! Why are you wasting your gold?")
+            if (hassprole == true) return message.channel.send("You've already purchased this item! Why are you wasting your gold?")
         }
 
         if (["rose", "bouquet"].includes(item.id)) {

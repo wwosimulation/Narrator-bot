@@ -23,19 +23,19 @@ module.exports = {
 
         let color = args.join(" ")
 
-        if (!color) return message.channel.send("Idiot, you need to give me a color")
+        if (!color) return message.channel.send("Hey which color you want? Specify it next time.")
 
-        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using +bug.")
+        if (!role) return message.channel.send("Special role is missing! If you have one, report this using +bug.")
 
-        if (color.length < 1) return message.channel.send("Stop. being. stupid. you. dumb. weirdo. Give me a color!")
+        if (color.length < 1) return message.channel.send("It is not even a color. 👀")
 
-        if (color.length > 99) return message.channel.send("Too many characters!")
+        if (color.length > 99) return message.channel.send("It is not even a color. 👀")
 
         if (!color.startsWith("#")) {
             color = toHex(color)
         }
 
-        if (!color.startsWith("#")) return message.channel.send(color + " isn't a vaild color!")
+        if (!color.startsWith("#")) return message.channel.send(color + " is not even a color. 👀")
 
         client.guilds.cache
             .get("465795320526274561")
