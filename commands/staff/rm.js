@@ -1,12 +1,11 @@
 const { fn, emojis } = require("../../config")
-const db = require("quick.db")
-const { players } = require("../../db.js")
+// const { players } = require("../../db.js")
 
 module.exports = {
     name: "rm",
     aliases: ["removemoney"],
     staffOnly: true,
-    run: async (message, args, client) => {
+    run: async (message, args) => {
         let amount = parseInt(args[0])
         if (!amount) return message.channel.send(`${args[0]} is not a valid amount`)
         args.shift()
@@ -15,7 +14,7 @@ module.exports = {
         args.forEach(async (x) => {
             let user = fn.getUser(x, message)
             if (user) {
-                let data = players.findOneAndUpdate({ user: user.id }, { $inc: { coins: amount } }).exec()
+                // let data = players.findOneAndUpdate({ user: user.id }, { $inc: { coins: amount } }).exec()
                 msg += `Removed ${Math.abs(amount)} ${emojis.coin} from ${user.user.tag}\n`
             } else {
                 msg += `Unable to find the user ${x}\n`
