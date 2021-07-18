@@ -6,7 +6,7 @@ module.exports = {
         if (!args[0]) return message.channel.send(`
 Please describe the bug properly.
 Mention details of how the bug has occured, for which role and in which game. Do mention details of expected and observed results.
-If you have screenshots to add, create a bug with above mention details. Then go to the URL generated and add your screenshots in the comments on the issue.
+If you have any screenshots to add, create a bug with above mentioned details. Then go to the URL generated and add your screenshots in the comments of the issue.
         `)
         let t = ""
         if (message.attachments.size > 0) {

@@ -3,7 +3,11 @@ const { ids, github } = require("../../config")
 module.exports = {
     name: "suggest",
     run: async (message, args, client) => {
-        if (!args[0]) return message.channel.send("Invalid suggestion")
+        if (!args[0]) return message.channel.send(`
+        Please describe the suggestion properly.
+        Mention details of how you want to improve current system / how your idea is effective and needs to be added in WOVSIM. Do mention the difference in current system and your idea if applicable.
+        If you have any screenshots / details to add, create an issue with above mentioned details. Then go to the URL generated and add your them in the comments of the suggestion.
+                `)
         let t = ""
         if (message.attachments.size > 0) {
             if (message.guild.id == ids.server.game) {
