@@ -4,7 +4,7 @@ module.exports = {
     name: "hack",
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name == "priv-hacker") { 
+        if (message.channel.name == "priv-hacker") {
             let isNight = db.get(`isNight`)
             let alrhacked = db.get(`hashacked_${message.channel.id}`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
@@ -19,7 +19,7 @@ module.exports = {
             if (alrhacked) return message.channel.send("You have already hacked")
 
             //gets players to hack
-            for (let i = 0; i < args.length; i++) { 
+            for (let i = 0; i < args.length; i++) {
                 //gets player
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[i]) || message.guild.members.cache.find((m) => m.id === args[i]) || message.guild.members.cache.find((m) => m.user.username === args[i]) || message.guild.members.cache.find((m) => m.user.tag === args[i])
                 if (!guy) return message.channel.send(`Player **${args[i]}** could not be found!`)
@@ -33,10 +33,9 @@ module.exports = {
                     }
                     db.set(`secondhack_${message.channel.id}`, lol)
                     message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username}** to DEATH!`)
-                    
-                //if player is not already hacked
+
+                    //if player is not already hacked
                 } else {
-                    
                     //add player nickname to firsthack
                     let lol = []
                     for (let j = 0; j < args.length; j++) {
@@ -44,13 +43,13 @@ module.exports = {
                     }
                     firsthack.forEach((person) => lol.push(person))
                     //gets player's role
-                    
-                    for (let j = 0; j < args.length; j++) { 
+
+                    for (let j = 0; j < args.length; j++) {
                         let role = db.get(`role_${guy.id}`)
 
-                        for (let i = 0; i < illu.length; i++) { 
+                        for (let i = 0; i < illu.length; i++) {
                             let disguised = db.get(`disguised_${illu[i]}`) || []
-                            if (disguised.length != 0) { 
+                            if (disguised.length != 0) {
                                 if (disguised.includes[args[0]]) {
                                     role == "Illusionist"
                                 }
@@ -63,7 +62,7 @@ module.exports = {
                             }
                         }
                     }
-                    
+
                     //adds player to hacked array
                     db.set(`hack_${message.channel.id}`, lol)
                     //sets to show player has hacked this night
