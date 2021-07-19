@@ -134,6 +134,7 @@ module.exports = {
                 ["Spirit Seer", "rww", "rrv", "Doctor", "rrv", "Wolf Seer", "Gunner", "Fool", "Junior Werewolf", "Medium", "Witch", "Cannibal", "Detective", "rww", "Priest", "rrv"],
             ]
         } else if (gamemode == "sandbox") {
+            
             shuffle(auraspirit)
             shuffle(docbg)
             shuffle(rrv)
@@ -146,6 +147,14 @@ module.exports = {
             roleOptions.push([auraspirit[0], "alpha-werewolf", docbg[0], "rrv", beastbunny[0], "wolf-seer", gunnermarks[0], "rv", jailerftwitch[0], alcrk[0], "medium", "seer", pacishadownmber[0], "rrv", juniorrww[0], cupidgr[0]])
         } else if (gamemode == "custom" || gamemode == "customhide") {
             args.shift()
+            excludes.forEach((role) => {
+            random = pull(random, role)
+            rrv = pull(rrv, role)
+            rsv = pull(rsv, role)
+            rww = pull(rww, role)
+            rk = pull(rk, role)
+            rv = pull(rv, role)
+        })
             roleOptions.push(args)
         }
 
