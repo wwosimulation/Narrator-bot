@@ -1522,7 +1522,7 @@ module.exports = {
         // hacker muting
 
         for (let i = 0; i < hacker.length; i++) {
-            let mute = db.get(`mute_{hacker[i]}`)
+            let mute = db.get(`mute_${hacker[i]}`)
             if (mute) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === mute)
                 // dayChat.send(`<:ggmute:766684344647417936> The Grumpy Grandma muted **${guy.nickname} ${guy.user.username}**!`)
