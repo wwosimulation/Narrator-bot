@@ -23,37 +23,37 @@ module.exports = {
                 if (!guy) return message.channel.send(`Player **${args[i]}** could not be found!`)
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send(`Player **${guy.nickname} ${guy.user.username}** is dead!`)
                 if (guy == message.member) return message.channel.send(`Hacking yourself isn't just gonna work!`)
-                
-            if (firsthack.includes(guy.nickname)) {
-                for (let j = 0; j < args.length; j++) {
-                    lol.push(guy.nickname)
-                }
-                db.set(`secondhack_${message.channel.id}`, lol)
-            } else {
-                let lol = []
-                for (let j = 0; j < args.length; j++) {
-                    lol.push(guy.nickname)
-                }
-                firsthack.forEach((person) => lol.push(person))
-                for (let j = 0; j < args.length; j++) {
-                    let role = db.get(`role_${guy.id}`)
 
-                    for (let i = 0; i < illu.length; i++) {
-                        let disguised = db.get(`disguised_${illu[i]}`) || []
-                        if (disguised.length != 0) {
-                            if (disguised.includes[args[0]]) {
-                                role == "Illusionist"
+                if (firsthack.includes(guy.nickname)) {
+                    for (let j = 0; j < args.length; j++) {
+                        lol.push(guy.nickname)
+                    }
+                    db.set(`secondhack_${message.channel.id}`, lol)
+                } else {
+                    let lol = []
+                    for (let j = 0; j < args.length; j++) {
+                        lol.push(guy.nickname)
+                    }
+                    firsthack.forEach((person) => lol.push(person))
+                    for (let j = 0; j < args.length; j++) {
+                        let role = db.get(`role_${guy.id}`)
+
+                        for (let i = 0; i < illu.length; i++) {
+                            let disguised = db.get(`disguised_${illu[i]}`) || []
+                            if (disguised.length != 0) {
+                                if (disguised.includes[args[0]]) {
+                                    role == "Illusionist"
+                                }
+                            }
+                        }
+
+                        for (let i = 0; i < shaman.length; i++) {
+                            let disguised = db.get(`shaman_${shaman[i]}`) || ""
+                            if (disguised == args[0]) {
+                                role = "Wolf Shaman"
                             }
                         }
                     }
-
-                    for (let i = 0; i < shaman.length; i++) {
-                        let disguised = db.get(`shaman_${shaman[i]}`) || ""
-                        if (disguised == args[0]) {
-                            role = "Wolf Shaman"
-                        }
-                    }
-            }
 
                     db.set(`hack_${message.channel.id}`, lol)
                     db.set(`hashacked_${message.channel.id}`, true)
