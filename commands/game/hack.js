@@ -29,6 +29,7 @@ module.exports = {
                         lol.push(guy.nickname)
                     }
                     db.set(`secondhack_${message.channel.id}`, lol)
+                    message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username} (${role})** to DEATH!`)
                 } else {
                     let lol = []
                     for (let j = 0; j < args.length; j++) {
