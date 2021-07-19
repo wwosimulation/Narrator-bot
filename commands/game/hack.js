@@ -61,14 +61,14 @@ module.exports = {
                                 role = "Wolf Shaman"
                             }
                         }
+                        //confirmation message with role
+                        message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username} (${role})**!`)
                     }
 
                     //adds player to hacked array
                     db.set(`hack_${message.channel.id}`, lol)
                     //sets to show player has hacked this night
                     db.set(`hashacked_${message.channel.id}`, true)
-                    //confirmation message with role
-                    message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username} (${role})**!`)
                 }
             }
         }
