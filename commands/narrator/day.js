@@ -231,6 +231,7 @@ module.exports = {
                         // doc's protection
                         if (secondhack[j] != "0") {
                             for (let k = 0; k < doc.length; k++) {
+                                 let protection = db.get(`heal_${doc[k]}`)
                                 if (protection == secondhack[j]) {
                                     let doctor = message.guild.channels.cache.get(doc[k])
                                     tempchan.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
