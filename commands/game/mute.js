@@ -44,14 +44,14 @@ module.exports = {
                 return await message.reply("You can only do this during the night!")
             } else if (hacked == null) {
                 return await message.reply("You haven't hacked anyone!")
-            } else if (hacked.includes(guy.nickname)) {
+            } else if (!hacked.includes(guy.nickname)) {
                 return await message.reply("You can only mute people hacked!")
             } else if (db.get(`usedmute_${message.channel.id}`) == true) {
                 return await message.reply("This is a one time command")
             } else {
                 db.set(`mute_${message.channel.id}`, args[0])
                 db.set(`usedmute_${message.channel.id}`, true)
-                message.react("475775342007549962")
+                message.react("776460712008351776")
             }
         }
     },
