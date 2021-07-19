@@ -134,7 +134,7 @@ module.exports = {
 
             for (let i = 0; i < hacker.length; i++) {
                 db.set(`hashacked_${message.channel.id}`, null)
-                db.set(`firsthack_${message.channel.id}`, null)
+                db.set(`hack_${message.channel.id}`, null)
                 db.set(`secondhack_${message.channel.id}`, null)
                 db.set(`usedmute_${message.channel.id}`, null)
             }
