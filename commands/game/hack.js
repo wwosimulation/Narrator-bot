@@ -11,6 +11,7 @@ module.exports = {
             let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").keyArray("id")
             let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").keyArray("id")
             let firsthack = db.get(`hack_${message.channel.id}`) || []
+            let lol = []
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You flew right through the computer.`)
             if (!args[0]) return message.channel.send("Nice hacking no one i see")
             if (isNight != "yes") return message.channel.send("You should not want to be seen hacking")
@@ -22,9 +23,8 @@ module.exports = {
                 if (!guy) return message.channel.send(`Player **${args[i]}** could not be found!`)
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send(`Player **${guy.nickname} ${guy.user.username}** is dead!`)
                 if (guy == message.member) return message.channel.send(`Hacking yourself isn't just gonna work!`)
-            }
+                
             if (firsthack.includes(guy.nickname)) {
-                let lol = []
                 for (let j = 0; j < args.length; j++) {
                     lol.push(guy.nickname)
                 }
@@ -53,6 +53,8 @@ module.exports = {
                             role = "Wolf Shaman"
                         }
                     }
+            }
+
                     db.set(`hack_${message.channel.id}`, lol)
                     db.set(`hashacked_${message.channel.id}`, true)
                     message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username} (${role})**!`)
