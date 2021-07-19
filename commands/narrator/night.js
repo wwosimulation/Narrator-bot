@@ -194,6 +194,7 @@ module.exports = {
             }
             for (let i = 0; i < hacker.length; i++) {
                 db.set(`hashacked_${hacker[i]}`, false)
+                db.set(`mute_${hacker[i]}`, false)
             }
             for (let i = 0; i < det.length; i++) {
                 db.set(`detCheck_${det[i]}`, "no")
