@@ -421,6 +421,10 @@ module.exports = {
                 }
                 let toJail = db.get(`jail_${jailer.id}`) || "None"
                 let prisoner = message.guild.members.cache.find((m) => m.nickname === toJail)
+                if (prisoner.roles.cache.has(dead.id)) {
+                    toJail = "None"
+                    db.delete(`jail_${jailer.id}`)
+                }
                 if (toJail != "None") {
                     if (prisoner && db.get(`role_${prisoner.id}`)) {
                         jailedchat.permissionOverwrites.edit(prisoner.id, {

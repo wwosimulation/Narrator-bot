@@ -111,9 +111,15 @@ module.exports = {
         // Set roleOptions to an array containing arrays of possible rolelists
         if (gamemode == "quick") {
             alphashaman = shuffle(alphashaman)
+            foolhh = shuffle(foolhh)
+            jailerwitch = shuffle(jailerwitch)
+            skcanni = shuffle(skcanni)
+            seerdet = shuffle(seerdet)
             roleOptions = [
                 ["Aura Seer", "Wolf Seer", "Doctor", "Avenger", "Detective", "Wolf Shaman", "Gunner", rv[0], "Witch", "Cannibal", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Werewolf", "Cupid"],
                 ["Aura Seer", "Wolf Seer", "Doctor", "Beast Hunter", "Aura", "Wolf Shaman", "Gunner", rv[0], "Witch", "Bomber", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Avenger", "Werewolf"],
+                ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Tough Guy", alphashaman[0], "Marksman", foolhh[0], jailerwitch[0], skcanni[0], "Medium", seerdet[0], "Junior Werewolf", "Cursed", "Beast Hunter", "Werewolf"],
+                ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Detective", "Wolf Shaman", "Gunner", foolhh[0], "Jailer", "Arsonist", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Bodyguard", "Werewolf"],
             ]
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
