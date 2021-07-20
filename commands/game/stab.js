@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "stab",
@@ -55,11 +56,11 @@ module.exports = {
                     i = 99
                     let emoji
                     if (message.channel.name == "priv-bandit") {
-                        emoji = "<:votebandit:744575294051975301>"
+                        emoji = `${getEmoji("votebandit", client)}`
                         db.set(`banditkill_${chan.id}`, guy.nickname)
                     }
                     if (message.channel.name == "priv-accomplice") {
-                        emoji = "<:thieve:745632726639706202>"
+                        emoji = `${getEmoji("thieve", client)}`
                         db.set(`accomplice_${chan.id}`, guy.nickname)
                     }
                     chan.send(`${emoji} ${message.member.nickname} voted **${guy.nickname} ${guy.user.username}**`)
