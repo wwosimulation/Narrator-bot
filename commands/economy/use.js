@@ -27,6 +27,7 @@ module.exports = {
 } else {
 data[item.id] + item.amount
 }
+}
             }, 3000)
         } else if (args[0].toLowerCase() == "icon") {
             let quantity = db.get(`iconinv_${message.author.id}`) || 0
