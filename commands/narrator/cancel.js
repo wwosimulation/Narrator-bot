@@ -6,7 +6,6 @@ module.exports = {
     narratorOnly: true,
     run: async (message, client, args) => {
         if (db.get(`game`) == null) return message.channel.send("No game is being hosted")
-        if (client.guilds.cache.get("465795320526274561") != message.guild) return message.channel.send(`Use this command in the sim server!`)
 
         message.guild.channels.cache.find((c) => c.name === "game-warning").send(`Game was canceled. Sorry for the inconvenience!`)
         let t = message.guild.roles.cache.get("606123676668133428").members
