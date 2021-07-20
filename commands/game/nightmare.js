@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "nightmare",
@@ -17,7 +18,7 @@ module.exports = {
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("That player is already dead... Have some decency bro.")
             if (wolfChat.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) return message.channel.send("Trying to nightmare other wolves just makes you look dumb...")
             if (nightmares < 1) return message.channel.send("Trying to cheat to get more nightmares isn't gonna work...")
-            message.channel.send(`<:nightmare:744572848982720602> You decided to nightmare **${guy.nickname} ${guy.user.username}**`)
+            message.channel.send(`${getEmoji("nightmare", client)} You decided to nightmare **${guy.nickname} ${guy.user.username}**`)
             db.set(`sleepy_${message.channel.id}`, guy.nickname)
         }
     },
