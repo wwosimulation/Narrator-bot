@@ -22,12 +22,12 @@ module.exports = {
                 await t.edit(`${emojis[item.id] ? `${emojis[item.id]} ` : ""}You recieved ${item.name} from the lootbox!${item.id == "other" ? "\nPlease contact Shadow for your prize!" : ""}`)
                 data.inventory.lootbox - 1
                 if (item.id != "other") {
-                 if (item.id == "coin") { 
-                  data.coins + item.amount
-} else {
-data[item.id] + item.amount
-}
-}
+                    if (item.id == "coin") {
+                        data.coins + item.amount
+                    } else {
+                        data[item.id] + item.amount
+                    }
+                }
             }, 3000)
         } else if (args[0].toLowerCase() == "icon") {
             let quantity = db.get(`iconinv_${message.author.id}`) || 0
