@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "scratch",
@@ -20,7 +21,7 @@ module.exports = {
                         msg.edit("Auhh, it seems that don't have the unlimited conversion bug like the app moron. Now shut up dumb.")
                     }, 3000)
                 })
-            message.channel.send(`<:scratch:744573055220580393> You have decided to convert **${guy.nickname} ${guy.user.username}**!`)
+            message.channel.send(`${getEmoji("scratch", client)} You have decided to convert **${guy.nickname} ${guy.user.username}**!`)
             db.set(`scratch_${message.channel.id}`, guy.nickname)
         }
     },
