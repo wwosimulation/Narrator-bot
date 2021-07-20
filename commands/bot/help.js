@@ -2,6 +2,8 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "help",
+    description: "Get the command list or help for a specific command.",
+    usage: `${process.env.PREFIX}help [command]`,
     run: async (message, args) => {
 
         // help embed
@@ -24,8 +26,8 @@ module.exports = {
                 `
             )
             .addFields(
-                {name: "Description", value: cmd_target.description || "No description added yet.zz"},
-                {name: "Usage:", value: `\`${cmd_target.usage || "No usage given."}\``},
+                {name: "Description", value: cmd_target.description || "No description given."},
+                {name: "Usage:", value: `\`${cmd_target.usage || `No usage given or "${process.env.PREFIX + cmd_target.name}"`}\``},
             )
             
             // if the command has aliases add those

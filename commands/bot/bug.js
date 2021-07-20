@@ -2,6 +2,8 @@
 
 // module.exports = {
 //     name: "bug",
+//     description: "Use this command to report a bug to the dev team.",
+//     usage: `${process.env.PREFIX}bug <description>`,
 //     run: async (message, args, client) => {
 //         if (!args[0]) return message.channel.send(message.i10n("bugNoArguments"))
 //         let t = ""

@@ -1,8 +1,10 @@
 // const { ids, github } = require("../../config")
 
 // module.exports = {
-//     name: "suggest",
-//     run: async (message, args, client) => {
+    // name: "suggest",
+    // description: "Suggest something.",
+    // usage: `${process.env.PREFIX}suggest <suggestion>`,
+    // run: async (message, args, client) => {
 //         if (!args[0]) return message.channel.send(message.i10n("suggestNoArguments"))
 //         let t = ""
 //         if (message.attachments.size > 0) {

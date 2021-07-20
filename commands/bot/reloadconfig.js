@@ -2,6 +2,8 @@ const cmd = require("node-cmd")
 const db = require("quick.db")
 module.exports = {
     name: "reloadconfig",
+    description: "Reload the config",
+    usage: `${process.env.PREFIX}reloadconfig`,
     run: async (message, args, client) => {
         if (!client.botAdmin(message.author.id)) return
         db.set("maintenance", "config-" + message.channel.id)
