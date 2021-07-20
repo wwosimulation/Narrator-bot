@@ -36,5 +36,6 @@ module.exports = {
         } else {
             return message.channel.send("This item does not exist!")
         }
+        data.save()
     },
 }
