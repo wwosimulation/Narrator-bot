@@ -8,8 +8,7 @@ module.exports = {
         if (db.get(`game`) == null) return message.channel.send("No game is being hosted")
 
         message.guild.channels.cache.find((c) => c.name === "game-warning").send(`Game was canceled. Sorry for the inconvenience!`)
-        let sim = client.guilds.cache.get("465795320526274561")
-        let t = sim.roles.cache.get("606123676668133428").members
+        let t = message.guild.roles.cache.get("606123676668133428").members
         t.forEach((e) => {
             e.roles.remove("606123676668133428")
         })
