@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "douse",
@@ -40,7 +41,7 @@ module.exports = {
 
                 db.set(`toDouse_${message.channel.id}`, [args[0], args[1]])
                 console.log(db.get(`toDouse_${message.channel.id}`))
-                message.channel.send("<:douse:744574203025686568> Doused **" + args[0] + " " + guy1.user.username + " & " + args[1] + " " + guy2.user.username + "**!")
+                message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username} & ${args[1]} ${guy2.user.username}**!`)
                 db.set(`dousedAt_${message.channel.id}`, db.get(`nightCount_${message.author.id}`))
             } else if (args.length == 1) {
                 if (!guy1 || guy1 == ownself) {
@@ -56,7 +57,7 @@ module.exports = {
                 }
                 db.delete(`toDouse_${message.channel.id}`)
                 db.set(`toDouse_${message.channel.id}`, [args[0]])
-                message.channel.send("<:douse:744574203025686568> Doused **" + args[0] + " " + guy1.user.username + "**!")
+                message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username}**!`)
                 db.set(`dousedAt_${message.channel.id}`, db.get(`nightCount_${message.author.id}`))
             } else {
                 return await message.channel.send("As far as i know, Dousing 3 or more players gets you blacklisted from the bot. ")
