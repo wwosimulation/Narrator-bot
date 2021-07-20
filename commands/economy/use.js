@@ -23,9 +23,9 @@ module.exports = {
                 data.inventory.lootbox = data.inventory.lootbox - 1
                 if (item.id != "other") {
                     if (item.id == "coin") {
-                        data.coins = +item.amount
+                        data.coins =+ item.amount
                     } else {
-                        data[item.id] = +item.amount
+                        data.inventory[item.id] =+ item.amount
                     }
                 }
                 data.save()
