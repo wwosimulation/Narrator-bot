@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "corrupt",
@@ -14,7 +15,7 @@ module.exports = {
             if (!guy || guy == message.member) return message.reply("Invalid Target!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("So you want to glitch someone who can't talk or vote. Very usefull. Here's another tip: `+suicide` kills all players and makes you win alone!")
 
-            message.channel.send(`<:corrupt:745632706838396989> You have decided to corrupt **${guy.nickname} ${guy.user.username}**!`)
+            message.channel.send(`${getEmoji("corrupt", client)} You have decided to corrupt **${guy.nickname} ${guy.user.username}**!`)
             db.set(`corrupt_${message.channel.id}`, guy.nickname)
         }
     },
