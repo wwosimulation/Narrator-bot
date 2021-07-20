@@ -5,6 +5,7 @@ module.exports = {
     name: "manual",
     gameOnly: true,
     narratorOnly: true,
+    aliases: ["m", "man"],
     run: async (message, args, client) => {
         message.react("💋")
         let content = args[1]

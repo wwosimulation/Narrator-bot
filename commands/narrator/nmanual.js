@@ -2,6 +2,7 @@ module.exports = {
     name: "nmanual",
     gameOnly: true,
     narratorOnly: true,
+    aliases: ["nm", "nman"],
     run: async (message, args, client) => {
         let chann = message.guild.channels.cache.filter((c) => c.name === `priv-${args[1]}`).keyArray("id")
 

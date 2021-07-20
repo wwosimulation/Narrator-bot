@@ -5,6 +5,7 @@ module.exports = {
     name: "exclude",
     gameOnly: true,
     narratorOnly: true,
+    aliases: ["ex"],
     run: async (message, args, client) => {
         args.forEach((arg) => {
             args[args.indexOf(arg)] = arg.toLowerCase()
