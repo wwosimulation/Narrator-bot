@@ -20,14 +20,15 @@ module.exports = {
             let item = shuffle(lootbox)[0]
             setTimeout(async () => {
                 await t.edit(`${emojis[item.id] ? `${emojis[item.id]} ` : ""}You recieved ${item.name} from the lootbox!${item.id == "other" ? "\nPlease contact Shadow for your prize!" : ""}`)
-                data.inventory.lootbox - 1
+                data.inventory.lootbox = data.inventory.lootbox - 1
                 if (item.id != "other") {
                     if (item.id == "coin") {
-                        data.coins + item.amount
+                        data.coins =+ item.amount
                     } else {
-                        data[item.id] + item.amount
+                        data[item.id] =+ item.amount
                     }
                 }
+                data.save()
             }, 3000)
         } else if (args[0].toLowerCase() == "icon") {
             let quantity = db.get(`iconinv_${message.author.id}`) || 0
@@ -36,6 +37,5 @@ module.exports = {
         } else {
             return message.channel.send("This item does not exist!")
         }
-        data.save()
     },
 }
