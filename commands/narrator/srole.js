@@ -262,7 +262,7 @@ module.exports = {
             if (role.name == "President") {
                 guy.roles.add(revealed)
                 setTimeout(() => {
-                    dayChat.send(`<:president:583672720932208671> Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
+                    dayChat.send(`${fn.getEmoji("president", client)} Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
                 }, 15000)
             }
 
