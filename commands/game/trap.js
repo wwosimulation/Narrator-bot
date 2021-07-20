@@ -12,8 +12,10 @@ module.exports = {
             let setTrap = await db.fetch(`setTrap_${message.channel.id}`)
             let trapActive = await db.fetch(`trapActive_${message.channel.id}`)
             let night = await db.fetch(`nightCount`)
+            let isNight = db.get(`isNight`)
             if (!args[0]) return message.reply("Can you please commit suicide. Ty")
             if (!guy) return await message.reply("Invalid target!")
+            if (isNight != "yes") return message.reply("You can only trap durring the day")
 
             if (!message.member.roles.cache.has(alive.id) || !guy.roles.cache.has(alive.id)) return await message.reply("You or your target isn't alive!")
 

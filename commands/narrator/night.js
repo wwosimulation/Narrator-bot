@@ -123,6 +123,7 @@ module.exports = {
                         db.set(`protest_${fcss[i]}`, "no")
                         i = 99
                         lynched = "no"
+                        fcss[i].send(`<:petal:745634256297918564> You protected **${args[0]} ${guy.user.username}** from being lynched!`)
                     }
                 }
             }
