@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "forge",
@@ -25,12 +26,12 @@ module.exports = {
                 db.set(`forging_${message.channel.id}`, db.get(`nightCount`))
                 db.subtract(`forged_${message.channel.id}`, 1)
                 db.set(`given_${message.channel.id}`, false)
-                message.channel.send(`<:forgeshield:744536494458404876> You have started to forge a shield`)
+                message.channel.send(`${getEmoji("forgeshield", client)} You have started to forge a shield`)
             } else if (forged == 1) {
                 db.set(`forging_${message.channel.id}`, db.get(`isNight`))
                 db.subtract(`forged_${message.channel.id}`, 1)
                 db.set(`given_${message.channel.id}`, false)
-                message.channel.send(`<:forgesword:744536546266578996> You have started forging a sword!`)
+                message.channel.send(`${getEmoji("forgesword", client)} You have started forging a sword!`)
             } else {
                 return message.channel.send("Bruh just shut up. You already lost your forged items.")
             }
