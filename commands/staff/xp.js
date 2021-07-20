@@ -14,7 +14,7 @@ module.exports = {
         let data = await players.findOne({ user: user.id })
         if (!user || !amount) return message.channel.send("Invalid arguments! Use `+xp <add/remove/set> <user> <amount>`")
 
-        if (run == "add") data.inventory.lootbox += amount
+        if (run == "add") data.xp += amount
         if (run == "remove") data.xp = data.xp - amount
         if (run == "set") data.xp = amount
 
