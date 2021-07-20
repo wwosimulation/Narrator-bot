@@ -34,38 +34,38 @@ module.exports = {
         } else {
             if (date == 0) {
                 amount = 10 * bonus
-                emote = "<:coin:606434686931173377>"
+                emote = `${config.getRole("coin", client)}`
                 item = "coins"
                 data.coins += 10 * bonus
             } else if (date == 1) {
                 item = "rose"
-                emote = "<:rosesingle:807256844191793158>"
+                emote = `${config.getRole("rosesingle", client)}`
                 amount = 1 * bonus
                 data.inventory.rose += 1 * bonus
             } else if (date == 2) {
                 amount = 1 * bonus
                 item = "rose bouquet"
-                emote = "<:rosebouquet:808545517209387008>"
+                emote = `${config.getRole("rosebouquet", client)}`
                 data.inventory.bouquet += 1 * bonus
             } else if (date == 3) {
                 amount = 1 * bonus
-                emote = "<:lootbox:808548473548963861>"
+                emote = `${config.getRole("lootbox", client)}`
                 item = "lootbox!\n\nTo use it, do `+use lootbox`"
                 data.inventory.lootbox += 1 * bonus
             } else if (date == 4) {
                 item = "coins"
-                emote = "<:coin:606434686931173377>"
+                emote = `${config.getRole("coin", client)}`
                 amount = 20 * bonus
                 data.coins += 20 * bonus
             } else if (date == 5) {
                 item = "roses"
-                emote = "<:rosesingle:807256844191793158>"
+                emote = `${config.getRole("rosesingle", client)}`
                 amount = 5 * bonus
                 data.inventory.roses += 5 * bonus
             } else if (date == 6) {
                 amount = 30 * bonus
                 item = "coins"
-                emote = "<:coin:606434686931173377>"
+                emote = `${config.getRole("coin", client)}`
                 data.daily.day = -1
                 data.coins += 30 * bonus
             }
