@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "tag",
@@ -121,7 +122,7 @@ module.exports = {
             }
 
             db.set(`mouth_${message.author.id}`, guy.nickname)
-            message.channel.send("<:loudmouthing:744572170507911230> You selected **" + guy.nickname + " " + guy.user.username + "** to be revealed when you die.")
+            message.channel.send(`${getEmoji("loudmouthing", client)} You selected **${guy.nickname} ${guy.user.username}** to be revealed when you die.`)
         }
     },
 }
