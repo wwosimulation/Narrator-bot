@@ -1,6 +1,7 @@
 const { MessageActionRow } = require("discord.js")
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "startgame",
@@ -138,7 +139,7 @@ module.exports = {
                     shuffle(allPlayers)
                     gotTarget = true
                     db.set(`hhtarget_${hh[o]}`, guy.nickname)
-                    message.guild.channels.cache.get(allHh[o]).send(`<:headhunter:475775432738996237> Your target is **${guy.nickname} ${guy.user.username}**!`)
+                    message.guild.channels.cache.get(allHh[o]).send(`${getEmoji("headhunter", client)} Your target is **${guy.nickname} ${guy.user.username}**!`)
                 }
             }
             if (gotTarget != true) {
