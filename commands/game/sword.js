@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "sword",
@@ -13,7 +14,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy == message.member) return message.reply("Invalid target!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("I love how you think that your stupidness is cute.")
-            message.guild.channels.cache.finf((c) => c.name === "day-chat").send(`<:getsword:744536585906683975> The Forger's sword was used to kill **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**.`)
+            message.guild.channels.cache.finf((c) => c.name === "day-chat").send(`${getEmoji("getsword", client)} The Forger's sword was used to kill **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**.`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
             db.delete(`sword_${message.channel.id}`)
