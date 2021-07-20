@@ -1,11 +1,7 @@
-const Discord = require("discord.js")
-const db = require("quick.db")
-const shuffle = require("shuffle-array")
-const config = require("../../config")
-const fs = require("fs")
-
 module.exports = {
     name: "reload",
+    description: "Reload commands or files.",
+    usage: `${process.env.PREFIX}reload <command | file>`,
     run: async (message, args, client) => {
         if (!["439223656200273932"].includes(message.author.id)) return
 

@@ -2,6 +2,8 @@ const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "botinfo",
+    description: "Use this command to get more information about the bot.",
+    usage: `${process.env.PREFIX}botinfo`,
     run: async (message, args, client) => {
         let embed = new MessageEmbed()
             .setTitle(client.user.tag)
