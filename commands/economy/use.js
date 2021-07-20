@@ -8,7 +8,7 @@ module.exports = {
     name: "use",
     run: async (message, args, client) => {
         if (!args[0]) return message.channel.send("Get a freaking life dude! You gotta specify an item!")
-        let data = players.findOne({ user: message.author.id })
+        let data = await players.findOne({ user: message.author.id })
 
         if (args[0].toLowerCase() == "lootbox") {
             let quantity = data.inventory.lootbox || 0
