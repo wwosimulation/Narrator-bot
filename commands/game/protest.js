@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "protest",
@@ -16,10 +17,10 @@ module.exports = {
             if (!guy) return await message.channel.send("Invalid Target!")
             if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("You probably have brain tumour. Protesting while being dead or protesting for others that are dead won't work.")
             if (message.channel.name == "priv-flower-child") {
-                message.channel.send(`<:petal:745634256297918564> You are protesting for **${args[0]} ${guy.user.username}**!`)
+                message.channel.send(`${getEmoji("petal", client)} You are protesting for **${args[0]} ${guy.user.username}**!`)
                 db.set(`flower_${message.channel.id}`, args[0])
             } else {
-                message.channel.send(`<:protest:745634377702310013> You are protesting for **${args[0]} ${guy.user.username}**!`)
+                message.channel.send(`${getEmoji("protest", client)} You are protesting for **${args[0]} ${guy.user.username}**!`)
                 db.set(`guardian_${message.channel.id}`, args[0])
             }
         }
