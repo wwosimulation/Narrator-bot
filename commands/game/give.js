@@ -1,5 +1,6 @@
 const { Client, GuildAuditLogsEntry } = require("discord.js")
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "give",
@@ -23,11 +24,11 @@ module.exports = {
             for (let i = 0; i < channel.length; i++) {
                 let iChan = message.guild.channels.cache.get(channel[i])
                 if (iChan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    iChan.send("<:moon:744571127275192394> You have recieved a card from the Fortune Teller! To use it, do `+reveal`")
+                    iChan.send(`${getEmoji("moon", client)} You have recieved a card from the Fortune Teller! To use it, do +reveal`)
                     db.set(`card_${iChan.id}`, true)
                 }
             }
-            message.channel.send(`<:moon:744571127275192394> You gave a card to **${guy.nickname} ${guy.user.username}**`)
+            message.channel.send(`${getEmoji("moon", client)} You gave a card to **${guy.nickname} ${guy.user.username}**`)
             db.subtract(`cards_${message.channel.id}`, 1)
         } else if (message.channel.name == "priv-santa-claus") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
@@ -63,11 +64,11 @@ module.exports = {
             if (forged == 2 || forged == 1) {
                 db.set(`toGiveS_${message.channel.id}`, guy.nickname)
                 db.set(`given_${message.channel.id}`, true)
-                message.channel.send(`<:getshield:744536572556476507> You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
+                message.channel.send(`${getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
             } else {
                 db.subtract(`forged_${message.channel.id}`, 1)
                 db.set(`toGiveK_${message.author.id}`, guy.nickname)
-                message.channel.send(`<:getsword:744536585906683975> You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
+                message.channel.send(`${getEmoji("getsword", client)} You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
             }
         } else if (message.channel.name == "priv-alchemist") {
             let isNight = db.get(`isNight`)
