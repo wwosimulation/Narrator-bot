@@ -1,5 +1,6 @@
 const { MessageFlags } = require("discord.js")
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "convert",
@@ -18,7 +19,7 @@ module.exports = {
             if (!guy || guy == message.member) return message.reply("Invalid Target!")
             if (!guy.roles.cache.has(alive.id) || !message.member.roles.cache.has(alive.id)) return message.channel.send("Bruh, you or your target is not alive!")
             db.set(`sect_${message.channel.id}`, args[0])
-            message.channel.send(`<:sect_member:774556759523590154> You decided to convert **${guy.nickname} ${guy.user.username}**!`)
+            message.channel.send(`${getEmoji("sect_member", client)} You decided to convert **${guy.nickname} ${guy.user.username}**!`)
         } else if (message.channel.name == "priv-bandit") {
             let allbandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).keyArray("id")
             for (let i = 0; i < allbandits.length; i++) {
@@ -43,7 +44,7 @@ module.exports = {
             if (!guy || guy.nickname == message.member.nickname) return message.reply("Invalid Target!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("Stop trying to convert dead players already. They're dead. Leave them alone...")
             db.set(`bandit_${message.channel.id}`, guy.nickname)
-            message.channel.send(`<:kidnap:744575308904267796> You decided to make player **${guy.nickname} ${guy.user.username}** into your Accomplice!`)
+            message.channel.send(`${getEmoji("kidnap", client)} You decided to make player **${guy.nickname} ${guy.user.username}** into your Accomplice!`)
         } else if (message.channel.name == "priv-zombie") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Try to look at yourself first before you judge others...")
             if (isNight != "yes") return message.channel.send("You can only bite during the night knucklehead")
@@ -61,7 +62,7 @@ module.exports = {
             if (zombies.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 return message.channel.send("You aren't a bitten zombie!")
             }
-            message.guild.channels.cache.find((c) => c.name === "zombies").send(`<:zombvote:745632486733905962> ${message.member.nickname} ${message.author.username} voted **${guy.nickname} ${guy.user.username}**!`)
+            message.guild.channels.cache.find((c) => c.name === "zombies").send(`${getEmoji("zombvote", client)} ${message.member.nickname} ${message.author.username} voted **${guy.nickname} ${guy.user.username}**!`)
             db.set(`bite_${message.channel.id}`, guy.nickname)
         }
     },
