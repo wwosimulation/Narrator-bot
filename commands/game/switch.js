@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "switch",
@@ -18,7 +19,7 @@ module.exports = {
 
             if (!guy1.roles.cache.has(alive.id) || !guy2.roles.cache.has(alive.id)) return message.channel.send("One of the player or both of them aren't alive smart-ass")
 
-            message.channel.send(`<:switch:780350022800769035> You decided to switch **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}**!`)
+            message.channel.send(`${getEmoji("switch", client)} You decided to switch **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}**!`)
             db.set(`switch_${message.channel.id}`, [guy1.nickname, guy2.nickname])
         }
     },
