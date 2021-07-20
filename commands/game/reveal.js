@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "reveal",
@@ -15,14 +16,14 @@ module.exports = {
             let ability = await db.fetch(`ability_${message.channel.id}`)
             if (ability == "yes") return await message.channel.send("You already used up your ability!")
             if (isDay != "yes") return await message.channel.send("Dummy, you didn't get the Fortune Teller's card. You can only reveal during the day :rage:")
-            dayChat.send(`<:mayoring:744571394947416128> **${message.member.nickname} ${message.author.username} (Mayor)** has revealed himself!`)
+            dayChat.send(`${getEmoji("mayoring", client)} **${message.member.nickname} ${message.author.username} (Mayor)** has revealed himself!`)
             message.member.roles.add(revealed.id)
             db.set(`ability_${message.channel.id}`, "yes")
         } else if (db.get(`card_${message.channel.id}`)) {
             if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can't reveal when dead!")
             db.set(`card_${message.channel.id}`, false)
             message.member.roles.add(revealed.id)
-            return dayChat.send(`<:sun:744571092601012255> **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
+            return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
         } else if (message.channel.name == "priv-pacifist" || message.channel.name == "priv-wolf-pacifist") {
             let ability = await db.fetch(`paci_${message.channel.id}`)
             let isday = await db.fetch(`isDay`)
@@ -42,7 +43,7 @@ module.exports = {
                     if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can't reveal when dead!")
                     db.set(`card_${message.channel.id}`, false)
                     message.member.roles.add(revealed.id)
-                    return dayChat.send(`<:sun:744571092601012255> **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
+                    return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
                 }
             }
             if (isday != "yes") return await message.reply("You can only use this ability during the day!")
@@ -60,9 +61,9 @@ module.exports = {
                 }
             }
             db.set(`paci_${message.channel.id}`, "yes")
-            dchat.send(`<:revealed:744572010801266793> The Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
+            dchat.send(`${getEmoji("revealed", client)} The Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
             guy.roles.add(revealed.id)
-            if (message.channel.name == "priv-wolf-pacifist") message.guild.channels.cache.get("606135720825847829").send(`<:revealed:744572010801266793> The Wolf Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
+            if (message.channel.name == "priv-wolf-pacifist") message.guild.channels.cache.get("606135720825847829").send(`${getEmoji("revealed", client)} The Wolf Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
 
             if (db.get(`card_${message.channel.id}`) == true) {
                 if (message.channel.name != "priv-mayor" && message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist") {
@@ -70,7 +71,7 @@ module.exports = {
                     if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't reveal when dead!")
                     let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
                     message.member.roles.add(revealed.id)
-                    day.send(`<:sun:744571092601012255> **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
+                    day.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
                     db.set(`card_${message.channel.id}`, false)
                 }
             }
