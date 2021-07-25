@@ -13,7 +13,7 @@ module.exports = {
             let firsthack = db.get(`hack_${message.channel.id}`) || []
             let sech = []
             let lol = firsthack
-           firsthack.forEach((person) => lol.push(person))
+            firsthack.forEach((person) => lol.push(person))
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You flew right through the computer.`)
             if (!args[0]) return message.channel.send("Nice hacking no one i see")
             if (isNight != "yes") return message.channel.send("You should not want to be seen hacking")
@@ -30,41 +30,41 @@ module.exports = {
 
                 //if player is already hacked
                 if (firsthack.includes(guy.nickname)) {
-                        sech.push(guy.nickname)
+                    sech.push(guy.nickname)
                     message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username}** to DEATH!`)
 
                     //if player is not already hacked
                 } else {
                     //add player nickname to firsthack
-                        lol.push(guy.nickname)
+                    lol.push(guy.nickname)
                     //gets player's role
 
-                        let role = db.get(`role_${guy.id}`)
+                    let role = db.get(`role_${guy.id}`)
 
-                        for (let i = 0; i < illu.length; i++) {
-                            let disguised = db.get(`disguised_${illu[i]}`) || []
-                            if (disguised.length != 0) {
-                                if (disguised.includes[args[0]]) {
-                                    role == "Illusionist"
-                                }
+                    for (let i = 0; i < illu.length; i++) {
+                        let disguised = db.get(`disguised_${illu[i]}`) || []
+                        if (disguised.length != 0) {
+                            if (disguised.includes[args[0]]) {
+                                role == "Illusionist"
                             }
                         }
-                        for (let i = 0; i < shaman.length; i++) {
-                            let disguised = db.get(`shaman_${shaman[i]}`) || ""
-                            if (disguised == args[0]) {
-                                role = "Wolf Shaman"
-                            }
-                        }
-                        //confirmation message with role
-                        message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username} (${role})**!`)
                     }
+                    for (let i = 0; i < shaman.length; i++) {
+                        let disguised = db.get(`shaman_${shaman[i]}`) || ""
+                        if (disguised == args[0]) {
+                            role = "Wolf Shaman"
+                        }
+                    }
+                    //confirmation message with role
+                    message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username} (${role})**!`)
                 }
-             //adds player to hacked array
-                    db.set(`hack_${message.channel.id}`, lol)
+            }
+            //adds player to hacked array
+            db.set(`hack_${message.channel.id}`, lol)
             //sets to show player has hacked this night
-                    db.set(`hashacked_${message.channel.id}`, true)
+            db.set(`hashacked_${message.channel.id}`, true)
             //adds people to die
             db.set(`secondhack_${message.channel.id}`, sech)
-            }
-        },
-    }
+        }
+    },
+}
