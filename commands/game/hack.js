@@ -66,6 +66,5 @@ module.exports = {
             //adds people to die
             db.set(`secondhack_${message.channel.id}`, sech)
             }
-        }
-    },
-}
+        },
+    }
