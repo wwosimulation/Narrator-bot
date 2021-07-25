@@ -1,8 +1,19 @@
+const aliases = require("../../config/src/aliases")
+
 module.exports = {
     name: "nmanual",
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
+        for (const key in aliases) {
+            if (args[1].includes(key)) {
+                if (Object.hasOwnProperty.call(aliases, key)) {
+                    const element = aliases[key]
+                    args[1] = element
+                }
+            }
+        }
+
         let chann = message.guild.channels.cache.filter((c) => c.name === `priv-${args[1]}`).keyArray("id")
 
         let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
