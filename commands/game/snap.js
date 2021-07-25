@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "snap",
@@ -19,7 +20,7 @@ module.exports = {
                 if (guy) {
                     if (guy.roles.cache.has(alive.id)) {
                         let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
-                        day.send(`<:delusionise:745632680623996969> The Illusionist killed **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
+                        day.send(`${getEmoji("delusionise", client)} The Illusionist killed **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
                         guy.roles.add(dead.id)
                         guy.roles.remove(alive.id)
                     }

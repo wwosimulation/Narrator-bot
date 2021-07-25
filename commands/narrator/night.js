@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "night",
@@ -107,7 +108,7 @@ module.exports = {
 
         if (!args[0]) return message.channel.send("This won't work. Add a number....")
         if (args[0] == "0") {
-            dayChat.send("<:votingme:744572471079993445> The Villagers couldn't decide on who to lynch!")
+            dayChat.send(`${getEmoji("votingme", client)} The Villagers couldn't decide on who to lynch!`)
         } else {
             let guy = message.guild.members.cache.find((m) => m.nickname == args[0])
 
@@ -119,11 +120,11 @@ module.exports = {
                 let petal = db.get(`flower_${fcss[i]}`)
                 if (petal == args[0]) {
                     if (db.get(`protest_${fcss[i]}`) != "yes") {
-                        dayChat.send(`<:votingme:744572471079993445> Player **${guy.nickname} ${guy.user.username}** could not be lynched!`)
+                        dayChat.send(`${getEmoji("votingme", client)} Player **${guy.nickname} ${guy.user.username}** could not be lynched!`)
                         db.set(`protest_${fcss[i]}`, "no")
                         i = 99
                         lynched = "no"
-                        fcss[i].send(`<:petal:745634256297918564> You protected **${args[0]} ${guy.user.username}** from being lynched!`)
+                        fcss[i].send(`${getEmoji("petal", client)} You protected **${args[0]} ${guy.user.username}** from being lynched!`)
                     }
                 }
             }
@@ -134,7 +135,7 @@ module.exports = {
                     let guardian = db.get(`guardian_${gwwss[i]}`)
                     if (guardian == args[0]) {
                         if (db.get(`protest_${gwwss[i]}`) != "yes") {
-                            dayChat.send(`<:votingme:744572471079993445> Player **${guy.nickname} ${guy.user.username}** could not be lynched!`)
+                            dayChat.send(`${getEmoji("votingme", client)} Player **${guy.nickname} ${guy.user.username}** could not be lynched!`)
                             db.set(`protest_${gwwss[i]}`, "no")
                             i = 99
                             lynched = "no"
@@ -146,7 +147,7 @@ module.exports = {
             if (lynched == "yes") {
                 if (db.get(`role_${guy.id}`) == "Handsome Prince") {
                     lynched = "no"
-                    dayChat.send(`<:votingme:744572471079993445> The Villagers tried to lynch **${guy.nickname} ${guy.user.username} (Handsome Prince) but they were too handsome to be killed today.`)
+                    dayChat.send(`${getEmoji("votingme", client)} The Villagers tried to lynch **${guy.nickname} ${guy.user.username} (Handsome Prince) but they were too handsome to be killed today.`)
                 }
             }
 
@@ -161,12 +162,12 @@ module.exports = {
                         }
                     }
                     lynched = "no"
-                    dayChat.send(`<:votingme:744572471079993445> The Villagers tried to lynch **${guy.nickname} ${guy.user.username} (Idiot) but instead made them lose their ability to vote.`)
+                    dayChat.send(`${getEmoji("votingme", client)} The Villagers tried to lynch **${guy.nickname} ${guy.user.username} (Idiot) but instead made them lose their ability to vote.`)
                 }
             }
 
             if (lynched == "yes") {
-                dayChat.send("<:votingme:744572471079993445> The Villagers lynched **" + guy.nickname + " " + guy.user.username + " (" + db.get(`role_${guy.id}`) + ")**!")
+                dayChat.send(`${getEmoji("votingme", client)} The Villagers lynched **${guy.nickname} ${guy.user.username} ( ${db.get(`role_${guy.id}`)} )**!`)
                 guy.roles.add(dead.id)
                 guy.roles.remove(alive.id)
             }
@@ -250,7 +251,7 @@ module.exports = {
                                 if (corruptor.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                     if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                         db.set(`corrupt_${corr[a]}`, null)
-                                        dayChat.send(`<:corrupt:745632706838396989> The Corruptor killed **${guy.nickname} ${guy.user.username}**!`)
+                                        dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${guy.nickname} ${guy.user.username}**!`)
                                         guy.roles.add(dead.id)
                                         guy.roles.remove(alive.id)
                                         guy.roles.add("777400587276255262")
@@ -263,7 +264,7 @@ module.exports = {
                                                     if (db.get(`role_${cguy.id}`) == "Red Lady") {
                                                         let corruptedornot = db.get(`rlcorrupted_${cguy.nickname}`)
                                                         if (corruptedornot == true) {
-                                                            dayChat.send(`<:corrupt:745632706838396989> The Corruptor killed **${cguy.nickname} ${cguy.user.username}**!`)
+                                                            dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${cguy.nickname} ${cguy.user.username}**!`)
                                                             cguy.roles.add(dead.id)
                                                             cguy.roles.remove(alive.id)
                                                             cguy.roles.add("777400587276255262")
@@ -566,7 +567,7 @@ module.exports = {
                         let guy = message.guild.members.cache.find((m) => m.nickname === b.toString())
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             if (guy.roles.cache.has(alive.id)) {
-                                dayChat.send(`<:tough_guy:584182666212016158> Player **${guy.nickname} ${guy.user.username} (Tough Guy)** was wounded last night and has died!`)
+                                dayChat.send(`${getEmoji("tough_guy", client)} Player **${guy.nickname} ${guy.user.username} (Tough Guy)** was wounded last night and has died!`)
                                 guy.roles.add(dead.id)
                                 guy.roles.remove(alive.id)
                             }
@@ -587,7 +588,7 @@ module.exports = {
                                     let guy = message.guild.members.cache.find((m) => m.nickname === blackpotion)
                                     if (guy) {
                                         if (guy.roles.cache.has(alive.id)) {
-                                            dayChat.send(`<:blackp:821920932989239296> The Alchemist killed **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
+                                            dayChat.send(`${getEmoji("blackp", client)} The Alchemist killed **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
                                             guy.roles.add(dead.id)
                                             guy.roles.remove(alive.id)
                                         }
@@ -668,7 +669,7 @@ module.exports = {
                             let goy = message.guild.members.cache.find((m) => m.nickname === e.toString())
                             if (goy) {
                                 if (goy.roles.cache.has(alive.id)) {
-                                    dayChat.send(`<:explode:745914819353509978> **${goy.nickname} ${goy.user.username} (${db.get(`role_${goy.id}`)})** was killed by an explosion!`)
+                                    dayChat.send(`${getEmoji("explode", client)} **${goy.nickname} ${goy.user.username} (${db.get(`role_${goy.id}`)})** was killed by an explosion!`)
                                     goy.roles.add(dead.id)
                                     goy.roles.remove(alive.id)
                                 }

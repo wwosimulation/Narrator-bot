@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getRole, ids } = require("../config")
+const { getRole, ids, getEmoji } = require("../config")
 const shuffle = require("shuffle-array")
 module.exports = (client) => {
     //Bot updating roles
@@ -18,7 +18,7 @@ module.exports = (client) => {
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     if (db.get(`frenzy_${chan.id}`) == true) {
                         db.set(`frenzy_${chan.id}`, false)
-                        newMember.guild.channels.cache.find((c) => c.name === "werewolves-chat").send("<:frenzy:744573088204718412> The frenzy has stopped because the Werewolf Berserk has died!")
+                        newMember.guild.channels.cache.find((c) => c.name === "werewolves-chat").send(`${getEmoji("frenzy", client)} The frenzy has stopped because the Werewolf Berserk has died!`)
                     }
                 }
             }
@@ -101,7 +101,7 @@ module.exports = (client) => {
                     let tag = db.get(`jwwtag_${oldMember.id}`)
                     let guy = newMember.guild.members.cache.find((m) => m.nickname === tag)
                     if (guy.roles.cache.has("606140092213624859") && newMember.roles.cache.has("606131202814115882")) {
-                        await newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`<:revenge:744572531889012756> The Junior Werewolf's death has been avenged! **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** is dead!`)
+                        await newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("revenge", client)} The Junior Werewolf's death has been avenged! **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** is dead!`)
                         await guy.roles.add("606131202814115882")
                         await guy.roles.remove("606140092213624859")
                     }
@@ -118,7 +118,7 @@ module.exports = (client) => {
                     let tag = db.get(`atag_${oldMember.id}`)
                     let guy = newMember.guild.members.cache.find((m) => m.nickname === tag)
                     if (guy.roles.cache.has("606140092213624859")) {
-                        newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`<:avenge:744536638314774558> The Avenger avenged **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
+                        newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("avenge", client)} The Avenger avenged **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
                         guy.roles.add("606131202814115882")
                         guy.roles.remove("606140092213624859")
                     }
@@ -135,7 +135,7 @@ module.exports = (client) => {
                     let tag = db.get(`mouth_${oldMember.id}`)
                     let guy = newMember.guild.members.cache.find((m) => m.nickname === tag)
                     if (guy.roles.cache.has("606140092213624859")) {
-                        newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`<:loudmouthed:744571429282119770> The Loudmouth's last will was to reveal **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
+                        newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("loudmouthed", client)} The Loudmouth's last will was to reveal **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
                         guy.roles.add("822806480099999774")
                     }
                 }
@@ -237,7 +237,7 @@ module.exports = (client) => {
                 if (guy) {
                     if (guy.roles.cache.has("606140092213624859")) {
                         if (sectMember.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) != "Sect Leader") {
-                            newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`<:sect_member:774556759523590154> Sect Member **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** commited suicide!`)
+                            newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("sect_member", client)} Sect Member **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** commited suicide!`)
                             guy.roles.add("606131202814115882")
                             guy.roles.remove("606140092213624859")
                             sectMember.permissionOverwrites.edit(guy.id, { VIEW_CHANNEL: false })
@@ -344,12 +344,12 @@ module.exports = (client) => {
                 }
             }
             if (found1 != "None") {
-                guild.channels.cache.find((c) => c.name === "day-chat").send(`<:toxic:787676985106890752> The Mad Scientist's toxic was exposed and killed **${guy1.nickname} ${guy1.user.username} (${db.get(`role_${guy1.id}`)})**!`)
+                guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("toxic", client)} The Mad Scientist's toxic was exposed and killed **${guy1.nickname} ${guy1.user.username} (${db.get(`role_${guy1.id}`)})**!`)
                 guy1.roles.add(dead.id)
                 guy1.roles.remove(alive.id)
             }
             if (found2 != "None") {
-                guild.channels.cache.find((c) => c.name === "day-chat").send(`<:toxic:787676985106890752> The Mad Scientist's toxic was exposed and killed **${guy2.nickname} ${guy2.user.username} (${db.get(`role_${guy2.id}`)})**!`)
+                guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("toxic", client)} The Mad Scientist's toxic was exposed and killed **${guy2.nickname} ${guy2.user.username} (${db.get(`role_${guy2.id}`)})**!`)
                 guy2.roles.add(dead.id)
                 guy2.roles.remove(alive.id)
             }
@@ -387,7 +387,7 @@ module.exports = (client) => {
                     if (cupid.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (guy != newMember) {
                             if (guy.roles.cache.has(alive.id) && newMember.presence.status != "offline" && !db.get(`suicided_${newMember.id}`)) {
-                                newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`<:couple:744542381206143026> Player **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** lost the love of their live and commited suicide!`)
+                                newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("couple", client)} Player **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** lost the love of their live and commited suicide!`)
                                 guy.roles.add(dead)
                                 guy.roles.remove(alive.id)
                             }

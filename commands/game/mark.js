@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "mark",
@@ -17,7 +18,7 @@ module.exports = {
             if (isNight != "yes") return message.channel.send("Bruh, you can only do this during the night!")
             if (db.get(`role_${guy.id}`) == "President") return message.channel.send("Killing the President just shows your stupidity")
             if (arrow < 1) return message.channel.send("You ran out of arrows nutcracker")
-            message.channel.send(`<:mark:779292927737200671> You decided to mark **${guy.nickname} ${guy.user.username}**!`)
+            message.channel.send(`${getEmoji("mark", client)} You decided to mark **${guy.nickname} ${guy.user.username}**!`)
             db.set(`mark_${message.channel.id}`, guy.nickname)
             db.set(`markActive_${message.channel.id}`, false)
         }

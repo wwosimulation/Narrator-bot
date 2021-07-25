@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "shadow",
@@ -11,7 +12,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't manipulate voting when dead, dumb.")
             if (abil == "yes") return message.channel.send("YOU ALREADY ENABLED MANIPULATING STUPID.")
             if (isDay != "yes") return message.channel.send("Yup, trying to manipulate during the night.")
-            message.guild.channels.cache.find((c) => c.name === "day-chat").send("<:shadow:744573018147127394> The Shadow Wolf has manipulated voting today!")
+            message.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("shadow", client)} The Shadow Wolf has manipulated voting today!`)
             db.set(`vtshadow`, true)
             db.set(`shadow_${message.channel.id}`, "yes")
             message.guild.channels.cache

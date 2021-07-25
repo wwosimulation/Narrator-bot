@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "water",
@@ -35,12 +36,12 @@ module.exports = {
                         if (toKill.includes("wolf")) {
                             guy.roles.remove(alive.id)
                             guy.roles.add(dead.id)
-                            dayChat.send(`<:water:744571479986798622> **${message.member.nickname} ${message.author.username} (Priest)** has thrown holy water at and killed **${args[0]} ${guy.user.username} (${role})**`)
+                            dayChat.send(`${getEmoji("water", client)} **${message.member.nickname} ${message.author.username} (Priest)** has thrown holy water at and killed **${args[0]} ${guy.user.username} (${role})**`)
                             ownself.roles.add(revealed.id)
                         } else {
                             ownself.roles.remove(alive.id)
                             ownself.roles.add(dead.id)
-                            dayChat.send(`<:water:744571479986798622> **${message.member.nickname} ${message.author.username} (Priest)** tried to throw holy water on **${args[0]} ${guy.user.username}** and killed themselves! **${args[0]} ${guy.user.username}** is not a werewolf!`)
+                            dayChat.send(`${getEmoji("water", client)} **${message.member.nickname} ${message.author.username} (Priest)** tried to throw holy water on **${args[0]} ${guy.user.username}** and killed themselves! **${args[0]} ${guy.user.username}** is not a werewolf!`)
                         }
                     }
                 }

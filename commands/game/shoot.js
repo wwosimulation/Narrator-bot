@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "shoot",
@@ -32,7 +33,7 @@ module.exports = {
                 }
                 if (db.get(`did_${message.channel.id}`) == dayCount) return message.channel.send("You already shot today. Get chill pill from dank memer man!")
                 if (db.get(`role_${guy.id}`) == "President") return message.channel.send("Even if you are coupled or sected, you can't shoot the President!")
-                dayChat.send(`<:bullet:744571767204478996> **${message.member.nickname} ${message.author.username} (Gunner)** shot **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
+                dayChat.send(`${getEmoji("bullet", client)} **${message.member.nickname} ${message.author.username} (Gunner)** shot **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
                 message.member.roles.add(revealed.id)
                 guy.roles.add(dead.id)
                 guy.roles.remove(alive.id)
@@ -53,7 +54,7 @@ module.exports = {
             if (isDay == "yes") return message.channel.send("Nice, killing in the day when no one is jailed.")
             if (bullet == 0) return message.channel.send("You already used your bullet")
             db.set(`bullet_jail`, 0)
-            dayChat.send(`<:bullet:744571767204478996> The Jailer executed their prisoner last night! **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** is dead!`)
+            dayChat.send(`${getEmoji("bullet", client)} The Jailer executed their prisoner last night! **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** is dead!`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
             jailedchat.permissionOverwrites.edit(guy.id, {
@@ -80,11 +81,11 @@ module.exports = {
                 if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Bandit" || role == "Illusionist" || role == "Corruptor" || role == "Accomplice" || role == "Sorcerer" || role == "Zombie" || role == "Sect Leader" || role == "Cannibal" || role == "Alchemist") {
                     guy.roles.add(dead.id)
                     guy.roles.remove(alive.id)
-                    day.send(`<:arrow:744571940374708234> The Marksman shot **${guy.nickname} ${guy.user.username} (${role})**!`)
+                    day.send(`${getEmoji("arrow", client)} The Marksman shot **${guy.nickname} ${guy.user.username} (${role})**!`)
                 } else {
                     message.member.roles.add(dead.id)
                     message.member.roles.remove(alive.id)
-                    day.send(`<:arrow:744571940374708234> **${message.member.nickname} ${message.author.username} (Marksman)** tried shotting **${guy.nickname} ${guy.user.username}** but their shot backfired! **${guy.nickname} ${guy.user.username}** is a villager!`)
+                    day.send(`${getEmoji("arrow", client)} **${message.member.nickname} ${message.author.username} (Marksman)** tried shotting **${guy.nickname} ${guy.user.username}** but their shot backfired! **${guy.nickname} ${guy.user.username}** is a villager!`)
                 }
             }
         }

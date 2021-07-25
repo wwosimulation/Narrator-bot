@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "frenzy",
@@ -15,7 +16,7 @@ module.exports = {
 
             db.set(`frenzy_${message.channel.id}`, true)
             message.react("744573088204718412")
-            wolfChat.send("<:frenzy:744573088204718412> The Werewolf Berserk activated it's frenzy tonight!")
+            wolfChat.send(`${getEmoji("frenzy", client)} The Werewolf Berserk activated it's frenzy tonight!`)
         }
     },
 }

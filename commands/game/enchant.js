@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "enchant",
@@ -41,7 +42,7 @@ module.exports = {
             if (disguised.length > 0) {
                 if (disguised.includes(guy.nickname)) return message.channel.send("Breaking me won't work. You already disguised this player...")
             }
-            message.channel.send(`<:delude:745632655038742568> You decided to disguise **${guy.nickname} ${guy.user.username}**!`)
+            message.channel.send(`${getEmoji("delude", client)} You decided to disguise **${guy.nickname} ${guy.user.username}**!`)
             db.set(`toDisguise_${message.channel.id}`, guy.nickname)
         }
     },
