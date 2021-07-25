@@ -34,43 +34,43 @@ module.exports = {
         } else {
             if (date == 0) {
                 amount = 10 * bonus
-                emote = `${config.getRole("coin", client)}`
+                emote = `${config.getRole("coin", client).toString()}`
                 item = "coins"
                 data.coins += 10 * bonus
             } else if (date == 1) {
                 item = "rose"
-                emote = `${config.getRole("rosesingle", client)}`
+                emote = `${config.getRole("rosesingle", client).toString()}`
                 amount = 1 * bonus
                 data.inventory.rose += 1 * bonus
             } else if (date == 2) {
                 amount = 1 * bonus
                 item = "rose bouquet"
-                emote = `${config.getRole("rosebouquet", client)}`
+                emote = `${config.getRole("rosebouquet", client).toString()}`
                 data.inventory.bouquet += 1 * bonus
             } else if (date == 3) {
                 amount = 1 * bonus
-                emote = `${config.getRole("lootbox", client)}`
+                emote = `${config.getRole("lootbox", client).toString()}`
                 item = "lootbox!\n\nTo use it, do `+use lootbox`"
                 data.inventory.lootbox += 1 * bonus
             } else if (date == 4) {
                 item = "coins"
-                emote = `${config.getRole("coin", client)}`
+                emote = `${config.getRole("coin", client).toString()}`
                 amount = 20 * bonus
                 data.coins += 20 * bonus
             } else if (date == 5) {
                 item = "roses"
-                emote = `${config.getRole("rosesingle", client)}`
+                emote = `${config.getRole("rosesingle", client).toString()}`
                 amount = 5 * bonus
                 data.inventory.roses += 5 * bonus
             } else if (date == 6) {
                 amount = 30 * bonus
                 item = "coins"
-                emote = `${config.getRole("coin", client)}`
+                emote = `${config.getRole("coin", client).toString()}`
                 data.daily.day = -1
                 data.coins += 30 * bonus
             }
 
-            let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have recieved ${amount} ${item}!${extra}`)
+            let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have received ${amount} ${item}!${extra}`)
             message.channel.send({ embeds: [dailymsg] })
 
             data.daily.day++
