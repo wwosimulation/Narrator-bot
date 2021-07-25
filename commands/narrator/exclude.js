@@ -11,14 +11,14 @@ module.exports = {
         })
 
         let roles = config.roles.map((x) => x.name.toLowerCase())
-        let aliases = require('../../config/src/aliases')
+        let aliases = require("../../config/src/aliases")
 
         let rolestoexclude = []
 
         for (const key in aliases) {
-            if(args.includes(key)) {
+            if (args.includes(key)) {
                 if (Object.hasOwnProperty.call(aliases, key)) {
-                    const element = aliases[key];
+                    const element = aliases[key]
                     rolestoexclude.push(element)
                     let index = args.indexOf(key)
                     args.splice(index, 1)
