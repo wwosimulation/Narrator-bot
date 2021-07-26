@@ -24,6 +24,10 @@ pull_request_rules:
       conditions:
           - author=imgbot[bot]
       actions:
+          label:
+              remove:
+                  - "Waiting for Changes"
+                  - "Waiting for Testing"
           merge:
               method: squash
     - name: close stale pull request
