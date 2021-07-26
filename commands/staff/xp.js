@@ -22,7 +22,7 @@ module.exports = {
         }
 
         if (run == "add" || run == "remove") {
-            if(run == "remove") {
+            if (run == "remove") {
                 amount = -amount
             }
             run = "$inc"
@@ -30,13 +30,13 @@ module.exports = {
         if (run == "set") {
             run = "$set"
         }
-        
+
         var obj = {}
-            obj[run] = {
-                xp: amount
-            }
+        obj[run] = {
+            xp: amount,
+        }
         data.updateOne(obj)
-        
+
         message.channel.send(`Successfully ran \`${run} ${amount}\` on ${user.id}`)
     },
 }
