@@ -10,16 +10,16 @@ pull_request_rules:
       conditions:
           - -draft
       actions:
-        label:
-          add:
-            - "Waiting for Testing"
+          label:
+              add:
+                  - "Waiting for Testing"
     - name: Auto-Label Changes
       conditions:
           - changes-requested-reviews-by=thewilloftheshadow
       actions:
-        label:
-          add:
-            - "Waiting for Changes"
+          label:
+              add:
+                  - "Waiting for Changes"
     - name: automatic merge for ImgBot pull requests
       conditions:
           - author=imgbot[bot]
