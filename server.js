@@ -2,12 +2,13 @@ console.log("Booting bot...")
 require("dotenv").config()
 const fs = require("fs")
 const db = require("quick.db")
-//const mongo = require("./db.js")
+const mongo = require("./db.js")
 const Discord = require("discord.js")
 const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] })
 const config = require("./config")
 //const shadowadmin = require("shadowadmin")
 client.db = db
+client.dbs = mongo
 
 const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
