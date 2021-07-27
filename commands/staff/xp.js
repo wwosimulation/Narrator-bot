@@ -15,7 +15,7 @@ module.exports = {
         if (!user || !amount) return message.channel.send("Invalid arguments! Use `+xp <add/remove/set> <user> <amount>`")
 
         if (!data) {
-            data = players.create({
+            data = await players.create({
                 user: user.id,
             })
             data.save()
@@ -35,7 +35,7 @@ module.exports = {
         obj[run] = {
             xp: amount,
         }
-        data.updateOne(obj)
+        await data.updateOne(obj)
 
         message.channel.send(`Successfully ran \`${run} ${amount}\` on ${user.id}`)
     },
