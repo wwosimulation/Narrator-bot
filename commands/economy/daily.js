@@ -34,38 +34,38 @@ module.exports = {
         } else {
             if (date == 0) {
                 amount = 10 * bonus
-                emote = `${config.getRole("coin", client).toString()}`
+                emote = `${config.getEmoji("coin", client)}`
                 item = "coins"
                 data.coins += 10 * bonus
             } else if (date == 1) {
                 item = "rose"
-                emote = `${config.getRole("rosesingle", client).toString()}`
+                emote = `${config.getEmoji("rosesingle", client)}`
                 amount = 1 * bonus
                 data.inventory.rose += 1 * bonus
             } else if (date == 2) {
                 amount = 1 * bonus
                 item = "rose bouquet"
-                emote = `${config.getRole("rosebouquet", client).toString()}`
+                emote = `${config.getEmoji("rosebouquet", client)}`
                 data.inventory.bouquet += 1 * bonus
             } else if (date == 3) {
                 amount = 1 * bonus
-                emote = `${config.getRole("lootbox", client).toString()}`
+                emote = `${config.getEmoji("lootbox", client)}`
                 item = "lootbox!\n\nTo use it, do `+use lootbox`"
                 data.inventory.lootbox += 1 * bonus
             } else if (date == 4) {
                 item = "coins"
-                emote = `${config.getRole("coin", client).toString()}`
+                emote = `${config.getEmoji("coin", client)}`
                 amount = 20 * bonus
                 data.coins += 20 * bonus
             } else if (date == 5) {
                 item = "roses"
-                emote = `${config.getRole("rosesingle", client).toString()}`
+                emote = `${config.getEmoji("rosesingle", client)}`
                 amount = 5 * bonus
                 data.inventory.roses += 5 * bonus
             } else if (date == 6) {
                 amount = 30 * bonus
                 item = "coins"
-                emote = `${config.getRole("coin", client).toString()}`
+                emote = `${config.getEmoji("coin", client)}`
                 data.daily.day = -1
                 data.coins += 30 * bonus
             }
