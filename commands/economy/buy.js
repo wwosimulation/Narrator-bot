@@ -147,6 +147,6 @@ module.exports = {
             data.privateChannel = t.id
         }
         data.save()
-        message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${config.fn.emote[item.currency]}!${item.response ? `\n${item.response}` : ""}`)
+        message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${config.getEmoji(item.currency, client!}!${item.response ? `\n${item.response}` : ""}`)
     },
 }
