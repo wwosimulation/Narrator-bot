@@ -23,19 +23,16 @@ module.exports = {
             let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])
             let guy3 = message.guild.members.cache.find((m) => m.nickname === args[2])
             if (isNight != "yes") return await message.channel.send("Placing bombs in broad day light is good. You should do it often!")
-            if (!args.length == 3) return await message.channel.send("I know you wanna be the arso but you're not. Select 3 players to place the bomb at.")
+            if (!args.length == 3) return await message.channel.send("I know you wanna be the arso but you're not. Select 3 players to place the bomb at.") // change with fix
             if (!guy1 || !guy2 || !guy3) return await message.channel.send("Invalid Target!")
             if ((!guy1.roles.cache.has(alive.id) && !guy2.roles.cache.has(alive.id) && !guy3.roles.cache.has(alive.id)) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("Listen, placing bombs aren't possible when dead or to dead players. Now be a lamb and SHUT UP. ")
-            if (night == didCmd + 1 && night != 1) return await message.channel.send("You already placed the bombs yesterday. So no bombs for you.")
+            if (night == didCmd + 1 && night != 1) return await message.channel.send("Your bomb will explode soon!")
             let bombs = [args[0], args[1], args[2]]
             let bombPlacements = `${args[0]} ${args[1]} ${args[2]}`
             console.log(bombPlacements)
             console.log(bombs)
-            //console.log(JSON.stringify(bombs) == '123' )
+
             if (config.bombPlacements.includes(bombPlacements)) {
-                //return await message.channel.send(
-                // "Honey, you can only place bombs vertically, horizontally or diagonally. Make sure they are in order. \n\n+bomb 7 6 5 - :x:\n+bomb 5 6 7 - :white_check_mark: "
-                // );
                 message.channel.send(`${config.fn.getEmoji("explode", client)} Placed bombs on **${guy1.user.username}**, **${guy2.user.username}** and **${guy3.user.username}**!`)
 
                 if (bombs.includes(message.member.nickname)) {
