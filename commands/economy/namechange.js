@@ -10,7 +10,7 @@ module.exports = {
             let specialrolesname = client.guilds.cache.get("465795320526274561").roles.cache.get("606247032553865227")
             let colorsrolename = client.guilds.cache.get("465795320526274561").roles.cache.get("606247387496972292")
             let allsprole = client.guilds.cache.get("465795320526274561").roles.cache.filter((r) => r.position < specialrolesname.position && r.position > colorsrolename.position)
-            let hassprole = false
+
             allsprole.forEach((e) => {
                 if (client.guilds.cache.get("465795320526274561").members.cache.get(message.author.id).roles.cache.has(e.id)) {
                     data.role = e.id
@@ -19,14 +19,14 @@ module.exports = {
                 }
             })
         }
-        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using +bug.")
+        if (!role) return message.channel.send("Special role is missing! If you have one, report this using +bug.")
 
-        if (args.length < 1) return message.channel.send("Stop. being. stupid. you. dumb. weirdo.")
-        if (args.join(" ").length > 99) return message.channel.send("Too many characters!")
+        if (args.length < 1) return message.channel.send("It is not even a name. 👀")
+        if (args.join(" ").length > 99) return message.channel.send("👀 That's too long mate!")
         client.guilds.cache
             .get("465795320526274561")
             .roles.cache.get(role)
             .edit({ name: args.join(" ") })
-        message.channel.send("Done! Your special role name is: " + args.join(" "))
+        message.channel.send("Done! " + args.join(" ") + " is your special role now.")
     },
 }

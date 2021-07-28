@@ -1,16 +1,17 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 
-const { shop, emojis, fn } = require("../../config")
+const { shop } = require("../../config")
 
 module.exports = {
     name: "shop",
-    run: async (message, args, client) => {
+    run: async (message, args) => {
         if (["color", "colors", "colour", "colours"].includes(args[0])) {
-            let embed = new MessageEmbed().setDescription("Available colors:\n\nUse `+buy <color> role` to purchase a color")
+            let embed = new MessageEmbed().setDescription("Available Colors:\n\n")
             shop.colors.forEach((x) => {
                 embed.description += `${x.name} Color\n`
             })
             embed.setTitle("Wolvesville Simulation Store").setColor("#1FFF43")
+            embed.setFooter('Use `+buy <color> role` to purchase a color.')
             return message.channel.send({ embeds: [embed] })
         } else {
             let row = new MessageActionRow()

@@ -15,7 +15,7 @@ module.exports = {
         } else {
             guy = message.author
         }
-        if (!guy) return message.channel.send("Unable to find that user")
+        if (!guy) return message.channel.send("Unable to find that user.")
         if (guy.author) guy = guy.author
 
         if (!data.profile && !fn.isNarrator(message.member)) return message.channel.send("This player does not have their profile unlocked from the shop!")

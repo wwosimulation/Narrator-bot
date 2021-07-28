@@ -1,12 +1,10 @@
-const db = require("quick.db")
-const Discord = require("discord.js")
 const { fn } = require("../../config")
 const { players } = require("../../db.js")
 
 module.exports = {
     name: "xp",
     narratorOnly: true,
-    run: async (message, args, client) => {
+    run: async (message, args) => {
         if (!args.length == 3) return message.channel.send("Invalid arguments! Use `+xp <add/remove/set> <user> <amount>`")
         let run = args[0]
         let user = fn.getUser(args[1], message)
