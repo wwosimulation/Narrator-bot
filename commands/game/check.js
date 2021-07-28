@@ -18,8 +18,7 @@ module.exports = {
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             else if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) {
                 return await message.reply("You or the person you are checking is not alive.")
-            }
-            else if (guy == ownself) {
+            } else if (guy == ownself) {
                 return message.channel.send("Checking yourself? Trust issues, hah! lol")
             } else {
                 let ability = await db.fetch(`auraCheck_${message.channel.id}`)
@@ -48,8 +47,7 @@ module.exports = {
                     message.channel.send(`You checked **${args[0]} ${guy.user.username} (${aura})**`)
                 }
             }
-        } 
-        else if (message.channel.name == "priv-seer") {
+        } else if (message.channel.name == "priv-seer") {
             let isNight = await db.fetch(`isNight`)
             if (isNight == "no") return await message.channel.send("It's day! You can check during nights only!")
             if (!args[0]) return message.channel.send("Who want to check? Insert the player number next time.")
@@ -58,8 +56,7 @@ module.exports = {
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             else if (guy == ownself) {
                 return message.channel.send("Checking yourself? Trust issues, hah! lol")
-            }
-            else if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.channel.send("You or the person you are checking is not alive.")
+            } else if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.channel.send("You or the person you are checking is not alive.")
             let checked = await db.fetch(`seer_${message.channel.id}`)
             if (checked == "yes") return await message.channel.send("You already used your ability for tonight!")
             let role = await db.fetch(`role_${guy.id}`)
@@ -90,7 +87,7 @@ module.exports = {
             let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             if (args.length != 2 || guy1 == guy2) return await message.channel.send("Honey, as Detective you need to select 2 players to compare.")
-            
+
             if (!guy1 || !guy2) return await message.reply("The player is not in game! Mention the correct player number.")
             else if (guy1 == ownself || guy2 == ownself) {
                 return message.channel.send("Checking with yourself? Trust issues, hah! lol")
