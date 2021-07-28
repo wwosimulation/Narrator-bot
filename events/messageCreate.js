@@ -22,7 +22,7 @@ module.exports = (client) => {
 
         message.i10n = (key, language = pdb.language) => {
             if (!language) language = "en"
-            i10n(key, language)
+            return i10n(key, language)
         }
 
         // blacklists
