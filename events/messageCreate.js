@@ -19,10 +19,9 @@ module.exports = (client) => {
             pdb = { user: message.author.id }
             players(pdb).save()
         }
-        
-        
+
         message.i10n = (key, language = pdb.language) => {
-            if(!language) language = "en"
+            if (!language) language = "en"
             i10n(key, language)
         }
 
