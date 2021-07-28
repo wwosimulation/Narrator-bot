@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const leaderboard = require("../commands/economy/leaderboard")
 const { shop, ids } = require("../config")
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
@@ -29,6 +30,16 @@ module.exports = (client) => {
                 let omg = await interaction.message.channel.send(`${interaction.member.nickname} voted ${interaction.values[0].split("-")[1]}`)
                 db.set(`vote_${interaction.member.id}`, interaction.values[0].split("-")[1])
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
+            }
+            if (interaction.customId.startsWith("leaderboard")) {
+                let arg = customId.slice(11).split('-') // ['', sort, message.id]
+                let new_page = interaction.values[0]
+                let m = interaction.message
+                let message = interaction.channel.messages.fetch(args[2])
+
+                let args = [new_page, arg[1], m]
+
+                leaderboard.run( message , args, client)
             }
         }
     })

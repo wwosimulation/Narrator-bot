@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, MessageSelectMenu, MessageActionRow } = require("discord.js")
 const { emojis, fn } = require("../../config")
 const { players } = require("../../db")
 
@@ -19,30 +19,62 @@ module.exports = {
         let desc = ""
         let sorts = ["coins", "roses", "gems", "xp"]
         let types = ["Coin", "Rose", "Gem", "Xp"]
+        let i = 0
+        let n = 1
 
         if (isNaN(args[0]) && sorts.includes(args[0])) (sort = args[0]), (lb_type = types[sorts.indexOf(sort)])
         if (!isNaN(args[0])) page = parseInt(args[0])
         if (args[1] && isNaN(args[1]) && sorts.includes(args[1])) (sort = args[1]), (lb_type = types[sorts.indexOf(sort)])
 
+        const drop = new MessageSelectMenu({customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{label: n, value: n, description: `Go to page ${n}`, default: true}]})
+
+        let obj = {}
+        obj[sort] = -1 
         await players
             .find({})
-            .sort({ coins: -1 })
+            .sort(obj)
             .forEach((player) => {
-                all_arr.push({ userID: player.user, coins: player[sort] })
+                all_arr.push({ userID: player.user, value: player[sort] })
+                i = i + 1
+                if(i == 10) {
+                    i = 0
+                    n = n + 1
+                    drop.addOptions({label: n, value: n, description: `Go to page ${n}`})
+                }
             })
 
-        lb_arr = all_arr.splice((page - 1) * 10, page * 10 - 1)
-
+        lb_arr = all_arr.splice((page - 1) * 10, 10)
         lb_arr.forEach((user) => {
-            desc = desc + `${user.coins} - ${getTag(user.userID)}\n`
+            desc = desc + `${user.value} - ${getTag(user.userID)}\n`
         })
 
+        let max_page = Math.ceil(all_arr.length / 10)
         let lb = new MessageEmbed()
-            .setFooter(`${page}/${Math.ceil(all_arr.length / 10)}`)
+            .setFooter(`${page}/${max_page}`)
             .setTitle(`${lb_type} Leaderboard`)
             .setColor("#1FFF43")
             .setDescription(desc)
 
-        message.channel.send({ embeds: [lb] })
+        let row = new MessageActionRow().addComponents(drop)
+        if(!args[2]){
+            let msg = message.channel.send({ embeds: [lb], components: [row]})
+            setTimeout(() => {
+                row.components.forEach((x) => x.setDisabled(true))
+                msg.edit({ components: [row], content: "This message is now inactiv!" })
+            }, 30000)
+        }
+        if(args[2]) {
+            try{
+                args[2].edit({embeds: [lb], components: [row]})
+            }catch(err){
+                console.log(err)
+                args[2].delete()
+                let msg = message.channel.send({ embeds: [lb], components: [row]})
+                setTimeout(() => {
+                    row.components.forEach((x) => x.setDisabled(true))
+                    msg.edit({ components: [row], content: "This message is now inactiv!" })
+                }, 30000)
+            }
+        }
     },
 }
