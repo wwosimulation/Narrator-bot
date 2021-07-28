@@ -50,6 +50,12 @@ module.exports = {
                     db.set(`winstreak_${guy.id}`, 0)
                     if (guy.presence.status != "offline") {
                         let data = await players.findOne({ user: guy.id }).exec()
+                        if (!data) {
+                            data = await players.create({
+                                user: user.id,
+                             })
+                             data.save()
+                        }
                         data.xp += xp.team.tie
                         data.stats.tie += 1
                         data.save()
@@ -78,6 +84,12 @@ module.exports = {
             let guy = fn.getUser(args[i], message)
             if (!guy) return message.channel.send(`Player ${args[i]} could not be found!`)
             let data = players.findOne({ user: guy.id }).exec()
+                        if (!data) {
+                            data = await players.create({
+                                user: user.id,
+                             })
+                             data.save()
+                        }
             console.log(guy.id, i)
             allPlayers[allPlayers.indexOf(guy.id)] = null
             if (!db.get(`xpreq_${guy.id}`)) {
