@@ -12,11 +12,29 @@ module.exports = {
         let data = await players.findOne({ user: user.id })
         if (!user || !amount) return message.channel.send("Invalid arguments! Use `+xp <add/remove/set> <user> <amount>`")
 
-        if (run == "add") data.xp += amount
-        if (run == "remove") data.xp = data.xp - amount
-        if (run == "set") data.xp = amount
+        if (!data) {
+            data = await players.create({
+                user: user.id,
+            })
+            data.save()
+        }
 
-        data.save()
+        if (run == "add" || run == "remove") {
+            if (run == "remove") {
+                amount = -amount
+            }
+            run = "$inc"
+        }
+        if (run == "set") {
+            run = "$set"
+        }
+
+        var obj = {}
+        obj[run] = {
+            xp: amount,
+        }
+        await data.updateOne(obj)
+
         message.channel.send(`Successfully ran \`${run} ${amount}\` on ${user.id}`)
     },
 }
