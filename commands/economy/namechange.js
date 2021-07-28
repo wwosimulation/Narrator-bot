@@ -19,14 +19,14 @@ module.exports = {
                 }
             })
         }
-        if (!role) return message.channel.send("Special role is missing! If you have one, report this using +bug.")
+        if (!role) return message.channel.send(message.i10n("specialRoleMissing"))
 
-        if (args.length < 1) return message.channel.send("It is not even a name. 👀")
-        if (args.join(" ").length > 99) return message.channel.send("👀 That's too long mate!")
+        if (args.length < 1) return message.channel.send(message.i10n("nameInvalid"))
+        if (args.join(" ").length > 99) return message.channel.send(message.i10n("nameInvalid"))
         client.guilds.cache
             .get("465795320526274561")
             .roles.cache.get(role)
             .edit({ name: args.join(" ") })
-        message.channel.send("Done! " + args.join(" ") + " is your special role now.")
+        message.channel.send(message.i10n("nameSuccess", {name: args.join(" ")}))
     },
 }
