@@ -53,17 +53,19 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy.id == message.author.id) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot bite the deads!")
+            
+            // code to check if a player is bitten
             let fod = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
             for (let i = 0; i < fod.length; i++) {
-                let tempchan = message.guild.channels.cache.get(fod[i])
+                let tempchan = message.guild.channels.cache.get([i])
                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    if (db.get(`bitten_${tempchan.id}`) == true) return message.reply("hey the player is already bitten!")
+                    if (db.get(`bitten_${tempchan.id}`) == true) return message.reply("Hey, the player is already bitten!")
                 }
             }
             // why this
             let zombies = message.guild.channels.cache.find((c) => c.name === "zombies")
             if (zombies.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                return message.channel.send("You aren't a bitten zombie!")
+                return message.channel.send("This zombie is getting converted!")
             } //till here
             message.guild.channels.cache.find((c) => c.name === "zombies").send(`${getEmoji("zombvote", client)} ${message.member.nickname} ${message.author.username} voted **${guy.nickname} ${guy.user.username}**!`)
             db.set(`bite_${message.channel.id}`, guy.nickname)
