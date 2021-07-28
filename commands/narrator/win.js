@@ -77,7 +77,7 @@ module.exports = {
         for (let i = 1; i < args.length; i++) {
             let guy = fn.getUser(args[i], message)
             if (!guy) return message.channel.send(`Player ${args[i]} could not be found!`)
-            let data = players.findOne( {user: guy.id} )
+            let data = players.findOne({ user: guy.id })
             console.log(guy.id, i)
             allPlayers[allPlayers.indexOf(guy.id)] = null
             if (!db.get(`xpreq_${guy.id}`)) {
