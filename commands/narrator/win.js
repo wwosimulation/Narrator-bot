@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
 const { fn, xp, roles, soloKillers } = require("../../config")
+const { players } = require("../../db.js")
 
 module.exports = {
     name: "win",
@@ -48,7 +49,10 @@ module.exports = {
                     }
                     db.set(`winstreak_${guy.id}`, 0)
                     if (guy.presence.status != "offline") {
-                        db.add(`xp_${guy.id}`, xp.team.tie)
+                        let data = await players.findOne({ user: guy.id })
+                        data.xp = data.xp + xp.team.tie
+                        data.stats.tie = data.stats.tie + 1
+                        data.save()
                         guy.send(embed.setTitle("Game Over - Tie").setDescription(`Finished Game: ${xp.finishGame}xp`).setFooter("You lost!").setColor(0xff0000))
                     }
                 }
@@ -73,6 +77,7 @@ module.exports = {
         for (let i = 1; i < args.length; i++) {
             let guy = fn.getUser(args[i], message)
             if (!guy) return message.channel.send(`Player ${args[i]} could not be found!`)
+            let data = players.findOne({ user: guy.id })
             console.log(guy.id, i)
             allPlayers[allPlayers.indexOf(guy.id)] = null
             if (!db.get(`xpreq_${guy.id}`)) {
@@ -82,7 +87,7 @@ module.exports = {
             let today = new Date().getDate()
             let themsg = `Win as ${args[0]} ${giveXP}xp`
             db.add(`${won}_${guy.id}`, 1)
-            db.add(`xp_${guy.id}`, giveXP)
+            data.xp = data.xp + giveXP
             db.add(`winstreak_${guy.id}`, 1)
             embed.setTitle("Game Over").setColor("#008800").setDescription(`Win as ${args[0]}: ${giveXP}xp`)
             let t = await guy.send({ embeds: [embed] }).catch((e) => message.channel.send("I could not send the details to " + guy.user.tag + "!"))
@@ -90,13 +95,13 @@ module.exports = {
                 embed.setTitle("Game Ended").setDescription(`${themsg}\nFinished Game: ${xp.finishGame}xp`)
                 if (guy.presence.status !== "offline") await t.edit({ embeds: [embed] })
                 themsg += `\nFinished Game: ${xp.finishGame}xp`
-                db.add(`xp_${guy.id}`, xp.finishGame)
+                data.xp = data.xp + xp.finishGame
             }, 1000)
             setTimeout(async () => {
                 if (db.get(`winstreak_${guy.id}`) > 1) {
                     embed.setTitle("Game Ended").setDescription(`${themsg}\nWin Streak: ${xp.winStreak}xp`)
                     await t.edit({ embeds: [embed] })
-                    db.add(`xp_${guy.id}`, xp.winStreak)
+                    data.xp = data.xp + xp.winStreak
                     themsg += `\nWin Streak: ${xp.winStreak}xp`
                 }
             }, 2000)
@@ -104,11 +109,12 @@ module.exports = {
                 if (fwotd < today) {
                     embed.setTitle("Game Ended").setDescription(`${themsg}\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`)
                     await t.edit({ embeds: [embed] })
-                    db.add(`xp_${guy.id}`, xp.firstWinOfTheDay)
+                    data.xp = data.xp + xp.firstWinOfTheDay
                     db.set(`firstwinoftheday_${guy.id}`, today)
                     themsg += `\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`
                 }
             }, 3000)
+            data.save()
         }
 
         // giving giveXP to dead players
