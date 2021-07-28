@@ -1,6 +1,7 @@
+const { MessageSelectMenu, MessageActionRow } = require("discord.js")
+
 module.exports = {
     name: "settings",
-    description: "Change your personal bot settings.",
     aliases: ["config"],
     run: async (message, args) => {
         let languageDropdown = new MessageSelectMenu().setCustomId(`configLanguage-${message.author.id}`).setMaxValues(1)
