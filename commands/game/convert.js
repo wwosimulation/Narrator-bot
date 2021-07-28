@@ -19,8 +19,7 @@ module.exports = {
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot convert the deads!")
             db.set(`sect_${message.channel.id}`, args[0])
             message.channel.send(`${getEmoji("sect_member", client)} You decided to convert **${guy.nickname} ${guy.user.username}**!`)
-        }
-        else if (message.channel.name == "priv-bandit") {
+        } else if (message.channel.name == "priv-bandit") {
             let allbandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).keyArray("id")
             for (let i = 0; i < allbandits.length; i++) {
                 let chan = message.guild.channels.cache.get(allbandits[i])
@@ -45,15 +44,13 @@ module.exports = {
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot convert the deads!")
             db.set(`bandit_${message.channel.id}`, guy.nickname)
             message.channel.send(`${getEmoji("kidnap", client)} You decided to make player **${guy.nickname} ${guy.user.username}** into your Accomplice!`)
-        }
-
-        else if (message.channel.name == "priv-zombie") {
+        } else if (message.channel.name == "priv-zombie") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Honey you cannot bite being dead.")
             if (isNight != "yes") return message.channel.send("It's day! You can convert during nights only!")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy.id == message.author.id) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot bite the deads!")
-            
+
             // code to check if a player is bitten
             let fod = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
             for (let i = 0; i < fod.length; i++) {
