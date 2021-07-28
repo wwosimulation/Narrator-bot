@@ -50,7 +50,7 @@ module.exports = {
         } else if (message.channel.name == "priv-seer") {
             let isNight = await db.fetch(`isNight`)
             if (isNight == "no") return await message.channel.send("It's day! You can check during nights only!")
-            if (!args[0]) return message.channel.send("Who want to check? Insert the player number next time.")
+            if (!args[0]) return message.channel.send("Who you want to check? Insert the player number next time.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
