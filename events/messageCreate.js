@@ -22,13 +22,7 @@ module.exports = (client) => {
 
         message.i10n = (key, replaceKeys = {}, language = pdb.language) => {
             if (!language) language = "en"
-            let string = i10n(key, language)
-		console.log(string)
-            for(let key in replaceKeys) {
-		console.log(key, replaceKeys[key])
-                string.replace(`{{${key}}}`, replaceKeys[key])   
-            }
-		console.log(string)
+            let string = i10n(key, language, replaceKeys)
             return string
         }
 
