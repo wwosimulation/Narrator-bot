@@ -18,7 +18,7 @@ module.exports = {
         let bonus = 1
         if (client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).premiumSince) {
             bonus = 2
-            extra = "\nBecause you are a booster, you received double the normal rewards amount!"
+            extra = `\n${message.i10n("boosterDaily")}`
         }
 
         if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
@@ -69,8 +69,7 @@ module.exports = {
                 data.daily.day = -1
                 data.coins += 30 * bonus
             }
-
-            let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have received ${amount} ${item}!${extra}`)
+            let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${message.i10n("daily", {emoji, number: amount, prize})}${extra}`)
             message.channel.send({ embeds: [dailymsg] })
 
             data.daily.day++

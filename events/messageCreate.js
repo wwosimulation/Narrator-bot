@@ -20,7 +20,7 @@ module.exports = (client) => {
             players(pdb).save()
         }
 
-        message.i10n = (key, replaceKeys, language = pdb.language) => {
+        message.i10n = (key, replaceKeys = {}, language = pdb.language) => {
             if (!language) language = "en"
             let string = i10n(key, language)
             for(let key in replaceKeys) {
