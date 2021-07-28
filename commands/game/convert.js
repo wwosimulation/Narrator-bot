@@ -39,7 +39,7 @@ module.exports = {
             }
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You are dead! Now here's a great idea, Act like a medium or Wolf Medium, and try reviving wolves...")
             if (isNight != "yes") return message.channel.send("It's day! You can convert during nights only!")
-            if (!args[0]) return message.channel.send("Who you want to convert? Insert the player number next time")
+            if (!args[0]) return message.channel.send("Who you want to convert? Insert the player number next time.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot convert the deads!")
