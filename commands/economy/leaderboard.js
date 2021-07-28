@@ -26,20 +26,20 @@ module.exports = {
         if (!isNaN(args[0])) page = parseInt(args[0])
         if (args[1] && isNaN(args[1]) && sorts.includes(args[1])) (sort = args[1]), (lb_type = types[sorts.indexOf(sort)])
 
-        const drop = new MessageSelectMenu({customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{label: n, value: n, description: `Go to page ${n}`, default: true}]})
+        const drop = new MessageSelectMenu({ customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{ label: n, value: n, description: `Go to page ${n}`, default: true }] })
 
         let obj = {}
-        obj[sort] = -1 
+        obj[sort] = -1
         await players
             .find({})
             .sort(obj)
             .forEach((player) => {
                 all_arr.push({ userID: player.user, value: player[sort] })
                 i = i + 1
-                if(i == 10) {
+                if (i == 10) {
                     i = 0
                     n = n + 1
-                    drop.addOptions({label: n, value: n, description: `Go to page ${n}`})
+                    drop.addOptions({ label: n, value: n, description: `Go to page ${n}` })
                 }
             })
 
@@ -49,27 +49,23 @@ module.exports = {
         })
 
         let max_page = Math.ceil(all_arr.length / 10)
-        let lb = new MessageEmbed()
-            .setFooter(`${page}/${max_page}`)
-            .setTitle(`${lb_type} Leaderboard`)
-            .setColor("#1FFF43")
-            .setDescription(desc)
+        let lb = new MessageEmbed().setFooter(`${page}/${max_page}`).setTitle(`${lb_type} Leaderboard`).setColor("#1FFF43").setDescription(desc)
 
         let row = new MessageActionRow().addComponents(drop)
-        if(!args[2]){
-            let msg = message.channel.send({ embeds: [lb], components: [row]})
+        if (!args[2]) {
+            let msg = message.channel.send({ embeds: [lb], components: [row] })
             setTimeout(() => {
                 row.components.forEach((x) => x.setDisabled(true))
                 msg.edit({ components: [row], content: "This message is now inactiv!" })
             }, 30000)
         }
-        if(args[2]) {
-            try{
-                args[2].edit({embeds: [lb], components: [row]})
-            }catch(err){
+        if (args[2]) {
+            try {
+                args[2].edit({ embeds: [lb], components: [row] })
+            } catch (err) {
                 console.log(err)
                 args[2].delete()
-                let msg = message.channel.send({ embeds: [lb], components: [row]})
+                let msg = message.channel.send({ embeds: [lb], components: [row] })
                 setTimeout(() => {
                     row.components.forEach((x) => x.setDisabled(true))
                     msg.edit({ components: [row], content: "This message is now inactiv!" })
