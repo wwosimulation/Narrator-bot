@@ -53,7 +53,7 @@ module.exports = {
         let row = new MessageActionRow().addComponents(drop)
         if (!args[3]) {
             let msg = await message.channel.send({ embeds: [lb], components: [row] })
-            setTimeout(() => {
+            setTimeout(async () => {
                 row.components.forEach((x) => x.setDisabled(true))
                 await msg.edit({ components: [row], content: "This message is now inactive!" })
             }, 30000)
@@ -67,7 +67,7 @@ module.exports = {
                 console.log(err)
                 args[2].delete()
                 let msg = await message.channel.send({ embeds: [lb], components: [row] })
-                setTimeout(() => {
+                setTimeout(async () => {
                     row.components.forEach((x) => x.setDisabled(true))
                     await msg.edit({ components: [row], content: "This message is now inactive!" })
                 }, 30000)
