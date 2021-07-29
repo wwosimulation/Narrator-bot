@@ -30,9 +30,9 @@ module.exports = {
 
         let obj = {}
         obj[sort] = -1
-        await players
+        await (await players
             .find({})
-            .sort(obj)
+            .sort(obj))
             .forEach((player) => {
                 all_arr.push({ userID: player.user, value: player[sort] })
                 i = i + 1
