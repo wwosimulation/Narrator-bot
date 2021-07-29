@@ -20,7 +20,7 @@ Use following commands with <@744538701522010174>'s prefix (+).
             .addField("Fun", "`emoji` use emojis from different servers available from `emojilist`.\n" + "`write` Write something with fancy letters and numbers.\n")
             .addField("Bot", "`botinfo` Get to know more about the bot.\n" + "`bug` Report a bug to the development team.\n" + "`suggest` Suggest a improvement, enhancement for the simulation.\n" + "`roleinfo` Know more about the in game roles and interactions.\n")
         message.channel.send({ embeds: [embed] })
-        
+
         let languageDropdown = new MessageSelectMenu().setCustomId(`configLanguage-${message.author.id}`).setMaxValues(1).setPlaceholder("Language")
         let allLanguages = require("../../i10n/allLanguages.js")
         allLanguages.forEach((x) => {
