@@ -641,7 +641,6 @@ module.exports = {
                 }
             }
             // deleting bomber bombs if dead
-            setTimeout(async function () {
                 let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").keyArray("id")
                 for (let i = 0; i < bb.length; i++) {
                     let chan = message.guild.channels.cache.get(bb[i])
@@ -657,7 +656,6 @@ module.exports = {
                         }
                     }
                 }
-            }, 2000)
 
             // bomber
             setTimeout(async function () {
