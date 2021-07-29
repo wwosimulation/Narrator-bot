@@ -8,7 +8,7 @@ module.exports = {
     usage: `${process.env.PREFIX}leaderboard [page] [coins | roses | gems | xp]`,
     run: async (message, args, client) => {
         async function getTag(userID) {
-            return client.users.fetch(userID).tag
+            return await client.users.fetch(userID).tag
         }
 
         let sort = "coins" //default
@@ -51,23 +51,25 @@ module.exports = {
         let lb = new MessageEmbed().setFooter(`${page}/${max_page}`).setTitle(`${lb_type} Leaderboard`).setColor("#1FFF43").setDescription(desc)
 
         let row = new MessageActionRow().addComponents(drop)
-        if (!args[2]) {
-            let msg = message.channel.send({ embeds: [lb], components: [row] })
+        if (!args[3]) {
+            let msg = await message.channel.send({ embeds: [lb], components: [row] })
             setTimeout(() => {
                 row.components.forEach((x) => x.setDisabled(true))
-                msg.edit({ components: [row], content: "This message is now inactiv!" })
+                await msg.edit({ components: [row], content: "This message is now inactive!" })
             }, 30000)
         }
-        if (args[2]) {
+        if (args[3]) {
             try {
+                let chn = await client.channels.fetch(args[2])
+                let m = await chn.messages.fetch(args[3])
                 args[2].edit({ embeds: [lb], components: [row] })
             } catch (err) {
                 console.log(err)
                 args[2].delete()
-                let msg = message.channel.send({ embeds: [lb], components: [row] })
+                let msg = await message.channel.send({ embeds: [lb], components: [row] })
                 setTimeout(() => {
                     row.components.forEach((x) => x.setDisabled(true))
-                    msg.edit({ components: [row], content: "This message is now inactiv!" })
+                    await msg.edit({ components: [row], content: "This message is now inactive!" })
                 }, 30000)
             }
         }
