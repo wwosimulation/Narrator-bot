@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js")
 const { MessageSelectMenu, MessageActionRow } = require("discord.js")
-const { getLangNameFromCode } = require('language-name-map')
+const { getLangNameFromCode } = require("language-name-map")
 
 module.exports = {
     name: "help",
