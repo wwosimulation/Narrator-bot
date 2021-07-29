@@ -38,7 +38,7 @@ module.exports = {
                 let guy = message.guild.members.cache.find((m) => m.nickname === i.toString())
                 if (guy) {
                     let role = db.get(`role_${guy.id}`)
-                    if (role.toLowerCase().includes("wolf")) {
+                    if (role.toLowerCase().includes("wolf") || role == "Sorcerer") {
                         db.add(`wlose_${guy.id}`, 1)
                     } else if (role == "Headhunter" || role == "Fool") {
                         db.add(`svlose_${guy.id}`, 1)
