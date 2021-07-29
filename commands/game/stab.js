@@ -21,10 +21,10 @@ module.exports = {
             for (let x = 0; x < cupid.length; x++) {
                 let couple = db.get(`couple_${cupid[x]}`)
                 if (message.author.nickname === couple[0]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not stab your lover!")
                 }
                 if (message.author.nickname === couple[1]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not stab your lover!")
                 }
             }
             db.set(`stab_${message.channel.id}`, guy.nickname)
@@ -61,10 +61,10 @@ module.exports = {
             for (let x = 0; x < cupid.length; x++) {
                 let couple = db.get(`couple_${cupid[x]}`)
                 if (message.author.nickname === couple[0]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not stab your lover!")
                 }
                 if (message.author.nickname === couple[1]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not stab your lover!")
                 }
             }
             for (let i = 0; i < allBandits.length; i++) {
