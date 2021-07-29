@@ -31,16 +31,17 @@ module.exports = (client) => {
                 db.set(`vote_${interaction.member.id}`, interaction.values[0].split("-")[1])
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
-            if (interaction.customId.startsWith("leaderboard")) {
-                let arg = customId.slice(11).split("-") // ['', sort, message.id]
-                let new_page = interaction.values[0]
-                let m = interaction.message
-                let message = interaction.channel.messages.fetch(arg[2])
+            
+        }
+        if (interaction.customId.startsWith("leaderboard")) {
+            let arg = customId.slice(11).split("-") // ['', sort, message.id]
+            let new_page = interaction.values[0]
+            let m = interaction.message
+            let message = interaction.channel.messages.fetch(arg[2])
 
-                let args = [new_page, arg[1], interaction.channelId, m]
+            let args = [new_page, arg[1], interaction.channelId, m]
 
-                leaderboard.run(message, args, client)
-            }
+            leaderboard.run(message, args, client)
         }
     })
 }

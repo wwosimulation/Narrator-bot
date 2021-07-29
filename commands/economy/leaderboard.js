@@ -8,7 +8,8 @@ module.exports = {
     usage: `${process.env.PREFIX}leaderboard [page] [coins | roses | gems | xp]`,
     run: async (message, args, client) => {
         async function getTag(userID) {
-            return await client.users.cache.get(userID).tag
+            let user = await client.users.cache.get(userID)
+            return user.tag
         }
 
         let sort = "coins" //default
