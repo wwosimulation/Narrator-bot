@@ -35,7 +35,7 @@ module.exports = {
                     VIEW_CHANNEL: null,
                 })
             }
-             if (channe.name.includes("zombies")) {
+            if (channe.name.includes("zombies")) {
                 let zombieschat = message.guild.channels.cache.find((c) => c.name === "zombies")
                 zombieschat.permissionOverwrites.edit(guy.id, {
                     READ_MESSAGE_HISTORY: null,
