@@ -34,6 +34,7 @@ module.exports = {
             let night = await db.fetch(`nightCount`)
             let isNight = await db.fetch(`isNight`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+            if(!guy) return message.reply("Invalid target!")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let hacked = await db.fetch(`hack_${message.channel.id}`)
             if (parseInt(args[0]) > parseInt(alive.members.size) + parseInt(dead.members.size) || parseInt(args[0]) < 1) {

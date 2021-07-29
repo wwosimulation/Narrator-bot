@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const config = require("../config")
 const db = require("quick.db")
+const i10n = require("../i10n")
 //const mongo = require("../roles.find(x => x.name.toLowerCase() == role2.replace("-", " "))")
 const { players, botbans } = require("../db.js")
 const cooldowns = new Discord.Collection()
@@ -17,6 +18,12 @@ module.exports = (client) => {
         if (!pdb) {
             pdb = { user: message.author.id }
             players(pdb).save()
+        }
+
+        message.i10n = (key, replaceKeys = {}, language = pdb.language) => {
+            if (!language) language = "en"
+            let string = i10n(key, language, replaceKeys)
+            return string
         }
 
         // blacklists

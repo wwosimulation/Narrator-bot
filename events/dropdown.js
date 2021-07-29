@@ -1,8 +1,15 @@
 const db = require("quick.db")
 const { shop, ids } = require("../config")
+const { players } = require("../db")
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isSelectMenu()) return
+        if (interaction.customId.startsWith("configLanguage")) {
+            let user = interaction.member.id
+            await players.findOneAndUpdate({ user }, { language: interaction.values[0] }).exec()
+            interaction.reply({ content: `Your language has been set to ${interaction.values[0]}!`, ephemeral: true })
+        }
+
         if (interaction.customId.startsWith("votephase")) {
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
