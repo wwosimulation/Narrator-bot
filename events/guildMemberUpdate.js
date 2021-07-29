@@ -467,6 +467,8 @@ module.exports = (client) => {
                         db.delete(`switch_${chan.id}`)
                     } else if (role.toLowerCase().includes("wolf")) {
                         db.delete(`wolvesKill_${chan.id}`)
+                    } else if (role == "Spirit Seer") {
+                        db.set(`spirit_${chan.id}`, null)
                     }
                 }
             }

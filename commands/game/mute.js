@@ -43,6 +43,8 @@ module.exports = {
                 return await message.reply("You can't mute yourself!")
             } else if (isNight != "yes") {
                 return await message.reply("You can only do this during the night!")
+            } else if (night == 1) {
+                return await message.reply("You can only mute a player after the first night!")
             } else if (hacked == null) {
                 return await message.reply("You haven't hacked anyone!")
             } else if (!hacked.includes(guy.nickname)) {
