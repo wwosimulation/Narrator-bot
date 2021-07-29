@@ -27,17 +27,17 @@ module.exports = {
             if (!guy1 || !guy2 || !guy3) return await message.channel.send("Invalid Target!")
             if ((!guy1.roles.cache.has(alive.id) && !guy2.roles.cache.has(alive.id) && !guy3.roles.cache.has(alive.id)) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("Listen, placing bombs aren't possible when dead or to dead players. Now be a lamb and SHUT UP. ")
             if (night == didCmd + 1 && night != 1) return await message.channel.send("You already placed the bombs yesterday. So no bombs for you.")
-             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
+            let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
             let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
-                for (let x = 0; x < cupid.length; x++) {
-                    let couple = db.get(`couple_${cupid[x]}`)
-                if (message.author.nickname === couple[0]){
-                if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && (guy1.nickname === couple[1] || guy2.nickname === couple[1] || guy3.nickname === couple[1])) return message.channel.send("You can not bomb your lover!")
+            for (let x = 0; x < cupid.length; x++) {
+                let couple = db.get(`couple_${cupid[x]}`)
+                if (message.author.nickname === couple[0]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && (guy1.nickname === couple[1] || guy2.nickname === couple[1] || guy3.nickname === couple[1])) return message.channel.send("You can not bomb your lover!")
                 }
-                if (message.author.nickname === couple[1]){
-                if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && (guy1.nickname === couple[0] || guy2.nickname === couple[0] || guy3.nickname === couple[0])) return message.channel.send("You can not bomb your lover!")
+                if (message.author.nickname === couple[1]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && (guy1.nickname === couple[0] || guy2.nickname === couple[0] || guy3.nickname === couple[0])) return message.channel.send("You can not bomb your lover!")
                 }
-                }
+            }
             let bombs = [args[0], args[1], args[2]]
             let bombPlacements = `${args[0]} ${args[1]} ${args[2]}`
             console.log(bombPlacements)
