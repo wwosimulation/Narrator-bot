@@ -23,7 +23,7 @@ module.exports = {
 
         let color = args.join(" ")
 
-        if (!color) return message.channel.send(message.i10n("colorInvalid", {color: "Nothing"}))
+        if (!color) return message.channel.send(message.i10n("colorInvalid", { color: "Nothing" }))
 
         if (!role) return message.channel.send(message.i10n("specialRoleMissing"))
 
@@ -31,7 +31,7 @@ module.exports = {
             color = toHex(color)
         }
 
-        if (!color.startsWith("#")) return message.channel.send(message.i10n("colorInvalid", {color}))
+        if (!color.startsWith("#")) return message.channel.send(message.i10n("colorInvalid", { color }))
 
         client.guilds.cache
             .get("465795320526274561")

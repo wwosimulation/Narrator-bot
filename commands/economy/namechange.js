@@ -27,6 +27,6 @@ module.exports = {
             .get("465795320526274561")
             .roles.cache.get(role)
             .edit({ name: args.join(" ") })
-        message.channel.send(message.i10n("nameSuccess", {name: args.join(" ")}))
+        message.channel.send(message.i10n("nameSuccess", { name: args.join(" ") }))
     },
 }

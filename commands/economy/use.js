@@ -1,13 +1,12 @@
 const db = require("quick.db")
-const Discord = require("discord.js")
 const { lootbox, emojis } = require("../../config")
 const shuffle = require("shuffle-array")
 const { players } = require("../../db.js")
 
 module.exports = {
     name: "use",
-    run: async (message, args, client) => {
-        if (!args[0]) return message.channel.send("Get a freaking life dude! You gotta specify an item!")
+    run: async (message, args) => {
+        if (!args[0]) return message.channel.send("Which item you are opening? Specify it next time.")
         let data = await players.findOne({ user: message.author.id })
 
         if (args[0].toLowerCase() == "lootbox") {
