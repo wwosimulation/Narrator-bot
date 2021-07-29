@@ -121,11 +121,9 @@ module.exports = {
             let colorsrolename = sim.roles.cache.get("606247387496972292")
             sim.roles
                 .create({
-                    data: {
                         name: `${message.author.username}'s Special role`,
                         color: "#007880",
                         position: colorsrolename.position + 1,
-                    },
                 })
                 .then((role) => {
                     data.customRole = role.id
