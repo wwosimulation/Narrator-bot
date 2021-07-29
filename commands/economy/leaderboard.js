@@ -26,7 +26,7 @@ module.exports = {
         if (!isNaN(args[0])) page = parseInt(args[0])
         if (args[1] && isNaN(args[1]) && sorts.includes(args[1])) (sort = args[1]), (lb_type = types[sorts.indexOf(sort)])
 
-        const drop = new MessageSelectMenu({ customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{ label: n, value: n, description: `Go to page ${n}`, default: true }] })
+        const drop = new MessageSelectMenu({ customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{ label: n.toString(), value: n.toString(), description: `Go to page ${n}`, default: true }] })
 
         let obj = {}
         obj[sort] = -1
@@ -39,7 +39,7 @@ module.exports = {
                 if (i == 10) {
                     i = 0
                     n = n + 1
-                    drop.addOptions({ label: n, value: n, description: `Go to page ${n}` })
+                    drop.addOptions({ label: n.toString(), value: n.toString(), description: `Go to page ${n}` })
                 }
             })
 
