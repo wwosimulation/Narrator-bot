@@ -69,7 +69,7 @@ module.exports = {
             let cmicheck = data.cmi
             if (cmicheck) {
                 dontbuy = true
-                return message.channel.send(message.i10n("alreadyPurchasedItem", {item: item.name}))
+                return message.channel.send(message.i10n("alreadyPurchasedItem", { item: item.name }))
             }
         }
 
@@ -84,7 +84,7 @@ module.exports = {
                     if (!data.customRole) data.customRole = e.id
                 }
             })
-            if (hassprole == true) return message.channel.send(message.i10n("alreadyPurchasedItem", {item: "special role"}))
+            if (hassprole == true) return message.channel.send(message.i10n("alreadyPurchasedItem", { item: "special role" }))
         }
 
         if (["rose", "bouquet"].includes(item.id)) {
@@ -95,7 +95,7 @@ module.exports = {
         if (dontbuy) return
         let totalPrice = (amount ? amount : 1) * item.price
         console.log(userHas, totalPrice)
-        if (totalPrice > userHas) return message.channel.send(message.i10n("notEnoughCurrency", {currency: pluralize(item.currency)}))
+        if (totalPrice > userHas) return message.channel.send(message.i10n("notEnoughCurrency", { currency: pluralize(item.currency) }))
         if (item.currency) data[item.currency] = data[item.currency] - totalPrice
         switch (item.currency) {
             case "coin":
@@ -121,9 +121,9 @@ module.exports = {
             let colorsrolename = sim.roles.cache.get("606247387496972292")
             sim.roles
                 .create({
-                        name: `${message.author.username}'s Special role`,
-                        color: "#007880",
-                        position: colorsrolename.position + 1,
+                    name: `${message.author.username}'s Special role`,
+                    color: "#007880",
+                    position: colorsrolename.position + 1,
                 })
                 .then((role) => {
                     data.customRole = role.id
@@ -141,7 +141,7 @@ module.exports = {
                     },
                 ],
             })
-            await message.channel.send(message.i10n("channelPurchaseSuccess", {channelLink: `${t}`}))
+            await message.channel.send(message.i10n("channelPurchaseSuccess", { channelLink: `${t}` }))
             data.privateChannel = t.id
         }
         data.save()
