@@ -27,6 +27,16 @@ module.exports = {
             if (sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (db.get(`role_${guy.id}`) == "Sect Leader") return message.channel.send("Yes, trying to kill your leader. Dumb, if it wasn't for me, you would be reported for gamethrowing.")
             }
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+            for (let x = 0; x < cupid.length; x++) {
+                db.get(`couple_${cupid[x]}`)
+                if (message.author.nickname === couple[0]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not poison your lover!")
+                }
+                if (message.author.nickname === couple[1]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not poison your lover!")
+                }
+            }
             message.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("poison", client)} The Witch poisoned **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
