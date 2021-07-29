@@ -3,7 +3,7 @@ const { ids, github } = require("../../config")
 module.exports = {
     name: "suggest",
     run: async (message, args, client) => {
-        if (!args[0]) return message.channel.send()
+        if (!args[0]) return message.channel.send(message.i10n("suggestNoArguments"))
         let t = ""
         if (message.attachments.size > 0) {
             if (message.guild.id == ids.server.game) {
