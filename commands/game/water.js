@@ -31,6 +31,19 @@ module.exports = {
                         if (dayCount == 1) {
                             let cmd = await db.fetch(`commandEnabled`)
                             if (cmd != "yes") return await message.reply("You can only throw holy water on a player after voting starts on day 1!")
+                        } else {
+                         let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members").members()
+                if (sectMembers.find(m => m.id === message.author.id) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not shoot the leader of the sect if you are sected!")
+                let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+                for (let x = 0; x < cupid.length; x++) {
+                    db.get(`couple_${cupid[x]}`)
+                if (message.author.nickname === couple[0]){
+                if (!sectMembers.find(m => m.id === message.author.id) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
+                }
+                if (message.author.nickname === couple[1]){
+                if (!sectMembers.find(m => m.id === message.author.id) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
+                }
+                }
                         }
                         db.set(`priest_${message.channel.id}`, 1)
                         if (toKill.includes("wolf")) {
