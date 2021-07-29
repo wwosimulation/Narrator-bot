@@ -36,7 +36,7 @@ module.exports = {
         ).forEach((player) => {
             all_arr.push({ userID: player.user, value: player[sort] })
             i = i + 1
-            if (i == 10) {
+            if (i === 10) {
                 i = 0
                 n = n + 1
                 drop.addOptions({ label: n.toString(), value: n.toString(), description: `Go to page ${n}` })
@@ -45,7 +45,8 @@ module.exports = {
 
         lb_arr = all_arr.splice((page - 1) * 10, 10)
         lb_arr.forEach((user) => {
-            desc = desc + `${user.value} - ${getTag(user.userID)}\n`
+            let user = client.users.cache.get(user.userID)
+            desc = desc + `${user.value} - ${user.tag}\n`
         })
 
         let max_page = Math.ceil(all_arr.length / 10)
