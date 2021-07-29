@@ -65,16 +65,16 @@ module.exports = {
             let bullet = db.get(`bullet_jail`) ? db.get(`bullet_jail`) : 1
             if (isDay == "yes") return message.channel.send("Nice, killing in the day when no one is jailed.")
             if (bullet == 0) return message.channel.send("You already used your bullet")
-            let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members").members()
-            if (sectMembers.find((m) => m.id === message.author.id) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not shoot the leader of the sect if you are sected!")
+            let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
+            if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not shoot the leader of the sect if you are sected!")
             let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
             for (let x = 0; x < cupid.length; x++) {
-                db.get(`couple_${cupid[x]}`)
+                let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
                 if (message.author.nickname === couple[0]) {
-                    if (!sectMembers.find((m) => m.id === message.author.id) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
+                    if (!sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
                 }
                 if (message.author.nickname === couple[1]) {
-                    if (!sectMembers.find((m) => m.id === message.author.id) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
+                    if (!sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
                 }
             }
             db.set(`bullet_jail`, 0)
@@ -100,16 +100,16 @@ module.exports = {
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player you are trying to kill is dead. Mark someone else dude.")
                 if (markActive == false) return message.channel.send("You just marked a player. Chill dude")
                 if (arrows < 1) return message.channel.send("You don't have any arrows left to shoot players!")
-                let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members").members()
-                if (sectMembers.find((m) => m.id === message.author.id) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not shoot the leader of the sect if you are sected!")
+                let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
+                if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not shoot the leader of the sect if you are sected!")
                 let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
                 for (let x = 0; x < cupid.length; x++) {
-                    db.get(`couple_${cupid[x]}`)
+                    let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
                     if (message.author.nickname === couple[0]) {
-                        if (!sectMembers.find((m) => m.id === message.author.id) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
+                        if (!sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
                     }
                     if (message.author.nickname === couple[1]) {
-                        if (!sectMembers.find((m) => m.id === message.author.id) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
+                        if (!sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
                     }
                 }
                 let role = db.get(`role_${guy.id}`)
