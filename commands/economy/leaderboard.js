@@ -30,18 +30,17 @@ module.exports = {
 
         let obj = {}
         obj[sort] = -1
-        await (await players
-            .find({})
-            .sort(obj))
-            .forEach((player) => {
-                all_arr.push({ userID: player.user, value: player[sort] })
-                i = i + 1
-                if (i == 10) {
-                    i = 0
-                    n = n + 1
-                    drop.addOptions({ label: n.toString(), value: n.toString(), description: `Go to page ${n}` })
-                }
-            })
+        await (
+            await players.find({}).sort(obj)
+        ).forEach((player) => {
+            all_arr.push({ userID: player.user, value: player[sort] })
+            i = i + 1
+            if (i == 10) {
+                i = 0
+                n = n + 1
+                drop.addOptions({ label: n.toString(), value: n.toString(), description: `Go to page ${n}` })
+            }
+        })
 
         lb_arr = all_arr.splice((page - 1) * 10, 10)
         lb_arr.forEach((user) => {
