@@ -114,6 +114,6 @@ module.exports = {
                 READ_MESSAGE_HISTORY: true,
             })
         }
-        db.set(`role_${guy.id}`, content)
+        db.set(`role_${guy.id}`, getRole(real).name)
     },
 }
