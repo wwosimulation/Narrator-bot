@@ -59,6 +59,13 @@ module.exports = {
                 READ_MESSAGE_HISTORY: false,
                 VIEW_CHANNEL: false,
             })
+            
+            message.guild.channels.cache.find((c) => c.name === "vote-chat").permissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
+                SEND_MESSAGES: false,
+                READ_MESSAGE_HISTORY: true,
+                VIEW_CHANNEL: true,
+            })
+
 
             message.guild.channels.cache.get("606132387587293195").permissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
                 SEND_MESSAGES: true,
