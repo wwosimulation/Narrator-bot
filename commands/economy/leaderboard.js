@@ -8,7 +8,7 @@ module.exports = {
     usage: `${process.env.PREFIX}leaderboard [page] [coins | roses | gems | xp]`,
     run: async (message, args, client) => {
         async function getTag(userID) {
-            return await client.users.fetch(userID).tag
+            return await client.users.cache.get(userID).tag
         }
 
         let sort = "coins" //default
@@ -26,7 +26,7 @@ module.exports = {
         if (!isNaN(args[0])) page = parseInt(args[0])
         if (args[1] && isNaN(args[1]) && sorts.includes(args[1])) (sort = args[1]), (lb_type = types[sorts.indexOf(sort)])
 
-        const drop = new MessageSelectMenu({ customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{ label: n.toString(), value: n.toString(), description: `Go to page ${n}`, default: true }] })
+        const drop = new MessageSelectMenu({ customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{ label: n.toString(), value: n.toString(), description: `Go to page ${n}`}] })
 
         let obj = {}
         obj[sort] = -1
@@ -62,7 +62,7 @@ module.exports = {
             try {
                 let chn = await client.channels.fetch(args[2])
                 let m = await chn.messages.fetch(args[3])
-                args[2].edit({ embeds: [lb], components: [row] })
+                m.edit({ embeds: [lb], components: [row] })
             } catch (err) {
                 console.log(err)
                 args[2].delete()
