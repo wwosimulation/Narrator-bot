@@ -26,7 +26,7 @@ module.exports = {
         if (!isNaN(args[0])) page = parseInt(args[0])
         if (args[1] && isNaN(args[1]) && sorts.includes(args[1])) (sort = args[1]), (lb_type = types[sorts.indexOf(sort)])
 
-        const drop = new MessageSelectMenu({ customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{ label: n.toString(), value: n.toString(), description: `Go to page ${n}`}] })
+        const drop = new MessageSelectMenu({ customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{ label: n.toString(), value: n.toString(), description: `Go to page ${n}` }] })
 
         let obj = {}
         obj[sort] = -1
