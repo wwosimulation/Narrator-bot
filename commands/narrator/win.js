@@ -49,9 +49,15 @@ module.exports = {
                     }
                     db.set(`winstreak_${guy.id}`, 0)
                     if (guy.presence.status != "offline") {
-                        let data = await players.findOne({ user: guy.id })
-                        data.xp = data.xp + xp.team.tie
-                        data.stats.tie = data.stats.tie + 1
+                        let data = await players.findOne({ user: guy.id }).exec()
+                        if (!data) {
+                            data = await players.create({
+                                user: user.id,
+                            })
+                            data.save()
+                        }
+                        data.xp += xp.team.tie
+                        data.stats.tie += 1
                         data.save()
                         guy.send(embed.setTitle("Game Over - Tie").setDescription(`Finished Game: ${xp.finishGame}xp`).setFooter("You lost!").setColor(0xff0000))
                     }
@@ -77,7 +83,13 @@ module.exports = {
         for (let i = 1; i < args.length; i++) {
             let guy = fn.getUser(args[i], message)
             if (!guy) return message.channel.send(`Player ${args[i]} could not be found!`)
-            let data = players.findOne({ user: guy.id })
+            let data = players.findOne({ user: guy.id }).exec()
+            if (!data) {
+                data = await players.create({
+                    user: user.id,
+                })
+                data.save()
+            }
             console.log(guy.id, i)
             allPlayers[allPlayers.indexOf(guy.id)] = null
             if (!db.get(`xpreq_${guy.id}`)) {
@@ -87,7 +99,7 @@ module.exports = {
             let today = new Date().getDate()
             let themsg = `Win as ${args[0]} ${giveXP}xp`
             db.add(`${won}_${guy.id}`, 1)
-            data.xp = data.xp + giveXP
+            data.xp += giveXP
             db.add(`winstreak_${guy.id}`, 1)
             embed.setTitle("Game Over").setColor("#008800").setDescription(`Win as ${args[0]}: ${giveXP}xp`)
             let t = await guy.send({ embeds: [embed] }).catch((e) => message.channel.send("I could not send the details to " + guy.user.tag + "!"))
@@ -95,13 +107,13 @@ module.exports = {
                 embed.setTitle("Game Ended").setDescription(`${themsg}\nFinished Game: ${xp.finishGame}xp`)
                 if (guy.presence.status !== "offline") await t.edit({ embeds: [embed] })
                 themsg += `\nFinished Game: ${xp.finishGame}xp`
-                data.xp = data.xp + xp.finishGame
+                data.xp += xp.finishGame
             }, 1000)
             setTimeout(async () => {
                 if (db.get(`winstreak_${guy.id}`) > 1) {
                     embed.setTitle("Game Ended").setDescription(`${themsg}\nWin Streak: ${xp.winStreak}xp`)
                     await t.edit({ embeds: [embed] })
-                    data.xp = data.xp + xp.winStreak
+                    data.xp += xp.winStreak
                     themsg += `\nWin Streak: ${xp.winStreak}xp`
                 }
             }, 2000)
@@ -109,7 +121,7 @@ module.exports = {
                 if (fwotd < today) {
                     embed.setTitle("Game Ended").setDescription(`${themsg}\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`)
                     await t.edit({ embeds: [embed] })
-                    data.xp = data.xp + xp.firstWinOfTheDay
+                    data.xp += xp.firstWinOfTheDay
                     db.set(`firstwinoftheday_${guy.id}`, today)
                     themsg += `\nFirst win of the day:\t${xp.firstWinOfTheDay}xp`
                 }
