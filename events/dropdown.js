@@ -35,9 +35,9 @@ module.exports = (client) => {
                 let arg = customId.slice(11).split("-") // ['', sort, message.id]
                 let new_page = interaction.values[0]
                 let m = interaction.message
-                let message = interaction.channel.messages.fetch(args[2])
+                let message = interaction.channel.messages.fetch(arg[2])
 
-                let args = [new_page, arg[1], m]
+                let args = [new_page, arg[1], interaction.channelId, m]
 
                 leaderboard.run(message, args, client)
             }
