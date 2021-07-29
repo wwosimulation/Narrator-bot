@@ -31,10 +31,10 @@ module.exports = {
             for (let x = 0; x < cupid.length; x++) {
                 db.get(`couple_${cupid[x]}`)
                 if (message.author.nickname === couple[0]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not poison your lover!")
                 }
                 if (message.author.nickname === couple[1]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not poison your lover!")
                 }
             }
             message.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("poison", client)} The Witch poisoned **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
