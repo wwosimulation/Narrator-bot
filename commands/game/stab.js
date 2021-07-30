@@ -16,6 +16,17 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Yes stabbing while dead. Nice job")
             if (isNight != "yes") return message.channel.send("Stabbing in broad daylight always makes sense.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("Congrats! You have invented a whole new level of stupidity by killing a dead player.")
+            let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+            for (let x = 0; x < cupid.length; x++) {
+                let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
+                if (message.author.nickname === couple[0]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not stab your lover!")
+                }
+                if (message.author.nickname === couple[1]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not stab your lover!")
+                }
+            }
             db.set(`stab_${message.channel.id}`, guy.nickname)
             message.react("774088736861978666")
         } else if (message.channel.name == "priv-bandit" || message.channel.name == "priv-accomplice") {
@@ -45,6 +56,17 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy.nickname == message.member.nickname) return message.channel.send("Here's an alternate suggestion: `+suicide`")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("Bruh, you can't kill players that have already been killed...")
+            let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+            for (let x = 0; x < cupid.length; x++) {
+                let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
+                if (message.author.nickname === couple[0]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not stab your lover!")
+                }
+                if (message.author.nickname === couple[1]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not stab your lover!")
+                }
+            }
             for (let i = 0; i < allBandits.length; i++) {
                 let chan = message.guild.channels.cache.get(allBandits[i])
                 let ownself = message.guild.members.cache.find((m) => m.id === message.author.id)

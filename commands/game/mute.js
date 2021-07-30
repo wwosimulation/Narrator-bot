@@ -34,6 +34,7 @@ module.exports = {
             let night = await db.fetch(`nightCount`)
             let isNight = await db.fetch(`isNight`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+            if (!guy) return message.reply("Invalid target!")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let hacked = await db.fetch(`hack_${message.channel.id}`)
             if (parseInt(args[0]) > parseInt(alive.members.size) + parseInt(dead.members.size) || parseInt(args[0]) < 1) {
@@ -42,6 +43,8 @@ module.exports = {
                 return await message.reply("You can't mute yourself!")
             } else if (isNight != "yes") {
                 return await message.reply("You can only do this during the night!")
+            } else if (night == 1) {
+                return await message.reply("You can only mute a player after the first night!")
             } else if (hacked == null) {
                 return await message.reply("You haven't hacked anyone!")
             } else if (!hacked.includes(guy.nickname)) {

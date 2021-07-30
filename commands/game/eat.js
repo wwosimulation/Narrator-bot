@@ -21,6 +21,17 @@ module.exports = {
                 if (!guy) return message.channel.send(`Player **${args[0]}** could not be found!`)
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send(`Player **${guy.nickname} ${guy.user.username}** is dead!`)
                 if (guy == message.member) return message.channel.send(`Eating yourself isn't just gonna work!`)
+                let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
+                let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+                for (let x = 0; x < cupid.length; x++) {
+                    let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
+                    if (message.author.nickname === couple[0]) {
+                        if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not eat your lover!")
+                    }
+                    if (message.author.nickname === couple[1]) {
+                        if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not eat your lover!")
+                    }
+                }
             }
 
             let lol = []

@@ -14,7 +14,17 @@ module.exports = {
 
             if (!guy || guy == message.member) return message.reply("Invalid Target!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("So you want to glitch someone who can't talk or vote. Very usefull. Here's another tip: `+suicide` kills all players and makes you win alone!")
-
+            let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+            for (let x = 0; x < cupid.length; x++) {
+                let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
+                if (message.author.nickname === couple[0]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not eat your lover!")
+                }
+                if (message.author.nickname === couple[1]) {
+                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not eat your lover!")
+                }
+            }
             message.channel.send(`${getEmoji("corrupt", client)} You have decided to corrupt **${guy.nickname} ${guy.user.username}**!`)
             db.set(`corrupt_${message.channel.id}`, guy.nickname)
         }

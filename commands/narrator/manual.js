@@ -7,7 +7,6 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-
         for (const key in aliases) {
             if (args[1].includes(key)) {
                 if (Object.hasOwnProperty.call(aliases, key)) {
@@ -114,6 +113,6 @@ module.exports = {
                 READ_MESSAGE_HISTORY: true,
             })
         }
-        db.set(`role_${guy.id}`, content)
+        db.set(`role_${guy.id}`, getRole(real).name)
     },
 }

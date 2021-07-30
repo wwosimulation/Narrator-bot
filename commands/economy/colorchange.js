@@ -23,26 +23,22 @@ module.exports = {
 
         let color = args.join(" ")
 
-        if (!color) return message.channel.send("Idiot, you need to give me a color")
+        if (!color) return message.channel.send(message.i10n("colorInvalid", { color: "Nothing" }))
 
-        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using +bug.")
-
-        if (color.length < 1) return message.channel.send("Stop. being. stupid. you. dumb. weirdo. Give me a color!")
-
-        if (color.length > 99) return message.channel.send("Too many characters!")
+        if (!role) return message.channel.send(message.i10n("specialRoleMissing"))
 
         if (!color.startsWith("#")) {
             color = toHex(color)
         }
 
-        if (!color.startsWith("#")) return message.channel.send(color + " isn't a vaild color!")
+        if (!color.startsWith("#")) return message.channel.send(message.i10n("colorInvalid", { color }))
 
         client.guilds.cache
             .get("465795320526274561")
             .roles.cache.get(role)
             .setColor(color)
             .then(() => {
-                message.channel.send("Done! Your special role color has been changed!")
+                message.channel.send(message.i10n("colorChanged"))
             })
             .catch((e) => {
                 return message.channel.send(e.message)

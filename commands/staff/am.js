@@ -1,12 +1,11 @@
 const { fn, emojis } = require("../../config")
-const db = require("quick.db")
 const { players } = require("../../db.js")
 
 module.exports = {
     name: "am",
     aliases: ["addmoney"],
     staffOnly: true,
-    run: async (message, args, client) => {
+    run: async (message, args) => {
         let amount = parseInt(args[0])
         if (!amount) return message.channel.send(`${args[0]} is not a valid amount`)
         args.shift()
