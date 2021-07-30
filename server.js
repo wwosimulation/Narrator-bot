@@ -130,7 +130,7 @@ client.on("ready", async () => {
     //ShadowAdmin initialize
     //shadowadmin.init(client, {prefix, owners: config.botAdmin})
     if (!client.user.username.includes("Beta")) {
-        let privateKey = fs.readFileSync("/home/ubuntu/wwosim/ghnb.pem")
+        let privateKey = fs.readFileSync("./ghnb.pem")
         client.github = new Octokit({
             authStrategy: createAppAuth,
             auth: {

@@ -22,6 +22,7 @@
         "colornames": "^1.1.1",
         "discord.js": "github:wwosimulation/discord.js",
         "dotenv": "^8.6.0",
+        "language-name-map": "^0.3.0",
         "moment": "^2.29.1",
         "mongoose": "^5.12.12",
         "ms": "^2.1.3",

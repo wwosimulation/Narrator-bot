@@ -4,3 +4,4 @@ node_modules/
 *.sqlite
 .env
 pnpm-lock.yaml
+ghnb.pem
