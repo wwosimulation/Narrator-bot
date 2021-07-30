@@ -40,6 +40,6 @@ module.exports = {
             data.inventory.bouquet = data.inventory.bouquet - 1
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
-        data.save()
+        data.save().exec()
     },
 }
