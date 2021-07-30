@@ -39,7 +39,6 @@ module.exports = (client) => {
                 db.set(`vote_${interaction.member.id}`, interaction.values[0].split("-")[1])
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
-            
         }
         if (interaction.customId.startsWith("leaderboard")) {
             let arg = customId.slice(11).split("-") // ['', sort, message.id]
