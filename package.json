@@ -4,9 +4,10 @@
     "description": "A discord bot that simulates the game Wolvesville",
     "main": "server.js",
     "scripts": {
-        "addconfig": "cd .. && git clone https://github.com/wwosimulation/config",
+        "pullall": "git submodule update --init --recursive",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "pm2 start server.js --name sim-bot",
+        "devstart": "pm2 start server.js --name sim-bot",
+        "start": "node server.js",
         "prettier": "npx prettier --check ."
     },
     "author": "Wolvesville Simulation",
