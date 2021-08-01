@@ -5,8 +5,8 @@
     "main": "server.js",
     "scripts": {
         "pullall": "git submodule update --init --recursive",
-        "setup-i10n": "cd i10n && npm i",
-        "setup-config": "cd config && npm i",
+        "setup-i10n": "cd /home/container/i10n && npm i",
+        "setup-config": "cd /home/container/config && npm i",
         "test": "echo \"Error: no test specified\" && exit 1",
         "devstart": "pm2 start server.js --name sim-bot",
         "start": "node server.js",
