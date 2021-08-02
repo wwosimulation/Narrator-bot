@@ -396,7 +396,7 @@ module.exports = (client) => {
                 }
             }
         }
-        
+
         //voting
         let voted = db.get(`votemsgid_${newMember.id}`)
         if (voted) {
