@@ -14,13 +14,10 @@ module.exports = (client) => {
 
         //let guy = message.member.nickname;
         if (message.author.bot) return //Ignore bots and dms
-        let pdb = await players.findOne({ user: message.author.id }).exec()
-        if (!pdb) {
-            pdb = { user: message.author.id }
-            players(pdb).save()
-        }
+        message.dbUser = await players.findOne({user: message.author.id}).exec()
+        if(!message.dbUser) message.dbUser = new players({user: message.author.id}).save()
 
-        message.i10n = (key, replaceKeys = {}, language = pdb.language) => {
+        message.i10n = (key, replaceKeys = {}, language = message.dbUser.language) => {
             if (!language) language = "en"
             let string = i10n(key, language, replaceKeys)
             return string
