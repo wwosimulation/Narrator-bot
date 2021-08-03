@@ -83,7 +83,7 @@ module.exports = {
         for (let i = 1; i < args.length; i++) {
             let guy = fn.getUser(args[i], message)
             if (!guy) return message.channel.send(`Player ${args[i]} could not be found!`)
-            let data = players.findOne({ user: guy.id }).exec()
+            let data = await players.findOne({ user: guy.id }).exec()
             if (!data) {
                 data = await players.create({
                     user: user.id,
