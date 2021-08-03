@@ -397,6 +397,18 @@ module.exports = (client) => {
             }
         }
 
+        //voting
+        let voted = db.get(`votemsgid_${newMember.id}`)
+        if (voted) {
+            let votechan = newMember.guild.channels.cache.find((c) => c.name === "vote-chat")
+            let message = votechan.messages.fetch(voted).catch((e) => console.log(e.message))
+            if (message) {
+                await message.delete()
+            }
+        }
+        db.delete(`vote_${newMember.id}`)
+        db.delete(`votemsgid_${newMember.id}`)
+
         // disabling everythihng
         let role = db.get(`role_${newMember.id}`) || "None"
         let allchannels = newMember.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
