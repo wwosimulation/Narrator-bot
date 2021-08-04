@@ -14,13 +14,13 @@ module.exports = {
         let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         if (message.channel.name == "priv-mayor") {
             let ability = await db.fetch(`ability_${message.channel.id}`)
-            if (ability == "yes") return await message.channel.send("You already used up your ability!")
-            if (isDay != "yes") return await message.channel.send("Dummy, you didn't get the Fortune Teller's card. You can only reveal during the day :rage:")
+            if (ability == "yes") return await message.channel.send("You have already used your ability!")
+            if (isDay != "yes") return await message.channel.send("You can use your ability only at night!")
             dayChat.send(`${getEmoji("mayoring", client)} **${message.member.nickname} ${message.author.username} (Mayor)** has revealed himself!`)
             message.member.roles.add(revealed.id)
             db.set(`ability_${message.channel.id}`, "yes")
         } else if (db.get(`card_${message.channel.id}`)) {
-            if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can't reveal when dead!")
+            if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can not reveal when dead!")
             db.set(`card_${message.channel.id}`, false)
             message.member.roles.add(revealed.id)
             return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
@@ -28,7 +28,7 @@ module.exports = {
             let ability = await db.fetch(`paci_${message.channel.id}`)
             let isday = await db.fetch(`isDay`)
             let day = await db.fetch(`dayCount`)
-            if (ability == "yes") return await message.reply("You already used up all your abilities!")
+            if (ability == "yes") return await message.reply("You have already used your ability!")
             let cmd = await db.fetch(`commandEnabled`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             let role = await db.fetch(`role_${guy.id}`)
@@ -37,7 +37,7 @@ module.exports = {
             let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
             let dchat = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            if (!message.member.roles.cache.has(aliveRole.id) || !guy.roles.cache.has(aliveRole.id)) return message.channel.send("Revealing when dead or revealing a dead player is just not possible.")
+            if (!message.member.roles.cache.has(aliveRole.id) || !guy.roles.cache.has(aliveRole.id)) return message.channel.send("You can play with alive people only!")
             if (args[0] == "card") {
                 if (db.get(`card_${message.channel.id}`) == true) {
                     if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can't reveal when dead!")
@@ -46,24 +46,24 @@ module.exports = {
                     return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
                 }
             }
-            if (isday != "yes") return await message.reply("You can only use this ability during the day!")
+            if (isday != "yes") return await message.reply("You can use your ability only during the day!")
             if (day == 1) {
-                if (cmd != "yes") return await message.reply("You can only use this ability when voting starts on day 1!")
+                if (cmd != "yes") return await message.reply("You can reveal after voting phase of day 1!")
             }
-            if (!guy || guy == message.member) return await message.reply("Invalid Target")
+            if (!guy || guy == message.member) return await message.reply("The player is not in game! Mention the correct player number.")
             if (role == "President") return await message.reply("You can't reveal the President!")
-            if (message.channel.name == "priv-wolf-pacifist" && nrole.includes("wolf")) return await message.reply("You can't reveal your own teammate!")
-            if (guy.roles.cache.has(revealed.id)) return await message.reply("You can't reveal a revealed player!")
+            if (message.channel.name == "priv-wolf-pacifist" && nrole.includes("wolf")) return await message.reply("You can not reveal your own teammate!")
+            if (guy.roles.cache.has(revealed.id)) return await message.reply("That player is already revealed!")
             if (sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && role == "Sect Leader") return await message.channel.send("You can't reveal a Sect Leader when sected!")
             if (lovers.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (lovers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    return message.channel.send("Yes, Gamethrowing. Revealing your lover never has been, is and will never be allowed.")
+                    return message.channel.send("Hey, you cannot reveal your lover!")
                 }
             }
             db.set(`paci_${message.channel.id}`, "yes")
             dchat.send(`${getEmoji("revealed", client)} The Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
             guy.roles.add(revealed.id)
-            if (message.channel.name == "priv-wolf-pacifist") message.guild.channels.cache.get("606135720825847829").send(`${getEmoji("revealed", client)} The Wolf Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
+            if (message.channel.name == "priv-wolf-pacifist") message.guild.channels.cache.get("606135720825847829").send(`${getEmoji("revealed", client)} You have revealed **${args[0]} ${guy.user.username} (${role})**!`)
 
             if (db.get(`card_${message.channel.id}`) == true) {
                 if (message.channel.name != "priv-mayor" && message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist") {

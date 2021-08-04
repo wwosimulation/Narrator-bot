@@ -17,23 +17,23 @@ module.exports = {
             let dayCount = await db.fetch(`dayCount`)
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             if (!guy || guy == ownself) {
-                return await message.reply("Invalid target!")
+                return await message.reply("The player is not in game! Mention the correct player number.")
             } else {
                 if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
-                    return await message.reply(`You or your target isn't alive!`)
+                    return await message.reply("You can play with alive people only!")
                 } else {
                     if (priest != null) {
-                        return await message.reply("You have already used up your ability!")
+                        return await message.reply("You have already used your ability!")
                     } else {
                         let role = await db.fetch(`role_${guy.id}`)
                         let toKill = role.toLowerCase()
-                        if (isDay != "yes") return message.channel.send("Dumb, You can only pray in the morning.")
+                        if (isDay != "yes") return message.channel.send("You can use your ability only during the day!")
                         if (dayCount == 1) {
                             let cmd = await db.fetch(`commandEnabled`)
-                            if (cmd != "yes") return await message.reply("You can only throw holy water on a player after voting starts on day 1!")
+                            if (cmd != "yes") return await message.reply("You can only throw the water once!")
                         } else {
                             let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
-                            if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not splash the leader of the sect if you are sected!")
+                            if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not water the Sect Leader being part of the sect!")
                             let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
                             for (let x = 0; x < cupid.length; x++) {
                                 let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
