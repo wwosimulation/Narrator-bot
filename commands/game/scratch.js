@@ -15,8 +15,7 @@ module.exports = {
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             //if (!wwsChat.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY"])) return message.channel.send("HEY SMART-A WORD DID YOU KNOW YOU CAN CONVERT EVERYONE BY DOING `+suicide`? Everyone is doing that right now!")
-            if (ability == "yes")
-                return message.channel.send("You have already used your ability.")
+            if (ability == "yes") return message.channel.send("You have already used your ability.")
             message.channel.send(`${getEmoji("scratch", client)} You have decided to convert **${guy.nickname} ${guy.user.username}**!`)
             db.set(`scratch_${message.channel.id}`, guy.nickname)
         }
