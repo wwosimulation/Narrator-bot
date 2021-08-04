@@ -14,11 +14,11 @@ module.exports = {
             let sech = []
             let lol = firsthack
             firsthack.forEach((person) => lol.push(person))
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You flew right through the computer.`)
-            if (!args[0]) return message.channel.send("Nice hacking no one i see")
-            if (isNight != "yes") return message.channel.send("You should not want to be seen hacking")
-            if (args.length > 2) return message.channel.send("Not not a pro, you can only hack 1 or 2 people")
-            if (alrhacked) return message.channel.send("You have already hacked")
+            if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You cannot use the ability now!`)
+            if (!args[0]) return message.channel.send("who are you hacking? Mention the player.")
+            if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
+            if (args.length > 2) return message.channel.send("You cannot hack more than 2 players.")
+            if (alrhacked) return message.channel.send("You have already hacked a player.")
 
             //gets players to hack
             for (let i = 0; i < args.length; i++) {
