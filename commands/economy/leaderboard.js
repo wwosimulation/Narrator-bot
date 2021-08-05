@@ -45,7 +45,7 @@ module.exports = {
 
         lb_arr = all_arr.splice((page - 1) * 10, 10)
         lb_arr.forEach((user) => {
-            let userz = client.users.cache.get(user.userID)
+            let userz = client.users.resolve(user.userID)
             desc = desc + `${user.value} - ${userz.tag}\n`
         })
 
