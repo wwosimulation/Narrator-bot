@@ -548,7 +548,7 @@ module.exports = {
                 .permissionOverwrites.edit(alive.id, {
                     VIEW_CHANNEL: true,
                 })
-             message.guild.channels.cache
+            message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
                 .permissionOverwrites.edit(dead.id, {
                     VIEW_CHANNEL: true,
