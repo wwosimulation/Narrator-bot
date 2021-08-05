@@ -61,6 +61,7 @@ module.exports = {
                 }
             }
             db.set(`paci_${message.channel.id}`, "yes")
+            db.set(`paciday_${message.channel.id}`, day)
             dchat.send(`${getEmoji("revealed", client)} The Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
             guy.roles.add(revealed.id)
             if (message.channel.name == "priv-wolf-pacifist") message.guild.channels.cache.get("606135720825847829").send(`${getEmoji("revealed", client)} The Wolf Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
