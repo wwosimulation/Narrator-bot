@@ -10,12 +10,12 @@ module.exports = {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
             let isNight = db.get(`isNight`)
-            if (!args[0]) return message.channel.send("Yes, stabbing the air. Perfect choice.")
-            if (!guy) return message.reply("Invalid target!")
-            if (guy == message.member) return message.channel.send("The Alias for this is `+suicide`. Thanks")
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Yes stabbing while dead. Nice job")
-            if (isNight != "yes") return message.channel.send("Stabbing in broad daylight always makes sense.")
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("Congrats! You have invented a whole new level of stupidity by killing a dead player.")
+            if (!args[0]) return message.channel.send("Who are you stabbing? Mention the player.")
+            if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
+            if (guy == message.member) return message.channel.send("Why are you stabbing yourself? lol")
+            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
+            if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
+            if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
             let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
             for (let x = 0; x < cupid.length; x++) {
@@ -48,14 +48,14 @@ module.exports = {
                             }
                         }
                     }
-                    if (playersInChannel == false) return message.channel.send("No, you need to convert someone before you can kill dumb.")
+                    if (playersInChannel == false) return message.channel.send("You need to convert a player before stabbing.")
                 }
             }
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't kill players when dead stupid...")
-            if (!args[0]) return message.channel.send("You can't kill players without telling me who to kill.")
+            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
+            if (!args[0]) return message.channel.send("Who are you stabbing? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (!guy || guy.nickname == message.member.nickname) return message.channel.send("Here's an alternate suggestion: `+suicide`")
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("Bruh, you can't kill players that have already been killed...")
+            if (!guy || guy.nickname == message.member.nickname) return message.channel.send("The player is not in game! Mention the correct player number.")
+            if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
             let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
             for (let x = 0; x < cupid.length; x++) {
@@ -72,7 +72,7 @@ module.exports = {
                 let ownself = message.guild.members.cache.find((m) => m.id === message.author.id)
                 if (chan.permissionsFor(ownself).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        return message.channel.send("Imagine trying to kill the person who made you who you are today")
+                        return message.channel.send("You cannot stab your teammates!")
                     }
 
                     i = 99
