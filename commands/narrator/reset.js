@@ -153,6 +153,7 @@ module.exports = {
 
             for (let i = 0; i < paci.length; i++) {
                 db.set(`paci_${paci[i]}`, "no")
+                db.delete(`pacday_${paci[i]}`)
             }
 
             for (let i = 0; i < flower.length; i++) {
