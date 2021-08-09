@@ -1346,7 +1346,7 @@ module.exports = {
                                                         a = 99
                                                         wwKill = "0"
                                                         thechan.send(`_ _\n**${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
-                                                        thechan.send(`${alive.id}`)
+                                                        thechan.send(`${alive}`)
                                                         wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                                         wwChat.send(`${alive}`)
                                                     }
@@ -3171,6 +3171,7 @@ module.exports = {
                             chan.send(`${getEmoji("suspect", client)} You could not get any information last night!`)
                         }
                     }
+                    db.set(`snipe_${chan.id}`, null)
                 }
             }
         }, 4000)
