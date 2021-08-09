@@ -91,6 +91,12 @@ module.exports = {
             let abc = ap.splice(ap.indexOf(thegr.nickname), 1)
             console.log(newppl)
             let guy = message.guild.members.cache.find((m) => m.nickname === ap[Math.floor(Math.random() * ap.length)])
+            let role = db.get(`role_${guy.id}`)
+            do {
+                abc = abc.splice(ap.indexOf(guy.nickname), 1)
+                guy = message.guild.members.cache.find((m) => m.nickname === ap[Math.floor(Math.random() * ap.length)])
+            }
+            while (role === "Mayor" || role === "Flower Child" || role === "Pacifist" || role === "Cursed" || role === "Jailer" || role === "Marksman" || role === "Cupid" || role === "Medium" || role === "Seer" || role === "Seer Apprentice" || role === "Detective" || role === "Kitten Wolf" || role === "Wolf Pacifist" || role === "Wolf Seer" || role === "Sect Leader" || role === "Zombie" || role === "Bandit" || role === "Headhunter")
             if (guy) {
                 for (let z = 0; z < gr.length; z++) {
                     let chan = message.guild.channels.cache.get(gr[z])
