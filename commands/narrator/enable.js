@@ -33,5 +33,5 @@ module.exports = {
                     m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton)] })
                 })
         } else return message.channel.send(`I could not find the button.`)
-    }
+    },
 }
