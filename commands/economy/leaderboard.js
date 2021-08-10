@@ -1,79 +1,86 @@
-const { MessageEmbed, MessageSelectMenu, MessageActionRow } = require("discord.js")
-const { emojis, fn } = require("../../config")
-const { players } = require("../../db")
+const { MessageEmbed} = require('discord.js')
+const { players } = require('../../db')
 
 module.exports = {
-    name: "leaderboard",
-    aliases: ["lb"],
-    usage: `${process.env.PREFIX}leaderboard [page] [coins | roses | gems | xp]`,
-    run: async (message, args, client) => {
-        async function getTag(userID) {
-            let user = await client.users.cache.get(userID)
-            return user.tag
-        }
-
-        let sort = "coins" //default
-        let all_arr = []
-        let page = 1 //default
-        let lb_type = "Coin" //default
-        let lb_arr = []
-        let desc = ""
-        let sorts = ["coins", "roses", "gems", "xp"]
-        let types = ["Coin", "Rose", "Gem", "Xp"]
-        let i = 0
-        let n = 1
-
-        if (isNaN(args[0]) && sorts.includes(args[0])) (sort = args[0]), (lb_type = types[sorts.indexOf(sort)])
-        if (!isNaN(args[0])) page = parseInt(args[0])
-        if (args[1] && isNaN(args[1]) && sorts.includes(args[1])) (sort = args[1]), (lb_type = types[sorts.indexOf(sort)])
-
-        const drop = new MessageSelectMenu({ customId: `leaderboard-${sort}-${message.id}`, placeholder: "Select page", options: [{ label: n.toString(), value: n.toString(), description: `Go to page ${n}` }] })
-
-        let obj = {}
-        obj[sort] = -1
-        await (
-            await players.find({}).sort(obj)
-        ).forEach((player) => {
-            all_arr.push({ userID: player.user, value: player[sort] })
-            i = i + 1
-            if (i === 10) {
-                i = 0
-                n = n + 1
-                drop.addOptions({ label: n.toString(), value: n.toString(), description: `Go to page ${n}` })
-            }
-        })
-
-        lb_arr = all_arr.splice((page - 1) * 10, 10)
-        lb_arr.forEach((user) => {
-            let userz = client.users.resolve(user.userID)
-            desc = desc + `${user.value} - ${userz.tag}\n`
-        })
-
-        let max_page = Math.ceil(all_arr.length / 10)
-        let lb = new MessageEmbed().setFooter(`${page}/${max_page}`).setTitle(`${lb_type} Leaderboard`).setColor("#1FFF43").setDescription(desc)
-
-        let row = new MessageActionRow().addComponents(drop)
-        if (!args[3]) {
-            let msg = await message.channel.send({ embeds: [lb], components: [row] })
-            setTimeout(async () => {
-                row.components.forEach((x) => x.setDisabled(true))
-                await msg.edit({ components: [row], content: "This message is now inactive!" })
-            }, 30000)
-        }
-        if (args[3]) {
-            try {
-                let chn = await client.channels.fetch(args[2])
-                let m = await chn.messages.fetch(args[3])
-                m.edit({ embeds: [lb], components: [row] })
-            } catch (err) {
-                console.log(err)
-                args[2].delete()
-                let msg = await message.channel.send({ embeds: [lb], components: [row] })
-                setTimeout(async () => {
-                    row.components.forEach((x) => x.setDisabled(true))
-                    await msg.edit({ components: [row], content: "This message is now inactive!" })
-                }, 30000)
-            }
-        }
-    },
+  name: "leaderboard",
+  aliases: ['lb'], 
+  description: "Displays the current leaderboard for coins, roses, gems or XP!",
+  usage: `${process.env.PREFIX}leaderboard [page] [coins | roses | gems | xp]`, 
+  run: async (message, args, client) => {
+    
+    // required sorting and embed variables
+    let page = 1 //default 
+    let sortedBy = "coins" // default
+    let lbType = "Coin" //default
+    
+    // extended arrays to check arguments and modify embed title
+    let sortedByOptions = ["coins", "roses", "gems", "xp"]
+    let lbTypes = ["Coin", "Rose", "Gem", "Xp"]
+    
+    //checking args and changeing line 12-14
+    /* args[0] is the leader board type (coins etc) */
+    if(isNaN(args[0]) && sortedByOptions.includes(args[0])) (sortedBy = args[0]), (lbType = lbTypes[sortedByOptions.indexOf(sortedBy)])
+    /* args[0] is the page */
+    if(!isNaN(args[0])) page = parseInt(args[0])
+    /* args[1] is the leader board type */
+    if(isNaN(args[1]) && sortedByOptions.includes(args[1])) (sortedBy = args[1]), (lbType = lbTypes[sortedByOptions.indexOf(sortedBy)])
+    else{
+      message.channel.send(`Invalid arguments! Please use \`${this.usage}\`\n`)
+    }
+    
+    
+    
+    let obj = {}
+    obj[sortedBy] = -1
+    
+    let embeds = []
+    let embedItemArray = []
+    let currentEmbedItems = []
+    
+    await (await players.find({}).sort(obj)).forEach((player) => {
+      if(currentEmbedItems.length <= 10) currentEmbedItems.push({userID: player.user, value: player.player[sortedBy]})
+      else{
+        embedItemArray.push(currentEmbedItems)
+        currentEmbedItems = [{userID: player.user, value: player.player[sortedBy]}]
+      }
+    })
+    embedItemArray.push(currentEmbedItems)
+    
+    async function getTag(userID) {
+      let user = client.users.resolve(userID)
+      return user.tag
+    }
+    /* 
+    Only visualization! 
+    embedItemArray = [[{}, {}, {}], [{}, {}, {}]]
+    */
+    
+    await embedItemArray.forEach(async (arr, i, embedItemArr) => {
+      let description = ""
+      await arr.forEach((item) => {
+        description = description + `${item.value} - ${getTag(item.userID)}\n`
+      })
+      embed = new MessageEmbed()
+      .setDescription(description)
+      .setColor("#1FFF43")
+      .setTimestamp()
+      .setFooter(`Page ${i+1}/${embedItemArr.length}`)
+      .setTitle(`${lbType} Leaderboard`)
+      
+      embeds.push(embed)
+    })
+    
+    
+    let msg
+    
+    if(!embeds[page - 1]) (msg = await message.channel.send({content: `${message.author}, page ${page} does not exist in this leader board!`, embeds: [embeds[0]]})), (page = 1)
+    else {
+      msg = await message.channel.send({embeds: embeds[page - 1]})
+    }
+    
+    client.paginator(message.author, msg, embeds, page)
+  }
 }
+
+
+
