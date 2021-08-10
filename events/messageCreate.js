@@ -63,7 +63,7 @@ module.exports = (client) => {
         }
 
         //If user mentions bot
-        if (message.content === `<@!${client.user.id}>`) return message.author.send(`Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`)
+        if (message.content == `<@!${client.user.id}>`) return message.author.send(`Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`)
 
         if (!message.content.startsWith(prefix)) return
         if (maint && !client.botAdmin(message.author.id)) return message.channel.send("Sorry! The bot is currently in maintenance mode!")
