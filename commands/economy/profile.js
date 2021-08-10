@@ -5,10 +5,6 @@ const { emojis, fn } = require("../../config")
 module.exports = {
     name: "profile",
     run: async (message, args, client) => {
-        let data = await players.findOne({ user: message.author.id })
-        let inventory = data.profile
-
-        if (inventory != true && !client.botAdmin(message.author.id)) return message.channel.send(message.i10n("profileNeedToBuy"))
         let guy
         if (args[0]) {
             guy = fn.getUser(args[0], message)
@@ -17,6 +13,10 @@ module.exports = {
         }
         if (!guy) return message.channel.send("Unable to find that user.")
         if (guy.author) guy = guy.author
+        let data = await players.findOne({ user: guy.id })
+        let inventory = data.profile
+
+        if (inventory != true && !client.botAdmin(message.author.id)) return message.channel.send(message.i10n("profileNeedToBuy"))
 
         if (!data.profile && !fn.isNarrator(message.member)) return message.channel.send(message.i10n("profileLocked"))
 
