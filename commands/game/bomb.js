@@ -29,7 +29,7 @@ module.exports = {
 
             if (night == didCmd + 1 && night != 1) return await message.channel.send("Your bomb will explode soon!")
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map(x => x.id)
             for (let x = 0; x < cupid.length; x++) {
                 let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
                 if (message.author.nickname === couple[0]) {

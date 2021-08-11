@@ -34,7 +34,7 @@ module.exports = {
                         } else {
                             let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
                             if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not water the Sect Leader being part of the sect!")
-                            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+                            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map(x => x.id)
                             for (let x = 0; x < cupid.length; x++) {
                                 let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
                                 if (message.author.nickname === couple[0]) {

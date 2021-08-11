@@ -66,7 +66,7 @@ module.exports = {
             })
 
         let allGr = []
-        let gr = message.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").keyArray("id")
+        let gr = message.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").map(x => x.id)
         let grig = 0
         for (let i = 0; i < gr.length; i++) {
             for (let a = 1; a <= alive.members.size; a++) {
@@ -113,7 +113,7 @@ module.exports = {
 
         let allHh = []
 
-        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").keyArray("id")
+        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map(x => x.id)
 
         let hhig = 0
         for (let i = 0; i < hh.length; i++) {

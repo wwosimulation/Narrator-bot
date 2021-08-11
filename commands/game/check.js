@@ -5,8 +5,8 @@ module.exports = {
     name: "check",
     gameOnly: true,
     run: async (message, args) => {
-        let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").keyArray("id")
-        let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").keyArray("id")
+        let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map(x => x.id)
+        let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map(x => x.id)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
         if (message.channel.name == "priv-aura-seer") {
