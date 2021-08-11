@@ -16,37 +16,37 @@ module.exports = {
         let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
         let wwVote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
         let jailed = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
-        let jailer = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").map(x => x.id)
-        let sk = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map(x => x.id)
-        let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map(x => x.id)
-        let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map(x => x.id)
-        let canni = message.guild.channels.cache.filter((c) => c.name === "priv-cannibal").map(x => x.id)
-        let doc = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map(x => x.id)
-        let bg = message.guild.channels.cache.filter((c) => c.name === "priv-bodyguard").map(x => x.id)
-        let witch = message.guild.channels.cache.filter((c) => c.name === "priv-witch").map(x => x.id)
-        let bh = message.guild.channels.cache.filter((c) => c.name === "priv-beast-hunter").map(x => x.id)
-        let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map(x => x.id)
-        let med = message.guild.channels.cache.filter((c) => c.name === "priv-medium").map(x => x.id)
+        let jailer = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").map((x) => x.id)
+        let sk = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map((x) => x.id)
+        let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map((x) => x.id)
+        let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
+        let canni = message.guild.channels.cache.filter((c) => c.name === "priv-cannibal").map((x) => x.id)
+        let doc = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id)
+        let bg = message.guild.channels.cache.filter((c) => c.name === "priv-bodyguard").map((x) => x.id)
+        let witch = message.guild.channels.cache.filter((c) => c.name === "priv-witch").map((x) => x.id)
+        let bh = message.guild.channels.cache.filter((c) => c.name === "priv-beast-hunter").map((x) => x.id)
+        let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
+        let med = message.guild.channels.cache.filter((c) => c.name === "priv-medium").map((x) => x.id)
         let day = db.get(`dayCount`)
-        let arso = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").map(x => x.id)
-        let shunt = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").map(x => x.id)
-        let sel = message.guild.channels.cache.filter((c) => c.name === "priv-sect-leader").map(x => x.id)
-        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map(x => x.id)
-        let kww = message.guild.channels.cache.filter((c) => c.name === "priv-kitten-wolf").map(x => x.id)
-        let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map(x => x.id)
-        let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map(x => x.id)
-        let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map(x => x.id)
+        let arso = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").map((x) => x.id)
+        let shunt = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").map((x) => x.id)
+        let sel = message.guild.channels.cache.filter((c) => c.name === "priv-sect-leader").map((x) => x.id)
+        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map((x) => x.id)
+        let kww = message.guild.channels.cache.filter((c) => c.name === "priv-kitten-wolf").map((x) => x.id)
+        let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
+        let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
+        let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
         let lovers = message.guild.channels.cache.find((c) => c.name === "lovers")
-        let bandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map(x => x.id)
-        let bandit = message.guild.channels.cache.filter((c) => c.name === "priv-bandit").map(x => x.id)
-        let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").map(x => x.id)
-        let wwb = message.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").map(x => x.id)
-        let rl = message.guild.channels.cache.filter((c) => c.name === "priv-red-lady").map(x => x.id)
-        let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").map(x => x.id)
-        let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").map(x => x.id)
+        let bandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
+        let bandit = message.guild.channels.cache.filter((c) => c.name === "priv-bandit").map((x) => x.id)
+        let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").map((x) => x.id)
+        let wwb = message.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").map((x) => x.id)
+        let rl = message.guild.channels.cache.filter((c) => c.name === "priv-red-lady").map((x) => x.id)
+        let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").map((x) => x.id)
+        let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").map((x) => x.id)
         let zombies = message.guild.channels.cache.find((c) => c.name === "zombies")
-        let sheriff = message.guild.channels.cache.filter((c) => c.name === "priv-sheriff").map(x => x.id)
-        let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").map(x => x.id)
+        let sheriff = message.guild.channels.cache.filter((c) => c.name === "priv-sheriff").map((x) => x.id)
+        let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").map((x) => x.id)
         let cupidKilled = false
         let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker"]
         let strongww = ["Werewolf", "Junior Werewolf", "Nightmare Werewolf", "Kitten Wolf", "Wolf Shaman", "Wolf Pacifist", "Shadow Wolf", "Guardian Wolf", "Werewolf Berserk", "Alpha Werewolf", "Wolf Seer", "Lone Wolf"]
@@ -144,7 +144,7 @@ module.exports = {
             if (shield != null) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === shield)
                 let role = db.get(`role_${guy.id}`)
-                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let j = 0; j < chan.length; j++) {
                     let tempchan = message.guild.channels.cache.get(chan[j])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -162,7 +162,7 @@ module.exports = {
             if (sword != null) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === sword)
                 let role = db.get(`role_${guy.id}`)
-                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let j = 0; j < chan.length; j++) {
                     let tempchan = message.guild.channels.cache.get(chan[j])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -259,7 +259,7 @@ module.exports = {
                         }
                         // forger
                         if (secondhack[j] != "0") {
-                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                             for (let k = 0; k < chans.length; k++) {
                                 let sectempchan = message.guild.channels.cache.get(chans[k])
                                 if (sectempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -502,7 +502,7 @@ module.exports = {
 
                         // forger
                         if (eat[j] != "0") {
-                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                             for (let k = 0; k < chans.length; k++) {
                                 let tempchan = message.guild.channels.cache.get(chans[k])
                                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -774,7 +774,7 @@ module.exports = {
 
                 // checking if the forger's shield is on the player
                 // forger
-                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let k = 0; k < chans.length; k++) {
                     let tempchan = message.guild.channels.cache.get(chans[k])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -1182,7 +1182,7 @@ module.exports = {
             }
 
             if (wwKill != "0") {
-                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let k = 0; k < chans.length; k++) {
                     let tempchan = message.guild.channels.cache.get(chans[k])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -1297,7 +1297,7 @@ module.exports = {
                             tgc.send(`${getEmoji("tough_guy", client)} You have been attacked by **${thewolf.nickname} ${thewolf.user.username} (${db.get(`role_${thewolf.id}`)})**. You have been wounded and will die at the end of the day.`)
                             tgc.send(`${alive}`)
                             db.set(`wounded_${tgc.id}`, true)
-                            let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                            let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                             for (let a = 0; a < gr.length; a++) {
                                 let thechan = message.guild.channels.cache.get(gr[a])
                                 if (thechan.permissionsFor(thewolf).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -1338,7 +1338,7 @@ module.exports = {
                                                 theChannel.send(`You have been attacked by **${thewolf.nickname} ${thewolf.user.username} (${db.get(`role_${thewolf.id}`)})**. You have been wounded and will die at the end of the day.`)
                                                 theChannel.send(`${alive}`)
                                                 db.set(`wounded_${theChannel.id}`, true)
-                                                let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                                                let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                                 for (let a = 0; a < gr.length; a++) {
                                                     let thechan = message.guild.channels.cache.get(gr[a])
                                                     if (thechan.permissionsFor(thewolf).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -1383,7 +1383,7 @@ module.exports = {
             if (wwKill != "0") {
                 console.log("It is not 0 (8)")
                 if (role == "Cursed") {
-                    let allcursed = message.guild.channels.cache.filter((c) => c.name === "priv-cursed").map(x => x.id)
+                    let allcursed = message.guild.channels.cache.filter((c) => c.name === "priv-cursed").map((x) => x.id)
                     for (let z = 0; z < allcursed.length; z++) {
                         let thecurse = message.guild.channels.cache.get(allcursed[z])
                         if (thecurse.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
@@ -1566,7 +1566,7 @@ module.exports = {
                                         sl.send(`${alive}`)
                                         sect = "0"
                                     } else {
-                                        let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                                        let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
 
                                         // protection from non-village
                                         for (let l = 0; l < thechan.length; l++) {
@@ -1658,7 +1658,7 @@ module.exports = {
                                         }
 
                                         if (sect != "0") {
-                                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                             for (let k = 0; k < chans.length; k++) {
                                                 let tempchan = message.guild.channels.cache.get(chans[k])
                                                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -1734,7 +1734,7 @@ module.exports = {
                                                     READ_MESSAGE_HISTORY: true,
                                                 })
                                                 sected.send(`${alive}\n${guy.user.username} is now a sect member`)
-                                                let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                                                let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                                 for (let k = 0; k < thechan.length; k++) {
                                                     let chan = message.guild.channels.cache.get(thechan[k])
                                                     if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
@@ -1900,7 +1900,7 @@ module.exports = {
                             }
 
                             if (glitch != "0") {
-                                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                 for (let k = 0; k < chans.length; k++) {
                                     let tempchan = message.guild.channels.cache.get(chans[k])
                                     if (tempchan.permissionsFor(corrupted).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -2020,7 +2020,7 @@ module.exports = {
                             dayChat.permissionOverwrites.edit(corrupted.id, {
                                 SEND_MESSAGES: false,
                             })
-                            let allchan = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.replace(" ", "-").toLowerCase()}`).map(x => x.id)
+                            let allchan = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                             for (let b = 0; b < allchan.length; b++) {
                                 let chan = message.guild.channels.cache.get(allchan[b])
                                 if (chan.permissionsFor(corrupted).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -2380,7 +2380,7 @@ module.exports = {
 
                     // forger
                     if (toDelude != "0") {
-                        let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${theroleiwant.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                        let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${theroleiwant.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                         for (let k = 0; k < chans.length; k++) {
                             let tempchan = message.guild.channels.cache.get(chans[k])
                             if (tempchan.permissionsFor(disguise).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -2725,7 +2725,7 @@ module.exports = {
         if (prisoner) {
             let role = db.get(`role_${prisoner.id}`)
             let role2 = role.toLowerCase().replace(" ", "-")
-            let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role2}`).map(x => x.id)
+            let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role2}`).map((x) => x.id)
             jailed.permissionOverwrites.edit(prisoner.id, {
                 VIEW_CHANNEL: false,
                 SEND_MESSAGES: false,
@@ -2904,7 +2904,7 @@ module.exports = {
                 }
 
                 // forger
-                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let j = 0; j < chan.length; j++) {
                     let tempchan = message.guild.channels.cache.get(chan[j])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -2969,7 +2969,7 @@ module.exports = {
                 // biting the player
                 if (brains[i] != "0") {
                     zombies.send(`${getEmoji("bitten", client)} Player **${guy.nickname} ${guy.user.username}** has been bitten!`)
-                    let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                    let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                     for (let j = 0; j < chan.length; j++) {
                         let tempchan = message.guild.channels.cache.get(chan[j])
                         if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {

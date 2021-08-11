@@ -14,7 +14,7 @@ module.exports = {
             }
         }
 
-        let chann = message.guild.channels.cache.filter((c) => c.name === `priv-${args[1]}`).map(x => x.id)
+        let chann = message.guild.channels.cache.filter((c) => c.name === `priv-${args[1]}`).map((x) => x.id)
 
         let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
 

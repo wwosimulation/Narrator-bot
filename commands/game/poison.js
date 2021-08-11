@@ -27,7 +27,7 @@ module.exports = {
             if (sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (db.get(`role_${guy.id}`) == "Sect Leader") return message.channel.send("You cannot poison a sect leader being part of the sect.")
             }
-            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map(x => x.id)
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
             for (let x = 0; x < cupid.length; x++) {
                 let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
                 if (message.author.nickname === couple[0]) {

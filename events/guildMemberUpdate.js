@@ -12,7 +12,7 @@ module.exports = (client) => {
         newMember.roles.remove(ids.revealed)
         // canceling frenzy
         if (db.get(`role_${newMember.id}`) == "Werewolf Berserk") {
-            let wwb = newMember.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").map(x => x.id)
+            let wwb = newMember.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").map((x) => x.id)
             for (let a = 0; a < wwb.length; a++) {
                 let chan = newMember.guild.channels.cache.get(wwb[a])
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -34,7 +34,7 @@ module.exports = (client) => {
 
         // grave robber
         let alive = newMember.guild.roles.cache.find((r) => r.name === "Alive")
-        let graverobbers = newMember.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").map(x => x.id)
+        let graverobbers = newMember.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").map((x) => x.id)
         for (let a = 0; a < graverobbers.length; a++) {
             let chan = newMember.guild.channels.cache.get(graverobbers[a])
             if (db.get(`target_${chan.id}`) == newMember.nickname) {
@@ -93,7 +93,7 @@ module.exports = (client) => {
         }
         // jww tag
         if (db.get(`role_${newMember.id}`) == "Junior Werewolf") {
-            let jww = newMember.guild.channels.cache.filter((c) => c.name === "priv-junior-werewolf").map(x => x.id)
+            let jww = newMember.guild.channels.cache.filter((c) => c.name === "priv-junior-werewolf").map((x) => x.id)
             for (let a = 0; a < jww.length; a++) {
                 let chan = newMember.guild.channels.cache.get(jww[a])
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -111,7 +111,7 @@ module.exports = (client) => {
 
         // avenger tag
         if (db.get(`role_${newMember.id}`) == "Avenger") {
-            let jww = newMember.guild.channels.cache.filter((c) => c.name === "priv-avenger").map(x => x.id)
+            let jww = newMember.guild.channels.cache.filter((c) => c.name === "priv-avenger").map((x) => x.id)
             for (let a = 0; a < jww.length; a++) {
                 let chan = newMember.guild.channels.cache.get(jww[a])
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -128,7 +128,7 @@ module.exports = (client) => {
 
         // loudmouth
         if (db.get(`role_${newMember.id}`) == "Loudmouth") {
-            let jww = newMember.guild.channels.cache.filter((c) => c.name === "priv-loudmouth").map(x => x.id)
+            let jww = newMember.guild.channels.cache.filter((c) => c.name === "priv-loudmouth").map((x) => x.id)
             for (let a = 0; a < jww.length; a++) {
                 let chan = newMember.guild.channels.cache.get(jww[a])
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -143,7 +143,7 @@ module.exports = (client) => {
         }
 
         // mortician
-        let mort = newMember.guild.channels.cache.filter((c) => c.name === "priv-mortician").map(x => x.id)
+        let mort = newMember.guild.channels.cache.filter((c) => c.name === "priv-mortician").map((x) => x.id)
         for (let a = 0; a < mort.length; a++) {
             let chan = newMember.guild.channels.cache.get(mort[a])
             let mortUser = chan.permissionOverwrites?.cache.find((x) => x.type == "member")
@@ -177,7 +177,7 @@ module.exports = (client) => {
         }
 
         // doppelganger
-        let dp = newMember.guild.channels.cache.filter((c) => c.name === "priv-doppelganger").map(x => x.id)
+        let dp = newMember.guild.channels.cache.filter((c) => c.name === "priv-doppelganger").map((x) => x.id)
         for (let a = 0; a < dp.length; a++) {
             let chan = newMember.guild.channels.cache.get(dp[a])
             console.log("worked")
@@ -282,7 +282,7 @@ module.exports = (client) => {
                                     },
                                 ],
                             })
-                            let seerapp = newMember.guild.channels.cache.filter((c) => c.name === "priv-seer-apprentice").map(x => x.id)
+                            let seerapp = newMember.guild.channels.cache.filter((c) => c.name === "priv-seer-apprentice").map((x) => x.id)
                             for (let b = 0; b < seerapp.length; b++) {
                                 let chan = newMember.guild.channels.cache.get(seerapp[b])
                                 if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -356,7 +356,7 @@ module.exports = (client) => {
         }
 
         // red lady
-        let rl = newMember.guild.channels.cache.filter((c) => c.name === "priv-red-lady").map(x => x.id)
+        let rl = newMember.guild.channels.cache.filter((c) => c.name === "priv-red-lady").map((x) => x.id)
         let dead = newMember.guild.roles.cache.find((r) => r.name === "Dead").id
         for (let a = 0; a < rl.length; a++) {
             let chan = newMember.guild.channels.cache.get(rl[a])
@@ -411,7 +411,7 @@ module.exports = (client) => {
 
         // disabling everythihng
         let role = db.get(`role_${newMember.id}`) || "None"
-        let allchannels = newMember.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+        let allchannels = newMember.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
         for (let a = 0; a < allchannels.length; a++) {
             let chan = newMember.guild.channels.cache.get(allchannels[a])
             if (chan) {

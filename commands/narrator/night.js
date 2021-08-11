@@ -6,7 +6,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.guild.id != "472261911526768642") return
-        let sww = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").map(x => x.id)
+        let sww = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").map((x) => x.id)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
         let votechat = message.guild.channels.cache.find((c) => c.name === "vote-chat")
@@ -115,7 +115,7 @@ module.exports = {
             if (!guy) return message.channel.send("User not found. Please try again!")
 
             let fc = message.guild.channels.cache.filter((c) => c.name === "priv-flower-child")
-            let fcss = fc.map(x => x.id)
+            let fcss = fc.map((x) => x.id)
             for (let i = 0; i < fcss.length; i++) {
                 let petal = db.get(`flower_${fcss[i]}`)
                 if (petal == args[0]) {
@@ -130,7 +130,7 @@ module.exports = {
             }
             if (lynched == "yes") {
                 let gww = message.guild.channels.cache.filter((c) => c.name === "priv-guardian-wolf")
-                let gwwss = gww.map(x => x.id)
+                let gwwss = gww.map((x) => x.id)
                 for (let i = 0; i < gwwss.length; i++) {
                     let guardian = db.get(`guardian_${gwwss[i]}`)
                     if (guardian == args[0]) {
@@ -153,7 +153,7 @@ module.exports = {
 
             if (lynched == "yes") {
                 if (db.get(`role_${guy.id}`) == "Idiot") {
-                    let idiot = message.guild.channels.cache.filter((c) => c.name === "priv-idiot").map(x => x.id)
+                    let idiot = message.guild.channels.cache.filter((c) => c.name === "priv-idiot").map((x) => x.id)
                     for (let k = 0; k < idiot.length; k++) {
                         let chan = message.guild.channels.cache.get(idiot[k])
                         if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -173,20 +173,20 @@ module.exports = {
             }
         }
         setTimeout(async () => {
-            let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map(x => x.id)
-            let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map(x => x.id)
-            let s = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map(x => x.id)
-            let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").map(x => x.id)
-            let sorc = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").map(x => x.id)
-            let wwseer = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-seer").map(x => x.id)
-            let healer1 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map(x => x.id) // doctor
-            let healer3 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map(x => x.id) // witch
-            let healer2 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map(x => x.id) // bodyguard
-            let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map(x => x.id)
-            let serialkiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map(x => x.id)
-            let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").map(x => x.id)
-            let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map(x => x.id)
-            let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map(x => x.id)
+            let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
+            let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id)
+            let s = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map((x) => x.id)
+            let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").map((x) => x.id)
+            let sorc = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").map((x) => x.id)
+            let wwseer = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-seer").map((x) => x.id)
+            let healer1 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // doctor
+            let healer3 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // witch
+            let healer2 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // bodyguard
+            let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map((x) => x.id)
+            let serialkiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map((x) => x.id)
+            let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").map((x) => x.id)
+            let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
+            let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
 
             for (let i = 0; i < as.length; i++) {
                 db.set(`auraCheck_${as[i]}`, "no")
@@ -242,7 +242,7 @@ module.exports = {
                 let corruptor = message.guild.channels.cache.get(corr[a])
                 if (glitch != null) {
                     let guy = message.guild.members.cache.find((c) => c.nickname === glitch)
-                    let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map(x => x.id)
+                    let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                     for (let b = 0; b < role.length; b++) {
                         let chan = message.guild.channels.cache.get(role[b])
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -302,8 +302,8 @@ module.exports = {
                         let nbr2 = db.get(`role_${guy2.id}`)
                         db.set(`role_${guy1.id}`, nbr2)
                         db.set(`role_${guy2.id}`, nbr1)
-                        let chan1 = message.guild.channels.cache.filter((c) => c.name === `priv-${nbr1.replace(" ", "-").toLowerCase()}`).map(x => x.id)
-                        let chan2 = message.guild.channels.cache.filter((c) => c.name === `priv-${nbr2.replace(" ", "-").toLowerCase()}`).map(x => x.id)
+                        let chan1 = message.guild.channels.cache.filter((c) => c.name === `priv-${nbr1.replace(" ", "-").toLowerCase()}`).map((x) => x.id)
+                        let chan2 = message.guild.channels.cache.filter((c) => c.name === `priv-${nbr2.replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                         for (let d = 0; d < chan1.length; d++) {
                             let chan = message.guild.channels.cache.get(chan1[d])
                             if (chan.permissionsFor(player).has(["VIEW_CHANNEL"])) {
@@ -406,7 +406,7 @@ module.exports = {
             }
 
             let jailedchat = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
-            let jailers = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").map(x => x.id)
+            let jailers = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").map((x) => x.id)
             for (let q = 0; q < jailers.length; q++) {
                 let jailer = message.guild.channels.cache.get(jailers[q])
                 for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
@@ -442,7 +442,7 @@ module.exports = {
                             wwChat.send("Your werewolf teammate **" + prisoner.nickname + " " + prisoner.user.username + " (" + db.get(`role_${prisoner.id}`) + ")** has been jailed!")
                         }
 
-                        let rolec = message.guild.channels.cache.filter((c) => c.name === `priv-` + db.get(`role_${prisoner.id}`).toLowerCase().replace(" ", "-")).map(x => x.id)
+                        let rolec = message.guild.channels.cache.filter((c) => c.name === `priv-` + db.get(`role_${prisoner.id}`).toLowerCase().replace(" ", "-")).map((x) => x.id)
 
                         for (let jailsch = 0; jailsch < rolec.length; jailsch++) {
                             let tolock = message.guild.channels.cache.get(rolec[jailsch])
@@ -461,7 +461,7 @@ module.exports = {
                 }
             }
 
-            let nmww = message.guild.channels.cache.filter((c) => c.name === "priv-nightmare-werewolf").map(x => x.id)
+            let nmww = message.guild.channels.cache.filter((c) => c.name === "priv-nightmare-werewolf").map((x) => x.id)
             let nightmares = []
             for (let a = 0; a < nmww.length; a++) {
                 // getting the nightmares
@@ -485,7 +485,7 @@ module.exports = {
                                             console.log(guy.nickname)
                                             wwChat.send(`The Nightmare Werewolf put **${guy.nickname} ${guy.user.username}** to sleep!`)
                                             let role = db.get(`role_${guy.id}`)
-                                            let temp = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map(x => x.id)
+                                            let temp = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                             for (let c = 0; c < temp.length; c++) {
                                                 let tempchan = message.guild.channels.cache.get(temp[c])
                                                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -522,7 +522,7 @@ module.exports = {
                                                 })
                                             }
                                             // bandits
-                                            let bandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map(x => x.id)
+                                            let bandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
                                             for (let d = 0; d < bandits.length; d++) {
                                                 let thechan = message.guild.channels.cache.get(bandits[d])
                                                 if (thechan.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY"])) {
@@ -554,7 +554,7 @@ module.exports = {
                     VIEW_CHANNEL: true,
                 })
 
-            let mm = message.guild.channels.cache.filter((c) => c.name === "priv-marksman").map(x => x.id)
+            let mm = message.guild.channels.cache.filter((c) => c.name === "priv-marksman").map((x) => x.id)
             for (let a = 0; a < mm.length; a++) {
                 if (db.get(`mark_${mm[a]}`) != null) {
                     db.set(`markActive_${mm[a]}`, true)
@@ -563,7 +563,7 @@ module.exports = {
 
             // Tough guy
 
-            let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").map(x => x.id)
+            let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").map((x) => x.id)
 
             for (let a = 0; a < tg.length; a++) {
                 if (db.get(`wounded_${tg[a]}`) == true) {
@@ -630,7 +630,7 @@ module.exports = {
                 await votechat.bulkDelete(md)
             }
             // deleting shamaned if shaman is dead
-            let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map(x => x.id)
+            let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map((x) => x.id)
             for (let i = 0; i < shaman.length; i++) {
                 let chan = message.guild.channels.cache.get(shaman[i])
                 for (let j = 1; j <= 16; j++) {
@@ -646,7 +646,7 @@ module.exports = {
                 }
             }
             // deleting bomber bombs if dead
-            let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map(x => x.id)
+            let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map((x) => x.id)
             for (let i = 0; i < bb.length; i++) {
                 let chan = message.guild.channels.cache.get(bb[i])
                 for (let j = 1; j <= 16; j++) {
@@ -664,7 +664,7 @@ module.exports = {
 
             // bomber
             setTimeout(async function () {
-                let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map(x => x.id)
+                let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map((x) => x.id)
                 for (let i = 0; i < bb.length; i++) {
                     let bombs = db.get(`bombs_${bb[i]}`) || []
                     if (bombs.length > 0) {

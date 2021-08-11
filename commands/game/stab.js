@@ -17,7 +17,7 @@ module.exports = {
             if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map(x => x.id)
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
             for (let x = 0; x < cupid.length; x++) {
                 let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
                 if (message.author.nickname === couple[0]) {
@@ -32,7 +32,7 @@ module.exports = {
         } else if (message.channel.name == "priv-bandit" || message.channel.name == "priv-accomplice") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let allBandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map(x => x.id)
+            let allBandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
             if (message.channel.name == "priv-bandit") {
                 for (let i = 0; i < allBandits.length; i++) {
                     let channel = message.guild.channels.cache.get(allBandits[i])
@@ -57,7 +57,7 @@ module.exports = {
             if (!guy || guy.nickname == message.member.nickname) return message.channel.send("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map(x => x.id)
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
             for (let x = 0; x < cupid.length; x++) {
                 let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
                 if (message.author.nickname === couple[0]) {

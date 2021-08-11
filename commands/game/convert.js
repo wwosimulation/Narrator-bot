@@ -20,7 +20,7 @@ module.exports = {
             db.set(`sect_${message.channel.id}`, args[0])
             message.channel.send(`${getEmoji("sect_member", client)} You decided to convert **${guy.nickname} ${guy.user.username}**!`)
         } else if (message.channel.name == "priv-bandit") {
-            let allbandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map(x => x.id)
+            let allbandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
             for (let i = 0; i < allbandits.length; i++) {
                 let chan = message.guild.channels.cache.get(allbandits[i])
                 let ownself = message.guild.members.cache.find((m) => m.id === message.author.id)
@@ -52,7 +52,7 @@ module.exports = {
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot bite the deads!")
 
             // code to check if a player is bitten
-            let fod = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map(x => x.id)
+            let fod = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
             for (let i = 0; i < fod.length; i++) {
                 let tempchan = message.guild.channels.cache.get([i])
                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {

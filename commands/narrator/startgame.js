@@ -66,7 +66,7 @@ module.exports = {
             })
 
         let allGr = []
-        let gr = message.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").map(x => x.id)
+        let gr = message.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").map((x) => x.id)
         let grig = 0
         for (let i = 0; i < gr.length; i++) {
             for (let a = 1; a <= alive.members.size; a++) {
@@ -95,8 +95,7 @@ module.exports = {
             do {
                 abc = abc.splice(ap.indexOf(guy.nickname), 1)
                 guy = message.guild.members.cache.find((m) => m.nickname === ap[Math.floor(Math.random() * ap.length)])
-            }
-            while (role === "Mayor" || role === "Flower Child" || role === "Pacifist" || role === "Cursed" || role === "Jailer" || role === "Marksman" || role === "Cupid" || role === "Medium" || role === "Seer" || role === "Seer Apprentice" || role === "Detective" || role === "Kitten Wolf" || role === "Wolf Pacifist" || role === "Wolf Seer" || role === "Sect Leader" || role === "Zombie" || role === "Bandit" || role === "Headhunter")
+            } while (role === "Mayor" || role === "Flower Child" || role === "Pacifist" || role === "Cursed" || role === "Jailer" || role === "Marksman" || role === "Cupid" || role === "Medium" || role === "Seer" || role === "Seer Apprentice" || role === "Detective" || role === "Kitten Wolf" || role === "Wolf Pacifist" || role === "Wolf Seer" || role === "Sect Leader" || role === "Zombie" || role === "Bandit" || role === "Headhunter")
             if (guy) {
                 for (let z = 0; z < gr.length; z++) {
                     let chan = message.guild.channels.cache.get(gr[z])
@@ -113,7 +112,7 @@ module.exports = {
 
         let allHh = []
 
-        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map(x => x.id)
+        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map((x) => x.id)
 
         let hhig = 0
         for (let i = 0; i < hh.length; i++) {

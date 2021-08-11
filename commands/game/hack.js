@@ -8,8 +8,8 @@ module.exports = {
             let isNight = db.get(`isNight`)
             let alrhacked = db.get(`hashacked_${message.channel.id}`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map(x => x.id)
-            let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map(x => x.id)
+            let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
+            let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map((x) => x.id)
             let firsthack = db.get(`hack_${message.channel.id}`) || []
             let sech = []
             let lol = firsthack
