@@ -2,6 +2,8 @@ const { players } = require("../../db")
 
 module.exports = {
     name: "namechange",
+    description: "Change the name of your special role to a new one. This name may have up to 99 characters.",
+    usage: `${process.env.PREFIX}namechange <name>`,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
         let role = data.customRole

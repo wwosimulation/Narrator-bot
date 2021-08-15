@@ -4,6 +4,8 @@ const { players } = require("../../db")
 
 module.exports = {
     name: "inventory",
+    description: "Lists your current inventory.",
+    usage: `${process.env.PREFIX}inventory`,
     aliases: ["inv"],
     run: async (message, args, client) => {
         //if (message.channel.type != "dm") return message.channel.send("This command only works in DMs as it contains private information!")
