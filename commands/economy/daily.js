@@ -1,10 +1,12 @@
-const Discord = require("discord.js")
+const { MessageEmbed } = require("discord.js")
 const ms = require("parse-ms")
 const config = require("../../config")
 const { players } = require("../../db.js")
 
 module.exports = {
     name: "daily",
+    description: "Claim your daily reward.",
+    usage: `${process.env.PREFIX}daily`,
     run: async (message, args, client) => {
         let item = ""
         let amount = ""
@@ -70,7 +72,7 @@ module.exports = {
                 data.coins += 30 * bonus
             }
 
-            let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have recieved ${amount} ${item}!${extra}`)
+            let dailymsg = new MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have recieved ${amount} ${item}!${extra}`)
             message.channel.send({ embeds: [dailymsg] })
 
             data.daily.day++

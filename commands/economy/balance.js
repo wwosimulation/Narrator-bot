@@ -3,6 +3,8 @@ const { players } = require("../../db")
 
 module.exports = {
     name: "balance",
+    description: "Shows your or another user's balance.",
+    usage: `${process.env.PREFIX}balance [user]`,
     aliases: ["bal", "coins", "money"],
     run: async (message, args) => {
         let user = fn.getUser(args.join(" "), message)

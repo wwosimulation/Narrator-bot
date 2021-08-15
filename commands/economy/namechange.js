@@ -2,6 +2,8 @@ const { players } = require("../../db")
 
 module.exports = {
     name: "namechange",
+    description: "Change the name of your special role to a new one. This name may have up to 99 characters.",
+    usage: `${process.env.PREFIX}namechange <name>`,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
         let role = data.customRole
@@ -19,7 +21,7 @@ module.exports = {
                 }
             })
         }
-        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using +bug.")
+        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using `+bug`.")
 
         if (args.length < 1) return message.channel.send("Stop. being. stupid. you. dumb. weirdo.")
         if (args.join(" ").length > 99) return message.channel.send("Too many characters!")

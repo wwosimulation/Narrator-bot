@@ -4,6 +4,8 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "buy",
+    description: "Buy an item from the shop.",
+    usage: `${process.env.PREFIX} <item | color>`,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
         const sim = client.guilds.cache.get(config.ids.server.sim)

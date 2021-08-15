@@ -1,8 +1,10 @@
-const Discord = require("discord.js")
+const { MessageEmbed } = require("discord.js")
 const { cmi, emojis } = require("../../config")
 
 module.exports = {
     name: "cmi",
+    description: `Get a list of game roles available to buy or buy them using the subcommand \`${process.env.PREFIX}cmi buy <role>\``,
+    usage: `${process.env.PREFIX}cmi [buy <role>]`,
     run: async (message, args, client) => {
         return
         //if (message.channel.type != "dm") return message.channel.send("Please try this command in DMs!")
@@ -15,7 +17,7 @@ module.exports = {
 
         for (let roleitem in cmi) {
             let role = cmi[roleitem]
-            embeds.push(new Discord.MessageEmbed())
+            embeds.push(new MessageEmbed())
             embeds[embeds.length - 1].addField(`${role.name}`, `${role.price} ${emojis[role.currency]}`)
         }
         addFooter = true
@@ -66,7 +68,7 @@ module.exports = {
         //   ehek += `${client.emojis.cache.find((x) => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 75<:coin:606434686931173377>\n`
         //   if (args.length == 0 && ehek.length > 1980) {
         //     message.channel.send(
-        //       new Discord.MessageEmbed()
+        //       new MessageEmbed()
         //         .setTitle("Roles to buy:")
         //         .setDescription(msg)
         //         .setColor("#008800")
@@ -80,7 +82,7 @@ module.exports = {
         //   ehek += `${client.emojis.cache.find((x) => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 75<:coin:606434686931173377>\n`
         //   if (args.length == 0 && ehek.length > 1980) {
         //     message.channel.send(
-        //       new Discord.MessageEmbed()
+        //       new MessageEmbed()
         //         .setTitle("Roles to buy:")
         //         .setDescription(msg)
         //         .setColor("#008800")
@@ -94,7 +96,7 @@ module.exports = {
         //   ehek += `${client.emojis.cache.find((x) => x.name === e.toLowerCase().replace(" ", "_"))} ${e} - 1000<:coin:606434686931173377>\n`
         //   if (args.length == 0 && ehek.length > 1980) {
         //     message.channel.send(
-        //       new Discord.MessageEmbed()
+        //       new MessageEmbed()
         //         .setTitle("Roles to buy:")
         //         .setDescription(msg)
         //         .setColor("#008800")
@@ -109,7 +111,7 @@ module.exports = {
 
         // if (args.length == 0) {
         //   message.channel.send(
-        //     new Discord.MessageEmbed()
+        //     new MessageEmbed()
         //       .setTitle("Roles to buy:")
         //       .setDescription(msg)
         //       .setColor("#008800")

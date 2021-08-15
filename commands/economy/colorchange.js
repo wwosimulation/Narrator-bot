@@ -3,6 +3,8 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "colorchange",
+    description: "Change the color of your special role.",
+    usage: `${process.env.PREFIX}colorchange <color>`,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
         let role = data.customRole
@@ -25,7 +27,7 @@ module.exports = {
 
         if (!color) return message.channel.send("Idiot, you need to give me a color")
 
-        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using +bug.")
+        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using `+bug`.")
 
         if (color.length < 1) return message.channel.send("Stop. being. stupid. you. dumb. weirdo. Give me a color!")
 
