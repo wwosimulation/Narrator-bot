@@ -4,6 +4,8 @@ const { emojis, fn } = require("../../config")
 
 module.exports = {
     name: "profile",
+    description: "Sends your or another user's profile if unlocked already.",
+    usage: `${process.env.PREFIX}profile [user]`,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
         let inventory = data.profile

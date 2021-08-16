@@ -6,6 +6,8 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "use",
+    description: "Use items from your inventory like lootboxes.",
+    usage: `${process.env.PREFIX}use <item>`,
     run: async (message, args, client) => {
         if (!args[0]) return message.channel.send("Get a freaking life dude! You gotta specify an item!")
         let data = players.findOne({ user: message.author.id })

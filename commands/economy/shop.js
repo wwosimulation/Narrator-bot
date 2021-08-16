@@ -4,6 +4,8 @@ const { shop, emojis, fn } = require("../../config")
 
 module.exports = {
     name: "shop",
+    description: "Displays the shop with all items you can buy. It can also list available colors to buy.",
+    usage: `${process.env.PREFIX}shop [color]`,
     run: async (message, args, client) => {
         if (["color", "colors", "colour", "colours"].includes(args[0])) {
             let embed = new MessageEmbed().setDescription("Available colors:\n\nUse `+buy <color> role` to purchase a color")

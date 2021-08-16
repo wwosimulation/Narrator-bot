@@ -2,6 +2,8 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "rose",
+    description: "Send a rose bouquet or single roses to other users on the game server.",
+    usage: `${process.env.PREFIX}rose <bouquet | single <user> [amount]>`,
     gameOnly: true,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
