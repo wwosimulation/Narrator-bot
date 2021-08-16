@@ -2,6 +2,8 @@ const config = require("../../config")
 const Discord = require("discord.js")
 module.exports = {
     name: "emoji",
+    description: "Use emojis from different servers available from `emojilist`",
+    usage: `${process.env.PREFIX}emoji <emoji>`,
     aliases: ["e"],
     run: async (message, args, client) => {
         if (!client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).roles.cache.has("663389088354664477")) return
