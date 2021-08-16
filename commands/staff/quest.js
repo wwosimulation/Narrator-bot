@@ -5,6 +5,8 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "quest",
+    description: "Add xp to a user after they finished a quest.",
+    usage: `${process.env.PREFIX}quest <user> <xp> <quest>`,
     aliases: ["quests"],
     narratorOnly: true,
     run: async (message, args, client) => {

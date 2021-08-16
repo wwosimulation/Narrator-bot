@@ -1,5 +1,7 @@
 module.exports = {
     name: "emergencystop",
+    description: "Reboot the bot.",
+    usage: `${process.env.PREFIX}emergencystop`,
     aliases: ["es", "yesstop", "reboot"],
     staffOnly: true,
     run: async (message, args, client) => {

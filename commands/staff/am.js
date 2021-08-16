@@ -4,6 +4,8 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "am",
+    description: "Add money to a user's balance.",
+    usage: `${process.env.PREFIX}am <amount> <user>`,
     aliases: ["addmoney"],
     staffOnly: true,
     run: async (message, args, client) => {
