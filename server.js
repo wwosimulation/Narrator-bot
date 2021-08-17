@@ -129,18 +129,18 @@ client.on("ready", async () => {
     client.channels.cache.get("859099353985974292").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
     //ShadowAdmin initialize
     //shadowadmin.init(client, {prefix, owners: config.botAdmin})
-    if (!client.user.username.includes("Beta")) {
-        let privateKey = fs.readFileSync("./ghnb.pem")
-        client.github = new Octokit({
-            authStrategy: createAppAuth,
-            auth: {
-                appId: 120523,
-                privateKey,
-                clientSecret: process.env.GITHUB,
-                installationId: 17541999,
-            },
-        })
-    }
+    //     if (!client.user.username.includes("Beta")) {
+    //         let privateKey = fs.readFileSync("./ghnb.pem")
+    //         client.github = new Octokit({
+    //             authStrategy: createAppAuth,
+    //             auth: {
+    //                 appId: 120523,
+    //                 privateKey,
+    //                 clientSecret: process.env.GITHUB,
+    //                 installationId: 17541999,
+    //             },
+    //         })
+    //     }
 })
 
 let maint = db.get("maintenance")
