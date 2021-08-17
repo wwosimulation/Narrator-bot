@@ -22,7 +22,7 @@ module.exports = {
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send(`Player **${guy.nickname} ${guy.user.username}** is dead!`)
                 if (guy == message.member) return message.channel.send(`Eating yourself isn't just gonna work!`)
                 let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-                let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+                let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
                 for (let x = 0; x < cupid.length; x++) {
                     let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
                     if (message.author.nickname === couple[0]) {

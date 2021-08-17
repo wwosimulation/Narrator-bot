@@ -12,6 +12,14 @@ module.exports = (client) => {
         }
 
         if (interaction.customId.startsWith("votephase")) {
+            let day = (await db.fetch(`dayCount`)) || "0"
+            let allpaci = message.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
+            for (let x = 0; x < allpaci.length; x++) {
+                let dayactivated = db.get(`pacday_${allpaci[x]}`)
+                if (dayactivated != null && day == dayactivated) {
+                    return interaction.reply({ content: `A pacifist has revealed someone's role you can't vote today.`, ephemeral: true })
+                }
+            }
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
             if (interaction.member.roles.cache.has(ids.spectator)) return interaction.reply({ content: `You're spectating, you can't vote!`, ephemeral: true })

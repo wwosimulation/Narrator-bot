@@ -19,7 +19,7 @@ module.exports = {
             if (cards < 1) return message.channel.send("You have given your cards already.")
             let role = db.get(`role_${guy.id}`)
             console.log()
-            let channel = message.guild.channels.cache.filter((c) => c.name === "priv-" + role.toLowerCase().replace(" ", "-")).keyArray("id")
+            let channel = message.guild.channels.cache.filter((c) => c.name === "priv-" + role.toLowerCase().replace(" ", "-")).map((x) => x.id)
             for (let i = 0; i < channel.length; i++) {
                 let iChan = message.guild.channels.cache.get(channel[i])
                 if (iChan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {

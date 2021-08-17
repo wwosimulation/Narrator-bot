@@ -34,7 +34,7 @@ module.exports = {
 
         // let channels = message.guild.channels.cache.filter((c) => c.name === `priv-${real}`)
         // //console.log(channels)
-        // let tomato = channels.keyArray("id")
+        // let tomato = channels.map(x => x.id)
         // let ch = await db.fetch(`channels_${real}`)
         // console.log(tomato)
         // if (content.includes("-")) {

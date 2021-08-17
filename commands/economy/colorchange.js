@@ -27,7 +27,7 @@ module.exports = {
 
         if (!role) return message.channel.send(message.i10n("specialRoleMissing"))
 
-        if (!color.startsWith("#")) {
+        if (!color.startsWith("#") && toHex(color)) {
             color = toHex(color)
         }
 

@@ -14,7 +14,7 @@ module.exports = {
         if (message.channel.name === "jailed-chat") {
             let night = db.get(`isNight`)
             if (night != "yes") return message.channel.send("You haven't jailed anyone yet.")
-            let js = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").keyArray("id")
+            let js = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").map((x) => x.id)
             for (let i = 0; i < js.length; i++) {
                 let j = message.guild.channels.cache.get(js[i])
                 for (let k = 1; k < 17; k++) {

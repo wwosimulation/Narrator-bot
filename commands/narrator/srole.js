@@ -21,9 +21,9 @@ module.exports = {
             allPlayers.push(guy.id)
         }
         let exists = false
-        let allchan = message.guild.channels.cache.filter((c) => c.name.startsWith("priv"))
-        for (let a = 0; a < allchan.keyArray("id").length; a++) {
-            let chan = message.guild.channels.cache.get(allchan.keyArray("id")[a])
+        let allchan = message.guild.channels.cache.filter((c) => c.name.startsWith("priv")).map((x) => x.id)
+        for (let a = 0; a < allchan.length; a++) {
+            let chan = message.guild.channels.cache.get(allchan[a])
             if (chan) {
                 for (let b = 1; b <= alive.members.size; b++) {
                     let tt = message.guild.members.cache.find((m) => m.nickname === b.toString())
@@ -295,7 +295,7 @@ module.exports = {
                         })
                     }
                     if (occupied == true) {
-                        if (qah == bandits.keyArray("id").length) {
+                        if (qah == bandits.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("bandits", {
                                 parent: "606250714355728395",
                             })
@@ -353,7 +353,7 @@ module.exports = {
                         })
                     }
                     if (occupied == true) {
-                        if (qah == sect.keyArray("id").length) {
+                        if (qah == sect.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("sect-members", {
                                 parent: "606250714355728395",
                             })
