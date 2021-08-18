@@ -9,7 +9,7 @@ module.exports = {
         let mid = db.get("entermsg")
         if (!args[0]) return message.channel.send(`Please specify the button to enable (join/spec)`)
         if (args[0] == "join") {
-            message.guild.cache
+            message.guild.channels.cache
                 .find((c) => c.name == "enter-game")
                 .messages.fetch(mid)
                 .then((m) => {
@@ -17,11 +17,12 @@ module.exports = {
                     let row = allc[0]
                     let jgbutton = row.components[0]
                     let specbutton = row.components[1]
+                    let narrbutton = row.components[2]
                     jgbutton.disabled = false
-                    m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton)] })
+                    m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
                 })
         } else if (args[0] == "spec") {
-            message.guild.cache
+            message.guild.channels.cache
                 .find((c) => c.name == "enter-game")
                 .messages.fetch(mid)
                 .then((m) => {
@@ -29,8 +30,9 @@ module.exports = {
                     let row = allc[0]
                     let jgbutton = row.components[0]
                     let specbutton = row.components[1]
+                    let narrbutton = row.components[2]
                     specbutton.disabled = false
-                    m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton)] })
+                    m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
                 })
         } else return message.channel.send(`I could not find the button.`)
     },
