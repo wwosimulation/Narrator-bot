@@ -21,7 +21,7 @@
         "axios": "^0.21.1",
         "colornames": "^1.1.1",
         "discord.js": "^13.0.1",
-        "dotenv": "^8.6.0",
+        "dotenv": "^10.0.0",
         "language-name-map": "^0.3.0",
         "moment": "^2.29.1",
         "mongoose": "^5.12.12",
