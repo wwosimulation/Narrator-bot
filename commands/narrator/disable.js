@@ -9,7 +9,7 @@ module.exports = {
         let mid = db.get("entermsg")
         if (!args[0]) return message.channel.send(`Please specify the button to disable (join/spec)`)
         if (args[0] == "join") {
-            message.guild.cache
+            message.guild.channels.cache
                 .find((c) => c.name == "enter-game")
                 .messages.fetch(mid)
                 .then((m) => {
@@ -21,7 +21,7 @@ module.exports = {
                     m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton)] })
                 })
         } else if (args[0] == "spec") {
-            message.guild.cache
+            message.guild.channels.cache
                 .find((c) => c.name == "enter-game")
                 .messages.fetch(mid)
                 .then((m) => {
