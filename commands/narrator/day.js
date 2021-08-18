@@ -1489,7 +1489,7 @@ module.exports = {
         console.log("Nice! I have locked players from ww chat")
 
         // remove werewolf votes
-        await wwVote.bulkDelete((await message.channel.messages.fetch({ limit: 100 })).filter((m) => !m.pinned))
+        //await wwVote.bulkDelete((await message.channel.messages.fetch({ limit: 100 })).filter((m) => !m.pinned))
 
         // medium reviving
         for (let i = 0; i < med.length; i++) {
