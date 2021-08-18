@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "enchant",
+    description: "Enchant/Disguise a player so that it appears like this player has your role when a seer checks them.",
+    usage: `${process.env.PREFIX}enchant <player>`,
     aliases: ["shaman", "disguise", "delude"],
     gameOnly: true,
     run: async (message, args, client) => {

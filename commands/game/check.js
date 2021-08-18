@@ -4,6 +4,8 @@ const { soloKillers, roles, getRole } = require("../../config")
 
 module.exports = {
     name: "check",
+    description: "Check players during the night. This command works for every seer in game.",
+    usage: `${process.env.PREFIX}check <player> [<player>]`,
     gameOnly: true,
     run: async (message, args, client) => {
         let shaman1 = await db.fetch(`shaman_606157077705916426`)

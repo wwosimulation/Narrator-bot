@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "corrupt",
+    description: "Glitch a plyaer so they can't talk and vote the next day. At the beginning of the next night your pray will die!",
+    usage: `${process.env.PREFIX}corrupt <player>`,
     gameOnly: true,
     aliases: ["glitch"],
     run: async (message, args, client) => {

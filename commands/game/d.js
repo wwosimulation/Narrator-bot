@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "d",
+    description: "This command is for the communication between the med(s) and the dead.",
+    usage: `${process.env.PREFIX}d <message...>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-medium") {

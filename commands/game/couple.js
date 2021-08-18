@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "couple",
+    description: "Shoot your two love arrows to couple two players.",
+    usage: `${process.env.PREFIX}couple <player1> <player2>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-cupid") {
