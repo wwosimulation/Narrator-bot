@@ -3,6 +3,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "reveal",
+    description: "Reveal a role in the game.",
+    usage: `${process.env.PREFIX}reveal [player]`,
     gameOnly: true,
     aliases: ["show"],
     run: async (message, args, client) => {

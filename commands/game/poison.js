@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "poison",
+    description: "Poison a player.",
+    usage: `${process.env.PREFIX}poison <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-witch") {

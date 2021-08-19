@@ -1,5 +1,7 @@
 module.exports = {
     name: "hohoho",
+    description: "Santa isn't Santa if he wouln't say 'hohoho'!",
+    usage: `${process.env.PREFIX}hohoho`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name === "priv-santa-claus") {

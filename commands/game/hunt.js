@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "hunt",
+    description: "Hunt a player and kill them if they belong to the sect.",
+    usage: `${process.env.PREFIX}hunt <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-sect-hunter") {

@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "frenzy",
+    description: "Activate the frenzy!",
+    usage: `${process.env.PREFIX}frenzy`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-werewolf-berserk") {

@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "mute",
+    description: "Mute a player and prevent them voting the next day.",
+    usage: `${process.env.PREFIX}mute <player>`,
     aliases: ["quiet", "shush"],
     gameOnly: true,
     run: async (message, args, client) => {

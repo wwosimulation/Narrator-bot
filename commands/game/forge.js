@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "forge",
+    description: "This command forges shields and swords.",
+    usage: `${process.env.PREFIX}forge`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-forger") {
