@@ -5,12 +5,12 @@ module.exports = {
     name: "xp",
     narratorOnly: true,
     run: async (message, args, client) => {
-        if (!args.length == 3) return message.channel.send("Invalid arguments! Use `+xp <add/remove/set> <user> <amount>`")
+        if (!args.length == 3) return message.channel.send(message.i10n("xpFormatInvalid"))
         let run = args[0]
         let user = fn.getUser(args[1], message)
         let amount = parseInt(args[2])
         let data = await players.findOne({ user: user.id })
-        if (!user || !amount) return message.channel.send("Invalid arguments! Use `+xp <add/remove/set> <user> <amount>`")
+        if (!user || !amount) return message.channel.send(message.i10n("xpFormatInvalid"))
 
         if (!data) {
             data = await players.create({
@@ -36,6 +36,6 @@ module.exports = {
         await data.updateOne(obj)
         fn.updateXP(user.id, client)
 
-        message.channel.send(`Successfully ran \`${run} ${amount}\` on ${user.id}`)
+        message.channel.send(message.i10n("commandRan", {command: `${run} ${amount}`, user: user.id}))
     },
 }
