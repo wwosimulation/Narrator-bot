@@ -3,6 +3,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "ignite",
+    description: "Set all players you doused before on fire.",
+    usage: `${process.env.PREFIX}ignite`,
     alises: ["burn", "fire"],
     gameOnly: true,
     run: async (message, args, client) => {

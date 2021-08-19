@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "resign",
+    description: "Put down your seer skills and be a normal wolf.",
+    usage: `${process.env.PREFIX}resign`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-wolf-seer") {
