@@ -126,7 +126,7 @@ client.on("ready", async () => {
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
-    client.channels.cache.get("859099353985974292").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
+    client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
     //ShadowAdmin initialize
     //shadowadmin.init(client, {prefix, owners: config.botAdmin})
     //     if (!client.user.username.includes("Beta")) {
