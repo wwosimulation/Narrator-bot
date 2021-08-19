@@ -50,7 +50,8 @@ module.exports = {
             } else if (date == 3) {
                 amount = 1 * bonus
                 emote = `${config.getEmoji("lootbox", client)}`
-                item = "lootbox!\n\nTo use it, do `+use lootbox`"
+                item = "lootbox!"
+                extra = `\nTo use it, do \`+use lootbox\`${extra}`
                 data.inventory.lootbox += 1 * bonus
             } else if (date == 4) {
                 item = "coins"
