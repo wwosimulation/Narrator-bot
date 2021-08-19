@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "help",
-    run: async (message) => {
+    run: async (message, args, client) => {
 //         let embed = new MessageEmbed()
 //             .setTitle("About Narrator Bot")
 //             .setColor(0x7419b4)
