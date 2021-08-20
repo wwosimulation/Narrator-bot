@@ -30,22 +30,25 @@ module.exports = {
             if (cmd_target.aliases) {
                 embed.addField({ name: "Aliases:", value: `${cmd_target.aliases.length ? cmd_target.aliases.map((alias) => `\`${alias}\``).join(" ") : "No aliases"}` })
             }
-        }
-        else if(["args", "arg", "arguments", "argument"].includes(args[0])) {
+        } else if (["args", "arg", "arguments", "argument"].includes(args[0])) {
             embed
-            .setTitle("Argument Help")
-            .setDescription(`
+                .setTitle("Argument Help")
+                .setDescription(
+                    `
 **Argument Requirement:**
 \`(sub)command\`
 \`<required>\`
 \`[optional]\`
 \`[option1 | option2]\`, \`<option1 | option2>\`
 \`[<optional> <but_two_required>]\`
-\`<no_limit...>\``)
-            .setThumbnail("https://cdn.discordapp.com/icons/465795320526274561/a_e9cb116d974c3cdb34ecf1e65e74ea2a.png")
-            .setTimestamp()
-            .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
-            .addField("Arguments",`
+\`<no_limit...>\``
+                )
+                .setThumbnail("https://cdn.discordapp.com/icons/465795320526274561/a_e9cb116d974c3cdb34ecf1e65e74ea2a.png")
+                .setTimestamp()
+                .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
+                .addField(
+                    "Arguments",
+                    `
 \`amount\` - Positive number.
 \`description\`- Text that should explain something detailed.
 \`message\` - Some text you want to be sent somewhere else.
@@ -62,7 +65,8 @@ module.exports = {
 \`xp\` - Amount of xp.
 
 
-Note: Some arguments were left out as they are obvious to understand like \`nickname\`.`)
+Note: Some arguments were left out as they are obvious to understand like \`nickname\`.`
+                )
         }
         // if args[0] doesn't exist or it is not a command
         else {
