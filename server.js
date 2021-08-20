@@ -49,7 +49,7 @@ for (const file of eventFiles) {
 }
 
 client.botAdmin = (id) => {
-    if (["439223656200273932", "406412325973786624"].includes(id)) return true
+    if (["439223656200273932", "406412325973786624", "263472056753061889"].includes(id)) return true
     return false
 }
 

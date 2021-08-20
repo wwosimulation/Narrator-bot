@@ -7,7 +7,7 @@ const fs = require("fs")
 module.exports = {
     name: "reload",
     run: async (message, args, client) => {
-        if (!["439223656200273932"].includes(message.author.id)) return
+        if (!["439223656200273932", "263472056753061889"].includes(message.author.id)) return
 
         let command = args[0]
         if (!command) return await message.channel.send(`***Bruh***`)
