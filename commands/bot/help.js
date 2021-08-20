@@ -23,10 +23,10 @@ module.exports = {
         let embed = new MessageEmbed()
             .setTitle(message.i10n("helpHeader"))
             .setColor(0x7419b4)
-            .setDescription(message.i10n("helpMain", {"game-warning": `<#606123818305585167>`, "how-to-play": "<#859001588617445436>", "ranked-warn": "<#860552178095882240>", "support-and-questions": "<#606123788257591297>", "clientUser": `<@${client.user.id}>`, "prefix": process.env.prefix}))
+            .setDescription(message.i10n("helpMain", {gamewarning: "<#606123818305585167>", howtoplay: "<#859001588617445436>", rankedwarn: "<#860552178095882240>", supportandquestions: "<#606123788257591297>", clientUser: `<@${client.user.id}>`, prefix: process.env.PREFIX}))
             .addField(message.i10n("economy"), message.i10n("helpEconomy"))
-            .addField(message.i10n("fun"), message.i10n("helpEconomy"))
-            .addField(message.i10n("bot"), message.i10n("helpEconomy"))
+            .addField(message.i10n("fun"), message.i10n("helpFun"))
+            .addField(message.i10n("bot"), message.i10n("helpBot"))
         message.channel.send({ embeds: [embed] })
     },
 }
