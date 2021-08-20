@@ -1,15 +1,15 @@
 // const { ids, github } = require("../../config")
 
 // module.exports = {
-    // name: "suggest",
-    // description: "Suggest something.",
-    // usage: `${process.env.PREFIX}suggest <suggestion>`,
-    // run: async (message, args, client) => {
-//         if (!args[0]) return message.channel.send(message.i10n("suggestNoArguments"))
+//     name: "suggest",
+//     description: "Suggest something.",
+//     usage: `${process.env.PREFIX}suggest <description...>`,
+//     run: async (message, args, client) => {
+//         if (!args[0]) return message.channel.send("Invalid suggestion")
 //         let t = ""
 //         if (message.attachments.size > 0) {
 //             if (message.guild.id == ids.server.game) {
-//                 message.channel.send(message.i10n("suggestNoGameServer"))
+//                 message.channel.send("Images attached to a suggestion from the game server cannot be submitted! Please use the link below to add your attachments.")
 //             } else {
 //                 message.attachments.forEach((a) => (t += a.url + "\n"))
 //             }

@@ -4,7 +4,7 @@ module.exports = {
     name: "timer",
     descriprion: "",
     usage: `${process.env.PREFIX}timer <time>`,
-    run: async (message, args) => {
+    run: async (message, args, client) => {
         if (args.length < 1) return message.channel.send(message.i10n("timeNoDuration"))
         let timer = ms(args.join(" ").toString())
         if (!timer) return message.channel.send(message.i10n("timeInvalidFormat"))
