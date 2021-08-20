@@ -11,7 +11,7 @@
         "devstart": "pm2 start server.js --name sim-bot",
         "start": "node server.js",
         "prettier": "npx prettier --check .",
-        "setup-modules": "npm run pullall && npm run setup-i10n && npm run setup-config"
+        "module-setup": "npm run pullall && npm run setup-i10n && npm run setup-config"
     },
     "author": "Wolvesville Simulation",
     "license": "ISC",
