@@ -3,7 +3,7 @@ const ms = require("ms")
 module.exports = {
     name: "timer",
     descriprion: "",
-    usage: `${process.env.PREFIX}timer <time>`,
+    usage: `${process.env.PREFIX}timer <time...>`,
     run: async (message, args, client) => {
         if (args.length < 1) return message.channel.send("No. You have to state what time")
         let timer = ms(args.join(" ").toString())

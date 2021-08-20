@@ -1,7 +1,7 @@
 module.exports = {
     name: "eval",
     description: "Run some code lines.",
-    usage: `${process.env.PREFIX}eval <code>`,
+    usage: `${process.env.PREFIX}eval <code...>`,
     run: async (message, args) => {
         if (message.content.includes("TOKEN")) return await message.channel.send("Yeah no, we aren't dumb enough to give our token away ok? Now get back to your dumb life")
         if (!["439223656200273932", "801726595378315264"].includes(message.author.id)) return

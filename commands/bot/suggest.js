@@ -3,7 +3,7 @@ const { ids, github } = require("../../config")
 module.exports = {
     name: "suggest",
     description: "Suggest something.",
-    usage: `${process.env.PREFIX}suggest <suggestion>`,
+    usage: `${process.env.PREFIX}suggest <description...>`,
     run: async (message, args, client) => {
         if (!args[0]) return message.channel.send("Invalid suggestion")
         let t = ""

@@ -6,7 +6,7 @@ const { players } = require("../../db.js")
 module.exports = {
     name: "xp",
     description: "Change the xp of a user. You can `<add | remove | set>` the amount.",
-    usage: `${process.env.PREFIX}xp <add | remove | set> <user> <amount>`,
+    usage: `${process.env.PREFIX}xp (add | remove | set) <user> <amount>`,
     narratorOnly: true,
     run: async (message, args, client) => {
         if (!args.length == 3) return message.channel.send("Invalid arguments! Use `+xp <add/remove/set> <user> <amount>`")
