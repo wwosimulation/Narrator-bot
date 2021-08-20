@@ -9,7 +9,7 @@ This bot was started in October of 2020 by Ashish who designed much of the core 
 ![CircleCI](https://img.shields.io/circleci/build/github/wwosimulation/Narrator-bot?style=for-the-badge)
 ![Lines of code](https://img.shields.io/tokei/lines/github/wwosimulation/Narrator-bot?style=for-the-badge)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/wwosimulation/Narrator-bot?style=for-the-badge)    
-![Discord](https://img.shields.io/discord/465795320526274561?logo=discord&style=for-the-badge)
+[![Discord](https://img.shields.io/discord/465795320526274561?logo=discord&style=for-the-badge)](https://discord.gg/rwhZGbjPuN)
 ![GitHub Repo stars](https://img.shields.io/github/stars/wwosimulation/Narrator-bot?logo=github&style=for-the-badge)
 ![GitHub contributors](https://img.shields.io/github/contributors/wwosimulation/Narrator-bot?style=for-the-badge)
 
