@@ -1,5 +1,7 @@
 module.exports = {
     name: "corrkill",
+    description: "Kill a player in corrupter's name.",
+    usage: `${process.env.PREFIX}corrkill <player>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
