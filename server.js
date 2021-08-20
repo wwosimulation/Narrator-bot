@@ -154,3 +154,5 @@ client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes
 client.login(process.env.TOKEN)
 
 client.on("error", (e) => console.error)
+
+module.exports = {client}

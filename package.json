@@ -7,9 +7,9 @@
         "pullall": "git submodule update --init --recursive",
         "setup-i10n": "cd /home/container/i10n && npm i",
         "setup-config": "cd /home/container/config && npm i",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "mocha",
         "devstart": "pm2 start server.js --name sim-bot",
-        "start": "node server.js",
+        "start": "node .",
         "prettier": "npx prettier --check .",
         "module-setup": "npm run pullall && cd /home/circleci/project/i10n && npm i && cd /home/circleci/project/i10n && npm i"
     },
@@ -36,6 +36,8 @@
         "ws": ">=7.4.6"
     },
     "devDependencies": {
+        "expect.js": "^0.3.1",
+        "mocha": "^9.0.3",
         "prettier": "^2.3.2"
     },
     "engines": {
