@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "sword",
+    description: "Use the sword to kill a player once.",
+    usage: `${process.env.PREFIX}sword <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
         let sword = db.get(`sword_${message.channel.id}`)

@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "stab",
+    description: "Stab your knife into a living body.",
+    usage: `${process.env.PREFIX}murder <player>`,
     aliases: ["murder"],
     gameOnly: true,
     run: async (message, args, client) => {

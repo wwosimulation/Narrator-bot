@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "snipe",
+    description: "Stalk a person.",
+    usage: `${process.env.PREFIX}snipe <player>`,
     run: async (message, args, client) => {
         if (message.channel.name === "priv-sheriff") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")

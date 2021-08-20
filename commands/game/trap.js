@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "trap",
+    description: "Place your trap on a player.",
+    usage: `${process.env.PREFIX}trap <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-beast-hunter") {
