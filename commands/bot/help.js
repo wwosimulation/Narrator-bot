@@ -1,5 +1,9 @@
 const { MessageEmbed } = require("discord.js")
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 module.exports = {
     name: "help",
     description: "Get the command list or help for a specific command.",
@@ -15,7 +19,7 @@ module.exports = {
         // If args[0] is a command, send a specific command card.
         if (cmd_target) {
             embed
-                .setTitle(client.utils.capitalizeFirstLetter(cmd_target.name))
+                .setTitle(capitalizeFirstLetter(cmd_target.name))
                 .setDescription(
                     `Prefix: \`${process.env.PREFIX}\`
                 \`[]\` = optional argument
