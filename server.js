@@ -155,4 +155,4 @@ client.login(process.env.TOKEN)
 
 client.on("error", (e) => console.error)
 
-module.exports = {client}
+module.exports = { client }
