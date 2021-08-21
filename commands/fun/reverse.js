@@ -1,4 +1,3 @@
-
 module.exports = {
     name: "reverse",
     description: "Use this command to reverse sentences or words.",
