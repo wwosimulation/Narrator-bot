@@ -17,7 +17,7 @@ module.exports = {
                     avatar: client.user.avatarURL(),
                     reason: `${process.env.PREFIX}reverse command`,
                 })
-            hook.send({content: msg, username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
+            hook.send({ content: msg, username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
         } else {
             message.channel.send(msg)
         }
