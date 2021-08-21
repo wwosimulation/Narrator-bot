@@ -19,7 +19,6 @@ module.exports = {
                 })
             hook.send(`${msg}`, { username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
         } else {
-            let userEmbed = new Discord.MessageEmbed().setDescription(`<@${message.author.id}>`).setColor("#1FFF43")
             message.channel.send(msg)
         }
     },
