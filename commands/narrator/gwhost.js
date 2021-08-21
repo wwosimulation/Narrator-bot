@@ -3,6 +3,8 @@ const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "gwhost",
+    description: "",
+    usage: `${process.env.PREFIX}gwhost [supervisor] <game...>`,
     narratorOnly: true,
     run: async (message, args, client) => {
         let mininarr = message.guild.roles.cache.get("606123620732895232")

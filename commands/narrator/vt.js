@@ -4,6 +4,8 @@ const ms = require("ms")
 
 module.exports = {
     name: "vt",
+    description: "Start the voting time.",
+    usage: `${process.env.PREFIX}vt <time...>`,
     narratorOnly: true,
     gameOnly: true,
     run: async (message, args, client) => {

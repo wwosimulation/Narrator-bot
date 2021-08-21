@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "sethhtarget",
+    description: "Set the target for a headhunter.",
+    usage: `${process.env.PREFIX}sethhtarget <palyer> <hh_channelID>`,
     aliases: ["sethh"],
     gameOnly: true,
     narratorOnly: true,
