@@ -3,6 +3,8 @@ const config = require("../../config")
 
 module.exports = {
     name: "exclude",
+    description: "Exclude some boring roles.",
+    usage: `${process.env.PREFIX}exclude <roles...>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

@@ -4,6 +4,8 @@ const { getRole } = require("../../config")
 
 module.exports = {
     name: "day",
+    description: "Day! :D",
+    usage: `${process.env.PREFIX}day [wolf_kill]`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

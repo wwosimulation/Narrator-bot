@@ -3,6 +3,8 @@ const { getRole } = require("../../config")
 
 module.exports = {
     name: "manual",
+    description: "Assign a role to someone.",
+    usage: `${process.env.PREFIX}manual <player> <role>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

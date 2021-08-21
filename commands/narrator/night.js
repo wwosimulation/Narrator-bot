@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "night",
+    description: "Night 👀.",
+    usage: `${process.env.PREFIX}night <player | 0>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.guild.id != "472261911526768642") return

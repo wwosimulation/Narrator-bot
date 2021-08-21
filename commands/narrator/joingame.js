@@ -3,6 +3,8 @@ const { MessageActionRow, MessageButton } = require("discord.js")
 
 module.exports = {
     name: "joingame",
+    description: "Start or end the joining process.",
+    usage: `${process.env.PREFIX}joingame <started | ended>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

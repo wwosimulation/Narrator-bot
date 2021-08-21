@@ -1,5 +1,7 @@
 module.exports = {
     name: "nmanual",
+    description: "Manual permissions.",
+    usage: `${process.env.PREFIX}nmanual <player> <role>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
