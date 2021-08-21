@@ -7,8 +7,9 @@ It also runs the server economy and much of the more labor-intensive tasks in th
 This bot was started in October of 2020 by Ashish who designed much of the core game functionality, and was transfered in March of 2021 to Shadow, who created the economy and completed the bot to release a couple months later.    
 
 ![CircleCI](https://img.shields.io/circleci/build/github/wwosimulation/Narrator-bot?style=for-the-badge)
-![Lines of code](https://img.shields.io/tokei/lines/github/wwosimulation/Narrator-bot?style=for-the-badge)
-![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/wwosimulation/Narrator-bot?style=for-the-badge)    
+![Lines of code](https://img.shields.io/tokei/lines/github/wwosimulation/Narrator-bot?style=for-the-badge)      
+![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/wwosimulation/Narrator-bot?style=for-the-badge)
+[![CodeFactor](https://www.codefactor.io/repository/github/wwosimulation/narrator-bot/badge)](https://www.codefactor.io/repository/github/wwosimulation/narrator-bot).      
 [![Discord](https://img.shields.io/discord/465795320526274561?logo=discord&style=for-the-badge)](https://discord.gg/rwhZGbjPuN)
 ![GitHub Repo stars](https://img.shields.io/github/stars/wwosimulation/Narrator-bot?logo=github&style=for-the-badge)
 ![GitHub contributors](https://img.shields.io/github/contributors/wwosimulation/Narrator-bot?style=for-the-badge)
