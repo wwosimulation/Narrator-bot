@@ -423,7 +423,7 @@ module.exports = {
                 }
                 let toJail = db.get(`jail_${jailer.id}`) || "None"
                 let prisoner = message.guild.members.cache.find((m) => m.nickname === toJail)
-                if (prisoner.roles.cache.has(dead.id)) {
+                if (prisoner?.roles.cache.has(dead.id)) {
                     toJail = "None"
                     db.delete(`jail_${jailer.id}`)
                 }
