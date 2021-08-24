@@ -301,10 +301,10 @@ module.exports = {
             }
 
             message.channel
-                .send("Iniating to reset database. Please allow 15 seconds to 1 minute of your time to allow this process to execute.")
+                .send("Reset in progress")
                 .then((msg) => {
                     setTimeout(function () {
-                        msg.edit("Database has successfully reset. Happy hunting 🐺").catch((e) => message.channel.send(`Error: ${e.message}`))
+                        msg.edit("Reset complete").catch((e) => message.channel.send(`Error: ${e.message}`))
                     }, times)
                 })
                 .catch((e) => message.channel.send(`Error: ${e.message}`))

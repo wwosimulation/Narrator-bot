@@ -17,8 +17,9 @@ module.exports = {
                 let row = allc[0]
                 let jgbutton = row.components[0]
                 let specbutton = row.components[1]
+                let narrbutton = row.components[2]
                 jgbutton.disabled = true
-                m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton)] })
+                m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
             })
 
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
