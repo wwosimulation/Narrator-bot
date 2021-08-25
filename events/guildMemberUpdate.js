@@ -10,6 +10,24 @@ module.exports = (client) => {
         if (newMember.roles.cache.has(ids.dead) && oldMember.roles.cache.has(ids.dead)) return
         if (!newMember.roles.cache.has(ids.dead)) return
         newMember.roles.remove(ids.revealed)
+        // canceling terror & peace
+        if (db.get(`role_${newMember.id}`) == "Prognosticator") {
+            let prog = newMember.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+            for (let a = 0; a < prog.length; a++) {
+                let chan = newMember.guild.channels.cache.get(prog[a])
+                if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    // peace
+                    if (db.get(`peace_${chan.id}`) > db.get(`nightCount`)) {
+                        db.set(`peace_${chan.id}`, 0)
+                    }
+                    // terror
+                    if (db.get(`terror_${chan.id}.day`) <= db.get(`dayCount`)) {
+                        db.set(`terror_${chan.id}.guy`, 0)
+                    }
+                }
+            }
+        }
+
         // canceling frenzy
         if (db.get(`role_${newMember.id}`) == "Werewolf Berserk") {
             let wwb = newMember.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").map((x) => x.id)
