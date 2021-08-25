@@ -30,6 +30,7 @@ module.exports = {
         let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
         let med = message.guild.channels.cache.filter((c) => c.name === "priv-medium").map((x) => x.id)
         let day = db.get(`dayCount`)
+        let night = db.get(`nightCount`)
         let arso = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").map((x) => x.id)
         let shunt = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").map((x) => x.id)
         let sel = message.guild.channels.cache.filter((c) => c.name === "priv-sect-leader").map((x) => x.id)
@@ -200,6 +201,38 @@ module.exports = {
                 }
             }
         }
+
+        // removing all kills if peace is activated
+        for (let i = 0; i < prog.length; i++) {
+            let tempchan = message.guild.channels.cache.get(hacker[i])
+            let peace = db.get(`peace_${tempchan[i].id}`)
+
+            if (peace === night) {
+
+                for (let i = 0; i < bandit.length; i++) {
+                    db.set(`bandit_${bandit[i]}`, null)
+                }
+                for (let i = 0; i < bandits.length; i++) {
+                    db.set(`bandit_${bandits[i]}`, null)
+                }
+                for (let i = 0; i < bandit.length; i++) {
+                    db.set(`bandit_${bandit[i]}`, null)
+                }
+                for (let i = 0; i < hacker.length; i++) {
+                    db.set(`secondhack_${hacker[i]}`, null)
+                }
+                for (let i = 0; i < canni.length; i++) {
+                    db.set(`eat_${canni[i]}`, null)
+                }
+                for (let i = 0; i < sk.length; i++) {
+                    db.set(`stab_${sk[i]}`, null)
+                }
+                args[0] = "0"
+            }
+
+
+        }
+        
         // getting kills from hacker
         for (let i = 0; i < hacker.length; i++) {
             let tempchan = message.guild.channels.cache.get(hacker[i])
