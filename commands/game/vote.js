@@ -80,7 +80,7 @@ module.exports = {
             if (!message.channel.name.includes("priv")) {
                 return
             } else {
-                if(voteBanned) message.channel.send({content: "The Prognosticator prevents you from voting."})
+                if (voteBanned) message.channel.send({ content: "The Prognosticator prevents you from voting." })
                 if (message.channel.name == "priv-idiot") {
                     let killed = await db.fetch(`idiot_${message.channel.id}`)
                     if (killed == "yes") return await message.channel.send("You cannot vote now!")

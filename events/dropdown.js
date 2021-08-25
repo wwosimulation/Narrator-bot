@@ -25,7 +25,7 @@ module.exports = (client) => {
 
         if (interaction.customId.startsWith("votephase")) {
             let day = (await db.fetch(`dayCount`)) || "0"
-            if (terrorCheck(interaction)) return interaction.reply({ content:"The Prognosticator prevents you from voting.", ephemeral: true })
+            if (terrorCheck(interaction)) return interaction.reply({ content: "The Prognosticator prevents you from voting.", ephemeral: true })
             let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
             for (let x = 0; x < allpaci.length; x++) {
                 let dayactivated = db.get(`pacday_${allpaci[x]}`)
