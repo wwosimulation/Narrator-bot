@@ -18,8 +18,7 @@ module.exports = {
         if (message.channel.name == "priv-arsonist") {
             if (!message.member.roles.cache.has(alive.id)) return await message.channel.send("You cannot use the ability now!")
             if (isNight != "yes") return await message.channel.send("You can use your ability only at night!")
-            if (fn.peaceCheck(message, db) === true) return message.channel.send({content: "The Prognosticator activated their power last night. You can't kill anyone."})
-
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "The Prognosticator activated their power last night. You can't kill anyone." })
 
             if (didCmd == db.get(`nightCount`)) return message.channel.send("You have used your ability tonight.")
             if (doused.length == 0) return await message.channel.send("Who are you igniting? You haven't doused player yet.")

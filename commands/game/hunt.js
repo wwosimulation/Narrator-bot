@@ -16,7 +16,7 @@ module.exports = {
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             if (!isNight == "yes") return await message.channel.send("You can use your ability only at night!")
-            if (fn.peaceCheck(message, db) === true) return message.channel.send({content: "The Prognosticator activated their power last night. You can't kill anyone."})
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "The Prognosticator activated their power last night. You can't kill anyone." })
             if (!guy || guy == ownself) return await message.channel.send("Invalid Target!")
             if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("You or the player are not alive!")
             if (sect.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) return await message.channel.send("You are sected.")
