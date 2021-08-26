@@ -5,7 +5,7 @@ module.exports = (client) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
         console.log(interaction.customId)
         if (interaction.customId == "igjoin") {
-            if (db.get("started") == "yes") return interaction.reply(`The game has already started!`, { ephemeral: true })
+            //if (db.get("started") == "yes") return interaction.reply(`The game has already started!`, { ephemeral: true })
             let guy = interaction.member
             if (guy.roles.cache.has("606140764682190849")) guy.roles.remove("606140764682190849") //spec
             if (guy.roles.cache.has("606276949689499648")) guy.roles.remove("606276949689499648") //narr
