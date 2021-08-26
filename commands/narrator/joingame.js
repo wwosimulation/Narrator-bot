@@ -22,7 +22,7 @@ module.exports = {
             //   let lobby = await message.guild.channels.cache.get("606132387587293195").send("If you would like to spectate the game instead of play, click the button below", {components: [lobbybtn]})
             //   db.set(`entermsg`, enter.id)
             //   db.set(`lobbymsg`, lobby.id)
-        }
+        //}
     },
 }
 
