@@ -13,6 +13,5 @@ module.exports = {
         if (!guy.roles.cache.has(alive.id)) return message.channel.send("I don't think hypnotizing a dead person is effective...")
         message.channel.send(`You decided to hypnotize **${guy.nickname} ${guy.user.username}**`)
         db.set(`hypnotize_${message.channel.id}`, guy.nickname)
-    }
-
+    },
 }
