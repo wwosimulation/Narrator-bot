@@ -38,9 +38,10 @@ module.exports = {
         } else if (message.channel.name == "priv-illusionist") {
             let disguised = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `disguised_${dc.chan.id}` : `disguised_${message.channel.id}`}`) || []
             let isNight = db.get(`isNight`)
+            if (isNight != "yes") return message.channel.send("You can enchant only during the night.")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({content:"We have a peaceful night. You can't disguise anyone."})
             if (!args[0]) return message.channel.send("Who are you enchanting? Mention the player.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            if (isNight != "yes") return message.channel.send("You can enchant only during the night.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Although this would be a great strategy I will have to stop you.`)
             if (!guy || guy == message.member) return message.reply("Invalid Target!")
