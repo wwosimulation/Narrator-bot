@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "scratch",
@@ -9,6 +9,7 @@ module.exports = {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let ability = db.get(`kitten_${message.channel.id}`) || "no"
             let wwsChat = message.guild.channels.cache.find((c) => c.name == "werewolves-chat")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({content:"We have a peaceful night. You can't convert anyone."})
             if (!args[0]) return message.channel.send("Who are you scratching? Mention the player.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])

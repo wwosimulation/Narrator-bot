@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "corrupt",
@@ -9,6 +9,7 @@ module.exports = {
         if (message.channel.name == "priv-corruptor") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot corrupt someone being dead!")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({content:"We have a peaceful night. You can't corrupt anyone."})
             if (!args[0]) return message.channel.send("Who are you glitching? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
 

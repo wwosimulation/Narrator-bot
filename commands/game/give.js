@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "give",
@@ -72,6 +72,7 @@ module.exports = {
         } else if (message.channel.name == "priv-alchemist") {
             let isNight = db.get(`isNight`)
             if (isNight == "no") return message.channel.send("You can only do this at night!")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({content:"We have a peaceful night. You can't give potions to anyone."})
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1]) || message.guild.members.cache.find((m) => m.id === args[1])
             if (args.length != 2) return message.channel.send("Who are you giving? Mention the player.")
