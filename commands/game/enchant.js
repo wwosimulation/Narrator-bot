@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "enchant",

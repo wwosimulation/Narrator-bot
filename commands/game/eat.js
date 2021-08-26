@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "eat",
@@ -11,6 +11,7 @@ module.exports = {
             let hunger = db.get(`hunger_${message.channel.id}`) || 1
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You are dead. You cannot use the command now!`)
+            if ( isNight == "yes" && fn.peaceCheck(message, db) === true) return message.channel.send({content:"We have a peaceful night. You can't eat anyone."})
             if (!args[0]) return message.channel.send("Who you are going to eat? Mention the player.")
             if (hunger < args.length) return message.channel.send("You cannot eat more than your hunger!")
             if (isNight != "yes") return message.channel.send("You cannot eat players during the day!")
