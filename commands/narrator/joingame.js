@@ -6,12 +6,13 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        if (args[0] == "started") {
-            db.set("started", "yes")
-            message.react("👍")
-        } else if (args[0] == "ended") {
-            db.set("started", "no")
-            message.react("👍")
+        message.channel.send("This command has been removed in favor of +enable and +disable")
+//         if (args[0] == "started") {
+//             db.set("started", "yes")
+//             message.react("👍")
+//         } else if (args[0] == "ended") {
+//             db.set("started", "no")
+//             message.react("👍")
             // } else if (args[0] == "code") {
             //   let join = new MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomId("igjoin")
             //   let spec = new MessageButton().setStyle("PRIMARY").setLabel("Spectate").setCustomId("igspec")
