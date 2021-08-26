@@ -9,9 +9,9 @@ module.exports = {
         let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let channel_id = args[0]
         let day = db.get(`dayCount`) || "0"
-        if(!guy || !channel_id) return  message.channel.send({content:`Invalid arguments.\nUse \`${this.usage}\``})
+        if (!guy || !channel_id) return message.channel.send({ content: `Invalid arguments.\nUse \`${this.usage}\`` })
         dayChat.send({ content: `${guy.nickname + guy.user.username || guy} won't be able to vote anymore from tomorrow on.` })
-        if (dayChat == "0") return message.channel.send({content:"Please check the votes manually. I don't know which day we have."})
-        db.set(`terror_${channel_id}`, {day: day, guy: guy.nickname})
-    }
+        if (dayChat == "0") return message.channel.send({ content: "Please check the votes manually. I don't know which day we have." })
+        db.set(`terror_${channel_id}`, { day: day, guy: guy.nickname })
+    },
 }
