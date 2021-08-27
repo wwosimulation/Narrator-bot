@@ -27,7 +27,7 @@ Use ${process.env.PREFIX}help to see all commands.
                 `
                 )
                 .addFields({ name: "Description", value: cmd_target.description || "No description given." }, { name: "Usage:", value: `\`${cmd_target.usage || `No usage given or "${process.env.PREFIX + cmd_target.name}"`}\`` })
-                .setFooter("\`[]\` = optional argument\n\`<>\` = required argument", message.author.avatarURL())
+                .setFooter("[] = optional argument\n<> = required argument", message.author.avatarURL())
 
             // if the command has aliases add those
             if (cmd_target.aliases) {
