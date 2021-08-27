@@ -88,7 +88,7 @@ module.exports = {
                                     chan.send(`${getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
                                     message.channel.send(`${getEmoji("getshield", client)} You have forced ${guy1.nickname} ${guy.user.username} to give the shield to **${guy.nickname} ${guy.user.username}**!`)
                                 } else {
-                                    db.subtract(`forged_${chan.channel.id}`, 1)
+                                    db.subtract(`forged_${chan.id}`, 1)
                                     db.set(`toGiveK_${guy1.id}`, guy.nickname)
                                     chan.send(`${getEmoji("getsword", client)} You have forced ${guy1.nickname} ${guy.user.username} to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
                                 }
