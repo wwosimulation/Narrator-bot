@@ -45,7 +45,7 @@ module.exports = {
         async function getTag(userID) {
             let user = await client.users.cache.get(userID)
             if(!user) return "N/A"
-            return user.tag
+            else return user.tag
         }
         /* 
     Only visualization! 
