@@ -82,6 +82,7 @@ module.exports = {
                     if (chan.permissionsFor(guy1).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
                             if (guy1.roles.cache.has(alive.id)) {
+                                forged = db.get(`forged_${chan.id}`
                                 if (forged == 2 || forged == 1) {
                                     db.set(`toGiveS_${chan.id}`, guy.nickname)
                                     db.set(`given_${chan.id}`, true)
