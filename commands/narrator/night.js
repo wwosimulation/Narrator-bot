@@ -184,7 +184,7 @@ module.exports = {
             let healer1 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // doctor
             let healer3 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // witch
             let healer2 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // bodyguard
-            let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map((x) => x.id))
+            let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map((x) => x.id)
             let serialkiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map((x) => x.id)
             let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").map((x) => x.id)
             let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
