@@ -21,7 +21,7 @@ module.exports = {
             embed
                 .setTitle(capitalizeFirstLetter(cmd_target.name))
                 .setDescription(
-`Prefix: \`${process.env.PREFIX}\`
+                    `Prefix: \`${process.env.PREFIX}\`
 
 Use ${process.env.PREFIX}help to see all commands.
                 `
