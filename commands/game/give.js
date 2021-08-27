@@ -49,7 +49,20 @@ module.exports = {
             let alive = message.guild.roles.cache.find((m) => m.name === "Alive")
             let isNight = db.get(`isNight`)
             let night = db.get(`nightCount`)
+            if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
             let forged = db.get(`forged_${message.channel.id}`)
+            } else {
+                let hypnotized = db.get(`hypnotized_${message.channel.id}`)
+                let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
+                let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${tempguy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
+                for (let b = 0; b < role.length; b++) {
+                    let chan = message.guild.channels.cache.get(role[b])
+                    if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        if (tempguy.roles.cache.has(alive.id)) {
+                            let forged = db.get(`forged_${chan.id}`)
+                        }
+                    }
+                }
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args.join(" ")) || message.guild.members.cache.find((m) => m.user.tag === args.join(" "))
 
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Lmao, being stupid af")
@@ -73,31 +86,18 @@ module.exports = {
                     message.channel.send(`${getEmoji("getsword", client)} You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
                 }
             } else {
-                let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-                let hypnotized = db.get(`hypnotized_${message.channel.id}`)
-                let guy1 = message.guild.members.cache.find((m) => m.nickname === hypnotized)
-                let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy1.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
-                for (let b = 0; b < role.length; b++) {
-                    let chan = message.guild.channels.cache.get(role[b])
-                    if (chan.permissionsFor(guy1).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        if (guy1.roles.cache.has(alive.id)) {
-                            forged = db.get(`forged_${chan.id}`)
-                            console.log(chan.id)
-                            if (forged == 2 || forged == 1) {
+                    if (forged == 2 || forged == 1) {
                                 db.set(`toGiveS_${chan.id}`, guy.nickname)
                                 db.set(`given_${chan.id}`, true)
                                 chan.send(`${getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
                                 message.channel.send(`${getEmoji("getshield", client)} You have forced ${guy1.nickname} ${guy.user.username} to give the shield to **${guy.nickname} ${guy.user.username}**!`)
-                            } else {
+                    } else {
                                 db.subtract(`forged_${chan.id}`, 1)
                                 db.set(`toGiveK_${guy1.id}`, guy.nickname)
                                 message.channel.send(`${getEmoji("getsword", client)} You have forced ${guy1.nickname} ${guy.user.username} to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
                                 chan.send(`${getEmoji("getsword", client)} You have decided to give the sword to **${guy.nickname} ${guy.user.username}**!`)
                             }
-                        }
-                    }
                 }
-            }
         } else if (message.channel.name == "priv-alchemist") {
             let isNight = db.get(`isNight`)
             if (isNight == "no") return message.channel.send("You can only do this at night!")
