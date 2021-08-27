@@ -43,7 +43,7 @@ module.exports = {
         embedItemArray.push(currentEmbedItems)
 
         async function getTag(userID) {
-            let user = await client.users.cache.get(userID)
+            let user = await client.users.fetch(userID)
             if (!user) return "N/A"
             else return user.tag
         }
@@ -52,10 +52,10 @@ module.exports = {
     embedItemArray = [[{}, {}, {}], [{}, {}, {}]]
     */
 
-        await embedItemArray.forEach(async (arr, i, embedItemArr) => {
+        embedItemArray.forEach(async (arr, i, embedItemArr) => {
             let description = ""
-            await arr.forEach((item) => {
-                description = description + `${item.value} - ${getTag(item.userID)}\n`
+            arr.forEach(async (item) => {
+                description = description + `${item.value} - ${await getTag(item.userID)}\n`
             })
             embed = new MessageEmbed()
                 .setDescription(description)
