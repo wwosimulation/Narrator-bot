@@ -23,6 +23,8 @@ module.exports = {
         if (!isNaN(args[0])) page = parseInt(args[0])
         /* args[1] is the leader board type */
         if (isNaN(args[1]) && sortedByOptions.includes(args[1])) (sortedBy = args[1]), (lbType = lbTypes[sortedByOptions.indexOf(sortedBy)])
+        /* args[1] is the page */
+        if (!isNaN(args[1])) page = parseInt(args[1])
 
         let obj = {}
         obj[sortedBy] = -1
@@ -71,7 +73,7 @@ module.exports = {
 
         if (!embeds[page - 1]) (msg = await message.channel.send({ content: `${message.author}, page ${page} does not exist in this leader board!`, embeds: [embeds[0]] })), (page = 1)
         else {
-            msg = await message.channel.send({ embeds: [embeds[page - 1]] })
+            msg = await message.channel.send({ embeds: embeds/*[embeds[page - 1]]*/ })
         }
 
         client.paginator(message.author, msg, embeds, page)
