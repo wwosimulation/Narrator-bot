@@ -61,10 +61,7 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
         await msg.react("▶️")
         await msg.react("⏩")
     }
-    let filter = (reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name)
-    let reaction = await msg.awaitReactions({ filter, time: 30 * 1000, max: 1, errors: ["time"] }).catch((err) => {
-        console.log(err)
-    })
+    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
     if (!reaction) return msg.reactions.removeAll().catch(() => {})
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
@@ -157,19 +154,21 @@ client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes
 client.login(process.env.TOKEN)
 
 function cleanStackTrace(reason) {
-    return require("callsite-record")({
-        forError: reason,
-    }).renderSync({
-        stackFilter(frame) {
-            return !frame.getFileName().includes("node_modules")
-        },
-    })
+    return require('callsite-record')({
+forError: reason
+     }).renderSync({
+stackFilter(frame) {
+return !frame.getFileName().includes('node_modules');
+}
+});
 }
 
-process.on("unhandledRejection", (reason) => {
-    console.log(cleanStackTrace(reason))
-})
+process.on('unhandledRejection', reason => {
+console.log(cleanStackTrace(reason));
+});
 
 client.on("error", (e) => console.error)
 
 module.exports = { client }
+
+
