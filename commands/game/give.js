@@ -73,6 +73,7 @@ module.exports = {
                     message.channel.send(`${getEmoji("getsword", client)} You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
                 }
             } else {
+                let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
                 let hypnotized = db.get(`hypnotized_${message.channel.id}`)
                 let guy1 = message.guild.members.cache.find((m) => m.nickname === hypnotized)
                 let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy1.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
