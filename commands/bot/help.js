@@ -88,8 +88,7 @@ Use following commands with <@744538701522010174>'s prefix (${process.env.PREFIX
                 .addField(message.i10n("economy"), message.i10n("helpEconomy"))
                 .addField(message.i10n("fun"), message.i10n("helpFun"))
                 .addField(message.i10n("bot"), message.i10n("helpBot"))
-
-            message.channel.send({ embeds: [embed] })
         }
+        message.channel.send({ embeds: [embed] })
     },
 }
