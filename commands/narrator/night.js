@@ -175,20 +175,20 @@ module.exports = {
             }
         }
         setTimeout(async () => {
-            let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").keyArray("id")
-            let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").keyArray("id")
-            let s = message.guild.channels.cache.filter((c) => c.name === "priv-seer").keyArray("id")
-            let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").keyArray("id")
-            let sorc = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").keyArray("id")
-            let wwseer = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-seer").keyArray("id")
-            let healer1 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").keyArray("id") // doctor
-            let healer3 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").keyArray("id") // witch
-            let healer2 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").keyArray("id") // bodyguard
-            let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").keyArray("id")
-            let serialkiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").keyArray("id")
-            let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").keyArray("id")
-            let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").keyArray("id")
-            let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").keyArray("id")
+            let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
+            let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id)
+            let s = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map((x) => x.id)
+            let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").map((x) => x.id)
+            let sorc = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").map((x) => x.id)
+            let wwseer = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-seer").map((x) => x.id)
+            let healer1 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // doctor
+            let healer3 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // witch
+            let healer2 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // bodyguard
+            let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map((x) => x.id))
+            let serialkiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map((x) => x.id)
+            let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").map((x) => x.id)
+            let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
+            let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
 
             for (let i = 0; i < as.length; i++) {
                 db.set(`auraCheck_${as[i]}`, "no")
