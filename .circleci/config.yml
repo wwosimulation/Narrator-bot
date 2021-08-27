@@ -9,7 +9,9 @@ jobs:
             - image: cimg/node:16.7.0
         steps:
             - checkout
-            - node/install-packages
+            - run:
+                  name: Install from npm
+                  command: npm install
             - run:
                   name: Setup modules
                   command: npm run module-setup
