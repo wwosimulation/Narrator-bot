@@ -40,7 +40,7 @@ module.exports = {
             if (currentEmbedItems.length <= 10) currentEmbedItems.push({ userID: player.user, value: player[sortedBy] })
             else {
                 embedItemArray.push(currentEmbedItems)
-                currentEmbedItems = [{ userID: player.user, value: player.player[sortedBy] }]
+                currentEmbedItems = [{ userID: player.user, value: player[sortedBy] }]
             }
         })
         embedItemArray.push(currentEmbedItems)
