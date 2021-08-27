@@ -54,8 +54,8 @@ module.exports = {
 
         embedItemArray.forEach(async (arr, i, embedItemArr) => {
             let description = ""
-            arr.forEach(async (item) => {
-                description = description + `${item.value} - ${await getTag(item.userID)}\n`
+            arr.forEach((item) => {
+                description = description + `${item.value} - ${getTag(item.userID)}\n`
             })
             embed = new MessageEmbed()
                 .setDescription(description)
