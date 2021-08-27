@@ -32,7 +32,7 @@ module.exports = {
 
             // if the command has aliases add those
             if (cmd_target.aliases) {
-                embed.addField({ name: "Aliases:", value: `${cmd_target.aliases.length ? cmd_target.aliases.map((alias) => `\`${alias}\``).join(" ") : "No aliases"}` })
+                embed.addField({ name: "Aliases:", value: `${cmd_target.aliases.join(", ")}` })
             }
         } else if (["args", "arg", "arguments", "argument"].includes(args[0])) {
             embed
