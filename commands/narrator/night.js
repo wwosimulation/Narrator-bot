@@ -287,7 +287,7 @@ module.exports = {
                 let hypnotize = db.get(`hypnotize_${dc[a]}`)
                 if (hypnotize != null) {
                     console.log(hypnotize)
-                    let guy = message.guild.members.cache.find((c) => c.nickname === hynpotize)
+                    let guy = message.guild.members.cache.find((c) => c.nickname === hypnotize)
                     let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                     for (let b = 0; b < role.length; b++) {
                         console.log(guy.id)
