@@ -43,7 +43,7 @@ module.exports = {
         embedItemArray.push(currentEmbedItems)
 
         function getTag(userID) {
-            let user = client.users.cache.find(user => user.id === userID)
+            let user = client.users.cache.find((user) => user.id === userID)
             if (!user) return "N/A"
             else return user.tag
         }
