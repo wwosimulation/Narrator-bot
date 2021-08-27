@@ -27,11 +27,7 @@ module.exports = {
 
         if (!color) return message.channel.send(message.i10n("colorInvalid", { color: "Nothing" }))
 
-<<<<<<< HEAD
-        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using `+bug`.")
-=======
         if (!role) return message.channel.send(message.i10n("specialRoleMissing"))
->>>>>>> 31694f1203063b079222a5132c68c3e316757018
 
         if (!color.startsWith("#") && toHex(color)) {
             color = toHex(color)

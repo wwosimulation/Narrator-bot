@@ -1,17 +1,10 @@
 module.exports = {
     name: "eval",
     description: "Run some code lines.",
-<<<<<<< HEAD
     usage: `${process.env.PREFIX}eval <code...>`,
-    run: async (message, args) => {
-        if (message.content.includes("TOKEN")) return await message.channel.send("Yeah no, we aren't dumb enough to give our token away ok? Now get back to your dumb life")
-        if (!["439223656200273932", "801726595378315264"].includes(message.author.id)) return
-=======
-    usage: `${process.env.PREFIX}eval <code>`,
     run: async (message, args, client) => {
         if (message.content.includes("TOKEN")) return await message.channel.send("Trying to get token, aren't you? 😏")
         if (!["439223656200273932", "801726595378315264", "263472056753061889"].includes(message.author.id)) return
->>>>>>> 31694f1203063b079222a5132c68c3e316757018
         try {
             if (!args[0]) return message.channel.send("undefined", { code: "js" })
 

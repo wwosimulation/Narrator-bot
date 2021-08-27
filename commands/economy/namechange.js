@@ -21,17 +21,10 @@ module.exports = {
                 }
             })
         }
-<<<<<<< HEAD
-        if (!role) return message.channel.send("I cannot find your special role! In case this doesn't make sense, try reporting this using `+bug`.")
-
-        if (args.length < 1) return message.channel.send("Stop. being. stupid. you. dumb. weirdo.")
-        if (args.join(" ").length > 100) return message.channel.send("Too many characters!")
-=======
         if (!role) return message.channel.send(message.i10n("specialRoleMissing"))
 
         if (args.length < 1) return message.channel.send(message.i10n("nameInvalid"))
         if (args.join(" ").length > 99) return message.channel.send(message.i10n("nameInvalid"))
->>>>>>> 31694f1203063b079222a5132c68c3e316757018
         client.guilds.cache
             .get("465795320526274561")
             .roles.cache.get(role)
