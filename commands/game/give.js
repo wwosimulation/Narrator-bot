@@ -61,7 +61,7 @@ module.exports = {
 
             if (forged < 0) return message.channel.send("You already used up all your ability dumb")
             if (db.get(`forging_${message.channel.id}`) == db.get(`nightCount`)) return message.channel.send("YOU JUST FORGED AN ITEM BRUH WAIT A WHILE")
-            if (db.get(`role_${message.author.id}`) != "dreamcatcher") {
+            if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
                 if (guy.id == message.author.id) return message.channel.send("Imagine giving something to yourself, lmao.")
                 if (forged == 2 || forged == 1) {
                     db.set(`toGiveS_${message.channel.id}`, guy.nickname)
