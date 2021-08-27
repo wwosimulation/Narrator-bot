@@ -8,7 +8,7 @@ module.exports = {
     name: "help",
     description: "Get the command list or help for a specific command.",
     usage: `${process.env.PREFIX}help [command | arguments]`,
-    run: async (message, args) => {
+    run: async (message, args, client) => {
         // help embed
         let embed = new MessageEmbed().setColor(0x7419b4)
         let cmd_target
