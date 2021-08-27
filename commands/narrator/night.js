@@ -286,13 +286,16 @@ module.exports = {
             for (let a = 0; a < dc.length; a++) {
                 let hypnotize = db.get(`hypnotize_${dc[a]}`)
                 if (hypnotize != null) {
+                    console.log(hypnotize)
                     let guy = message.guild.members.cache.find((c) => c.nickname === hynpotize)
                     let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                     for (let b = 0; b < role.length; b++) {
+                        console.log(guy.id)
                         let chan = message.guild.channels.cache.get(role[b])
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                 db.set(`hypnotize_${dc[a]}`, null)
+                                console.log('hi')
                                 chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
                                 dc[a].send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
                                 chan.permissionOverwrites.edit(guy.id, {
