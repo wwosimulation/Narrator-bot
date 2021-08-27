@@ -80,7 +80,6 @@ module.exports = {
                 for (let b = 0; b < role.length; b++) {
                     let chan = message.guild.channels.cache.get(role[b])
                     if (chan.permissionsFor(guy1).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
                             if (guy1.roles.cache.has(alive.id)) {
                                 forged = db.get(`forged_${chan.id}`)
                                 console.log(chan.id)
@@ -99,7 +98,6 @@ module.exports = {
                         }
                     }
                 }
-            }
         } else if (message.channel.name == "priv-alchemist") {
             let isNight = db.get(`isNight`)
             if (isNight == "no") return message.channel.send("You can only do this at night!")
