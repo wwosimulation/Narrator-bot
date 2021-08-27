@@ -293,20 +293,20 @@ module.exports = {
                         console.log(guy.id)
                         let chan = message.guild.channels.cache.get(role[b])
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                        for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
+                            for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
                                 let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
-                            if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
-                                db.set(`hypnotize_${dc[a]}`, null)
-                                console.log("hi")
-                                chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
-                                dc[a].send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
-                                chan.permissionOverwrites.edit(guy.id, {
-                                    SEND_MESSAGES: false,
-                                })
-                                dc[a].setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
-                                dc[a].send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
-                                db.set(`hypnotized_${dc[a]}`, guy.nickname)
-                            }
+                                if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
+                                    db.set(`hypnotize_${dc[a]}`, null)
+                                    console.log("hi")
+                                    chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
+                                    dc[a].send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
+                                    chan.permissionOverwrites.edit(guy.id, {
+                                        SEND_MESSAGES: false,
+                                    })
+                                    dc[a].setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
+                                    dc[a].send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
+                                    db.set(`hypnotized_${dc[a]}`, guy.nickname)
+                                }
                             }
                         }
                     }
