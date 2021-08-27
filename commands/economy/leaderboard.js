@@ -23,9 +23,6 @@ module.exports = {
         if (!isNaN(args[0])) page = parseInt(args[0])
         /* args[1] is the leader board type */
         if (isNaN(args[1]) && sortedByOptions.includes(args[1])) (sortedBy = args[1]), (lbType = lbTypes[sortedByOptions.indexOf(sortedBy)])
-        else {
-            message.channel.send(`Invalid arguments! Please use \`${this.usage}\`\n`)
-        }
 
         let obj = {}
         obj[sortedBy] = -1
@@ -46,7 +43,7 @@ module.exports = {
         embedItemArray.push(currentEmbedItems)
 
         async function getTag(userID) {
-            let user = client.users.cache.get(userID)
+            let user = await client.users.cache.get(userID)
             if(!user) return "N/A"
             return user.tag
         }
