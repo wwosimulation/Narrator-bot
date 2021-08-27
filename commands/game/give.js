@@ -55,14 +55,14 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Lmao, being stupid af")
             if (isNight != "yes") return message.channel.send("Bruh u can only do this during the night moron.")
             if (!args[0]) return message.channel.send("Bruh! You need to stop!")
- 
+
             if (!guy) return message.reply("Invalid Target")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("BRUH THIS PLAYER IS NOT ALIVE STUPID")
 
             if (forged < 0) return message.channel.send("You already used up all your ability dumb")
             if (db.get(`forging_${message.channel.id}`) == db.get(`nightCount`)) return message.channel.send("YOU JUST FORGED AN ITEM BRUH WAIT A WHILE")
-            if (db.get(`role_${message.author.id}`) != 'dreamcatcher') {
-                if (guy.id == message.author.id) return message.channel.send('Imagine giving something to yourself, lmao.')
+            if (db.get(`role_${message.author.id}`) != "dreamcatcher") {
+                if (guy.id == message.author.id) return message.channel.send("Imagine giving something to yourself, lmao.")
                 if (forged == 2 || forged == 1) {
                     db.set(`toGiveS_${message.channel.id}`, guy.nickname)
                     db.set(`given_${message.channel.id}`, true)
