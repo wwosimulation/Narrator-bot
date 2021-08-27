@@ -1,8 +1,8 @@
 const { MessageEmbed } = require("discord.js")
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-};
+    return string.charAt(0).toUpperCase() + string.slice(1)
+}
 
 module.exports = {
     name: "help",
@@ -84,12 +84,12 @@ Read more about how to play in <#859001588617445436>. Ranked games will be annou
 
 Use following commands with <@744538701522010174>'s prefix (${process.env.PREFIX}).
 `
-            )
-            .addField(message.i10n("economy"), message.i10n("helpEconomy"))
-            .addField(message.i10n("fun"), message.i10n("helpFun"))
-            .addField(message.i10n("bot"), message.i10n("helpBot"))
-    
-        message.channel.send({ embeds: [embed] })
-            }
+                )
+                .addField(message.i10n("economy"), message.i10n("helpEconomy"))
+                .addField(message.i10n("fun"), message.i10n("helpFun"))
+                .addField(message.i10n("bot"), message.i10n("helpBot"))
+
+            message.channel.send({ embeds: [embed] })
+        }
     },
 }
