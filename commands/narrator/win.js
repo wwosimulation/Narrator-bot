@@ -10,7 +10,7 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        return;
+        return
         if (args.length < 2) message.channel.send(`Please specify the winning team and its players!\n\`\`\`${process.env.PREFIX}win <team> <players>\`\`\``)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         if (alive.members.size != "0") return message.channel.send('To use this command, everyone must have the "Dead" role! Use `+suicideall` if you need to kill everyone at once.')

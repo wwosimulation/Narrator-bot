@@ -38,6 +38,6 @@ module.exports = {
         await data.updateOne(obj)
         fn.updateXP(user.id, client)
 
-        message.channel.send(message.i10n("commandRan", {command: `${run} ${amount}`, user: user.id}))
+        message.channel.send(message.i10n("commandRan", { command: `${run} ${amount}`, user: user.id }))
     },
 }
