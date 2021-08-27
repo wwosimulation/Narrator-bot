@@ -61,7 +61,8 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
         await msg.react("▶️")
         await msg.react("⏩")
     }
-    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
+    let filter = (reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name)
+    let reaction = await msg.awaitReactions({ filter, time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
     if (!reaction) return msg.reactions.removeAll().catch(() => {})
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
