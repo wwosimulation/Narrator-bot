@@ -76,6 +76,6 @@ module.exports = {
             msg = await message.channel.send({ embeds: [embeds[page - 1]] })
         }
 
-        client.paginator(message.author, msg, embeds, page)
+        client.paginator(message.author.id, msg, embeds, page)
     },
 }
