@@ -295,7 +295,7 @@ module.exports = {
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                 db.set(`hypnotize_${dc[a]}`, null)
-                                console.log('hi')
+                                console.log("hi")
                                 chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
                                 dc[a].send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
                                 chan.permissionOverwrites.edit(guy.id, {
