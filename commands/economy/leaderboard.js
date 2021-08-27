@@ -73,7 +73,7 @@ module.exports = {
 
         if (!embeds[page - 1]) (msg = await message.channel.send({ content: `${message.author}, page ${page} does not exist in this leader board!`, embeds: [embeds[0]] })), (page = 1)
         else {
-            msg = await message.channel.send({ embeds: [embeds[0], embeds[1], embeds[2], embeds[3], embeds[4], embeds[5], embeds[6], embeds[7], embeds[8], embeds[9]] /*[embeds[page - 1]]*/ })
+            msg = await message.channel.send({ embeds: [embeds[page - 1]] })
         }
 
         client.paginator(message.author, msg, embeds, page)
