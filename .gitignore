@@ -4,3 +4,7 @@ node_modules/
 *.sqlite
 .env
 pnpm-lock.yaml
+ghnb.pem
+.cache/
+.config/
+package-lock.json

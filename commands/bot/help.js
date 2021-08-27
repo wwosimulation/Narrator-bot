@@ -1,14 +1,14 @@
 const { MessageEmbed } = require("discord.js")
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-};
+    return string.charAt(0).toUpperCase() + string.slice(1)
+}
 
 module.exports = {
     name: "help",
     description: "Get the command list or help for a specific command.",
     usage: `${process.env.PREFIX}help [command | arguments]`,
-    run: async (message, args) => {
+    run: async (message, args, client) => {
         // help embed
         let embed = new MessageEmbed().setColor(0x7419b4)
         let cmd_target
@@ -32,7 +32,7 @@ module.exports = {
 
             // if the command has aliases add those
             if (cmd_target.aliases) {
-                embed.addField({ name: "Aliases:", value: `${cmd_target.aliases.join(", ")}` })
+                embed.addField({ name: "Aliases:", value: `${cmd_target.aliases.length ? cmd_target.aliases.map((alias) => `\`${alias}\``).join(" ") : "No aliases"}` })
             }
         } else if (["args", "arg", "arguments", "argument"].includes(args[0])) {
             embed
@@ -81,16 +81,15 @@ Note: Some arguments were left out as they are obvious to understand like \`nick
 When a game is live, it will be announced in <#606123818305585167>. Click on the join game button to join a game server.
 Read more about how to play in <#859001588617445436>. Ranked games will be announced in <#860552178095882240>.
 
-For any questions head over to the <#606123788257591297>.
 
 Use following commands with <@744538701522010174>'s prefix (${process.env.PREFIX}).
 `
                 )
-                .addField("Economy", "`shop` Buy different items in the shop.\n" + "`daily` Get coins, roses, items as a daily reward.\n" + "`inventory` Find the roses, coins, items in your inventory.\n" + "`balance` Check how many narrator bot coins you got.\n" + "`namechange` Give your custom role a new name.\n" + "`colorchange` Give your custom role a new color.\n" + "`profile` Checkout your exclusive profile. Available in the shop!\n" + "`use` Use this command with the item name such as lootbox, icon to use them.")
-                .addField("Fun", "`emoji` use emojis from different servers available from `emojilist`.\n" + "`write` Write something with fancy letters and numbers.\n")
-                .addField("Bot", "`botinfo` Get to know more about the bot.\n" + "`bug` Report a bug to the development team.\n" + "`suggest` Suggest a improvement, enhancement for the simulation.\n" + "`roleinfo` Know more about the in game roles and interactions.\n")
-        }
+                .addField(message.i10n("economy"), message.i10n("helpEconomy"))
+                .addField(message.i10n("fun"), message.i10n("helpFun"))
+                .addField(message.i10n("bot"), message.i10n("helpBot"))
 
-        message.channel.send({ embeds: [embed] })
+            message.channel.send({ embeds: [embed] })
+        }
     },
 }

@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "sword",
@@ -10,12 +11,12 @@ module.exports = {
         if (sword == true) {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Look at this idiot lmao...")
-            if (args.length == 0) return message.channel.send("Lmao, we have another one. Send them to the mental hospital, ward 69.")
+            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
+            if (args.length == 0) return message.channel.send("Who are you giving the sword? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (!guy || guy == message.member) return message.reply("Invalid target!")
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("I love how you think that your stupidness is cute.")
-            message.guild.channels.cache.finf((c) => c.name === "day-chat").send(`<:getsword:744536585906683975> The Forger's sword was used to kill **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**.`)
+            if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
+            if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
+            message.guild.channels.cache.finf((c) => c.name === "day-chat").send(`${getEmoji("getsword", client)} The Forger's sword was used to kill **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**.`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
             db.delete(`sword_${message.channel.id}`)

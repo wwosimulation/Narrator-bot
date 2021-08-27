@@ -1,3 +1,5 @@
+const aliases = require("../../config/src/aliases")
+
 module.exports = {
     name: "nmanual",
     description: "Manual permissions.",
@@ -5,7 +7,16 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        let chann = message.guild.channels.cache.filter((c) => c.name === `priv-${args[1]}`).keyArray("id")
+        for (const key in aliases) {
+            if (args[1].includes(key)) {
+                if (Object.hasOwnProperty.call(aliases, key)) {
+                    const element = aliases[key]
+                    args[1] = element
+                }
+            }
+        }
+
+        let chann = message.guild.channels.cache.filter((c) => c.name === `priv-${args[1]}`).map((x) => x.id)
 
         let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
 
@@ -21,6 +32,14 @@ module.exports = {
             if (channe.name.includes("wolf")) {
                 let wolfchat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
                 wolfchat.permissionOverwrites.edit(guy.id, {
+                    READ_MESSAGE_HISTORY: null,
+                    SEND_MESSAGES: null,
+                    VIEW_CHANNEL: null,
+                })
+            }
+            if (channe.name.includes("zombies")) {
+                let zombieschat = message.guild.channels.cache.find((c) => c.name === "zombies")
+                zombieschat.permissionOverwrites.edit(guy.id, {
                     READ_MESSAGE_HISTORY: null,
                     SEND_MESSAGES: null,
                     VIEW_CHANNEL: null,

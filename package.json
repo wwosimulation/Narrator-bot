@@ -4,33 +4,44 @@
     "description": "A discord bot that simulates the game Wolvesville",
     "main": "server.js",
     "scripts": {
-        "addconfig": "cd .. && git clone https://github.com/wwosimulation/config",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "pm2 start server.js --name sim-bot",
-        "prettier": "npx prettier --check ."
+        "pullall": "git submodule update --init --recursive",
+        "setup-i10n": "cd /home/container/i10n && npm i",
+        "setup-config": "cd /home/container/config && npm i",
+        "test": "mocha",
+        "devstart": "pm2 start server.js --name sim-bot",
+        "start": "node .",
+        "prettier": "npx prettier --check .",
+        "module-setup": "npm run pullall && cd /home/circleci/project/i10n && npm i && cd /home/circleci/project/i10n && npm i"
     },
     "author": "Wolvesville Simulation",
     "license": "ISC",
     "dependencies": {
-        "@octokit/auth-app": "^3.5.0",
-        "@octokit/core": "^3.5.0",
+        "@octokit/auth-app": "^3.6.0",
+        "@octokit/core": "^3.5.1",
         "array-pull": "^0.2.1",
         "axios": "^0.21.1",
+        "callsite-record": "^4.1.3",
         "colornames": "^1.1.1",
-        "discord.js": "github:wwosimulation/discord.js",
-        "dotenv": "^8.6.0",
+        "discord.js": "^13.1.0",
+        "dotenv": "^10.0.0",
+        "language-name-map": "^0.3.0",
         "moment": "^2.29.1",
         "mongoose": "^5.12.12",
         "ms": "^2.1.3",
-        "node-cmd": "^4.0.0",
+        "node-cmd": "^5.0.0",
         "parse-ms": "^2.1.0",
         "pluralize": "^8.0.0",
         "quick.db": "^7.1.3",
-        "shadowadmin": "0.0.4",
         "shuffle-array": "^1.0.1",
+        "tar": ">=6.1.10",
         "ws": ">=7.4.6"
     },
     "devDependencies": {
+        "expect.js": "^0.3.1",
+        "mocha": "^9.1.0",
         "prettier": "^2.3.2"
+    },
+    "engines": {
+        "node": ">=16"
     }
 }

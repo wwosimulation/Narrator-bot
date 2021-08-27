@@ -6,7 +6,7 @@ module.exports = {
     usage: `${process.env.PREFIX}rose <bouquet | single <user> [amount]>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        let data = await players.findOne({ user: message.author.id })
+        let data = await players.findOne({ user: message.author.id }).exec()
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
         let spec = message.guild.roles.cache.find((r) => r.name === "Spectator")
@@ -18,7 +18,7 @@ module.exports = {
     if (message.member.roles.cache.has(mininarr.id) || message.member.roles.cache.has(narrator.id)) return message.channel.send("You can't give the rose as a narrator!")
     */
 
-        if (!args[0]) return message.channel.send("You need to state if you want to give a rose to a player or as a bouquet!\n\nOptions: `single [player number]` or `bouquet`")
+        if (!args[0]) return message.channel.send("You need to state if you want to give a rose to a player or as a bouquet!\n\nOptions: `single [player] [amount]` or `bouquet`")
 
         if (args[0] == "single") {
             let amount = parseInt(args[2])
@@ -42,5 +42,6 @@ module.exports = {
             data.inventory.bouquet = data.inventory.bouquet - 1
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
+        data.save()
     },
 }

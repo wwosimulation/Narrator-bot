@@ -1,6 +1,7 @@
 const { MessageActionRow } = require("discord.js")
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "startgame",
@@ -18,8 +19,9 @@ module.exports = {
                 let row = allc[0]
                 let jgbutton = row.components[0]
                 let specbutton = row.components[1]
+                let narrbutton = row.components[2]
                 jgbutton.disabled = true
-                m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton)] })
+                m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
             })
 
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
@@ -67,7 +69,7 @@ module.exports = {
             })
 
         let allGr = []
-        let gr = message.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").keyArray("id")
+        let gr = message.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").map((x) => x.id)
         let grig = 0
         for (let i = 0; i < gr.length; i++) {
             for (let a = 1; a <= alive.members.size; a++) {
@@ -92,6 +94,11 @@ module.exports = {
             let abc = ap.splice(ap.indexOf(thegr.nickname), 1)
             console.log(newppl)
             let guy = message.guild.members.cache.find((m) => m.nickname === ap[Math.floor(Math.random() * ap.length)])
+            let role = db.get(`role_${guy.id}`)
+            do {
+                abc = abc.splice(ap.indexOf(guy.nickname), 1)
+                guy = message.guild.members.cache.find((m) => m.nickname === ap[Math.floor(Math.random() * ap.length)])
+            } while (role === "Mayor" || role === "Flower Child" || role === "Pacifist" || role === "Cursed" || role === "Jailer" || role === "Marksman" || role === "Cupid" || role === "Medium" || role === "Seer" || role === "Seer Apprentice" || role === "Detective" || role === "Kitten Wolf" || role === "Wolf Pacifist" || role === "Wolf Seer" || role === "Sect Leader" || role === "Zombie" || role === "Bandit" || role === "Headhunter")
             if (guy) {
                 for (let z = 0; z < gr.length; z++) {
                     let chan = message.guild.channels.cache.get(gr[z])
@@ -108,7 +115,7 @@ module.exports = {
 
         let allHh = []
 
-        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").keyArray("id")
+        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map((x) => x.id)
 
         let hhig = 0
         for (let i = 0; i < hh.length; i++) {
@@ -140,7 +147,7 @@ module.exports = {
                     shuffle(allPlayers)
                     gotTarget = true
                     db.set(`hhtarget_${hh[o]}`, guy.nickname)
-                    message.guild.channels.cache.get(allHh[o]).send(`<:headhunter:475775432738996237> Your target is **${guy.nickname} ${guy.user.username}**!`)
+                    message.guild.channels.cache.get(allHh[o]).send(`${getEmoji("headhunter", client)} Your target is **${guy.nickname} ${guy.user.username}**!`)
                 }
             }
             if (gotTarget != true) {

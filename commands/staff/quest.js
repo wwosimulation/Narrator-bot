@@ -1,4 +1,3 @@
-const db = require("quick.db")
 const Discord = require("discord.js")
 const { fn } = require("../../config")
 const { players } = require("../../db.js")
@@ -10,13 +9,20 @@ module.exports = {
     aliases: ["quests"],
     narratorOnly: true,
     run: async (message, args, client) => {
+<<<<<<< HEAD
         if (args.length < 3) return message.channel.send("Invalid format! Use `+quest <user> <xp> <quest>`")
 
         let guy = fn.getUser(args[0], message)
         if (!guy) return message.channel.send(`Invalid member! Please use it as \`+quest <user> <xp> <quest>\`!`)
+=======
+        if (args.length < 3) return message.channel.send(message.i10n("questFormatInvalid"))
+
+        let guy = fn.getUser(args[0], message)
+        if (!guy) return message.channel.send(message.i10n("userInvalid", {user: args[0]}))
+>>>>>>> 31694f1203063b079222a5132c68c3e316757018
         let data = players.findOne({ user: guy.id })
 
-        if (isNaN(args[1])) return message.channel.send(`Bruh, \`${args[1]}\` is not a number...`)
+        if (isNaN(args[1])) return message.channel.send(message.i10n("invalidAmount", {amount: args[1]}))
 
         data.xp += parseInt(args[1])
         data.save()

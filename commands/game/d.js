@@ -22,7 +22,7 @@ module.exports = {
             if (isNight != "yes") return message.channel.send("You can only chat with the medium during the night!")
             if (!args) return await message.channel.send("Yup, sending empty messages. Congrats, you are a certified moron!")
             let me = message.guild.channels.cache.filter((c) => c.name === "priv-medium")
-            let med = me.keyArray("id")
+            let med = me.map((x) => x.id)
             let medi = []
             let alive = message.guild.roles.cache.find((r) => r.name == "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")

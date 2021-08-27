@@ -1,4 +1,4 @@
-const { fn, emojis } = require("../../config")
+const { fn } = require("../../config")
 const db = require("quick.db")
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
     usage: `${process.env.PREFIX}oldcmi <user>`,
     aliases: [],
     staffOnly: true,
-    run: async (message, args, client) => {
+    run: async (message, args) => {
         msg = ``
         args.forEach((x) => {
             let user = fn.getUser(x, message)

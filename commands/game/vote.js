@@ -17,8 +17,8 @@ module.exports = {
             if (!message.channel.name.includes("wolf")) return
 
             let voted = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0])
-            if (message.member.roles.cache.has(dead.id)) return message.channel.send("I'm not even gonna say what's your problem.")
-            if (!voted && args[0] != "cancel") return message.channel.send("Target doesn't exist!")
+            if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")
+            if (!voted && args[0] != "cancel") return message.channel.send("The player is not in game! Mention the correct player number.")
 
             if (args[0] == "cancel") {
                 let tmtd = db.get(`wwkillmsg_${message.channel.id}`)
@@ -30,12 +30,12 @@ module.exports = {
                         return
                     }
                 } else {
-                    return message.channel.send("If you didn't vote, how am i suppose to cancel your vote")
+                    return message.channel.send("Hey you haven't voted yet!")
                 }
             }
 
-            if (voted == message.member) return message.channel.send("Bruh, you are a wolf, not a fool")
-            if (!voted.roles.cache.has(alive.id)) return message.channel.send("You can't vote a dead player!")
+            if (voted == message.member) return message.channel.send("You cannot vote yourself!")
+            if (!voted.roles.cache.has(alive.id)) return message.channel.send("You can not vote a dead player!")
 
             if (db.get(`role_${message.author.id}`) == "Wolf Seer") {
                 if (db.get(`resigned_${message.channel.id}`) != true) {
@@ -44,7 +44,7 @@ module.exports = {
                         if (tempguy) {
                             if (tempguy.roles.cache.has(alive.id)) {
                                 if (db.get(`role_${tempguy.id}`).toLowerCase().includes("wolf")) {
-                                    return message.channel.send("You need to resign in order to vote")
+                                    return message.channel.send("You need to resign in order to vote.")
                                 }
                             }
                         }
@@ -71,7 +71,7 @@ module.exports = {
             } else {
                 if (message.channel.name == "priv-idiot") {
                     let killed = await db.fetch(`idiot_${message.channel.id}`)
-                    if (killed == "yes") return await message.channel.send("You idiot! You were lynched and now can't vote. Bohoo. Go tell your mommy.")
+                    if (killed == "yes") return await message.channel.send("You cannot vote now!")
                 }
                 let votedGuy = message.guild.members.cache.find((m) => m.nickname === args[0])
                 let voteChat = message.guild.channels.cache.find((c) => c.name === "vote-chat")
@@ -86,9 +86,9 @@ module.exports = {
                     }
                 }
                 if (!votedGuy || votedGuy.roles.cache.has(dead.id) || votedGuy == message.member) {
-                    return await message.reply(`Target does not exist!`)
+                    return await message.reply("The player is not in game! Mention the correct player number.")
                 } else if (!votedGuy.roles.cache.has("606140092213624859") || !message.member.roles.cache.has("606140092213624859")) {
-                    return await message.reply(`I know I'm just a bot but I know that you or the player you are trying to vote is dead. Get a life and stop breaking me dude!`)
+                    return await message.reply("You can play with alive people only!")
                 } else {
                     let voteChat = message.guild.channels.cache.find((c) => c.name === "vote-chat")
 
@@ -96,7 +96,7 @@ module.exports = {
                     let voted = message.guild.members.cache.find((m) => m.nickname === args[0])
                     let votes = ["0"]
                     if (args[0] == message.member.nickname) {
-                        return message.reply(`Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`)
+                        return message.reply("You can not vote yourself!")
                     } else {
                         let voted = db.get(`votemsgid_${message.channel.id}`)
                         if (voted) {

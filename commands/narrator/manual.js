@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const { getRole } = require("../../config")
+const aliases = require("../../config/src/aliases")
 
 module.exports = {
     name: "manual",
@@ -8,6 +9,15 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
+        for (const key in aliases) {
+            if (args[1].includes(key)) {
+                if (Object.hasOwnProperty.call(aliases, key)) {
+                    const element = aliases[key]
+                    args[1] = element
+                }
+            }
+        }
+
         message.react("💋")
         let content = args[1]
         let night = await db.fetch(`nightCount`)
@@ -26,7 +36,7 @@ module.exports = {
 
         // let channels = message.guild.channels.cache.filter((c) => c.name === `priv-${real}`)
         // //console.log(channels)
-        // let tomato = channels.keyArray("id")
+        // let tomato = channels.map(x => x.id)
         // let ch = await db.fetch(`channels_${real}`)
         // console.log(tomato)
         // if (content.includes("-")) {
@@ -105,6 +115,6 @@ module.exports = {
                 READ_MESSAGE_HISTORY: true,
             })
         }
-        db.set(`role_${guy.id}`, content)
+        db.set(`role_${guy.id}`, getRole(real).name)
     },
 }

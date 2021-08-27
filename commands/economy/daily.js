@@ -20,7 +20,7 @@ module.exports = {
         let bonus = 1
         if (client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).premiumSince) {
             bonus = 2
-            extra = "\nBecause you are a booster, you received double the normal rewards amount!"
+            extra = `\n${message.i10n("boosterDaily")}`
         }
 
         if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
@@ -36,43 +36,48 @@ module.exports = {
         } else {
             if (date == 0) {
                 amount = 10 * bonus
-                emote = "<:coin:606434686931173377>"
+                emote = `${config.getEmoji("coin", client)}`
                 item = "coins"
                 data.coins += 10 * bonus
             } else if (date == 1) {
                 item = "rose"
-                emote = "<:rosesingle:807256844191793158>"
+                emote = `${config.getEmoji("rosesingle", client)}`
                 amount = 1 * bonus
                 data.inventory.rose += 1 * bonus
             } else if (date == 2) {
                 amount = 1 * bonus
                 item = "rose bouquet"
-                emote = "<:rosebouquet:808545517209387008>"
+                emote = `${config.getEmoji("rosebouquet", client)}`
                 data.inventory.bouquet += 1 * bonus
             } else if (date == 3) {
                 amount = 1 * bonus
-                emote = "<:lootbox:808548473548963861>"
-                item = "lootbox!\n\nTo use it, do `+use lootbox`"
+                emote = `${config.getEmoji("lootbox", client)}`
+                item = "lootbox!"
+                extra = `\nTo use it, do \`+use lootbox\`${extra}`
                 data.inventory.lootbox += 1 * bonus
             } else if (date == 4) {
                 item = "coins"
-                emote = "<:coin:606434686931173377>"
+                emote = `${config.getEmoji("coin", client)}`
                 amount = 20 * bonus
                 data.coins += 20 * bonus
             } else if (date == 5) {
                 item = "roses"
-                emote = "<:rosesingle:807256844191793158>"
+                emote = `${config.getEmoji("rosesingle", client)}`
                 amount = 5 * bonus
                 data.inventory.roses += 5 * bonus
             } else if (date == 6) {
                 amount = 30 * bonus
                 item = "coins"
-                emote = "<:coin:606434686931173377>"
+                emote = `${config.getEmoji("coin", client)}`
                 data.daily.day = -1
                 data.coins += 30 * bonus
             }
+<<<<<<< HEAD
 
             let dailymsg = new MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${emote} Nice! You have recieved ${amount} ${item}!${extra}`)
+=======
+            let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${message.i10n("daily", { emoji: emote, number: amount, prize: item })}${extra}`)
+>>>>>>> 31694f1203063b079222a5132c68c3e316757018
             message.channel.send({ embeds: [dailymsg] })
 
             data.daily.day++

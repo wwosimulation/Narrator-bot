@@ -23,9 +23,9 @@ module.exports = {
             allPlayers.push(guy.id)
         }
         let exists = false
-        let allchan = message.guild.channels.cache.filter((c) => c.name.startsWith("priv"))
-        for (let a = 0; a < allchan.keyArray("id").length; a++) {
-            let chan = message.guild.channels.cache.get(allchan.keyArray("id")[a])
+        let allchan = message.guild.channels.cache.filter((c) => c.name.startsWith("priv")).map((x) => x.id)
+        for (let a = 0; a < allchan.length; a++) {
+            let chan = message.guild.channels.cache.get(allchan[a])
             if (chan) {
                 for (let b = 1; b <= alive.members.size; b++) {
                     let tt = message.guild.members.cache.find((m) => m.nickname === b.toString())
@@ -113,9 +113,15 @@ module.exports = {
         // Set roleOptions to an array containing arrays of possible rolelists
         if (gamemode == "quick") {
             alphashaman = shuffle(alphashaman)
+            foolhh = shuffle(foolhh)
+            jailerwitch = shuffle(jailerwitch)
+            skcanni = shuffle(skcanni)
+            seerdet = shuffle(seerdet)
             roleOptions = [
                 ["Aura Seer", "Wolf Seer", "Doctor", "Avenger", "Detective", "Wolf Shaman", "Gunner", rv[0], "Witch", "Cannibal", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Werewolf", "Cupid"],
                 ["Aura Seer", "Wolf Seer", "Doctor", "Beast Hunter", "Aura", "Wolf Shaman", "Gunner", rv[0], "Witch", "Bomber", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Avenger", "Werewolf"],
+                ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Tough Guy", alphashaman[0], "Marksman", foolhh[0], jailerwitch[0], skcanni[0], "Medium", seerdet[0], "Junior Werewolf", "Cursed", "Beast Hunter", "Werewolf"],
+                ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Detective", "Wolf Shaman", "Gunner", foolhh[0], "Jailer", "Arsonist", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Bodyguard", "Werewolf"],
             ]
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
@@ -142,6 +148,14 @@ module.exports = {
             roleOptions.push([auraspirit[0], "alpha-werewolf", docbg[0], "rrv", beastbunny[0], "wolf-seer", gunnermarks[0], "rv", jailerftwitch[0], alcrk[0], "medium", "seer", pacishadownmber[0], "rrv", juniorrww[0], cupidgr[0]])
         } else if (gamemode == "custom" || gamemode == "customhide") {
             args.shift()
+            excludes.forEach((role) => {
+                random = pull(random, role)
+                rrv = pull(rrv, role)
+                rsv = pull(rsv, role)
+                rww = pull(rww, role)
+                rk = pull(rk, role)
+                rv = pull(rv, role)
+            })
             roleOptions.push(args)
         }
 
@@ -199,7 +213,7 @@ module.exports = {
                 cancel = true
                 return message.channel.send(`The information for the ${x} role is missing! Please report this using \`+bug\``)
             }
-            if (["Bandit", "Accomplice", "Sect Leader"].includes(role.name)) {
+            if (["Bandit", "Accomplice", "Sect Leader", "Grave Robber"].includes(role.name)) {
                 cancel = true
                 return message.channel.send(`The ${role.name} role is currently not available`)
             }
@@ -250,7 +264,7 @@ module.exports = {
             if (role.name == "President") {
                 guy.roles.add(revealed)
                 setTimeout(() => {
-                    dayChat.send(`<:president:583672720932208671> Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
+                    dayChat.send(`${fn.getEmoji("president", client)} Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
                 }, 15000)
             }
 
@@ -283,7 +297,7 @@ module.exports = {
                         })
                     }
                     if (occupied == true) {
-                        if (qah == bandits.keyArray("id").length) {
+                        if (qah == bandits.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("bandits", {
                                 parent: "606250714355728395",
                             })
@@ -341,7 +355,7 @@ module.exports = {
                         })
                     }
                     if (occupied == true) {
-                        if (qah == sect.keyArray("id").length) {
+                        if (qah == sect.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("sect-members", {
                                 parent: "606250714355728395",
                             })
