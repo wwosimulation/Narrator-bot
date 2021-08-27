@@ -37,7 +37,7 @@ module.exports = {
         await (
             await players.find({}).sort(obj)
         ).forEach((player) => {
-            if (currentEmbedItems.length <= 10) currentEmbedItems.push({ userID: player.user, value: player[sortedBy] })
+            if (currentEmbedItems.length < 10) currentEmbedItems.push({ userID: player.user, value: player[sortedBy] })
             else {
                 embedItemArray.push(currentEmbedItems)
                 currentEmbedItems = [{ userID: player.user, value: player[sortedBy] }]
@@ -46,7 +46,8 @@ module.exports = {
         embedItemArray.push(currentEmbedItems)
 
         async function getTag(userID) {
-            let user = client.users.resolve(userID)
+            let user = client.users.cache.get(userID)
+            if(!user) return "N/A"
             return user.tag
         }
         /* 
