@@ -133,9 +133,9 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
         interaction.update({ embeds: [embeds[page]] })
         client.buttonPaginator(authorID, msg, embeds, page, false)
     })
-    collector.on("end", () => {
+    client.setTimeout(() => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
-    })
+    }, 30 * 1000)
 }
 
 client.debug = async (options = { game: false }) => {
