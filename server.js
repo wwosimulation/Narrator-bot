@@ -122,6 +122,7 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
     collector.on("collect", (interaction) => {
         let footerArr = interaction.message.embeds[0].footer.text.replace("Page ", "").split("/")
         pageNowIndex = parseInt(footerArr[0]) - 1
+        console.log("new try")
 
         if (interaction.customId === "begin") {
             interaction.update({ embeds: [embeds[0]] })
