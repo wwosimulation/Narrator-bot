@@ -1166,7 +1166,7 @@ module.exports = {
                                 killedplayers.push(guy.id)
                                 thekiller.push(TheDC.id)
                             }
-                                    db.set(`hypnotized_${tempchan.id}`, null)
+                            db.set(`hypnotized_${tempchan.id}`, null)
                         }
                     }
                 }
