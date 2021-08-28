@@ -50,7 +50,7 @@ module.exports = {
             let isNight = db.get(`isNight`)
             let night = db.get(`nightCount`)
             if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
-            let forged = db.get(`forged_${message.channel.id}`)
+                let forged = db.get(`forged_${message.channel.id}`)
             } else {
                 let hypnotized = db.get(`hypnotized_${message.channel.id}`)
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
@@ -87,18 +87,18 @@ module.exports = {
                     message.channel.send(`${getEmoji("getsword", client)} You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
                 }
             } else {
-                    if (forged == 2 || forged == 1) {
-                                db.set(`toGiveS_${chan.id}`, guy.nickname)
-                                db.set(`given_${chan.id}`, true)
-                                chan.send(`${getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
-                                message.channel.send(`${getEmoji("getshield", client)} You have forced ${guy1.nickname} ${guy.user.username} to give the shield to **${guy.nickname} ${guy.user.username}**!`)
-                    } else {
-                                db.subtract(`forged_${chan.id}`, 1)
-                                db.set(`toGiveK_${guy1.id}`, guy.nickname)
-                                message.channel.send(`${getEmoji("getsword", client)} You have forced ${guy1.nickname} ${guy.user.username} to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
-                                chan.send(`${getEmoji("getsword", client)} You have decided to give the sword to **${guy.nickname} ${guy.user.username}**!`)
-                            }
+                if (forged == 2 || forged == 1) {
+                    db.set(`toGiveS_${chan.id}`, guy.nickname)
+                    db.set(`given_${chan.id}`, true)
+                    chan.send(`${getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
+                    message.channel.send(`${getEmoji("getshield", client)} You have forced ${guy1.nickname} ${guy.user.username} to give the shield to **${guy.nickname} ${guy.user.username}**!`)
+                } else {
+                    db.subtract(`forged_${chan.id}`, 1)
+                    db.set(`toGiveK_${guy1.id}`, guy.nickname)
+                    message.channel.send(`${getEmoji("getsword", client)} You have forced ${guy1.nickname} ${guy.user.username} to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
+                    chan.send(`${getEmoji("getsword", client)} You have decided to give the sword to **${guy.nickname} ${guy.user.username}**!`)
                 }
+            }
         } else if (message.channel.name == "priv-alchemist") {
             let isNight = db.get(`isNight`)
             if (isNight == "no") return message.channel.send("You can only do this at night!")
