@@ -63,6 +63,7 @@ module.exports = {
                         if (tempguy.roles.cache.has(alive.id)) {
                             forged = db.get(`forged_${chan.id}`)
                             chan = message.guild.channels.cache.get(role[b])
+                            console.log(chan.id)
                         }
                     }
                 }
