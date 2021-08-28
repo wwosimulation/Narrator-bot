@@ -135,7 +135,7 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
                 pageNowIndex = pageNowIndex - 1
             } else {
                 interaction.update({ embeds: [embeds[embeds.length - 1]] })
-                pageNowIndex = embeds.length -1
+                pageNowIndex = embeds.length - 1
             }
         } else if (interaction.customId === "next") {
             if (!pageNowIndex === embeds.length - 1) {
