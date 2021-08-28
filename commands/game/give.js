@@ -58,7 +58,7 @@ module.exports = {
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
                 let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${tempguy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                 for (let b = 0; b < role.length; b++) {
-                    temochan = message.guild.channels.cache.get(role[b])
+                    temchan = message.guild.channels.cache.get(role[b])
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (tempguy.roles.cache.has(alive.id)) {
                             forged = db.get(`forged_${tempchan.id}`)
