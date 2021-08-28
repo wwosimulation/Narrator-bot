@@ -3,7 +3,7 @@ require("dotenv").config()
 const fs = require("fs")
 const db = require("quick.db")
 
-if(db.get("emergencystop")) {
+if (db.get("emergencystop")) {
     console.log("Bot has been emergency stopped")
     process.exit(0)
 }
@@ -160,21 +160,19 @@ client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes
 client.login(process.env.TOKEN)
 
 function cleanStackTrace(reason) {
-    return require('callsite-record')({
-forError: reason
-     }).renderSync({
-stackFilter(frame) {
-return !frame.getFileName().includes('node_modules');
-}
-});
+    return require("callsite-record")({
+        forError: reason,
+    }).renderSync({
+        stackFilter(frame) {
+            return !frame.getFileName().includes("node_modules")
+        },
+    })
 }
 
-process.on('unhandledRejection', reason => {
-console.log(cleanStackTrace(reason));
-});
+process.on("unhandledRejection", (reason) => {
+    console.log(cleanStackTrace(reason))
+})
 
 client.on("error", (e) => console.error)
 
 module.exports = { client }
-
-

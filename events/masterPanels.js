@@ -4,17 +4,16 @@ module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isButton()) return
         if (interaction.customId == "dev-restart") {
-            await interaction.reply({content: "Restart in progress...", ephemeral: true})
+            await interaction.reply({ content: "Restart in progress...", ephemeral: true })
             process.exit(0)
         }
-        if(interaction.customId == "dev-emergencystop") {
-            await interaction.reply({content: "Emergency stop initiated by " + interaction.user.tag})
+        if (interaction.customId == "dev-emergencystop") {
+            await interaction.reply({ content: "Emergency stop initiated by " + interaction.user.tag })
             db.set("emergencystop", true)
             process.exit(0)
         }
-        if(interaction.customId == "dev-status") {
-            await interaction.reply({content: "Coming soon!", ephemeral: true})
+        if (interaction.customId == "dev-status") {
+            await interaction.reply({ content: "Coming soon!", ephemeral: true })
         }
-        
     })
 }
