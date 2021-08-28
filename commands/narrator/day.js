@@ -930,7 +930,7 @@ module.exports = {
             if (role == "dreamcatcher") {
                 TheDC = tempguy
                 let roles = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${tempguy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
-                for (let b = 0; b < role.length; b++) {
+                for (let b = 0; b < roles.length; b++) {
                     let tempchan = message.guild.channels.cache.get(roles[b])
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (tempguy.roles.cache.has(alive.id)) {
