@@ -131,7 +131,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
         else page = 1
     } else if (interaction.customId === "end") page = embeds.length
     let m = interaction.update({ embeds: [embeds[page]] })
-    client.buttonPaginator(authorID, m, embeds, page, false)
+    client.buttonPaginator(authorID, m, embeds, page, false).catch(console.error)
 
     /*/if(!addButtons) msg.edit({embeds:[embeds[page]]})
     collector.on("collect", (interaction) => {
