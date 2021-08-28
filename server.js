@@ -120,29 +120,34 @@ client.buttonPaginator = async (authorID, msg, embeds, page) => {
     let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
 
     page = page - 1
+    db.set(`buttonPaginator_${msg.id}`, page)
 
     collector.on("collect", (interaction) => {
+        let currPage = db.get(`buttonPaginator_${msg.id}`)
+        let p = currPage
         if (interaction.customId === "begin") {
-            page = 0
+            p = 0
         } else if (interaction.customId === "back") {
-            if (!page === 0) {
-                page -= 1
+            if (!currPage === 0) {
+                p -= 1
             } else {
-                page = embeds.length - 1
+                p = embeds.length - 1
             }
         } else if (interaction.customId === "next") {
-            if (!page === embeds.length - 1) {
-                page += 1
+            if (!currPage === embeds.length - 1) {
+                p += 1
             } else {
-                page = 0
+                p = 0
             }
         } else if (interaction.customId === "end") {
-            page = embeds.length - 1
+            p = embeds.length - 1
         }
-        interaction.update({ embeds: [embeds[page]] })
+        db.set(`buttonPaginator_${msg.id}`, p)
+        interaction.update({ embeds: [embeds[p]] })
     })
     collector.on("end", () => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
+        db.delete(`buttonPaginator_${msg.id}`)
     })
 }
 
