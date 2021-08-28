@@ -934,7 +934,7 @@ module.exports = {
                     let tempchan = message.guild.channels.cache.get(roles[b])
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (tempguy.roles.cache.has(alive.id)) {
-                            let hypnotized = db.get(`hypnotized_${tempchan.id}`)
+                            let hypnotized = db.get(`hypnotized_${tempchan.id}`) || 0
                             let guy = message.guild.members.cache.find((me) => me.nickname === hypnotized)
                             if (hypnotized != "0") {
                                 for (let j = 0; j < bh.length; j++) {
@@ -1172,6 +1172,7 @@ module.exports = {
                                     chan.permissionOverwrites.edit(guy.id, {
                                         SEND_MESSAGES: true,
                                     })
+                                    db.set(`hypnotized_${tempchan.id}`, null)
                                 }
                             }
                         }
