@@ -144,7 +144,7 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
         interaction.deferReply()
     })
     collector.on("end", () => {
-        msg.edit({ components: [deadRow], content: "This message is now inactiv." })
+        msg.edit({ components: [deadRow], content: "This message is now inactive." })
     })
 }
 
