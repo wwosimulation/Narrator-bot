@@ -76,11 +76,11 @@ module.exports = {
 
             if (!guy) return message.reply("Invalid Target")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("BRUH THIS PLAYER IS NOT ALIVE STUPID")
-
             if (forged < 0) return message.channel.send("You already used up all your ability dumb")
-            if (db.get(`forging_${message.channel.id}`) == db.get(`nightCount`)) return message.channel.send("YOU JUST FORGED AN ITEM BRUH WAIT A WHILE")
             if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
+                if (db.get(`forging_${message.channel.id}`) == db.get(`nightCount`)) return message.channel.send("YOU JUST FORGED AN ITEM BRUH WAIT A WHILE")
                 if (guy.id == message.author.id) return message.channel.send("Imagine giving something to yourself, lmao.")
+                console.log('test')
                 if (forged == 2 || forged == 1) {
                     db.set(`toGiveS_${message.channel.id}`, guy.nickname)
                     db.set(`given_${message.channel.id}`, true)
@@ -92,6 +92,7 @@ module.exports = {
                 }
             } else {
                 let hypnotized = db.get(`hypnotized_${message.channel.id}`)
+                if (db.get(`forging_${chan.id}`) == db.get(`nightCount`)) return message.channel.send("YOU JUST FORGED AN ITEM BRUH WAIT A WHILE")
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
                 if (forged == 2 || forged == 1) {
                     db.set(`toGiveS_${chan.id}`, guy.nickname)
