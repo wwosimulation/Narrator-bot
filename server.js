@@ -117,7 +117,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     if (addButtons) msg.edit({ components: [activeRow] })
     // collecting interactions
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
-    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000})
+    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
 
     page = page - 1
     //if(!addButtons) msg.edit({embeds:[embeds[page]]})
