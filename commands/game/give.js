@@ -96,6 +96,7 @@ module.exports = {
                 if (forged == 2 || forged == 1) {
                     db.set(`toGiveS_${chan.id}`, guy.nickname)
                     db.set(`given_${chan.id}`, true)
+                    console.log(chan.id)
                     chan.send(`${getEmoji("getshield", client)} The Dreamcatcher forced you to give the shield to **${guy.nickname} ${guy.user.username}**!`)
                     message.channel.send(`${getEmoji("getshield", client)} You have forced ${tempguy.nickname} ${tempguy.user.username} to give the shield to **${guy.nickname} ${guy.user.username}**!`)
                 } else {
