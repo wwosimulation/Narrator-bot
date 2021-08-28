@@ -114,7 +114,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     let activeRow = new Discord.MessageActionRow().addComponents([buttonBegin, buttonBack, buttonNext, buttonEnd])
     let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
     // adding buttons
-    if (addButtons) msg.edit({ components: [activeRow] })
+    if (addButtons) msg = msg.edit({ components: [activeRow] })
 
     page = page - 1
     // collecting interactions
