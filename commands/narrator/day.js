@@ -925,6 +925,7 @@ module.exports = {
         // checking dc kills
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
             let tempguy = message.guild.members.cache.find((m) => m.nickname === m.toString())
+            console.log(tempguy)
             let role = db.get(`role_${tempguy.id}`).toLowerCase()
             if (role == "dreamcatcher") {
                 TheDC = tempguy
