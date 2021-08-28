@@ -120,7 +120,7 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
     let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
 
     collector.on("collect", (interaction) => {
-        let embedFilter = (embed) => (embed.footer === interaction.message.embeds[0].footer)
+        let embedFilter = (embed) => embed.footer === interaction.message.embeds[0].footer
         pageNowIndex = embeds.findIndex(embedFilter)
         console.log(pageNowIndex)
 
