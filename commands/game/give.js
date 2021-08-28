@@ -52,7 +52,7 @@ module.exports = {
             let forged
             let chan
             if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
-               forged = db.get(`forged_${message.channel.id}`)
+                forged = db.get(`forged_${message.channel.id}`)
             } else {
                 let hypnotized = db.get(`hypnotized_${message.channel.id}`)
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
