@@ -924,7 +924,7 @@ module.exports = {
         }
         // checking dc kills
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
-            let tempguy = message.guild.members.cache.find((m) => m.nickname === m.toString())
+            let tempguy = message.guild.members.cache.find((me) => me.nickname === m.toString())
             console.log(tempguy)
             let role = db.get(`role_${tempguy.id}`).toLowerCase()
             if (role == "dreamcatcher") {
@@ -935,7 +935,7 @@ module.exports = {
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (tempguy.roles.cache.has(alive.id)) {
                             let hypnotized = db.get(`hypnotized_${tempchan.id}`)
-                            let guy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
+                            let guy = message.guild.members.cache.find((me) => me.nickname === hypnotized)
                             if (hypnotized != "0") {
                                 for (let j = 0; j < bh.length; j++) {
                                     let trap = db.get(`setTrap_${bh[j]}`)
