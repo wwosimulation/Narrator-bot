@@ -139,7 +139,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page) => {
         } else if (interaction.customId === "end") {
             page = embeds.length - 1
         }
-        interaction.update({ embeds: embeds[page] })
+        interaction.update({ embeds: [embeds[page]] })
     })
     collector.on("end", () => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
