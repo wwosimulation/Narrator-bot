@@ -926,7 +926,7 @@ module.exports = {
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
             let tempguy = message.guild.members.cache.find((m) => m.nickname === m.toString())
             let role = db.get(`role_${tempguy.id}`).toLowerCase()
-            if (role == 'dreamcatcher') {
+            if (role == "dreamcatcher") {
                 TheDC = tempguy
                 let roles = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${tempguy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                 for (let b = 0; b < role.length; b++) {
