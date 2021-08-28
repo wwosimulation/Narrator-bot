@@ -1166,17 +1166,7 @@ module.exports = {
                                 killedplayers.push(guy.id)
                                 thekiller.push(TheDC.id)
                             }
-                            tempchan.setName("priv-dreamcatcher")
-                            let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
-                            for (let b = 0; b < role.length; b++) {
-                                let chan = message.guild.channels.cache.get(role[b])
-                                if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                    chan.permissionOverwrites.edit(guy.id, {
-                                        SEND_MESSAGES: true,
-                                    })
                                     db.set(`hypnotized_${tempchan.id}`, null)
-                                }
-                            }
                         }
                     }
                 }
