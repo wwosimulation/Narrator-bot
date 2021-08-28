@@ -62,6 +62,7 @@ module.exports = {
                     if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (tempguy.roles.cache.has(alive.id)) {
                             forged = db.get(`forged_${chan.id}`)
+                            chan = message.guild.channels.cache.get(role[b])
                         }
                     }
                 }
