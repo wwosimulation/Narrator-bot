@@ -104,6 +104,52 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     }
 }
 
+client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) =>{
+    // buttons
+    let buttonBegin = new Discord.MessageButton({ style:"SUCCESS", emoji:"⏪", customId:"begin"})
+    let buttonBack = new Discord.MessageButton({ style:"SUCCESS", emoji:"◀", customId:"back"})
+    let buttonNext = new Discord.MessageButton({ style:"SUCCESS", emoji:"▶", customId:"next"})
+    let buttonEnd = new Discord.MessageButton({ style:"SUCCESS", emoji:"⏩", customId:"end"})
+    // rows
+    let activeRow = new Discord.MessageActionRow().addComponents([buttonBegin, buttonBack, buttonNext, buttonEnd])
+    let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
+    // adding buttons
+    msg.edit({components:[activeRow]})
+    // collecting interactions
+    let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
+    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000})
+
+    collector.on('collect', interaction => {
+        let m = interaction.message
+        let embedFilter = (embed) => embed = m.embeds.first()
+        pageNowIndex = embeds.findIndex(embedFilter)
+
+        if (interaction.customId === "begin") {
+            msg.edit({ embeds:[embeds[0]]})
+        }
+        else if (interaction.customId === "back") {
+            if(!pageNowIndex=== 0){
+                msg.edit({ embeds:[embeds[pageNowIndex- 1]]})
+            } else {
+                msg.edit({ embeds:[embeds[embeds.length - 1]]})
+            }
+        }
+        else if(interaction.customId === "next") {
+            if(!pageNowIndex=== embeds.length - 1) {
+                msg.edit({ embeds:[embeds[pageNowIndex + 1]]})
+            } else {
+                msg.edit({ embeds:[embeds[0]]})
+            }
+        }
+        else if(interaction.customId === "end") {
+            msg.edit({ embeds:[embeds[embeds.length - 1]]})
+        }
+    })
+    collector.on('end', () => {
+        msg.edit({ components:[deadRow], content:"This message is now inactiv."})
+    })
+}
+
 client.debug = async (options = { game: false }) => {
     let data = {}
     data.night = db.get(`nightCount`)
