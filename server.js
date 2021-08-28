@@ -122,7 +122,7 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
     collector.on("collect", (interaction) => {
         // let embedFilter = (embed) => (embed.footer === interaction.message.embeds[0].footer)
         // pageNowIndex = embeds.findIndex(embedFilter)
-        let footerArr = interaction.message.embeds[0].footer.split('/')
+        let footerArr = interaction.message.embeds[0].footer.split("/")
         pageNowIndex = parseInt(footerArr[0])
         console.log(interaction.message.embeds)
 
@@ -135,7 +135,7 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
                 pageNowIndex = pageNowIndex - 1
             } else {
                 interaction.update({ embeds: [embeds[embeds.length - 1]] })
-                pageNowIndex = embeds.length -1
+                pageNowIndex = embeds.length - 1
             }
         } else if (interaction.customId === "next") {
             if (!pageNowIndex === embeds.length - 1) {
