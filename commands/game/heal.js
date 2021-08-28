@@ -14,9 +14,25 @@ module.exports = {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
                 if (!guy) return await message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You or your target isn't alive!")
+                if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
                 if (guy == ownself) return await message.channel.send("You cannot protect yourself.")
                 db.set(`heal_${message.channel.id}`, args[0])
                 message.react("475775251297337344")
+                } else {
+                    let hypnotized = db.get(`hypnotized_${message.channel.id}`)
+                    let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
+                    let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${tempguy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
+                    for (let b = 0; b < role.length; b++) {
+                        let chan = message.guild.channels.cache.get(role[b])
+                        if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                            if (tempguy.roles.cache.has(alive.id)) {
+                                db.set(`heal_${chan.id}`, args[0])
+                                message.react("475775251297337344")
+                                chan.send(`The dreamcatcher has forced you to protect **${guy.nickname} ${guy.user.username}**`)
+                            }
+                        }
+                    }
+                }
             }
             ;``
         } else if (message.channel.name === "priv-witch") {
@@ -30,10 +46,26 @@ module.exports = {
                     let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
                     let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
                     if (!guy) return await message.reply("The player is not in game! Mention the correct player number.")
-                    if (guy == ownself) return await message.channel.send("You cannot protect yourself.")
                     if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You can play with alive people only!")
+                    if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
+                    if (guy == ownself) return await message.channel.send("You cannot protect yourself.")
                     db.set(`potion_${message.channel.id}`, args[0])
                     message.react("596733389084819476")
+                    } else {
+                        let hypnotized = db.get(`hypnotized_${message.channel.id}`)
+                        let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
+                        let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${tempguy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
+                        for (let b = 0; b < role.length; b++) {
+                            let chan = message.guild.channels.cache.get(role[b])
+                            if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                if (tempguy.roles.cache.has(alive.id)) {
+                                    db.set(`potion_${chan.id}`, args[0])
+                                    message.react("596733389084819476")
+                                    chan.send(`The dreamcatcher has forced you to protect **${guy.nickname} ${guy.user.username}**`)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         } else if (message.channel.name == "priv-bodyguard") {

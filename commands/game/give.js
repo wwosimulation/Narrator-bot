@@ -63,6 +63,7 @@ module.exports = {
                         }
                     }
                 }
+            }
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args.join(" ")) || message.guild.members.cache.find((m) => m.user.tag === args.join(" "))
 
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Lmao, being stupid af")
