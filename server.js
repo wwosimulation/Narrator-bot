@@ -122,8 +122,9 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
     collector.on("collect", (interaction) => {
         // let embedFilter = (embed) => (embed.footer === interaction.message.embeds[0].footer)
         // pageNowIndex = embeds.findIndex(embedFilter)
-        pageNowIndex = pageNowIndex
-        console.log(pageNowIndex)
+        let footerArr = interaction.message.embeds[0].footer.split('/')
+        pageNowIndex = parseInt(footerArr[0])
+        console.log(interaction.message.embeds)
 
         if (interaction.customId === "begin") {
             interaction.update({ embeds: [embeds[0]] })
@@ -148,6 +149,7 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
             interaction.update({ embeds: [embeds[embeds.length - 1]] })
             pageNowIndex = embeds.length - 1
         }
+        console.log(pageNowIndex)
     })
     collector.on("end", () => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
