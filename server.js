@@ -120,26 +120,33 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
     let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
 
     collector.on("collect", (interaction) => {
-        let embedFilter = (embed) => (embed.footer === interaction.message.embeds[0].footer)
-        pageNowIndex = embeds.findIndex(embedFilter)
+        // let embedFilter = (embed) => (embed.footer === interaction.message.embeds[0].footer)
+        // pageNowIndex = embeds.findIndex(embedFilter)
+        pageNowIndex = pageNowIndex
         console.log(pageNowIndex)
 
         if (interaction.customId === "begin") {
             interaction.update({ embeds: [embeds[0]] })
+            pageNowIndex = 0
         } else if (interaction.customId === "back") {
-            if (pageNowIndex != 0) {
+            if (!pageNowIndex === 0) {
                 interaction.update({ embeds: [embeds[pageNowIndex - 1]] })
+                pageNowIndex = pageNowIndex - 1
             } else {
                 interaction.update({ embeds: [embeds[embeds.length - 1]] })
+                pageNowIndex = embeds.length -1
             }
         } else if (interaction.customId === "next") {
             if (!pageNowIndex === embeds.length - 1) {
                 interaction.update({ embeds: [embeds[pageNowIndex + 1]] })
+                pageNowIndex = pageNowIndex + 1
             } else {
                 interaction.update({ embeds: [embeds[0]] })
+                pageNowIndex = 0
             }
         } else if (interaction.customId === "end") {
             interaction.update({ embeds: [embeds[embeds.length - 1]] })
+            pageNowIndex = embeds.length - 1
         }
     })
     collector.on("end", () => {
