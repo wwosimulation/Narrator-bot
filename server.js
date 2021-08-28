@@ -104,7 +104,7 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     }
 }
 
-client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
+client.buttonPaginator = async (authorID, msg, embeds, page) => {
     // buttons
     let buttonBegin = new Discord.MessageButton({ style: "SUCCESS", emoji: "⏪", customId: "begin" })
     let buttonBack = new Discord.MessageButton({ style: "SUCCESS", emoji: "◀", customId: "back" })
@@ -119,34 +119,27 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
     let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
 
-    collector.on("collect", (interaction) => {
-        let footerArr = interaction.message.embeds[0].footer.text.replace("Page ", "").split("/")
-        pageNowIndex = parseInt(footerArr[0]) - 1
-        console.log("new try")
+    page = page - 1
 
+    collector.on("collect", (interaction) => {
         if (interaction.customId === "begin") {
-            interaction.update({ embeds: [embeds[0]] })
-            pageNowIndex = 0
+            page = 0
         } else if (interaction.customId === "back") {
-            if (!pageNowIndex === 0) {
-                interaction.update({ embeds: [embeds[pageNowIndex - 1]] })
-                pageNowIndex = pageNowIndex - 1
+            if (!page === 0) {
+                page -= 1
             } else {
-                interaction.update({ embeds: [embeds[embeds.length - 1]] })
-                pageNowIndex = embeds.length - 1
+                page = embeds.length - 1
             }
         } else if (interaction.customId === "next") {
-            if (!pageNowIndex === embeds.length - 1) {
-                interaction.update({ embeds: [embeds[pageNowIndex + 1]] })
-                pageNowIndex = pageNowIndex + 1
+            if (!page === embeds.length - 1) {
+                page += 1
             } else {
-                interaction.update({ embeds: [embeds[0]] })
-                pageNowIndex = 0
+                page = 0
             }
         } else if (interaction.customId === "end") {
-            interaction.update({ embeds: [embeds[embeds.length - 1]] })
-            pageNowIndex = embeds.length - 1
+           page = embeds.length - 1
         }
+        interaction.update({ embeds: embeds[page]})
     })
     collector.on("end", () => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
