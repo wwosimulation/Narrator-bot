@@ -125,23 +125,22 @@ client.buttonPaginator = async (authorID, msg, embeds, pageNowIndex) => {
         pageNowIndex = embeds.findIndex(embedFilter)
 
         if (interaction.customId === "begin") {
-            msg.edit({ embeds: [embeds[0]] })
+            interaction.update({ embeds: [embeds[0]] })
         } else if (interaction.customId === "back") {
             if (!pageNowIndex === 0) {
-                msg.edit({ embeds: [embeds[pageNowIndex - 1]] })
+                interaction.update({ embeds: [embeds[pageNowIndex - 1]] })
             } else {
-                msg.edit({ embeds: [embeds[embeds.length - 1]] })
+                interaction.update({ embeds: [embeds[embeds.length - 1]] })
             }
         } else if (interaction.customId === "next") {
             if (!pageNowIndex === embeds.length - 1) {
-                msg.edit({ embeds: [embeds[pageNowIndex + 1]] })
+                interaction.update({ embeds: [embeds[pageNowIndex + 1]] })
             } else {
-                msg.edit({ embeds: [embeds[0]] })
+                interaction.update({ embeds: [embeds[0]] })
             }
         } else if (interaction.customId === "end") {
-            msg.edit({ embeds: [embeds[embeds.length - 1]] })
+            interaction.update({ embeds: [embeds[embeds.length - 1]] })
         }
-        interaction.deferReply()
     })
     collector.on("end", () => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
