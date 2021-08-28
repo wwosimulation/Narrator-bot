@@ -1020,19 +1020,19 @@ module.exports = {
                             // checking if the forger's shield is on the player
                             // forger
                             if (hypnotized != "0") {
-                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
-                            for (let k = 0; k < chans.length; k++) {
-                                let chan = message.guild.channels.cache.get(chans[k])
-                                if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                    let shield = db.get(`shield_${tempchan.id}`)
-                                    if (shield == true) {
-                                        chan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
-                                        chan.send(`${alive}`)
-                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                        tempchan.send(`${alive}`)
-                                        hypnotized = "0"
-                                        db.set(`shield_${chan.id}`, false)
-                                    }
+                                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
+                                for (let k = 0; k < chans.length; k++) {
+                                    let chan = message.guild.channels.cache.get(chans[k])
+                                    if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                        let shield = db.get(`shield_${tempchan.id}`)
+                                        if (shield == true) {
+                                            chan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
+                                            chan.send(`${alive}`)
+                                            tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                            tempchan.send(`${alive}`)
+                                            hypnotized = "0"
+                                            db.set(`shield_${chan.id}`, false)
+                                        }
                                     }
                                 }
                             }
