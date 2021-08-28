@@ -115,12 +115,25 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
     // adding buttons
     if (addButtons) msg.edit({ components: [activeRow] })
-    // collecting interactions
-    let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
-    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
 
     page = page - 1
-    //if(!addButtons) msg.edit({embeds:[embeds[page]]})
+    // collecting interactions
+    let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
+    let interaction = await msg.awaitMessageComponent({ filter, time: 30 * 1000, max: 1 })
+    if(!interaction) return msg.edit({ components: [deadRow], content: "This message is now inactive." })
+
+    if (interaction.customId === "begin") page = 1
+    else if (interaction.customId === "back") {
+        if (!page === 0) page -= 1
+        else page = embeds.length
+    } else if (interaction.customId === "next") {
+        if (!page === embeds.length - 1) page += 1
+        else page = 1
+    } else if (interaction.customId === "end") page = embeds.length
+    let m = interaction.update({ embeds: [embeds[page]] })
+    client.buttonPaginator(authorID, m, embeds, page, false)
+
+    /*/if(!addButtons) msg.edit({embeds:[embeds[page]]})
     collector.on("collect", (interaction) => {
         if (interaction.customId === "begin") page = 1
         else if (interaction.customId === "back") {
@@ -135,7 +148,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     })
     client.setTimeout(() => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
-    }, 30 * 1000)
+    }, 30 * 1000)*/
 }
 
 client.debug = async (options = { game: false }) => {
