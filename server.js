@@ -120,7 +120,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     // collecting interactions
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
     let interaction = await msg.awaitMessageComponent({ filter, time: 30 * 1000, max: 1 })
-    if(!interaction) return msg.edit({ components: [deadRow], content: "This message is now inactive." })
+    if (!interaction) return msg.edit({ components: [deadRow], content: "This message is now inactive." })
 
     if (interaction.customId === "begin") page = 1
     else if (interaction.customId === "back") {
