@@ -15,9 +15,9 @@ module.exports = {
                 if (!guy) return await message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You or your target isn't alive!")
                 if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
-                if (guy == ownself) return await message.channel.send("You cannot protect yourself.")
-                db.set(`heal_${message.channel.id}`, args[0])
-                message.react("475775251297337344")
+                    if (guy == ownself) return await message.channel.send("You cannot protect yourself.")
+                    db.set(`heal_${message.channel.id}`, args[0])
+                    message.react("475775251297337344")
                 } else {
                     let hypnotized = db.get(`hypnotized_${message.channel.id}`)
                     let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
@@ -48,9 +48,9 @@ module.exports = {
                     if (!guy) return await message.reply("The player is not in game! Mention the correct player number.")
                     if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You can play with alive people only!")
                     if (db.get(`role_${message.author.id}`).toLowerCase() != "dreamcatcher") {
-                    if (guy == ownself) return await message.channel.send("You cannot protect yourself.")
-                    db.set(`potion_${message.channel.id}`, args[0])
-                    message.react("596733389084819476")
+                        if (guy == ownself) return await message.channel.send("You cannot protect yourself.")
+                        db.set(`potion_${message.channel.id}`, args[0])
+                        message.react("596733389084819476")
                     } else {
                         let hypnotized = db.get(`hypnotized_${message.channel.id}`)
                         let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
