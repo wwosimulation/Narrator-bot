@@ -183,7 +183,7 @@ module.exports = {
         // removing all kills if peace is activated
         for (let i = 0; i < prog.length; i++) {
             let tempchan = message.guild.channels.cache.get(prog[i])
-            let peace = db.get(`peace_${tempchan[i].id}`)
+            let peace = db.get(`peace_${tempchan[i]}`)
 
             if (peace === night) {
 
