@@ -67,16 +67,18 @@ module.exports = {
                 amount = 30 * bonus
                 item = "coins"
                 emote = `${config.getEmoji("coin", client)}`
-                data.daily.day = -1
+                await data.updateOne({ $set: { 'daily.day': -1 } })
                 await data.updateOne({ $inc: { coins: amount } })
             }
             let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${message.i10n("daily", { emoji: emote, number: amount, prize: item })}${extra}`)
             message.channel.send({ embeds: [dailymsg] })
 
-            data.daily.day++
-            data.daily.last = Date.now()
+            await data.updateOne({ $inc: { 'daily.day': 1 } })
+            await data.updateOne({ $set: { 'daily.last': Date.now() } })
+            /*data.daily.day++
+            data.daily.last = 
 
-            data.save()
+            data.save()*/
         }
     },
 }
