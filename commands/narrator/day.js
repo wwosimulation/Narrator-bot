@@ -185,7 +185,7 @@ module.exports = {
             let tempchan = message.guild.channels.cache.get(prog[i])
             let peace = db.get(`peace_${tempchan[i]}`)
 
-            if (peace === night) {
+            if (peace && peace === night) {
                 for (let i = 0; i < bandit.length; i++) {
                     db.set(`bandit_${bandit[i]}`, null)
                 }
