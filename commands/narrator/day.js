@@ -208,7 +208,6 @@ module.exports = {
             let peace = db.get(`peace_${tempchan[i]}`)
 
             if (peace === night) {
-
                 for (let i = 0; i < bandit.length; i++) {
                     db.set(`bandit_${bandit[i]}`, null)
                 }
@@ -229,10 +228,8 @@ module.exports = {
                 }
                 args[0] = "0"
             }
-
-
         }
-        
+
         // getting kills from hacker
         for (let i = 0; i < hacker.length; i++) {
             let tempchan = message.guild.channels.cache.get(hacker[i])
