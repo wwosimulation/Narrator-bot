@@ -9,7 +9,7 @@ function terrorCheck(interaction) {
     for (let i = 0; i < prog.length; i++) {
         let tempchan = interaction.guild.channels.cache.get(prog[i])
         let terror = db.get(`terror_${tempchan[i]}`)
-        if (terror.day >= dayCount && interaction.member.nickname === terror.guy) res = true
+        if (terror && terror.day >= dayCount && interaction.member.nickname === terror.guy) res = true
     }
     return res
 }
