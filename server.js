@@ -6,6 +6,12 @@ const Tracing = require("@sentry/tracing")
 
 const fs = require("fs")
 const db = require("quick.db")
+
+if (db.get("emergencystop")) {
+    console.log("Bot has been emergency stopped")
+    process.exit(0)
+}
+
 const mongo = require("./db.js")
 const Discord = require("discord.js")
 const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS_AND_STICKERS", "GUILD_PRESENCES"] })
