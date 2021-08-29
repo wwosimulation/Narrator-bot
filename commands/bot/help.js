@@ -70,7 +70,7 @@ Note: Some arguments were left out as they are obvious to understand like \`nick
         else {
             embed
                 .setTitle(message.i10n("helpHeader"))
-                .setDescription(message.i10n("helpMain", {gamewarning: "<#606123818305585167>", howtoplay: "<#859001588617445436>", rankedwarn: "<#860552178095882240>", supportandquestions: "<#606123788257591297>", clientUser: `<@${client.user.id}>`, prefix: process.env.PREFIX}))
+                .setDescription(message.i10n("helpMain", { gamewarning: "<#606123818305585167>", howtoplay: "<#859001588617445436>", rankedwarn: "<#860552178095882240>", supportandquestions: "<#606123788257591297>", clientUser: `<@${client.user.id}>`, prefix: process.env.PREFIX }))
                 .addField(message.i10n("economy"), message.i10n("helpEconomy"))
                 .addField(message.i10n("fun"), message.i10n("helpFun"))
                 .addField(message.i10n("bot"), message.i10n("helpBot"))
