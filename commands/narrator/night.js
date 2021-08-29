@@ -295,6 +295,7 @@ module.exports = {
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
                                 let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
+                                if (db.get(`role_${player.id}`) == 'Dreamcatcher'){
                                 if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                     db.set(`hypnotize_${dc[a]}`, null)
                                     console.log("hi")
@@ -308,11 +309,14 @@ module.exports = {
                                     chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
                                     db.set(`hypnotized_${dc[a]}`, guy.nickname)
                                 }
+                                }
                             }
                         }
                     }
                 }
             }
+
+
 
             for (let a = 0; a < nb.length; a++) {
                 let naughty = message.guild.channels.cache.get(nb[a])

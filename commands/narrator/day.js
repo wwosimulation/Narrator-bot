@@ -1166,7 +1166,7 @@ module.exports = {
                                 killedplayers.push(guy.id)
                                 thekiller.push(TheDC.id)
                             }
-                            db.set(`hypnotized_${tempchan.id}`, null)
+                            tempchan.setName('priv-dreamcatcher')
                         }
                     }
                 }
@@ -3622,6 +3622,10 @@ module.exports = {
         }
         for (let i = 0; i < arso.length; i++) {
             db.delete(`toDouse_${arso[i]}`)
+        }
+        let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
+        for (let i = 0; i < dc.length; i++) {
+            db.set(`hypnotized_${tempchan.id}`, null)
         }
         console.log("The code worked up to here!")
         db.set(`vtshadow`, false)
