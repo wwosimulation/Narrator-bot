@@ -75,10 +75,6 @@ module.exports = {
 
             await data.updateOne({ $inc: { "daily.day": 1 } })
             await data.updateOne({ $set: { "daily.last": Date.now() } })
-            /*data.daily.day++
-            data.daily.last = 
-
-            data.save()*/
         }
     },
 }
