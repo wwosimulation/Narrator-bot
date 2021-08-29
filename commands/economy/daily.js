@@ -41,18 +41,18 @@ module.exports = {
                 item = "rose"
                 emote = `${config.getEmoji("rosesingle", client)}`
                 amount = 1 * bonus
-                await data.update({ $inc: { inventory: { rose: amount } } })
+                await data.update({ $inc: { 'inventory.rose': amount } })
             } else if (date == 2) {
                 amount = 1 * bonus
                 item = "rose bouquet"
                 emote = `${config.getEmoji("rosebouquet", client)}`
-                await data.update({ $inc: { inventory: { bouquet: amount } } })
+                await data.update({ $inc: { 'inventory.bouquet': amount } })
             } else if (date == 3) {
                 amount = 1 * bonus
                 emote = `${config.getEmoji("lootbox", client)}`
                 item = "lootbox!"
                 extra = `\nTo use it, do \`+use lootbox\`${extra}`
-                await data.update({ $inc: { inventory: { lootbox: amount } } })
+                await data.update({ $inc: { 'inventory.lootbox': amount } })
             } else if (date == 4) {
                 item = "coins"
                 emote = `${config.getEmoji("coin", client)}`
@@ -62,7 +62,7 @@ module.exports = {
                 item = "roses"
                 emote = `${config.getEmoji("rosesingle", client)}`
                 amount = 5 * bonus
-                await data.update({ $inc: { inventory: { rose: amount } } })
+                await data.update({ $inc: { 'inventory.rose': amount } })
             } else if (date == 6) {
                 amount = 30 * bonus
                 item = "coins"
