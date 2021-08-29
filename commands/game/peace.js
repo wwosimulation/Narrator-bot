@@ -16,8 +16,7 @@ module.exports = {
                 dayChat.send({ content: `${alive}\nPeace be upon you dear villagers. No one can die the following night!` })
                 db.set(`peace_${message.channel.id}`, nightCount + 1)
                 message.channel.send({ content: "Your message has reached the villagers." })
-            }
-            else return message.channel.send("You can use this command in only in nights and not during the first one.")
+            } else return message.channel.send("You can use this command in only in nights and not during the first one.")
         }
     },
 }
