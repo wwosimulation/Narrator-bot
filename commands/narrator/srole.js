@@ -6,6 +6,8 @@ const { getRole, fn } = require("../../config")
 
 module.exports = {
     name: "srole",
+    description: "Prepare the agme with channels and roles.",
+    usage: `${process.env.PREFIX}srole <gamemode> [force]`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

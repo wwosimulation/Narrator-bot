@@ -3,6 +3,8 @@ const { soloKillers, roles, getRole } = require("../../config")
 
 module.exports = {
     name: "check",
+    description: "Check players during the night. This command works for every seer in game.",
+    usage: `${process.env.PREFIX}check <player> [<player>]`,
     gameOnly: true,
     run: async (message, args) => {
         let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map((x) => x.id)

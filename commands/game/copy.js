@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "copy",
+    description: "As doppelganger you can copy another player's role. Use this command to perform the ritual.",
+    usage: `${process.env.PREFIX}copy <player>`,
     gameOnly: true,
     run: async (message, args) => {
         if (message.channel.name == "priv-doppelganger") {

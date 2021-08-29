@@ -4,6 +4,8 @@ const { ids } = require("../../config")
 
 module.exports = {
     name: "reset",
+    description: "Reset the database.",
+    usage: `${process.env.PREFIX}reset`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.member.roles.cache.has("606139219395608603") || message.member.roles.cache.has("606276949689499648")) {

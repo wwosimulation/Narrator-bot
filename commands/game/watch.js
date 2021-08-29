@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "watch",
+    description: "Watch a player 👀.",
+    usage: `${process.env.PREFIX}watch <player>`,
     aliases: ["intentlystareat"],
     gameOnly: true,
     run: async (message, args, client) => {
