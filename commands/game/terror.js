@@ -18,8 +18,7 @@ module.exports = {
                 dayChat.send({ content: `**${guy.nickname + " " + guy.user.username || guy}** won't be able to vote anymore from tomorrow on.` })
                 db.set(`terror_${message.channel.id}`, { day: dayCount + 1, guy: guy.nickname })
                 message.channel.send({ content: "The villagers are informed!" })
-            }
-            else return message.channel.send("You can use this command only at days.")
+            } else return message.channel.send("You can use this command only at days.")
         }
     },
 }
