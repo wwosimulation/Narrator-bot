@@ -11,8 +11,8 @@ module.exports = {
             let isNight = db.get(`isNight`)
             let nightCount = db.get(`nightCount`) || 1
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send({ content: "You are dead..." })
-            if (ability == "yes") return message.channel.send({ content: "You already used that ability!" })
-            if (isNight && nightCount > 1) {
+            if (!ability == "no") return message.channel.send({ content: "You already used that ability!" })
+            if (isNight == "yes" && nightCount > 1) {
                 dayChat.send({ content: `${alive}\nPeace be upon you dear villagers. No one can die the following night!` })
                 db.set(`peace_${message.channel.id}`, nightCount + 1)
                 message.channel.send({ content: "Your message has reached the villagers." })
