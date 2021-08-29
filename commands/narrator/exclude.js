@@ -3,6 +3,8 @@ const config = require("../../config")
 
 module.exports = {
     name: "exclude",
+    description: "Exclude some boring roles.",
+    usage: `${process.env.PREFIX}exclude <roles...>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
@@ -11,8 +13,20 @@ module.exports = {
         })
 
         let roles = config.roles.map((x) => x.name.toLowerCase())
+        let aliases = require("../../config/src/aliases")
 
         let rolestoexclude = []
+
+        for (const key in aliases) {
+            if (args.includes(key)) {
+                if (Object.hasOwnProperty.call(aliases, key)) {
+                    const element = aliases[key]
+                    rolestoexclude.push(element)
+                    let index = args.indexOf(key)
+                    args.splice(index, 1)
+                }
+            }
+        }
 
         for (let arg of args) {
             arg = arg.toLowerCase().replace("-", " ")

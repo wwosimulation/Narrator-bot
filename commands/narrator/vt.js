@@ -4,6 +4,8 @@ const ms = require("ms")
 
 module.exports = {
     name: "vt",
+    description: "Start the voting time.",
+    usage: `${process.env.PREFIX}vt <time...>`,
     narratorOnly: true,
     gameOnly: true,
     run: async (message, args, client) => {
@@ -21,7 +23,7 @@ module.exports = {
         droppy.addOptions({ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` })
         for (let i = 1; i <= 16; i++) {
             console.log(i)
-            let player = message.guild.members.cache.find((x) => x.nickname == `${i}`)
+            let player = message.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(aliveRole.id))
             if (player) {
                 droppy.addOptions({ label: `${i}`, value: `votefor-${i}`, description: `${player.user.tag}` })
             }

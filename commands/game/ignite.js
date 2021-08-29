@@ -1,7 +1,10 @@
 const db = require("quick.db")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "ignite",
+    description: "Set all players you doused before on fire.",
+    usage: `${process.env.PREFIX}ignite`,
     alises: ["burn", "fire"],
     gameOnly: true,
     run: async (message, args, client) => {
@@ -11,11 +14,11 @@ module.exports = {
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
         let didCmd = db.get(`dousedAt_${message.channel.id}`) || "-1"
         if (message.channel.name == "priv-arsonist") {
-            if (!message.member.roles.cache.has(alive.id)) return await message.channel.send("Yes. Trying to win as dead. Good Job.")
-            if (isNight != "yes") return await message.channel.send("Burning in broad day light just makes you look stupid")
+            if (!message.member.roles.cache.has(alive.id)) return await message.channel.send("You cannot use the ability now!")
+            if (isNight != "yes") return await message.channel.send("You can use your ability only at night!")
 
-            if (didCmd == db.get(`nightCount`)) return message.channel.send("Bruh, you just doused dummy...")
-            if (doused.length == 0) return await message.channel.send("Are you dumb? Don't try to think i'm stupid! You haven't even doused anyone yet! ")
+            if (didCmd == db.get(`nightCount`)) return message.channel.send("You have used your ability tonight.")
+            if (doused.length == 0) return await message.channel.send("Who are you igniting? You haven't doused player yet.")
 
             for (let i = 0; i < doused.length; i++) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === doused[i])
@@ -23,7 +26,7 @@ module.exports = {
                     if (guy.roles.cache.has(alive.id)) {
                         let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
                         let role = db.get(`role_${guy.id}`)
-                        dayChat.send(`<:ignite:744575140032938014> The Arsonist ignited **${guy.nickname} ${guy.user.username} (${role})**!`)
+                        dayChat.send(`${getEmoji("ignite", client)} The Arsonist ignited **${guy.nickname} ${guy.user.username} (${role})**!`)
                         guy.roles.add(dead.id)
                         guy.roles.remove(alive.id)
                     }

@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const config = require("../config")
 const db = require("quick.db")
+const i10n = require("../i10n")
 //const mongo = require("../roles.find(x => x.name.toLowerCase() == role2.replace("-", " "))")
 const { players, botbans } = require("../db.js")
 const cooldowns = new Discord.Collection()
@@ -13,10 +14,13 @@ module.exports = (client) => {
 
         //let guy = message.member.nickname;
         if (message.author.bot) return //Ignore bots and dms
-        let pdb = await players.findOne({ user: message.author.id }).exec()
-        if (!pdb) {
-            pdb = { user: message.author.id }
-            players(pdb).save()
+        message.dbUser = await players.findOne({ user: message.author.id }).exec()
+        if (!message.dbUser) message.dbUser = new players({ user: message.author.id }).save()
+
+        message.i10n = (key, replaceKeys = {}, language = message.dbUser.language) => {
+            if (!language) language = "en"
+            let string = i10n(key, language, replaceKeys)
+            return string
         }
 
         // blacklists
@@ -59,7 +63,7 @@ module.exports = (client) => {
         }
 
         //If user mentions bot
-        if (message.content === "<@!549402544066002955>") return message.author.send(`Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`)
+        if (message.content === `<@!${client.user.id}>`) return message.author.send(`Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`)
 
         if (!message.content.startsWith(prefix)) return
         if (maint && !client.botAdmin(message.author.id)) return message.channel.send("Sorry! The bot is currently in maintenance mode!")

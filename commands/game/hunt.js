@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "hunt",
+    description: "Hunt a player and kill them if they belong to the sect.",
+    usage: `${process.env.PREFIX}hunt <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-sect-hunter") {
@@ -10,10 +12,10 @@ module.exports = {
             let isNight = db.get(`isNight`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            if (!isNight == "yes") return await message.channel.send("Listen, you can't go hunting for the sect in broad day light.")
+            if (!isNight == "yes") return await message.channel.send("You can use your ability only at night!")
             if (!guy || guy == ownself) return await message.channel.send("Invalid Target!")
-            if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("You can't hunt if you or your target is dead dumb.")
-            if (sect.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) return await message.channel.send("You are sected. You basically a normal villager since shooting your own team is just considered gamethrowing!")
+            if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("You or the player are not alive!")
+            if (sect.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) return await message.channel.send("You are sected.")
             db.set(`hunt_${message.channel.id}`, args[0])
             message.channel.send("Done.")
         }

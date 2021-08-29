@@ -1,9 +1,11 @@
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
-const { getRole } = require("../../config")
+const { getRole, getEmoji } = require("../../config")
 
 module.exports = {
     name: "day",
+    description: "Day! :D",
+    usage: `${process.env.PREFIX}day [wolf_kill]`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
@@ -16,38 +18,39 @@ module.exports = {
         let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
         let wwVote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
         let jailed = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
-        let jailer = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").keyArray("id")
-        let sk = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").keyArray("id")
-        let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").keyArray("id")
-        let canni = message.guild.channels.cache.filter((c) => c.name === "priv-cannibal").keyArray("id")
-        let doc = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").keyArray("id")
-        let bg = message.guild.channels.cache.filter((c) => c.name === "priv-bodyguard").keyArray("id")
-        let witch = message.guild.channels.cache.filter((c) => c.name === "priv-witch").keyArray("id")
-        let bh = message.guild.channels.cache.filter((c) => c.name === "priv-beast-hunter").keyArray("id")
-        let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").keyArray("id")
-        let med = message.guild.channels.cache.filter((c) => c.name === "priv-medium").keyArray("id")
+        let jailer = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").map((x) => x.id)
+        let sk = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map((x) => x.id)
+        let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map((x) => x.id)
+        let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
+        let canni = message.guild.channels.cache.filter((c) => c.name === "priv-cannibal").map((x) => x.id)
+        let doc = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id)
+        let bg = message.guild.channels.cache.filter((c) => c.name === "priv-bodyguard").map((x) => x.id)
+        let witch = message.guild.channels.cache.filter((c) => c.name === "priv-witch").map((x) => x.id)
+        let bh = message.guild.channels.cache.filter((c) => c.name === "priv-beast-hunter").map((x) => x.id)
+        let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
+        let med = message.guild.channels.cache.filter((c) => c.name === "priv-medium").map((x) => x.id)
         let day = db.get(`dayCount`)
-        let arso = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").keyArray("id")
-        let shunt = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").keyArray("id")
-        let sel = message.guild.channels.cache.filter((c) => c.name === "priv-sect-leader").keyArray("id")
-        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").keyArray("id")
-        let kww = message.guild.channels.cache.filter((c) => c.name === "priv-kitten-wolf").keyArray("id")
-        let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").keyArray("id")
-        let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").keyArray("id")
-        let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
+        let arso = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").map((x) => x.id)
+        let shunt = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").map((x) => x.id)
+        let sel = message.guild.channels.cache.filter((c) => c.name === "priv-sect-leader").map((x) => x.id)
+        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map((x) => x.id)
+        let kww = message.guild.channels.cache.filter((c) => c.name === "priv-kitten-wolf").map((x) => x.id)
+        let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
+        let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
+        let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
         let lovers = message.guild.channels.cache.find((c) => c.name === "lovers")
-        let bandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).keyArray("id")
-        let bandit = message.guild.channels.cache.filter((c) => c.name === "priv-bandit").keyArray("id")
-        let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").keyArray("id")
-        let wwb = message.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").keyArray("id")
-        let rl = message.guild.channels.cache.filter((c) => c.name === "priv-red-lady").keyArray("id")
-        let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").keyArray("id")
-        let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").keyArray("id")
+        let bandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
+        let bandit = message.guild.channels.cache.filter((c) => c.name === "priv-bandit").map((x) => x.id)
+        let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").map((x) => x.id)
+        let wwb = message.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").map((x) => x.id)
+        let rl = message.guild.channels.cache.filter((c) => c.name === "priv-red-lady").map((x) => x.id)
+        let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").map((x) => x.id)
+        let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").map((x) => x.id)
         let zombies = message.guild.channels.cache.find((c) => c.name === "zombies")
-        let sheriff = message.guild.channels.cache.filter((c) => c.name === "priv-sheriff").keyArray("id")
-        let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").keyArray("id")
+        let sheriff = message.guild.channels.cache.filter((c) => c.name === "priv-sheriff").map((x) => x.id)
+        let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").map((x) => x.id)
         let cupidKilled = false
-        let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist"]
+        let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker"]
         let strongww = ["Werewolf", "Junior Werewolf", "Nightmare Werewolf", "Kitten Wolf", "Wolf Shaman", "Wolf Pacifist", "Shadow Wolf", "Guardian Wolf", "Werewolf Berserk", "Alpha Werewolf", "Wolf Seer", "Lone Wolf"]
         let village = ["Villager", "Doctor", "Bodyguard", "Tough Guy", "Red Lady", "Gunner", "Jailer", "Priest", "Marksman", "Seer", "Aura Seer", "Spirit Seer", "Seer Apprentice", "Detective", "Medium", "Mayor", "Witch", "Avenger", "Beast Hunter", "Pacifist", "Grumpy Grandma", "Cupid", "President", "Cursed", "Loudmouth", "Flower Child", "Sheriff", "Fortune Teller", "Forger", "Grave Robber", "Santa Claus", "Easter Bunny", "Sibling", "Drunk", "Mad Scientist", "Idiot", "Wise Man", "Doppelganger", "Naughty Boy", "Handsome Prince", "Sect Hunter"]
         let killedplayers = []
@@ -143,13 +146,13 @@ module.exports = {
             if (shield != null) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === shield)
                 let role = db.get(`role_${guy.id}`)
-                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let j = 0; j < chan.length; j++) {
                     let tempchan = message.guild.channels.cache.get(chan[j])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         j = 99
                         if (guy.roles.cache.has(alive.id)) {
-                            tempchan.send(`<:getshield:744536572556476507> You have recieved a shield from the Forger!`)
+                            tempchan.send(`${getEmoji("getshield", client)} You have recieved a shield from the Forger!`)
                             db.set(`given_${forg.id}`, true)
                             db.set(`toGiveS_${forg.id}`, null)
                             db.set(`shield_${tempchan.id}`, true)
@@ -161,13 +164,13 @@ module.exports = {
             if (sword != null) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === sword)
                 let role = db.get(`role_${guy.id}`)
-                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let j = 0; j < chan.length; j++) {
                     let tempchan = message.guild.channels.cache.get(chan[j])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         j = 99
                         if (guy.roles.cache.has(alive.id)) {
-                            tempchan.send(`<:getsword:744536585906683975> You have recieved a sword from the Forger! To use it, do \`+sword [player number]\`!`)
+                            tempchan.send(`${getEmoji("getsword", client)} You have recieved a sword from the Forger! To use it, do \`+sword [player number]\`!`)
                             db.set(`given_${forg.id}`, true)
                             db.set(`toGiveK_${forg.id}`, null)
                             db.set(`sword_${tempchan.id}`, true)
@@ -175,6 +178,238 @@ module.exports = {
                     }
                 }
             }
+        }
+        // getting kills from hacker
+        for (let i = 0; i < hacker.length; i++) {
+            let tempchan = message.guild.channels.cache.get(hacker[i])
+
+            let theHacker
+            for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
+                let tempGu = message.guild.members.cache.find((m) => m.nickname === j.toString())
+                if (tempGu) {
+                    if (tempGu.roles.cache.has(alive.id)) {
+                        theHacker = tempGu
+                    }
+                }
+            }
+            let secondhack = db.get(`secondhack_${hacker[i]}`)
+            if (secondhack != null) {
+                for (let j = 0; j < secondhack.length; j++) {
+                    let guy = message.guild.members.cache.find((m) => m.nickname === secondhack[j])
+                    if (guy.roles.cache.has(alive.id)) {
+                        let role = db.get(`role_${guy.id}`)
+                        // beast hunter trap
+                        for (let k = 0; k < bh.length; k++) {
+                            let trap = db.get(`setTrap_${bh[k]}`)
+                            let active = db.get(`trapActive_${bh[k]}`)
+                            if (trap == secondhack[j] && active == true) {
+                                for (let l = 1; l <= alive.members.size + dead.members.size; l++) {
+                                    let bhc = message.guild.channels.cache.get(bh[k])
+                                    let ithink = message.guild.members.cache.find((m) => m.nickname === l.toString())
+                                    if (ithink.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                        if (ithink.roles.cache.has(alive.id)) {
+                                            secondhack[j] = "0" // makes the cannibal's attack to the player none
+                                            l = 99
+                                            k = 99
+                                            tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                            tempchan.send(`${alive}`)
+                                            bhc.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
+                                            bhc.send(`${alive}`)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (secondhack[j] != "0") {
+                            // jailer's protection
+                            if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+                                if (guy.roles.cache.has(alive.id)) {
+                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    tempchan.send(`${alive}`)
+                                    secondhack[j] = "0" // makes the hacker's attack towards the player none
+                                }
+                            }
+                        }
+                        // doc's protection
+                        if (secondhack[j] != "0") {
+                            for (let k = 0; k < doc.length; k++) {
+                                let protection = db.get(`heal_${doc[k]}`)
+                                if (protection == secondhack[j]) {
+                                    let doctor = message.guild.channels.cache.get(doc[k])
+                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    tempchan.send(`${alive}`)
+                                    doctor.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                                    doctor.send(`${alive}`)
+                                    secondhack[j] = "0"
+                                }
+                            }
+                        }
+                        // witch's potion
+
+                        if (secondhack[j] != "0") {
+                            for (let k = 0; k < witch.length; k++) {
+                                let potion = db.get(`potion_${witch[k]}`)
+                                if (potion == secondhack[j]) {
+                                    let channe = message.guild.channels.cache.get(witch[k])
+                                    channe.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                                    channe.send(`${alive}`)
+                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    tempchan.send(`${alive}`)
+                                    secondhack[j] = "0"
+                                }
+                            }
+                        }
+                        // forger
+                        if (secondhack[j] != "0") {
+                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
+                            for (let k = 0; k < chans.length; k++) {
+                                let sectempchan = message.guild.channels.cache.get(chans[k])
+                                if (sectempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                    let shield = db.get(`shield_${sectempchan.id}`)
+                                    if (shield == true) {
+                                        sectempchan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
+                                        sectempchan.send(`${alive}`)
+                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                        tempchan.send(`${alive}`)
+                                        secondhack[j] = "0"
+                                        db.set(`shield_${sectempchan.id}`, false)
+                                    }
+                                }
+                            }
+                        }
+                        // bodyguard's protection
+                        for (let k = 0; k < bg.length; k++) {
+                            let protection = db.get(`guard_${bg[k]}`)
+                            let lives = db.get(`lives_${bg[k]}`)
+                            if (protection == secondhack[j]) {
+                                let channe = message.guild.channels.cache.get(bg[k])
+                                if (lives == 2) {
+                                    db.subtract(`lives_${bg[k]}`, 1)
+                                    secondhack[j] = "0"
+                                    channe.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                    channe.send(`${alive}`)
+                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    tempchan.send(`${alive}`)
+                                } else if (lives == 1) {
+                                    let player
+                                    for (let o = 1; o <= alive.members.size + dead.members.size; o++) {
+                                        player = message.guild.members.cache.find((m) => m.nickname === o.toString())
+                                        if (channe.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])) {
+                                            if (player.roles.cache.has(alive.id)) {
+                                                o = 99
+                                                secondhack[j] = "0"
+                                                player.roles.add(dead.id)
+                                                player.roles.remove(alive.id)
+                                                dayChat.send(`${getEmoji("normal_gravestone", client)} The Hacker hacked **${player.nickname} ${player.user.username} (Bodyguard)**!`)
+                                                killedplayers.push(player.id)
+                                                thekiller.push(theHacker.id)
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if (role == "Bodyguard") {
+                                let channe = message.guild.channels.cache.get(bg[k])
+                                if (channe.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                    secondhack[j] = "0"
+                                    let lives = db.get(`lives_${channe.id}`)
+                                    if (lives == 2) {
+                                        channe.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                        channe.send(`${alive}`)
+                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                        tempchan.send(`${alive}`)
+                                    } else if (lives == 1) {
+                                        dayChat.send(`${getEmoji("eat", client)} The hunngry Cannibal ate **${guy.nickname} ${guy.user.username} (Bodyguard)**!`)
+                                        guy.roles.add(dead.id)
+                                        guy.roles.remove(alive.id)
+                                        killedplayers.push(guy.id)
+                                        thekiller.push(theHacker.id)
+                                    }
+                                }
+                            }
+                        }
+                        // tough guy
+                        if (secondhack[j] != "0") {
+                            for (let o = 1; o <= alive.members.size + dead.members.size; o++) {
+                                let theHacker = message.guild.members.cache.find((m) => m.nickname === o.toString())
+                                if (theHacker) {
+                                    if (tempchan.permissionsFor(theHacker).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                        if (theHacker.roles.cache.has(alive.id)) {
+                                            if (db.get(`role_${message.guild.members.cache.find((m) => m.nickname === secondhack[j]).id}`) == "Tough Guy") {
+                                                for (let x = 0; x < tg.length; x++) {
+                                                    let iudi = message.guild.channels.cache.get(tg[x])
+                                                    if (iudi.permissionsFor(message.guild.members.cache.find((m) => m.nickname === secondhack[j])).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                        tempchan.send(`_ _\n${getEmoji("tough_guy", client)} Player **${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
+                                                        tempchan.send(`<&${alive}>`)
+
+                                                        iudi.send(`${getEmoji("guard", client)} You have been attacked by **${theHacker.nickname} ${theHacker.user.username} (Hacker)**. You have been wounded and will die at the end of the day.`)
+                                                        iudi.send(`${alive}`)
+                                                        db.set(`wounded_${tg[x]}`, true)
+                                                        secondhack[j] = guy.nickname
+                                                    }
+                                                }
+                                            } else {
+                                                for (let p = 0; p < tg.length; p++) {
+                                                    let chan = message.guild.channels.cache.get(tg[p])
+                                                    let tough = db.get(`tough_${tg[p]}`)
+                                                    if (tough == secondhack[j]) {
+                                                        let theTg
+                                                        for (let q = 1; q <= alive.members.size + dead.members.size; q++) {
+                                                            let the = message.guild.members.cache.find((m) => m.nickname === q.toString())
+                                                            if (the) {
+                                                                if (the.roles.cache.has(alive.id)) {
+                                                                    theTg = the
+                                                                }
+                                                            }
+                                                        }
+                                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                        tempchan.send(`_ _\n${getEmoji("tough_guy", client)} Player **${theTg.nickname} ${theTg.user.username}** is a tough guy! He now knows your role!`)
+                                                        tempchan.send(`${alive}`)
+                                                        chan.send(`${getEmoji("guard", client)} You were protecting **${guy.nickname} ${guy.user.username}** who has been attacked by **${theCanni.nickname} ${theCanni.user.username} (Cannibal)**. You have been wounded and will die at the end of the day.`)
+                                                        chan.send(`${alive}`)
+                                                        db.set(`wounded_${tg[p]}`, true)
+                                                        secondhack[j] = "0"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // red lady
+                        if (secondhack[j] != "0") {
+                            if (role == "Red Lady") {
+                                for (let k = 0; k < rl.length; k++) {
+                                    let chan = message.guild.channels.cache.get(rl[k])
+                                    if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])) {
+                                        let visit = db.get(`visit_${chan.id}`)
+                                        if (visit) {
+                                            chan.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`)
+                                            chan.send(`${alive}`)
+                                            tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                            tempchan.send(`${alive}`)
+                                            secondhack[j] = "0"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // killing players
+                        if (secondhack[j] != "0") {
+                            dayChat.send(`${getEmoji("eat", client)} The Hacker hacked **${guy.nickname} ${guy.user.username} (${role})**!`)
+                            if (role == "Cupid") {
+                                cupidKilled = true
+                            }
+                            guy.roles.add(dead.id)
+                            guy.roles.remove(alive.id)
+                            killedplayers.push(guy.id)
+                            thekiller.push(theHacker.id)
+                        }
+                    }
+                }
+            }
+            db.set(`secondhack_${hacker[i]}`, null)
         }
         // getting the kills from cannibal
         for (let i = 0; i < canni.length; i++) {
@@ -215,9 +450,9 @@ module.exports = {
                                             eat[j] = "0" // makes the cannibal's attack to the player none
                                             l = 99
                                             k = 99
-                                            cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                            cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                             cannibal.send(`${alive}`)
-                                            bhc.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                                            bhc.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                                             bhc.send(`${alive}`)
                                         }
                                     }
@@ -229,7 +464,7 @@ module.exports = {
                             // jailer's protection
                             if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                                 if (guy.roles.cache.has(alive.id)) {
-                                    cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     cannibal.send(`${alive}`)
                                     eat[j] = "0" // makes the cannibal's attack towards the player none
                                 }
@@ -242,9 +477,9 @@ module.exports = {
                                 let protection = db.get(`heal_${doc[k]}`)
                                 if (protection == eat[j]) {
                                     let doctor = message.guild.channels.cache.get(doc[k])
-                                    cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     cannibal.send(`${alive}`)
-                                    doctor.send(`<:heal:744536259673718894> Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                                    doctor.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
                                     doctor.send(`${alive}`)
                                     eat[j] = "0"
                                 }
@@ -258,9 +493,9 @@ module.exports = {
                                 let potion = db.get(`potion_${witch[k]}`)
                                 if (potion == eat[j]) {
                                     let channe = message.guild.channels.cache.get(witch[k])
-                                    channe.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                                    channe.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                                     channe.send(`${alive}`)
-                                    cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     cannibal.send(`${alive}`)
                                     eat[j] = "0"
                                 }
@@ -269,15 +504,15 @@ module.exports = {
 
                         // forger
                         if (eat[j] != "0") {
-                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                             for (let k = 0; k < chans.length; k++) {
                                 let tempchan = message.guild.channels.cache.get(chans[k])
                                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                     let shield = db.get(`shield_${tempchan.id}`)
                                     if (shield == true) {
-                                        tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
+                                        tempchan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
                                         tempchan.send(`${alive}`)
-                                        cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                        cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                         cannibal.send(`${alive}`)
                                         eat[j] = "0"
                                         db.set(`shield_${tempchan.id}`, false)
@@ -294,9 +529,9 @@ module.exports = {
                                 if (lives == 2) {
                                     db.subtract(`lives_${bg[k]}`, 1)
                                     eat[j] = "0"
-                                    channe.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                    channe.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                     channe.send(`${alive}`)
-                                    cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     cannibal.send(`${alive}`)
                                 } else if (lives == 1) {
                                     let player
@@ -308,7 +543,7 @@ module.exports = {
                                                 eat[j] = "0"
                                                 player.roles.add(dead.id)
                                                 player.roles.remove(alive.id)
-                                                dayChat.send(`<:eat:744575270102630482> The hunngry Cannibal ate **${player.nickname} ${player.user.username} (Bodyguard)**!`)
+                                                dayChat.send(`${getEmoji("eat", client)} The hunngry Cannibal ate **${player.nickname} ${player.user.username} (Bodyguard)**!`)
                                                 killedplayers.push(player.id)
                                                 thekiller.push(theCanni.id)
                                             }
@@ -321,12 +556,12 @@ module.exports = {
                                     eat[j] = "0"
                                     let lives = db.get(`lives_${channe.id}`)
                                     if (lives == 2) {
-                                        channe.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                        channe.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                         channe.send(`${alive}`)
-                                        cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                        cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                         cannibal.send(`${alive}`)
                                     } else if (lives == 1) {
-                                        dayChat.send(`<:eat:744575270102630482> The hunngry Cannibal ate **${guy.nickname} ${guy.user.username} (Bodyguard)**!`)
+                                        dayChat.send(`${getEmoji("eat", client)} The hunngry Cannibal ate **${guy.nickname} ${guy.user.username} (Bodyguard)**!`)
                                         guy.roles.add(dead.id)
                                         guy.roles.remove(alive.id)
                                         killedplayers.push(guy.id)
@@ -347,11 +582,11 @@ module.exports = {
                                                 for (let x = 0; x < tg.length; x++) {
                                                     let iudi = message.guild.channels.cache.get(tg[x])
                                                     if (iudi.permissionsFor(message.guild.members.cache.find((m) => m.nickname === eat[j])).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                        cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                                        cannibal.send(`_ _\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
+                                                        cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                        cannibal.send(`_ _\n${getEmoji("tough_guy", client)} Player **${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
                                                         cannibal.send(`<&${alive}>`)
 
-                                                        iudi.send(`<:guard:744536167109886023> You have been attacked by **${theCanni.nickname} ${theCanni.user.username} (Cannibal)**. You have been wounded and will die at the end of the day.`)
+                                                        iudi.send(`${getEmoji("guard", client)} You have been attacked by **${theCanni.nickname} ${theCanni.user.username} (Cannibal)**. You have been wounded and will die at the end of the day.`)
                                                         iudi.send(`${alive}`)
                                                         db.set(`wounded_${tg[x]}`, true)
                                                         eat[j] = "0"
@@ -371,10 +606,10 @@ module.exports = {
                                                                 }
                                                             }
                                                         }
-                                                        cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                                        cannibal.send(`_ _\n<:tough_guy:606429479170080769> Player **${theTg.nickname} ${theTg.user.username}** is a tough guy! He now knows your role!`)
+                                                        cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                        cannibal.send(`_ _\n${getEmoji("tough_guy", client)} Player **${theTg.nickname} ${theTg.user.username}** is a tough guy! He now knows your role!`)
                                                         cannibal.send(`${alive}`)
-                                                        chan.send(`<:guard:744536167109886023> You were protecting **${guy.nickname} ${guy.user.username}** who has been attacked by **${theCanni.nickname} ${theCanni.user.username} (Cannibal)**. You have been wounded and will die at the end of the day.`)
+                                                        chan.send(`${getEmoji("guard", client)} You were protecting **${guy.nickname} ${guy.user.username}** who has been attacked by **${theCanni.nickname} ${theCanni.user.username} (Cannibal)**. You have been wounded and will die at the end of the day.`)
                                                         chan.send(`${alive}`)
                                                         db.set(`wounded_${tg[p]}`, true)
                                                         eat[j] = "0"
@@ -395,9 +630,9 @@ module.exports = {
                                     if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])) {
                                         let visit = db.get(`visit_${chan.id}`)
                                         if (visit) {
-                                            chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                                            chan.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`)
                                             chan.send(`${alive}`)
-                                            cannibal.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                            cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                             cannibal.send(`${alive}`)
                                             eat[j] = "0"
                                         }
@@ -408,7 +643,7 @@ module.exports = {
 
                         // killing players
                         if (eat[j] != "0") {
-                            dayChat.send(`<:eat:744575270102630482> The hungry Cannibal ate **${guy.nickname} ${guy.user.username} (${role})**!`)
+                            dayChat.send(`${getEmoji("eat", client)} The hungry Cannibal ate **${guy.nickname} ${guy.user.username} (${role})**!`)
                             if (role == "Cupid") {
                                 cupidKilled = true
                             }
@@ -476,9 +711,9 @@ module.exports = {
                         if (trap == kills[i] && active == true) {
                             kills[i] = "0" // makes the serial killer's attack towards the player none
                             let toSend = message.guild.channels.cache.get(bh[j])
-                            toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                            toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                             toSK.send(`${alive}`)
-                            toSend.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                            toSend.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                             toSend.send(`${alive}`)
                             db.set(`setTrap_${bh[j]}`, null)
                             db.set(`trapActive_${bh[j]}`, false)
@@ -496,7 +731,7 @@ module.exports = {
                             if (jailerGuy.permissionsFor(isJailer).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 j = 99
                                 if (isJailer.roles.cache.has(alive.id)) {
-                                    toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     toSK.send(`${alive}`)
                                     kills[i] = "0" // makes the serial killer's attack towards the player none
                                 }
@@ -511,11 +746,11 @@ module.exports = {
                         let protection = db.get(`heal_${doc[j]}`)
                         if (protection == guy.nickname) {
                             kills[i] = "0" // makes the serial killer's attack towards the player none
-                            toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                            toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                             toSK.send(`${alive}`)
                             let toSend = message.guild.channels.cache.get(doc[j])
                             toSend.send(`${alive}`)
-                            toSend.send(`<:heal:744536259673718894> Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                            toSend.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
                             j = 99
                         }
                     }
@@ -530,9 +765,9 @@ module.exports = {
                             db.set(`potion_${witch[j]}`, null)
                             db.set(`witchAbil_${witch[j]}`, 1)
                             let toSend = message.guild.channels.cache.get(witch[j])
-                            toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                            toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                             toSK.send(`${alive}`)
-                            toSend.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                            toSend.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                             toSend.send(`${alive}`)
                             j = 99
                         }
@@ -541,15 +776,15 @@ module.exports = {
 
                 // checking if the forger's shield is on the player
                 // forger
-                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
+                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let k = 0; k < chans.length; k++) {
                     let tempchan = message.guild.channels.cache.get(chans[k])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         let shield = db.get(`shield_${tempchan.id}`)
                         if (shield == true) {
-                            tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
+                            tempchan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
                             tempchan.send(`${alive}`)
-                            toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                            toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                             toSK.send(`${alive}`)
                             kills[i] = "0"
                             db.set(`shield_${tempchan.id}`, false)
@@ -565,9 +800,9 @@ module.exports = {
                         let guard = db.get(`guard_${chan.id}`)
                         if (guard == kills[i]) {
                             if (lives == 2) {
-                                chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                 chan.send(`${alive}`)
-                                toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                 toSK.send(`${alive}`)
                                 kills[i] = "0"
                                 db.subtract(`lives_${chan.id}`, 1)
@@ -578,7 +813,7 @@ module.exports = {
                                     if (tempbg) {
                                         if (tempbg.roles.cache.has(alive.id)) {
                                             if (chan.permissionsFor(tempbg).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${tempbg.nickname} ${tempbg.user.username} (Bodyguard)**!`)
+                                                dayChat.send(`${getEmoji("serial_killer_knife", client)} The Serial Killer stabbed **${tempbg.nickname} ${tempbg.user.username} (Bodyguard)**!`)
                                                 tempbg.roles.add(dead.id)
                                                 tempbg.roles.remove(alive.id)
                                             }
@@ -600,9 +835,9 @@ module.exports = {
                                 if (guy.roles.cache.has(alive.id)) {
                                     let lives = db.get(`lives_${chan.id}`)
                                     if (lives == 2) {
-                                        chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                        chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                         chan.send(`${alive}`)
-                                        toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                        toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                         toSK.send(`${alive}`)
                                         db.subtract(`lives_${chan.id}`, 1)
                                         kills[i] = "0"
@@ -625,10 +860,10 @@ module.exports = {
                                     if (thetg.roles.cache.has(alive.id)) {
                                         if (chan.permissionsFor(thetg).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                             k = 99
-                                            chan.send(`<:guard:744536167109886023> You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${THESK.nickname} ${THESK.user.username} (Serial Killer)**! You will die at the end of the day!`)
+                                            chan.send(`${getEmoji("guard", client)} You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${THESK.nickname} ${THESK.user.username} (Serial Killer)**! You will die at the end of the day!`)
                                             chan.send(`${alive}`)
-                                            toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                            toSK.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**! He now knows your role!`)
+                                            toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                            toSK.send(`_ _\n\n${getEmoji("tough_guy", client)} Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**! He now knows your role!`)
                                             toSK.send(`${alive}`)
                                             kills[i] = "0"
                                             db.set(`wounded_${chan.id}`, true)
@@ -645,10 +880,10 @@ module.exports = {
                         for (let j = 0; j < tg.length; j++) {
                             let chan = message.guild.channels.cache.get(tg[j])
                             if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                                chan.send(`<:guard:744536167109886023> You have been attacked by **${THESK.nickname} ${THESK.user.username} (Serial Killer)**! You will die at the end of the day!`)
+                                chan.send(`${getEmoji("guard", client)} You have been attacked by **${THESK.nickname} ${THESK.user.username} (Serial Killer)**! You will die at the end of the day!`)
                                 chan.send(`${alive}`)
-                                toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                toSK.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**! He now knows your role!`)
+                                toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                toSK.send(`_ _\n\n${getEmoji("tough_guy", client)} Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**! He now knows your role!`)
                                 toSK.send(`${alive}`)
                                 db.set(`wounded_${chan.id}`, true)
                                 kills[i] = "0"
@@ -664,9 +899,9 @@ module.exports = {
                             let chan = message.guild.channels.cache.get(rl[j])
                             if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 if (db.get(`visit_${chan.id}`)) {
-                                    chan.send(`<:guard:744536167109886023> Someone tried attacking you while you were away!`)
+                                    chan.send(`${getEmoji("guard", client)} Someone tried attacking you while you were away!`)
                                     chan.send(`${alive}`)
-                                    toSK.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    toSK.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     toSK.send(`${alive}`)
                                     kills[i] = "0"
                                 }
@@ -678,7 +913,7 @@ module.exports = {
                 // serial killer attacking
                 if (kills[i] != "0") {
                     let role = db.get(`role_${guy.id}`)
-                    dayChat.send(`<:serial_killer_knife:774088736861978666> The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
+                    dayChat.send(`${getEmoji("serial_killer_knife", client)} The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
                     if (role == "Cupid") {
                         cupidKilled = true
                     }
@@ -814,7 +1049,7 @@ module.exports = {
 
             if (kills[0] != "0") {
                 wwKill = "0"
-                dayChat.send(`<:werewolf:475776038727581697> The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
+                dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
                 if (role == "Cupid") {
                     cupidKilled = true
                 }
@@ -824,7 +1059,7 @@ module.exports = {
                 thekiller.push("Werewolf")
             }
             for (let a = 1; a < kills.length; a++) {
-                dayChat.send(`<:frenzy:744573088204718412> The Werewolf frenzy killed **${kills[a].nickname} ${kills[a].user.username} (${db.get(`role_${kills[a].id}`)})**!`)
+                dayChat.send(`${getEmoji("frenzy", client)} The Werewolf frenzy killed **${kills[a].nickname} ${kills[a].user.username} (${db.get(`role_${kills[a].id}`)})**!`)
                 kills[a].roles.add(dead.id)
                 kills[a].roles.remove(alive.id)
                 killedplayers.push(kills[a].id)
@@ -841,7 +1076,7 @@ module.exports = {
                 console.log("It is not 0 (2)")
                 if (role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Wise Man" || role == "Corruptor" || role == "Bandit" || role == "Cannibal" || role == "Alchemist" || role == "Illusionist") {
                     wwKill = "0"
-                    wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                    wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                 }
             }
 
@@ -885,7 +1120,7 @@ module.exports = {
                         let ro = db.get(`role_${shush.id}`)
                         if (ro == allwolves[0]) {
                             wwKill = "0" // makes the werewolves' attack towards the player none
-                            dayChat.send(`<:trap:744535154927861761> The Beast Hunter's trap killed **${shush.nickname} ${shush.user.username} (${ro})**!`)
+                            dayChat.send(`${getEmoji("trap", client)} The Beast Hunter's trap killed **${shush.nickname} ${shush.user.username} (${ro})**!`)
                             shush.roles.add(dead.id)
                             shush.roles.remove(alive.id)
                             killedplayers.push(shush.id)
@@ -904,7 +1139,7 @@ module.exports = {
                     if (jailerGuy.permissionsFor(isJailer).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         j = 99
                         if (isJailer.roles.cache.has(alive.id)) {
-                            wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                            wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                             wwChat.send(`${alive}`)
                             wwKill = "0" // makes the werewolves' attack towards the player none
                         }
@@ -919,10 +1154,10 @@ module.exports = {
                     let protection = db.get(`heal_${doc[j]}`)
                     if (protection == guy.nickname) {
                         wwKill = "0" // makes the werewolves' attack towards the player none
-                        wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                        wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                         wwChat.send(`${alive}`)
                         let toSend = message.guild.channels.cache.get(doc[j])
-                        toSend.send(`<:heal:744536259673718894> Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                        toSend.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
                         toSend.send(`${alive}`)
                         j = 99
                     }
@@ -939,9 +1174,9 @@ module.exports = {
                         db.set(`potion_${witch[j]}`, null)
                         db.set(`witchAbil_${witch[j]}`, 1)
                         let toSend = message.guild.channels.cache.get(witch[j])
-                        wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                        wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                         wwChat.send(`${alive}`)
-                        toSend.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                        toSend.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                         toSend.send(`${alive}`)
                         j = 99
                     }
@@ -949,15 +1184,15 @@ module.exports = {
             }
 
             if (wwKill != "0") {
-                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let k = 0; k < chans.length; k++) {
                     let tempchan = message.guild.channels.cache.get(chans[k])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         let shield = db.get(`shield_${tempchan.id}`)
                         if (shield == true) {
-                            tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
+                            tempchan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
                             tempchan.send(`${alive}`)
-                            wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                            wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                             wwChat.send(`${alive}`)
                             wwKill = "0"
                             db.set(`shield_${tempchan.id}`, false)
@@ -976,9 +1211,9 @@ module.exports = {
                         let thecha = message.guild.channels.cache.get(bg[j])
                         if (lives == 2) {
                             wwKill = "0" // makes the werewolves' attack towards the player none
-                            thecha.send("<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.")
+                            thecha.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                             thecha.send(`${alive}`)
-                            wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                            wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                             wwChat.send(`${alive}`)
                             db.set(`lives_${bg[j]}`, 1)
                         } else if (lives == 1) {
@@ -986,7 +1221,7 @@ module.exports = {
                             for (let k = 1; k <= alive.members.size + dead.members.size; k++) {
                                 let lol = message.guild.members.cache.find((m) => m.nickname === k.toString())
                                 if (thecha.permissionsFor(lol).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                    dayChat.send(`<:werewolf:475776038727581697> The Werewolves killed **${lol.nickname} ${lol.user.username} (Bodyguard)**!`)
+                                    dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${lol.nickname} ${lol.user.username} (Bodyguard)**!`)
                                     k = 99
                                     lol.roles.add(dead.id)
                                     lol.roles.remove(alive.id)
@@ -1002,9 +1237,9 @@ module.exports = {
                             if (thecha.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 if (!db.get(`lives_${bg[k]}`) || db.get(`lives_${bg[k]}`) == 2) {
                                     wwKill = "0"
-                                    thecha.send("<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.")
+                                    thecha.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                     thecha.send(`${alive}`)
-                                    wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     wwChat.send(`${alive}`)
                                     db.set(`lives_${bg[k]}`, 1)
                                     k = 89
@@ -1061,10 +1296,10 @@ module.exports = {
                         if (db.get(`role_${wolvesID[k]}`) == allwolves[0]) {
                             console.log("Tough test 11")
                             let thewolf = message.guild.members.cache.get(wolvesID[k])
-                            tgc.send(`<:tough_guy:606429479170080769> You have been attacked by **${thewolf.nickname} ${thewolf.user.username} (${db.get(`role_${thewolf.id}`)})**. You have been wounded and will die at the end of the day.`)
+                            tgc.send(`${getEmoji("tough_guy", client)} You have been attacked by **${thewolf.nickname} ${thewolf.user.username} (${db.get(`role_${thewolf.id}`)})**. You have been wounded and will die at the end of the day.`)
                             tgc.send(`${alive}`)
                             db.set(`wounded_${tgc.id}`, true)
-                            let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
+                            let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                             for (let a = 0; a < gr.length; a++) {
                                 let thechan = message.guild.channels.cache.get(gr[a])
                                 if (thechan.permissionsFor(thewolf).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -1074,9 +1309,9 @@ module.exports = {
                                         let thtg = message.guild.members.cache.find((m) => m.nickname === b.toString())
                                         if (thtg && thtg.roles.cache.has(alive.id) && tgc.permissionsFor(thtg).has(["READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
                                             wwKill = "0"
-                                            thechan.send(`_ _\n<:tough_guy:606429479170080769> Player **${thtg.nickname} ${thtg.user.username}** is a tough guy! He now knows your role!`)
+                                            thechan.send(`_ _\n${getEmoji("tough_guy", client)} Player **${thtg.nickname} ${thtg.user.username}** is a tough guy! He now knows your role!`)
                                             thechan.send(`${alive}`)
-                                            wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                            wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                             wwChat.send(`${alive}`)
                                         }
                                     }
@@ -1105,7 +1340,7 @@ module.exports = {
                                                 theChannel.send(`You have been attacked by **${thewolf.nickname} ${thewolf.user.username} (${db.get(`role_${thewolf.id}`)})**. You have been wounded and will die at the end of the day.`)
                                                 theChannel.send(`${alive}`)
                                                 db.set(`wounded_${theChannel.id}`, true)
-                                                let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
+                                                let gr = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${thewolf.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                                 for (let a = 0; a < gr.length; a++) {
                                                     let thechan = message.guild.channels.cache.get(gr[a])
                                                     if (thechan.permissionsFor(thewolf).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -1113,8 +1348,8 @@ module.exports = {
                                                         a = 99
                                                         wwKill = "0"
                                                         thechan.send(`_ _\n**${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
-                                                        thechan.send(`${alive.id}`)
-                                                        wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                        thechan.send(`${alive}`)
+                                                        wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                                         wwChat.send(`${alive}`)
                                                     }
                                                 }
@@ -1136,9 +1371,9 @@ module.exports = {
                         if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             if (db.get(`visit_${chan.id}`)) {
                                 wwKill = "0"
-                                wwChat.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                 wwChat.send(`${alive}`)
-                                chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                                chan.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`)
                                 chan.send(`${alive}`)
                             }
                         }
@@ -1150,7 +1385,7 @@ module.exports = {
             if (wwKill != "0") {
                 console.log("It is not 0 (8)")
                 if (role == "Cursed") {
-                    let allcursed = message.guild.channels.cache.filter((c) => c.name === "priv-cursed").keyArray("id")
+                    let allcursed = message.guild.channels.cache.filter((c) => c.name === "priv-cursed").map((x) => x.id)
                     for (let z = 0; z < allcursed.length; z++) {
                         let thecurse = message.guild.channels.cache.get(allcursed[z])
                         if (thecurse.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
@@ -1198,7 +1433,7 @@ module.exports = {
                         })
                     }
                 } else {
-                    dayChat.send(`<:werewolf:475776038727581697> The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
+                    dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
                     if (role == "Cupid") {
                         cupidKilled = true
                     }
@@ -1256,7 +1491,7 @@ module.exports = {
         console.log("Nice! I have locked players from ww chat")
 
         // remove werewolf votes
-        await wwVote.bulkDelete((await message.channel.messages.fetch({ limit: 100 })).filter((m) => !m.pinned))
+        //await wwVote.bulkDelete((await message.channel.messages.fetch({ limit: 100 })).filter((m) => !m.pinned))
 
         // medium reviving
         for (let i = 0; i < med.length; i++) {
@@ -1264,7 +1499,7 @@ module.exports = {
             db.set(`revive_${med[i]}`, null)
             if (reviving) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === reviving)
-                dayChat.send(`<:revived:744571959550935184> The Medium revived **${guy.nickname} ${guy.user.username}**!`)
+                dayChat.send(`${getEmoji("revived", client)} The Medium revived **${guy.nickname} ${guy.user.username}**!`)
                 guy.roles.add(alive.id)
                 guy.roles.remove(dead.id)
                 db.set(`med_${med[i]}`, "yes")
@@ -1279,7 +1514,20 @@ module.exports = {
             let mute = db.get(`mute_${gg[i]}`)
             if (mute) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === mute)
-                dayChat.send(`<:ggmute:766684344647417936> The Grumpy Grandma muted **${guy.nickname} ${guy.user.username}**!`)
+                dayChat.send(`${getEmoji("ggmute", client)} The Grumpy Grandma muted **${guy.nickname} ${guy.user.username}**!`)
+                dayChat.permissionOverwrites.edit(guy.id, {
+                    SEND_MESSAGES: false,
+                })
+            }
+        }
+
+        // hacker muting
+
+        for (let i = 0; i < hacker.length; i++) {
+            let mute = db.get(`mute_${hacker[i]}`)
+            if (mute) {
+                let guy = message.guild.members.cache.find((m) => m.nickname === mute)
+                // dayChat.send(`<:ggmute:766684344647417936> The Grumpy Grandma muted **${guy.nickname} ${guy.user.username}**!`)
                 dayChat.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: false,
                 })
@@ -1316,20 +1564,20 @@ module.exports = {
                                 //return; // I FOUND THE PROBLEM
                                 if (leader.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                     if (role.toLowerCase().includes("wolf") || role == "Arsonist" || role == "Zombie" || role == "Bandit" || role == "Accomplice" || role == "Sorcerer" || role == "Serial Killer" || role == "Corruptor" || role == "Illusinist" || role == "Cannibal" || role == "targetofhh" || role == "Cursed" || role == "Doppelganger" || role == "Alchemist" || role == "Grave Robber") {
-                                        sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                        sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                         sl.send(`${alive}`)
                                         sect = "0"
                                     } else {
-                                        let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                                        let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
 
                                         // protection from non-village
                                         for (let l = 0; l < thechan.length; l++) {
                                             if (db.get(`bitten_${thechan[l]}`) == true) {
                                                 sect = "0"
-                                                sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                 sl.send(`${alive}`)
                                             } else if (strongww.includes(role) || role == "Cursed" || soloKillers.includes(role) || role == "Sorcerer" || role == "Zombie" || role == "Doppelganger" || role == "Accomplice" || message.guild.channels.cache.get("682617467767357453").permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                 sl.send(`${alive}`)
                                                 sect = "0"
                                             }
@@ -1354,9 +1602,9 @@ module.exports = {
                                                 if (trap == guy.nickname && active == true) {
                                                     sect = "0" // makes the serial killer's attack towards the player none
                                                     let toSend = message.guild.channels.cache.get(bh[l])
-                                                    sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                    sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                     sl.send(`${alive}`)
-                                                    toSend.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                                                    toSend.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                                                     toSend.send(`${alive}`)
                                                     db.set(`setTrap_${bh[l]}`, null)
                                                     db.set(`trapActive_${bh[l]}`, false)
@@ -1370,7 +1618,7 @@ module.exports = {
                                             for (let k = 0; k < thechan.length; k++) {
                                                 if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
                                                     k = 99
-                                                    sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                    sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                     sl.send(`${alive}`)
                                                     sect = "0"
                                                 }
@@ -1383,11 +1631,11 @@ module.exports = {
                                                 let protection = db.get(`heal_${doc[o]}`)
                                                 if (protection == guy.nickname) {
                                                     sect = "0" // makes the serial killer's attack towards the player none
-                                                    sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                    sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                     sl.send(`${alive}`)
                                                     let toSend = message.guild.channels.cache.get(doc[o])
                                                     toSend.send(`${alive}`)
-                                                    toSend.send(`<:heal:744536259673718894> Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                                                    toSend.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
                                                     o = 99
                                                 }
                                             }
@@ -1402,9 +1650,9 @@ module.exports = {
                                                     db.set(`potion_${witch[o]}`, null)
                                                     db.set(`witchAbil_${witch[o]}`, 1)
                                                     let toSend = message.guild.channels.cache.get(witch[o])
-                                                    sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                    sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                     sl.send(`${alive}`)
-                                                    toSend.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                                                    toSend.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                                                     toSend.send(`${alive}`)
                                                     o = 99
                                                 }
@@ -1412,15 +1660,15 @@ module.exports = {
                                         }
 
                                         if (sect != "0") {
-                                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                             for (let k = 0; k < chans.length; k++) {
                                                 let tempchan = message.guild.channels.cache.get(chans[k])
                                                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                     let shield = db.get(`shield_${tempchan.id}`)
                                                     if (shield == true) {
-                                                        tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
+                                                        tempchan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
                                                         tempchan.send(`${alive}`)
-                                                        sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                        sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                         sl.send(`${alive}`)
                                                         sect = "0"
                                                         db.set(`shield_${tempchan.id}`, false)
@@ -1440,9 +1688,9 @@ module.exports = {
                                                     let thecha = message.guild.channels.cache.get(bg[o])
                                                     if (lives == 2) {
                                                         sect = "0" // makes the serial killer's attack towards the player none
-                                                        thecha.send("<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.")
+                                                        thecha.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                         thecha.send(`${alive}`)
-                                                        sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                        sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                         sl.send(`${alive}`)
                                                         db.subtract(`lives_${bg[o]}`, 1)
                                                     }
@@ -1453,9 +1701,9 @@ module.exports = {
                                                             p = 89
                                                             if (db.get(`lives_${bg[p]}`) == 2) {
                                                                 sect = "0" // makes the serial killer's attack towards the player none
-                                                                thecha.send("<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.")
+                                                                thecha.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                                 thecha.send(`${alive}`)
-                                                                sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                                sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                                 sl.send(`${alive}`)
                                                                 db.subtract(`lives_${bg[p]}`, 1)
                                                             }
@@ -1472,10 +1720,10 @@ module.exports = {
                                                     let chan = message.guild.channels.cache.get(rl[k])
                                                     if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                         if (db.get(`visit_${chan.id}`)) {
-                                                            sl.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
+                                                            sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                             sl.send(`${alive}`)
                                                             sect = "0"
-                                                            chan.send(`<:guard:744536167109886023> Somebody tried to attack you while you were away!`)
+                                                            chan.send(`${getEmoji("guard", client)} Somebody tried to attack you while you were away!`)
                                                             chan.send(`${alive}`)
                                                         }
                                                     }
@@ -1488,7 +1736,7 @@ module.exports = {
                                                     READ_MESSAGE_HISTORY: true,
                                                 })
                                                 sected.send(`${alive}\n${guy.user.username} is now a sect member`)
-                                                let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).keyArray("id")
+                                                let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                                 for (let k = 0; k < thechan.length; k++) {
                                                     let chan = message.guild.channels.cache.get(thechan[k])
                                                     if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
@@ -1525,7 +1773,7 @@ module.exports = {
                                     let role = db.get(`role_${guy.id}`)
                                     if (guy.roles.cache.has(alive.id)) {
                                         if (role == "Sect Leader" || sected.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                            dayChat.send(`<:arrow:744571940374708234> The Sect Hunter killed **${guy.nickname} ${guy.user.username} (${role})**`)
+                                            dayChat.send(`${getEmoji("arrow", client)} The Sect Hunter killed **${guy.nickname} ${guy.user.username} (${role})**`)
                                             guy.roles.add(dead.id)
                                             guy.roles.remove(alive.id)
                                         }
@@ -1590,9 +1838,9 @@ module.exports = {
                                             c = 99
                                             b = 99
                                             if (player.roles.cache.has(alive.id)) {
-                                                chan.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                                                chan.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                                                 chan.send(`${alive}`)
-                                                corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be corrupted!`)
+                                                corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be corrupted!`)
                                                 corruptor.send(`${alive}`)
                                                 glitch = "0"
                                             }
@@ -1609,7 +1857,7 @@ module.exports = {
                                         if (db.get(`role_${player.id}`) == "Jailer") {
                                             b = 99
                                             if (player.roles.cache.has(alive.id)) {
-                                                corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be corrupted!`)
+                                                corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be corrupted!`)
                                                 corruptor.send(`${alive}`)
                                                 glitch = "0"
                                             }
@@ -1624,9 +1872,9 @@ module.exports = {
                                     let heal = db.get(`heal_${doc[b]}`)
                                     if (doc == glitch) {
                                         let chan = message.guild.channels.cache.get(doc[b])
-                                        corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
+                                        corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
                                         corruptor.send(`${alive}`)
-                                        chan.send(`<:heal:744536259673718894> Your protection saved **${corrupted.nickname} ${corrupted.user.username}**!`)
+                                        chan.send(`${getEmoji("heal", client)} Your protection saved **${corrupted.nickname} ${corrupted.user.username}**!`)
                                         chan.send(`${alive}`)
                                         glitch = "0"
                                         b = 99
@@ -1643,9 +1891,9 @@ module.exports = {
                                         db.set(`potion_${witch[b]}`, null)
                                         db.set(`witchAbil_${witch[b]}`, "yes")
                                         let chan = message.guild.channels.cache.get(witch[b])
-                                        chan.send(`<:potion:744536604252700766> Your potion saved **${corrupted.nickname} ${corrupted.user.username}**!`)
+                                        chan.send(`${getEmoji("potion", client)} Your potion saved **${corrupted.nickname} ${corrupted.user.username}**!`)
                                         chan.send(`${alive}`)
-                                        corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
+                                        corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
                                         corruptor.send(`${alive}`)
                                         glitch = "0"
                                         b = 99
@@ -1654,15 +1902,15 @@ module.exports = {
                             }
 
                             if (glitch != "0") {
-                                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                 for (let k = 0; k < chans.length; k++) {
                                     let tempchan = message.guild.channels.cache.get(chans[k])
                                     if (tempchan.permissionsFor(corrupted).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                         let shield = db.get(`shield_${tempchan.id}`)
                                         if (shield == true) {
-                                            tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
+                                            tempchan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
                                             tempchan.send(`${alive}`)
-                                            corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
+                                            corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
                                             corruptor.send(`${alive}`)
                                             glitch = "0"
                                             db.set(`shield_${tempchan.id}`, false)
@@ -1680,9 +1928,9 @@ module.exports = {
                                             if (db.get(`lives_${chan.id}`) == 2) {
                                                 b = 99
                                                 glitch = "0"
-                                                chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                                chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                 chan.send(`${alive}`)
-                                                corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
+                                                corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
                                                 corruptor.send(`${alive}`)
                                                 db.subtract(`guard_${chan.id}`, 1)
                                             }
@@ -1701,9 +1949,9 @@ module.exports = {
                                         if (lives == 2) {
                                             b = 99
                                             glitch = "0"
-                                            chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                            chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                             chan.send(`${alive}`)
-                                            corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
+                                            corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
                                             corruptor.send(`${alive}`)
                                             db.subtract(`guard_${chan.id}`, 1)
                                         } else if (lives == 1)
@@ -1741,7 +1989,7 @@ module.exports = {
                                                     chan.send(`You were attacked by **${thecorrtocorr.nickname} ${thecorrtocorr.user.username} (Corruptor)**! You will die at the end of the day!`)
                                                 }
                                                 chan.send(`${alive}`)
-                                                corruptor.send(`<:tough_guy:606429479170080769> Player **${corrupted.nickname} ${corrupted.user.username}** is a **Tough Guy**! They now know your role!`)
+                                                corruptor.send(`${getEmoji("tough_guy", client)} Player **${corrupted.nickname} ${corrupted.user.username}** is a **Tough Guy**! They now know your role!`)
                                                 db.set(`wounded_${chan.id}`, true)
                                             }
                                         }
@@ -1758,9 +2006,9 @@ module.exports = {
                                     if (chan.permissionsFor(corrupted).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                         if (db.get(`visit_${chan.id}`)) {
                                             glitch = "0"
-                                            chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                                            chan.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`)
                                             chan.send(`${alive}`)
-                                            corruptor.send(`<:guard:744536167109886023> Player **${corrupted.nickname} ${corrupted.user.username}** could not be corrupted!`)
+                                            corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be corrupted!`)
                                             corruptor.send(`${alive}`)
                                         }
                                     }
@@ -1770,15 +2018,15 @@ module.exports = {
 
                         // corrupting the player
                         if (glitch != "0") {
-                            corruptor.send(`<:corrupt:745632706838396989> Player **${corrupted.nickname} ${corrupted.user.username}** has successfully been corrupted!`)
+                            corruptor.send(`${getEmoji("corrupt", client)} Player **${corrupted.nickname} ${corrupted.user.username}** has successfully been corrupted!`)
                             dayChat.permissionOverwrites.edit(corrupted.id, {
                                 SEND_MESSAGES: false,
                             })
-                            let allchan = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.replace(" ", "-").toLowerCase()}`).keyArray("id")
+                            let allchan = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                             for (let b = 0; b < allchan.length; b++) {
                                 let chan = message.guild.channels.cache.get(allchan[b])
                                 if (chan.permissionsFor(corrupted).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                    chan.send(`<:corrupt:745632706838396989> You have been glitched! No one will hear you scream! You cannot vote or use your abilities today and will die at the end of the day.`)
+                                    chan.send(`${getEmoji("corrupt", client)} You have been glitched! No one will hear you scream! You cannot vote or use your abilities today and will die at the end of the day.`)
                                     chan.send(`${alive}`)
                                     chan.permissionOverwrites.edit(corrupted, {
                                         SEND_MESSAGES: false,
@@ -1793,11 +2041,11 @@ module.exports = {
                                         if (rlguy) {
                                             if (rlguy.roles.cache.has(alive.id)) {
                                                 if (rlchan.permissionsFor(rlguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                    corruptor.send(`<:corrupt:745632706838396989> Player **${rlguy.nickname} ${rlguy.user.username}** has successfully been corrupted!`)
+                                                    corruptor.send(`${getEmoji("corrupt", client)} Player **${rlguy.nickname} ${rlguy.user.username}** has successfully been corrupted!`)
                                                     rlchan.permissionOverwrites.edit(rlguy.id, {
                                                         SEND_MESSAGES: false,
                                                     })
-                                                    rlchan.send(`<:corrupt:745632706838396989> You have been glitched! No one will hear you scream! You cannot vote or use your abilities today and will die at the end of the day.`)
+                                                    rlchan.send(`${getEmoji("corrupt", client)} You have been glitched! No one will hear you scream! You cannot vote or use your abilities today and will die at the end of the day.`)
                                                     rlchan.send(`${alive}`)
                                                     db.set(`rlcorrupted_${rlguy.nickname}`, true)
                                                 }
@@ -1827,7 +2075,7 @@ module.exports = {
 
                         allch.forEach((lol) => {
                             if (lol.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                lol.send(`<:redp:821920816596910100> The Alchemist has sent you a potion. Sadly, you cannot make out the colour... you might die at the end of the day.`)
+                                lol.send(`${getEmoji("redp", client)} The Alchemist has sent you a potion. Sadly, you cannot make out the colour... you might die at the end of the day.`)
                                 lol.send(`${alive}`)
                             }
                         })
@@ -1849,9 +2097,9 @@ module.exports = {
                                     let trap = db.get(`setTrap_${bchan.id}`)
                                     let active = db.get(`trapActive_${bchan.id}`)
                                     if (trap == blackpotion && active == true) {
-                                        bchan.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                                        bchan.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                                         bchan.send(`${alive}`)
-                                        chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                                        chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                                         chan.send(`${alive}`)
                                         blackpotion = "0"
                                         db.delete(`blackpotion_${chan.id}`)
@@ -1865,9 +2113,9 @@ module.exports = {
                                     for (let b = 0; b < doc.length; b++) {
                                         let bchan = message.guild.channels.cache.get(doc[b])
                                         if (db.get(`heal_${bchan.id}`) == blackpotion) {
-                                            bchan.send(`<:heal:744536259673718894> Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                                            bchan.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
                                             bchan.send(`${alive}`)
-                                            chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                                            chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                                             chan.send(`${alive}`)
                                             db.delete(`blackpotion_${chan.id}`)
                                             blackpotion = "0"
@@ -1880,9 +2128,9 @@ module.exports = {
                                     for (let b = 0; b < witch.length; b++) {
                                         let bchan = message.guild.channels.cache.get(witch[b])
                                         if (db.get(`potion_${bchan.id}`) == blackpotion) {
-                                            bchan.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                                            bchan.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                                             bchan.send(`${alive}`)
-                                            chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                                            chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                                             chan.send(`${alive}`)
                                             blackpotion = "0"
                                             db.delete(`blackpotion_${chan.id}`)
@@ -1898,9 +2146,9 @@ module.exports = {
                                     rpiu.forEach((bchan) => {
                                         if (bchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                             if (db.get(`shield_${bchan.id}`) == true) {
-                                                bchan.send(`<:potion:744536604252700766> Your shield saved your life!`)
+                                                bchan.send(`${getEmoji("potion", client)} Your shield saved your life!`)
                                                 bchan.send(`${alive}`)
-                                                chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                                                chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                                                 chan.send(`${alive}`)
                                                 blackpotion = "0"
                                                 db.delete(`blackpotion_${chan.id}`)
@@ -1920,9 +2168,9 @@ module.exports = {
                                             if (alrole == "Bodyguard") {
                                                 if (lives == 2) {
                                                     if (bchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                        bchan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                                        bchan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                         bchan.send(`${alive}`)
-                                                        chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                                                        chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                                                         chan.send(`${alive}`)
                                                         blackpotion = "0"
                                                         db.delete(`blackpotion_${chan.id}`)
@@ -1931,9 +2179,9 @@ module.exports = {
                                                 }
                                             } else if (guard == blackpotion) {
                                                 if (lives == 2) {
-                                                    bchan.send(`<:potion:744536604252700766> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                                    bchan.send(`${getEmoji("potion", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                     bchan.send(`${alive}`)
-                                                    chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                                                    chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                                                     chan.send(`${alive}`)
                                                     blackpotion = "0"
                                                     db.delete(`blackpotion_${chan.id}`)
@@ -1975,8 +2223,8 @@ module.exports = {
                                                                 if (chan.permissionsFor(theal).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                                     bchan.send(`You were attacked by **${theal.nickname} ${theal.user.username} (Alchemist)**! You will die at the end of the day!`)
                                                                     bchan.send(`${alive}`)
-                                                                    chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username}** could not be poisoned this night!`)
-                                                                    chan.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**. He know knows your role!`)
+                                                                    chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username}** could not be poisoned this night!`)
+                                                                    chan.send(`_ _\n\n${getEmoji("tough_guy", client)} Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**. He know knows your role!`)
                                                                     chan.send(`${alive}`)
                                                                     db.set(`wounded_${bchan.id}`, true)
                                                                 }
@@ -2004,8 +2252,8 @@ module.exports = {
                                                 if (theal && thetg) {
                                                     bchan.send(`You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${theal.nickname} ${theal.user.username} (Alchemist)**! You will die at the end of the day!`)
                                                     bchan.send(`${alive}`)
-                                                    chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username}** could not be poisoned this night!`)
-                                                    chan.send(`_ _\n\n<:tough_guy:606429479170080769> Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**. He know knows your role!`)
+                                                    chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username}** could not be poisoned this night!`)
+                                                    chan.send(`_ _\n\n${getEmoji("tough_guy", client)} Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**. He know knows your role!`)
                                                     chan.send(`${alive}`)
                                                     db.set(`wounded_${bchan.id}`, true)
                                                 }
@@ -2019,9 +2267,9 @@ module.exports = {
                                     for (let b = 0; b < rl.length; b++) {
                                         let bchan = message.guild.channels.cache.get(rl[b])
                                         if (db.get(`visit_${bchan.id}`)) {
-                                            chan.send(`<:guard:744536167109886023> **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
+                                            chan.send(`${getEmoji("guard", client)} **${guy.nickname} ${guy.user.username} could not be poisoned this night!`)
                                             chan.send(`${alive}`)
-                                            bchan.send(`<:visit:744571914034479126> Someone tried to attack you while you were away!`)
+                                            bchan.send(`${getEmoji("visit", client)} Someone tried to attack you while you were away!`)
                                             bchan.send(`${alive}`)
                                         }
                                     }
@@ -2029,7 +2277,7 @@ module.exports = {
 
                                 // killing
                                 if (blackpotion != "0") {
-                                    lol.send(`<:redp:821920816596910100> The Alchemist has sent you a potion. Sadly, you cannot make out the colour... you might die at the end of the day.`)
+                                    lol.send(`${getEmoji("redp", client)} The Alchemist has sent you a potion. Sadly, you cannot make out the colour... you might die at the end of the day.`)
                                     lol.send(`${alive}`)
                                 }
                             }
@@ -2060,9 +2308,9 @@ module.exports = {
                                     c = 99
                                     if (player.roles.cache.has(alive.id)) {
                                         b = 99
-                                        chan.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                                        chan.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                                         chan.send(`${alive}`)
-                                        illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                                        illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                         illusionist.send(`${alive}`)
                                         db.set(`setTrap_${chan.id}`, null)
                                         db.set(`trapActive_${chan.id}`, false)
@@ -2081,7 +2329,7 @@ module.exports = {
                                 if (theRoleIneed == "Jailer") {
                                     b = 99
                                     if (player.roles.cache.has(alive.id)) {
-                                        illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                                        illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                         illusionist.send(`${alive}`)
                                         toDelude = "0"
                                     }
@@ -2097,9 +2345,9 @@ module.exports = {
                             if (heal == disguise.nickname) {
                                 console.log(doc[b])
                                 let doctor = message.guild.channels.cache.get(doc[b])
-                                illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                                illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                 illusionist.send(`${alive}`)
-                                doctor.send(`<:heal:744536259673718894> Your protection saved **${disguise.nickname} ${disguise.user.username}**!`)
+                                doctor.send(`${getEmoji("heal", client)} Your protection saved **${disguise.nickname} ${disguise.user.username}**!`)
                                 doctor.send(`${alive}`)
                                 toDelude = "0"
                                 b = 99
@@ -2120,9 +2368,9 @@ module.exports = {
                                         if (player.roles.cache.has(alive.id)) {
                                             db.set(`potion_${witch[b]}`, null)
                                             db.set(`witchAbil_${witch[b]}`, "yes")
-                                            illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                                            illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                             illusionist.send(`${alive}`)
-                                            chan.send(`<:potion:744536604252700766> Your potion saved **${disguise.nickname} ${disguise.user.username}**!`)
+                                            chan.send(`${getEmoji("potion", client)} Your potion saved **${disguise.nickname} ${disguise.user.username}**!`)
                                             chan.send(`${alive}`)
                                             toDelude = "0"
                                         }
@@ -2134,15 +2382,15 @@ module.exports = {
 
                     // forger
                     if (toDelude != "0") {
-                        let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${theroleiwant.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                        let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${theroleiwant.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                         for (let k = 0; k < chans.length; k++) {
                             let tempchan = message.guild.channels.cache.get(chans[k])
                             if (tempchan.permissionsFor(disguise).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 let shield = db.get(`shield_${tempchan.id}`)
                                 if (shield == true) {
-                                    tempchan.send(`<:guard:744536167109886023> You were attacked but your shield saved you!`)
+                                    tempchan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
                                     tempchan.send(`${alive}`)
-                                    illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                                    illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                     illusionist.send(`${alive}`)
                                     toDelude = "0"
                                     db.set(`shield_${tempchan.id}`, false)
@@ -2161,9 +2409,9 @@ module.exports = {
                                     let lives = db.get(`lives_${chan.id}`)
                                     if (lives == 2) {
                                         toDelude = "0"
-                                        chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                        chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                         chan.send(`${alive}`)
-                                        illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                                        illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                         illusionist.send(`${alive}`)
                                         db.subtract(`lives_${chan.id}`, 1)
                                     }
@@ -2181,9 +2429,9 @@ module.exports = {
                             if (guard == disguise.nickname) {
                                 if (lives == 2) {
                                     toDelude = "0"
-                                    chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                    chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                     chan.send(`${alive}`)
-                                    illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                                    illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                     illusionist.send(`${alive}`)
                                     db.subtract(`lives_${chan.id}`, 1)
                                 }
@@ -2198,9 +2446,9 @@ module.exports = {
                                 let chan = message.guild.channels.cache.get(rl[b])
                                 if (chan.permissionsFor(disguise).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                     if (db.get(`visit_${chan.id}`)) {
-                                        chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                                        chan.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`)
                                         chan.send(`${alive}`)
-                                        illusionist.send(`<:guard:744536167109886023> Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
+                                        illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                         illusionist.send(`${alive}`)
                                     }
                                 }
@@ -2212,7 +2460,7 @@ module.exports = {
                         let alldisguised = db.get(`disguised_${illusionist.id}`) || []
                         alldisguised.push(disguise.nickname)
                         db.set(`disguised_${illusionist.id}`, alldisguised) //.catch(e => message.channel.send("Something went wrong. The Illusionist could not try to add it's disguise!"))
-                        illusionist.send(`<:delude:74563265503874568> Player **${disguise.nickname} ${disguise.user.username}** has successfully been disguised!`)
+                        illusionist.send(`${getEmoji("delude", client)} Player **${disguise.nickname} ${disguise.user.username}** has successfully been disguised!`)
                         illusionist.send(`${alive}`)
                     }
                 }
@@ -2241,7 +2489,7 @@ module.exports = {
                                         if (trap == conversion && active == true) {
                                             wwChat.send(`Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`)
                                             let ctar = message.guild.channels.cache.get(bh[x])
-                                            ctar.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                                            ctar.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                                             ctar.send(`${alive}`)
                                             conversion = "0"
                                         }
@@ -2267,7 +2515,7 @@ module.exports = {
                                         for (let x = 0; x < doc.length; x++) {
                                             let ctar = message.guild.channels.cache.get(doc[x])
                                             if (db.get(`heal_${ctar.id}`) == guy.nickname) {
-                                                ctar.send(`<:heal:744536259673718894> Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                                                ctar.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
                                                 ctar.send(`${alive}`)
                                                 wwChat.send(`Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`)
                                                 conversion = "0"
@@ -2280,7 +2528,7 @@ module.exports = {
                                         for (let x = 0; x < witch.length; x++) {
                                             let ctar = message.guild.channels.cache.get(witch[x])
                                             if (db.get(`potion_${ctar.id}`) == guy.nickname) {
-                                                ctar.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                                                ctar.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                                                 ctar.send(`${alive}`)
                                                 wwChat.send(`Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`)
                                                 conversion = "0"
@@ -2298,7 +2546,7 @@ module.exports = {
                                                 if (ctar.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                     let lives = db.get(`lives_${ctar.id}`)
                                                     if (lives == 2) {
-                                                        ctar.send("<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.")
+                                                        ctar.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                         conversion = "0"
                                                         ctar.send(`${alive}`)
                                                         wwChat.send(`Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`)
@@ -2311,7 +2559,7 @@ module.exports = {
                                                 let ctar = message.guild.channels.cache.get(bg[x])
                                                 if (db.get(`guard_${ctar.id}`) == guy.nickname) {
                                                     if (db.get(`lives_${ctar.id}`) == 2) {
-                                                        ctar.send("<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.")
+                                                        ctar.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                         conversion = "0"
                                                         ctar.send(`${alive}`)
                                                         wwChat.send(`Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`)
@@ -2329,7 +2577,7 @@ module.exports = {
                                                 let chan = message.guild.channels.cache.get(rl[x])
                                                 if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                     if (db.get(`visit_${chan.id}`)) {
-                                                        chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                                                        chan.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`)
                                                         chan.send(`${alive}`)
                                                         wwChat.send(`Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`)
                                                     }
@@ -2479,7 +2727,7 @@ module.exports = {
         if (prisoner) {
             let role = db.get(`role_${prisoner.id}`)
             let role2 = role.toLowerCase().replace(" ", "-")
-            let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role2}`).keyArray("id")
+            let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role2}`).map((x) => x.id)
             jailed.permissionOverwrites.edit(prisoner.id, {
                 VIEW_CHANNEL: false,
                 SEND_MESSAGES: false,
@@ -2550,7 +2798,7 @@ module.exports = {
                                     VIEW_CHANNEL: true,
                                     READ_MESSAGE_HISTORY: true,
                                 })
-                                zombies.send(`<:zombie:607528874548527106> Player **${tempguy.nickname} ${tempguy.user.username}** has been converted into a zombie! Welcome them to the team!`)
+                                zombies.send(`${getEmoji("zombie", client)} Player **${tempguy.nickname} ${tempguy.user.username}** has been converted into a zombie! Welcome them to the team!`)
                             }
                         }
                     }
@@ -2593,7 +2841,7 @@ module.exports = {
                 // solo killers, cursed and wolves
                 if (strongww.includes(role) || role == "Cursed" || soloKillers.includes(role) || role == "Sorcerer" || role == "Sect Leader" || role == "Accomplice" || message.guild.channels.cache.get("682617467767357453").permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     brains[i] = "0"
-                    zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                    zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                 }
                 // beast hunter
                 if (brains[i] != "0") {
@@ -2603,9 +2851,9 @@ module.exports = {
                         let active = db.get(`trapActive_${chan.id}`)
                         if (trap == guy.nickname && active == true) {
                             brains[i] = "0"
-                            chan.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                            chan.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                             chan.send(`${alive}`)
-                            zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                            zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                             db.set(`setTrap_${chan.id}`, null)
                             db.set(`trapActive_${chan.id}`, false)
                         }
@@ -2620,7 +2868,7 @@ module.exports = {
                             if (tempguy) {
                                 if (db.get(`role_${tempguy.id}`) == "Jailer") {
                                     if (tempguy.roles.cache.has(alive.id)) {
-                                        zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                                        zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                                         brains[i] = "0"
                                     }
                                 }
@@ -2634,9 +2882,9 @@ module.exports = {
                     for (let j = 0; j < doc.length; j++) {
                         let chan = message.guild.channels.cache.get(doc[j])
                         if (db.get(`heal_${chan.id}`) == guy.nickname) {
-                            chan.send(`<:heal:744536259673718894> Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                            chan.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
                             chan.send(`${alive}`)
-                            zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                            zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                             brains[i] = "0"
                         }
                     }
@@ -2647,9 +2895,9 @@ module.exports = {
                     for (let j = 0; j < witch.length; j++) {
                         let chan = message.guild.channels.cache.get(witch[j])
                         if (db.get(`potion_${chan.id}`) == guy.nickname) {
-                            chan.send(`<:potion:744536604252700766> Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                            chan.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                             chan.send(`${alive}`)
-                            zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                            zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                             brains[i] = "0"
                             db.set(`potion_${chan.id}`, null)
                             db.set(`witchAbil_${chan.id}`, "yes")
@@ -2658,14 +2906,14 @@ module.exports = {
                 }
 
                 // forger
-                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                 for (let j = 0; j < chan.length; j++) {
                     let tempchan = message.guild.channels.cache.get(chan[j])
                     if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (db.get(`shield_${tempchan.id}`) == true) {
-                            tempchan.send(`<:guard:744536167109886023> Your shield saved you a life!`)
+                            tempchan.send(`${getEmoji("guard", client)} Your shield saved you a life!`)
                             tempchan.send(`${alive}`)
-                            zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                            zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                             brains[i] = "0"
                             db.set(`shield_${tempchan.id}`, false)
                         }
@@ -2678,9 +2926,9 @@ module.exports = {
                         let chan = message.guild.channels.cache.get(bg[j])
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             j = 99
-                            chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                            chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                             chan.send(`${alive}`)
-                            zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                            zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                             brains[i] = "0"
                             db.subtract(`lives_${chan.id}`, 1)
                         }
@@ -2693,9 +2941,9 @@ module.exports = {
                         if (guard == guy.nickname) {
                             if (lives == 2) {
                                 j = 99
-                                chan.send(`<:guard:744536167109886023> You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                 chan.send(`${alive}`)
-                                zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                                zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                                 brains[i] = "0"
                                 db.subtract(`lives_${chan.id}`, 1)
                             }
@@ -2711,9 +2959,9 @@ module.exports = {
                             if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 if (db.get(`visit_${chan.id}`)) {
                                     brains[i] = "0"
-                                    chan.send(`<:guard:744536167109886023> Someone tried to kill you while you were away!`)
+                                    chan.send(`${getEmoji("guard", client)} Someone tried to kill you while you were away!`)
                                     chan.send(`${alive}`)
-                                    zombies.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
+                                    zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                                 }
                             }
                         }
@@ -2722,8 +2970,8 @@ module.exports = {
 
                 // biting the player
                 if (brains[i] != "0") {
-                    zombies.send(`<:bitten:745632614442074223> Player **${guy.nickname} ${guy.user.username}** has been bitten!`)
-                    let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).keyArray("id")
+                    zombies.send(`${getEmoji("bitten", client)} Player **${guy.nickname} ${guy.user.username}** has been bitten!`)
+                    let chan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                     for (let j = 0; j < chan.length; j++) {
                         let tempchan = message.guild.channels.cache.get(chan[j])
                         if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -2739,7 +2987,7 @@ module.exports = {
                                     if (rlguy.roles.cache.has(alive.id)) {
                                         if (rlchan.permissionsFor(rlguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                             db.set(`bitten_${rlchan.id}`, true)
-                                            zombies.send(`<:bitten:745632614442074223> Player **${rlguy.nickname} ${rlguy.user.username}** has been bitten!`)
+                                            zombies.send(`${getEmoji("bitten", client)} Player **${rlguy.nickname} ${rlguy.user.username}** has been bitten!`)
                                             k = 99
                                         }
                                     }
@@ -2800,9 +3048,9 @@ module.exports = {
                             let trap = db.get(`setTrap_${bchan.id}`)
                             let active = db.get(`trapActive_${bchan.id}`)
                             if (trap == douses[j] && active == true) {
-                                chan.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be doused!`)
+                                chan.send(`${getEmoji("guard", client)}> Player **${guy.nickname} ${guy.user.username}** could not be doused!`)
                                 chan.send(`${alive}`)
-                                bchan.send(`<:trap:744535154927861761> Your trap was triggered last night but your target was too strong.`)
+                                bchan.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
                                 bchan.send(`${alive}`)
                                 douses[j] = "0"
                                 db.set(`setTrap_${bchan.id}`, null)
@@ -2820,7 +3068,7 @@ module.exports = {
                                     if (tempguy.roles.cache.has(alive.id)) {
                                         if (db.get(`role_${tempguy.id}`) == "Jailer") {
                                             douses[j] = "0"
-                                            chan.send(`<:guard:744536167109886023> Player **${guy.nickname} ${guy.user.username}** could not be doused!`)
+                                            chan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be doused!`)
                                             chan.send(`${alive}`)
                                         }
                                     }
@@ -2836,7 +3084,7 @@ module.exports = {
                                 let allDouses = db.get(`doused_${arso[i]}`) || []
                                 allDouses.push(douses[j])
                                 let arsoguy = message.guild.members.cache.find((m) => m.nickname === douses[j])
-                                message.guild.channels.cache.get(arso[i]).send(`<:douse:744574203025686568> Player **${douses[j]} ${arsoguy.user.username}** has been doused!`)
+                                message.guild.channels.cache.get(arso[i]).send(`${getEmoji("douse", client)} Player **${douses[j]} ${arsoguy.user.username}** has been doused!`)
                                 for (let k = 0; k < rl.length; k++) {
                                     let chan = message.guild.channels.cache.get(rl[k])
                                     if (db.get(`visit_${chan.id}`) == guy.nickname) {
@@ -2844,7 +3092,7 @@ module.exports = {
                                             let rlguy = message.guild.members.cache.find((m) => m.nickname === l.toString())
                                             if (rlguy) {
                                                 if (rlguy.roles.cache.has(alive.id)) {
-                                                    message.guild.channels.cache.get(arso[i]).send(`<:douse:744574203025686568> Player **${l.toString()} ${rlguy.user.username}** has been doused!`)
+                                                    message.guild.channels.cache.get(arso[i]).send(`${getEmoji("douse", client)} Player **${l.toString()} ${rlguy.user.username}** has been doused!`)
                                                     allDouses.push(rlguy.nickname)
                                                 }
                                             }
@@ -2914,7 +3162,7 @@ module.exports = {
                                     console.log(suspects)
                                     if (suspects.length > 0) {
                                         let terminus = require("shuffle-array")([suspects[0], KILLME])
-                                        chan.send(`<:suspect:789549569750335509> Your target **${guy.nickname} ${guy.user.username}** was either killed by **${terminus[0].nickname} ${terminus[0].user.username}** or **${terminus[1].nickname} ${terminus[1].user.username}**!`)
+                                        chan.send(`${getEmoji("suspect", client)} Your target **${guy.nickname} ${guy.user.username}** was either killed by **${terminus[0].nickname} ${terminus[0].user.username}** or **${terminus[1].nickname} ${terminus[1].user.username}**!`)
                                         chan.send(`${alive}`)
                                         targetFailed = false
                                     }
@@ -2922,9 +3170,10 @@ module.exports = {
                             }
                         }
                         if (targetFailed == true) {
-                            chan.send("<:suspect:789549569750335509> You could not get any information last night!")
+                            chan.send(`${getEmoji("suspect", client)} You could not get any information last night!`)
                         }
                     }
+                    db.set(`snipe_${chan.id}`, null)
                 }
             }
         }, 4000)
@@ -2962,15 +3211,15 @@ module.exports = {
 
                                     if (guys.length == 1) {
                                         if (killed == true) {
-                                            chan.send(`<:yeskill:744534212878794863> **${guys[0].nickname} ${guys[0].user.username}** killed someone last night!`).catch((e) => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`))
+                                            chan.send(`${getEmoji("yeskill", client)} **${guys[0].nickname} ${guys[0].user.username}** killed someone last night!`).catch((e) => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`))
                                         } else {
-                                            chan.send(`<:nokill:744534142515150979> **${guys[0].nickname} ${guys[0].user.username}** didn't kill anyone last night!`).catch((e) => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`))
+                                            chan.send(`${getEmoji("nokill", client)} **${guys[0].nickname} ${guys[0].user.username}** didn't kill anyone last night!`).catch((e) => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`))
                                         }
                                     } else {
                                         if (killed == true) {
-                                            chan.send(`<:yeskill:744534212878794863> **${guys[0].nickname} ${guys[0].user.username}** or **${guys[1].nickname} ${guys[1].user.username}** killed someone last night!`).catch((e) => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`))
+                                            chan.send(`${getEmoji("yeskill", client)} **${guys[0].nickname} ${guys[0].user.username}** or **${guys[1].nickname} ${guys[1].user.username}** killed someone last night!`).catch((e) => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`))
                                         } else {
-                                            chan.send(`<:nokill:744534142515150979> **${guys[0].nickname} ${guys[0].user.username}** and **${guys[1].nickname} ${guys[1].user.username}** didn't kill anyone last night!`).catch((e) => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`))
+                                            chan.send(`${getEmoji("nokill", client)} **${guys[0].nickname} ${guys[0].user.username}** and **${guys[1].nickname} ${guys[1].user.username}** didn't kill anyone last night!`).catch((e) => chan.send(`${alive} An error occured, ping the narrator in charge to give you your info.`))
                                         }
                                     }
                                     chan.send(`${alive}`)
@@ -2995,7 +3244,7 @@ module.exports = {
                             y = 99
                             player = lololololol
                             if (player.roles.cache.has(alive.id) || player.roles.cache.has(dead.id)) {
-                                let couple = []
+                                let couple = db.get(`couple_${channel.id}`) || []
                                 if (couple.length != 0) {
                                     let guy1 = message.guild.members.cache.find((m) => m.nickname === couple[0])
                                     let guy2 = message.guild.members.cache.find((m) => m.nickname === couple[1])
@@ -3041,8 +3290,8 @@ module.exports = {
                                         READ_MESSAGE_HISTORY: true,
                                         SEND_MESSAGES: false,
                                     })
-                                    lovers.send(`<:couple:744542381206143026> You are in love with **${guy1.nickname} ${guy1.user.username} (${db.get(`role_${guy1.id}`)})** and **${guy2.nickname} ${guy2.user.username} (${db.get(`role_${guy2.id}`)})**. You win if you stay alive together until the end of the game. You die if your lover dies.\n\n_ _\n\n_ _\n\n${alive}`)
-                                    channel.send(`<:couple:744542381206143026> Player **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}** are in love!`)
+                                    lovers.send(`${getEmoji("couple", client)} You are in love with **${guy1.nickname} ${guy1.user.username} (${db.get(`role_${guy1.id}`)})** and **${guy2.nickname} ${guy2.user.username} (${db.get(`role_${guy2.id}`)})**. You win if you stay alive together until the end of the game. You die if your lover dies.\n\n_ _\n\n_ _\n\n${alive}`)
+                                    channel.send(`${getEmoji("couple", client)} Player **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}** are in love!`)
                                 } else {
                                     let aliveplayers = []
                                     alive.members.forEach((play) => {
@@ -3069,7 +3318,7 @@ module.exports = {
                                             SEND_MESSAGES: false,
                                         })
                                         lovers.send(`You are in love with **${couple[0].nickname} ${couple[0].user.username} (${db.get(`role_${couple[0].id}`)})** and **${couple[1].nickname} ${couple[1].user.username} (${db.get(`role_${couple[1].id}`)})**. You win if you stay alive together until the end of the game. You die if your lover dies.\n\n_ _\n\n_ _\n\n${alive}`)
-                                        channel.send(`<:couple:744542381206143026> Player **${couple[0].nickname} ${couple[0].user.username}** and **${couple[1].nickname} ${couple[1].user.username}** are in love!`)
+                                        channel.send(`${getEmoji("couple", client)} Player **${couple[0].nickname} ${couple[0].user.username}** and **${couple[1].nickname} ${couple[1].user.username}** are in love!`)
                                     } else {
                                         channel.send(`There aren't enough players for the couple to happen! The action has been canceled!`)
                                     }

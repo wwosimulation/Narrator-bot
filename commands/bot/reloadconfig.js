@@ -10,6 +10,6 @@ module.exports = {
         message.channel.send("Updating config... please stand by...")
         let one = cmd.get(`cd ${process.cwd()} && git pull && git submodule update --remote`)
         console.log(one)
-        let two = cmd.get(`pm2 restart ${process.env.pm_id}`)
+        let two = cmd.get(`pm2 restart ${process.env.pm_id}`) // variable "two" is not being used
     },
 }

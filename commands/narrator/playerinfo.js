@@ -5,6 +5,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "playerinfo",
+    description: "Get the playerinfo.",
+    usage: `${process.env.PREFIX}playerinfo`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
@@ -12,7 +14,7 @@ module.exports = {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive").members.size
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead").members.size
         let c = message.guild.channels.cache.filter((c) => c.name.startsWith("priv"))
-        let ch = c.keyArray("id")
+        let ch = c.map((x) => x.id)
         for (let i = 1; i <= alive + dead; i++) {
             let guy = message.guild.members.cache.find((m) => m.nickname === i.toString())
             if (!guy) return message.channel.send("Something went wrong... Make sure that all of the players only have 1 role (Alive or Dead)!")

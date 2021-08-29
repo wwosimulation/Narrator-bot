@@ -1,10 +1,12 @@
 module.exports = {
     name: "stafflist",
+    description: "Update the staff list.",
+    usage: `${process.env.PREFIX}stafflist`,
     run: async (message, args, client) => {
         if (message.member.permissions.has("MANAGE_ROLES")) {
             message.react("👍")
             client.emit("stafflist")
-            message.channel.send("Stafflist update has been queued")
+            message.channel.send(message.i10n("stafflistQueued"))
         }
     },
 }

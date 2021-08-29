@@ -4,52 +4,55 @@ const { ids } = require("../../config")
 
 module.exports = {
     name: "reset",
+    description: "Reset the database.",
+    usage: `${process.env.PREFIX}reset`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.member.roles.cache.has("606139219395608603") || message.member.roles.cache.has("606276949689499648")) {
             let times = [10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000]
             times = times[Math.floor(Math.random() * times.length)]
-            let gunner = message.guild.channels.cache.filter((c) => c.name === "priv-gunner").keyArray("id") // gunner
-            let grumpy = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").keyArray("id") // gg
-            let seer = message.guild.channels.cache.filter((c) => c.name === "priv-seer").keyArray("id") // seer
-            let aura = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").keyArray("id") // aura
-            let doctor = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").keyArray("id") // doc
-            let beasthunter = message.guild.channels.cache.filter((c) => c.name === "priv-beast-hunter").keyArray("id") // bh
-            let witch = message.guild.channels.cache.filter((c) => c.name === "priv-witch").keyArray("id") // witch
-            let bodyguard = message.guild.channels.cache.filter((c) => c.name === "priv-bodyguard").keyArray("id") // bg
-            let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").keyArray("id") // det
-            let priest = message.guild.channels.cache.filter((c) => c.name === "priv-priest").keyArray("id") // priest
-            let paci = message.guild.channels.cache.filter((c) => c.name === "priv-pacifist").keyArray("id") // paci
-            let flower = message.guild.channels.cache.filter((c) => c.name === "priv-flower-child").keyArray("id") // fc
-            let guardian = message.guild.channels.cache.filter((c) => c.name === "priv-guardian-wolf").keyArray("id") // gww
-            let wwpaci = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-pacifist").keyArray("id") // wwp
-            let wwseer = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-seer").keyArray("id") // wws
-            let skiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").keyArray("id") // sk
-            let arsonist = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").keyArray("id") // arso
-            let bomb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").keyArray("id") // bomber
-            let secthunter = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").keyArray("id") // sect hunter
-            let sorcerer = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").keyArray("id") // sorcerer
-            let wwshaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").keyArray("id") // wwshaman
-            let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").keyArray("id")
-            let jailer = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").keyArray("id")
-            let canni = message.guild.channels.cache.filter((c) => c.name === "priv-cannibal").keyArray("id")
-            let nmww = message.guild.channels.cache.filter((c) => c.name === "priv-nightmare-werewolf").keyArray("id")
-            let shadow = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").keyArray("id")
-            let ft = message.guild.channels.cache.filter((c) => c.name === "flowe-child").keyArray("id")
-            let mm = message.guild.channels.cache.filter((c) => c.name === "priv-marksman").keyArray("id")
-            let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").keyArray("id")
-            let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").keyArray("id")
-            let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").keyArray("id")
-            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").keyArray("id")
-            let bandit = message.guild.channels.cache.filter((c) => c.name === "priv-bandit").keyArray("id")
-            let bandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).keyArray("id")
-            let wwb = message.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").keyArray("id")
-            let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").keyArray("id")
-            let dp = message.guild.channels.cache.filter((c) => c.name === "priv-doppelganger").keyArray("id")
-            let kww = message.guild.channels.cache.filter((c) => c.name === "priv-kitten-wolf").keyArray("id")
-            let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").keyArray("id")
-            let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").keyArray("id")
-            let mortician = message.guild.channels.cache.filter((c) => c.name === "priv-mortician").keyArray("id")
+            let gunner = message.guild.channels.cache.filter((c) => c.name === "priv-gunner").map((x) => x.id) // gunner
+            let grumpy = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id) // gg
+            let seer = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map((x) => x.id) // seer
+            let aura = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id) // aura
+            let doctor = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // doc
+            let beasthunter = message.guild.channels.cache.filter((c) => c.name === "priv-beast-hunter").map((x) => x.id) // bh
+            let witch = message.guild.channels.cache.filter((c) => c.name === "priv-witch").map((x) => x.id) // witch
+            let bodyguard = message.guild.channels.cache.filter((c) => c.name === "priv-bodyguard").map((x) => x.id) // bg
+            let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").map((x) => x.id) // det
+            let priest = message.guild.channels.cache.filter((c) => c.name === "priv-priest").map((x) => x.id) // priest
+            let paci = message.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id) // paci
+            let flower = message.guild.channels.cache.filter((c) => c.name === "priv-flower-child").map((x) => x.id) // fc
+            let guardian = message.guild.channels.cache.filter((c) => c.name === "priv-guardian-wolf").map((x) => x.id) // gww
+            let wwpaci = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-pacifist").map((x) => x.id) // wwp
+            let wwseer = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-seer").map((x) => x.id) // wws
+            let skiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map((x) => x.id) // sk
+            let arsonist = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").map((x) => x.id) // arso
+            let bomb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map((x) => x.id) // bomber
+            let secthunter = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").map((x) => x.id) // sect hunter
+            let sorcerer = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").map((x) => x.id) // sorcerer
+            let wwshaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map((x) => x.id) // wwshaman
+            let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map((x) => x.id)
+            let jailer = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").map((x) => x.id)
+            let canni = message.guild.channels.cache.filter((c) => c.name === "priv-cannibal").map((x) => x.id)
+            let nmww = message.guild.channels.cache.filter((c) => c.name === "priv-nightmare-werewolf").map((x) => x.id)
+            let shadow = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").map((x) => x.id)
+            let ft = message.guild.channels.cache.filter((c) => c.name === "flowe-child").map((x) => x.id)
+            let mm = message.guild.channels.cache.filter((c) => c.name === "priv-marksman").map((x) => x.id)
+            let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
+            let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
+            let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").map((x) => x.id)
+            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
+            let bandit = message.guild.channels.cache.filter((c) => c.name === "priv-bandit").map((x) => x.id)
+            let bandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
+            let wwb = message.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").map((x) => x.id)
+            let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").map((x) => x.id)
+            let dp = message.guild.channels.cache.filter((c) => c.name === "priv-doppelganger").map((x) => x.id)
+            let kww = message.guild.channels.cache.filter((c) => c.name === "priv-kitten-wolf").map((x) => x.id)
+            let forger = message.guild.channels.cache.filter((c) => c.name === "priv-forger").map((x) => x.id)
+            let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").map((x) => x.id)
+            let mortician = message.guild.channels.cache.filter((c) => c.name === "priv-mortician").map((x) => x.id)
+            let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
 
             db.delete(`excludes`)
 
@@ -58,6 +61,14 @@ module.exports = {
                 READ_MESSAGE_HISTORY: false,
                 VIEW_CHANNEL: false,
             })
+
+            message.guild.channels.cache
+                .find((c) => c.name === "vote-chat")
+                .permissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
+                    SEND_MESSAGES: false,
+                    READ_MESSAGE_HISTORY: true,
+                    VIEW_CHANNEL: true,
+                })
 
             message.guild.channels.cache.get("606132387587293195").permissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
                 SEND_MESSAGES: true,
@@ -131,12 +142,20 @@ module.exports = {
                 db.set(`mortician_${det[i]}`, null)
             }
 
+            for (let i = 0; i < hacker.length; i++) {
+                db.set(`hashacked_${message.channel.id}`, null)
+                db.set(`hack_${message.channel.id}`, null)
+                db.set(`secondhack_${message.channel.id}`, null)
+                db.set(`usedmute_${message.channel.id}`, null)
+            }
+
             for (let i = 0; i < priest.length; i++) {
                 db.set(`priest_${priest[i]}`, null)
             }
 
             for (let i = 0; i < paci.length; i++) {
                 db.set(`paci_${paci[i]}`, "no")
+                db.delete(`pacday_${paci[i]}`)
             }
 
             for (let i = 0; i < flower.length; i++) {
@@ -267,7 +286,7 @@ module.exports = {
                 db.set(`bite_${zombie[i]}`, null)
             }
             // removing cards, shield and sword from players
-            let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).keyArray("id")
+            let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
             for (let i = 0; i < allChannels.length; i++) {
                 if (db.get(`card_${allChannels[i]}`) == true) {
                     db.set(`card_${allChannels[i]}`, false)
@@ -284,10 +303,10 @@ module.exports = {
             }
 
             message.channel
-                .send("Iniating to reset database. Please allow 15 seconds to 1 minute of your time to allow this process to execute.")
+                .send("Reset in progress")
                 .then((msg) => {
                     setTimeout(function () {
-                        msg.edit("Database has successfully reset. Happy hunting 🐺").catch((e) => message.channel.send(`Error: ${e.message}`))
+                        msg.edit("Reset complete").catch((e) => message.channel.send(`Error: ${e.message}`))
                     }, times)
                 })
                 .catch((e) => message.channel.send(`Error: ${e.message}`))

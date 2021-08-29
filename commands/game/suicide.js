@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "suicide",
+    description: "Kill yourself... In game! NOT IN REAL LIFE!",
+    usage: `${process.env.PREFIX}suicide [player]`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.member.permissions.has("MANAGE_CHANNELS")) {

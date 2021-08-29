@@ -4,6 +4,8 @@ const { players } = require("../../db")
 
 module.exports = {
     name: "inventory",
+    description: "Lists your current inventory.",
+    usage: `${process.env.PREFIX}inventory`,
     aliases: ["inv"],
     run: async (message, args, client) => {
         //if (message.channel.type != "dm") return message.channel.send("This command only works in DMs as it contains private information!")
@@ -11,7 +13,7 @@ module.exports = {
         let data = await players.findOne({ user: message.author.id })
 
         // prettier-ignore
-        let embed = new Discord.MessageEmbed().setTitle("Inventory")
+        let embed = new Discord.MessageEmbed().setTitle(message.i10n("inventory"))
           .setAuthor(message.author.tag, message.author.avatarURL())
           .addField("Coins", `${data.coins} ${emojis.coin}`, true)
           .addField("Gems", `${data.gems} ${emojis.gem}`, true)
