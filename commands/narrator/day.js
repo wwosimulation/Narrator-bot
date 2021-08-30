@@ -3628,7 +3628,7 @@ module.exports = {
         }
         let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
         for (let i = 0; i < dc.length; i++) {
-            db.set(`hypnotized_${tempchan.id}`, null)
+            db.set(`hypnotized_${dc}`, null)
         }
         console.log("The code worked up to here!")
         db.set(`vtshadow`, false)
