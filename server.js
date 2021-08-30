@@ -110,11 +110,11 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     let buttonBack = new Discord.MessageButton({ style: "SUCCESS", emoji: "◀", customId: "back" })
     let buttonNext = new Discord.MessageButton({ style: "SUCCESS", emoji: "▶", customId: "next" })
     let buttonEnd = new Discord.MessageButton({ style: "SUCCESS", emoji: "⏩", customId: "end" })
-    
+
     // rows
     let activeRow = new Discord.MessageActionRow().addComponents([buttonBegin, buttonBack, buttonNext, buttonEnd])
     let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
-    
+
     // adding buttons
     if (addButtons) msg.edit({ components: [activeRow] })
 
