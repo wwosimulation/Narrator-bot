@@ -110,28 +110,33 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     let buttonBack = new Discord.MessageButton({ style: "SUCCESS", emoji: "◀", customId: "back" })
     let buttonNext = new Discord.MessageButton({ style: "SUCCESS", emoji: "▶", customId: "next" })
     let buttonEnd = new Discord.MessageButton({ style: "SUCCESS", emoji: "⏩", customId: "end" })
+    
     // rows
     let activeRow = new Discord.MessageActionRow().addComponents([buttonBegin, buttonBack, buttonNext, buttonEnd])
     let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
+    
     // adding buttons
     if (addButtons) msg.edit({ components: [activeRow] })
+
     // collecting interactions
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
     let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000, max: 1 })
 
-    page = page - 1
+    let p = --page
+    
     //if(!addButtons) msg.edit({embeds:[embeds[page]]})
     collector.on("collect", (interaction) => {
-        if (interaction.customId === "begin") page = 1
+
+        if (interaction.customId === "begin") p = 0
         else if (interaction.customId === "back") {
-            if (!page === 0) page -= 1
-            else page = embeds.length
+            if (p != 0) p--
+            else p = embeds.length - 1
         } else if (interaction.customId === "next") {
-            if (!page === embeds.length - 1) page += 1
-            else page = 1
-        } else if (interaction.customId === "end") page = embeds.length
-        interaction.update({ embeds: [embeds[page]] })
-        client.buttonPaginator(authorID, msg, embeds, page, false)
+            if (p != embeds.length - 1) p++
+            else p = 0
+        } else if (interaction.customId === "end") p = embeds.length - 1
+        await interaction.update({ embeds: [embeds[p]] })
+        //client.buttonPaginator(authorID, msg, embeds, p, false)
     })
     collector.on("end", () => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
