@@ -298,31 +298,31 @@ module.exports = {
                             for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
                                 let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
                                 if (player.nickname == hypnotize) {
-                                if (db.get(`role_${player.id}`) == "Dreamcatcher") {
-                                    if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
-                                        db.set(`hypnotize_${dc[a]}`, null)
-                                        console.log("hi")
-                                        chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
-                                        let chan1 = message.guild.channels.cache.get(dc[a])
-                                        chan1.send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
-                                        chan.permissionOverwrites.edit(guy.id, {
-                                            SEND_MESSAGES: false,
-                                        })
-                                        chan1.setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
-                                        chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
-                                        db.set(`hypnotized_${dc[a]}`, guy.nickname)
-                                        if (db.get(`role_${guy.id}`) == 'Bomber') {
-                                            chan1.permissionOverwrites.edit(player.id, {
+                                    if (db.get(`role_${player.id}`) == "Dreamcatcher") {
+                                        if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
+                                            db.set(`hypnotize_${dc[a]}`, null)
+                                            console.log("hi")
+                                            chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
+                                            let chan1 = message.guild.channels.cache.get(dc[a])
+                                            chan1.send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
+                                            chan.permissionOverwrites.edit(guy.id, {
                                                 SEND_MESSAGES: false,
                                             })
-                                            message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
-                                            setTimeout(async function () {
+                                            chan1.setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
+                                            chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
+                                            db.set(`hypnotized_${dc[a]}`, guy.nickname)
+                                            if (db.get(`role_${guy.id}`) == "Bomber") {
                                                 chan1.permissionOverwrites.edit(player.id, {
-                                                    SEND_MESSAGES: true,
+                                                    SEND_MESSAGES: false,
                                                 })
-                                                message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
-                                            }, 60000)
-                                        }
+                                                message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
+                                                setTimeout(async function () {
+                                                    chan1.permissionOverwrites.edit(player.id, {
+                                                        SEND_MESSAGES: true,
+                                                    })
+                                                    message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
+                                                }, 60000)
+                                            }
                                         }
                                     }
                                 }
