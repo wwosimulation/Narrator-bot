@@ -938,6 +938,7 @@ module.exports = {
                         if (tempguy.roles.cache.has(alive.id)) {
                             let hypnotized = db.get(`hypnotized_${tempchan.id}`) || 0
                             let guy = message.guild.members.cache.find((me) => me.nickname === hypnotized)
+                            console.log(hypnotized)
                             if (hypnotized != "0") {
                                 for (let j = 0; j < bh.length; j++) {
                                     let trap = db.get(`setTrap_${bh[j]}`)
