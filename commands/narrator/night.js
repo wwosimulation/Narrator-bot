@@ -310,7 +310,7 @@ module.exports = {
                                         chan1.setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
                                         chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
                                         db.set(`hypnotized_${dc[a]}`, guy.nickname)
-                                        if (db.get(`role_${guy.id}`) == 'Bomber') {
+                                        if (db.get(`role_${guy.id}`) == "Bomber") {
                                             chan.permissionOverwrites.edit(player.id, {
                                                 SEND_MESSAGES: false,
                                             })
