@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "heal",
+    description: "Protect somebody so they won't be able to be attacked during the night.",
+    usage: `${process.env.PREFIX}heal <player>`,
     aliases: ["protect", "save"],
     gameOnly: true,
     run: async (message, args, client) => {

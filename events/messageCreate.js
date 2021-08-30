@@ -14,8 +14,8 @@ module.exports = (client) => {
 
         //let guy = message.member.nickname;
         if (message.author.bot) return //Ignore bots and dms
-        message.dbUser = await players.findOne({user: message.author.id}).exec()
-        if(!message.dbUser) message.dbUser = new players({user: message.author.id}).save()
+        message.dbUser = await players.findOne({ user: message.author.id }).exec()
+        if (!message.dbUser) message.dbUser = new players({ user: message.author.id }).save()
 
         message.i10n = (key, replaceKeys = {}, language = message.dbUser.language) => {
             if (!language) language = "en"
@@ -122,12 +122,8 @@ module.exports = (client) => {
 
         client.channels.cache.get("832884582315458570").send(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`)
         await command.run(message, args, client).catch((error) => {
+            client.Sentry.captureException(error)
             console.error(error)
-            let emsg = `\`\`\`js\n${error.stack}\`\`\``
-            client.channels.cache.get("861979564514082876").send({
-                embeds: [new Discord.MessageEmbed().setDescription(`An error occured when ${message.author} attempted the following command: \`${message.content.replace(/(`)/g, "$1")}\`\n\n**Error Description**${emsg.length > 3500 ? "See below" : emsg}`)],
-            })
-            if (emsg.length > 3500) client.channels.cache.get("861979564514082876").send(emsg)
             message.channel.send(`❌ An error occurred when trying to execute this command. Please contact a dev assistant.`)
         })
     })

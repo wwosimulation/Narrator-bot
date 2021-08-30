@@ -3,6 +3,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "water",
+    description: "Throw the holy water on the wolfs! They need to DIE!",
+    usage: `${process.env.PREFIX}water <player>`,
     aliases: ["splash", "spray"],
     gameOnly: true,
     run: async (message, args, client) => {

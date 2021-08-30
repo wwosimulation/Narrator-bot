@@ -4,6 +4,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "give",
+    description: "Give something to another player. No matter what. A shield, a gift, cards or poisonous drinks!",
+    usage: `${process.env.PREFIX}give <player | <red | black> player>`,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-fortune-teller") {
             let alive = message.guild.roles.cache.find((c) => c.name === "Alive")

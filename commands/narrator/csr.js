@@ -1,9 +1,9 @@
 module.exports = {
     name: "csr",
+    description: "Pings the alive role and asks which gamemode (Classic or Sandbox or Random)",
+    usage: `${process.env.PREFIX}csr`,
     gameOnly: true,
     narratorOnly: true,
-    description: "Pings the alive role and asks which gamemode (Classic or Sandbox or Random)",
-
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         message.channel.bulkDelete(1)

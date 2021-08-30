@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "revall",
+    description: "Revive all players.",
+    usage: `${process.env.PREFIX}revall`,
     aliases: ["reviveall", "wolfmed", "allrev"],
     narratorOnly: true,
     gameOnly: true,

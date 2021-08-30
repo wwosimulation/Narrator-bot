@@ -4,6 +4,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "reveal",
+    description: "Reveal a role in the game.",
+    usage: `${process.env.PREFIX}reveal [player]`,
     gameOnly: true,
     aliases: ["show"],
     run: async (message, args, client) => {

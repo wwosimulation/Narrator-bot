@@ -3,6 +3,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "shoot",
+    description: "Kill a player with your weapons!",
+    usage: `${process.env.PREFIX}shoot [player]`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-gunner") {

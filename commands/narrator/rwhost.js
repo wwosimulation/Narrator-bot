@@ -3,6 +3,8 @@ const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "rwhost",
+    description: "Host a ranked game.",
+    usage: `${process.env.PREFIX}rwhost <game...>`,
     run: async (message, args, client) => {
         let narrator = message.guild.roles.cache.get("606123619999023114")
         if (!message.member.roles.cache.has(narrator.id)) return

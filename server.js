@@ -1,24 +1,29 @@
 console.log("Booting bot...")
 require("dotenv").config()
+
+const Sentry = require("@sentry/node")
+const Tracing = require("@sentry/tracing")
+
 const fs = require("fs")
 const db = require("quick.db")
+
+if (db.get("emergencystop")) {
+    console.log("Bot has been emergency stopped")
+    process.exit(0)
+}
+
 const mongo = require("./db.js")
 const Discord = require("discord.js")
 const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS_AND_STICKERS", "GUILD_PRESENCES"] })
 const config = require("./config")
-//const shadowadmin = require("shadowadmin")
 client.db = db
 client.dbs = mongo
+client.Sentry = Sentry
 
 const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
 
 client.commands = new Discord.Collection()
-// const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"))
-// for (const file of commandFiles) {
-//   const command = require(`./commands/${file}`)
-//   client.commands.set(command.name, command)
-// }
 fs.readdir("./commands/", (err, files) => {
     files.forEach((file) => {
         let path = `./commands/${file}`
@@ -122,25 +127,28 @@ client.debug = async (options = { game: false }) => {
 //Bot on startup
 client.on("ready", async () => {
     client.config = {}
+
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
-    //ShadowAdmin initialize
-    //shadowadmin.init(client, {prefix, owners: config.botAdmin})
-    //     if (!client.user.username.includes("Beta")) {
-    //         let privateKey = fs.readFileSync("./ghnb.pem")
-    //         client.github = new Octokit({
-    //             authStrategy: createAppAuth,
-    //             auth: {
-    //                 appId: 120523,
-    //                 privateKey,
-    //                 clientSecret: process.env.GITHUB,
-    //                 installationId: 17541999,
-    //             },
-    //         })
-    //     }
+    if (!client.user.username.includes("Besta")) {
+        Sentry.init({
+            dsn: process.env.SENTRY,
+            tracesSampleRate: 1.0,
+        })
+        // let privateKey = fs.readFileSync("./ghnb.pem")
+        // client.github = new Octokit({
+        //     authStrategy: createAppAuth,
+        //     auth: {
+        //         appId: 120523,
+        //         privateKey,
+        //         clientSecret: process.env.GITHUB,
+        //         installationId: 17541999,
+        //     },
+        // })
+    }
 })
 
 let maint = db.get("maintenance")
@@ -154,21 +162,19 @@ client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes
 client.login(process.env.TOKEN)
 
 function cleanStackTrace(reason) {
-    return require('callsite-record')({
-forError: reason
-     }).renderSync({
-stackFilter(frame) {
-return !frame.getFileName().includes('node_modules');
-}
-});
+    return require("callsite-record")({
+        forError: reason,
+    }).renderSync({
+        stackFilter(frame) {
+            return !frame.getFileName().includes("node_modules")
+        },
+    })
 }
 
-process.on('unhandledRejection', reason => {
-console.log(cleanStackTrace(reason));
-});
+process.on("unhandledRejection", (reason) => {
+    console.log(cleanStackTrace(reason))
+})
 
 client.on("error", (e) => console.error)
 
 module.exports = { client }
-
-

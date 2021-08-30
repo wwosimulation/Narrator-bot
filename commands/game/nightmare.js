@@ -3,6 +3,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "nightmare",
+    description: "Block a players abilities during the next night.",
+    usage: `${process.env.PREFIX}nightmare <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-nightmare-werewolf") {

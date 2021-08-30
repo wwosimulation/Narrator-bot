@@ -3,6 +3,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "convert",
+    description: "Convert a player to your team. This command applies for bandit, sect leader and zombies.",
+    usage: `${process.env.PREFIX}convert <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")

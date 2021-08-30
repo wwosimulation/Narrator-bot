@@ -3,6 +3,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "eat",
+    description: "Eat some players. You can only eat as much players as you have hunger (max 5)!",
+    usage: `${process.env.PREFIX}eat <player...>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-cannibal") {

@@ -4,7 +4,9 @@ const { shop } = require("../../config")
 
 module.exports = {
     name: "shop",
-    run: async (message, args) => {
+    description: "Displays the shop with all items you can buy. It can also list available colors to buy.",
+    usage: `${process.env.PREFIX}shop [color]`,
+    run: async (message, args, client) => {
         if (["color", "colors", "colour", "colours"].includes(args[0])) {
             let embed = new MessageEmbed().setDescription(`${message.i10n("availableColors")}:\n\n`)
             shop.colors.forEach((x) => {
