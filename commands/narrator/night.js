@@ -297,7 +297,6 @@ module.exports = {
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
                                 let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
-                                if (player.nickname == hypnotize) {
                                 if (db.get(`role_${player.id}`) == "Dreamcatcher") {
                                     if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                         db.set(`hypnotize_${dc[a]}`, null)
@@ -322,7 +321,6 @@ module.exports = {
                                                 })
                                                 message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
                                             }, 60000)
-                                        }
                                         }
                                     }
                                 }
