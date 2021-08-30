@@ -29,7 +29,7 @@ module.exports = {
         let obj = {}
         obj[sortedBy] = -1
         let obj2 = {}
-        obj2[sortedBy] = {$gt: 0}
+        obj2[sortedBy] = { $gt: 0 }
 
         let embeds = []
         let embedItemArray = []
