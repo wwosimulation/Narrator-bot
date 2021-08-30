@@ -310,7 +310,7 @@ module.exports = {
                                         chan1.setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
                                         chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
                                         db.set(`hypnotized_${dc[a]}`, guy.nickname)
-                                        if (db.get(`role_${guy.id}`) == 'Bomber') {
+                                        if (db.get(`role_${guy.id}`) == "Bomber") {
                                             chan1.permissionOverwrites.edit(player.id, {
                                                 SEND_MESSAGES: false,
                                             })
@@ -321,7 +321,7 @@ module.exports = {
                                                 chan1.permissionOverwrites.edit(player.id, {
                                                     SEND_MESSAGES: false,
                                                 })
-message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
+                                                message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
                                                 setTimeout(async function () {
                                                     chan1.permissionOverwrites.edit(player.id, {
                                                         SEND_MESSAGES: true,
@@ -329,7 +329,6 @@ message.channel.send(`Your channel has been locked for 1 minute due to a bug inc
                                                     message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
                                                 }, 60000)
                                             }
-
                                         }
                                     }
                                 }
