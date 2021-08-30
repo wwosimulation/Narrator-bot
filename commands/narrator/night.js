@@ -310,7 +310,7 @@ module.exports = {
                                         chan1.setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
                                         chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
                                         db.set(`hypnotized_${dc[a]}`, guy.nickname)
-                                        if (role == 'Bomber') {
+                                        if (role == "Bomber") {
                                             ff.permissionOverwrites.edit(tempguy.id, {
                                                 SEND_MESSAGES: false,
                                             })
@@ -321,6 +321,7 @@ module.exports = {
                                                 })
                                                 message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
                                             }, 60000)
+                                        }
                                     }
                                 }
                             }
@@ -328,7 +329,6 @@ module.exports = {
                     }
                 }
             }
-        }
 
             for (let a = 0; a < nb.length; a++) {
                 let naughty = message.guild.channels.cache.get(nb[a])
