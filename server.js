@@ -110,16 +110,38 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     let buttonBack = new Discord.MessageButton({ style: "SUCCESS", emoji: "◀", customId: "back" })
     let buttonNext = new Discord.MessageButton({ style: "SUCCESS", emoji: "▶", customId: "next" })
     let buttonEnd = new Discord.MessageButton({ style: "SUCCESS", emoji: "⏩", customId: "end" })
+
     // rows
     let activeRow = new Discord.MessageActionRow().addComponents([buttonBegin, buttonBack, buttonNext, buttonEnd])
     let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
+
     // adding buttons
     if (addButtons) msg = msg.edit({ components: [activeRow] })
 
-    page = page - 1
+    let p = page-- //index value 
+
     // collecting interactions
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
-    let interaction = await msg.awaitMessageComponent({ filter, time: 30 * 1000, max: 1 }).catch(console.error)
+    let collector = msg.createMessageComponentCollector({filter, time: 30 * 1000})
+
+    collector.on('collect', async button => {
+        if(button.customId === "begin") p = 0
+        else if(button.customId === "back") {
+            if(p != 0) p--
+            else p = embeds.length - 1
+        }
+        else if(button.customId === "next") {
+            if(p != embeds.length - 1) p++
+            else p = 0
+        }
+        else if(button.customId === "end") p = embeds.length - 1
+        await button.update({embeds:[embeds[p]]})
+    })
+    collector.on('end', () => {
+        msg.edit({components: [deadRow]})
+    })
+
+    /*let interaction = await msg.awaitMessageComponent({ filter, time: 30 * 1000, max: 1 }).catch(console.error)
     if (!interaction) return msg.edit({ components: [deadRow], content: "This message is now inactive." })
 
     if (interaction.customId === "begin") page = 1
@@ -133,7 +155,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     let m = interaction.update({ embeds: [embeds[page]] })
     client.buttonPaginator(authorID, m, embeds, page, false).catch(console.error)
 
-    /*/if(!addButtons) msg.edit({embeds:[embeds[page]]})
+    /*if(!addButtons) msg.edit({embeds:[embeds[page]]})
     collector.on("collect", (interaction) => {
         if (interaction.customId === "begin") page = 1
         else if (interaction.customId === "back") {
