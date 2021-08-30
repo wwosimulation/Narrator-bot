@@ -118,25 +118,27 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     // adding buttons
     if (addButtons) msg = msg.edit({ components: [activeRow] })
 
-    let p = page-- //index value
+    let p = page-- //index value 
 
     // collecting interactions
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
-    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
+    let collector = msg.createMessageComponentCollector({filter, time: 30 * 1000}).catch((err) => console.log(err))
 
-    collector.on("collect", async (button) => {
-        if (button.customId === "begin") p = 0
-        else if (button.customId === "back") {
-            if (p != 0) p--
+    collector.on('collect', async button => {
+        if(button.customId === "begin") p = 0
+        else if(button.customId === "back") {
+            if(p != 0) p--
             else p = embeds.length - 1
-        } else if (button.customId === "next") {
-            if (p != embeds.length - 1) p++
+        }
+        else if(button.customId === "next") {
+            if(p != embeds.length - 1) p++
             else p = 0
-        } else if (button.customId === "end") p = embeds.length - 1
-        await button.update({ embeds: [embeds[p]] })
+        }
+        else if(button.customId === "end") p = embeds.length - 1
+        await button.update({embeds:[embeds[p]]})
     })
-    collector.on("end", () => {
-        msg.edit({ components: [deadRow] })
+    collector.on('end', () => {
+        msg.edit({components: [deadRow]})
     })
 
     /*let interaction = await msg.awaitMessageComponent({ filter, time: 30 * 1000, max: 1 }).catch(console.error)
