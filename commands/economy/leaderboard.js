@@ -28,13 +28,15 @@ module.exports = {
 
         let obj = {}
         obj[sortedBy] = -1
+        let obj2 = {}
+        obj2[sortedBy] = {$gt: 0}
 
         let embeds = []
         let embedItemArray = []
         let currentEmbedItems = []
 
         await (
-            await players.find({}).sort(obj)
+            await players.find(obj2).sort(obj)
         ).forEach((player) => {
             if (currentEmbedItems.length < 10) currentEmbedItems.push({ userID: player.user, value: player[sortedBy] })
             else {
