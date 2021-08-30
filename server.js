@@ -138,29 +138,6 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     collector.on("end", () => {
         msg.edit({ components: [deadRow] })
     })
-
-    /*let interaction = await msg.awaitMessageComponent({ filter, time: 30 * 1000, max: 1 }).catch(console.error)
-    if (!interaction) return msg.edit({ components: [deadRow], content: "This message is now inactive." })
-
-    let p = --page
-    
-    //if(!addButtons) msg.edit({embeds:[embeds[page]]})
-    collector.on("collect", (interaction) => {
-
-        if (interaction.customId === "begin") p = 0
-        else if (interaction.customId === "back") {
-            if (p != 0) p--
-            else p = embeds.length - 1
-        } else if (interaction.customId === "next") {
-            if (p != embeds.length - 1) p++
-            else p = 0
-        } else if (interaction.customId === "end") p = embeds.length - 1
-        await interaction.update({ embeds: [embeds[p]] })
-        //client.buttonPaginator(authorID, msg, embeds, p, false)
-    })
-    client.setTimeout(() => {
-        msg.edit({ components: [deadRow], content: "This message is now inactive." })
-    }, 30 * 1000)*/
 }
 
 client.debug = async (options = { game: false }) => {
