@@ -122,7 +122,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
 
     // collecting interactions
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
-    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 }).catch((err) => console.log(err))
+    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
 
     collector.on("collect", async (button) => {
         if (button.customId === "begin") p = 0
