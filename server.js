@@ -120,11 +120,44 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
 
     // collecting interactions
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
-    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000, max: 1 })
+    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
 
+    collector.on("collect", async (button) => {
+        if (button.customId === "begin") p = 0
+        else if (button.customId === "back") {
+            if (p != 0) p--
+            else p = embeds.length - 1
+        } else if (button.customId === "next") {
+            if (p != embeds.length - 1) p++
+            else p = 0
+        } else if (button.customId === "end") p = embeds.length - 1
+        await button.update({ embeds: [embeds[p]] })
+    })
+    collector.on("end", () => {
+        msg.edit({ components: [deadRow] })
+    })
+
+    /*let interaction = await msg.awaitMessageComponent({ filter, time: 30 * 1000, max: 1 }).catch(console.error)
+    if (!interaction) return msg.edit({ components: [deadRow], content: "This message is now inactive." })
+
+<<<<<<< HEAD
     let p = --page
     
     //if(!addButtons) msg.edit({embeds:[embeds[page]]})
+=======
+    if (interaction.customId === "begin") page = 1
+    else if (interaction.customId === "back") {
+        if (!page === 0) page -= 1
+        else page = embeds.length
+    } else if (interaction.customId === "next") {
+        if (!page === embeds.length - 1) page += 1
+        else page = 1
+    } else if (interaction.customId === "end") page = embeds.length
+    let m = interaction.update({ embeds: [embeds[page]] })
+    client.buttonPaginator(authorID, m, embeds, page, false).catch(console.error)
+
+    /*if(!addButtons) msg.edit({embeds:[embeds[page]]})
+>>>>>>> 94ec490c8a25b00d5df8b83e56d6e6c76ce98a65
     collector.on("collect", (interaction) => {
 
         if (interaction.customId === "begin") p = 0
@@ -138,9 +171,9 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
         await interaction.update({ embeds: [embeds[p]] })
         //client.buttonPaginator(authorID, msg, embeds, p, false)
     })
-    collector.on("end", () => {
+    client.setTimeout(() => {
         msg.edit({ components: [deadRow], content: "This message is now inactive." })
-    })
+    }, 30 * 1000)*/
 }
 
 client.debug = async (options = { game: false }) => {
