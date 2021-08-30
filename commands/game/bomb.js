@@ -17,12 +17,13 @@ module.exports = {
         if (message.channel.name == "priv-bomber") {
             let night = await db.fetch(`nightCount`)
             let didCmd
+            let dc
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let dc = config.fn.dcActions(message, db, alive)
             if (db.get(`role_${message.author.id}`) != 'Dreamcatcher') {
             didCmd = await db.fetch(`didCmd_${message.channel.id}`)
             } else {
+                dc = config.fn.dcActions(message, db, alive)
                 didCmd = db.get(`didCmd_${dc.chan.id}`)
             }
             let isNight = await db.fetch(`isNight`)
