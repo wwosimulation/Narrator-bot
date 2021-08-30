@@ -710,7 +710,7 @@ module.exports = {
             }, 2000)
 
             // bomber
-            setTimeout(async function () { 
+            setTimeout(async function () {
                 let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map((x) => x.id)
                 for (let i = 0; i < bb.length; i++) {
                     let bombs = db.get(`bombs_${bb[i]}`) || []
