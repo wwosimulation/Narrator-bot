@@ -1,10 +1,12 @@
-const Discord = require("discord.js")
+const { MessageEmbed } = require("discord.js")
 const ms = require("parse-ms")
 const config = require("../../config")
 const { players } = require("../../db.js")
 
 module.exports = {
     name: "daily",
+    description: "Claim your daily reward.",
+    usage: `${process.env.PREFIX}daily`,
     run: async (message, args, client) => {
         let item = ""
         let amount = ""

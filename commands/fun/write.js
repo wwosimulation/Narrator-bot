@@ -3,6 +3,8 @@ const Discord = require("discord.js")
 module.exports = {
     name: "write",
     aliases: ["w"],
+    description: "Write something with fancy letters and numbers.",
+    usage: `${process.env.PREFIX}write <message...>`,
     run: async (message, args, client) => {
         if (!client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).roles.cache.has("663389088354664477")) return console.log("No perms for emojis")
         message.delete()
@@ -24,7 +26,7 @@ module.exports = {
                     avatar: client.user.avatarURL(),
                     reason: `${process.env.PREFIX}emoji command`,
                 })
-            hook.send({content: newz, username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
+            hook.send({ content: newz, username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
         } else {
             let userEmbed = new Discord.MessageEmbed().setDescription(`<@${message.author.id}>`).setColor("#1FFF43")
             message.channel.send(`${newz}`, userEmbed)

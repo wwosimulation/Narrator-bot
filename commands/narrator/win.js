@@ -5,6 +5,8 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "win",
+    description: "Announce the winning team and its palyers.",
+    usage: `${process.env.PREFIX}win <team> <player...>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

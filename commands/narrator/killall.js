@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "killall",
+    description: "Kill everyone who is still alive.",
+    usage: `${process.env.PREFIX}killall`,
     aliases: ["suicideall", "gameend", "alldie", "dieall"],
     gameOnly: true,
     narratorOnly: true,

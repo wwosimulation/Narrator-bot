@@ -4,6 +4,8 @@ const config = require("../../config")
 
 module.exports = {
     name: "custom",
+    description: "This command is disabled until further notice. Please be patient till this command works!" /*Suggest a custom role list. Send the roles one by one!*/,
+    usage: `${process.env.PREFIX}custom`,
     gameOnly: true,
     run: async (message, args, client) => {
         return

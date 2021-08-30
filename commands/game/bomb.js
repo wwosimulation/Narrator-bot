@@ -9,6 +9,8 @@ const config = require("../../config")
 
 module.exports = {
     name: "bomb",
+    description: "Place your bombs as arsonist.",
+    usage: `${process.env.PREFIX}bomb <player> <player> <player>`,
     aliases: ["explode"],
     gameOnly: true,
     run: async (message, args, client) => {

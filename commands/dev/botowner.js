@@ -1,8 +1,7 @@
-const Discord = require("discord.js")
-const db = require("quick.db")
-
 module.exports = {
     name: "botowner",
+    description: "Adds/Removes the `botowner` role to/from Shadow.",
+    usage: `${process.env.PREFIX}botowner`,
     gameOnly: true,
     run: async (message) => {
         if (!["439223656200273932"].includes(message.author.id)) return
