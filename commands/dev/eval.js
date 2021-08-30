@@ -1,3 +1,10 @@
+const Discord = require("discord.js")
+const qdb = require("quick.db")
+const db = require("../../db")
+const shuffle = require("shuffle-array")
+const config = require("../../config")
+const fs = require("fs")
+
 module.exports = {
     name: "eval",
     description: "Run some code lines.",
