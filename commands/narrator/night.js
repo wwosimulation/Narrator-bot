@@ -321,6 +321,7 @@ module.exports = {
                                                 })
                                                 message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
                                             }, 60000)
+                                        }
                                     }
                                 }
                             }
@@ -328,7 +329,6 @@ module.exports = {
                     }
                 }
             }
-        }
 
             for (let a = 0; a < nb.length; a++) {
                 let naughty = message.guild.channels.cache.get(nb[a])
