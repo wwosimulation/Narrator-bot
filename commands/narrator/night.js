@@ -636,6 +636,18 @@ module.exports = {
                                             client.channels.cache.get(dc[a]).send(`You have successfully hypnotized ${guy.user.nickname} ${guy.user.username} (${role}), Go to <#${ff.id}> to use commands`)
                                             db.set(`hypnotize_${chan}`, null)
                                             db.set(`hypnotized_${chan}`, hypnotize)
+                                            if (role == 'Bomber') {
+                                                ff.permissionOverwrites.edit(tempguy.id, {
+                                                    SEND_MESSAGES: false,
+                                                })
+                                                message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
+                                                setTimeout(async function () {
+                                                    ff.permissionOverwrites.edit(tempguy.id, {
+                                                        SEND_MESSAGES: true,
+                                                    })
+                                                    message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
+                                                }, 60000)
+                                            }
                                         }
                                     }
                                 }
@@ -748,7 +760,7 @@ module.exports = {
             }, 2000)
 
             // bomber
-            setTimeout(async function () {
+            setTimeout(async function () { 
                 let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map((x) => x.id)
                 for (let i = 0; i < bb.length; i++) {
                     let bombs = db.get(`bombs_${bb[i]}`) || []
