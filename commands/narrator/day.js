@@ -925,7 +925,7 @@ module.exports = {
             }
         }
         // checking dc kills
-        console.log('e')
+        console.log("e")
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
             let tempguy = message.guild.members.cache.find((me) => me.nickname === m.toString())
             console.log(tempguy)
