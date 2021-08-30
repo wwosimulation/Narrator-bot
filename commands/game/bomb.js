@@ -17,27 +17,15 @@ module.exports = {
         if (message.channel.name == "priv-bomber") {
             let night = await db.fetch(`nightCount`)
             let didCmd
-            let chan
+            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
+            let dc = config.fn.dcActions(message, db, alive)
             if (db.get(`role_${message.author.id}`) != 'Dreamcatcher') {
             didCmd = await db.fetch(`didCmd_${message.channel.id}`)
             } else {
-                let hypnotized = db.get(`hypnotized_${message.channel.id}`)
-                let tempguy = message.guild.members.cache.find((m) => m.nickname === hypnotized)
-                let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${tempguy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
-                for (let b = 0; b < role.length; b++) {
-                    tempchan = message.guild.channels.cache.get(role[b])
-                    if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        if (tempguy.roles.cache.has(alive.id)) {
-                            didCmd = db.get(`forged_${tempchan.id}`)
-                            chan = tempchan
-                            console.log(chan.id)
-                        }
-                    }
-                }
+                didCmd = db.get(`didCmd_${dc.chan.id}`)
             }
             let isNight = await db.fetch(`isNight`)
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0])
             let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])
@@ -76,9 +64,9 @@ module.exports = {
                 db.set(`didCmd_${message.channel.id}`, night)
                 console.log(db.get(`bomb_${message.channel.id}`))
                 } else {
-                    db.set(`bombs_${chan.id}`, bombs)
-                    db.set(`didCmd_${chan.id}`, night)
-                    console.log(db.get(`bomb_${chan.id}`))
+                    db.set(`bombs_${dc.chan.id}`, bombs)
+                    db.set(`didCmd_${dc.chan.id}`, night)
+                    console.log(db.get(`bomb_${dc.chan.id}`))
                 }
             } else {
                 return await message.channel.send("Honey, you can only place bombs vertically, horizontally or diagonally. Make sure they are in order. \n\n+bomb 7 6 5 - :x:\n+bomb 5 6 7 - :white_check_mark:")
