@@ -935,7 +935,7 @@ module.exports = {
                     let tempchan = message.guild.channels.cache.get(roles[b])
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (tempguy.roles.cache.has(alive.id)) {
-                            console.log('e')
+                            console.log("e")
                             let hypnotized = db.get(`hypnotized_${tempchan.id}`) || 0
                             tempchan.setName("priv-dreamcatcher")
                             let guy = message.guild.members.cache.find((me) => me.nickname === hypnotized)
