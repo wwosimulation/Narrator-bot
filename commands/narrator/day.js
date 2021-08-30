@@ -927,15 +927,13 @@ module.exports = {
         // checking dc kills
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
             let tempguy = message.guild.members.cache.find((me) => me.nickname === m.toString())
-            let role = db.get(`role_${tempguy.id}`).toLowerCase()
-            if (role == "dreamcatcher") {
+            let role = db.get(`role_${tempguy.id}`)
+            if (role == "Dreamcatcher") {
                 TheDC = tempguy
-                let roles = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${tempguy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
-                for (let b = 0; b < roles.length; b++) {
-                    let tempchan = message.guild.channels.cache.get(roles[b])
-                    console.log(tempchan.id)
+                let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
+            for (let i = 0; i < allChannels.length; i++) {
+                    let tempchan = message.guild.channels.cache.get(allChannels[b])
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        console.log(tempchan.id)
                         if (tempguy.roles.cache.has(alive.id)) {
                             let hypnotized = db.get(`hypnotized_${tempchan.id}`) || 0
                             tempchan.setName("priv-dreamcatcher")
