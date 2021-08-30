@@ -312,11 +312,12 @@ module.exports = {
                                         db.set(`hypnotized_${dc[a]}`, guy.nickname)
                                         if (db.get(`role_${guy.id}`) == 'Bomber') {
                                             chan.permissionOverwrites.edit(tempguy.id, {
+
                                                 SEND_MESSAGES: false,
                                             })
                                             message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
                                             setTimeout(async function () {
-                                                ff.permissionOverwrites.edit(tempguy.id, {
+                                                chan.permissionOverwrites.edit(tempguy.id, {
                                                     SEND_MESSAGES: true,
                                                 })
                                                 message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
