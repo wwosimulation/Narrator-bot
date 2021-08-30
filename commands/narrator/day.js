@@ -1169,7 +1169,7 @@ module.exports = {
                                 killedplayers.push(guy.id)
                                 thekiller.push(TheDC.id)
                             }
-                            tempchan.setName('priv-dreamcatcher')
+                            tempchan.setName("priv-dreamcatcher")
                         }
                     }
                 }
