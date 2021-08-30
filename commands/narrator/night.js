@@ -310,6 +310,17 @@ module.exports = {
                                         chan1.setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
                                         chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
                                         db.set(`hypnotized_${dc[a]}`, guy.nickname)
+                                        if (role == 'Bomber') {
+                                            ff.permissionOverwrites.edit(tempguy.id, {
+                                                SEND_MESSAGES: false,
+                                            })
+                                            message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
+                                            setTimeout(async function () {
+                                                ff.permissionOverwrites.edit(tempguy.id, {
+                                                    SEND_MESSAGES: true,
+                                                })
+                                                message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
+                                            }, 60000)
                                     }
                                 }
                             }
@@ -317,6 +328,7 @@ module.exports = {
                     }
                 }
             }
+        }
 
             for (let a = 0; a < nb.length; a++) {
                 let naughty = message.guild.channels.cache.get(nb[a])
@@ -592,68 +604,6 @@ module.exports = {
             for (let a = 0; a < mm.length; a++) {
                 if (db.get(`mark_${mm[a]}`) != null) {
                     db.set(`markActive_${mm[a]}`, true)
-                }
-            }
-            for (let a = 0; a < dc.length; a++) {
-                let chan = message.guild.channels.cache.get(dc[a])
-                console.log(chan)
-                if (db.get(`hypnotize_${chan.id}`) != null) {
-                    for (let b = 1; b <= alive.members.size + dead.members.size; b++) {
-                        let tempguy = message.guild.members.cache.find((m) => m.nickname === b.toString())
-                        if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            if (tempguy.roles.cache.has(alive.id)) {
-                                let hypnotize = db.fetch(`hypnotize_${dc[a]}`)
-                                let guy = message.guild.members.cache.find((m) => m.nickname === hypnotize)
-                                let role = db.fetch(`role_${guy.id}`)
-                                if (guy.roles.cache.has(alive.id)) {
-                                    let ff = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`, {
-                                        parent: "748959630520090626",
-                                    })
-                                    ff.permissionOverwrites.create(tempguy.id, {
-                                        SEND_MESSAGES: true,
-                                        VIEW_CHANNEL: true,
-                                        READ_MESSAGE_HISTORY: true,
-                                    })
-                                    ff.permissionOverwrites.create(message.guild.id, {
-                                        VIEW_CHANNEL: false,
-                                    })
-                                    ff.permissionOverwrites.create(narrator.id, {
-                                        SEND_MESSAGES: true,
-                                        VIEW_CHANNEL: true,
-                                        READ_MESSAGE_HISTORY: true,
-                                        MANAGE_CHANNELS: true,
-                                        MENTION_EVERYONE: true,
-                                        ATTACH_FILES: true,
-                                    })
-                                    let allchan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.replace(" ", "-").toLowerCase()}`).map((x) => x.id)
-                                    for (let b = 0; b < allchan.length; b++) {
-                                        let tempchan = message.guild.channels.cache.get(allchan[b])
-                                        if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                            tempchan.permissionOverwrites.edit(guy.id, {
-                                                SEND_MESSAGES: false,
-                                            })
-                                            tempchan.send("The dreamcatcher has hypnotized you! You cannot use any command for this night.")
-                                            client.channels.cache.get(dc[a]).send(`You have successfully hypnotized ${guy.user.nickname} ${guy.user.username} (${role}), Go to <#${ff.id}> to use commands`)
-                                            db.set(`hypnotize_${chan}`, null)
-                                            db.set(`hypnotized_${chan}`, hypnotize)
-                                            if (role == 'Bomber') {
-                                                ff.permissionOverwrites.edit(tempguy.id, {
-                                                    SEND_MESSAGES: false,
-                                                })
-                                                message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
-                                                setTimeout(async function () {
-                                                    ff.permissionOverwrites.edit(tempguy.id, {
-                                                        SEND_MESSAGES: true,
-                                                    })
-                                                    message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
-                                                }, 60000)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
             // Tough guy
