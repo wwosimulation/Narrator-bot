@@ -1170,7 +1170,6 @@ module.exports = {
                                 killedplayers.push(guy.id)
                                 thekiller.push(TheDC.id)
                             }
-
                         }
                     }
                 }

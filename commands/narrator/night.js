@@ -636,7 +636,7 @@ module.exports = {
                                             client.channels.cache.get(dc[a]).send(`You have successfully hypnotized ${guy.user.nickname} ${guy.user.username} (${role}), Go to <#${ff.id}> to use commands`)
                                             db.set(`hypnotize_${chan}`, null)
                                             db.set(`hypnotized_${chan}`, hypnotize)
-                                            if (role == 'Bomber') {
+                                            if (role == "Bomber") {
                                                 ff.permissionOverwrites.edit(tempguy.id, {
                                                     SEND_MESSAGES: false,
                                                 })
@@ -760,7 +760,7 @@ module.exports = {
             }, 2000)
 
             // bomber
-            setTimeout(async function () { 
+            setTimeout(async function () {
                 let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map((x) => x.id)
                 for (let i = 0; i < bb.length; i++) {
                     let bombs = db.get(`bombs_${bb[i]}`) || []
