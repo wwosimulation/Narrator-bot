@@ -128,7 +128,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
             if (p != 0) p--
             else p = embeds.length - 1
         } else if (button.customId === "next") {
-            if (p != embeds.length - 1) p++
+            if (p != embeds.length - 1) p = p + 1
             else p = 0
         } else if (button.customId === "end") p = embeds.length - 1
         await button.update({ embeds: [embeds[p]] })
