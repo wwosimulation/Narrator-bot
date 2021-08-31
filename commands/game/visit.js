@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const config = require('../../config')
+const config = require("../../config")
 
 module.exports = {
     name: "visit",
@@ -10,7 +10,7 @@ module.exports = {
         if (message.channel.name === "priv-red-lady") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dc
-            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = config.fn.dcActions(message, db, alive)
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
             let isNight = db.get(`isNight`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0]) return message.channel.send("Who are you visiting? Mention the player.")
@@ -24,7 +24,7 @@ module.exports = {
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
 
             message.react("744571914034479126")
-            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `visit_${dc.chan.id}` : `visit_${message.channel.id}`}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `visit_${dc.chan.id}` : `visit_${message.channel.id}`}`, guy.nickname)
         }
     },
 }

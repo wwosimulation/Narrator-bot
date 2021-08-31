@@ -11,8 +11,8 @@ module.exports = {
             let isNight = db.get(`isNight`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dc
-            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
-            let arrow = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`) || 2
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+            let arrow = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`) || 2
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             if (!args[0]) return message.channel.send("Who are you marking? Mention the player.")
             if (args[0] == message.member.nickname) return message.channel.send("You cannot mark the yourself.")
@@ -23,8 +23,8 @@ module.exports = {
             if (db.get(`role_${guy.id}`) == "President") return message.channel.send("You can not mark the president.")
             if (arrow < 1) return message.channel.send("You donot have any arrows left.")
             message.channel.send(`${getEmoji("mark", client)} You decided to mark **${guy.nickname} ${guy.user.username}**!`)
-            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `mark_${dc.chan.id}` : `mark_${message.channel.id}`}`, guy.nickname)
-            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `markActive_${dc.chan.id}` : `markActive_${message.channel.id}`}`, false)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `mark_${dc.chan.id}` : `mark_${message.channel.id}`}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `markActive_${dc.chan.id}` : `markActive_${message.channel.id}`}`, false)
         }
     },
 }

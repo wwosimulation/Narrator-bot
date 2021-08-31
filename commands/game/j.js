@@ -10,7 +10,7 @@ module.exports = {
             let night = db.get(`isNight`)
             if (night != "yes") return message.channel.send("You haven't jailed anyone yet.")
             let j = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
-            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') return message.channel.send("Nope, What's the point of sending messages to the jailed if you can't even see messages from the jailed?")
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") return message.channel.send("Nope, What's the point of sending messages to the jailed if you can't even see messages from the jailed?")
             j.send("**Jailer**: " + args.join(" "))
         }
 
@@ -24,7 +24,7 @@ module.exports = {
                     let guy = message.guild.members.cache.find((m) => m.nickname === k.toString())
                     if (guy) {
                         if (j.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            if (db.get(`role_${guy.id}`) != 'Dreamcatcher') j.send("**" + message.member.nickname + " " + message.author.username + "**: " + args.join(" "))
+                            if (db.get(`role_${guy.id}`) != "Dreamcatcher") j.send("**" + message.member.nickname + " " + message.author.username + "**: " + args.join(" "))
                         }
                     }
                 }

@@ -9,8 +9,8 @@ module.exports = {
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dc
-        if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
-        let sword = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `sword_${dc.chan.id}` : `sword_${message.channel.id}`}`)
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+        let sword = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `sword_${dc.chan.id}` : `sword_${message.channel.id}`}`)
         if (sword == true) {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
@@ -21,7 +21,7 @@ module.exports = {
             message.guild.channels.cache.finf((c) => c.name === "day-chat").send(`${getEmoji("getsword", client)} The Forger's sword was used to kill **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**.`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
-            db.delete(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `sword_${dc.chan.id}` : `sword_${message.channel.id}`}`)
+            db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `sword_${dc.chan.id}` : `sword_${message.channel.id}`}`)
         }
     },
 }

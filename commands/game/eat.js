@@ -11,8 +11,8 @@ module.exports = {
             // getting all the variables
             let isNight = db.get(`isNight`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') fn.dcActions(message, db, alive)
-            let hunger = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `hunger_${dc.chan.id}` : `hunger_${message.channel.id}`}`) || 1
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") fn.dcActions(message, db, alive)
+            let hunger = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hunger_${dc.chan.id}` : `hunger_${message.channel.id}`}`) || 1
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You are dead. You cannot use the command now!`)
             if (!args[0]) return message.channel.send("Who you are going to eat? Mention the player.")
             if (hunger < args.length) return message.channel.send("You cannot eat more than your hunger!")
@@ -43,7 +43,7 @@ module.exports = {
                 message.guild.members.cache.find((m) => m.user.tag === args[j])
                 lol.push(guy.nickname)
             }
-            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `eat_${dc.chan.id}` : `eat_${message.channel.id}`}`, lol)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `eat_${dc.chan.id}` : `eat_${message.channel.id}`}`, lol)
             for (let j = 0; j < args.length; j++) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[j]) || message.guild.members.cache.find((m) => m.id === args[j]) || message.guild.members.cache.find((m) => m.user.username === args[j])
                 message.guild.members.cache.find((m) => m.user.tag === args[j])
