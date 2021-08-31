@@ -2,14 +2,14 @@ const db = require("quick.db")
 const leaderboard = require("../commands/economy/leaderboard")
 const { shop, ids } = require("../config")
 const { players } = require("../db")
-function terrorCheck(interaction) {
-    let prog = interaction.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+function terrorCheck(message) {
+    let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
     let dayCount = db.get(`dayCount`)
     let res = false
     for (let i = 0; i < prog.length; i++) {
-        let tempchan = interaction.guild.channels.fetch(prog[i])
-        let terror = db.get(`terror_${tempchan[i].id}`) || "none"
-        if (terror !== "none" && terror.day >= dayCount && interaction.member.nickname === terror.guy) res = true
+        let terrorDay = db.get(`terror_${prog[i]}.day`) || "no"
+        let terrorGuy = db.get(`terror_${prog[i]}.guy`) || "no"
+        if (terrorDay !== "no" && terrorGuy !== "no" && terrorDay >= dayCount && message.member.nickname === terrorGuy) res = true
     }
     return res
 }
