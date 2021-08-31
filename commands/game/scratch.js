@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "scratch",
@@ -9,7 +9,9 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name == "priv-kitten-wolf") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let ability = db.get(`kitten_${message.channel.id}`) || "no"
+            let dc
+            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
+            let ability = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `kitten_${dc.chan.id}` : `kitten_${message.channel.id}`}`) || "no"
             let wwsChat = message.guild.channels.cache.find((c) => c.name == "werewolves-chat")
             if (!args[0]) return message.channel.send("Who are you scratching? Mention the player.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
@@ -19,7 +21,7 @@ module.exports = {
             //if (!wwsChat.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY"])) return message.channel.send("HEY SMART-A WORD DID YOU KNOW YOU CAN CONVERT EVERYONE BY DOING `+suicide`? Everyone is doing that right now!")
             if (ability == "yes") return message.channel.send("You have already used your ability.")
             message.channel.send(`${getEmoji("scratch", client)} You have decided to convert **${guy.nickname} ${guy.user.username}**!`)
-            db.set(`scratch_${message.channel.id}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `scratch_${dc.chan.id}` : `scratch_${message.channel.id}`}`, guy.nickname)
         }
     },
 }

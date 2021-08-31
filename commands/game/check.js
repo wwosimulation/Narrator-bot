@@ -54,7 +54,7 @@ module.exports = {
             else if (guy == ownself) {
                 return message.channel.send("Checking yourself? Trust issues, hah! lol")
             } else if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.channel.send("You or the person you are checking is not alive.")
-            let checked = await db.fetch(`seer_${message.channel.id}`)
+            let checked = await db.fetch(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `seer_${dc.chan.id}` : `seer_${message.channel.id}`}`)
             if (checked == "yes") return await message.channel.send("You already used your ability for tonight!")
             let role = await db.fetch(`role_${guy.id}`)
 
@@ -75,7 +75,7 @@ module.exports = {
             }
 
             message.channel.send(`You checked **${args[0]} ${guy.user.username} (${role})**!`)
-            db.set(`seer_${message.channel.id}`, "yes")
+            db.set(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `seer_${dc.chan.id}` : `seer_${message.channel.id}`}`, "yes")
         } else if (message.channel.name == "priv-detective") {
             let isNight = await db.fetch(`isNight`)
             if (isNight == "no") return await message.channel.send("It's day! You can check during nights only!")
@@ -93,7 +93,7 @@ module.exports = {
                 return await message.channel.send("You or the person you are checking is not alive.")
             }
 
-            let ability = await db.fetch(`detCheck_${message.channel.id}`)
+            let ability = await db.fetch(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `detCheck_${dc.chan.id}` : `detCheck_${message.channel.id}`}`)
             if (ability == "yes") return await message.reply(`You have already used your ability for tonight!`)
 
             let role1 = await db.fetch(`role_${guy1.id}`)
@@ -142,14 +142,14 @@ module.exports = {
                 result = "different teams"
             }
             message.channel.send(`**${args[0]} ${guy1.user.username}** and **${args[1]} ${guy2.user.username}** have ${result}!`)
-            db.set(`detCheck_${message.channel.id}`, "yes")
+            db.set(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `detCheck_${dc.chan.id}` : `detCheck_${message.channel.id}`}`, "yes")
         } else if (message.channel.name == "priv-wolf-seer") {
             let isNight = await db.fetch(`isNight`)
             if (isNight == "no") return await message.channel.send("It's day! You can check during nights only!")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            let ability = await db.fetch(`wwseer_${message.channel.id}`)
+            let ability = await db.fetch(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `wwseer_${dc.chan.id}` : `wwseer_${message.channel.id}`}`)
             if (ability == "yes") return await message.channel.send("You have already used your ability for tonight!")
             if (message.member.roles.cache.has(dead.id)) return await message.channel.send("Yes. Checking while dead. Dude, you can't even tell the wolves your check.")
             if (message.member == guy || !guy) return await message.channel.send("The player is not in game! Mention the correct player number.")
@@ -187,9 +187,9 @@ module.exports = {
 
             message.channel.send(`You checked **${args[0]} ${guy.user.username} (${role})**!${soloKillers.includes(role) ? " As a werewolf, you cannot kill this player at night." : ""}`)
             wwchat.send(`The Wolf Seer checked **${args[0]} ${guy.user.username} (${role})**!`)
-            db.set(`wwseer_${message.channel.id}`, "yes")
+            db.set(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `wwseer_${dc.chan.id}` : `wwseer_${message.channel.id}`}`, "yes")
         } else if (message.channel.name == "priv-sorcerer") {
-            let ability = await db.fetch(`sorcerer_${message.channel.id}`)
+            let ability = await db.fetch(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `sorcerer_${dc.chan.id}` : `sorcerer_${message.channel.id}`}`)
             let isNight = await db.fetch(`isNight`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
@@ -211,7 +211,7 @@ module.exports = {
             }
 
             message.channel.send("You checked **" + args[0] + " " + guy.user.username + " (" + role + ")**! ")
-            db.set(`sorcerer_${message.channel.id}`, "yes")
+            db.set(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `sorcerer_${dc.chan.id}` : `sorcerer_${message.channel.id}`}`, "yes")
         } else if (message.channel.name == "priv-spirit-seer") {
             let isNight = db.get(`isNight`)
             let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
@@ -232,7 +232,7 @@ module.exports = {
                     check.push(guy2.nickname)
                 }
             }
-            db.set(`spirit_${message.channel.id}`, check)
+            db.set(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `spirit_${dc.chan.id}` : `spirit_${message.channel.id}`}`, check)
             message.react("744534042329743370")
         }
     },

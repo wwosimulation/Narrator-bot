@@ -16,16 +16,11 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name == "priv-bomber") {
             let night = await db.fetch(`nightCount`)
-            let didCmd
             let dc
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            if (db.get(`role_${message.author.id}`) != 'Dreamcatcher') {
-            didCmd = await db.fetch(`didCmd_${message.channel.id}`)
-            } else {
-                dc = config.fn.dcActions(message, db, alive)
-                didCmd = db.get(`didCmd_${dc.chan.id}`)
-            }
+            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = config.fn.dcActions(message, db, alive)
+            let didCmd = await db.fetch(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `didCmd_${dc.chan.id}` : `didCmd_${message.channel.id}`}`)
             let isNight = await db.fetch(`isNight`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0])
@@ -60,15 +55,9 @@ module.exports = {
                 if (bombs.includes(message.member.nickname)) {
                     bombs.splice(bombs.indexOf(message.author.id), 1)
                 }
-                if (db.get(`role_${message.author.id}`) != 'Dreamcatcher') {
-                db.set(`bombs_${message.channel.id}`, bombs)
-                db.set(`didCmd_${message.channel.id}`, night)
-                console.log(db.get(`bomb_${message.channel.id}`))
-                } else {
-                    db.set(`bombs_${dc.chan.id}`, bombs)
-                    db.set(`didCmd_${dc.chan.id}`, night)
-                    console.log(db.get(`bomb_${dc.chan.id}`))
-                }
+                db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `bombs_${dc.chan.id}` : `bombs_${message.channel.id}`}`, bombs)
+                db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `didCmd_${dc.chan.id}` : `didCmd_${message.channel.id}`}`, night)
+                console.log(db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `bomb_${dc.chan.id}` : `bomb_${message.channel.id}`}`))
             } else {
                 return await message.channel.send("Honey, you can only place bombs vertically, horizontally or diagonally. Make sure they are in order. \n\n+bomb 7 6 5 - :x:\n+bomb 5 6 7 - :white_check_mark:")
             }

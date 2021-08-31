@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "sword",
@@ -7,9 +7,11 @@ module.exports = {
     usage: `${process.env.PREFIX}sword <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        let sword = db.get(`sword_${message.channel.id}`)
+        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        let dc
+        if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
+        let sword = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `sword_${dc.chan.id}` : `sword_${message.channel.id}`}`)
         if (sword == true) {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (args.length == 0) return message.channel.send("Who are you giving the sword? Mention the player.")
@@ -19,7 +21,7 @@ module.exports = {
             message.guild.channels.cache.finf((c) => c.name === "day-chat").send(`${getEmoji("getsword", client)} The Forger's sword was used to kill **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**.`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
-            db.delete(`sword_${message.channel.id}`)
+            db.delete(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `sword_${dc.chan.id}` : `sword_${message.channel.id}`}`)
         }
     },
 }

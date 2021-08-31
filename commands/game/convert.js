@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "convert",
@@ -10,6 +10,8 @@ module.exports = {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let isNight = db.get(`isNight`)
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
+        let dc
+        if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
 
         if (message.channel.name == "priv-sect-leader") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Honey you cannot convert being dead.")
@@ -19,7 +21,7 @@ module.exports = {
 
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot convert the deads!")
-            db.set(`sect_${message.channel.id}`, args[0])
+            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `sect_${dc.chan.id}` : `sect_${message.channel.id}`}`, args[0])
             message.channel.send(`${getEmoji("sect_member", client)} You decided to convert **${guy.nickname} ${guy.user.username}**!`)
         } else if (message.channel.name == "priv-bandit") {
             let allbandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
@@ -44,7 +46,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot convert the deads!")
-            db.set(`bandit_${message.channel.id}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `bandit_${dc.chan.id}` : `bandit_${message.channel.id}`}`, guy.nickname)
             message.channel.send(`${getEmoji("kidnap", client)} You decided to make player **${guy.nickname} ${guy.user.username}** into your Accomplice!`)
         } else if (message.channel.name == "priv-zombie") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Honey you cannot bite being dead.")
@@ -67,7 +69,7 @@ module.exports = {
                 return message.channel.send("This zombie is getting converted!")
             } //till here
             message.guild.channels.cache.find((c) => c.name === "zombies").send(`${getEmoji("zombvote", client)} ${message.member.nickname} ${message.author.username} voted **${guy.nickname} ${guy.user.username}**!`)
-            db.set(`bite_${message.channel.id}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `bite_${dc.chan.id}` : `bite_${message.channel.id}`}`, guy.nickname)
         }
     },
 }

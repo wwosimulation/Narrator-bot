@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "enchant",
@@ -8,6 +8,9 @@ module.exports = {
     aliases: ["shaman", "disguise", "delude"],
     gameOnly: true,
     run: async (message, args, client) => {
+        let dc
+        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-wolf-shaman") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
@@ -32,8 +35,7 @@ module.exports = {
                 }
             }
         } else if (message.channel.name == "priv-illusionist") {
-            let disguised = db.get(`disguised_${message.channel.id}`) || []
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+            let disguised = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `disguised_${dc.chan.id}` : `disguised_${message.channel.id}`}`) || []
             let isNight = db.get(`isNight`)
             if (!args[0]) return message.channel.send("Who are you enchanting? Mention the player.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
@@ -45,7 +47,7 @@ module.exports = {
                 if (disguised.includes(guy.nickname)) return message.channel.send("You have already disguised this player.")
             }
             message.channel.send(`${getEmoji("delude", client)} You decided to disguise **${guy.nickname} ${guy.user.username}**!`)
-            db.set(`toDisguise_${message.channel.id}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `toDisguise_${dc.chan.id}` : `toDisguise_${message.channel.id}`}`, guy.nickname)
         }
     },
 }
