@@ -933,7 +933,7 @@ module.exports = {
                 let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
                 for (let b = 0; b < allChannels.length; b++) {
                     let tempchan = message.guild.channels.cache.get(allChannels[b])
-                    if (!tempchan.name.includes('dreamcatcher')) tempchan.delete()
+                    if (!tempchan.name.includes("dreamcatcher")) tempchan.delete()
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (tempguy.roles.cache.has(alive.id)) {
                             let hypnotized = db.get(`hypnotized_${tempchan.id}`) || 0
