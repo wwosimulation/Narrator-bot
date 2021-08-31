@@ -10,7 +10,6 @@ module.exports = {
         if (message.guild.id != "472261911526768642") return
 
         let sww = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").map((x) => x.id)
-        let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
         let votechat = message.guild.channels.cache.find((c) => c.name === "vote-chat")
@@ -179,6 +178,7 @@ module.exports = {
         setTimeout(async () => {
             let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
             let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id)
+            let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
             let s = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map((x) => x.id)
             let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").map((x) => x.id)
             let sorc = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").map((x) => x.id)
