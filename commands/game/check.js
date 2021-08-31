@@ -20,7 +20,7 @@ module.exports = {
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You or the person you are checking is not alive.")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") fn.dcActions(message, db, alive)
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             if (guy == ownself) return message.channel.send("Checking yourself? Trust issues, hah! lol")
             let ability = await db.fetch(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `auraCheck_${dc.chan.id}` : `auraCheck_${message.channel.id}`}`)
             if (ability == "yes") return await message.reply(`You have already used your ability for tonight!`)
