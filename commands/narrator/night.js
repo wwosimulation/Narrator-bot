@@ -302,12 +302,13 @@ module.exports = {
                                         db.set(`hypnotize_${dc[a]}`, null)
                                         console.log("hi")
                                         chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
-                                        let chan1 = message.guild.channels.cache.get(dc[a])
+                                        let chan1 = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`, {
+                                            parent: "748959630520090626",
+                                        })
                                         chan1.send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
                                         chan.permissionOverwrites.edit(guy.id, {
                                             SEND_MESSAGES: false,
                                         })
-                                        chan1.setName(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`)
                                         chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
                                         db.set(`hypnotized_${dc[a]}`, guy.nickname)
                                         if (db.get(`role_${guy.id}`) == "Bomber") {
