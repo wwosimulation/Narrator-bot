@@ -6,9 +6,9 @@ function terrorCheck(message) {
     let dayCount = db.get(`dayCount`)
     let res = false
     for (let i = 0; i < prog.length; i++) {
-        let tempchan = message.guild.channels.cache.get(prog[i])
-        let terror = db.get(`terror_${tempchan[i].id}`)
-        if (terror.day >= dayCount && message.member.nickname === terror.guy) res = true
+        let terrorDay = db.get(`terror_${prog[i]}.day`) || "no"
+        let terrorGuy = db.get(`terror_${prog[i]}.guy`) || "no"
+        if (terrorDay !== "no" && terrorGuy !== "no" && terrorDay >= dayCount && message.member.nickname === terrorGuy) res = true
     }
     return res
 }
