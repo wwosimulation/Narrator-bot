@@ -9,8 +9,8 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name == "priv-witch") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
-            let ability = await db.fetch(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`)
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+            let ability = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`)
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let day = await db.fetch(`isDay`)
             let night = await db.fetch(`nightCount`)
@@ -43,7 +43,7 @@ module.exports = {
             message.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("poison", client)} The Witch poisoned **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
-            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`, 1)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`, 1)
         }
     },
 }

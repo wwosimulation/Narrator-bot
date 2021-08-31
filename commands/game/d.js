@@ -11,7 +11,7 @@ module.exports = {
             if (isNight != "yes") return message.channel.send("You can only speak with the dead during the night!")
             if (message.member.roles.cache.has("606131202814115882")) return await message.channel.send("wow. here's a crazy idea, why not go to <#606196101380309012> and chat there?")
             if (!args) return await message.channel.send("Yup, sending empty messages. Congrats, you are a certified moron!")
-            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') return message.channel.send("Nope, What's the point of sending messages to the dead if you can't even see messages from the dead?")
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") return message.channel.send("Nope, What's the point of sending messages to the dead if you can't even see messages from the dead?")
             let de = message.guild.channels.cache.find((c) => c.name === "dead-chat")
             let content = ""
             for (let i = 0; i < args.length; i++) {
@@ -33,7 +33,7 @@ module.exports = {
                 for (let e = 0; e < med.length; e++) {
                     let cha = message.guild.channels.cache.get(med[e])
                     if (cha.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]) && guy.roles.cache.has(alive.id)) {
-                        if (db.get(`role_${guy.id}`) != 'Dreamcatcher') medi.push(med[e])
+                        if (db.get(`role_${guy.id}`) != "Dreamcatcher") medi.push(med[e])
                     }
                 }
             }

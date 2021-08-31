@@ -13,9 +13,9 @@ module.exports = {
         let dc
         let isNight = await db.fetch(`isNight`)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-        let ignited = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`) || "-1"
+        let ignited = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`) || "-1"
         if (doused == null) {
             doused = []
         }
@@ -41,12 +41,12 @@ module.exports = {
                         return await message.channel.send("You have already doused that player!")
                     }
                 }
-                db.delete(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`)
+                db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`)
 
-                db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0], args[1]])
-                console.log(db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`))
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0], args[1]])
+                console.log(db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`))
                 message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username} & ${args[1]} ${guy2.user.username}**!`)
-                db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, db.get(`nightCount_${message.author.id}`))
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, db.get(`nightCount_${message.author.id}`))
             } else if (args.length == 1) {
                 if (!guy1 || guy1 == ownself) {
                     return await message.channel.send("The player is not in game! Mention the correct player number.")
@@ -59,10 +59,10 @@ module.exports = {
                         return await message.channel.send("You have already doused that player!")
                     }
                 }
-                db.delete(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`)
-                db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0]])
+                db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`)
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0]])
                 message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username}**!`)
-                db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, db.get(`nightCount_${message.author.id}`))
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, db.get(`nightCount_${message.author.id}`))
             } else {
                 return await message.channel.send("You cannot douse more than 2 players at a time!")
             }

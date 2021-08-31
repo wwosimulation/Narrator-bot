@@ -9,7 +9,7 @@ module.exports = {
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dc
-        if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-gunner") {
             if (!db.get(`bullets_${message.channel.id}`)) {
                 db.set(`bullets_${message.channel.id}`, 1)
@@ -90,11 +90,11 @@ module.exports = {
         } else if (message.channel.name == "priv-marksman") {
             let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let markActive = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `markActive_${dc.chan.id}` : `markActive_${message.channel.id}`}`) || false
-            let mark = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `mark_${dc.chan.id}` : `mark_${message.channel.id}`}`)
-            let arrows = db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`) || 2
-            if (!db.get(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`)) {
-                db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 2)
+            let markActive = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `markActive_${dc.chan.id}` : `markActive_${message.channel.id}`}`) || false
+            let mark = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `mark_${dc.chan.id}` : `mark_${message.channel.id}`}`)
+            let arrows = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`) || 2
+            if (!db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`)) {
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 2)
             }
             if (mark != null) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === mark)
@@ -115,7 +115,7 @@ module.exports = {
                     }
                 }
                 let role = db.get(`role_${guy.id}`)
-                db.subtract(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 1)
+                db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 1)
                 if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Bandit" || role == "Illusionist" || role == "Corruptor" || role == "Accomplice" || role == "Sorcerer" || role == "Zombie" || role == "Sect Leader" || role == "Cannibal" || role == "Alchemist") {
                     guy.roles.add(dead.id)
                     guy.roles.remove(alive.id)

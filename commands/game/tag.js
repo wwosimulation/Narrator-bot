@@ -16,7 +16,7 @@ module.exports = {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
         let dc
-        if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') dc = fn.dcActions(message, db, alive)
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
         if (message.channel.name == "priv-junior-werewolf") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
@@ -46,7 +46,7 @@ module.exports = {
                 }
             }
 
-            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `jwwtag_${dc.chan.id}` : `jwwtag_${message.channel.id}`}`, args[0])
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `jwwtag_${dc.chan.id}` : `jwwtag_${message.channel.id}`}`, args[0])
             message.react("475775484219752453")
         }
         if (message.channel.name == "priv-avenger") {
@@ -83,7 +83,7 @@ module.exports = {
                 }
             }
 
-            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `atag_${dc.chan.id}` : `atag_${message.channel.id}`}`, args[0])
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `atag_${dc.chan.id}` : `atag_${message.channel.id}`}`, args[0])
             message.react("482179367485702162")
         }
         if (message.channel.name == "priv-loudmouth") {
@@ -125,7 +125,7 @@ module.exports = {
                 }
             }
 
-            db.set(`${db.get(`role_${message.author.id}`) == 'Dreamcatcher' ? `mouth_${dc.chan.id}` : `mouth_${message.channel.id}`}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `mouth_${dc.chan.id}` : `mouth_${message.channel.id}`}`, guy.nickname)
             message.channel.send(`${getEmoji("loudmouthing", client)} You selected **${guy.nickname} ${guy.user.username}** to be revealed when you die.`)
         }
     },
