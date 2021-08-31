@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { soloKillers, roles, getRole } = require("../../config")
+const { soloKillers, roles, getRole, fn } = require("../../config")
 
 module.exports = {
     name: "check",
@@ -11,6 +11,7 @@ module.exports = {
         let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
+        let dc
         if (message.channel.name == "priv-aura-seer") {
             let isNight = await db.fetch(`isNight`)
             if (isNight == "no") return await message.channel.send("It's day! You can check during nights only!")
@@ -18,15 +19,11 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
-            else if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) {
-                return await message.reply("You or the person you are checking is not alive.")
-            } else if (guy == ownself) {
-                return message.channel.send("Checking yourself? Trust issues, hah! lol")
-            } else {
-                let ability = await db.fetch(`auraCheck_${message.channel.id}`)
-                if (ability == "yes") {
-                    return await message.reply(`You have already used your ability for tonight!`)
-                } else {
+            if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You or the person you are checking is not alive.")
+            if (db.get(`role_${message.author.id}`) == 'Dreamcatcher') fn.dcActions(message, db, alive)
+            if (guy == ownself) return message.channel.send("Checking yourself? Trust issues, hah! lol")
+                let ability = await db.fetch(`${db.get(`role_${ownself.id}`) == 'Dreamcatcher' ? `auraCheck_${dc.chan.id}` : `auraCheck_${message.channel.id}`}`)
+                if (ability == "yes") return await message.reply(`You have already used your ability for tonight!`)
                     let role = await db.fetch(`role_${guy.id}`)
                     let aura = getRole(role).aura
 
@@ -45,10 +42,8 @@ module.exports = {
                             aura = "Evil"
                         }
                     }
-                    db.set(`auraCheck_${message.channel.id}`, "yes")
+                    db.set(`${db.get(`role_${ownself.id}`) == 'Dreamcatcher' ? `auraCheck_${dc.chan.id}` : `auraCheck_${message.channel.id}`}`, "yes")
                     message.channel.send(`You checked **${args[0]} ${guy.user.username} (${aura})**`)
-                }
-            }
         } else if (message.channel.name == "priv-seer") {
             let isNight = await db.fetch(`isNight`)
             if (isNight == "no") return await message.channel.send("It's day! You can check during nights only!")
