@@ -76,6 +76,7 @@ module.exports = {
         // getting the dc their channel
         for (let k = 0; k < dc.length; k++) {
             dc = message.guild.channels.cache.get(dc[b])
+            console.log(dc)
         }
 
         // changing perms for allplayers
