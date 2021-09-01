@@ -57,11 +57,11 @@ module.exports = {
         let killedplayers = []
         let thekiller = []
         let hhtarget = []
-        
+
         // delete's dc their temp channel
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
             let tempguy = message.guild.members.cache.find((me) => me.nickname === m.toString())
-            if (db.get(`role_${tempguy}`) == 'Dreamcatcher') {
+            if (db.get(`role_${tempguy}`) == "Dreamcatcher") {
                 let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
                 for (let b = 0; b < allChannels.length; b++) {
                     let tempchan = message.guild.channels.cache.get(allChannels[b])
@@ -76,8 +76,6 @@ module.exports = {
         for (let k = 0; k < dc.length; k++) {
             dc = message.guild.channels.cache.get(dc[b])
         }
-
-
 
         // changing perms for allplayers
         for (let x = 1; x < 17; x++) {
@@ -965,247 +963,247 @@ module.exports = {
             let tempchan = message.guild.channels.cache.get(dc[j])
             for (let z = 1; z <= alive.members.size + dead.members.size; z++) {
                 let tempguy = message.guild.members.cache.find((me) => me.nickname === z.toString())
-                    if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        theDC = tempguy
-                        if (tempguy.roles.cache.has(alive.id)) {
-                            let hypnotized = db.get(`hypnotized_${tempchan.id}`) || 0
-                            let guy = message.guild.members.cache.find((me) => me.nickname === hypnotized)
-                            console.log(hypnotized)
-                            if (hypnotized != "0") {
-                                for (let j = 0; j < bh.length; j++) {
-                                    let trap = db.get(`setTrap_${bh[j]}`)
-                                    let active = db.get(`trapActive_${bh[j]}`)
-                                    for (let x = 1; x <= alive.members.size + dead.members.size; x++) {
-                                        let hhhhh = message.guild.members.cache.find((me) => me.nickname === x.toString())
-                                        let chan = message.guild.channels.cache.get(bh[j])
-                                        if (chan.permissionsFor(hhhhh).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                            x = 99
-                                            if (!hhhhh.roles.cache.has(alive.id)) {
-                                                trap = null
-                                                active = false
-                                            }
-                                        }
-                                    }
-                                    if (trap == hypnotized && active == true) {
-                                        hypnotized = "0" // makes the dreamcatcher's attack towards the player none
-                                        let toSend = message.guild.channels.cache.get(bh[j])
-                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                        tempchan.send(`${alive}`)
-                                        toSend.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
-                                        toSend.send(`${alive}`)
-                                        db.set(`setTrap_${bh[j]}`, null)
-                                        db.set(`trapActive_${bh[j]}`, false)
-                                        j = 99
-                                    }
-                                }
-                            }
-
-                            // checks if the user being killed is jailed
-                            if (hypnotized != "0") {
-                                if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                                    let jailerGuy = message.guild.channels.cache.find((c) => c.name === "priv-jailer")
-                                    for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
-                                        let isJailer = message.guild.members.cache.find((m) => m.nickname === j.toString())
-                                        if (jailerGuy.permissionsFor(isJailer).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                            j = 99
-                                            if (isJailer.roles.cache.has(alive.id)) {
-                                                tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                                tempchan.send(`${alive}`)
-                                                hypnotized = "0" // makes dreamcatcher's attack towards the player none
-                                            }
+                if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    theDC = tempguy
+                    if (tempguy.roles.cache.has(alive.id)) {
+                        let hypnotized = db.get(`hypnotized_${tempchan.id}`) || 0
+                        let guy = message.guild.members.cache.find((me) => me.nickname === hypnotized)
+                        console.log(hypnotized)
+                        if (hypnotized != "0") {
+                            for (let j = 0; j < bh.length; j++) {
+                                let trap = db.get(`setTrap_${bh[j]}`)
+                                let active = db.get(`trapActive_${bh[j]}`)
+                                for (let x = 1; x <= alive.members.size + dead.members.size; x++) {
+                                    let hhhhh = message.guild.members.cache.find((me) => me.nickname === x.toString())
+                                    let chan = message.guild.channels.cache.get(bh[j])
+                                    if (chan.permissionsFor(hhhhh).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                        x = 99
+                                        if (!hhhhh.roles.cache.has(alive.id)) {
+                                            trap = null
+                                            active = false
                                         }
                                     }
                                 }
-                            }
-
-                            if (hypnotized != "0") {
-                                // checking if the doc's protection exists
-                                for (let j = 0; j < doc.length; j++) {
-                                    let protection = db.get(`heal_${doc[j]}`)
-                                    if (protection == guy.nickname) {
-                                        hypnotized = "0" // makes the dreamcatcher's attack towards the player none
-                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                        tempchan.send(`${alive}`)
-                                        let toSend = message.guild.channels.cache.get(doc[j])
-                                        toSend.send(`${alive}`)
-                                        toSend.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
-                                        j = 99
-                                    }
+                                if (trap == hypnotized && active == true) {
+                                    hypnotized = "0" // makes the dreamcatcher's attack towards the player none
+                                    let toSend = message.guild.channels.cache.get(bh[j])
+                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    tempchan.send(`${alive}`)
+                                    toSend.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
+                                    toSend.send(`${alive}`)
+                                    db.set(`setTrap_${bh[j]}`, null)
+                                    db.set(`trapActive_${bh[j]}`, false)
+                                    j = 99
                                 }
                             }
+                        }
 
-                            // checking if the witch's potion is on the player
-                            if (hypnotized != "0") {
-                                for (let j = 0; j < witch.length; j++) {
-                                    let potion = db.get(`potion_${witch[j]}`)
-                                    if (potion == hypnotized) {
-                                        hypnotized = "0" // makes the dreamcatcher's attack towards the player none
-                                        db.set(`potion_${witch[j]}`, null)
-                                        db.set(`witchAbil_${witch[j]}`, 1)
-                                        let toSend = message.guild.channels.cache.get(witch[j])
-                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                        tempchan.send(`${alive}`)
-                                        toSend.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
-                                        toSend.send(`${alive}`)
+                        // checks if the user being killed is jailed
+                        if (hypnotized != "0") {
+                            if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
+                                let jailerGuy = message.guild.channels.cache.find((c) => c.name === "priv-jailer")
+                                for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
+                                    let isJailer = message.guild.members.cache.find((m) => m.nickname === j.toString())
+                                    if (jailerGuy.permissionsFor(isJailer).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                         j = 99
-                                    }
-                                }
-                            }
-
-                            // checking if the forger's shield is on the player
-                            // forger
-                            if (hypnotized != "0") {
-                                let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
-                                for (let k = 0; k < chans.length; k++) {
-                                    let chan = message.guild.channels.cache.get(chans[k])
-                                    if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                        let shield = db.get(`shield_${tempchan.id}`)
-                                        if (shield == true) {
-                                            chan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
-                                            chan.send(`${alive}`)
+                                        if (isJailer.roles.cache.has(alive.id)) {
                                             tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                             tempchan.send(`${alive}`)
-                                            hypnotized = "0"
-                                            db.set(`shield_${chan.id}`, false)
+                                            hypnotized = "0" // makes dreamcatcher's attack towards the player none
                                         }
                                     }
                                 }
                             }
+                        }
 
-                            // checking if the bodyguard's protection is on the player
-                            if (hypnotized != "0") {
+                        if (hypnotized != "0") {
+                            // checking if the doc's protection exists
+                            for (let j = 0; j < doc.length; j++) {
+                                let protection = db.get(`heal_${doc[j]}`)
+                                if (protection == guy.nickname) {
+                                    hypnotized = "0" // makes the dreamcatcher's attack towards the player none
+                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    tempchan.send(`${alive}`)
+                                    let toSend = message.guild.channels.cache.get(doc[j])
+                                    toSend.send(`${alive}`)
+                                    toSend.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
+                                    j = 99
+                                }
+                            }
+                        }
+
+                        // checking if the witch's potion is on the player
+                        if (hypnotized != "0") {
+                            for (let j = 0; j < witch.length; j++) {
+                                let potion = db.get(`potion_${witch[j]}`)
+                                if (potion == hypnotized) {
+                                    hypnotized = "0" // makes the dreamcatcher's attack towards the player none
+                                    db.set(`potion_${witch[j]}`, null)
+                                    db.set(`witchAbil_${witch[j]}`, 1)
+                                    let toSend = message.guild.channels.cache.get(witch[j])
+                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                    tempchan.send(`${alive}`)
+                                    toSend.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                                    toSend.send(`${alive}`)
+                                    j = 99
+                                }
+                            }
+                        }
+
+                        // checking if the forger's shield is on the player
+                        // forger
+                        if (hypnotized != "0") {
+                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
+                            for (let k = 0; k < chans.length; k++) {
+                                let chan = message.guild.channels.cache.get(chans[k])
+                                if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                    let shield = db.get(`shield_${tempchan.id}`)
+                                    if (shield == true) {
+                                        chan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
+                                        chan.send(`${alive}`)
+                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                        tempchan.send(`${alive}`)
+                                        hypnotized = "0"
+                                        db.set(`shield_${chan.id}`, false)
+                                    }
+                                }
+                            }
+                        }
+
+                        // checking if the bodyguard's protection is on the player
+                        if (hypnotized != "0") {
+                            for (let j = 0; j < bg.length; j++) {
+                                let chan = message.guild.channels.cache.get(bg[j])
+                                let lives = db.get(`lives_${chan.id}`)
+                                let guard = db.get(`guard_${chan.id}`)
+                                if (guard == hypnotized) {
+                                    if (lives == 2) {
+                                        chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
+                                        chan.send(`${alive}`)
+                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                        tempchan.send(`${alive}`)
+                                        hypnotized = "0"
+                                        db.subtract(`lives_${chan.id}`, 1)
+                                    } else {
+                                        hypnotized = "0"
+                                        for (let k = 1; k <= 16; k++) {
+                                            let tempbg = message.guild.members.cache.find((m) => m.nickname === k.toString())
+                                            if (tempbg) {
+                                                if (tempbg.roles.cache.has(alive.id)) {
+                                                    if (chan.permissionsFor(tempbg).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                        dayChat.send(`${getEmoji("serial_killer_knife", client)} The Dreamcatcher killed **${tempbg.nickname} ${tempbg.user.username} (Bodyguard)**!`)
+                                                        tempbg.roles.add(dead.id)
+                                                        tempbg.roles.remove(alive.id)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // dreamcatcher attacking bodyguard
+                        if (hypnotized != "0") {
+                            let role = db.get(`role_${guy.id}`)
+                            if (role == "Bodyguard") {
                                 for (let j = 0; j < bg.length; j++) {
                                     let chan = message.guild.channels.cache.get(bg[j])
-                                    let lives = db.get(`lives_${chan.id}`)
-                                    let guard = db.get(`guard_${chan.id}`)
-                                    if (guard == hypnotized) {
-                                        if (lives == 2) {
-                                            chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
-                                            chan.send(`${alive}`)
-                                            tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                            tempchan.send(`${alive}`)
-                                            hypnotized = "0"
-                                            db.subtract(`lives_${chan.id}`, 1)
-                                        } else {
-                                            hypnotized = "0"
-                                            for (let k = 1; k <= 16; k++) {
-                                                let tempbg = message.guild.members.cache.find((m) => m.nickname === k.toString())
-                                                if (tempbg) {
-                                                    if (tempbg.roles.cache.has(alive.id)) {
-                                                        if (chan.permissionsFor(tempbg).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                            dayChat.send(`${getEmoji("serial_killer_knife", client)} The Dreamcatcher killed **${tempbg.nickname} ${tempbg.user.username} (Bodyguard)**!`)
-                                                            tempbg.roles.add(dead.id)
-                                                            tempbg.roles.remove(alive.id)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            // dreamcatcher attacking bodyguard
-                            if (hypnotized != "0") {
-                                let role = db.get(`role_${guy.id}`)
-                                if (role == "Bodyguard") {
-                                    for (let j = 0; j < bg.length; j++) {
-                                        let chan = message.guild.channels.cache.get(bg[j])
-                                        if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                            if (guy.roles.cache.has(alive.id)) {
-                                                let lives = db.get(`lives_${chan.id}`)
-                                                if (lives == 2) {
-                                                    chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
-                                                    chan.send(`${alive}`)
-                                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                                    tempchan.send(`${alive}`)
-                                                    db.subtract(`lives_${chan.id}`, 1)
-                                                    hypnotized = "0"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            // tough guy protections
-                            if (hypnotized != "0") {
-                                for (let j = 0; j < tg.length; j++) {
-                                    let chan = message.guild.channels.cache.get(tg[j])
-                                    let tough = db.get(`tough_${chan.id}`)
-                                    if (tough == hypnotized) {
-                                        for (let k = 1; k <= 16; k++) {
-                                            let thetg = message.guild.members.cache.find((m) => m.nickname === k.toString())
-                                            if (thetg) {
-                                                if (thetg.roles.cache.has(alive.id)) {
-                                                    if (chan.permissionsFor(thetg).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                        k = 99
-                                                        chan.send(`${getEmoji("guard", client)} You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${TheDC}.nickname} ${TheDC.user.username} (Dreamcatcher)**! You will die at the end of the day!`)
-                                                        chan.send(`${alive}`)
-                                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                                        tempchan.send(`_ _\n\n${getEmoji("tough_guy", client)} Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**! He now knows your role!`)
-                                                        tempchan.send(`${alive}`)
-                                                        hypnotized = "0"
-                                                        db.set(`wounded_${chan.id}`, true)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (hypnotized != "0") {
-                                if (db.get(`role_${guy.id}`) == "Tough Guy") {
-                                    for (let j = 0; j < tg.length; j++) {
-                                        let chan = message.guild.channels.cache.get(tg[j])
-                                        if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                                            chan.send(`${getEmoji("guard", client)} You have been attacked by **${TheDC.nickname} ${TheDC.user.username} (Dreamcatcher)**! You will die at the end of the day!`)
-                                            chan.send(`${alive}`)
-                                            tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
-                                            tempchan.send(`_ _\n\n${getEmoji("tough_guy", client)} Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**! He now knows your role!`)
-                                            tempchan.send(`${alive}`)
-                                            db.set(`wounded_${chan.id}`, true)
-                                            hypnotized = "0"
-                                        }
-                                    }
-                                }
-                            }
-
-                            // red lady protection
-                            if (hypnotized != "0") {
-                                if (db.get(`role_${guy.id}`) == "Red Lady") {
-                                    for (let j = 0; j < rl.length; j++) {
-                                        let chan = message.guild.channels.cache.get(rl[j])
-                                        if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                            if (db.get(`visit_${chan.id}`)) {
-                                                chan.send(`${getEmoji("guard", client)} Someone tried attacking you while you were away!`)
+                                    if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                        if (guy.roles.cache.has(alive.id)) {
+                                            let lives = db.get(`lives_${chan.id}`)
+                                            if (lives == 2) {
+                                                chan.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                 chan.send(`${alive}`)
                                                 tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                                 tempchan.send(`${alive}`)
+                                                db.subtract(`lives_${chan.id}`, 1)
                                                 hypnotized = "0"
                                             }
                                         }
                                     }
                                 }
                             }
-                            // dc attacking
-                            if (hypnotized != "0") {
-                                let role = db.get(`role_${guy.id}`)
-                                dayChat.send(`The Dreamcatcher killed **${guy.nickname} ${guy.user.username} (${role})**!`)
-                                if (role == "Cupid") {
-                                    cupidKilled = true
+                        }
+
+                        // tough guy protections
+                        if (hypnotized != "0") {
+                            for (let j = 0; j < tg.length; j++) {
+                                let chan = message.guild.channels.cache.get(tg[j])
+                                let tough = db.get(`tough_${chan.id}`)
+                                if (tough == hypnotized) {
+                                    for (let k = 1; k <= 16; k++) {
+                                        let thetg = message.guild.members.cache.find((m) => m.nickname === k.toString())
+                                        if (thetg) {
+                                            if (thetg.roles.cache.has(alive.id)) {
+                                                if (chan.permissionsFor(thetg).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                                    k = 99
+                                                    chan.send(`${getEmoji("guard", client)} You were protecting **${guy.nickname} ${guy.user.username}** who was attacked by **${TheDC}.nickname} ${TheDC.user.username} (Dreamcatcher)**! You will die at the end of the day!`)
+                                                    chan.send(`${alive}`)
+                                                    tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                                    tempchan.send(`_ _\n\n${getEmoji("tough_guy", client)} Player **${thetg.nickname} ${thetg.user.username}** is a **Tough Guy**! He now knows your role!`)
+                                                    tempchan.send(`${alive}`)
+                                                    hypnotized = "0"
+                                                    db.set(`wounded_${chan.id}`, true)
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                                guy.roles.add(dead.id)
-                                guy.roles.remove(alive.id)
-                                killedplayers.push(guy.id)
-                                db.set(`hypnotized_${tempchan.id}`, null)
-                                thekiller.push(TheDC.id)
                             }
+                        }
+
+                        if (hypnotized != "0") {
+                            if (db.get(`role_${guy.id}`) == "Tough Guy") {
+                                for (let j = 0; j < tg.length; j++) {
+                                    let chan = message.guild.channels.cache.get(tg[j])
+                                    if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
+                                        chan.send(`${getEmoji("guard", client)} You have been attacked by **${TheDC.nickname} ${TheDC.user.username} (Dreamcatcher)**! You will die at the end of the day!`)
+                                        chan.send(`${alive}`)
+                                        tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                        tempchan.send(`_ _\n\n${getEmoji("tough_guy", client)} Player **${guy.nickname} ${guy.user.username}** is a **Tough Guy**! He now knows your role!`)
+                                        tempchan.send(`${alive}`)
+                                        db.set(`wounded_${chan.id}`, true)
+                                        hypnotized = "0"
+                                    }
+                                }
+                            }
+                        }
+
+                        // red lady protection
+                        if (hypnotized != "0") {
+                            if (db.get(`role_${guy.id}`) == "Red Lady") {
+                                for (let j = 0; j < rl.length; j++) {
+                                    let chan = message.guild.channels.cache.get(rl[j])
+                                    if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                        if (db.get(`visit_${chan.id}`)) {
+                                            chan.send(`${getEmoji("guard", client)} Someone tried attacking you while you were away!`)
+                                            chan.send(`${alive}`)
+                                            tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
+                                            tempchan.send(`${alive}`)
+                                            hypnotized = "0"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // dc attacking
+                        if (hypnotized != "0") {
+                            let role = db.get(`role_${guy.id}`)
+                            dayChat.send(`The Dreamcatcher killed **${guy.nickname} ${guy.user.username} (${role})**!`)
+                            if (role == "Cupid") {
+                                cupidKilled = true
+                            }
+                            guy.roles.add(dead.id)
+                            guy.roles.remove(alive.id)
+                            killedplayers.push(guy.id)
+                            db.set(`hypnotized_${tempchan.id}`, null)
+                            thekiller.push(TheDC.id)
                         }
                     }
                 }
             }
+        }
         // bandit killing for real
 
         let frenzy = false
