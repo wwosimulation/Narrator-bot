@@ -1870,7 +1870,7 @@ module.exports = {
                             if (glitch != "0") {
                                 for (let b = 0; b < doc.length; b++) {
                                     let heal = db.get(`heal_${doc[b]}`)
-                                    if (doc == glitch) {
+                                    if (heal == glitch) {
                                         let chan = message.guild.channels.cache.get(doc[b])
                                         corruptor.send(`${getEmoji("guard", client)} Player **${corrupted.nickname} ${corrupted.user.username}** could not be glitched!`)
                                         corruptor.send(`${alive}`)
