@@ -1201,7 +1201,7 @@ module.exports = {
                             guy.roles.remove(alive.id)
                             killedplayers.push(guy.id)
                             db.set(`hypnotized_${tempchan.id}`, null)
-                            thekiller.push(TheDC.id)
+                            thekiller.push(theDC.id)
                         }
                     }
                 }
