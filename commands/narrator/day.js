@@ -61,7 +61,7 @@ module.exports = {
         // delete's dc their temp channel
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
             let tempguy = message.guild.members.cache.find((me) => me.nickname === m.toString())
-            if (db.get(`role_${tempguy}`) == "Dreamcatcher") {
+            if (db.get(`role_${tempguy.id}`) == "Dreamcatcher") {
                 let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
                 for (let b = 0; b < allChannels.length; b++) {
                     console.log('hi')
@@ -416,7 +416,7 @@ module.exports = {
                         }
                         // killing players
                         if (secondhack[j] != "0") {
-                            if (db.get(`hypnotized_${dc}`) != theHacker.nickname) {
+                            if (db.get(`hypnotized_${dc.id}`) != theHacker.nickname) {
                                 dayChat.send(`${getEmoji("eat", client)} The Hacker hacked **${guy.nickname} ${guy.user.username} (${role})**!`)
                             } else {
                                 dayChat.send(`${getEmoji("eat", client)} The Dreamcatcher compelled the Hacker to hack **${guy.nickname} ${guy.user.username} (${role})**`)
@@ -566,7 +566,7 @@ module.exports = {
                                                 eat[j] = "0"
                                                 player.roles.add(dead.id)
                                                 player.roles.remove(alive.id)
-                                                if (db.get(`hypnotized_${dc}`) != theCanni.nickname) {
+                                                if (db.get(`hypnotized_${dc.id}`) != theCanni.nickname) {
                                                     dayChat.send(`${getEmoji("eat", client)} The hunngry Cannibal ate **${player.nickname} ${player.user.username} (Bodyguard)**!`)
                                                 } else {
                                                     dayChat.send(`${getEmoji("eat", client)} The Dreamcatcher compelled the Cannibal to eat **${player.nickname} ${player.user.username} (Bodyguard)**`)
@@ -669,7 +669,7 @@ module.exports = {
 
                         // killing players
                         if (eat[j] != "0") {
-                            if (db.get(`hypnotized_${dc}`) != theCanni.nickname) {
+                            if (db.get(`hypnotized_${dc.id}`) != theCanni.nickname) {
                                 dayChat.send(`${getEmoji("eat", client)} The hungry Cannibal **${guy.nickname} ${guy.user.username} (${role})**!`)
                             } else {
                                 dayChat.send(`${getEmoji("eat", client)} The Dreamcatcher compelled the cannibal to eat **${guy.nickname} ${guy.user.username} (${role})**`)
@@ -943,7 +943,7 @@ module.exports = {
                 // serial killer attacking
                 if (kills[i] != "0") {
                     let role = db.get(`role_${guy.id}`)
-                    if (db.get(`hypnotized_${dc}`) != THESK.nickname) {
+                    if (db.get(`hypnotized_${dc.id}`) != THESK.nickname) {
                         dayChat.send(`${getEmoji("serial_killer_knife", client)} The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
                     } else {
                         dayChat.send(`${getEmoji("serial_killer_knife", client)} The Dreamcatcher compelled the Serial Killer to stab **${guy.nickname} ${guy.user.username} (${role})**`)
@@ -3657,7 +3657,7 @@ module.exports = {
             db.delete(`toDouse_${arso[i]}`)
         }
         for (let i = 0; i < dc.length; i++) {
-            db.set(`hypnotized_${dc}`, null)
+            db.set(`hypnotized_${dc.id}`, null)
         }
         console.log("The code worked up to here!")
         db.set(`vtshadow`, false)
