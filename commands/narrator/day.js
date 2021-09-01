@@ -963,7 +963,7 @@ module.exports = {
         // checking dc kills
 
         for (let b = 0; b < dc.length; b++) {
-            let tempchan = message.guild.channels.cache.get(dc[j])
+            let tempchan = message.guild.channels.cache.get(dc[b])
             for (let z = 1; z <= alive.members.size + dead.members.size; z++) {
                 let tempguy = message.guild.members.cache.find((me) => me.nickname === z.toString())
                 if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
