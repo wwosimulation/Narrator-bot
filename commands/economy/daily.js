@@ -72,7 +72,7 @@ module.exports = {
                 await data.updateOne({ $set: { "daily.day": -1 } })
                 await data.updateOne({ $inc: { coins: amount } })
             }
-            let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${message.i10n("daily", { emoji: emote, number: amount, prize: item })}${extra}`)
+            let dailymsg = new MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${message.i10n("daily", { emoji: emote, number: amount, prize: item })}${extra}`)
             message.channel.send({ embeds: [dailymsg] })
 
             await data.updateOne({ $inc: { "daily.day": 1 } })

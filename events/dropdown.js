@@ -49,7 +49,7 @@ module.exports = (client) => {
             }
         }
         if (interaction.customId.startsWith("leaderboard")) {
-            let arg = customId.slice(11).split("-") // ['', sort, message.id]
+            let arg = interaction.customId.slice(11).split("-") // ['', sort, message.id]
             let new_page = interaction.values[0]
             let m = interaction.message
             let message = interaction.channel.messages.fetch(arg[2])

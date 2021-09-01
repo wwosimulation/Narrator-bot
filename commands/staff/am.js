@@ -11,6 +11,7 @@ module.exports = {
         let amount = parseInt(args[0])
         if (!amount) return message.channel.send(message.i10n("amountInvalid", { amount: args[0] }))
         args.shift()
+        if(!args.length) return message.channel.send(message.i10n("userInvalid", {user: "Nothing"}))
         msg = ``
         args.forEach(async (x) => {
             let user = fn.getUser(x, message)
