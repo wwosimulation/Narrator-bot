@@ -64,7 +64,7 @@ module.exports = {
             if (db.get(`role_${tempguy.id}`) == "Dreamcatcher") {
                 let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
                 for (let b = 0; b < allChannels.length; b++) {
-                    console.log('hi')
+                    console.log("hi")
                     let tempchan = message.guild.channels.cache.get(allChannels[b])
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (!tempchan.name.includes("dreamcatcher")) tempchan.delete()
