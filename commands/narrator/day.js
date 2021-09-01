@@ -3657,7 +3657,6 @@ module.exports = {
         for (let i = 0; i < arso.length; i++) {
             db.delete(`toDouse_${arso[i]}`)
         }
-        let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
         for (let i = 0; i < dc.length; i++) {
             db.set(`hypnotized_${dc}`, null)
         }
