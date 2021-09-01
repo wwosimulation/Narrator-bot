@@ -11,7 +11,8 @@ module.exports = {
             // getting all the variables
             let isNight = db.get(`isNight`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") fn.dcActions(message, db, alive)
+            let dc
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             let hunger = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hunger_${dc.chan.id}` : `hunger_${message.channel.id}`}`) || 1
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You are dead. You cannot use the command now!`)
             if (!args[0]) return message.channel.send("Who you are going to eat? Mention the player.")
