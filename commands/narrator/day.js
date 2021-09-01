@@ -49,6 +49,7 @@ module.exports = {
         let zombies = message.guild.channels.cache.find((c) => c.name === "zombies")
         let sheriff = message.guild.channels.cache.filter((c) => c.name === "priv-sheriff").map((x) => x.id)
         let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").map((x) => x.id)
+        let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dream-catcher").map((x) => x.id)
         let cupidKilled = false
         let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker"]
         let strongww = ["Werewolf", "Junior Werewolf", "Nightmare Werewolf", "Kitten Wolf", "Wolf Shaman", "Wolf Pacifist", "Shadow Wolf", "Guardian Wolf", "Werewolf Berserk", "Alpha Werewolf", "Wolf Seer", "Lone Wolf"]
@@ -56,8 +57,27 @@ module.exports = {
         let killedplayers = []
         let thekiller = []
         let hhtarget = []
+        
+        // delete's dc their temp channel
+        for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
+            let tempguy = message.guild.members.cache.find((me) => me.nickname === m.toString())
+            if (db.get(`role_${tempguy}`) == 'Dreamcatcher') {
+                let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
+                for (let b = 0; b < allChannels.length; b++) {
+                    let tempchan = message.guild.channels.cache.get(allChannels[b])
+                    if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        if (!tempchan.name.includes("dreamcatcher")) tempchan.delete()
+                    }
+                }
+            }
+        }
 
-        // checks if a team has won
+        // getting the dc their channel
+        for (let k = 0; k < dc.length; k++) {
+            dc = message.guild.channels.cache.get(dc[b])
+        }
+
+
 
         // changing perms for allplayers
         for (let x = 1; x < 17; x++) {
@@ -397,7 +417,11 @@ module.exports = {
                         }
                         // killing players
                         if (secondhack[j] != "0") {
-                            dayChat.send(`${getEmoji("eat", client)} The Hacker hacked **${guy.nickname} ${guy.user.username} (${role})**!`)
+                            if (db.get(`hypnotized_${dc}`) != theHacker.nickname) {
+                                dayChat.send(`${getEmoji("eat", client)} The Hacker hacked **${guy.nickname} ${guy.user.username} (${role})**!`)
+                            } else {
+                                dayChat.send(`${getEmoji("eat", client)} The Dreamcatcher compelled the Hacker to hack **${guy.nickname} ${guy.user.username} (${role})**`)
+                            }
                             if (role == "Cupid") {
                                 cupidKilled = true
                             }
@@ -543,7 +567,11 @@ module.exports = {
                                                 eat[j] = "0"
                                                 player.roles.add(dead.id)
                                                 player.roles.remove(alive.id)
-                                                dayChat.send(`${getEmoji("eat", client)} The hunngry Cannibal ate **${player.nickname} ${player.user.username} (Bodyguard)**!`)
+                                                if (db.get(`hypnotized_${dc}`) != theCanni.nickname) {
+                                                    dayChat.send(`${getEmoji("eat", client)} The hunngry Cannibal ate **${player.nickname} ${player.user.username} (Bodyguard)**!`)
+                                                } else {
+                                                    dayChat.send(`${getEmoji("eat", client)} The Dreamcatcher compelled the Cannibal to eat **${player.nickname} ${player.user.username} (Bodyguard)**`)
+                                                }
                                                 killedplayers.push(player.id)
                                                 thekiller.push(theCanni.id)
                                             }
@@ -585,7 +613,6 @@ module.exports = {
                                                         cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                                         cannibal.send(`_ _\n${getEmoji("tough_guy", client)} Player **${guy.nickname} ${guy.user.username}** is a tough guy! He now knows your role!`)
                                                         cannibal.send(`<&${alive}>`)
-
                                                         iudi.send(`${getEmoji("guard", client)} You have been attacked by **${theCanni.nickname} ${theCanni.user.username} (Cannibal)**. You have been wounded and will die at the end of the day.`)
                                                         iudi.send(`${alive}`)
                                                         db.set(`wounded_${tg[x]}`, true)
@@ -643,7 +670,11 @@ module.exports = {
 
                         // killing players
                         if (eat[j] != "0") {
-                            dayChat.send(`${getEmoji("eat", client)} The hungry Cannibal ate **${guy.nickname} ${guy.user.username} (${role})**!`)
+                            if (db.get(`hypnotized_${dc}`) != theCanni.nickname) {
+                                dayChat.send(`${getEmoji("eat", client)} The hungry Cannibal **${guy.nickname} ${guy.user.username} (${role})**!`)
+                            } else {
+                                dayChat.send(`${getEmoji("eat", client)} The Dreamcatcher compelled the cannibal to eat **${guy.nickname} ${guy.user.username} (${role})**`)
+                            }
                             if (role == "Cupid") {
                                 cupidKilled = true
                             }
@@ -913,7 +944,11 @@ module.exports = {
                 // serial killer attacking
                 if (kills[i] != "0") {
                     let role = db.get(`role_${guy.id}`)
-                    dayChat.send(`${getEmoji("serial_killer_knife", client)} The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
+                    if (db.get(`hypnotized_${dc}`) != THESK.nickname) {
+                        dayChat.send(`${getEmoji("serial_killer_knife", client)} The Serial Killer stabbed **${guy.nickname} ${guy.user.username} (${role})**!`)
+                    } else {
+                        dayChat.send(`${getEmoji("serial_killer_knife", client)} The Dreamcatcher compelled the Serial Killer to stab **${guy.nickname} ${guy.user.username} (${role})**`)
+                    }
                     if (role == "Cupid") {
                         cupidKilled = true
                     }
@@ -925,16 +960,13 @@ module.exports = {
             }
         }
         // checking dc kills
-        for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
-            let tempguy = message.guild.members.cache.find((me) => me.nickname === m.toString())
-            let role = db.get(`role_${tempguy.id}`)
-            if (role == "Dreamcatcher") {
-                TheDC = tempguy
-                let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
-                for (let b = 0; b < allChannels.length; b++) {
-                    let tempchan = message.guild.channels.cache.get(allChannels[b])
+
+        for (let b = 0; b < dc.length; b++) {
+            let tempchan = message.guild.channels.cache.get(dc[j])
+            for (let z = 1; z <= alive.members.size + dead.members.size; z++) {
+                let tempguy = message.guild.members.cache.find((me) => me.nickname === z.toString())
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        if (!tempchan.name.includes("dreamcatcher")) tempchan.delete()
+                        theDC = tempguy
                         if (tempguy.roles.cache.has(alive.id)) {
                             let hypnotized = db.get(`hypnotized_${tempchan.id}`) || 0
                             let guy = message.guild.members.cache.find((me) => me.nickname === hypnotized)
@@ -1174,7 +1206,6 @@ module.exports = {
                     }
                 }
             }
-        }
         // bandit killing for real
 
         let frenzy = false
