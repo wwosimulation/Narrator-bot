@@ -76,8 +76,7 @@ module.exports = {
 
         // getting the dc their channel
         for (let k = 0; k < dc.length; k++) {
-            drc = message.guild.channels.cache.get(dc[k])
-            console.log(drc)
+            drc = dc[k]
         }
 
         // changing perms for allplayers
@@ -3659,7 +3658,7 @@ module.exports = {
             db.delete(`toDouse_${arso[i]}`)
         }
         for (let i = 0; i < dc.length; i++) {
-            db.set(`hypnotized_${drc}`, null)
+            db.set(`hypnotized_${dc[i]}`, null)
         }
         console.log("The code worked up to here!")
         db.set(`vtshadow`, false)
