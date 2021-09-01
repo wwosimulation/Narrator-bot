@@ -309,7 +309,7 @@ module.exports = {
                                         chan1.permissionOverwrites.edit(player.id, {
                                             SEND_MESSAGES: true,
                                             READ_MESSAGE_HISTORY: true,
-                                            VIEW_CHANNEL: true
+                                            VIEW_CHANNEL: true,
                                         })
                                         chan1.send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
                                         chan.permissionOverwrites.edit(guy.id, {
