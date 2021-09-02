@@ -23,7 +23,6 @@ module.exports = {
                 if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`You will not force the doctor to protect themselves to make them look like they are selfish, that's pure evil!`)
                 if (!guy) return await message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You or your target isn't alive!")
-                if (guy == ownself) return await message.channel.send("You cannot protect yourself.")
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `heal_${dc.chan.id}` : `heal_${message.channel.id}`}`, args[0])
                 message.react("475775251297337344")
             }
