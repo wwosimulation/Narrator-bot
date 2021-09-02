@@ -18,6 +18,7 @@ module.exports = {
             if (isNight == "no") return await message.channel.send("It's day! You can check during nights only!")
             if (!args[0]) return message.channel.send("Who want to check? Insert the player number next time.")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
+            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You or the person you are checking is not alive.")
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`You are in control of them, why would you ever want to waste their ability?`)
