@@ -16,7 +16,7 @@ module.exports = {
             if (!args[0]) return message.channel.send("Who are you visiting? Mention the player.")
 
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args.join(" ")) || message.guild.members.cache.find((m) => m.user.tag === args.join(" "))
-            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`This just makes the red lady look weird.`)
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`This just makes the red lady look weird.`)
 
             if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
 

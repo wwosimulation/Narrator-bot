@@ -22,7 +22,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0]) return message.channel.send("Who are you tagging? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
             if (!guy) return message.reply("Invalid Target!")
             if (guy == message.member) return message.channel.send("You cannot tag yourself with you! lol")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
@@ -57,7 +57,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0]) return message.channel.send("Who are you tagging? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             if (guy == message.member) return message.channel.send("You cannot tag yourself! lol")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
@@ -94,7 +94,7 @@ module.exports = {
             if (!args[0]) return message.channel.send("Who are you revealing? Mention the player.")
 
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Technically the loudmouth already is revealed when they die so this is pointless...`)
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Technically the loudmouth already is revealed when they die so this is pointless...`)
 
             if (!guy || guy == message.member || !guy.roles.cache.has(alive.id)) return message.reply("The player is not in game! Mention the correct player number.")
 

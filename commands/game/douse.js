@@ -30,7 +30,7 @@ module.exports = {
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             if (args.length == 2) {
                 let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])
-                if (typeof dc !== 'undefined' && (guy1.nickname == db.get(`hypnotized_${dc.tempchan}`) || guy2.nickname == db.get(`hypnotized_${dc.tempcham}`))) return message.channel.send(`Yea, this is probably not a good idea...`)
+                if (typeof dc !== "undefined" && (guy1.nickname == db.get(`hypnotized_${dc.tempchan}`) || guy2.nickname == db.get(`hypnotized_${dc.tempcham}`))) return message.channel.send(`Yea, this is probably not a good idea...`)
                 if (!guy1 || !guy2 || guy1 == guy2 || guy1 == ownself || guy2 == ownself) {
                     return await message.channel.send("The player is not in game! Mention the correct player number.")
                 }
