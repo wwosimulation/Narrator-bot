@@ -17,7 +17,7 @@ module.exports = {
             if (!args[0]) return message.channel.send("Who are you marking? Mention the player.")
             if (args[0] == message.member.nickname) return message.channel.send("You cannot mark yourself.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Hmmm, I wonder how the marksman will shoot themselves.`)
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Hmmm, I wonder how the marksman will shoot themselves.`)
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             if (isNight != "yes") return message.channel.send("Bruh, you can only do this during the night!")

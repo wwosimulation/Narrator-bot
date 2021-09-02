@@ -14,7 +14,7 @@ module.exports = {
         if (message.channel.name == "priv-wolf-shaman") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, that's funny. disguising a wolf shaman as a wolf shaman!`)
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, that's funny. disguising a wolf shaman as a wolf shaman!`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let isDay = db.get(`isDay`)
             if (!args[0]) return message.channel.send("Who are you enchanting? Mention the player.")
@@ -42,7 +42,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             if (isNight != "yes") return message.channel.send("You can enchant only during the night.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Although this would be a great strategy I will have to stop you.`)
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Although this would be a great strategy I will have to stop you.`)
             if (!guy || guy == message.member) return message.reply("Invalid Target!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             if (disguised.length > 0) {

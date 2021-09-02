@@ -16,7 +16,7 @@ module.exports = {
             let night = await db.fetch(`nightCount`)
             let isNight = await db.fetch(`isNight`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`That's funny but no.`)
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`That's funny but no.`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             if (parseInt(args[0]) > parseInt(alive.members.size) + parseInt(dead.members.size) || parseInt(args[0]) < 1) {
                 return await message.reply("The player is not in game! Mention the correct player number.")
