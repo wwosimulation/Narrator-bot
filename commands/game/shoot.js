@@ -62,7 +62,7 @@ module.exports = {
             let jailedchat = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
             let isDay = db.get(`isDay`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            let jailed = db.get(`jail_${message.channel.id}`)
+            let jailed = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `jail_${dc.chan.id}` : `jail_${message.channel.id}`}`)
             let guy = message.guild.members.cache.find((m) => m.nickname === jailed)
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is already dead.")
             let bullet = db.get(`bullet_jail`) ? db.get(`bullet_jail`) : 1
