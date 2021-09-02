@@ -13,6 +13,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0] || args.length > 1) return message.channel.send("Who you want to give? Mention a player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
+            if (typeof dc !== 'undefined') if (guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Haha, giving the fortune teller a fortune card! this can't get better.`)
 
             if (!guy || guy == message.member) return message.channel.send("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Player is not alive or you are trying to give a card to yourself!")
@@ -58,7 +59,10 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
             if (!args[0]) return message.channel.send("Who are you giving? Mention the player.")
-            if (!guy || guy.id == message.author.id) return message.reply("The player is not in game! Mention the correct player number.")
+            if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
+            if (typeof dc === 'undefined' && guy.id == message.author.id)  return message.channel.send("I dont get why I am not allowed to give the forger a shield/sword. What's the problem?")
+            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`I dont get why I am not allowed to give the forger a shield/sword. What's the problem?`)
+
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
 
             if (forged < 0) return message.channel.send("You have already used your ability.")
@@ -78,6 +82,7 @@ module.exports = {
             if (isNight == "no") return message.channel.send("You can only do this at night!")
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1]) || message.guild.members.cache.find((m) => m.id === args[1])
+            if (typeof dc !== 'undefined') if (guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Nope, you will not force the alchemist to give themselves a potion.`)
             if (args.length != 2) return message.channel.send("Who are you giving? Mention the player.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")

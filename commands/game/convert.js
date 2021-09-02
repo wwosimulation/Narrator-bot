@@ -18,7 +18,7 @@ module.exports = {
             if (isNight != "yes") return message.channel.send("You can convert players during the night only.")
             if (!args[0]) return message.channel.send("Who you want to check? Insert the player number next time.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-
+            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, this is probably not a good idea...`)
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is dead, you cannot convert the deads!")
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `sect_${dc.chan.id}` : `sect_${message.channel.id}`}`, args[0])

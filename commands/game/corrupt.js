@@ -15,6 +15,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot corrupt someone being dead!")
             if (!args[0]) return message.channel.send("Who are you glitching? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
+            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, this is probably not a good idea...`)
 
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             else if (guy == message.member) {

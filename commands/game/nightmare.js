@@ -14,6 +14,7 @@ module.exports = {
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             let wolfChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
+            if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Did you really just try to make the nightmare werewolf give himself nightmares? That's pointless and evil...`)
             let nightmares = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `nightmare_${dc.chan.id}` : `nightmare_${message.channel.id}`}`) || 2
             console.log(nightmares)
             if (!message.member.roles.cache.has(alive.id)) return message.chanenl.send("You cannot use the ability now!")

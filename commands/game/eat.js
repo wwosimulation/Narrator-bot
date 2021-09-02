@@ -21,6 +21,7 @@ module.exports = {
 
             for (let i = 0; i < args.length; i++) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[i]) || message.guild.members.cache.find((m) => m.id === args[i]) || message.guild.members.cache.find((m) => m.user.username === args[i])
+                if (typeof dc !== 'undefined' && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`So you want to let the cannibal eat themself? What kind of psycho are you?`)
                 message.guild.members.cache.find((m) => m.user.tag === args[i])
                 if (!guy) return message.channel.send(`Player **${args[0]}** could not be found!`)
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send(`Player **${guy.nickname} ${guy.user.username}** is dead!`)
