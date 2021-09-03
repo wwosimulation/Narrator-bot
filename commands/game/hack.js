@@ -1,9 +1,5 @@
 const db = require("quick.db")
-<<<<<<< HEAD
-const { fn } = require("../../config")
-=======
-const config = require("../../config")
->>>>>>> daf8c456572453399e381a41bb1a095e34bcdf61
+const { fn }, config = require("../../config")
 
 module.exports = {
     name: "hack",
