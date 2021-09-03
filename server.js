@@ -110,7 +110,7 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
 }
 
 client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) => {
-    if(embeds.length <= 1) return
+    if (embeds.length <= 1) return
 
     // buttons
     let buttonBegin = new Discord.MessageButton({ style: "SUCCESS", emoji: "⏪", customId: "begin" })
@@ -171,7 +171,7 @@ client.on("ready", async () => {
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
-    if (!client.user.username.includes("Besta")) {
+    if (!client.user.username.includes("Beta")) {
         Sentry.init({
             dsn: process.env.SENTRY,
             tracesSampleRate: 1.0,
