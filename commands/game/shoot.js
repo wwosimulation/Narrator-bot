@@ -94,6 +94,7 @@ module.exports = {
             let markActive = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `markActive_${dc.chan.id}` : `markActive_${message.channel.id}`}`) || false
             let mark = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `mark_${dc.chan.id}` : `mark_${message.channel.id}`}`)
             let arrows = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`) || 2
+            let isNight = db.get(`isNight`)
             if (!db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`)) {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 2)
             }
