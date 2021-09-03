@@ -1666,7 +1666,7 @@ module.exports = {
             if (wwKill != "0") {
                 console.log("It is not 0 (8)")
                 if (role == "Cursed") {
-                    let allcursed = message.guild.channels.cache.filter((c) => c.name === "priv-cursed").map((x) => x.id)
+                    let allcursed = message.guild.channels.cache.filter(c => c.name === "priv-cursed").map((x) => x.id)
                     for (let z = 0; z < allcursed.length; z++) {
                         let thecurse = message.guild.channels.cache.get(allcursed[z])
                         if (thecurse.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
@@ -1704,11 +1704,16 @@ module.exports = {
                                 SEND_MESSAGES: false,
                                 VIEW_CHANNEL: false,
                                 READ_MESSAGE_HISTORY: false,
+                            })                        
+                            wwChat.send(`**${guy.nickname} ${guy.user.username}** was cursed and has been converted into a werewolf!`)
+                            wwChat.permissionOverwrites.edit(guy.id, {
+                                SEND_MESSAGES: true,
+                                READ_MESSAGE_HISTORY: true,
+                                VIEW_CHANNEL: true,
                             })
                         }
-                        wwChat.send(`**${guy.nickname} ${guy.user.username}** was cursed and has been converted into a werewolf!`)
-                        wwChat.permissionOverwrites.edit(guy.id, {
-                            SEND_MESSAGES: true,
+
+                        wwVote.permissionOverwrites.edit(guy.id, {
                             READ_MESSAGE_HISTORY: true,
                             VIEW_CHANNEL: true,
                         })
@@ -2743,6 +2748,7 @@ module.exports = {
                         db.set(`disguised_${illusionist.id}`, alldisguised) //.catch(e => message.channel.send("Something went wrong. The Illusionist could not try to add it's disguise!"))
                         illusionist.send(`${getEmoji("delude", client)} Player **${disguise.nickname} ${disguise.user.username}** has successfully been disguised!`)
                         illusionist.send(`${alive}`)
+                        db.set(`toDisguise_${illusionist.id}`)
                     }
                 }
             }
