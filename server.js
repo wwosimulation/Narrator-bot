@@ -171,7 +171,7 @@ client.on("ready", async () => {
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
-    if (!client.user.username.includes("Besta")) {
+    if (!client.user.username.includes("Beta")) {
         Sentry.init({
             dsn: process.env.SENTRY,
             tracesSampleRate: 1.0,
