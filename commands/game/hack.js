@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { fn }, config = require("../../config")
+const { fn } = require("../../config")
 
 module.exports = {
     name: "hack",
@@ -9,7 +9,7 @@ module.exports = {
         if (message.channel.name == "priv-hacker") {
             let isNight = db.get(`isNight`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             let alrhacked = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hashacked_${dc.chan.id}` : `hashacked_${message.channel.id}`}`)
 
             let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
