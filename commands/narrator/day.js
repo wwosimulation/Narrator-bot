@@ -182,8 +182,7 @@ module.exports = {
 
         // removing all kills if peace is activated
         for (let i = 0; i < prog.length; i++) {
-            let tempchan = message.guild.channels.cache.get(prog[i])
-            let peace = db.get(`peace_${tempchan[i]}`) || "no"
+            let peace = db.get(`peace_${prog[i]}`) || "no"
 
             if (peace !== "no" && peace === night) {
                 for (let i = 0; i < bandit.length; i++) {
