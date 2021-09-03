@@ -406,7 +406,7 @@ module.exports = {
             sorcChats.forEach((x) => x.send(allWolves.join("\n")))
         }
 
-        let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes ? `Excluded roles: ${excludes.map(x => getRole(x).name ? getRole(x).name : "").join(", ")}` : ""}`)
+        let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`)
         dcSent.pin()
         dayChat.permissionOverwrites.edit(alive, {
             SEND_MESSAGES: false,
