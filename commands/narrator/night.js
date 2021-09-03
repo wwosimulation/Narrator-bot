@@ -1,6 +1,5 @@
 const db = require("quick.db")
-<<<<<<< HEAD
-const { getEmoji } = require("../../config")
+const { getEmoji, getRole } = require("../../config")
 function peaceCheck(message) {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
     let nightCount = db.get(`nightCount`) + 1
@@ -12,9 +11,6 @@ function peaceCheck(message) {
     }
     return res
 }
-=======
-const { getEmoji, getRole } = require("../../config")
->>>>>>> daf8c456572453399e381a41bb1a095e34bcdf61
 
 module.exports = {
     name: "night",
