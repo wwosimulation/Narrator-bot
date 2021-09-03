@@ -1705,10 +1705,15 @@ module.exports = {
                                 VIEW_CHANNEL: false,
                                 READ_MESSAGE_HISTORY: false,
                             })
+                            wwChat.send(`**${guy.nickname} ${guy.user.username}** was cursed and has been converted into a werewolf!`)
+                            wwChat.permissionOverwrites.edit(guy.id, {
+                                SEND_MESSAGES: true,
+                                READ_MESSAGE_HISTORY: true,
+                                VIEW_CHANNEL: true,
+                            })
                         }
-                        wwChat.send(`**${guy.nickname} ${guy.user.username}** was cursed and has been converted into a werewolf!`)
-                        wwChat.permissionOverwrites.edit(guy.id, {
-                            SEND_MESSAGES: true,
+
+                        wwVote.permissionOverwrites.edit(guy.id, {
                             READ_MESSAGE_HISTORY: true,
                             VIEW_CHANNEL: true,
                         })
@@ -2743,6 +2748,7 @@ module.exports = {
                         db.set(`disguised_${illusionist.id}`, alldisguised) //.catch(e => message.channel.send("Something went wrong. The Illusionist could not try to add it's disguise!"))
                         illusionist.send(`${getEmoji("delude", client)} Player **${disguise.nickname} ${disguise.user.username}** has successfully been disguised!`)
                         illusionist.send(`${alive}`)
+                        db.set(`toDisguise_${illusionist.id}`, null)
                     }
                 }
             }
