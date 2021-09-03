@@ -4,6 +4,8 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "reveal",
+    description: "Reveal a role in the game.",
+    usage: `${process.env.PREFIX}reveal [player]`,
     gameOnly: true,
     aliases: ["show"],
     run: async (message, args, client) => {
@@ -48,7 +50,7 @@ module.exports = {
             }
             if (isday != "yes") return await message.reply("You can use your ability only during the day!")
             if (day == 1) {
-                if (cmd != "yes") return await message.reply("You can reveal after voting phase of day 1!")
+                if (cmd != "yes") return await message.reply("You can reveal after discussion phase of day 1!")
             }
             if (!guy || guy == message.member) return await message.reply("The player is not in game! Mention the correct player number.")
             if (role == "President") return await message.reply("You can't reveal the President!")

@@ -1,5 +1,7 @@
 module.exports = {
     name: "bye",
+    description: "Clean the game server.",
+    usage: `${process.env.PREFIX}bye`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

@@ -1,5 +1,7 @@
 module.exports = {
     name: "getrandom",
+    description: "Get a random role from any random category.",
+    usage: `${process.env.PREFIX}getrandom <randoms>`,
     narratorOnly: true,
     run: async (message, args, client) => {
         if (args[0] == "rrv") {

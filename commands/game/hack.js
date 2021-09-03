@@ -1,17 +1,24 @@
 const db = require("quick.db")
+<<<<<<< HEAD
 const { fn } = require("../../config")
+=======
+const config = require("../../config")
+>>>>>>> daf8c456572453399e381a41bb1a095e34bcdf61
 
 module.exports = {
     name: "hack",
     gameOnly: true,
     run: async (message, args, client) => {
+        let dc
         if (message.channel.name == "priv-hacker") {
             let isNight = db.get(`isNight`)
-            let alrhacked = db.get(`hashacked_${message.channel.id}`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
+            let alrhacked = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hashacked_${dc.chan.id}` : `hashacked_${message.channel.id}`}`)
+
             let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
             let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map((x) => x.id)
-            let firsthack = db.get(`hack_${message.channel.id}`) || []
+            let firsthack = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hack_${dc.chan.id}` : `hack_${message.channel.id}`}`) || []
             let sech = []
             let lol = firsthack
             firsthack.forEach((person) => lol.push(person))
@@ -62,11 +69,11 @@ module.exports = {
                 }
             }
             //adds player to hacked array
-            db.set(`hack_${message.channel.id}`, lol)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hack_${dc.chan.id}` : `hack_${message.channel.id}`}`, lol)
             //sets to show player has hacked this night
-            db.set(`hashacked_${message.channel.id}`, true)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hashacked_${dc.chan.id}` : `hashacked_${message.channel.id}`}`, true)
             //adds people to die
-            db.set(`secondhack_${message.channel.id}`, sech)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `secondhack_${dc.chan.id}` : `secondhack_${message.channel.id}`}`, sech)
         }
     },
 }

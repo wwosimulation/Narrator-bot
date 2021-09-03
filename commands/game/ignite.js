@@ -3,14 +3,18 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "ignite",
+    description: "Set all players you doused before on fire.",
+    usage: `${process.env.PREFIX}ignite`,
     alises: ["burn", "fire"],
     gameOnly: true,
     run: async (message, args, client) => {
         let isNight = db.get(`isNight`)
-        let doused = db.get(`doused_${message.channel.id}`) || []
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        let dc
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+        let doused = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `doused_${dc.chan.id}` : `doused_${message.channel.id}`}`) || []
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-        let didCmd = db.get(`dousedAt_${message.channel.id}`) || "-1"
+        let didCmd = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`) || "-1"
         if (message.channel.name == "priv-arsonist") {
             if (!message.member.roles.cache.has(alive.id)) return await message.channel.send("You cannot use the ability now!")
             if (isNight != "yes") return await message.channel.send("You can use your ability only at night!")
@@ -31,8 +35,8 @@ module.exports = {
                     }
                 }
             }
-            db.set(`ignitedAt_${message.channel.id}`, db.get(`nightCount`))
-            db.delete(`doused_${message.channel.id}`)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`, db.get(`nightCount`))
+            db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `doused_${dc.chan.id}` : `doused_${message.channel.id}`}`)
         }
     },
 }

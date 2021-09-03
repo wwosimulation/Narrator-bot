@@ -1,4 +1,5 @@
 const db = require("quick.db")
+<<<<<<< HEAD
 const { getEmoji } = require("../../config")
 function peaceCheck(message) {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
@@ -11,12 +12,18 @@ function peaceCheck(message) {
     }
     return res
 }
+=======
+const { getEmoji, getRole } = require("../../config")
+>>>>>>> daf8c456572453399e381a41bb1a095e34bcdf61
 
 module.exports = {
     name: "night",
+    description: "Night 👀.",
+    usage: `${process.env.PREFIX}night <player | 0>`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.guild.id != "472261911526768642") return
+
         let sww = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").map((x) => x.id)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
@@ -186,6 +193,7 @@ module.exports = {
         setTimeout(async () => {
             let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
             let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id)
+            let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
             let s = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map((x) => x.id)
             let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").map((x) => x.id)
             let sorc = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").map((x) => x.id)
@@ -283,6 +291,58 @@ module.exports = {
                                                     }
                                                 }
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (let a = 0; a < dc.length; a++) {
+                let hypnotize = db.get(`hypnotize_${dc[a]}`)
+                if (hypnotize != null) {
+                    console.log(hypnotize)
+                    let guy = message.guild.members.cache.find((c) => c.nickname === hypnotize)
+                    let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
+                    for (let b = 0; b < role.length; b++) {
+                        console.log(guy.id)
+                        let chann = message.guild.channels.cache.get(role[b])
+                        if (chann.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                            let chan = chann
+                            for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
+                                let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
+                                if (db.get(`role_${player.id}`) == "Dreamcatcher") {
+                                    if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
+                                        db.set(`hypnotize_${dc[a]}`, null)
+                                        console.log("hi")
+                                        chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
+                                        let chan1 = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`, {
+                                            parent: "748959630520090626",
+                                        })
+                                        chan1.permissionOverwrites.edit(player.id, {
+                                            SEND_MESSAGES: true,
+                                            READ_MESSAGE_HISTORY: true,
+                                            VIEW_CHANNEL: true,
+                                        })
+                                        chan1.send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
+                                        chan.permissionOverwrites.edit(guy.id, {
+                                            SEND_MESSAGES: false,
+                                        })
+                                        chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
+                                        db.set(`hypnotized_${dc[a]}`, guy.nickname)
+                                        if (db.get(`role_${guy.id}`) == "Bomber") {
+                                            chan1.permissionOverwrites.edit(player.id, {
+                                                SEND_MESSAGES: false,
+                                            })
+                                            message.channel.send(`Your channel has been locked for 1 minute due to a bug including dreamcatcher and bomber.`)
+                                            setTimeout(async function () {
+                                                chan1.permissionOverwrites.edit(player.id, {
+                                                    SEND_MESSAGES: true,
+                                                })
+                                                message.channel.send(`<@&${alive.id}>, Your channel has been opened.`)
+                                            }, 60000)
                                         }
                                     }
                                 }
@@ -434,40 +494,42 @@ module.exports = {
                 }
                 let toJail = db.get(`jail_${jailer.id}`) || "None"
                 let prisoner = message.guild.members.cache.find((m) => m.nickname === toJail)
-                if (prisoner?.roles.cache.has(dead.id)) {
-                    toJail = "None"
-                    db.delete(`jail_${jailer.id}`)
-                }
-                if (toJail != "None") {
-                    if (prisoner && db.get(`role_${prisoner.id}`)) {
-                        jailedchat.permissionOverwrites.edit(prisoner.id, {
-                            SEND_MESSAGES: true,
-                            VIEW_CHANNEL: true,
-                            READ_MESSAGE_HISTORY: true,
-                        })
-
-                        if (db.get(`role_${prisoner.id}`).toLowerCase().includes("wolf")) {
-                            wwChat.permissionOverwrites.edit(prisoner.id, {
-                                VIEW_CHANNEL: false,
+                if (prisoner) {
+                    if (prisoner.roles.cache.has(dead.id)) {
+                        toJail = "None"
+                        db.delete(`jail_${jailer.id}`)
+                    }
+                    if (toJail != "None") {
+                        if (prisoner && db.get(`role_${prisoner.id}`)) {
+                            jailedchat.permissionOverwrites.edit(prisoner.id, {
+                                SEND_MESSAGES: true,
+                                VIEW_CHANNEL: true,
+                                READ_MESSAGE_HISTORY: true,
                             })
-                            wwChat.send("Your werewolf teammate **" + prisoner.nickname + " " + prisoner.user.username + " (" + db.get(`role_${prisoner.id}`) + ")** has been jailed!")
-                        }
 
-                        let rolec = message.guild.channels.cache.filter((c) => c.name === `priv-` + db.get(`role_${prisoner.id}`).toLowerCase().replace(" ", "-")).map((x) => x.id)
-
-                        for (let jailsch = 0; jailsch < rolec.length; jailsch++) {
-                            let tolock = message.guild.channels.cache.get(rolec[jailsch])
-                            if (tolock.permissionsFor(prisoner.id).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                tolock.permissionOverwrites.edit(prisoner.id, {
-                                    SEND_MESSAGES: false,
+                            if (db.get(`role_${prisoner.id}`).toLowerCase().includes("wolf")) {
+                                wwChat.permissionOverwrites.edit(prisoner.id, {
+                                    VIEW_CHANNEL: false,
                                 })
-                                tolock.send("You have been jailed! You can't do your actions for tonight! Head to <#606251143466713174> to talk with the jailer!")
+                                wwChat.send("Your werewolf teammate **" + prisoner.nickname + " " + prisoner.user.username + " (" + db.get(`role_${prisoner.id}`) + ")** has been jailed!")
                             }
-                        }
 
-                        setTimeout(function () {
-                            jailedchat.send(`${alive} You have been jailed!`)
-                        }, 2000)
+                            let rolec = message.guild.channels.cache.filter((c) => c.name === `priv-` + db.get(`role_${prisoner.id}`).toLowerCase().replace(" ", "-")).map((x) => x.id)
+
+                            for (let jailsch = 0; jailsch < rolec.length; jailsch++) {
+                                let tolock = message.guild.channels.cache.get(rolec[jailsch])
+                                if (tolock.permissionsFor(prisoner.id).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                    tolock.permissionOverwrites.edit(prisoner.id, {
+                                        SEND_MESSAGES: false,
+                                    })
+                                    tolock.send("You have been jailed! You can't do your actions for tonight! Head to <#606251143466713174> to talk with the jailer!")
+                                }
+                            }
+
+                            setTimeout(function () {
+                                jailedchat.send(`${alive} You have been jailed!`)
+                            }, 2000)
+                        }
                     }
                 }
             }
@@ -559,11 +621,6 @@ module.exports = {
                 .permissionOverwrites.edit(alive.id, {
                     VIEW_CHANNEL: true,
                 })
-            message.guild.channels.cache
-                .find((c) => c.name === "vote-chat")
-                .permissionOverwrites.edit(dead.id, {
-                    VIEW_CHANNEL: true,
-                })
 
             let mm = message.guild.channels.cache.filter((c) => c.name === "priv-marksman").map((x) => x.id)
             for (let a = 0; a < mm.length; a++) {
@@ -571,7 +628,6 @@ module.exports = {
                     db.set(`markActive_${mm[a]}`, true)
                 }
             }
-
             // Tough guy
 
             let tg = message.guild.channels.cache.filter((c) => c.name === "priv-tough-guy").map((x) => x.id)
@@ -657,21 +713,23 @@ module.exports = {
                 }
             }
             // deleting bomber bombs if dead
-            let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map((x) => x.id)
-            for (let i = 0; i < bb.length; i++) {
-                let chan = message.guild.channels.cache.get(bb[i])
-                for (let j = 1; j <= 16; j++) {
-                    let tempguy = message.guild.members.cache.find((m) => m.nickname === j.toString())
-                    if (tempguy) {
-                        if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL"])) {
-                            j = 99
-                            if (tempguy.roles.cache.has(dead.id)) {
-                                db.delete(`bombs_${chan.id}`)
+            setTimeout(async function () {
+                let bb = message.guild.channels.cache.filter((c) => c.name === "priv-bomber").map((x) => x.id)
+                for (let i = 0; i < bb.length; i++) {
+                    let chan = message.guild.channels.cache.get(bb[i])
+                    for (let j = 1; j <= 16; j++) {
+                        let tempguy = message.guild.members.cache.find((m) => m.nickname === j.toString())
+                        if (tempguy) {
+                            if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL"])) {
+                                j = 99
+                                if (tempguy.roles.cache.has(dead.id)) {
+                                    db.delete(`bombs_${chan.id}`)
+                                }
                             }
                         }
                     }
                 }
-            }
+            }, 2000)
 
             // bomber
             setTimeout(async function () {

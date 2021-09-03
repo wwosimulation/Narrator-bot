@@ -1,6 +1,8 @@
 let sentMessage = (sentMessage) => sentMessage.react
 module.exports = {
     name: "sow",
+    description: "Send vote for start or wait.",
+    usage: `${process.env.PREFIX}sow`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

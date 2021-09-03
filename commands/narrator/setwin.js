@@ -1,6 +1,8 @@
 const db = require("quick.db")
 module.exports = {
     name: "setwin",
+    description: "End the game and announce the winner.",
+    usage: `${process.env.PREFIX}setwin <winner...>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

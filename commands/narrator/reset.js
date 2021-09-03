@@ -4,6 +4,8 @@ const { ids } = require("../../config")
 
 module.exports = {
     name: "reset",
+    description: "Reset the database.",
+    usage: `${process.env.PREFIX}reset`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.member.roles.cache.has("606139219395608603") || message.member.roles.cache.has("606276949689499648")) {
@@ -88,10 +90,12 @@ module.exports = {
                 .messages.fetch(mid)
                 .then((m) => {
                     let allc = m.components
+                    if(allc) {
                     let row = allc[0]
                     let button = row.components[0]
                     button.disabled = true
                     m.edit({ components: [new MessageActionRow().addComponents(button)] })
+                    }
                 })
 
             db.set(`game`, null)

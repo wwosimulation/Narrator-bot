@@ -3,6 +3,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "say",
+    description: "Let the bot say something for you.",
+    usage: `${process.env.PREFIX}say [channel] <message...>`,
     run: async (message, args, client) => {
         if (!client.botAdmin(message.author.id) && !config.fn.isNarrator(message.member)) return
         if (db.get("settings.disableSay")) return
@@ -12,10 +14,10 @@ module.exports = {
         let channel = await client.channels.cache.get(idsendreply)
         if (!channel) {
             let sf = parseInt(idsendreply)
-            reply = sf ? await message.channel.messages.fetch(sf) : null
+            replyMsg = sf ? await message.channel.messages.fetch(sf) : null
             if (reply) {
                 args.shift()
-                return await message.channel.messages.fetch(sf).then((m) => m.reply(args.join(" ")))
+                return await replyMsg.reply(args.join(" "))
             } else {
                 return message.channel.send(args.join(" "))
             }

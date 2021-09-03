@@ -1,10 +1,12 @@
-const Discord = require("discord.js")
+const { MessageEmbed } = require("discord.js")
 const ms = require("parse-ms")
 const config = require("../../config")
 const { players } = require("../../db.js")
 
 module.exports = {
     name: "daily",
+    description: "Claim your daily reward.",
+    usage: `${process.env.PREFIX}daily`,
     run: async (message, args, client) => {
         let item = ""
         let amount = ""
@@ -36,46 +38,45 @@ module.exports = {
                 amount = 10 * bonus
                 emote = `${config.getEmoji("coin", client)}`
                 item = "coins"
-                data.coins += 10 * bonus
+                await data.updateOne({ $inc: { coins: amount } })
             } else if (date == 1) {
                 item = "rose"
                 emote = `${config.getEmoji("rosesingle", client)}`
                 amount = 1 * bonus
-                data.inventory.rose += 1 * bonus
+                await data.updateOne({ $inc: { "inventory.rose": amount } })
             } else if (date == 2) {
                 amount = 1 * bonus
                 item = "rose bouquet"
                 emote = `${config.getEmoji("rosebouquet", client)}`
-                data.inventory.bouquet += 1 * bonus
+                await data.updateOne({ $inc: { "inventory.bouquet": amount } })
             } else if (date == 3) {
                 amount = 1 * bonus
                 emote = `${config.getEmoji("lootbox", client)}`
                 item = "lootbox!"
                 extra = `\nTo use it, do \`+use lootbox\`${extra}`
-                data.inventory.lootbox += 1 * bonus
+                await data.updateOne({ $inc: { "inventory.lootbox": amount } })
             } else if (date == 4) {
                 item = "coins"
                 emote = `${config.getEmoji("coin", client)}`
                 amount = 20 * bonus
-                data.coins += 20 * bonus
+                await data.updateOne({ $inc: { coins: amount } })
             } else if (date == 5) {
                 item = "roses"
                 emote = `${config.getEmoji("rosesingle", client)}`
                 amount = 5 * bonus
-                data.inventory.roses += 5 * bonus
+                await data.updateOne({ $inc: { "inventory.rose": amount } })
             } else if (date == 6) {
                 amount = 30 * bonus
                 item = "coins"
                 emote = `${config.getEmoji("coin", client)}`
-                data.daily.day = -1
-                data.coins += 30 * bonus
+                await data.updateOne({ $set: { "daily.day": -1 } })
+                await data.updateOne({ $inc: { coins: amount } })
             }
-            let dailymsg = new Discord.MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${message.i10n("daily", { emoji: emote, number: amount, prize: item })}${extra}`)
+            let dailymsg = new MessageEmbed().setTitle("Daily Rewards! Woohooo!").setDescription(`${message.i10n("daily", { emoji: emote, number: amount, prize: item })}${extra}`)
             message.channel.send({ embeds: [dailymsg] })
 
-            data.daily.day++
-            data.daily.last = Date.now()
+            await data.updateOne({ $inc: { "daily.day": 1 } })
+            await data.updateOne({ $set: { "daily.last": Date.now() } })
         }
-        data.save()
     },
 }

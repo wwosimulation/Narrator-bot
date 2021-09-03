@@ -1,5 +1,7 @@
 module.exports = {
     name: "massping",
+    description: "Massping an innocent user so they wake up.",
+    usage: `${process.env.PREFIX}massping <nickname>`,
     aliases: ["sjjsjs", "wake"],
     narratorOnly: true,
     run: async (message, args) => {

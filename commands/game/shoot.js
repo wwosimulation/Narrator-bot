@@ -3,8 +3,13 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "shoot",
+    description: "Kill a player with your weapons!",
+    usage: `${process.env.PREFIX}shoot [player]`,
     gameOnly: true,
     run: async (message, args, client) => {
+        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        let dc
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-gunner") {
             if (!db.get(`bullets_${message.channel.id}`)) {
                 db.set(`bullets_${message.channel.id}`, 1)
@@ -14,7 +19,6 @@ module.exports = {
                 db.set(`bullets_${message.channel.id}`, 2)
                 bullets = db.get(`bullets_${message.channel.id}`)
             }
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
@@ -53,13 +57,12 @@ module.exports = {
                 db.set(`did_${message.channel.id}`, dayCount)
             }
         } else if (message.channel.name == "priv-jailer") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let jailedchat = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
             let isDay = db.get(`isDay`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            let jailed = db.get(`jail_${message.channel.id}`)
+            let jailed = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `jail_${dc.chan.id}` : `jail_${message.channel.id}`}`)
             let guy = message.guild.members.cache.find((m) => m.nickname === jailed)
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is already dead.")
             let bullet = db.get(`bullet_jail`) ? db.get(`bullet_jail`) : 1
@@ -87,14 +90,21 @@ module.exports = {
             })
         } else if (message.channel.name == "priv-marksman") {
             let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
+<<<<<<< HEAD
             let markActive = db.get(`markActive_${message.channel.id}`) || false
             let mark = db.get(`mark_${message.channel.id}`)
             let arrows = db.get(`arrows_${message.channel.id}`) || 2
             let isNight = db.get(`isNight`)
             if (!db.get(`arrows_${message.channel.id}`)) {
                 db.set(`arrows_${message.channel.id}`, 2)
+=======
+            let markActive = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `markActive_${dc.chan.id}` : `markActive_${message.channel.id}`}`) || false
+            let mark = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `mark_${dc.chan.id}` : `mark_${message.channel.id}`}`)
+            let arrows = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`) || 2
+            if (!db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`)) {
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 2)
+>>>>>>> daf8c456572453399e381a41bb1a095e34bcdf61
             }
             if (mark != null) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === mark)
@@ -116,7 +126,7 @@ module.exports = {
                     }
                 }
                 let role = db.get(`role_${guy.id}`)
-                db.subtract(`arrows_${message.channel.id}`, 1)
+                db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 1)
                 if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Bandit" || role == "Illusionist" || role == "Corruptor" || role == "Accomplice" || role == "Sorcerer" || role == "Zombie" || role == "Sect Leader" || role == "Cannibal" || role == "Alchemist") {
                     guy.roles.add(dead.id)
                     guy.roles.remove(alive.id)

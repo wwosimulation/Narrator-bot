@@ -3,9 +3,12 @@ const Discord = require("discord.js")
 const db = require("quick.db")
 const pull = require("array-pull")
 const { getRole, fn } = require("../../config")
+const { join } = require("../../config/src/cmi")
 
 module.exports = {
     name: "srole",
+    description: "Prepare the agme with channels and roles.",
+    usage: `${process.env.PREFIX}srole <gamemode> [force]`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
@@ -403,7 +406,7 @@ module.exports = {
             sorcChats.forEach((x) => x.send(allWolves.join("\n")))
         }
 
-        let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}`)
+        let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes ? `Excluded roles: ${excludes.map(x => getRole(x).name ? getRole(x).name : "").join(", ")}` : ""}`)
         dcSent.pin()
         dayChat.permissionOverwrites.edit(alive, {
             SEND_MESSAGES: false,

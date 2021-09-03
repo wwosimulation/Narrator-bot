@@ -1,8 +1,10 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "tag",
+    description: "Select a target to be revealed or killed when you die.",
+    usage: `${process.env.PREFIX}tag <player>`,
     aliases: ["revenge", "avenge", "target"],
     gameOnly: true,
     run: async (message, args, client) => {
@@ -13,11 +15,14 @@ module.exports = {
         let atag = await db.fetch(`atag_${message.author.id}`)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
+        let dc
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
         if (message.channel.name == "priv-junior-werewolf") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0]) return message.channel.send("Who are you tagging? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
             if (!guy) return message.reply("Invalid Target!")
             if (guy == message.member) return message.channel.send("You cannot tag yourself with you! lol")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
@@ -42,7 +47,7 @@ module.exports = {
                 }
             }
 
-            db.set(`jwwtag_${message.author.id}`, args[0])
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `jwwtag_${dc.chan.id}` : `jwwtag_${message.channel.id}`}`, args[0])
             message.react("475775484219752453")
         }
         if (message.channel.name == "priv-avenger") {
@@ -52,6 +57,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0]) return message.channel.send("Who are you tagging? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             if (guy == message.member) return message.channel.send("You cannot tag yourself! lol")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
@@ -79,7 +85,7 @@ module.exports = {
                 }
             }
 
-            db.set(`atag_${message.author.id}`, args[0])
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `atag_${dc.chan.id}` : `atag_${message.channel.id}`}`, args[0])
             message.react("482179367485702162")
         }
         if (message.channel.name == "priv-loudmouth") {
@@ -88,6 +94,7 @@ module.exports = {
             if (!args[0]) return message.channel.send("Who are you revealing? Mention the player.")
 
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Technically the loudmouth already is revealed when they die so this is pointless...`)
 
             if (!guy || guy == message.member || !guy.roles.cache.has(alive.id)) return message.reply("The player is not in game! Mention the correct player number.")
 
@@ -121,7 +128,7 @@ module.exports = {
                 }
             }
 
-            db.set(`mouth_${message.author.id}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `mouth_${dc.chan.id}` : `mouth_${message.channel.id}`}`, guy.nickname)
             message.channel.send(`${getEmoji("loudmouthing", client)} You selected **${guy.nickname} ${guy.user.username}** to be revealed when you die.`)
         }
     },

@@ -3,6 +3,8 @@ const { getLangNameFromCode } = require("language-name-map")
 
 module.exports = {
     name: "settings",
+    description: "Select your preferred language for Narratot-Bot answers.",
+    usage: `${process.env.PREFIX}settings`,
     aliases: ["config"],
     run: async (message, args) => {
         let languageDropdown = new MessageSelectMenu().setCustomId(`configLanguage-${message.author.id}`).setMaxValues(1).setPlaceholder("Language")
