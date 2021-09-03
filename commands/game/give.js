@@ -1,22 +1,25 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "give",
     description: "Give something to another player. No matter what. A shield, a gift, cards or poisonous drinks!",
     usage: `${process.env.PREFIX}give <player | <red | black> player>`,
     run: async (message, args, client) => {
+        let dc
         if (message.channel.name == "priv-fortune-teller") {
             let alive = message.guild.roles.cache.find((c) => c.name === "Alive")
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0] || args.length > 1) return message.channel.send("Who you want to give? Mention a player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
+            if (typeof dc !== "undefined") if (guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Haha, giving the fortune teller a fortune card! this can't get better.`)
 
             if (!guy || guy == message.member) return message.channel.send("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Player is not alive or you are trying to give a card to yourself!")
-            let cards = db.get(`cards_${message.channel.id}`) || 2
+            let cards = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`) || 2
             if (cards == 2) {
-                db.set(`cards_${message.channel.id}`, 2)
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`, 2)
             }
             if (cards < 1) return message.channel.send("You have given your cards already.")
             let role = db.get(`role_${guy.id}`)
@@ -30,7 +33,7 @@ module.exports = {
                 }
             }
             message.channel.send(`${getEmoji("moon", client)} You gave a card to **${guy.nickname} ${guy.user.username}**`)
-            db.subtract(`cards_${message.channel.id}`, 1)
+            db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`, 1)
         } else if (message.channel.name == "priv-santa-claus") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
@@ -50,25 +53,28 @@ module.exports = {
             let alive = message.guild.roles.cache.find((m) => m.name === "Alive")
             let isNight = db.get(`isNight`)
             let night = db.get(`nightCount`)
-            let forged = db.get(`forged_${message.channel.id}`)
+            let forged = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forged_${dc.chan.id}` : `forged_${message.channel.id}`}`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args.join(" ")) || message.guild.members.cache.find((m) => m.user.tag === args.join(" "))
 
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
             if (!args[0]) return message.channel.send("Who are you giving? Mention the player.")
-            if (!guy || guy.id == message.author.id) return message.reply("The player is not in game! Mention the correct player number.")
+            if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
+            if (typeof dc === "undefined" && guy.id == message.author.id) return message.channel.send("I dont get why I am not allowed to give the forger a shield/sword. What's the problem?")
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`I dont get why I am not allowed to give the forger a shield/sword. What's the problem?`)
+
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
 
             if (forged < 0) return message.channel.send("You have already used your ability.")
-            if (db.get(`forging_${message.channel.id}`) == db.get(`nightCount`)) return message.channel.send("You cannot give the item now!")
+            if (db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forging_${dc.chan.id}` : `forging_${message.channel.id}`}`) == db.get(`nightCount`)) return message.channel.send("You cannot give the item now!")
 
             if (forged == 2 || forged == 1) {
-                db.set(`toGiveS_${message.channel.id}`, guy.nickname)
-                db.set(`given_${message.channel.id}`, true)
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toGiveS_${dc.chan.id}` : `toGiveS_${message.channel.id}`}`, guy.nickname)
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `given_${dc.chan.id}` : `given_${message.channel.id}`}`, true)
                 message.channel.send(`${getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
             } else {
-                db.subtract(`forged_${message.channel.id}`, 1)
-                db.set(`toGiveK_${message.author.id}`, guy.nickname)
+                db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forged_${dc.chan.id}` : `forged_${message.channel.id}`}}`, 1)
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toGiveK_${dc.tempguy.id}` : `toGiveK_${message.author.id}`}}`, guy.nickname)
                 message.channel.send(`${getEmoji("getsword", client)} You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
             }
         } else if (message.channel.name == "priv-alchemist") {
@@ -76,16 +82,17 @@ module.exports = {
             if (isNight == "no") return message.channel.send("You can only do this at night!")
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1]) || message.guild.members.cache.find((m) => m.id === args[1])
+            if (typeof dc !== "undefined") if (guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Nope, you will not force the alchemist to give themselves a potion.`)
             if (args.length != 2) return message.channel.send("Who are you giving? Mention the player.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             if (!["red", "black"].includes(args[0].toLowerCase())) return message.channel.send("Which potion you are giving? Those are either `red` or `black`.")
             if (args[0].toLowerCase() == "red") {
-                db.set(`redpotion_${message.channel.id}`, guy.nickname)
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `redpotion_${dc.chan.id}` : `redpotion_${message.channel.id}`}`, guy.nickname)
                 message.react("821920816596910100")
             } else if (args[0].toLowerCase() == "black") {
-                db.set(`blackpotion_${message.channel.id}`, guy.nickname)
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `blackpotion_${dc.chan.id}` : `blackpotion_${message.channel.id}`}`, guy.nickname)
                 message.react("821920932989239296")
             }
         }

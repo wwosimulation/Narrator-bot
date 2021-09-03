@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "poison",
@@ -8,13 +8,15 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-witch") {
-            let ability = await db.fetch(`ability_${message.channel.id}`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+            let ability = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`)
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let day = await db.fetch(`isDay`)
             let night = await db.fetch(`nightCount`)
             let isNight = await db.fetch(`isNight`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yeah... let's don't shall we, you will kill them anyway.`)
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
             if (!args[0]) return message.channel.send("Who are you poisoning? Mention the player.")
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
@@ -42,7 +44,7 @@ module.exports = {
             message.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("poison", client)} The Witch poisoned **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
-            db.set(`ability_${message.channel.id}`, 1)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`, 1)
         }
     },
 }

@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "corrupt",
@@ -8,11 +8,14 @@ module.exports = {
     gameOnly: true,
     aliases: ["glitch"],
     run: async (message, args, client) => {
+        let dc
         if (message.channel.name == "priv-corruptor") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot corrupt someone being dead!")
             if (!args[0]) return message.channel.send("Who are you glitching? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, this is probably not a good idea...`)
 
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             else if (guy == message.member) {
@@ -31,7 +34,7 @@ module.exports = {
                 }
             }
             message.channel.send(`${getEmoji("corrupt", client)} You have decided to corrupt **${guy.nickname} ${guy.user.username}**!`)
-            db.set(`corrupt_${message.channel.id}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `corrupt_${dc.chan.id}` : `corrupt_${message.channel.id}`}`, guy.nickname)
         }
     },
 }

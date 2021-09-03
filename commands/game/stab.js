@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "stab",
@@ -8,9 +8,12 @@ module.exports = {
     aliases: ["murder"],
     gameOnly: true,
     run: async (message, args, client) => {
+        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        let dc
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-serial-killer") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
+            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
             let isNight = db.get(`isNight`)
             if (!args[0]) return message.channel.send("Who are you stabbing? Mention the player.")
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
@@ -29,10 +32,9 @@ module.exports = {
                     if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not stab your lover!")
                 }
             }
-            db.set(`stab_${message.channel.id}`, guy.nickname)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `stab_${dc.chan.id}` : `stab_${message.channel.id}`}`, guy.nickname)
             message.react("774088736861978666")
         } else if (message.channel.name == "priv-bandit" || message.channel.name == "priv-accomplice") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let allBandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
             if (message.channel.name == "priv-bandit") {

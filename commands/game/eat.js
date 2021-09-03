@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "eat",
@@ -10,8 +10,10 @@ module.exports = {
         if (message.channel.name == "priv-cannibal") {
             // getting all the variables
             let isNight = db.get(`isNight`)
-            let hunger = db.get(`hunger_${message.channel.id}`) || 1
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+            let dc
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+            let hunger = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hunger_${dc.chan.id}` : `hunger_${message.channel.id}`}`) || 1
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You are dead. You cannot use the command now!`)
             if (!args[0]) return message.channel.send("Who you are going to eat? Mention the player.")
             if (hunger < args.length) return message.channel.send("You cannot eat more than your hunger!")
@@ -19,6 +21,7 @@ module.exports = {
 
             for (let i = 0; i < args.length; i++) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[i]) || message.guild.members.cache.find((m) => m.id === args[i]) || message.guild.members.cache.find((m) => m.user.username === args[i])
+                if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`So you want to let the cannibal eat themself? What kind of psycho are you?`)
                 message.guild.members.cache.find((m) => m.user.tag === args[i])
                 if (!guy) return message.channel.send(`Player **${args[0]}** could not be found!`)
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send(`Player **${guy.nickname} ${guy.user.username}** is dead!`)
@@ -42,7 +45,7 @@ module.exports = {
                 message.guild.members.cache.find((m) => m.user.tag === args[j])
                 lol.push(guy.nickname)
             }
-            db.set(`eat_${message.channel.id}`, lol)
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `eat_${dc.chan.id}` : `eat_${message.channel.id}`}`, lol)
             for (let j = 0; j < args.length; j++) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[j]) || message.guild.members.cache.find((m) => m.id === args[j]) || message.guild.members.cache.find((m) => m.user.username === args[j])
                 message.guild.members.cache.find((m) => m.user.tag === args[j])

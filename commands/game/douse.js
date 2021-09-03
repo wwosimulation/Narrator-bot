@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "douse",
@@ -10,10 +10,12 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name != "priv-arsonist") return
         let doused = await db.fetch(`doused_${message.channel.id}`)
+        let dc
         let isNight = await db.fetch(`isNight`)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-        let ignited = db.get(`ignitedAt_${message.channel.id}`) || "-1"
+        let ignited = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`) || "-1"
         if (doused == null) {
             doused = []
         }
@@ -28,6 +30,7 @@ module.exports = {
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             if (args.length == 2) {
                 let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])
+                if (typeof dc !== "undefined" && (guy1.nickname == db.get(`hypnotized_${dc.tempchan}`) || guy2.nickname == db.get(`hypnotized_${dc.tempcham}`))) return message.channel.send(`Yea, this is probably not a good idea...`)
                 if (!guy1 || !guy2 || guy1 == guy2 || guy1 == ownself || guy2 == ownself) {
                     return await message.channel.send("The player is not in game! Mention the correct player number.")
                 }
@@ -39,12 +42,12 @@ module.exports = {
                         return await message.channel.send("You have already doused that player!")
                     }
                 }
-                db.delete(`toDouse_${message.channel.id}`)
+                db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`)
 
-                db.set(`toDouse_${message.channel.id}`, [args[0], args[1]])
-                console.log(db.get(`toDouse_${message.channel.id}`))
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0], args[1]])
+                console.log(db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`))
                 message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username} & ${args[1]} ${guy2.user.username}**!`)
-                db.set(`dousedAt_${message.channel.id}`, db.get(`nightCount_${message.author.id}`))
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, db.get(`nightCount_${message.author.id}`))
             } else if (args.length == 1) {
                 if (!guy1 || guy1 == ownself) {
                     return await message.channel.send("The player is not in game! Mention the correct player number.")
@@ -57,10 +60,10 @@ module.exports = {
                         return await message.channel.send("You have already doused that player!")
                     }
                 }
-                db.delete(`toDouse_${message.channel.id}`)
-                db.set(`toDouse_${message.channel.id}`, [args[0]])
+                db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`)
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0]])
                 message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username}**!`)
-                db.set(`dousedAt_${message.channel.id}`, db.get(`nightCount_${message.author.id}`))
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, db.get(`nightCount_${message.author.id}`))
             } else {
                 return await message.channel.send("You cannot douse more than 2 players at a time!")
             }
