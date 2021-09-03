@@ -1666,7 +1666,7 @@ module.exports = {
             if (wwKill != "0") {
                 console.log("It is not 0 (8)")
                 if (role == "Cursed") {
-                    let allcursed = message.guild.channels.cache.filter(c => c.name === "priv-cursed").map((x) => x.id)
+                    let allcursed = message.guild.channels.cache.filter((c) => c.name === "priv-cursed").map((x) => x.id)
                     for (let z = 0; z < allcursed.length; z++) {
                         let thecurse = message.guild.channels.cache.get(allcursed[z])
                         if (thecurse.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
@@ -1704,7 +1704,7 @@ module.exports = {
                                 SEND_MESSAGES: false,
                                 VIEW_CHANNEL: false,
                                 READ_MESSAGE_HISTORY: false,
-                            })                        
+                            })
                             wwChat.send(`**${guy.nickname} ${guy.user.username}** was cursed and has been converted into a werewolf!`)
                             wwChat.permissionOverwrites.edit(guy.id, {
                                 SEND_MESSAGES: true,
