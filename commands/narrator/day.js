@@ -2748,7 +2748,7 @@ module.exports = {
                         db.set(`disguised_${illusionist.id}`, alldisguised) //.catch(e => message.channel.send("Something went wrong. The Illusionist could not try to add it's disguise!"))
                         illusionist.send(`${getEmoji("delude", client)} Player **${disguise.nickname} ${disguise.user.username}** has successfully been disguised!`)
                         illusionist.send(`${alive}`)
-                        db.set(`toDisguise_${illusionist.id}`)
+                        db.set(`toDisguise_${illusionist.id}`, null)
                     }
                 }
             }
