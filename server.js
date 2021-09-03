@@ -110,7 +110,7 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
 }
 
 client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) => {
-    if(embeds.length <= 1) return
+    if (embeds.length <= 1) return
 
     // buttons
     let buttonBegin = new Discord.MessageButton({ style: "SUCCESS", emoji: "⏪", customId: "begin" })

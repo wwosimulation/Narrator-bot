@@ -82,17 +82,17 @@ module.exports = (client) => {
             let cmd = interaction.customId.split("-")[1]
             switch (cmd) {
                 case "request":
-                    let nextTime = db.get("nextRequest") 
-                    if (nextTime && nextTime > Date.now()) return interaction.reply({content: `A game can only be requested once per every 30 minutes! The next game can be requested <t:${Math.round(nextTime / 1000)}:R>`, ephemeral: true}) 
+                    let nextTime = db.get("nextRequest")
+                    if (nextTime && nextTime > Date.now()) return interaction.reply({ content: `A game can only be requested once per every 30 minutes! The next game can be requested <t:${Math.round(nextTime / 1000)}:R>`, ephemeral: true })
                     client.channels.cache.get("606123759514025985").send(`${interaction.member} is requesting a game! ||@here||`)
-                    interaction.reply({content: "Your request has been sent to the narrators!", ephemeral: true})
+                    interaction.reply({ content: "Your request has been sent to the narrators!", ephemeral: true })
                     db.set("nextRequest", Date.now() + ms("30m"))
-                    break;
-                case "stats": 
-                    interaction.reply({content: `The last winner of the game was ${db.get("winner")}. More accurate/useful stats are coming soon!`, ephemeral: true})
-            
+                    break
+                case "stats":
+                    interaction.reply({ content: `The last winner of the game was ${db.get("winner")}. More accurate/useful stats are coming soon!`, ephemeral: true })
+
                 default:
-                    break;
+                    break
             }
         }
     })
