@@ -5,8 +5,7 @@ function peaceCheck(message) {
     let nightCount = db.get(`nightCount`) + 1
     let res = false
     for (let i = 0; i < prog.length; i++) {
-      let tempchan = message.guild.channels.cache.get(prog[i])
-      let peace = db.get(`peace_${tempchan[i].id}`)
+      let peace = db.get(`peace_${prog[i]}`)
       if (peace === nightCount) res = true
     }
     return res
