@@ -61,7 +61,7 @@ module.exports = {
             // code to check if a player is bitten
             let fod = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
             for (let i = 0; i < fod.length; i++) {
-                let tempchan = message.guild.channels.cache.get([i])
+                let tempchan = message.guild.channels.cache.get(fod[i])
                 if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     if (db.get(`bitten_${tempchan.id}`) == true) return message.reply("Hey, the player is already bitten!")
                 }

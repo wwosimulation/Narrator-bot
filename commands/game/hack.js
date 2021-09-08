@@ -34,7 +34,7 @@ module.exports = {
 
                 //if player is already hacked
                 if (firsthack.includes(guy.nickname)) {
-                    if (fn.peaceCheck(message, db) === true) return message.channel.send({content:"We have a peaceful night. You can't hack anyone for the second time."})
+                    if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't hack anyone for the second time." })
                     sech.push(guy.nickname)
                     message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username}** to DEATH!`)
 

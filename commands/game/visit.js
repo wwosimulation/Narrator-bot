@@ -13,7 +13,7 @@ module.exports = {
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             let isNight = db.get(`isNight`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (fn.peaceCheck(message, db) === true && isNight == "yes") return message.channel.send({content:"We have a peaceful night. You decided to stay at home today."})
+            if (fn.peaceCheck(message, db) === true && isNight == "yes") return message.channel.send({ content: "We have a peaceful night. You decided to stay at home today." })
             if (!args[0]) return message.channel.send("Who are you visiting? Mention the player.")
 
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args.join(" ")) || message.guild.members.cache.find((m) => m.user.tag === args.join(" "))
