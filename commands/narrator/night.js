@@ -5,8 +5,8 @@ function peaceCheck(message) {
     let nightCount = db.get(`nightCount`) + 1
     let res = false
     for (let i = 0; i < prog.length; i++) {
-      let peace = db.get(`peace_${prog[i]}`)
-      if (peace == nightCount) return true, res = true
+        let peace = db.get(`peace_${prog[i]}`)
+        if (peace == nightCount) return true, (res = true)
     }
     return res
 }
