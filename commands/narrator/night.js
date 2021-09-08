@@ -732,7 +732,7 @@ module.exports = {
                 for (let i = 0; i < bb.length; i++) {
                     let bombs = db.get(`bombs_${bb[i]}`) || []
                     if (bombs.length > 0) {
-                        if (peaceCheck(message) === true) return bb[i].send({ content: "We have a peaceful night. Your bombs will explade next night." })
+                        if (peaceCheck(message) === true) return message.guild.channels.fetch(bb[i]).then((chnl) => chnl.send({ content: "We have a peaceful night. Your bombs will explade next night." }))
                         bombs.forEach((e) => {
                             let goy = message.guild.members.cache.find((m) => m.nickname === e.toString())
                             if (goy) {
