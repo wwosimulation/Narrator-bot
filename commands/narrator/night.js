@@ -5,11 +5,11 @@ function peaceCheck (message) {
     let nightCount = db.get(`nightCount`) + 1
     let res = false
     for (let i = 0; i < prog.length; i++) {
-      let peace = db.get(`peace_${prog[i]}`) || "none"
-      if (peace !== "none" && peace === nightCount) res = true
+        let peace = db.get(`peace_${prog[i]}`) || "none"
+        if (peace !== "none" && peace === nightCount) res = true
     }
     return res
-  }
+}
 module.exports = {
     name: "night",
     description: "Night 👀.",
