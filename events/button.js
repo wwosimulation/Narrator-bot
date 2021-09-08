@@ -1,6 +1,12 @@
+const { MessageActionRow } = require("discord.js")
+const { MessageButton } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
 const { shop } = require("../config")
+
+const canHost = new MessageButton().setLabel("I can host").setStyle("SUCCESS").setCustomId(`hostrequest-yes;`)
+const canNotHost = new MessageButton().setLabel("No one can host").setStyle("DANGER").setCustomId(`hostrequest-no;`)
+
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
@@ -84,13 +90,34 @@ module.exports = (client) => {
                 case "request":
                     let nextTime = db.get("nextRequest")
                     if (nextTime && nextTime > Date.now()) return interaction.reply({ content: `A game can only be requested once per every 30 minutes! The next game can be requested <t:${Math.round(nextTime / 1000)}:R>`, ephemeral: true })
-                    client.channels.cache.get("606123759514025985").send(`${interaction.member} is requesting a game! ||@here||`)
+                    canHost.customId += interaction.member.id
+                    canNotHost.customId += interaction.member.id
+                    const row = new MessageActionRow().addComponents(canHost, canNotHost)
+                    client.channels.cache.get("606123759514025985").send({content: `${interaction.member} is requesting a game! ||@here||\n\nThe below buttons will send a DM to the requesting user about your choice.`, components: [row]})
                     interaction.reply({ content: "Your request has been sent to the narrators!", ephemeral: true })
                     db.set("nextRequest", Date.now() + ms("30m"))
                     break
                 case "stats":
                     interaction.reply({ content: `The last winner of the game was ${db.get("winner")}. More accurate/useful stats are coming soon!`, ephemeral: true })
 
+                default:
+                    break
+            }
+        }
+        //hostrequest-no;1920765935063
+        if (interaction.customId.startsWith("hostrequest")) {
+            let cmd = interaction.customId.split("-")[1]
+            let [action, user] = cmd.split(";")
+            foundUser = interaction.guild.members.resolve(user)
+            switch (action) {
+                case "no":
+                    foundUser.send({content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.`})
+                    interaction.reply(`No one can host, so the user has been informed. Thank you ${interaction.member}`)
+                    break
+                case "yes":
+                    foundUser.send({content: `Hey there, we received your request for a game, so ${interaction.member} is starting one soon!.`})
+                    interaction.reply(`${interaction.member} is now hosting a game! The user has been informed.`)
+                    break
                 default:
                     break
             }
