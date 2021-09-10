@@ -1,9 +1,6 @@
 console.log("Booting bot...")
 require("dotenv").config()
 
-const Sentry = require("@sentry/node")
-const Tracing = require("@sentry/tracing")
-
 const fs = require("fs")
 const db = require("quick.db")
 
@@ -172,10 +169,6 @@ client.on("ready", async () => {
     console.log("Connected!")
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
     if (!client.user.username.includes("Beta")) {
-        Sentry.init({
-            dsn: process.env.SENTRY,
-            tracesSampleRate: 1.0,
-        })
         // let privateKey = fs.readFileSync("./ghnb.pem")
         // client.github = new Octokit({
         //     authStrategy: createAppAuth,
