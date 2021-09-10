@@ -15,7 +15,6 @@ const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_R
 const config = require("./config")
 client.db = db
 client.dbs = mongo
-client.Sentry = Sentry
 
 const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
