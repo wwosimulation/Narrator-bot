@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const { getEmoji, getRole, fn } = require("../../config")
-function peaceCheck (message) {
+function peaceCheck(message) {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
     let nightCount = db.get(`nightCount`)
     let res = false
