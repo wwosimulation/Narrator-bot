@@ -22,6 +22,12 @@ module.exports = {
 
         if (!data.profile && !fn.isNarrator(message.member)) return message.channel.send(message.i10n("profileLocked"))
 
+        let badges
+        for(const badge in data.badges) {
+            if(badge === "invite" && data.badges.invite.unlocked ) badges = badges + capitalizeFirstLetter(badge)
+            if(badge !== "invite") badges = badges + `\`${capitalizeFirstLetter(badge)}\``
+        }
+
         console.log(data.roses)
         // TODO: reformat this
         let embed = new Discord.MessageEmbed()
@@ -29,6 +35,7 @@ module.exports = {
             .setDescription(data.profileDesc)
             .setThumbnail(data.profileIcon)
             .addField("XP", `${data.xp} XP`, true)
+            .addField("Badges", badges)
             .addField("Stats", "Coming soon!")
         //.addField("Stats", `Wins: ${wins}\nLoses: ${lost}\nTies: ${tie}\nWin Streak: ${winstreak}\n\nWin as Village: ${villagewin}\nLost as Village: ${villagelost}\n\nWin as Werewolf: ${wwwin}\nLost as Werewolf: ${wwlost}\n\nWin as Solo Voting: ${solovwin}\nLost as Solo Voting: ${solovlost}\n\nWin as Solo Killer: ${solokwin}\nLost as Solo Killing: ${soloklost}\n\nWins as Couple: ${couplewin}\nLost as Couple: ${couplelost}`)
 
