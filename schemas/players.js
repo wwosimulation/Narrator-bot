@@ -43,21 +43,7 @@ const schema = new mongoose.Schema({
     },
     winStreak: { type: Number, default: 0 },
     language: { type: String, default: "en" },
-    badges: {
-        invite: {
-            link: { type: String, default: ""},
-            unlocked: { type: Boolean, default: false}
-        }
-    },
+    badges: { type: Object, default: {invite: {link: "none", members: 0, unlocked: false}}},
 })
-
-// badges: 
-/*{
-    invite: {
-        link: "discord.gg/-code-",
-        unlocked: true | false,
-    }
-
-}*/
 
 module.exports = mongoose.model(`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`, schema)
