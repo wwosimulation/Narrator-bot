@@ -23,9 +23,9 @@ module.exports = {
         if (!data.profile && !fn.isNarrator(message.member)) return message.channel.send(message.i10n("profileLocked"))
 
         let badges
-        for(const badge in data.badges) {
-            if(badge === "invite" && data.badges.invite.unlocked ) badges = badges + capitalizeFirstLetter(badge)
-            if(badge !== "invite") badges = badges + `\`${capitalizeFirstLetter(badge)}\``
+        for (const badge in data.badges) {
+            if (badge === "invite" && data.badges.invite.unlocked) badges = badges + capitalizeFirstLetter(badge)
+            if (badge !== "invite") badges = badges + `\`${capitalizeFirstLetter(badge)}\``
         }
 
         console.log(data.roses)
