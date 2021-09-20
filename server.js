@@ -185,12 +185,14 @@ client.on("ready", async () => {
     client.invites = new Discord.Collection()
     let sim = client.guilds.cache.get(config.ids.server.sim)
 
-    sim.invites.fetch().then((collection) => collection.each(invite => {
-        let guy = await players.findOne({"badges.invite.code": invite.code})
-        if(guy) {
-            client.invites.set(invite.code, invite.uses)
-        }
-    }))
+    sim.invites.fetch().then((collection) =>
+        collection.each((invite) => {
+            let guy = await players.findOne({ "badges.invite.code": invite.code })
+            if (guy) {
+                client.invites.set(invite.code, invite.uses)
+            }
+        })
+    )
 
     /*await (await players.find({})).forEach(async (player) => {
         if(player.badges.invite.code && player.badges.invite.code !== "none") {
@@ -209,7 +211,6 @@ if (typeof maint == "string" && maint.startsWith("config-")) {
 client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
 
 client.login(process.env.TOKEN)
-
 
 client.on("error", (e) => console.error)
 
