@@ -25,16 +25,23 @@ module.exports = {
         if (args[0].startsWith("https://discord.gg/" || arsg[0].startsWith("discord.gg/"))) code = args[0].split("discord.gg/")[1]
         else code = args[0]
 
-        if (sim.invites.cache.has(code)) {
-            if (!sim.invites.cache.get(code).inviter.id === message.author.id) status = "not own"
-            else status = "valid"
-        } else {
-            status = "not sim"
-        }
+        sim.invites.fetch().then(coll => {
+            if(coll.has(code)){
+                let inv = coll.get(code)
+                if(inv.inviter.id !== message.author.id) status = "not own"
+                else status = "valid"
+            }
+            else status = "not sim"
+        })
+        
+        /* IMPORTANT STUFF!
+        if(x.invites.fetch().then(coll => {if(coll.has(y)) console.log("no")})) console.log("yes")
+        */
 
         switch (status) {
             case "valid":
                 await players.findOneAndUpdate({ user: message.author.id }, { $set: { "badges.invite.code": code } }, { upsert: true })
+                client.invites.set(code, sim.invites.fetch(code))
                 response.setColor("GREEN").setDescription(`Successfully registered \`${code}\` to your account!`).setTitle("Successfully added invite")
             case "not own":
                 response.setColor("RED").setDescription("Please use an invite you created!").setTitle("Failed to add invite")
