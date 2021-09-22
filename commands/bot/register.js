@@ -25,15 +25,14 @@ module.exports = {
         if (args[0].startsWith("https://discord.gg/" || arsg[0].startsWith("discord.gg/"))) code = args[0].split("discord.gg/")[1]
         else code = args[0]
 
-        sim.invites.fetch().then(coll => {
-            if(coll.has(code)){
+        sim.invites.fetch().then((coll) => {
+            if (coll.has(code)) {
                 let inv = coll.get(code)
-                if(inv.inviter.id !== message.author.id) status = "not own"
+                if (inv.inviter.id !== message.author.id) status = "not own"
                 else status = "valid"
-            }
-            else status = "not sim"
+            } else status = "not sim"
         })
-        
+
         /* IMPORTANT STUFF!
         if(x.invites.fetch().then(coll => { if() {} })) {}
         */
