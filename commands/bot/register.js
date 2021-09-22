@@ -15,7 +15,7 @@ module.exports = {
         if (!args[0]) {
             let guy = await players.findOne({ user: message.author.id })
             if (guy.badges.invite.code && guy.badges.invite.code !== "none") {
-                response.setColor("GREEN").setDescription(`You current registered invite code is \`${guy.badges.invite.code}\``)
+                response.setColor("GREEN").setDescription(`You current registered invite code is \`${guy.badges.invite.code}\` with ${guy.badges.invite.members} uses.`)
             } else {
                 response.setColor("RED").setDescription(`You don't have any invite registered yet. Register it now using \`${this.usage}\`!\n\nThe invite can be in any of these formats:\n\`https://discord.gg/wmY5afT\`,\n\`discord.gg/wmY5afT\`,\n\`wmY5afT\``)
             }
@@ -35,13 +35,13 @@ module.exports = {
         })
         
         /* IMPORTANT STUFF!
-        if(x.invites.fetch().then(coll => {if(coll.has(y)) console.log("no")})) console.log("yes")
+        if(x.invites.fetch().then(coll => { if() {} })) {}
         */
 
         switch (status) {
             case "valid":
                 await players.findOneAndUpdate({ user: message.author.id }, { $set: { "badges.invite.code": code } }, { upsert: true })
-                client.invites.set(code, sim.invites.fetch(code))
+                client.invites.set(code, sim.invites.resolve(code))
                 response.setColor("GREEN").setDescription(`Successfully registered \`${code}\` to your account!`).setTitle("Successfully added invite")
             case "not own":
                 response.setColor("RED").setDescription("Please use an invite you created!").setTitle("Failed to add invite")

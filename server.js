@@ -186,20 +186,13 @@ client.on("ready", async () => {
     let sim = client.guilds.cache.get(config.ids.server.sim)
 
     sim.invites.fetch().then((collection) =>
-        collection.each((invite) => {
+        collection.each( async(invite) => {
             let guy = await players.findOne({ "badges.invite.code": invite.code })
             if (guy) {
-                client.invites.set(invite.code, invite.uses)
+                client.invites.set(invite.code, invite)
             }
         })
     )
-
-    /*await (await players.find({})).forEach(async (player) => {
-        if(player.badges.invite.code && player.badges.invite.code !== "none") {
-            sim.invites.fetch({code: player.badges.invite.code})
-        }
-    })
-    client.guilds.cache.get(config.ids.server.sim).invites.cache*/
 })
 
 let maint = db.get("maintenance")
