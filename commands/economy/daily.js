@@ -25,14 +25,7 @@ module.exports = {
 
         if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
             let time = ms(cooldown - (Date.now() - lastDaily))
-            let hrs = `${time.hours} hours`
-            let min = `${time.minutes} minutes and`
-            let sec = `${time.seconds} seconds`
-            if (hrs == 0) hrs = ""
-            if (min == 0) min = ""
-            if (sec == 0) sec = ""
-            console.log(hrs)
-            message.reply(`No. Come back in ${hrs} ${min} ${sec}`)
+            message.reply(message.i10n("dailyNotReady", {time: `<t:${Math.floor(new Date(x.daily.last) / 1000)}:R>`}))
         } else {
             if (date == 0) {
                 amount = 10 * bonus
