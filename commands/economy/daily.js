@@ -22,10 +22,10 @@ module.exports = {
             bonus = 2
             extra = `\n${message.i10n("boosterDaily")}`
         }
-
-        if (lastDaily !== null && cooldown - (Date.now() - lastDaily) > 0) {
-            let time = ms(cooldown - (Date.now() - lastDaily))
-            message.reply(message.i10n("dailyNotReady", {time: `<t:${Math.floor(new Date(x.daily.last) / 1000)}:R>`}))
+        if(!lastDaily) lastDaily = 0
+        let timeLeft = cooldown - (Date.now() - lastDaily)
+        if (timeLeft > 0) {
+            message.reply(message.i10n("dailyNotReady", {time: `<t:${Math.floor(new Date(Date.now() + timeLeft)}:R>`}))
         } else {
             if (date == 0) {
                 amount = 10 * bonus
