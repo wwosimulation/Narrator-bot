@@ -44,6 +44,28 @@ fs.readdir("./commands/", (err, files) => {
         })
     })
 })
+client.slashCommands = new Discord.Collection()
+fs.readdir("./slashCommands/", (err, files) => {
+    files.forEach((file) => {
+        let path = `./slashCommands/${file}`
+        fs.readdir(path, (err, files) => {
+            if(err) console.error(err)
+            let jsfile = files.filter((f) => f.split(".").pop() === "js")
+            if(jsfile.length <= 0) {
+                console.error(`Couldn't find slash commands in the ${file} category.`)
+            }
+            jsfile.forEach((f, i) => {
+                let props = require(`./slashCommands/${file}/${f}`)
+                props.category = file
+                try {
+                    client.commands.set(props.name, props)
+                } catch (err) {
+                    if (err) console.error(err)
+                }
+            })
+        })
+    })
+})
 
 const eventFiles = fs.readdirSync("./events").filter((file) => file.endsWith(".js"))
 for (const file of eventFiles) {
