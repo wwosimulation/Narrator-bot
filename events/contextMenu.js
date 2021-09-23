@@ -9,14 +9,14 @@ module.exports = (client) => {
             let user = interaction.options.getMember("user")
             let daychat = interaction.guild.channels.cache.find((c) => c.name === "day-chat")
 
-            if(user.roles.cache.has(ids.dead)) return interaction.reply("You cannot use this action on a Dead player!")
+            if (user.roles.cache.has(ids.dead)) return interaction.reply("You cannot use this action on a Dead player!")
 
             if (action == "Kill") {
-                if(!user.roles.cache.has(ids.alive)) return interaction.reply({content: "You cannot use this action on spectators!", ephemeral: true})
+                if (!user.roles.cache.has(ids.alive)) return interaction.reply({ content: "You cannot use this action on spectators!", ephemeral: true })
                 user.roles.add(ids.dead)
                 user.roles.remove(ids.alive)
                 daychat.send(`**${user.nickname} ${user.user.username} (${db.get(`role_${user.id}`)})** was killed by the narrator!`)
-                intereaction.reply({content: "Done!", ephemeral: true})
+                intereaction.reply({ content: "Done!", ephemeral: true })
             }
 
             if (action == "Spectate") {
@@ -27,7 +27,7 @@ module.exports = (client) => {
                 }
                 user.roles.add("606140764682190849")
                 if (user.roles.cache.has("606140092213624859")) user.roles.remove("606140092213624859") //alive
-                interaction.reply({content: "Done!", ephemeral: true})
+                interaction.reply({ content: "Done!", ephemeral: true })
                 daychat.send(`${user.user.tag} is now spectating the game!`)
             }
         }
