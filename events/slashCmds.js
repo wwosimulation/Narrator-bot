@@ -5,7 +5,7 @@ const cooldowns = new Collection()
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
-        if(!interaction.isCommand) return
+        if (!interaction.isCommand) return
         let commandFile = client.slashCommands.get(interaction.commandName)
 
         let maint = db.get("maintenance")
@@ -20,11 +20,10 @@ module.exports = (client) => {
             return string
         }
 
-        if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({content: "Sorry! The bot is currently in maintenance mode!", ephemeral: true})
-        if(blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({content: "Blacklisted users can't use any command!", ephemeral: true})
+        if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({ content: "Sorry! The bot is currently in maintenance mode!", ephemeral: true })
+        if (blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({ content: "Blacklisted users can't use any command!", ephemeral: true })
 
-        if ((commandFile.narratorOnly && !config.fn.isNarrator(interaction.member)) || (commandFile.staffOnly && !config.fn.isStaff(interaction.member))) return interaction.reply({content: "You are missing permissions to do that!", ephemeral: true})
-
+        if ((commandFile.narratorOnly && !config.fn.isNarrator(interaction.member)) || (commandFile.staffOnly && !config.fn.isStaff(interaction.member))) return interaction.reply({ content: "You are missing permissions to do that!", ephemeral: true })
 
         if (!cooldowns.has(commandFile.name)) {
             cooldowns.set(commandFile.name, new Collection())
@@ -36,7 +35,7 @@ module.exports = (client) => {
             const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000
-                return interaction.reply({content: `Please wait ${Math.ceil(timeLeft.toFixed(1))} more seconds before reusing the \`${commandFile.command.name}\` command.`, ephemeral: true})
+                return interaction.reply({ content: `Please wait ${Math.ceil(timeLeft.toFixed(1))} more seconds before reusing the \`${commandFile.command.name}\` command.`, ephemeral: true })
             }
         }
         timestamps.set(interaction.user.id, now)
@@ -47,10 +46,10 @@ module.exports = (client) => {
             let option = interaction.get(arg.name)
             args.push(option)
         })
-        client.channels.cache.get("832884582315458570").send({content:Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ") || "None"}**\User: ${interaction.user.tag} (${interaction.user.id})`)})
+        client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ") || "None"}**\User: ${interaction.user.tag} (${interaction.user.id})`) })
         await command.run(interaction, client).catch((error) => {
             console.error(error)
-            interaction.reply({content:`❌ An error occurred when trying to execute this command. Please contact a dev assistant.`, ephemeral: true})
+            interaction.reply({ content: `❌ An error occurred when trying to execute this command. Please contact a dev assistant.`, ephemeral: true })
         })
     })
 }
