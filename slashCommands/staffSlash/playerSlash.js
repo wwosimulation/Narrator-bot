@@ -58,7 +58,7 @@ module.exports = {
         ],
         defaultPermission: false,
     },
-    run: async (interaction) => {
+    run: async (interaction, client) => {
         let target =  interaction.options.getUser("player")
         let column = interaction.options.getString("column")
         let operator = interaction.options.getString("operator")

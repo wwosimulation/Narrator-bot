@@ -12,7 +12,7 @@ module.exports = {
             {id: "", type: ""}
         ],
     },
-    run: async (interaction) => {
+    run: async (interaction, client) => {
         interaction.reply(`${message.i10n("ping")}! ${Math.ceil(message.client.ws.ping)} ms.`)
     }
 }

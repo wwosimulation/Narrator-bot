@@ -58,7 +58,7 @@ fs.readdir("./slashCommands/", (err, files) => {
                 let props = require(`./slashCommands/${file}/${f}`)
                 props.category = file
                 try {
-                    client.commands.set(props.name, props)
+                    client.commands.set(props.command.name, props)
                 } catch (err) {
                     if (err) console.error(err)
                 }
