@@ -58,6 +58,11 @@ module.exports = {
         ],
         defaultPermission: false,
     },
+    permissions: {
+        sim: [{ id: "606138123260264488", type: "ROLE", permission: true }],
+        game: [{ id: "", type: "" }],
+    },
+    server: ["sim", "game"],
     run: async (interaction, client) => {
         let target = interaction.options.getUser("player")
         let column = interaction.options.getString("column")
