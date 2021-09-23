@@ -49,9 +49,9 @@ fs.readdir("./slashCommands/", (err, files) => {
     files.forEach((file) => {
         let path = `./slashCommands/${file}`
         fs.readdir(path, (err, files) => {
-            if(err) console.error(err)
+            if (err) console.error(err)
             let jsfile = files.filter((f) => f.split(".").pop() === "js")
-            if(jsfile.length <= 0) {
+            if (jsfile.length <= 0) {
                 console.error(`Couldn't find slash commands in the ${file} category.`)
             }
             jsfile.forEach((f, i) => {
@@ -208,7 +208,7 @@ client.on("ready", async () => {
     let sim = client.guilds.cache.get(config.ids.server.sim)
 
     sim.invites.fetch().then((collection) =>
-        collection.each( async(invite) => {
+        collection.each(async (invite) => {
             let guy = await players.findOne({ "badges.invite.code": invite.code })
             if (guy) {
                 client.invites.set(invite.code, invite)

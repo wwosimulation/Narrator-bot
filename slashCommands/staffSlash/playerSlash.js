@@ -22,26 +22,26 @@ module.exports = {
                 description: "Select the column to be updated.",
                 required: true,
                 choices: [
-                    {name: "coins", value: "coins"},
-                    {name: "roses", value: "roses"},
-                    {name: "gems", value: "gems"},
-                    {name: "xp", value: "xp"},
-                    {name: "rose", value: "rose"},
-                    {name: "bouquet", value: "bouquet"},
-                    {name: "lootbox", value: "lootbox"},
-                    {name: "badge", value: "badge"},
-                ]
+                    { name: "coins", value: "coins" },
+                    { name: "roses", value: "roses" },
+                    { name: "gems", value: "gems" },
+                    { name: "xp", value: "xp" },
+                    { name: "rose", value: "rose" },
+                    { name: "bouquet", value: "bouquet" },
+                    { name: "lootbox", value: "lootbox" },
+                    { name: "badge", value: "badge" },
+                ],
             },
             {
                 type: "STRING",
                 name: "operator",
-                description: "Select the way you want to update the value. NOTE: You can't \"set\" a badge.",
+                description: 'Select the way you want to update the value. NOTE: You can\'t "set" a badge.',
                 required: true,
                 choices: [
-                    {name: "set", value: "set"},
-                    {name: "add", value: "add"},
-                    {name: "remove", value: "remove"},
-                ]
+                    { name: "set", value: "set" },
+                    { name: "add", value: "add" },
+                    { name: "remove", value: "remove" },
+                ],
             },
             {
                 type: "STRING",
@@ -59,7 +59,7 @@ module.exports = {
         defaultPermission: false,
     },
     run: async (interaction) => {
-        let target =  interaction.options.getUser("player")
+        let target = interaction.options.getUser("player")
         let column = interaction.options.getString("column")
         let operator = interaction.options.getString("operator")
         let value = interaction.options.getString("value")
@@ -69,61 +69,60 @@ module.exports = {
         let operators = ["set", "add", "remove"]
         let force = false
 
-        if(!target) return interaction.reply({content:`Invalid player! Use\n\`${this.usage}\``, ephemeral: true})
-        if(!columns.includes(column)) return interaction.reply({content:`Invalid column! Available columns are ${columns.map((column) => `\`${column}\``).join(" ")}`, ephemeral: true})
-        if(!operators.includes(operator)) return interaction.reply({content:`Invalid operator! Available operators are ${operators.map((operator) => `\`${operator}\``).join(" ")}`, ephemeral: true})
-        if(!value) return interaction.reply({content:`Invalid usage! Use\n\`${this.usage}\``, ephemeral: true})
-        if(options !== "none" && ["-f", "force", "--force"].includes(options)) force = true
+        if (!target) return interaction.reply({ content: `Invalid player! Use\n\`${this.usage}\``, ephemeral: true })
+        if (!columns.includes(column)) return interaction.reply({ content: `Invalid column! Available columns are ${columns.map((column) => `\`${column}\``).join(" ")}`, ephemeral: true })
+        if (!operators.includes(operator)) return interaction.reply({ content: `Invalid operator! Available operators are ${operators.map((operator) => `\`${operator}\``).join(" ")}`, ephemeral: true })
+        if (!value) return interaction.reply({ content: `Invalid usage! Use\n\`${this.usage}\``, ephemeral: true })
+        if (options !== "none" && ["-f", "force", "--force"].includes(options)) force = true
 
-        let playerData = await players.findOne({user: target.id})
+        let playerData = await players.findOne({ user: target.id })
 
-        if(column === "coins" || column === "roses" || column === "gems" || column === "xp" || column === "rose" || column === "bouquet" || column === "lootbox") {
-            if(column === "rose" || column === "bouquet" || column === "lootbox") column = `inventory.${column}`
+        if (column === "coins" || column === "roses" || column === "gems" || column === "xp" || column === "rose" || column === "bouquet" || column === "lootbox") {
+            if (column === "rose" || column === "bouquet" || column === "lootbox") column = `inventory.${column}`
 
             let update = {}
             let operatorObj = {}
 
             let amount = value
-            if(isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({content:message.i10n("amountInvalid", {amount: amount}), ephemeral: true})
+            if (isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({ content: message.i10n("amountInvalid", { amount: amount }), ephemeral: true })
 
             switch (operator) {
                 case "set":
                     update[column] = amount
-                    operatorObj['$set'] = update
-                    break;
-                case "add": 
+                    operatorObj["$set"] = update
+                    break
+                case "add":
                     update[column] = amount
-                    operatorObj['$inc'] = update
-                    break;
+                    operatorObj["$inc"] = update
+                    break
                 case "remove":
-                    if((playerData && playerData.coins > amount) || force) {
+                    if ((playerData && playerData.coins > amount) || force) {
                         update[column] = -amount
-                        operatorObj['$inc'] = update
+                        operatorObj["$inc"] = update
+                    } else if (!playerData || !playerData[column] < amount) {
+                        return interaction.reply({ content: `You try to remove more ${column} than the user has. If you want to continue run this command again with \`force\` as option.`, ephemeral: true })
                     }
-                    else if(!playerData || !playerData[column] < amount) {
-                        return interaction.reply({content:`You try to remove more ${column} than the user has. If you want to continue run this command again with \`force\` as option.`, ephemeral: true})
-                    }
-                    break;
+                    break
             }
-            await players.updateOne({user: target.id}, operatorObj, {upsert: true}) //upsert in case there is no player with this id
-            interaction.reply({content:`${capitalizeFirstLetter(column)} updated for ${target.tag}`})
+            await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
+            interaction.reply({ content: `${capitalizeFirstLetter(column)} updated for ${target.tag}` })
         }
         if (column === "badges") {
             let update = {}
             let operatorObj = {}
 
-            if(value === "invite") {
+            if (value === "invite") {
                 switch (operator) {
                     case "add":
                         update["badges.invite.unlocked"] = true
                     case "remove":
                         update["badges.invite.unlocked"] = false
                     case "set":
-                        return interaction.reply({content:"This operator does not work for badges.", ephemeral: true})
+                        return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
                 }
                 operatorObj["$set"] = update
-                await players.updateOne({user: target.id}, operatorObj, {upsert: true})
-                return interaction.reply({content: message.i10n("done")})
+                await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
+                return interaction.reply({ content: message.i10n("done") })
             }
 
             switch (operator) {
@@ -134,10 +133,10 @@ module.exports = {
                     update[value] = playerData.badges[value]
                     operatorObj["$unset"] = update
                 case "set":
-                    return interaction.reply({content:"This operator does not work for badges.", ephemeral: true})
+                    return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
             }
-            await players.updateOne({user: target.id}, operatorObj, {upsert: true})
-            return interaction.reply({content: message.i10n("done")})
+            await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
+            return interaction.reply({ content: message.i10n("done") })
         }
-    }
+    },
 }
