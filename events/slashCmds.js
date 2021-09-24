@@ -5,7 +5,7 @@ const cooldowns = new Collection()
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
-        if (!interaction.isCommand) return
+        if (!interaction.isCommand()) return
         let commandFile = client.slashCommands.get(interaction.commandName)
 
         let maint = db.get("maintenance")

@@ -16,7 +16,7 @@ module.exports = {
     usage: `${process.env.PREFIX}player <user> <column> <update_operator> <value> [force]`,
     staffOnly: true,
     run: async (message, args, client) => {
-        let target =  message.mentions.users.first() || message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === args[0] || x.user.tag.toLowerCase() === args[0])
+        let target = getUser(args[0])
         let column = args[1]
         let operator = args[2]
         let value = args[3]
@@ -34,8 +34,8 @@ module.exports = {
 
         let playerData = await players.findOne({user: target.id})
 
-        if(column === "coins" || column === "roses" || column === "gems" || column === "xp" || column === "rose" || column === "bouquet" || column === "lootbox") {
-            if(column === "rose" || column === "bouquet" || column === "lootbox") column = `inventory.${column}`
+        if(columns.slice(0, 7).includes(column)) { 
+            if(["rose", "bouquet", "lootbox"].includes(column)) column = `inventory.${column}`
 
             let update = {}
             let operatorObj = {}
