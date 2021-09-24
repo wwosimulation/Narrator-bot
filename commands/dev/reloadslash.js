@@ -1,4 +1,4 @@
-const { ids } = require("../config")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "reloadslash",
