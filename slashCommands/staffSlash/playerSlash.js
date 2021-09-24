@@ -59,8 +59,15 @@ module.exports = {
         defaultPermission: false,
     },
     permissions: {
-        sim: [{ id: "606138123260264488", type: "ROLE", permission: true }, {id: "606167032425218084", type: "ROLE", permission: false}],
-        game: [{ id: "606139219395608603", type: "ROLE", permission: true}, {id: "606276949689499648", type: "ROLE", permission: true}, {id: "606131215526789120", type: "ROLE", permission: false}],
+        sim: [
+            { id: "606138123260264488", type: "ROLE", permission: true },
+            { id: "606167032425218084", type: "ROLE", permission: false },
+        ],
+        game: [
+            { id: "606139219395608603", type: "ROLE", permission: true },
+            { id: "606276949689499648", type: "ROLE", permission: true },
+            { id: "606131215526789120", type: "ROLE", permission: false },
+        ],
     },
     server: ["sim", "game"],
     run: async (interaction, client) => {
