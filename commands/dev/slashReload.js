@@ -15,6 +15,6 @@ module.exports = {
                 done += 1
             })
         })
-        message.channel.send({content:`${done} slash commands created/updated.`})
-    }
+        message.channel.send({ content: `${done} slash commands created/updated.` })
+    },
 }
