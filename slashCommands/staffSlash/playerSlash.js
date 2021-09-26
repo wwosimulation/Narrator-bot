@@ -60,13 +60,13 @@ module.exports = {
     },
     permissions: {
         sim: [
-            { id: "606138123260264488", type: "ROLE", permission: true },
-            { id: "606167032425218084", type: "ROLE", permission: false },
+            { id: "606138123260264488", type: "ROLE", permission: true }, // @Staff
+            { id: "606167032425218084", type: "ROLE", permission: false }, // @Member
         ],
         game: [
-            { id: "606139219395608603", type: "ROLE", permission: true },
-            { id: "606276949689499648", type: "ROLE", permission: true },
-            { id: "606131215526789120", type: "ROLE", permission: false },
+            { id: "606139219395608603", type: "ROLE", permission: true }, // @Narrator
+            { id: "606276949689499648", type: "ROLE", permission: true }, // @Narrator Trainee
+            { id: "606131215526789120", type: "ROLE", permission: false }, // @Player
         ],
     },
     server: ["sim", "game"],

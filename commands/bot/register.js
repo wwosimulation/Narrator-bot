@@ -15,9 +15,9 @@ module.exports = {
         if (!args[0]) {
             let guy = await players.findOne({ user: message.author.id })
             if (guy.badges.invite.code && guy.badges.invite.code !== "none") {
-                response.setColor("GREEN").setDescription(`You current registered invite code is \`${guy.badges.invite.code}\` with ${guy.badges.invite.members} uses.`)
+                response.setColor("GREEN").setDescription(message.i10n("registeredInvite", { code: guy.badges.invite.code, uses:guy.badges.invite.members}))
             } else {
-                response.setColor("RED").setDescription(`You don't have any invite registered yet. Register it now using \`${this.usage}\`!\n\nThe invite can be in any of these formats:\n\`https://discord.gg/wmY5afT\`,\n\`discord.gg/wmY5afT\`,\n\`wmY5afT\``)
+                response.setColor("RED").setDescription(message.i10n("noInviteRegistered", {usage: this.usage}))
             }
             return message.channel.send({ embeds: [response] })
         }
@@ -33,7 +33,7 @@ module.exports = {
             } else status = "not sim"
         })
 
-        /* IMPORTANT STUFF!
+        /* IMPORTANT STUFF! (for me lol)
         if(x.invites.fetch().then(coll => { if() {} })) {}
         */
 
@@ -41,13 +41,13 @@ module.exports = {
             case "valid":
                 await players.findOneAndUpdate({ user: message.author.id }, { $set: { "badges.invite.code": code } }, { upsert: true })
                 client.invites.set(code, sim.invites.resolve(code))
-                response.setColor("GREEN").setDescription(`Successfully registered \`${code}\` to your account!`).setTitle("Successfully added invite")
+                response.setColor("GREEN").setDescription(message.i10n("inviteRegistered", {code: code})).setTitle(message.i10n("inviteAdded"))
             case "not own":
-                response.setColor("RED").setDescription("Please use an invite you created!").setTitle("Failed to add invite")
+                response.setColor("RED").setDescription(message.i10n("notOwnInvite")).setTitle(message.i10n("inviteAddFailed"))
             case "not sim":
-                response.setColor("RED").setDescription(`Unable to find invite \`${code}\`!\nPlease use an invite from the sim server.`).setTitle("Failed to add invite")
+                response.setColor("RED").setDescription(message.i10n("notSimInvite", {code: code})).setTitle(message.i10n("inviteAddFailed"))
             default:
-                response.setColor("RED").setDescription("Can't resolve this invite. Please try again or report this bug.").setTitle("Failed to add invite")
+                response.setColor("RED").setDescription(message.i10n("inviteNotResolveable")).setTitle(message.i10n("inviteAddFailed"))
         }
         return message.channel.send({ embeds: [response] })
     },
