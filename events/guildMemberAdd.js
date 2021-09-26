@@ -3,6 +3,16 @@ const { ids } = require("../config")
 
 module.exports = (client) => {
     client.on("guildMemberAdd", async (member) => {
+
+        member.dbUser = await players.findOne({ user: member.id }).exec()
+        if (!member.dbUser) member.dbUser = new players({ user: member.author.id }).save()
+
+        member.i10n = (key, replaceKeys = {}, language = member.dbUser.language) => {
+            if (!language) language = "en"
+            let string = i10n(key, language, replaceKeys)
+            return string
+        }
+
         let sim = client.servers.cache.get(ids.server.sim)
         if (member.guild.id !== sim.id) return
         client.invites.every(async (invite) => {
@@ -14,7 +24,7 @@ module.exports = (client) => {
                 if(guy.badges.invite.members = 15) {
                     await players.updateOne({"badges.invite.code": invite.code}, {$set:{"badges.invite.unlocked": true}})
                     let guyUser = client.users.resolve(guy.user)
-                    guyUser.send({content:`Congratulations! You just unlocked the invite badge with the code \`${invite.code}\``})
+                    guyUser.send({content:member.i10n("inviteBadgeUnlocked", { code: invite.code })})
                 }
             }
         })
