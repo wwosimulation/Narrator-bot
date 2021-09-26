@@ -15,9 +15,9 @@ module.exports = {
         if (!args[0]) {
             let guy = await players.findOne({ user: message.author.id })
             if (guy.badges.invite.code && guy.badges.invite.code !== "none") {
-                response.setColor("GREEN").setDescription(message.i10n("registeredInvite", { code: guy.badges.invite.code, uses:guy.badges.invite.members}))
+                response.setColor("GREEN").setDescription(message.i10n("registeredInvite", { code: guy.badges.invite.code, uses: guy.badges.invite.members }))
             } else {
-                response.setColor("RED").setDescription(message.i10n("noInviteRegistered", {usage: this.usage}))
+                response.setColor("RED").setDescription(message.i10n("noInviteRegistered", { usage: this.usage }))
             }
             return message.channel.send({ embeds: [response] })
         }
@@ -41,11 +41,17 @@ module.exports = {
             case "valid":
                 await players.findOneAndUpdate({ user: message.author.id }, { $set: { "badges.invite.code": code } }, { upsert: true })
                 client.invites.set(code, sim.invites.resolve(code))
-                response.setColor("GREEN").setDescription(message.i10n("inviteRegistered", {code: code})).setTitle(message.i10n("inviteAdded"))
+                response
+                    .setColor("GREEN")
+                    .setDescription(message.i10n("inviteRegistered", { code: code }))
+                    .setTitle(message.i10n("inviteAdded"))
             case "not own":
                 response.setColor("RED").setDescription(message.i10n("notOwnInvite")).setTitle(message.i10n("inviteAddFailed"))
             case "not sim":
-                response.setColor("RED").setDescription(message.i10n("notSimInvite", {code: code})).setTitle(message.i10n("inviteAddFailed"))
+                response
+                    .setColor("RED")
+                    .setDescription(message.i10n("notSimInvite", { code: code }))
+                    .setTitle(message.i10n("inviteAddFailed"))
             default:
                 response.setColor("RED").setDescription(message.i10n("inviteNotResolveable")).setTitle(message.i10n("inviteAddFailed"))
         }
