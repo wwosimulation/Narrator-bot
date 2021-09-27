@@ -132,8 +132,10 @@ module.exports = {
                 switch (operator) {
                     case "add":
                         update["badges.invite.unlocked"] = true
+                        break
                     case "remove":
                         update["badges.invite.unlocked"] = false
+                        break
                     case "set":
                         return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
                 }
