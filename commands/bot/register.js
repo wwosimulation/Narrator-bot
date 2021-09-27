@@ -12,6 +12,9 @@ module.exports = {
         let status = ""
         let response = new MessageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter(`Want to check which invite you registered? Use ${process.env.PREFIX}register`)
 
+        args = message.content.slice(process.env.PREFIX.length).split(/ +/)
+        args.shift()
+
         if (!args[0]) {
             let guy = await players.findOne({ user: message.author.id })
             if (guy.badges.invite.code && guy.badges.invite.code !== "none") {
