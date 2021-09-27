@@ -4,6 +4,7 @@
 ["coins", "roses", "gems", "xp", "rose", "bouquet", "lootbox", "badge"]
 ["set", "add", "remove"]
 */
+const players = require("../../schemas/players")
 
 module.exports = {
     command: {

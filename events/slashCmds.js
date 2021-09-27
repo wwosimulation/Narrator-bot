@@ -47,7 +47,7 @@ module.exports = (client) => {
         if (interaction.options.data.lenght !== 0) {
             interaction.options.data.forEach((arg) => {
                 let option = interaction.options.get(arg.name)
-                args.push(option)
+                args.push(option.value)
             })
         }
         if (!args[0]) args = ["None"]
