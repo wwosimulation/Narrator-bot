@@ -5,7 +5,7 @@
 */
 
 const players = require("../../schemas/players")
-const { getUser } = require("../../config")
+const { fn } = require("../../config")
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -16,7 +16,7 @@ module.exports = {
     usage: `${process.env.PREFIX}player <user> <column> <updateOperator> <value> [force]`,
     staffOnly: true,
     run: async (message, args, client) => {
-        let target = getUser(args[0], message)
+        let target = fn.getUser(args[0], message)
         let column = args[1]
         let operator = args[2]
         let value = args[3]
