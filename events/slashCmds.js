@@ -43,10 +43,12 @@ module.exports = (client) => {
         setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount)
 
         let args
-        interaction.options.forEach((arg) => {
-            let option = interaction.get(arg.name)
-            args.push(option)
-        })
+        if(interaction.options) {
+            interaction.options.forEach((arg) => {
+                let option = interaction.get(arg.name)
+                args.push(option)
+            })
+        }
         client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ") || "None"}**\User: ${interaction.user.tag} (${interaction.user.id})`) })
         await command.run(interaction, client).catch((error) => {
             console.error(error)
