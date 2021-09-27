@@ -5,7 +5,7 @@ module.exports = {
     name: "trickortreat",
     description: "Select 2 people that will have to choose between trick or treat during the night.",
     usage: `${process.env.PREFIX}trickortreat <target1> <target2>`,
-    aliases: ["trick", "tot", "treat"]
+    aliases: ["trick", "tot", "treat"],
     gameOnly: true,
     run: async (message, args, client) => { 
       if (message.channel.name == "priv-jack") {
