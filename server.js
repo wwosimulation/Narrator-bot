@@ -4,6 +4,9 @@ require("dotenv").config()
 const fs = require("fs")
 const db = require("quick.db")
 
+const Sentry = require("@sentry/node")
+const Tracing = require("@sentry/tracing")
+
 if (db.get("emergencystop")) {
     console.log("Bot has been emergency stopped")
     process.exit(0)
@@ -15,6 +18,7 @@ const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_R
 const config = require("./config")
 client.db = db
 client.dbs = mongo
+client.Sentry = Sentry
 
 const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
@@ -184,13 +188,17 @@ client.debug = async (options = { game: false }) => {
 //Bot on startup
 client.on("ready", async () => {
     client.config = {}
-
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
+    client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
     if (!client.user.username.includes("Beta")) {
+        Sentry.init({
+            dsn: process.env.SENTRY,
+            tracesSampleRate: 1.0,
+        })
         // let privateKey = fs.readFileSync("./ghnb.pem")
         // client.github = new Octokit({
         //     authStrategy: createAppAuth,
@@ -223,7 +231,6 @@ if (typeof maint == "string" && maint.startsWith("config-")) {
     db.set("maintenance", false)
 }
 //require("./slash.js")(client)
-client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
 
 client.login(process.env.TOKEN)
 
