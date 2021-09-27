@@ -7,6 +7,7 @@ module.exports = {
     usage: `${process.env.PREFIX}roleinfo <role>`,
     run: async (message, args, client) => {
         let role = getRole(args.join(" "))
+        if(role.name == "Jack") role = getRole("thisroledoesntexist")
         let embed = new MessageEmbed().setTitle(role.name).setDescription(role.description).setThumbnail(role.icon)
         message.channel.send({ embeds: [embed] })
     },
