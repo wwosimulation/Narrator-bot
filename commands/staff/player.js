@@ -64,7 +64,7 @@ module.exports = {
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
             message.channel.send({ content: `${capitalizeFirstLetter(column)} updated for ${target.user ? target.user.tag : target.tag}` })
         }
-        if (column === "badges") {
+        if (column === "badge") {
             let update = {}
             let operatorObj = {}
 

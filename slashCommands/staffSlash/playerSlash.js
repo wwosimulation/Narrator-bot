@@ -93,8 +93,8 @@ module.exports = {
 
         let playerData = await players.findOne({ user: target.id })
 
-        if (column === "coins" || column === "roses" || column === "gems" || column === "xp" || column === "rose" || column === "bouquet" || column === "lootbox") {
-            if (column === "rose" || column === "bouquet" || column === "lootbox") column = `inventory.${column}`
+        if (column !== "badge") {
+            if (["rose", "bouquet", "lootbox"].includes(column)) column = `inventory.${column}`
 
             let update = {}
             let operatorObj = {}
@@ -123,7 +123,7 @@ module.exports = {
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
             interaction.reply({ content: `${capitalizeFirstLetter(column)} updated for ${target.tag}` })
         }
-        if (column === "badges") {
+        if (column === "badge") {
             let update = {}
             let operatorObj = {}
 
