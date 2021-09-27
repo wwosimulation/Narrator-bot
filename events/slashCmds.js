@@ -43,7 +43,7 @@ module.exports = (client) => {
         setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount)
 
         let args
-        if(interaction.options) {
+        if(interaction.options.data.size !== 0) {
             interaction.options.data.each((arg) => {
                 let option = interaction.get(arg.name)
                 args.push(option)
