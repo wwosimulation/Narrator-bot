@@ -44,8 +44,8 @@ module.exports = (client) => {
 
         let args
         if(interaction.options.data.size !== 0) {
-            interaction.options.data.each((arg) => {
-                let option = interaction.get(arg.name)
+            interaction.options.data.forEach((arg) => {
+                let option = interaction.options.get(arg.name)
                 args.push(option)
             })
         }
