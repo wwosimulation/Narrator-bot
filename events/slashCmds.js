@@ -43,13 +43,8 @@ module.exports = (client) => {
         setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount)
 
         let args
-<<<<<<< HEAD
         if(interaction.options) {
             interaction.options.each((arg) => {
-=======
-        if (interaction.options) {
-            interaction.options.forEach((arg) => {
->>>>>>> 1109ac4eb0de02cabc629d1360c1883621c51f0a
                 let option = interaction.get(arg.name)
                 args.push(option)
             })
