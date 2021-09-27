@@ -3,6 +3,7 @@ const config = require("../config")
 const { Collection, Util } = require("discord.js")
 const cooldowns = new Collection()
 const players = require("../schemas/players")
+const i10n = require("../i10n")
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
@@ -50,7 +51,7 @@ module.exports = (client) => {
             })
         }
         if (!args[0]) args = ["None"]
-        client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\User: ${interaction.user.tag} (${interaction.user.id})`) })
+        client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id})`) })
         await commandFile.run(interaction, client).catch((error) => {
             console.error(error)
             interaction.reply({ content: `❌ An error occurred when trying to execute this command. Please contact a dev assistant.`, ephemeral: true })
