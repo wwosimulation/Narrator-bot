@@ -1,4 +1,4 @@
-const { messageEmbed } = require("discord.js")
+const { MessageEmbed } = require("discord.js")
 const players = require("../../schemas/players")
 const { ids } = require("../../config")
 
@@ -10,7 +10,7 @@ module.exports = {
         let code = ""
         let sim = client.guilds.cache.get(ids.server.sim)
         let status = ""
-        let response = new messageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter(`Want to check which invite you registered? Use ${process.env.PREFIX}register`)
+        let response = new MessageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter(`Want to check which invite you registered? Use ${process.env.PREFIX}register`)
 
         if (!args[0]) {
             let guy = await players.findOne({ user: message.author.id })
