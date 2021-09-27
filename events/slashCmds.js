@@ -49,7 +49,7 @@ module.exports = (client) => {
                 args.push(option)
             })
         }
-        if(!args[0]) args = ["None"]
+        if (!args[0]) args = ["None"]
         client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\User: ${interaction.user.tag} (${interaction.user.id})`) })
         await command.run(interaction, client).catch((error) => {
             console.error(error)
