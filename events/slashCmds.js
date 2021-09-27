@@ -2,6 +2,7 @@ const db = require("quick.db")
 const config = require("../config")
 const { Collection, Util } = require("discord.js")
 const cooldowns = new Collection()
+const players = require("../schemas/players")
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
