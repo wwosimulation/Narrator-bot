@@ -122,7 +122,7 @@ module.exports = (client) => {
 
         client.channels.cache.get("832884582315458570").send(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`)
         await command.run(message, args, client).catch((error) => {
-			client.Sentry.captureException(error)
+            client.Sentry.captureException(error)
             console.error(error)
             message.channel.send(`❌ An error occurred when trying to execute this command. Please contact a dev assistant.`)
         })
