@@ -5,7 +5,7 @@ module.exports = {
     description: "Loads slash commands, add them if they don't exist yet and overrides the permissions.",
     usage: `${process.env.PREFIX}reloadslash`,
     run: (message, args, client) => {
-        if (!message.member.roles.has("859099415515627540") || !message.member.roles.has("606123616228343812")) return message.reply({ content: "You are missing permissions to do that!" })
+        if (!message.member.roles.cache.has("859099415515627540") || !message.member.roles.has("606123616228343812")) return message.reply({ content: "You are missing permissions to do that!" })
         let done = 0
         client.slashCommands.each((cmd) => {
             cmd.server.forEach((server) => {
