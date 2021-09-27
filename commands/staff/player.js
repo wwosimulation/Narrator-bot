@@ -16,7 +16,7 @@ module.exports = {
     usage: `${process.env.PREFIX}player <user> <column> <updateOperator> <value> [force]`,
     staffOnly: true,
     run: async (message, args, client) => {
-        let target = getUser(args[0])
+        let target = getUser(args[0], message)
         let column = args[1]
         let operator = args[2]
         let value = args[3]
