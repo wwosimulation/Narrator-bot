@@ -124,6 +124,7 @@ module.exports = {
             interaction.reply({ content: `${capitalizeFirstLetter(column)} updated for ${target.tag}` })
         }
         if (column === "badge") {
+            console.log(operator)
             let update = {}
             let operatorObj = {}
 
