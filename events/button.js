@@ -94,7 +94,7 @@ module.exports = (client) => {
                     canHost.customId += interaction.member.id
                     canNotHost.customId += interaction.member.id
                     const row = new MessageActionRow().addComponents(canHost, canNotHost)
-                    client.channels.cache.get("606123759514025985").send({ content: `${interaction.member} is requesting a game! ||@here||\n\nThe below buttons will send a DM to the requesting user about your choice.`, components: [row] })
+                    client.channels.cache.get("606123759514025985").send({content: `${interaction.member} is requesting a game! ||@here||\n\nThe below buttons will send a DM to the requesting user about your choice.`, components: [row]})
                     interaction.reply({ content: "Your request has been sent to the narrators!", ephemeral: true })
                     db.set("nextRequest", Date.now() + ms("30m"))
                     break
@@ -112,35 +112,36 @@ module.exports = (client) => {
             foundUser = interaction.guild.members.resolve(user)
             switch (action) {
                 case "no":
-                    foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` })
+                    foundUser.send({content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.`})
                     interaction.reply(`No one can host, so the user has been informed. Thank you ${interaction.member}`)
                     break
                 case "yes":
-                    foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.member} is starting one soon!.` })
+                    foundUser.send({content: `Hey there, we received your request for a game, so ${interaction.member} is starting one soon!.`})
                     interaction.reply(`${interaction.member} is now hosting a game! The user has been informed.`)
                     break
                 default:
                     break
             }
         }
-        if (interaction.customId.startsWith("trick")) {
-            let channelID = interaction.customId.split("_")[1]
-            client.channels.cache.get(channelID).send(`You have decided to trick`)
-            button = interaction.message.components[0].components[0]
-            button2 = interaction.message.components[0].components[1]
-            button1.disabled = true
-            button2.disable = true
-            interaction.message.edit({ components: [new MessageActionRow().addComponents(button)] })
-            // db.set(`choice_${channelID}`, trick)
-        }
-        if (interaction.customId.startsWith("treat")) {
-            let channelID = interaction.customId.split("_")[1]
-            client.channels.cache.get(channelID).send(`You have decided to trick`)
-            button1 = interaction.message.components[0].components[0]
-            button2 = interaction.message.components[0].components[1]
-            button.disabled = true
-            interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
-            // db.set(`choice_${channelID}`, treat)
-        }
+                    if (interaction.customId.startsWith("trick")) {
+              let channelID = interaction.customId.split("_")[1]
+              client.channels.cache.get(channelID).send(`You have decided to trick`)
+              button = interaction.message.components[0].components[0]
+              button2 = interaction.message.components[0].components[1]
+              button1.disabled = true
+              button2.disable = true
+              interaction.message.edit({ components: [new MessageActionRow().addComponents(button)] })
+              // db.set(`choice_${channelID}`, trick)
+                    }
+                                        if (interaction.customId.startsWith("treat")) {
+              let channelID = interaction.customId.split("_")[1]
+              client.channels.cache.get(channelID).send(`You have decided to treat`)
+              button1 = interaction.message.components[0].components[0]
+              button2 = interaction.message.components[0].components[1]
+              interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
+              // db.set(`choice_${channelID}`, treat)
+                                        }
     })
+                    
+                      
 }
