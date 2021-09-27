@@ -141,7 +141,7 @@ module.exports = (client) => {
               button.disabled = true
               interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
               // db.set(`choice_${channelID}`, treat)
+                                        }
                     
                       
-                    })
 }
