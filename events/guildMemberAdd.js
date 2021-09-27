@@ -1,5 +1,6 @@
 const players = require("../schemas/players")
 const { ids } = require("../config")
+const i10n = require("../i10n")
 
 module.exports = (client) => {
     client.on("guildMemberAdd", async (member) => {
@@ -12,7 +13,7 @@ module.exports = (client) => {
             return string
         }
 
-        let sim = client.servers.cache.get(ids.server.sim)
+        let sim = client.guilds.cache.get(ids.server.sim)
         if (member.guild.id !== sim.id) return
         client.invites.every(async (invite) => {
             let inv = await sim.invites.resolve(invite.code)
