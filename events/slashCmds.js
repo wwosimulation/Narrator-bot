@@ -43,13 +43,14 @@ module.exports = (client) => {
         setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount)
 
         let args
-        if (interaction.options.data.size !== 0) {
+        if (interaction.options.data.lenght !== 0) {
             interaction.options.data.forEach((arg) => {
                 let option = interaction.options.get(arg.name)
                 args.push(option)
             })
         }
-        client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args[0] ? args.join(" ") : "None"}**\User: ${interaction.user.tag} (${interaction.user.id})`) })
+        if(!args[0]) args = ["None"]
+        client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\User: ${interaction.user.tag} (${interaction.user.id})`) })
         await command.run(interaction, client).catch((error) => {
             console.error(error)
             interaction.reply({ content: `❌ An error occurred when trying to execute this command. Please contact a dev assistant.`, ephemeral: true })
