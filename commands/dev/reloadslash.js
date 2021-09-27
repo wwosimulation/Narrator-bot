@@ -18,9 +18,8 @@ module.exports = {
                 })
             })
             message.channel.send({ content: `${done} slash commands created/updated.` })
-        }catch(err){
+        } catch (err) {
             console.error
         }
-
     },
 }
