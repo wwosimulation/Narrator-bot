@@ -123,7 +123,7 @@ module.exports = (client) => {
                     break
             }
             if (interaction.customId.startsWith("trick")) {
-              let channelID = interaction.customId.split("-")
+              let channelID = interaction.customId.split("_")
               let chan = message.guild.channels.cache.get(channelID)
               chan.send(`You have decided to trick`)
               interaction.components[0].setDisabled(true)
