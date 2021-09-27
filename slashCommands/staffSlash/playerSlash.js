@@ -141,21 +141,23 @@ module.exports = {
                 }
                 operatorObj["$set"] = update
                 await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-                return interaction.reply({ content: message.i10n("done") })
+                return interaction.reply({ content: interaction.i10n("done") })
             }
 
             switch (operator) {
                 case "add":
                     update[value] = true
                     operatorObj["$set"] = update
+                    break
                 case "remove":
                     update[value] = playerData.badges[value]
                     operatorObj["$unset"] = update
+                    break
                 case "set":
                     return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-            return interaction.reply({ content: message.i10n("done") })
+            return interaction.reply({ content: interaction.i10n("done") })
         }
     },
 }
