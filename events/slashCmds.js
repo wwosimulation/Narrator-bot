@@ -51,7 +51,7 @@ module.exports = (client) => {
         }
         if (!args[0]) args = ["None"]
         client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\User: ${interaction.user.tag} (${interaction.user.id})`) })
-        await command.run(interaction, client).catch((error) => {
+        await commandFile.run(interaction, client).catch((error) => {
             console.error(error)
             interaction.reply({ content: `❌ An error occurred when trying to execute this command. Please contact a dev assistant.`, ephemeral: true })
         })
