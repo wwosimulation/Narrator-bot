@@ -394,6 +394,7 @@ module.exports = {
             }
 
             await lol.send(role.description)
+            await lol.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
             db.set(`role_${guy.id}`, theirRole)
 
             db.delete(`atag_${guy.id}`)

@@ -47,7 +47,8 @@ module.exports = (client) => {
             if (!member.id) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
             let mininarr = guild.roles.cache.get("606123620732895232")
             let narrator = guild.roles.cache.get("606123619999023114")
-            if (!member.roles.cache.has(mininarr.id) && !member.roles.cache.has(narrator.id)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
+            let supervisor = guild.roles.cache.get("762061739848106024")
+            if (!member.roles.cache.has(mininarr.id) && !member.roles.cache.has(narrator.id) && !member.roles.cache.has(supervisor.id)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
             if (member.roles.cache.has(mininarr.id)) {
                 if (interaction.member.roles.cache.has("606276949689499648")) return interaction.reply({ content: "You already have this role!", ephemeral: true })
                 if (db.get(`hoster`) != interaction.member.id && db.get(`game`)) return interaction.reply({ content: "Unfortunately, you aren't the host, and because you're a narrator in training, you aren't allowed to narrate spectate!", ephemeral: true })
