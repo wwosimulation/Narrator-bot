@@ -55,8 +55,8 @@ module.exports = {
                     .setColor("RED")
                     .setDescription(message.i10n("notSimInvite", { code: code }))
                     .setTitle(message.i10n("inviteAddFailed"))
-            /*default:
-                response.setColor("RED").setDescription(message.i10n("inviteNotResolveable")).setTitle(message.i10n("inviteAddFailed"))*/
+            default:
+                response.setColor("RED").setDescription(message.i10n("inviteNotResolveable")).setTitle(message.i10n("inviteAddFailed"))
         }
         return message.channel.send({ embeds: [response] })
     },

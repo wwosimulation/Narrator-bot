@@ -212,17 +212,7 @@ client.on("ready", async () => {
     }
 
     //Invite Tracker
-    client.invites = new Discord.Collection()
-    let sim = client.guilds.cache.get(config.ids.server.sim)
-
-    sim.invites.fetch().then((collection) =>
-        collection.each(async (invite) => {
-            let guy = await players.findOne({ "badges.invite.code": invite.code })
-            if (guy) {
-                client.invites.set(invite.code, invite)
-            }
-        })
-    )
+    client.allinvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
 })
 
 let maint = db.get("maintenance")
