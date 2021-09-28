@@ -6,7 +6,7 @@ function peaceCheck(message) {
     let res = false
     for (let i = 0; i < prog.length; i++) {
         let peace = db.get(`peace_${prog[i]}`) || "none"
-        if (peace !== "none" && peace - 1 === nightCount) return true
+        if (peace !== "none" && peace === nightCount) return true
     }
     return res
 }
