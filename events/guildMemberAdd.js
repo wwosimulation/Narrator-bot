@@ -15,7 +15,7 @@ module.exports = (client) => {
 
         /*let sim = client.guilds.cache.get(ids.server.sim)
         if (member.guild.id !== sim.id) return
-        client.invites.every(async (invite) => {
+        client.allinvites.every(async (invite) => {
             let inv = await sim.invites.resolve(invite.code)
             if (inv.uses !== invite.uses) {
                 await players.updateOne({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })

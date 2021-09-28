@@ -5,15 +5,12 @@ const { ids } = require("../../config")
 module.exports = {
     name: "register",
     description: "Register your invite link to be able to get the Invite badge.",
-    usage: `${process.env.PREFIX}register [invite]`,
+    usage: `${process.env.PREFIX}register`,
     run: async (message, args, client) => {
         let code = ""
         let sim = client.guilds.cache.get(ids.server.sim)
         let status = ""
         let response = new MessageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter(`Want to check which invite you registered? Use ${process.env.PREFIX}register`)
-
-        args = message.content.slice(process.env.PREFIX.length).split(/ +/)
-        args.shift()
 
         if (!args[0]) {
             let guy = await players.findOne({ user: message.author.id })
@@ -24,29 +21,18 @@ module.exports = {
             }
             return message.channel.send({ embeds: [response] })
         }
-
-        if (args[0].startsWith("https://discord.gg/" || arsg[0].startsWith("discord.gg/"))) code = args[0].split("discord.gg/")[1]
-        else code = args[0]
-
-        sim.invites.fetch().then((coll) => {
-            if (coll.has(code)) {
-                let inv = coll.get(code)
-                if (inv.inviter.id !== message.author.id) status = "not own"
-                else status = "valid"
-            } else status = "not sim"
-        })
-
-        /* IMPORTANT STUFF! (for me lol)
-        if(x.invites.fetch().then(coll => { if() {} })) {}
-        */
+        
+        let sim = client.guilds.resolve(ids.server.sim)
+        let invite = sim.invites.create("606123774978293772", {maxAge: 0, unique: true, reson: `Invite registered by ${message.author.tag}`})
+        await players.findOneAndUpdate({ user: message.author.id }, { $set: { "badges.invite.code": invite.code } }, { upsert: true })
+        client.allinvites.set(code, sim.invites.resolve(invite.code))
+        status = valid
 
         switch (status) {
             case "valid":
-                await players.findOneAndUpdate({ user: message.author.id }, { $set: { "badges.invite.code": code } }, { upsert: true })
-                client.invites.set(code, sim.invites.resolve(code))
                 response
                     .setColor("GREEN")
-                    .setDescription(message.i10n("inviteRegistered", { code: code }))
+                    .setDescription(message.i10n("inviteRegistered", { code: invite.code }))
                     .setTitle(message.i10n("inviteAdded"))
             case "not own":
                 response.setColor("RED").setDescription(message.i10n("notOwnInvite")).setTitle(message.i10n("inviteAddFailed"))
