@@ -45,7 +45,7 @@ module.exports = (client) => {
         // prisoner died
         let jailed = newMember.guild.channels.cache.find((c) => c.name === "jailed-chat")
         if (jailed.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
-            jailed.permissionOverwrites.edit(newMember, {
+            jailed.permissionOverwrites.edit(newMember.id, {
                 VIEW_CHANNEL: false,
             })
         }
