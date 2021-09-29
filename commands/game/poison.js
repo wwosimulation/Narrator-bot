@@ -18,6 +18,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yeah... let's don't shall we, you will kill them anyway.`)
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
+            if (isNight == "yes" && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't poison anyone." })
             if (!args[0]) return message.channel.send("Who are you poisoning? Mention the player.")
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")

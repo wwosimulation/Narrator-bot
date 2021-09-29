@@ -2,6 +2,18 @@ const db = require("quick.db")
 const leaderboard = require("../commands/economy/leaderboard")
 const { shop, ids } = require("../config")
 const { players } = require("../db")
+function terrorCheck(message) {
+    let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+    let dayCount = db.get(`dayCount`)
+    let res = false
+    for (let i = 0; i < prog.length; i++) {
+        let terrorDay = db.get(`terror_${prog[i]}.day`) || "no"
+        let terrorGuy = db.get(`terror_${prog[i]}.guy`) || "no"
+        if (terrorDay !== "no" && terrorGuy !== "no" && terrorDay >= dayCount && message.member.nickname === terrorGuy) res = true
+    }
+    return res
+}
+
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isSelectMenu()) return
@@ -13,6 +25,7 @@ module.exports = (client) => {
 
         if (interaction.customId.startsWith("votephase")) {
             let day = (await db.fetch(`dayCount`)) || "0"
+            if (terrorCheck(interaction)) return interaction.reply({ content: "The Prognosticator prevents you from voting.", ephemeral: true })
             let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
             for (let x = 0; x < allpaci.length; x++) {
                 let dayactivated = db.get(`pacday_${allpaci[x]}`)

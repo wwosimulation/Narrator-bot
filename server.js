@@ -198,7 +198,6 @@ if (typeof maint == "string" && maint.startsWith("config-")) {
 
 client.login(process.env.TOKEN)
 
-
 client.on("error", (e) => console.error)
 
 module.exports = { client }
