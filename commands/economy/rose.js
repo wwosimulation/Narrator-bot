@@ -4,7 +4,6 @@ module.exports = {
     name: "rose",
     description: "Send a rose bouquet or single roses to other users on the game server.",
     usage: `${process.env.PREFIX}rose <bouquet | single <user> [amount]>`,
-    gameOnly: true,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id }).exec()
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
@@ -39,7 +38,8 @@ module.exports = {
                     players.findOneAndUpdate({ user: guy.id }, { $inc: { roses: 1 } }).exec()
                 }
             }
-            data.inventory.bouquet = data.inventory.bouquet - 1
+            let bouquet = data.inventory.bouquet - 1
+            players.findOneAndUpdate({ user: message.author.id }, { $set: { "data.inventory.bouquets": bouquet } })
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
         data.save()
