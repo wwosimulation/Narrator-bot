@@ -152,7 +152,7 @@ module.exports = {
                 case "remove":
                     let updateStr = `badges.${value.toLowerCase()}`
                     update[updateStr] = true
-                    operatorObj = { "$unset": update }
+                    operatorObj = { $unset: update }
                     break
                 case "set":
                     return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
