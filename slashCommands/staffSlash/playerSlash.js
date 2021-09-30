@@ -150,7 +150,8 @@ module.exports = {
                     operatorObj["$set"] = update
                     break
                 case "remove":
-                    update = {"playerData.badges":value}
+                    let updateStr = `badges.${value.toLowerCase()}`
+                    update[updateStr] = true
                     operatorObj = { "$unset": update }
                     break
                 case "set":
