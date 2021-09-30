@@ -86,7 +86,9 @@ module.exports = {
         let force = false
 
         if (options !== "none") {
-            ["-f", "force", "--force"].forEach((option) => {if(options.includes(option)) force = true})
+            ;["-f", "force", "--force"].forEach((option) => {
+                if (options.includes(option)) force = true
+            })
         }
 
         let playerData = await players.findOne({ user: target.id })
