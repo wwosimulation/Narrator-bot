@@ -42,10 +42,30 @@ module.exports = (client) => {
             }
         }
 
+        if (db.get(`role_${newMember.id}`) == "Corruptor") {
+            let corr = newMember.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
+            for (let a = 0; a < corr.length; a++) {
+                let chan = newMember.guild.channels.cache.get(corr[a])
+                if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    let allChannels = newMember.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
+                    let nick = db.get(`corrupt_${chan.id}`)
+                    for (let b = 0; b < allChannels.length; b++) {
+                        let chann = newMember.guild.channels.cache.get(allChannels[b])
+                        let guy = newMember.guild.members.cache.find((m) => m.nickname === nick)
+                        if (chann.permissionsFor(guy.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                            chann.permissionOverwrites.edit(guy.id, {
+                                SEND_MESSAGES: true,
+                            })
+                        }
+                    }
+                }
+            }
+        }
+
         // prisoner died
         let jailed = newMember.guild.channels.cache.find((c) => c.name === "jailed-chat")
         if (jailed.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
-            jailed.permissionOverwrites.edit(newMember, {
+            jailed.permissionOverwrites.edit(newMember.id, {
                 VIEW_CHANNEL: false,
             })
         }
