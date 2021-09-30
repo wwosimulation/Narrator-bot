@@ -143,7 +143,7 @@ module.exports = {
                 await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
                 return interaction.reply({ content: interaction.i10n("done") })
             }
-            
+
             let updateStr
             switch (operator) {
                 case "add":
