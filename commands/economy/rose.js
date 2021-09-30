@@ -4,13 +4,14 @@ module.exports = {
     name: "rose",
     description: "Send a rose bouquet or single roses to other users on the game server.",
     usage: `${process.env.PREFIX}rose <bouquet | single <user> [amount]>`,
+    gameOnly: true,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id }).exec()
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
         let spec = message.guild.roles.cache.find((r) => r.name === "Spectator")
-        let alive = message.guild.roles.cache.find((r) => r.name === "Satan 😈")
-        let dead = message.guild.roles.cache.find((r) => r.name === "test, ignore")
+        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
 
         /*
     if (message.member.roles.cache.has(spec.id)) return message.channel.send("You can't give the rose as a spectator!")
@@ -38,7 +39,7 @@ module.exports = {
                     players.findOneAndUpdate({ user: guy.id }, { $inc: { roses: 1 } }).exec()
                 }
             }
-            data.inventory.bouquet -= 1
+            data.inventory.bouquet = data.inventory.bouquet - 1
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
         data.save()
