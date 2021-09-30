@@ -42,6 +42,5 @@ module.exports = {
             players.findOneAndUpdate({ user: message.author.id }, { $set: { "data.inventory.bouquets": bouquet } })
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
-        data.save()
     },
 }
