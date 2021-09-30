@@ -100,7 +100,7 @@ module.exports = {
             let operatorObj = {}
 
             let amount = value
-            if (isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({ content: message.i10n("amountInvalid", { amount: amount }), ephemeral: true })
+            if (isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({ content: interaction.i10n("amountInvalid", { amount: amount }), ephemeral: true })
 
             switch (operator) {
                 case "set":
