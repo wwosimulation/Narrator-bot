@@ -29,7 +29,7 @@ module.exports = (client) => {
             }
         })*/
 
-        // Mainly copied from Wolvesville Utopium Bot
+        // Mainly copied from Wolvesville Utopium Bot => Stack Overflow
         let guildInvites = await member.guild.invites.fetch()
         const oldinv = client.allinvites
         client.allinvites = guildInvites

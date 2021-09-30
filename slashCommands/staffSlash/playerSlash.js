@@ -85,11 +85,9 @@ module.exports = {
         let operators = ["set", "add", "remove"]
         let force = false
 
-        if (!target) return interaction.reply({ content: `Invalid player! Use\n\`${this.usage}\``, ephemeral: true })
-        if (!columns.includes(column)) return interaction.reply({ content: `Invalid column! Available columns are ${columns.map((column) => `\`${column}\``).join(" ")}`, ephemeral: true })
-        if (!operators.includes(operator)) return interaction.reply({ content: `Invalid operator! Available operators are ${operators.map((operator) => `\`${operator}\``).join(" ")}`, ephemeral: true })
-        if (!value) return interaction.reply({ content: `Invalid usage! Use\n\`${this.usage}\``, ephemeral: true })
-        if (options !== "none" && ["-f", "force", "--force"].includes(options)) force = true
+        if (options !== "none") {
+            ["-f", "force", "--force"].forEach((option) => {if(options.includes(option)) force = true})
+        }
 
         let playerData = await players.findOne({ user: target.id })
 

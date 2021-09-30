@@ -72,8 +72,10 @@ module.exports = {
                 switch (operator) {
                     case "add":
                         update["badges.invite.unlocked"] = true
+                        break
                     case "remove":
                         update["badges.invite.unlocked"] = false
+                        break
                     case "set":
                         return message.channel.send({ content: "This operator does not work for badges." })
                 }
@@ -86,9 +88,11 @@ module.exports = {
                 case "add":
                     update[value] = true
                     operatorObj["$set"] = update
+                    break
                 case "remove":
                     update[value] = playerData.badges[value]
                     operatorObj["$unset"] = update
+                    break
                 case "set":
                     return message.channel.send({ content: "This operator does not work for badges." })
             }
