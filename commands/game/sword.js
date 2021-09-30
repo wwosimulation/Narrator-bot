@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "sword",
@@ -12,6 +12,7 @@ module.exports = {
         if (sword == true) {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "The Prognosticator activated their power last night. You can't kill anyone." })
             if (args.length == 0) return message.channel.send("Who are you giving the sword? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")

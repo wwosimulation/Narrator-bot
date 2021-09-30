@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const config = require("../../config")
+const { fn } = require("../../config")
 
 module.exports = {
     name: "hack",
@@ -9,7 +9,7 @@ module.exports = {
         if (message.channel.name == "priv-hacker") {
             let isNight = db.get(`isNight`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             let alrhacked = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hashacked_${dc.chan.id}` : `hashacked_${message.channel.id}`}`)
 
             let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
@@ -34,6 +34,7 @@ module.exports = {
 
                 //if player is already hacked
                 if (firsthack.includes(guy.nickname)) {
+                    if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't hack anyone for the second time." })
                     sech.push(guy.nickname)
                     message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username}** to DEATH!`)
 

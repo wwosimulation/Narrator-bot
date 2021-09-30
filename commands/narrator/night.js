@@ -1,6 +1,15 @@
 const db = require("quick.db")
-const { getEmoji, getRole } = require("../../config")
-
+const { getEmoji, getRole, fn } = require("../../config")
+function peaceCheck(message) {
+    let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+    let nightCount = db.get(`nightCount`)
+    let res = false
+    for (let i = 0; i < prog.length; i++) {
+        let peace = db.get(`peace_${prog[i]}`) || "none"
+        if (peace !== "none" && peace === nightCount) return true
+    }
+    return res
+}
 module.exports = {
     name: "night",
     description: "Night 👀.",
@@ -253,6 +262,11 @@ module.exports = {
                             for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
                                 let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
                                 if (corruptor.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                    if (!player.roles.cache.has(alive.id)) {
+                                        chan.permissionOverwrites.edit(guy.id, {
+                                            SEND_MESSAGES: true,
+                                        })
+                                    }
                                     if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                         db.set(`corrupt_${corr[a]}`, null)
                                         dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${guy.nickname} ${guy.user.username}**!`)
@@ -722,6 +736,7 @@ module.exports = {
                 for (let i = 0; i < bb.length; i++) {
                     let bombs = db.get(`bombs_${bb[i]}`) || []
                     if (bombs.length > 0) {
+                        if (peaceCheck(message) === true) return message.guild.channels.fetch(bb[i]).then((chnl) => chnl.send({ content: "We have a peaceful night. Your bombs will explade next night." }))
                         bombs.forEach((e) => {
                             let goy = message.guild.members.cache.find((m) => m.nickname === e.toString())
                             if (goy) {

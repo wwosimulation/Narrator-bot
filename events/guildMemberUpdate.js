@@ -10,6 +10,24 @@ module.exports = (client) => {
         if (newMember.roles.cache.has(ids.dead) && oldMember.roles.cache.has(ids.dead)) return
         if (!newMember.roles.cache.has(ids.dead)) return
         newMember.roles.remove(ids.revealed)
+        // canceling terror & peace
+        if (db.get(`role_${newMember.id}`) == "Prognosticator") {
+            let prog = newMember.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+            for (let a = 0; a < prog.length; a++) {
+                let chan = newMember.guild.channels.cache.get(prog[a])
+                if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    // peace
+                    if (db.get(`peace_${chan.id}`) > db.get(`nightCount`)) {
+                        db.set(`peace_${chan.id}`, 0)
+                    }
+                    // terror
+                    if (db.get(`terror_${chan.id}.day`) <= db.get(`dayCount`)) {
+                        db.set(`terror_${chan.id}.guy`, 0)
+                    }
+                }
+            }
+        }
+
         // canceling frenzy
         if (db.get(`role_${newMember.id}`) == "Werewolf Berserk") {
             let wwb = newMember.guild.channels.cache.filter((c) => c.name === "priv-werewolf-berserk").map((x) => x.id)
@@ -24,10 +42,30 @@ module.exports = (client) => {
             }
         }
 
+        if (db.get(`role_${newMember.id}`) == "Corruptor") {
+            let corr = newMember.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
+            for (let a = 0; a < corr.length; a++) {
+                let chan = newMember.guild.channels.cache.get(corr[a])
+                if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    let allChannels = newMember.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
+                    let nick = db.get(`corrupt_${chan.id}`)
+                    for (let b = 0; b < allChannels.length; b++) {
+                        let chann = newMember.guild.channels.cache.get(allChannels[b])
+                        let guy = newMember.guild.members.cache.find((m) => m.nickname === nick)
+                        if (chann.permissionsFor(guy.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                            chann.permissionOverwrites.edit(guy.id, {
+                                SEND_MESSAGES: true,
+                            })
+                        }
+                    }
+                }
+            }
+        }
+
         // prisoner died
         let jailed = newMember.guild.channels.cache.find((c) => c.name === "jailed-chat")
         if (jailed.permissionsFor(newMember).has(["VIEW_CHANNEL"])) {
-            jailed.permissionOverwrites.edit(newMember, {
+            jailed.permissionOverwrites.edit(newMember.id, {
                 VIEW_CHANNEL: false,
             })
         }
