@@ -34,7 +34,8 @@ module.exports = (client) => {
         const oldinv = client.allinvites
         client.allinvites = guildInvites
         const invite = guildInvites.find((inv) => inv.uses > oldinv.get(inv.code).uses)
-        const inviter = client.users.cache.get(invite.inviter.id)
+        console.log(invite)
+        const inviter = client.users.resolve(invite.inviter.id)
         if (!inviter) return
         await players.updateOne({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
         let guy = await players.findOne({ "badges.invite.code": invite.code })
