@@ -4,10 +4,9 @@ const { ids } = require("../../config")
 
 module.exports = {
     name: "register",
-    description: "Register your invite link to be able to get the Invite badge.",
+    description: "Request an invite to earn the invite badge.",
     usage: `${process.env.PREFIX}register`,
     run: async (message, args, client) => {
-        // let sim = client.guilds.cache.get(ids.server.sim)
         let response = new MessageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter(`Want to check which invite you registered? Use ${process.env.PREFIX}register`)
 
         let guy = await players.findOne({ user: message.author.id })
