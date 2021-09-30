@@ -5,7 +5,7 @@ const i10n = require("../i10n")
 module.exports = (client) => {
     client.on("guildMemberAdd", async (member) => {
         member.dbUser = await players.findOne({ user: member.id }).exec()
-        if (!member.dbUser) member.dbUser = new players({ user: member.author.id }).save()
+        if (!member.dbUser) member.dbUser = new players({ user: member.id }).save()
 
         member.i10n = (key, replaceKeys = {}, language = member.dbUser.language) => {
             if (!language) language = "en"
