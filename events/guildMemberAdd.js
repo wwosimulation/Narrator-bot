@@ -33,7 +33,8 @@ module.exports = (client) => {
         let guildInvites = await member.guild.invites.fetch()
         const oldinv = client.allinvites
         client.allinvites = guildInvites
-        const invite = guildInvites.find((inv) => inv.uses > oldinv.get(inv.code).uses)
+        let invite
+        guildInvites.find((inv) => inv.uses > oldinv.resolve.then((coll) => invite = coll.get(inv.code).uses))
         console.log(invite)
         const inviter = client.users.resolve(invite.inviter.id)
         if (!inviter) return
