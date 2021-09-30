@@ -151,7 +151,7 @@ module.exports = {
                     break
                 case "remove":
                     update[value] = playerData.badges[value]
-                    operatorObj = { "$unset": update }
+                    operatorObj = { $unset: update }
                     break
                 case "set":
                     return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
