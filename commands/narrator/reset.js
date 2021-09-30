@@ -90,11 +90,11 @@ module.exports = {
                 .messages.fetch(mid)
                 .then((m) => {
                     let allc = m.components
-                    if(allc) {
-                    let row = allc[0]
-                    let button = row.components[0]
-                    button.disabled = true
-                    m.edit({ components: [new MessageActionRow().addComponents(button)] })
+                    if (allc) {
+                        let row = allc[0]
+                        let button = row.components[0]
+                        button.disabled = true
+                        m.edit({ components: [new MessageActionRow().addComponents(button)] })
                     }
                 })
 

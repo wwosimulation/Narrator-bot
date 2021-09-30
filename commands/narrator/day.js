@@ -30,6 +30,7 @@ module.exports = {
         let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
         let med = message.guild.channels.cache.filter((c) => c.name === "priv-medium").map((x) => x.id)
         let day = db.get(`dayCount`)
+        let night = db.get(`nightCount`)
         let arso = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").map((x) => x.id)
         let shunt = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").map((x) => x.id)
         let sel = message.guild.channels.cache.filter((c) => c.name === "priv-sect-leader").map((x) => x.id)
@@ -49,11 +50,12 @@ module.exports = {
         let zombies = message.guild.channels.cache.find((c) => c.name === "zombies")
         let sheriff = message.guild.channels.cache.filter((c) => c.name === "priv-sheriff").map((x) => x.id)
         let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").map((x) => x.id)
+        let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
         let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
         let cupidKilled = false
         let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker"]
         let strongww = ["Werewolf", "Junior Werewolf", "Nightmare Werewolf", "Kitten Wolf", "Wolf Shaman", "Wolf Pacifist", "Shadow Wolf", "Guardian Wolf", "Werewolf Berserk", "Alpha Werewolf", "Wolf Seer", "Lone Wolf"]
-        let village = ["Villager", "Doctor", "Bodyguard", "Tough Guy", "Red Lady", "Gunner", "Jailer", "Priest", "Marksman", "Seer", "Aura Seer", "Spirit Seer", "Seer Apprentice", "Detective", "Medium", "Mayor", "Witch", "Avenger", "Beast Hunter", "Pacifist", "Grumpy Grandma", "Cupid", "President", "Cursed", "Loudmouth", "Flower Child", "Sheriff", "Fortune Teller", "Forger", "Grave Robber", "Santa Claus", "Easter Bunny", "Sibling", "Drunk", "Mad Scientist", "Idiot", "Wise Man", "Doppelganger", "Naughty Boy", "Handsome Prince", "Sect Hunter"]
+        let village = ["Villager", "Doctor", "Bodyguard", "Tough Guy", "Red Lady", "Gunner", "Jailer", "Priest", "Marksman", "Seer", "Aura Seer", "Spirit Seer", "Seer Apprentice", "Detective", "Medium", "Mayor", "Witch", "Avenger", "Beast Hunter", "Pacifist", "Grumpy Grandma", "Cupid", "President", "Cursed", "Loudmouth", "Flower Child", "Sheriff", "Fortune Teller", "Forger", "Grave Robber", "Santa Claus", "Easter Bunny", "Sibling", "Drunk", "Mad Scientist", "Idiot", "Wise Man", "Doppelganger", "Naughty Boy", "Handsome Prince", "Sect Hunter", "Prognosticator"]
         let killedplayers = []
         let thekiller = []
         let hhtarget = []
@@ -199,6 +201,34 @@ module.exports = {
                 }
             }
         }
+
+        // removing all kills if peace is activated
+        for (let i = 0; i < prog.length; i++) {
+            let peace = db.get(`peace_${prog[i]}`) || "no"
+
+            if (peace !== "no" && peace === night) {
+                for (let i = 0; i < bandit.length; i++) {
+                    db.set(`bandit_${bandit[i]}`, null)
+                }
+                for (let i = 0; i < bandits.length; i++) {
+                    db.set(`bandit_${bandits[i]}`, null)
+                }
+                for (let i = 0; i < bandit.length; i++) {
+                    db.set(`bandit_${bandit[i]}`, null)
+                }
+                for (let i = 0; i < hacker.length; i++) {
+                    db.set(`secondhack_${hacker[i]}`, null)
+                }
+                for (let i = 0; i < canni.length; i++) {
+                    db.set(`eat_${canni[i]}`, null)
+                }
+                for (let i = 0; i < sk.length; i++) {
+                    db.set(`stab_${sk[i]}`, null)
+                }
+                args[0] = "0"
+            }
+        }
+
         // getting kills from hacker
         for (let i = 0; i < hacker.length; i++) {
             let tempchan = message.guild.channels.cache.get(hacker[i])

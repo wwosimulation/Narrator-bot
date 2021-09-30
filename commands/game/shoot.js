@@ -68,6 +68,7 @@ module.exports = {
             let bullet = db.get(`bullet_jail`) ? db.get(`bullet_jail`) : 1
             if (isDay == "yes") return message.channel.send("You cannot shoot during the day without jailing someone!")
             if (bullet == 0) return message.channel.send("You have already used your bullet.")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "The Prognosticator activated their power last night. You can't kill anyone." })
             let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
             if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not shoot the sect leader while you are a sect member!")
             let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
@@ -93,6 +94,7 @@ module.exports = {
             let markActive = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `markActive_${dc.chan.id}` : `markActive_${message.channel.id}`}`) || false
             let mark = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `mark_${dc.chan.id}` : `mark_${message.channel.id}`}`)
             let arrows = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`) || 2
+            let isNight = db.get(`isNight`)
             if (!db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`)) {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 2)
             }
@@ -102,6 +104,7 @@ module.exports = {
                 if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
                 if (markActive == false) return message.channel.send("You have just marked a player.")
                 if (arrows < 1) return message.channel.send("You don't have any arrows left to shoot players!")
+                if (isNight === "yes" && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "The Prognosticator activated their power last night. You can't kill anyone." })
                 let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
                 if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not shoot the leader of the sect if you are sected!")
                 let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
