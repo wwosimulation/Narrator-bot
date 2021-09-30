@@ -38,9 +38,9 @@ module.exports = {
                     players.findOneAndUpdate({ user: guy.id }, { $inc: { roses: 1 } }).exec()
                 }
             }
-            let bouquet = data.inventory.bouquet - 1
-            players.findOneAndUpdate({ user: message.author.id }, { $set: { "data.inventory.bouquets": bouquet } })
+            data.inventory.bouquet = data.inventory.bouquet -= 1
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
+        data.save()
     },
 }
