@@ -215,7 +215,6 @@ client.on("ready", async () => {
     await client.guilds.cache
         .get(config.ids.server.sim)
         .invites.fetch()
-        .then((coll) => (client.allinvites = coll.clone()))
 })
 
 let maint = db.get("maintenance")
