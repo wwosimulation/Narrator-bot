@@ -57,12 +57,12 @@ module.exports = {
                         update[column] = -amount
                         operatorObj["$inc"] = update
                     } else if (!playerData || !playerData[column] < amount) {
-                        return message.channel.send({ content: `You try to remove more ${column} than the user has. If you want to continue run this command again with \`force\` at the end.` })
+                        return message.channel.send({ content: `You try to remove more ${column.replace("inventory.", "")} than the user has. If you want to continue run this command again with \`force\` at the end.` })
                     }
                     break
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
-            message.channel.send({ content: `${capitalizeFirstLetter(column)} updated for ${target.user ? target.user.tag : target.tag}` })
+            message.channel.send({ content: `${capitalizeFirstLetter(column.replace("inventory.", ""))} updated for ${target.user ? target.user.tag : target.tag}` })
         }
         if (column === "badge") {
             let update = {}
@@ -71,10 +71,10 @@ module.exports = {
             if (value === "invite") {
                 switch (operator) {
                     case "add":
-                        update["badges.invite.unlocked"] = true
+                        update = { "badges.invite.unlocked": true }
                         break
                     case "remove":
-                        update["badges.invite.unlocked"] = false
+                        update = { "badges.invite.unlocked": false }
                         break
                     case "set":
                         return message.channel.send({ content: "This operator does not work for badges." })
@@ -84,15 +84,19 @@ module.exports = {
                 return message.channel.send({ content: message.i10n("done") })
             }
 
+            let updateStr
             switch (operator) {
                 case "add":
-                    update[value] = true
-                    operatorObj["$set"] = update
+                    updateStr = `badges.${value.toLowerCase()}`
+                    update[updateStr] = true
+                    operatorObj = { $set: update }
                     break
                 case "remove":
-                    update[value] = playerData.badges[value]
-                    operatorObj["$unset"] = update
+                    updateStr = `badges.${value.toLowerCase()}`
+                    update[updateStr] = true
+                    operatorObj = { $unset: update }
                     break
+                case "set":
                 case "set":
                     return message.channel.send({ content: "This operator does not work for badges." })
             }
