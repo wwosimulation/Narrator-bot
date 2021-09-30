@@ -131,15 +131,15 @@ module.exports = {
             if (value === "invite") {
                 switch (operator) {
                     case "add":
-                        update = {"badges.invite.unlocked":true}
+                        update = { "badges.invite.unlocked": true }
                         break
                     case "remove":
-                        update = {"badges.invite.unlocked":false}
+                        update = { "badges.invite.unlocked": false }
                         break
                     case "set":
                         return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
                 }
-                operatorObj = {$set:update}
+                operatorObj = { $set: update }
                 await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
                 return interaction.reply({ content: interaction.i10n("done") })
             }
@@ -148,7 +148,7 @@ module.exports = {
                 case "add":
                     let updateStr = `badges.${value.toLowerCase()}`
                     update[updateStr] = true
-                    operatorObj = {$set:update}
+                    operatorObj = { $set: update }
                     break
                 case "remove":
                     let updateStr = `badges.${value.toLowerCase()}`
