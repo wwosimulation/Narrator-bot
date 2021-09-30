@@ -116,12 +116,12 @@ module.exports = {
                         update[column] = -amount
                         operatorObj["$inc"] = update
                     } else if (!playerData || !playerData[column] < amount) {
-                        return interaction.reply({ content: `You try to remove more ${column} than the user has. If you want to continue run this command again with \`force\` as option.`, ephemeral: true })
+                        return interaction.reply({ content: `You try to remove more ${column.replace("inventory.", "")} than the user has. If you want to continue run this command again with \`force\` as option.`, ephemeral: true })
                     }
                     break
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
-            interaction.reply({ content: `${capitalizeFirstLetter(column)} updated for ${target.tag}` })
+            interaction.reply({ content: `${capitalizeFirstLetter(column.replace("inventory.", ""))} updated for ${target.tag}` })
         }
         if (column === "badge") {
             console.log(operator)
