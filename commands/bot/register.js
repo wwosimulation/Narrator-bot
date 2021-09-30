@@ -7,28 +7,29 @@ module.exports = {
     description: "Register your invite link to be able to get the Invite badge.",
     usage: `${process.env.PREFIX}register`,
     run: async (message, args, client) => {
-        let code = ""
         let sim = client.guilds.cache.get(ids.server.sim)
-        let status = ""
         let response = new MessageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter(`Want to check which invite you registered? Use ${process.env.PREFIX}register`)
 
-        if (!args[0]) {
-            let guy = await players.findOne({ user: message.author.id })
-            if (guy.badges.invite.code && guy.badges.invite.code !== "none") {
-                response.setColor("GREEN").setDescription(message.i10n("registeredInvite", { code: guy.badges.invite.code, uses: guy.badges.invite.members }))
-            } else {
-                response.setColor("RED").setDescription(message.i10n("noInviteRegistered", { usage: this.usage }))
-            }
-            return message.channel.send({ embeds: [response] })
+        
+        let guy = await players.findOne({ user: message.author.id })
+        if (guy.badges.invite.code && guy.badges.invite.code !== "none") {
+            response.setColor("GREEN").setDescription(message.i10n("registeredInvite", { code: guy.badges.invite.code, uses: guy.badges.invite.members }))
+        } else {
+            response.setColor("RED").setDescription(message.i10n("noInviteRegistered", { usage: this.usage }))
         }
+        
         
         let sim = client.guilds.resolve(ids.server.sim)
         let invite = sim.invites.create("606123774978293772", {maxAge: 0, unique: true, reson: `Invite registered by ${message.author.tag}`})
         await players.findOneAndUpdate({ user: message.author.id }, { $set: { "badges.invite.code": invite.code } }, { upsert: true })
-        client.allinvites.set(code, sim.invites.resolve(invite.code))
-        status = valid
+        client.allinvites.set(invite.code, sim.invites.resolve(invite.code))
+        response
+        .setColor("GREEN")
+        .setDescription(message.i10n("inviteRegistered", { code: invite.code }))
+        .setTitle(message.i10n("inviteAdded"))
 
-        switch (status) {
+
+        /*switch (status) {
             case "valid":
                 response
                     .setColor("GREEN")
@@ -43,7 +44,7 @@ module.exports = {
                     .setTitle(message.i10n("inviteAddFailed"))
             default:
                 response.setColor("RED").setDescription(message.i10n("inviteNotResolveable")).setTitle(message.i10n("inviteAddFailed"))
-        }
+        }*/
         return message.channel.send({ embeds: [response] })
     },
 }
