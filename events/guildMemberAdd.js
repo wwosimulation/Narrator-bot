@@ -39,7 +39,7 @@ module.exports = (client) => {
         await players.updateOne({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
         let guy = await players.findOne({ "badges.invite.code": invite.code })
         if (guy.badges.invite.unlocked === true) return
-        if (guy.badges.invite.members >= 15) {
+        if (guy.badges.invite.members >= 1) {
             await players.updateOne({ "badges.invite.code": invite.code }, { $set: { "badges.invite.unlocked": true } })
             let guyUser = client.users.resolve(guy.user)
             guyUser.send({ content: member.i10n("inviteBadgeUnlocked", { code: invite.code }) })
