@@ -9,8 +9,8 @@ module.exports = {
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
         let spec = message.guild.roles.cache.find((r) => r.name === "Spectator")
-        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
+        let alive = message.guild.roles.cache.find((r) => r.name === "Satan 😈")
+        let dead = message.guild.roles.cache.find((r) => r.name === "test, ignore")
 
         /*
     if (message.member.roles.cache.has(spec.id)) return message.channel.send("You can't give the rose as a spectator!")
