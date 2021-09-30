@@ -143,15 +143,16 @@ module.exports = {
                 await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
                 return interaction.reply({ content: interaction.i10n("done") })
             }
-
+            
+            let updateStr
             switch (operator) {
                 case "add":
-                    let updateStr = `badges.${value.toLowerCase()}`
+                    updateStr = `badges.${value.toLowerCase()}`
                     update[updateStr] = true
                     operatorObj = { $set: update }
                     break
                 case "remove":
-                    let updateStr = `badges.${value.toLowerCase()}`
+                    updateStr = `badges.${value.toLowerCase()}`
                     update[updateStr] = true
                     operatorObj = { $unset: update }
                     break
