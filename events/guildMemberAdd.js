@@ -34,7 +34,7 @@ module.exports = (client) => {
         const oldinv = client.allinvites
         client.allinvites = guildInvites
         let invite
-        guildInvites.find((inv) => inv.uses > oldinv.resolve.then((coll) => invite = coll.get(inv.code).uses))
+        guildInvites.find((inv) => inv.uses > oldinv.resolve().then((coll) => invite = coll.get(inv.code).uses))
         console.log(invite)
         const inviter = client.users.resolve(invite.inviter.id)
         if (!inviter) return
