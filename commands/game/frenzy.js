@@ -13,7 +13,7 @@ module.exports = {
             const wolfChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
             let isDay = db.get(`isDay`)
             const abil = db.get(`abil_${message.channel.id}`) || "no"
-            
+
             if (isDay != "yes") return message.channel.send("You can only use frenzy during the day!")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
 
