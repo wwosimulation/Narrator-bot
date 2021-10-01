@@ -31,18 +31,19 @@ module.exports = (client) => {
 
         // Mainly copied from Wolvesville Utopium Bot => Stack Overflow
         let guildInvites = await member.guild.invites.fetch()
-        const oldinv = client.allinvites
+        let oldinv
+        client.allinvites.resolve().then(coll => oldinv = coll.clone())
         client.allinvites = guildInvites
         let invite
-        guildInvites.resolve().each((guildInv) => {
+        guildInvites.each((guildInv) => {
             let coll = oldinv.filter((inv) => guildInv.code === inv.code && guildInv.uses !== inv.uses)
             invite = coll.first()
         })
         //guildInvites.find((inv) => inv.uses > oldinv.resolve().then((coll) => invite = coll.get(inv.code).uses))
         console.log(invite)
-        const inviter = client.users.resolve(invite.inviter.id)
+        const inviter = await players.findOne({ "badges.invite.code": invite.code })
         if (!inviter) return
-        await players.updateOne({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
+        await players.findOneAndUpdate({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
         let guy = await players.findOne({ "badges.invite.code": invite.code })
         if (guy.badges.invite.unlocked === true) return
         if (guy.badges.invite.members >= 1) {
