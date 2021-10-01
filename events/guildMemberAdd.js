@@ -33,12 +33,11 @@ module.exports = (client) => {
         let guildInvites = await member.guild.invites.fetch()
         const oldinv = client.allInvites
         client.allInvites = guildInvites
-        let invite
         /*guildInvites.each((guildInv) => {
             let coll = oldinv.filter((inv) => guildInv.code === inv.code && guildInv.uses !== inv.uses)
             invite = coll.first()
         })*/
-        invite = guildInvites.find((inv) => inv.uses > oldinv.get(inv.code).uses)
+        let invite = guildInvites.find((inv) => inv.uses > oldinv.get(inv.code).uses)
         console.log(invite)
         const inviter = await players.findOne({ "badges.invite.code": invite.code })
         if (!inviter) return
