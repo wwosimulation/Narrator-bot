@@ -32,7 +32,7 @@ module.exports = (client) => {
         // Mainly copied from Wolvesville Utopium Bot => Stack Overflow
         let guildInvites = await member.guild.invites.fetch()
         let oldinv
-        client.allinvites.resolve().then(coll => oldinv = coll.clone())
+        client.allinvites.resolve().then((coll) => (oldinv = coll.clone()))
         client.allinvites = guildInvites
         let invite
         guildInvites.each((guildInv) => {
