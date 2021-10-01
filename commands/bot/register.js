@@ -17,7 +17,7 @@ module.exports = {
             let sim = client.guilds.resolve(ids.server.sim)
             sim.invites.create("606123774978293772", { maxAge: 0, unique: true, reson: `Invite registered by ${message.author.tag}` }).then( async (invite) => {
                 await players.findOneAndUpdate({ user: message.author.id }, { $set: { "badges.invite.code": invite.code } }, { upsert: true })
-                client.allinvites.set(invite.code, sim.invites.resolve(invite.code))
+                client.allInvites.set(invite.code, sim.invites.resolve(invite.code))
                 response
                     .setColor("GREEN")
                     .setDescription(message.i10n("inviteRegistered", { code: invite.code }))

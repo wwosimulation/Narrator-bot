@@ -15,7 +15,7 @@ module.exports = (client) => {
 
         /*let sim = client.guilds.cache.get(ids.server.sim)
         if (member.guild.id !== sim.id) return
-        client.allinvites.every(async (invite) => {
+        client.allInvites.every(async (invite) => {
             let inv = await sim.invites.resolve(invite.code)
             if (inv.uses !== invite.uses) {
                 await players.updateOne({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
@@ -31,8 +31,8 @@ module.exports = (client) => {
 
         // Mainly copied from Wolvesville Utopium Bot => Stack Overflow
         let guildInvites = await member.guild.invites.fetch()
-        const oldinv = client.allinvites
-        client.allinvites = guildInvites
+        const oldinv = client.allInvites
+        client.allInvites = guildInvites
         let invite
         guildInvites.each((guildInv) => {
             let coll = oldinv.filter((inv) => guildInv.code === inv.code && guildInv.uses !== inv.uses)
