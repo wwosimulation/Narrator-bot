@@ -212,7 +212,7 @@ client.on("ready", async () => {
     }
 
     //Invite Tracker
-    await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
+    client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
 })
 
 let maint = db.get("maintenance")
