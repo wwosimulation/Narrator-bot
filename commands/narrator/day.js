@@ -2950,6 +2950,11 @@ module.exports = {
                                             ATTACH_FILES: true,
                                         })
 
+                                        wwVote.permissionOverwrites.create(guy.id, {
+                                            VIEW_CHANNEL: true,
+                                            READ_MESSAGE_HISTORY: true,
+                                        })
+
                                         await ff.send(getRole("werewolf").description)
                                         await ff.send(`_ _\n\n_ _\n\nYou have been converted into a Werewolf!`)
                                         let sos = await ff.send(`${alive}`)
@@ -3012,6 +3017,7 @@ module.exports = {
                                                                     READ_MESSAGE_HISTORY: false,
                                                                 })
                                                                 db.set(`role_${rlguy.id}`, "Werewolf")
+                                                                db.set(`scratch_${kww[a]}`, null)
                                                             }
                                                         }
                                                     }

@@ -42,6 +42,21 @@ module.exports = (client) => {
             }
         }
 
+
+        // mort dies
+        if (db.get(`role_${newMember.id}`) == "Mortician") {
+            let mort = newMember.guild.channels.cache.filter((c) => c.name === "priv-mortician").map((x) => x.id)
+            for (let a = 0; a < mort.length; a++) {
+                let chan = newMember.guild.channels.cache.get(mort[a])
+                if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    if (db.get(`mortician_${chan.id}`)) {
+                        db.set(`mortician_${chan.id}`, null)
+                    }
+                }
+            }
+        }
+
+        // corr death
         if (db.get(`role_${newMember.id}`) == "Corruptor") {
             let corr = newMember.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
             for (let a = 0; a < corr.length; a++) {

@@ -13,6 +13,10 @@ module.exports = {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dc
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+            if (args[0] == "cancel") {
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `eat_${dc.chan.id}` : `eat_${message.channel.id}`}`, null)
+                return message.channel.send('Okay, your action has been canceled')
+            }
             let hunger = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hunger_${dc.chan.id}` : `hunger_${message.channel.id}`}`) || 1
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You are dead. You cannot use the command now!`)
             if (isNight == "yes" && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't eat anyone." })

@@ -7,6 +7,10 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name != "priv-jailer") return
+        if (args[0] == "cancel") {
+            db.set(`jail_${message.channel.id}`, null)
+            return message.channel.send('Okay, your action has been canceled')
+        }
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let isNight = db.get(`isNight`)
         if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
