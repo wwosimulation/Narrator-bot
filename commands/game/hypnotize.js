@@ -9,7 +9,7 @@ module.exports = {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         if (args[0] == "cancel") {
             db.set(`hypnotize_${message.channel.id}`, null)
-            return message.channel.send('Okay, your action has been canceled')
+            return message.channel.send("Okay, your action has been canceled")
         }
         let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
         if (!message.member.roles.cache.has(alive.id)) return message.chanenl.send("You cannot use the ability now!")

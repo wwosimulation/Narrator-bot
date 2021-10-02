@@ -12,7 +12,7 @@ module.exports = {
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         if (args[0] == "cancel") {
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `corrupt_${dc.chan.id}` : `corrupt_${message.channel.id}`}`, null)
-            return message.channel.send('Okay, your action has been canceled')
+            return message.channel.send("Okay, your action has been canceled")
         }
         if (message.channel.name == "priv-corruptor") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")

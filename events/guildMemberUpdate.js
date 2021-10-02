@@ -42,7 +42,6 @@ module.exports = (client) => {
             }
         }
 
-
         // mort dies
         if (db.get(`role_${newMember.id}`) == "Mortician") {
             let mort = newMember.guild.channels.cache.filter((c) => c.name === "priv-mortician").map((x) => x.id)

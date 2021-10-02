@@ -14,7 +14,7 @@ module.exports = {
         if (message.channel.name == "priv-serial-killer") {
             if (args[0] == "cancel") {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `stab_${dc.chan.id}` : `stab_${message.channel.id}`}`, null)
-                return message.channel.send('Okay, your action has been canceled')
+                return message.channel.send("Okay, your action has been canceled")
             }
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
