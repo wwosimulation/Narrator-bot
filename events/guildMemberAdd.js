@@ -39,7 +39,7 @@ module.exports = (client) => {
         })*/
         let invite = guildInvites.each((inv) => console.log(inv.uses ? inv.uses : "not found" + inv.code))
         return
-        if(!invite) console.log("hm")
+        if (!invite) console.log("hm")
         const inviter = await players.findOne({ "badges.invite.code": invite.code })
         if (!inviter) return
         await players.findOneAndUpdate({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
