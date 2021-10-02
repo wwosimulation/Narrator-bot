@@ -37,7 +37,8 @@ module.exports = (client) => {
             let coll = oldinv.filter((inv) => guildInv.code === inv.code && guildInv.uses !== inv.uses)
             invite = coll.first()
         })*/
-        let invite = guildInvites.find((inv) => inv.uses > oldinv.get(inv.code).uses)
+        let invite = guildInvites.each((inv) => console.log(inv.uses ? inv.uses : "not found"))
+        return
         if(!invite) console.log("hm")
         const inviter = await players.findOne({ "badges.invite.code": invite.code })
         if (!inviter) return
