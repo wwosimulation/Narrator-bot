@@ -37,9 +37,10 @@ module.exports = (client) => {
             let coll = oldinv.filter((inv) => guildInv.code === inv.code && guildInv.uses !== inv.uses)
             invite = coll.first()
         })*/
-        let invite = guildInvites.each((inv) => console.log(inv.uses ? inv.uses : "not found" + inv.code))
-        return
-        if (!invite) console.log("hm")
+        let invite = guildInvites.find((inv) => inv.uses ? inv.uses : 0 > oldinv.get(inv.code).uses ? oldinv.get(inv.code).uses : 9999)
+        if(!invite) {
+            return member.user.send({content: "Please contact modmail bla bla bla"})
+        }
         const inviter = await players.findOne({ "badges.invite.code": invite.code })
         if (!inviter) return
         await players.findOneAndUpdate({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
