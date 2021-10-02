@@ -38,7 +38,7 @@ module.exports = (client) => {
             invite = coll.first()
         })*/
         let invite = guildInvites.find((inv) => inv.uses > oldinv.get(inv.code).uses)
-        console.log(invite)
+        if(!invite) return console.log("No invite found.")
         const inviter = await players.findOne({ "badges.invite.code": invite.code })
         if (!inviter) return
         await players.findOneAndUpdate({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
