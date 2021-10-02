@@ -419,5 +419,6 @@ module.exports = {
         })
         client.commands.get("playerinfo").run(message, args, client)
         message.channel.send("If everything looks correct, use `+startgame` to start the game!")
+        db.set(`gamemode`, args[0])
     },
 }
