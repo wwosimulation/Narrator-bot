@@ -293,8 +293,8 @@ module.exports = {
                     }
                 }
                 console.log(players)
-                players = players.splice(1, 1);
-                players = players.splice(3, 1);
+                players = players.splice(1, 1)
+                players = players.splice(3, 1)
                 for (let b = 0; b < players.length; b++) {
                     console.log("g")
                     let guy = message.guild.members.cache.find((c) => c.nickname === players[b])
