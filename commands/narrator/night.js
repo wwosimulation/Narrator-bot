@@ -251,28 +251,22 @@ module.exports = {
                 for (let b = 0; b < tot.length; b++) {
                     console.log(tot[b])
                     let guy = message.guild.members.cache.find((m) => m.nickname === tot[b])
-                    const category = message.guild.channels.cache.filter((channel) => channel.name === "temporary roles")
                     if (guy.roles.cache.has(alive.id)) {
                         if (tot[b] != null) {
                             for (let c = 0; c < jailers.length; c++) {
-                                let jaile = message.guild.channels.cache.get(jailers[c])
-                                if (category.id === jaile.parentID) {
                                     console.log(db.get(`jail_${jailers[c]}`))
                                     if (tot[b] != db.get(`jail_${jailers[c]}`)) players.push(tot[b])
                                     tot[b] = null
                                 }
                             }
-                        }
                         for (let c = 0; c < nmww.length; c++) {
-                            let nmwww = message.guild.channels.cache.get(nmww[c])
-                            if (category.id === nmwww.parentID) {
+
                                 console.log(db.get(`nighmare_${nmww[c]}`))
                                 if (tot[b] != db.get(`nightmare_${nmww[c]}`)) {
                                     players.push(tot[b])
                                     tot[b] = null
                                 }
                             }
-                        }
                     } else {
                         thejack.send(`**${guy.nickname} ${guy.user.username}** has died.`)
                     }
