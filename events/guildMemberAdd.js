@@ -34,7 +34,10 @@ module.exports = (client) => {
         const oldinv = client.allInvites.clone()
         client.allInvites = guildInvites.clone()
 
-        let invite = guildInvites.find((inv) => (inv.uses ? inv.uses : 0 > oldinv.get(inv.code).uses ? oldinv.get(inv.code).uses : 9999))
+        let invite = guildInvites.find((inv) => {
+            if(inv.uses && oldinv.get(inv.code).uses && inv.uses > oldinv.get(inv.code).uses) return inv
+            else return undefined
+        })
         console.log(invite)
         if (!invite) {
             return member.send({ content: `Hey ${member.user}!\nWe were not able to track the invite you used. If you want to, you can tell us by DMing <@831722996149518366> (Modmail#7955). The inviter might get rewarded if they invited a specific amount of new members.` })
