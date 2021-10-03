@@ -255,25 +255,25 @@ module.exports = {
                         if (tot[b] != null) {
                             for (let c = 0; c < jailers.length; c++) {
                                 console.log(db.get(`jail_${jailers[c]}`))
-                                    if (tot[b] == db.get(`jail_${jailers[c]}`)) {
+                                if (tot[b] == db.get(`jail_${jailers[c]}`)) {
+                                    thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
+                                    tot[b] = null
+                                } else {
+                                    players.push(tot[b])
+                                    tot[b] = null
+                                }
+                                for (let d = 0; d < nmww.length; d++) {
+                                    console.log(`nightmare_${nmww[d]}`)
+                                    if (tot[b] == db.get(`nightmare_${nmww[d]}`)) {
                                         thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
                                         tot[b] = null
                                     } else {
                                         players.push(tot[b])
                                         tot[b] = null
+                                        c = 99
                                     }
-                                    for (let d = 0; d < nmww.length; d++) {
-                                        console.log(`nightmare_${nmww[d]}`)
-                                        if (tot[b] == db.get(`nightmare_${nmww[d]}`)) {
-                                            thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
-                                            tot[b] = null
-                                        } else {
-                                            players.push(tot[b])
-                                            tot[b] = null
-                                            c = 99
-                                        }
-                                        }
-                                    }
+                                }
+                            }
                         }
                         if (tot[b] != null) {
                             for (let c = 0; c < nmww.length; c++) {
