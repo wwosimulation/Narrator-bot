@@ -253,23 +253,15 @@ module.exports = {
                     let guy = message.guild.members.cache.find((m) => m.nickname === tot[b])
                     if (guy.roles.cache.has(alive.id)) {
                         for (let c = 0; c < jailers.length; c++) {
-                            if (tot[b] == db.get(`jail_${jailers[c]}`)) {
-                                thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
-                            } else {
-                                players.push(tot[b])
+                            if (tot[b] != db.get(`jail_${jailers[c]}`)) players.push(tot[b])
                             }
-                        }
+
                         for (let c = 0; c < nmww.length; c++) {
-                            if (tot[b] == db.get(`nightmare_${nmww[c]}`)) {
-                                thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
-                            } else {
-                                players.push(tot[b])
-                            }
+                            if (tot[b] != db.get(`nightmare_${nmww[c]}`)) players.push(tot[b])
                         }
                     } else {
                         thejack.send(`**${guy.nickname} ${guy.user.username}** has died.`)
                     }
-                    players.push(tot[b])
                 }
                 console.log(players)
                 for (let b = 0; b < players.length; b++) {
