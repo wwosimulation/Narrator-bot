@@ -35,7 +35,7 @@ module.exports = (client) => {
         client.allInvites = guildInvites.clone()
 
         let invite = guildInvites.find((inv) => {
-            if(inv.uses && oldinv.get(inv.code).uses && inv.uses > oldinv.get(inv.code).uses) return inv
+            if (inv.uses && oldinv.get(inv.code).uses && inv.uses > oldinv.get(inv.code).uses) return inv
             else return undefined
         })
         console.log(invite)
