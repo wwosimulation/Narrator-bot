@@ -33,16 +33,15 @@ module.exports = (client) => {
         let guildInvites = await member.guild.invites.fetch()
         const oldinv = client.allInvites
         client.allInvites = guildInvites
-        /*guildInvites.each((guildInv) => {
-            let coll = oldinv.filter((inv) => guildInv.code === inv.code && guildInv.uses !== inv.uses)
-            invite = coll.first()
-        })*/
+
         let invite = guildInvites.find((inv) => inv.uses ? inv.uses : 0 > oldinv.get(inv.code).uses ? oldinv.get(inv.code).uses : 9999)
         if(!invite) {
-            return member.user.send({content: "Please contact modmail bla bla bla"})
+            return member.send({content: `Hey ${member.user}!\nWe were not able to track the invite you used. If you want to, you can tell us by DMing <@831722996149518366> (Modmail#7955). The inviter might get rewarded if they invited a specific amount of new members.`})
         }
+
         const inviter = await players.findOne({ "badges.invite.code": invite.code })
         if (!inviter) return
+
         await players.findOneAndUpdate({ "badges.invite.code": invite.code }, { $inc: { "badges.invite.members": 1 } })
         let guy = await players.findOne({ "badges.invite.code": invite.code })
         if (guy.badges.invite.unlocked === true) return
