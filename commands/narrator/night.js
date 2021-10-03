@@ -254,19 +254,27 @@ module.exports = {
                     if (guy.roles.cache.has(alive.id)) {
                         if (tot[b] != null) {
                             for (let c = 0; c < jailers.length; c++) {
-                                    console.log(db.get(`jail_${jailers[c]}`))
-                                    if (tot[b] != db.get(`jail_${jailers[c]}`)) players.push(tot[b])
-                                    tot[b] = null
+                                    if (tot[b] == db.get(`jail_${jailers[c]}`)) {
+                                        thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
+                                        tot[b] = null
+                                    } else {
+                                        players.push(tot[b])
+                                        tot[b] = null
+                                    }
                                 }
                             }
+                            if (tot[b] != null) {
                         for (let c = 0; c < nmww.length; c++) {
-
-                                console.log(db.get(`nighmare_${nmww[c]}`))
-                                if (tot[b] != db.get(`nightmare_${nmww[c]}`)) {
+                                if (tot[b] == db.get(`nightmare_${nmww[c]}`)) {
+                                    thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
+                                    tot[b] = null
+                                } else {
                                     players.push(tot[b])
                                     tot[b] = null
+                                    c = 99
                                 }
                             }
+                        }
                     } else {
                         thejack.send(`**${guy.nickname} ${guy.user.username}** has died.`)
                     }
