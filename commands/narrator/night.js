@@ -251,7 +251,7 @@ module.exports = {
                 for (let b = 0; b < tot.length; b++) {
                     console.log(tot[b])
                     let guy = message.guild.members.cache.find((m) => m.nickname === tot[b])
-                    const category = guild.channels.cache.filter((channel) => channel.name === "temporary roles")
+                    const category = message.guild.channels.cache.filter((channel) => channel.name === "temporary roles")
                     if (guy.roles.cache.has(alive.id)) {
                         if (tot[b] != null) {
                             for (let c = 0; c < jailers.length; c++) {
