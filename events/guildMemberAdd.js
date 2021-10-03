@@ -31,8 +31,8 @@ module.exports = (client) => {
 
         // Mainly copied from Wolvesville Utopium Bot => Stack Overflow
         let guildInvites = await member.guild.invites.fetch()
-        const oldinv = client.allInvites
-        client.allInvites = guildInvites
+        const oldinv = client.allInvites.clone()
+        client.allInvites = guildInvites.clone()
 
         let invite = guildInvites.find((inv) => inv.uses ? inv.uses : 0 > oldinv.get(inv.code).uses ? oldinv.get(inv.code).uses : 9999)
         console.log(invite)
