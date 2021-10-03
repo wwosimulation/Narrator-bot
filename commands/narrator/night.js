@@ -254,7 +254,7 @@ module.exports = {
                     if (guy.roles.cache.has(alive.id)) {
                         if (tot[b] != null) {
                             for (let c = 0; c < jailers.length; c++) {
-
+                                console.log(db.get(`jail_${jailers[c]}`))
                                     if (tot[b] == db.get(`jail_${jailers[c]}`)) {
                                         thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
                                         tot[b] = null
@@ -293,6 +293,8 @@ module.exports = {
                     }
                 }
                 console.log(players)
+                players = players.splice(1, 1);
+                players = players.splice(3, 1);
                 for (let b = 0; b < players.length; b++) {
                     console.log("g")
                     let guy = message.guild.members.cache.find((c) => c.nickname === players[b])
