@@ -254,7 +254,7 @@ module.exports = {
                     if (guy.roles.cache.has(alive.id)) {
                         for (let c = 0; c < jailers.length; c++) {
                             if (tot[b] != db.get(`jail_${jailers[c]}`)) players.push(tot[b])
-                            }
+                        }
 
                         for (let c = 0; c < nmww.length; c++) {
                             if (tot[b] != db.get(`nightmare_${nmww[c]}`)) players.push(tot[b])

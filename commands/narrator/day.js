@@ -201,7 +201,7 @@ module.exports = {
             }
         }
 
-        // jack 
+        // jack
         for (let i = 0; i < jack.length; i++) {
             let tempchan = message.guild.channels.cache.get(jack[i])
 
@@ -227,15 +227,15 @@ module.exports = {
                             let punish = db.get(`punish_${jack[i]}`)
                             if (choice == null) {
                                 dayChat.send(`Jack has punished **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})`)
-                                players[a] = '0'
+                                players[a] = "0"
                             }
                             if (choice == punish) {
-                                if (players[a] != '0') {
+                                if (players[a] != "0") {
                                     // checking if the doc's protection exists
                                     for (let j = 0; j < doc.length; j++) {
                                         let protection = db.get(`heal_${doc[j]}`)
                                         if (protection == guy.nickname) {
-                                            players[a] = '0' 
+                                            players[a] = "0"
                                             let toSend = message.guild.channels.cache.get(doc[j])
                                             toSend.send(`${alive}`)
                                             toSend.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
@@ -243,7 +243,7 @@ module.exports = {
                                         }
                                     }
                                 }
-                                if (players[a] != '0') {
+                                if (players[a] != "0") {
                                     for (let k = 0; k < witch.length; k++) {
                                         let potion = db.get(`potion_${witch[k]}`)
                                         if (potion == players[a]) {
@@ -255,7 +255,7 @@ module.exports = {
                                         }
                                     }
                                 }
-                                if (players[a] != '0') {
+                                if (players[a] != "0") {
                                     for (let k = 0; k < bg.length; k++) {
                                         let protection = db.get(`guard_${bg[k]}`)
                                         let lives = db.get(`lives_${bg[k]}`)
@@ -302,12 +302,12 @@ module.exports = {
                                         }
                                     }
                                 }
-                                if (players[a] != '0') {
+                                if (players[a] != "0") {
                                     let role = db.get(`role_${guy.id}`)
                                     dayChat.send(`Jack punished**${guy.nickname} ${guy.user.username} (${role})**!`)
                                     if (role == "Cupid") {
-                                            cupidKilled = true
-                                        }
+                                        cupidKilled = true
+                                    }
                                     guy.roles.add(dead.id)
                                     guy.roles.remove(alive.id)
                                     killedplayers.push(guy.id)
@@ -316,9 +316,8 @@ module.exports = {
                                 db.set(`trickortreat_${tempchan.id}`, null)
                                 db.set(`punish_${tempchan.id}`, null)
                             }
-                        }         
+                        }
                     }
-
                 }
             }
         }
