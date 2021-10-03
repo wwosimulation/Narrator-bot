@@ -261,6 +261,17 @@ module.exports = {
                                         players.push(tot[b])
                                         tot[b] = null
                                     }
+                                    for (let d = 0; d < nmww.length; d++) {
+                                        console.log(`nightmare_${nmww[d]}`)
+                                        if (tot[b] == db.get(`nightmare_${nmww[d]}`)) {
+                                            thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
+                                            tot[b] = null
+                                        } else {
+                                            players.push(tot[b])
+                                            tot[b] = null
+                                            c = 99
+                                        }
+                                        }
                                 }
                             }
                             if (tot[b] != null) {
@@ -277,6 +288,7 @@ module.exports = {
                         }
                     } else {
                         thejack.send(`**${guy.nickname} ${guy.user.username}** has died.`)
+                        tot[b] = null
                     }
                 }
                 console.log(players)
