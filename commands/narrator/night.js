@@ -272,6 +272,7 @@ module.exports = {
                                 players.push(tot[b])
                                 tot[b] = null
                             }
+                            }
                         }
                     } else {
                         thejack.send(`**${guy.nickname} ${guy.user.username}** has died.`)
