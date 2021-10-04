@@ -1,4 +1,4 @@
-const { players } = require("../../db.js")
+const { players } = require("../../schemas/players")
 
 module.exports = {
     name: "rose",
