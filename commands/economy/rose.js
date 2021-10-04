@@ -12,13 +12,12 @@ module.exports = {
         let spec = message.guild.roles.cache.find((r) => r.name === "Spectator")
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-        console.log(data)
 
         /*
     if (message.member.roles.cache.has(spec.id)) return message.channel.send("You can't give the rose as a spectator!")
     if (message.member.roles.cache.has(mininarr.id) || message.member.roles.cache.has(narrator.id)) return message.channel.send("You can't give the rose as a narrator!")
     */
-
+        if(!["single", "bouquet"].includes([args[0]])) return message.channel.send(`Invalid format! Please use ${this.usage}`)
         if (!args[0]) return message.channel.send("You need to state if you want to give a rose to a player or as a bouquet!\n\nOptions: `single [player] [amount]` or `bouquet`")
         if ((args[2] && isNaN(args[2])) || (args[2] && !isNaN(args[2]) && parseInt(args[2]) % 1 != 0) || parseInt(args[2]) <= 0) return message.channel.send("Please state an integer as amount!")
 
