@@ -4,7 +4,7 @@ const i10n = require("../i10n")
 
 module.exports = (client) => {
     client.on("guildMemberAdd", async (member) => {
-        member.dbUser = await players.findOne({ user: member.id }).exec()
+        /*member.dbUser = await players.findOne({ user: member.id }).exec()
         if (!member.dbUser) member.dbUser = new players({ user: member.id }).save()
 
         member.i10n = (key, replaceKeys = {}, language = member.dbUser.language) => {
@@ -27,7 +27,7 @@ module.exports = (client) => {
                     guyUser.send({ content: member.i10n("inviteBadgeUnlocked", { code: invite.code }) })
                 }
             }
-        })*/
+        })// normally here would also be a comment
 
         // Mainly copied from Wolvesville Utopium Bot => Stack Overflow
         let guildInvites = await member.guild.invites.fetch()
@@ -53,6 +53,6 @@ module.exports = (client) => {
             await players.updateOne({ "badges.invite.code": invite.code }, { $set: { "badges.invite.unlocked": true } })
             let guyUser = client.users.resolve(guy.user)
             guyUser.send({ content: member.i10n("inviteBadgeUnlocked", { code: invite.code }) })
-        }
+        }*/
     })
 }
