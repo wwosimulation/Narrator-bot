@@ -215,27 +215,30 @@ module.exports = {
                 }
             }
             let players = db.get(`trickortreat_${jack[i]}`)
-            if (players != null) {
+            console.log(`e`)
                 for (let a = 0; a < players.length; a++) {
+                  if (players[a] != null) {
+                    console.log('f')
                     let guy = message.guild.members.cache.find((m) => m.nickname === players[a])
                     let allChannels = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`)
                     for (let b = 0; b < allChannels.length; b++) {
                         if (allChannels[b].permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                          console.log('g')
                             let chan = allChannels[b]
                             b = 99
                             let choice = db.get(`choice_${chan.id}`)
                             let punish = db.get(`punish_${jack[i]}`)
-                            if (choice == null) {
+                            if (choice == undefined) {
                                 dayChat.send(`Jack has punished **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})`)
                                 players[a] = "0"
                             }
                             if (choice == punish) {
-                                if (players[a] != "0") {
+                                if (players[a] != null) {
                                     // checking if the doc's protection exists
                                     for (let j = 0; j < doc.length; j++) {
                                         let protection = db.get(`heal_${doc[j]}`)
                                         if (protection == guy.nickname) {
-                                            players[a] = "0"
+                                            players[a] = null
                                             let toSend = message.guild.channels.cache.get(doc[j])
                                             toSend.send(`${alive}`)
                                             toSend.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
@@ -243,19 +246,19 @@ module.exports = {
                                         }
                                     }
                                 }
-                                if (players[a] != "0") {
+                                if (players[a] != null) {
                                     for (let k = 0; k < witch.length; k++) {
                                         let potion = db.get(`potion_${witch[k]}`)
                                         if (potion == players[a]) {
                                             let channe = message.guild.channels.cache.get(witch[k])
                                             channe.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                                             channe.send(`${alive}`)
-                                            players[a] = "0"
+                                            players[a] = null
                                             k = 99
                                         }
                                     }
                                 }
-                                if (players[a] != "0") {
+                                if (players[a] != null) {
                                     for (let k = 0; k < bg.length; k++) {
                                         let protection = db.get(`guard_${bg[k]}`)
                                         let lives = db.get(`lives_${bg[k]}`)
@@ -263,7 +266,7 @@ module.exports = {
                                             let channe = message.guild.channels.cache.get(bg[k])
                                             if (lives == 2) {
                                                 db.subtract(`lives_${bg[k]}`, 1)
-                                                players[a] = "0"
+                                                players[a] = null
                                                 channe.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
                                                 channe.send(`${alive}`)
                                             } else if (lives == 1) {
@@ -273,7 +276,7 @@ module.exports = {
                                                     if (channe.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])) {
                                                         if (player.roles.cache.has(alive.id)) {
                                                             o = 99
-                                                            players[a] = "0"
+                                                            players[a] = null
                                                             player.roles.add(dead.id)
                                                             player.roles.remove(alive.id)
                                                             dayChat.send(`${getEmoji("normal_gravestone", client)} Jack punished **${player.nickname} ${player.user.username} (Bodyguard)**!`)
@@ -286,7 +289,7 @@ module.exports = {
                                         } else if (role == "Bodyguard") {
                                             let channe = message.guild.channels.cache.get(bg[k])
                                             if (channe.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                players[a] = "0"
+                                                players[a] = null
                                                 let lives = db.get(`lives_${channe.id}`)
                                                 if (lives == 2) {
                                                     channe.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
@@ -302,7 +305,8 @@ module.exports = {
                                         }
                                     }
                                 }
-                                if (players[a] != "0") {
+                                if (players[a] != null) {
+                                  console.log('h')
                                     let role = db.get(`role_${guy.id}`)
                                     dayChat.send(`Jack punished**${guy.nickname} ${guy.user.username} (${role})**!`)
                                     if (role == "Cupid") {
@@ -318,6 +322,7 @@ module.exports = {
                             }
                         }
                     }
+                  }
                 }
             }
         }
