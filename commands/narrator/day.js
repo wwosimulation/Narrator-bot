@@ -215,14 +215,14 @@ module.exports = {
                 }
             }
             let players = db.get(`trickortreat_${jack[i]}`)
-            for (let a = 0; a < players.length; a++) {
-                if (players[a] != null) {
+                for (let a = 0; a < players.length; a++) {
+                  if (players[a] != null) {
                     let guy = message.guild.members.cache.find((m) => m.nickname === players[a])
                     let allChannels = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                     for (let b = 0; b < allChannels.length; b++) {
-                        let chan = message.guild.channels.cache.get(allchannels[b])
+                      let chan = message.guild.channels.cache.get(allChannels[b])
                         if (chan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            console.log("g")
+                          console.log('g')
                             b = 99
                             let choice = db.get(`choice_${chan.id}`)
                             let punish = db.get(`punish_${jack[i]}`)
@@ -304,7 +304,7 @@ module.exports = {
                                     }
                                 }
                                 if (players[a] != null) {
-                                    console.log("h")
+                                  console.log('h')
                                     let role = db.get(`role_${guy.id}`)
                                     dayChat.send(`Jack punished**${guy.nickname} ${guy.user.username} (${role})**!`)
                                     if (role == "Cupid") {
@@ -320,9 +320,9 @@ module.exports = {
                             }
                         }
                     }
+                  }
                 }
             }
-        }
 
         // getting kills from hacker
         for (let i = 0; i < hacker.length; i++) {
