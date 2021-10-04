@@ -43,6 +43,7 @@ const schema = new mongoose.Schema({
     },
     winStreak: { type: Number, default: 0 },
     language: { type: String, default: "en" },
+    badges: { type: Object, default: {invite: {code: "none", members: 0, unlocked: false}}},
 })
 
 module.exports = mongoose.model(`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`, schema)

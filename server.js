@@ -22,6 +22,7 @@ client.Sentry = Sentry
 
 const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
+const players = require("./schemas/players.js")
 
 client.commands = new Discord.Collection()
 fs.readdir("./commands/", (err, files) => {
@@ -40,6 +41,28 @@ fs.readdir("./commands/", (err, files) => {
                 try {
                     client.commands.set(props.name, props)
                     if (props.alias) props.alias.forEach((alias) => client.commands.set(alias, props))
+                } catch (err) {
+                    if (err) console.error(err)
+                }
+            })
+        })
+    })
+})
+client.slashCommands = new Discord.Collection()
+fs.readdir("./slashCommands/", (err, files) => {
+    files.forEach((file) => {
+        let path = `./slashCommands/${file}`
+        fs.readdir(path, (err, files) => {
+            if (err) console.error(err)
+            let jsfile = files.filter((f) => f.split(".").pop() === "js")
+            if (jsfile.length <= 0) {
+                console.error(`Couldn't find slash commands in the ${file} category.`)
+            }
+            jsfile.forEach((f, i) => {
+                let props = require(`./slashCommands/${file}/${f}`)
+                props.category = file
+                try {
+                    client.slashCommands.set(props.command.name, props)
                 } catch (err) {
                     if (err) console.error(err)
                 }
@@ -187,6 +210,9 @@ client.on("ready", async () => {
         //     },
         // })
     }
+
+    //Invite Tracker
+    client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
 })
 
 let maint = db.get("maintenance")
