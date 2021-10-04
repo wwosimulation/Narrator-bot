@@ -40,7 +40,7 @@ module.exports = {
                     players.findOneAndUpdate({ user: guy.id }, { $inc: { roses: 1 } }).exec()
                 }
             }
-            await data.updateOne({$inc:{"inventory.bouquet": -1}})
+            await data.updateOne({ $inc: { "inventory.bouquet": -1 } })
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
         data.save()
