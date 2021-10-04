@@ -325,7 +325,6 @@ module.exports = {
                   }
                 }
             }
-        }
 
         // getting kills from hacker
         for (let i = 0; i < hacker.length; i++) {
