@@ -6,7 +6,7 @@ module.exports = {
     usage: `${process.env.PREFIX}rose <bouquet | single <user> [amount]>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        let data = await players.findOne({ user: message.author.id }).exec()
+        let data = await players.findOne({ user: message.author.id })
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
         let spec = message.guild.roles.cache.find((r) => r.name === "Spectator")
