@@ -23,7 +23,7 @@ module.exports = {
 
         if (args[0] == "single") {
             let amount = parseInt(args[2]) || 1
-            if (data.inventory.roses < amount) return message.channel.send(`You can't give ${amount} roses if you don't have that many in your inventory!`)
+            if (data["inventory.roses"] < amount) return message.channel.send(`You can't give ${amount} roses if you don't have that many in your inventory!`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.id === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1])
             if (!guy) return message.channel.send("Player does not exist!")
             if (message.member == guy) return message.channel.send("You cannot give a rose to yourself!")
