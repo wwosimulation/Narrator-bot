@@ -1,4 +1,5 @@
 const players = require("../../schemas/players")
+const here = require(".")
 
 module.exports = {
     name: "rose",
