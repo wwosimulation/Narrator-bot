@@ -27,7 +27,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.id === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1])
             if (!guy) return message.channel.send("Player does not exist!")
             if (message.member == guy) return message.channel.send("You cannot give a rose to yourself!")
-            await data.updateOne({$inc:{"inventory.rose": -amount}})
+            await data.updateOne({ $inc: { "inventory.rose": -amount } })
             players.findOneAndUpdate({ user: guy.id }, { $inc: { roses: amount } }).exec()
             return message.channel.send(`You have successfully given ${args[1]} ${amount} rose${amount === 1 ? "" : "s"}!`)
         } else if (args[0] == "bouquet") {
