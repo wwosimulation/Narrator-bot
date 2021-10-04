@@ -19,7 +19,7 @@ module.exports = {
     */
 
         if (!args[0]) return message.channel.send("You need to state if you want to give a rose to a player or as a bouquet!\n\nOptions: `single [player] [amount]` or `bouquet`")
-        if ((args[2] && isNaN(args[2])) || ( args[2] && !isNaN(args[2]) && parseInt(args[2]) % 1 != 0 || parseInt(args[2]) <= 0)) return message.channel.send("Please state an integer as amount!")
+        if ((args[2] && isNaN(args[2])) || (args[2] && !isNaN(args[2]) && parseInt(args[2]) % 1 != 0) || parseInt(args[2]) <= 0) return message.channel.send("Please state an integer as amount!")
 
         if (args[0] == "single") {
             let amount = parseInt(args[2]) || 1
