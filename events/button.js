@@ -131,7 +131,7 @@ module.exports = (client) => {
             button1.disabled = true
             button2.disabled = true
             interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
-            db.set(`choice_${channelID}`, trick)
+            db.set(`choice_${channelID}`, 'trick')
         }
         if (interaction.customId.startsWith("treat")) {
             let channelID = interaction.customId.split("_")[1]
@@ -141,7 +141,7 @@ module.exports = (client) => {
             button1.disabled = true
             button2.disabled = true
             interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
-            db.set(`choice_${channelID}`, treat)
+            db.set(`choice_${channelID}`, 'treat')
         }
     })
 }
