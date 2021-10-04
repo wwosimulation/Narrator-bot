@@ -247,56 +247,33 @@ module.exports = {
             for (let a = 0; a < jack.length; a++) {
                 let thejack = message.guild.channels.cache.get(jack[a])
                 let tot = db.get(`trickortreat_${jack[a]}`)
-                let players = []
+                let players = tot
                 for (let b = 0; b < tot.length; b++) {
                     console.log(tot[b])
                     let guy = message.guild.members.cache.find((m) => m.nickname === tot[b])
                     if (guy.roles.cache.has(alive.id)) {
-                        if (tot[b] != null) {
-                            for (let c = 0; c < jailers.length; c++) {
-                                console.log(db.get(`jail_${jailers[c]}`))
-                                if (tot[b] == db.get(`jail_${jailers[c]}`)) {
-                                    thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
-                                    tot[b] = null
-                                } else {
-                                    players.push(tot[b])
-                                    tot[b] = null
-                                }
-                                for (let d = 0; d < nmww.length; d++) {
-                                    console.log(`nightmare_${nmww[d]}`)
-                                    if (tot[b] == db.get(`nightmare_${nmww[d]}`)) {
-                                        thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
-                                        tot[b] = null
-                                    } else {
-                                        players.push(tot[b])
-                                        tot[b] = null
-                                        c = 99
-                                    }
-                                }
+                      if (players[b] != null) {
+                        for (let x = 0; x < jailers.length; x++) {
+                          if (players[b] == db.get(`jail_${jailers[x]}`)) {
+                            players[b] = null
+                            console.log(players)
+                          } else {
+                            for (let y = 0; y < nmww.length; y++) {
+                              if (players[b] == db.get(`nightmare_${nmww[y]}`)) {
+                                players[b] = null
+                                console.log(players)
+                              }
                             }
+                          }
                         }
-                        if (tot[b] != null) {
-                            for (let c = 0; c < nmww.length; c++) {
-                                if (tot[b] == db.get(`nightmare_${nmww[c]}`)) {
-                                    thejack.send(`**${guy.nickname} ${guy.user.username}** got jailed or nightmared`)
-                                    tot[b] = null
-                                } else {
-                                    players.push(tot[b])
-                                    tot[b] = null
-                                    c = 99
-                                }
-                            }
-                        }
+                      }
                     } else {
-                        thejack.send(`**${guy.nickname} ${guy.user.username}** has died.`)
-                        tot[b] = null
+                      players[b] = null
                     }
                 }
                 console.log(players)
-                players = players.splice(1, 1)
-                players = players.splice(3, 1)
                 for (let b = 0; b < players.length; b++) {
-                    console.log("g")
+                    if (players[b] != null) {
                     let guy = message.guild.members.cache.find((c) => c.nickname === players[b])
                     let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
                     for (let b = 0; b < role.length; b++) {
@@ -314,6 +291,7 @@ module.exports = {
                             const row = new MessageActionRow().addComponents(treat, trick)
                             chan.send({ content: "Jack is trick-or-treating and has decided to visit your house, Will you choose to trick or treat?", components: [row] })
                         }
+                    }
                     }
                 }
             }
