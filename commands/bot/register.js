@@ -7,7 +7,7 @@ module.exports = {
     description: "Request an invite to earn the invite badge.",
     usage: `${process.env.PREFIX}register`,
     run: async (message, args, client) => {
-	return message.channel.send({content:"This command is currently not available! We hope it will be released soon!" })
+        return message.channel.send({ content: "This command is currently not available! We hope it will be released soon!" })
 
         let response = new MessageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter(`Want to check which invite you registered? Use ${process.env.PREFIX}register`)
 
