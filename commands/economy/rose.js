@@ -32,7 +32,6 @@ module.exports = {
             return message.channel.send(`You have successfully given ${args[1]} ${amount} rose${amount === 1 ? "" : "s"}!`)
         } else if (args[0] == "bouquet") {
             if (data.inventory.bouquet === 0) return message.channel.send("You don't have any bouquet!")
-            console.log(data.inventory.bouquet)
             for (let i = 0; i <= alive.members.size + dead.members.size; i++) {
                 console.log(i)
                 let guy = message.guild.members.cache.find((m) => m.nickname === i.toString())
