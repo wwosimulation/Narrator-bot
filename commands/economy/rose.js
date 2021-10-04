@@ -19,16 +19,17 @@ module.exports = {
     */
 
         if (!args[0]) return message.channel.send("You need to state if you want to give a rose to a player or as a bouquet!\n\nOptions: `single [player] [amount]` or `bouquet`")
+        if (args[2] && isNaN(args[2])) return message.channel.send("Please state an integer as amount!")
 
         if (args[0] == "single") {
-            let amount = parseInt(args[2])
+            let amount = parseInt(args[2]) || 1
             if (data.inventory.roses < amount) return message.channel.send(`You can't give ${amount} roses if you don't have that many in your inventory!`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.id === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1])
             if (!guy) return message.channel.send("Player does not exist!")
             if (message.member == guy) return message.channel.send("You cannot give a rose to yourself!")
-            data.inventory.rose = data.inventory.rose - amount
+            await data.updateOne({$inc:{"inventory.rose": -amount}})
             players.findOneAndUpdate({ user: guy.id }, { $inc: { roses: amount } }).exec()
-            return message.channel.send(`You have successfully given ${args[1]} ${amount} rose${amount == 1 ? "" : "s"}!`)
+            return message.channel.send(`You have successfully given ${args[1]} ${amount} rose${amount === 1 ? "" : "s"}!`)
         } else if (args[0] == "bouquet") {
             if (data.inventory.bouquet === 0) return message.channel.send("You don't have any bouquet!")
             console.log(data.inventory.bouquet)
@@ -43,6 +44,5 @@ module.exports = {
             await data.updateOne({$inc:{"inventory.bouquet": -1}})
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
-        data.save()
     },
 }
