@@ -4,7 +4,7 @@ const db = require("../../db")
 const shuffle = require("shuffle-array")
 const config = require("../../config")
 const fs = require("fs")
-const canvas = require('canvas')
+const canvas = require("canvas")
 
 module.exports = {
     name: "eval",
