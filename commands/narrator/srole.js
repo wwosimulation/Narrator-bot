@@ -12,6 +12,7 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
+        return message.channel.send("This command has moved to the /srole slash command!")
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
