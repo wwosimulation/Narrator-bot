@@ -112,7 +112,7 @@ module.exports = {
                     operatorObj["$inc"] = update
                     break
                 case "remove":
-                    if ((playerData && playerData.coins > amount) || force) {
+                    if ((playerData && playerData[column] > amount) || force) {
                         update[column] = -amount
                         operatorObj["$inc"] = update
                     } else if (!playerData || !playerData[column] < amount) {
