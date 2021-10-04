@@ -10,6 +10,10 @@ module.exports = {
             let isNight = db.get(`isNight`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+            if (args[0] == "cancel") {
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hack_${dc.chan.id}` : `hack_${message.channel.id}`}`, null)
+                return message.channel.send("Okay, your action has been canceled")
+            }
             let alrhacked = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hashacked_${dc.chan.id}` : `hashacked_${message.channel.id}`}`)
 
             let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
