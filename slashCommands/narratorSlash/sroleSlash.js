@@ -17,7 +17,7 @@ module.exports = {
                     { name: "Quick", value: "quick" },
                     { name: "Sandbox", value: "sandbox" },
                     { name: "Custom", value: "custom" },
-                    { name: "Ranked", value: "Ranked" },
+                    { name: "Ranked", value: "ranked" },
                 ],
             },
             {
