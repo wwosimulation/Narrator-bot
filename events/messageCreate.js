@@ -124,7 +124,7 @@ module.exports = (client) => {
         await command.run(message, args, client)?.catch((error) => {
             client.Sentry.captureException(error)
             console.error(error)
-            message.channel.send(`❌ An error occurred when trying to execute this command. Please contact a dev assistant.`)
+            message.channel.send(message.i10n("error"))
         })
     })
 }
