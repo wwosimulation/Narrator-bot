@@ -16,16 +16,14 @@ module.exports = (client) => {
         interaction.dbUser = await players.findOne({ user: interaction.user.id }).exec()
         if (!interaction.dbUser) interaction.dbUser = await players({ user: interaction.author.id }).create({ user: interaction.author.id }).save()
 
-        
-
         interaction.i10n = (key, replaceKeys = {}, language = interaction.dbUser.language) => {
             if (!language) language = "en"
             let string = i10n(key, language, replaceKeys)
             return string
         }
 
-        if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({ content: "Sorry! The bot is currently in maintenance mode!", ephemeral: true })
-        if (blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({ content: "Blacklisted users can't use any command!", ephemeral: true })
+        if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({ content: interaction.i10n("maintenance"), ephemeral: true })
+        if (blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({ content: interaction.i10n("blacklisted"), ephemeral: true })
 
         if ((commandFile.narratorOnly && !config.fn.isNarrator(interaction.member)) || (commandFile.staffOnly && !config.fn.isStaff(interaction.member))) return interaction.reply({ content: "You are missing permissions to do that!", ephemeral: true })
 
@@ -56,7 +54,7 @@ module.exports = (client) => {
         client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id})`) })
         await commandFile.run(interaction, client).catch((error) => {
             console.error(error)
-            interaction.reply({ content: `❌ An error occurred when trying to execute this command. Please contact a dev assistant.`, ephemeral: true })
+            interaction.reply({ content: interaction.i10n("error"), ephemeral: true })
         })
     })
 }
