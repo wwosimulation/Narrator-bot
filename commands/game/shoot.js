@@ -119,7 +119,7 @@ module.exports = {
                 }
                 let role = db.get(`role_${guy.id}`)
                 db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 1)
-                if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Bandit" || role == "Illusionist" || role == "Corruptor" || role == "Accomplice" || role == "Sorcerer" || role == "Zombie" || role == "Sect Leader" || role == "Cannibal" || role == "Alchemist") {
+                if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Bandit" || role == "Illusionist" || role == "Corruptor" || role == "Accomplice" || role == "Sorcerer" || role == "Zombie" || role == "Sect Leader" || role == "Cannibal" || role == "Alchemist" || role == "Hacker") {
                     guy.roles.add(dead.id)
                     guy.roles.remove(alive.id)
                     day.send(`${getEmoji("arrow", client)} The Marksman shot **${guy.nickname} ${guy.user.username} (${role})**!`)
