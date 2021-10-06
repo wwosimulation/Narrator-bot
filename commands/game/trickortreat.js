@@ -19,11 +19,20 @@ module.exports = {
             if (!ownself.roles.cache.has(alive.id)) return message.channel.send("You are dead.")
             if (!guy1 || !guy2) return message.channel.send("Please select 2 players...")
             if (!guy1.roles.cache.has(alive.id) || !guy2.roles.cache.has(alive.id)) return message.channel.send("One of the players you selected is dead.")
+            if (args[2] == "trick") {
+                db.set(`punish_${message.channel.id}`, "trick")
+                message.channel.send(`Done! the person that select's trick will now die.`)
+            } else if (args[2] == "treat") {
+                db.set(`punish_${message.channel.id}`, "treat")
+                message.channel.send(`Done! the person that select's treat will now die.`)
+            } else {
+                message.channel.send(`That's not a valid option, either select trick or treat!`)
+            }
             if (guy1 == ownself || guy2 == ownself) return message.channel.send("You canmot select yourself")
             if (guy1 == guy2) return message.channel.send("You cannot select the same person")
             if (db.get(`punish_${message.channel.id}`) == null) return message.channel.send("Please select which option will cause death first with `+punish`")
             db.set(`trickortreat_${message.channel.id}`, [args[0], args[1]])
-            message.channel.send(`You have selected **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}**`)
+            message.channel.send(`You have selected **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}**, the option that will be punished is **${args[2]}**`)
         }
     },
 }
