@@ -15,7 +15,7 @@ module.exports = (client) => {
         //let guy = message.member.nickname;
         if (message.author.bot) return //Ignore bots and dms
         message.dbUser = await players.findOne({ user: message.author.id }).exec()
-        if (!message.dbUser) message.dbUser = await players({ user: message.author.id }).create({ user: message.author.id }).save()
+        if (!message.dbUser) message.dbUser = await new players.create({ user: message.author.id }).save()
 
         message.i10n = (key, replaceKeys = {}, language = message.dbUser.language) => {
             if (!language) language = "en"
