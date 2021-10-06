@@ -3,8 +3,8 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "trickortreat",
-    description: "Select 2 people that will have to choose between trick or treat during the night.",
-    usage: `${process.env.PREFIX}trickortreat <target1> <target2>`,
+    description: "Select 2 people that will have to choose between trick or treat during the night. and select which option will kill them",
+    usage: `${process.env.PREFIX}trickortreat <target1> <target2> <trick/treat>`,
     aliases: ["trick", "tot", "treat"],
     gameOnly: true,
     run: async (message, args, client) => {
@@ -21,10 +21,8 @@ module.exports = {
             if (!guy1.roles.cache.has(alive.id) || !guy2.roles.cache.has(alive.id)) return message.channel.send("One of the players you selected is dead.")
             if (args[2] == "trick") {
                 db.set(`punish_${message.channel.id}`, "trick")
-                message.channel.send(`Done! the person that select's trick will now die.`)
             } else if (args[2] == "treat") {
                 db.set(`punish_${message.channel.id}`, "treat")
-                message.channel.send(`Done! the person that select's treat will now die.`)
             } else {
                 message.channel.send(`That's not a valid option, either select trick or treat!`)
             }
