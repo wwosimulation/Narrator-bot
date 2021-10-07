@@ -13,6 +13,7 @@ module.exports = {
                     let id = ids.server[server]
                     client.application.commands.delete(cmd.command, id)
                     done += 1
+		})
             })
             message.channel.send({ content: `${done} slash commands deleted.` })
         } catch (err) {
