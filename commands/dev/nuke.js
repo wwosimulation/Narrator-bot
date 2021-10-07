@@ -3,6 +3,7 @@ const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "nuke",
+<<<<<<< HEAD
     description: "Deletes all or specific slash commands of the bot you are using.",
     usage: `${process.env.PREFIX}nuke [(here) <commands...>]`,
     run: async (message, args, client) => {
@@ -77,5 +78,24 @@ module.exports = {
             answer = answer + `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\nGame: \`${client.guilds.resolve(ids.server.game).commands.cache.size}\``
             return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
         //}
+=======
+    description: "Deletes all slash commands of the bot you are using.",
+    usage: `${process.env.PREFIX}nuke`,
+    run: (message, args, client) => {
+        try {
+            if (!message.member.roles.cache.has("859099415515627540") && !message.member.roles.cache.has("606123616228343812")) return message.reply({ content: "You are missing permissions to do that!" })
+            let done = 0
+            client.slashCommands.each((cmd) => {
+                cmd.server.forEach((server) => {
+                    let id = ids.server[server]
+                    client.application.commands.delete(cmd.command, id)
+                    done += 1
+		})
+            })
+            message.channel.send({ content: `${done} slash commands deleted.` })
+        } catch (err) {
+            console.error
+        }
+>>>>>>> cddc849 (Update nuke.js)
     },
 }
