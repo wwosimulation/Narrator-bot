@@ -14,7 +14,8 @@ module.exports = (client) => {
         let blacklists = db.get(`blacklistss`) || []
 
         interaction.dbUser = await players.findOne({ user: interaction.user.id }).exec()
-        if (!interaction.dbUser) interaction.dbUser = await players({ user: interaction.author.id }).create({ user: interaction.author.id }).save()
+        if (!interaction.dbUser) interaction.dbUser = await players.create({ user: interaction.author.id })
+
 
         interaction.i10n = (key, replaceKeys = {}, language = interaction.dbUser.language) => {
             if (!language) language = "en"
