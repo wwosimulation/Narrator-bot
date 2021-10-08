@@ -8,10 +8,10 @@ module.exports = {
     run: async (message, args) => {
         if (message.channel.name == "priv-doppelganger") {
             const night = db.get(`nightCount`) || 1
-            const isNight = db.get(`isNight`) || "yes"
+            const gamePhase = db.get(`gamePhase`)
             const alive = message.guild.roles.cache.find((r) => r.name === "Alive")
 
-            if (night != 1 || isNight != "yes") return message.channel.send("You can only copy on the first night!")
+            if (night != 1 || gamePhase % 3 != 0) return message.channel.send("You can only copy on the first night!")
 
             if (!args[0]) return message.channel.send("Who you want to copy? Insert the player number next time.")
 
