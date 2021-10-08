@@ -7,8 +7,8 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-medium") {
-            let isNight = await db.fetch(`isNight`)
-            if (isNight != "yes") return message.channel.send("You can only speak with the dead during the night!")
+            let gamePhase = await db.fetch(`gamePhase`)
+            if (gamePhase % 3 != 0) return message.channel.send("You can only speak with the dead during the night!")
             if (message.member.roles.cache.has("606131202814115882")) return await message.channel.send("wow. here's a crazy idea, why not go to <#606196101380309012> and chat there?")
             if (!args) return await message.channel.send("Yup, sending empty messages. Congrats, you are a certified moron!")
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") return message.channel.send("Nope, What's the point of sending messages to the dead if you can't even see messages from the dead?")
@@ -19,8 +19,8 @@ module.exports = {
             }
             de.send("**Medium**: " + content)
         } else if (message.channel.name == "dead-chat") {
-            let isNight = db.get(`isNight`)
-            if (isNight != "yes") return message.channel.send("You can only chat with the medium during the night!")
+            let gamePhase = db.get(`gamePhase`)
+            if (gamePhase % 3 != 0) return message.channel.send("You can only chat with the medium during the night!")
             if (!args) return await message.channel.send("Yup, sending empty messages. Congrats, you are a certified moron!")
             let me = message.guild.channels.cache.filter((c) => c.name === "priv-medium")
             let med = me.map((x) => x.id)
