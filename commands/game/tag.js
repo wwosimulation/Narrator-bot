@@ -9,7 +9,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         let night = db.get(`nightCount`) || 1
-        let isNight = db.get(`isNight`) || "yes"
+        let gamePhase = db.get(`gamePhase`)
         let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
         let jtag = await db.fetch(`jwwtag_${message.author.id}`)
         let atag = await db.fetch(`atag_${message.author.id}`)
@@ -52,7 +52,7 @@ module.exports = {
         }
         if (message.channel.name == "priv-avenger") {
             if (night == 1) {
-                if (isNight == "yes") return message.channel.send("You can tag a player day 1 onwards.")
+                if (gamePhase % 3 == 0) return message.channel.send("You can tag a player day 1 onwards.")
             }
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0]) return message.channel.send("Who are you tagging? Mention the player.")
@@ -99,7 +99,7 @@ module.exports = {
             if (!guy || guy == message.member || !guy.roles.cache.has(alive.id)) return message.reply("The player is not in game! Mention the correct player number.")
 
             if (night == 1) {
-                if (isNight == "yes") {
+                if (gamePhase % 3 == 0) {
                     return message.channel.send("You can not select a player to reveal during the first night!")
                 }
             }
