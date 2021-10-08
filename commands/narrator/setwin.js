@@ -8,7 +8,7 @@ module.exports = {
     run: async (message, args, client) => {
         db.set(`winner`, args.join(" "))
         message.channel.send("Done!")
-        db.set(`gamePhase`,-10)
+        db.set(`gamePhase`, -10)
         db.set(`commandEnabled`, "yes")
         message.guild.channels.cache.find((x) => x.name == "day-chat").send(`Game over! ${args.join(" ")} has won!`)
     },
