@@ -12,12 +12,12 @@ module.exports = {
         let aliveRole = message.guild.roles.cache.find((r) => r.name === "Alive")
         let deadRole = message.guild.roles.cache.find((r) => r.name === "Dead")
         let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
-        let isDay = db.get(`isDay`)
+        let gamePhase = db.get(`gamePhase`)
         let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         if (message.channel.name == "priv-mayor") {
             let ability = await db.fetch(`ability_${message.channel.id}`)
             if (ability == "yes") return await message.channel.send("You have already used your ability!")
-            if (isDay != "yes") return await message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 != 1) return await message.channel.send("You can use your ability only at night!")
             dayChat.send(`${getEmoji("mayoring", client)} **${message.member.nickname} ${message.author.username} (Mayor)** has revealed himself!`)
             message.member.roles.add(revealed.id)
             db.set(`ability_${message.channel.id}`, "yes")
@@ -28,7 +28,7 @@ module.exports = {
             return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
         } else if (message.channel.name == "priv-pacifist" || message.channel.name == "priv-wolf-pacifist") {
             let ability = await db.fetch(`paci_${message.channel.id}`)
-            let isday = await db.fetch(`isDay`)
+            let gamePhase = await db.fetch(`gamePhase`)
             let day = await db.fetch(`dayCount`)
             if (ability == "yes") return await message.reply("You have already used your ability!")
             let cmd = await db.fetch(`commandEnabled`)
@@ -48,7 +48,7 @@ module.exports = {
                     return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
                 }
             }
-            if (isday != "yes") return await message.reply("You can use your ability only during the day!")
+            if (gamePhase % 3 != 1) return await message.reply("You can use your ability only during the day!")
             if (day == 1) {
                 if (cmd != "yes") return await message.reply("You can reveal after discussion phase of day 1!")
             }
