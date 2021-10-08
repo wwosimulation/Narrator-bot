@@ -8,7 +8,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-marksman") {
-            let isNight = db.get(`isNight`)
+            let gamePhase = db.get(`gamePhase`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dc
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
@@ -20,7 +20,7 @@ module.exports = {
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Hmmm, I wonder how the marksman will shoot themselves.`)
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            if (isNight != "yes") return message.channel.send("Bruh, you can only do this during the night!")
+            if (gamePhase % 3 != 0) return message.channel.send("Bruh, you can only do this during the night!")
             if (db.get(`role_${guy.id}`) == "President") return message.channel.send("You can not mark the president.")
             if (arrow < 1) return message.channel.send("You donot have any arrows left.")
             message.channel.send(`${getEmoji("mark", client)} You decided to mark **${guy.nickname} ${guy.user.username}**!`)
