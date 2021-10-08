@@ -174,8 +174,7 @@ client.debug = async (options = { game: false }) => {
     let data = {}
     data.night = db.get(`nightCount`)
     data.day = db.get(`dayCount`)
-    data.isNight = db.get(`isNight`)
-    data.isDay = db.get(`isDay`)
+    data.gamePhase = db.get(`gamePhase`)
     let alive = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Alive")
     let dead = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Dead")
     let players = []
