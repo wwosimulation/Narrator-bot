@@ -14,8 +14,8 @@ module.exports = {
         let dc
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-aura-seer") {
-            let isNight = await db.fetch(`isNight`)
-            if (isNight == "no") return await message.channel.send("It's day! You can check during nights only!")
+            let gamePhase = await db.fetch(`gamePhase`)
+            if (gamePhase % 3 != 0) return await message.channel.send("It's day! You can check during nights only!")
             if (!args[0]) return message.channel.send("Who want to check? Insert the player number next time.")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
