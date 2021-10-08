@@ -8,13 +8,13 @@ module.exports = {
     aliases: ["protect", "save"],
     gameOnly: true,
     run: async (message, args, client) => {
-        let isNight = await db.fetch(`isNight`)
+        let gamePhase = await db.fetch(`gamePhase`)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dc
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
 
         if (message.channel.name === "priv-doctor") {
-            if (isNight != "yes") {
+            if (gamePhase % 3 != 0) {
                 return await message.reply("You can only use this during the night!")
             } else {
                 let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
@@ -28,7 +28,7 @@ module.exports = {
             }
             ;``
         } else if (message.channel.name === "priv-witch") {
-            if (isNight != "yes") {
+            if (gamePhase % 3 != 0) {
                 return await message.reply(`You can use the ability only at night!`)
             } else {
                 let witch = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `witchAbil_${dc.chan.id}` : `witchAbil_${message.channel.id}`}`)
@@ -64,10 +64,10 @@ module.exports = {
             message.react("475775137434697728")
         } else if (message.channel.name == "priv-tough-guy") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let isNight = db.get(`isNight`)
+            let gamePhase = db.get(`gamePhase`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0]) return message.channel.send("Who do you want to protect? Mention the player.")
-            if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
 
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
 
