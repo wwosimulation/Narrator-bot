@@ -474,6 +474,8 @@ module.exports = {
         })
         client.commands.get("playerinfo").run(interaction, args, client)
         interaction.editReply("If everything looks correct, use `+startgame` to start the game!")
+        interaction.reply("If everything looks correct, use `+startgame` to start the game!")
+        db.set(`gamePhase`, -1)
         db.set(`gamemode`, gamemode)
     },
 }
