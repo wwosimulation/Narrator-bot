@@ -1791,7 +1791,7 @@ module.exports = {
 
         dayChat.send(`Day ${day + 1} has started! Get ready to discuss!`)
         db.add(`dayCount`, 1)
-        db.set(`isDay`, "yes")
+        db.add(`gamePhase`, 1)
 
         console.log("Ok so it is day")
         // lock werewolves from their chat
@@ -3704,8 +3704,6 @@ module.exports = {
         }
         console.log("The code worked up to here!")
         db.set(`vtshadow`, false)
-        db.set(`isDay`, "yes")
-        db.set(`isNight`, "no")
         // if (args[1] == "test") {
         //   dayChat.send(`${alive}`)
         // }
