@@ -8,7 +8,7 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-nightmare-werewolf") {
-            let isDay = db.get(`isDay`)
+            let gamePhase = db.get(`gamePhase`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dc
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
@@ -18,7 +18,7 @@ module.exports = {
             let nightmares = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `nightmare_${dc.chan.id}` : `nightmare_${message.channel.id}`}`) || 2
             console.log(nightmares)
             if (!message.member.roles.cache.has(alive.id)) return message.chanenl.send("You cannot use the ability now!")
-            if (isDay != "yes") return message.channel.send("You can use your ability only during the day!")
+            if (gamePhase % 3 != 1) return message.channel.send("You can use your ability only during the day!")
             if (!guy || guy == message.member) return message.channel.send("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             if (wolfChat.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) return message.channel.send("You cannot nightmare your fellow wolves.")
