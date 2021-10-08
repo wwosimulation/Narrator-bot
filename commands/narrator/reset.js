@@ -99,6 +99,7 @@ module.exports = {
                 })
 
             db.set(`game`, null)
+            db.set(`gamePhase`, -10)
             for (let i = 0; i < gunner.length; i++) {
                 db.set(`bullets_${gunner[i]}`, 2)
                 db.set(`did_${gunner[i]}`, 555)
