@@ -12,7 +12,7 @@ module.exports = {
                 .each((server) => {
                     server.commands.set([])
                 })
-            message.channel.send({ content: `The servers have the following count of slash commands:\nSim:${client.guilds.resolve(ids.server.sim).commands.cache.size}\nGame:${client.guilds.resolve(ids.server.game).commands.cache.size}` })
+            message.channel.send({ content: `The servers have the following count of slash commands:\nSim: ${client.guilds.resolve(ids.server.sim).commands.cache.size}\nGame: ${client.guilds.resolve(ids.server.game).commands.cache.size}` })
         } catch (err) {
             message.channel.send("An error occurred!")
             console.error
