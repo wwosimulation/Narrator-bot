@@ -57,6 +57,7 @@ module.exports = {
 
             db.delete(`excludes`)
 
+<<<<<<< HEAD
             message.guild.channels.cache
                 .find((x) => x.name == "day-chat")
                 .permissionOverwrites.edit(ids.alive, {
@@ -64,6 +65,13 @@ module.exports = {
                     READ_MESSAGE_HISTORY: false,
                     VIEW_CHANNEL: false,
                 })
+=======
+            message.guild.channels.cache.find(x => x.name == "day-chat").permissionOverwrites.edit(ids.alive, {
+                SEND_MESSAGES: false,
+                READ_MESSAGE_HISTORY: false,
+                VIEW_CHANNEL: false,
+            })
+>>>>>>> 580ec30 (Update IDs to new server)
 
             message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
@@ -73,6 +81,7 @@ module.exports = {
                     VIEW_CHANNEL: true,
                 })
 
+<<<<<<< HEAD
             message.guild.channels.cache
                 .find((x) => x.name == "game-lobby")
                 .permissionOverwrites.edit(ids.alive, {
@@ -82,6 +91,15 @@ module.exports = {
                 })
 
             let t = client.guilds.cache.get(ids.server.sim).roles.cache.get("606123676668133428").members
+=======
+            message.guild.channels.cache.get("606132387587293195").permissionOverwrites.edit(ids.alive, {
+                SEND_MESSAGES: true,
+                READ_MESSAGE_HISTORY: true,
+                VIEW_CHANNEL: true,
+            })
+
+            let t = client.guilds.cache.get(ids.sim).roles.cache.get("606123676668133428").members
+>>>>>>> 580ec30 (Update IDs to new server)
 
             t.forEach((e) => {
                 e.roles.remove("606123676668133428") // joining role

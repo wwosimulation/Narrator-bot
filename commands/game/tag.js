@@ -40,7 +40,11 @@ module.exports = {
             }
 
             // check if the player tagged is a couple of the jww
+<<<<<<< HEAD
             let lovers = message.guild.channels.cache.find((x) => x.name == "lovers")
+=======
+            let lovers = message.guild.channels.cache.find(x => x.name == "lovers")
+>>>>>>> 580ec30 (Update IDs to new server)
             if (lovers.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (lovers.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     return message.channel.send("You can not tag your couple!")
@@ -70,7 +74,11 @@ module.exports = {
             }
 
             // check if the player tagged is a couple of the avenger
+<<<<<<< HEAD
             let lovers = message.guild.channels.cache.find((x) => x.name == "lovers")
+=======
+            let lovers = message.guild.channels.cache.find(x => x.name == "lovers")
+>>>>>>> 580ec30 (Update IDs to new server)
             if (lovers.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (lovers.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     return message.channel.send("You can not tag your couple.")
@@ -78,7 +86,11 @@ module.exports = {
             }
 
             // check if the player tagged is a sect leader and if you are a sect member
+<<<<<<< HEAD
             let sl = message.guild.channels.cache.find((x) => x.name == "sect-members")
+=======
+            let sl = message.guild.channels.cache.find(x => x.name == "sect-members")
+>>>>>>> 580ec30 (Update IDs to new server)
             if (sl.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (role == "Sect Leader") {
                     return message.channel.send("You cannot tag your sect leader being part of the sect!")
@@ -113,7 +125,11 @@ module.exports = {
             }
 
             // check if the player tagged is a couple of the loudmouth
+<<<<<<< HEAD
             let lovers = message.guild.channels.cache.find((x) => x.name == "lovers")
+=======
+            let lovers = message.guild.channels.cache.find(x => x.name == "lovers")
+>>>>>>> 580ec30 (Update IDs to new server)
             if (lovers.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (lovers.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     return message.channel.send("You can not reveal your couple!")
@@ -121,7 +137,11 @@ module.exports = {
             }
 
             // check if the player tagged is a sect leader and if you are a sect member
+<<<<<<< HEAD
             let sl = message.guild.channels.cache.find((x) => x.name == "sect-members")
+=======
+            let sl = message.guild.channels.cache.find(x => x.name == "sect-members")
+>>>>>>> 580ec30 (Update IDs to new server)
             if (sl.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (role == "Sect Leader") {
                     return message.channel.send("You can not reveal the Sect Leader being part of the sect.")
