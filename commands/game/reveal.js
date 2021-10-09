@@ -66,7 +66,7 @@ module.exports = {
             dchat.send(`${getEmoji("revealed", client)} The Pacifist revealed **${args[0]} ${guy.user.username} (${role})**!`)
             db.set(`pacday_${message.channel.id}`, day)
             guy.roles.add(revealed.id)
-            if (message.channel.name == "priv-wolf-pacifist") message.guild.channels.cache.get("606135720825847829").send(`${getEmoji("revealed", client)} You have revealed **${args[0]} ${guy.user.username} (${role})**!`)
+            if (message.channel.name == "priv-wolf-pacifist") message.guild.channels.cache.find(x => x.name == "werewolves-chat").send(`${getEmoji("revealed", client)} You have revealed **${args[0]} ${guy.user.username} (${role})**!`)
 
             if (db.get(`card_${message.channel.id}`) == true) {
                 if (message.channel.name != "priv-mayor" && message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist") {
