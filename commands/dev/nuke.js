@@ -74,8 +74,16 @@ module.exports = {
                     server.commands.set([])
                     answer = answer + `Bulk delete of server: \`${server.name}\`\n`
                 })
+<<<<<<< HEAD
             answer = answer + `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\nGame: \`${client.guilds.resolve(ids.server.game).commands.cache.size}\``
             return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
         //}
+=======
+            message.channel.send({ content: `The servers have the following count of slash commands:\nSim: ${client.guilds.resolve(ids.server.sim).commands.cache.size}\nGame: ${client.guilds.resolve(ids.server.game).commands.cache.size}` })
+        } catch (err) {
+            message.channel.send("An error occurred!")
+            console.error
+        }
+>>>>>>> eee7713 (Update nuke.js)
     },
 }
