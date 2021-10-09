@@ -7,17 +7,14 @@ module.exports = {
     run: (message, args, client) => {
         try {
             if (!message.member.roles.cache.has("859099415515627540") && !message.member.roles.cache.has("606123616228343812")) return message.reply({ content: "You are missing permissions to do that!" })
-            let done = 0
-            client.slashCommands.each((cmd) => {
-                cmd.server.forEach((server) => {
-                    let id = ids.server[server]
-                    client.application.commands.delete(cmd.command, id)
-                    done += 1
+            client.guilds.cache
+                .filter((guild) => guild.id === ids.server.sim || guild.id === ids.server.game)
+                .each((server) => {
+                    server.commands.set([])
                 })
-            })
-            message.channel.send({ content: `${done} slash commands deleted.` })
+            message.channel.send({ content: `The servers have the following count of slash commands:\nSim: ${client.guilds.resolve(ids.server.sim).commands.cache.size}\nGame: ${client.guilds.resolve(ids.server.game).commands.cache.size}` })
         } catch (err) {
-            console.error
+            message.channel.send("An error occurred!")
         }
     },
 }
