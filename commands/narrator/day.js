@@ -1892,7 +1892,7 @@ module.exports = {
                                                 sect = "0"
                                                 sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                 sl.send(`${alive}`)
-                                            } else if (strongww.includes(role) || role == "Cursed" || soloKillers.includes(role) || role == "Sorcerer" || role == "Zombie" || role == "Doppelganger" || role == "Accomplice" || message.guild.channels.cache.get("682617467767357453").permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                            } else if (strongww.includes(role) || role == "Cursed" || soloKillers.includes(role) || role == "Sorcerer" || role == "Zombie" || role == "Doppelganger" || role == "Accomplice" || message.guild.channels.cache.find(x => x.name == "sect-members").permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                 sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
                                                 sl.send(`${alive}`)
                                                 sect = "0"
@@ -2078,7 +2078,7 @@ module.exports = {
                 let hunt = db.get(`hunt_${shunt[i]}`) || "0"
                 let schan = message.guild.channels.cache.get(shunt[i])
                 let guy = message.guild.members.cache.find((m) => m.nickname === hunt)
-                let sected = message.guild.channels.cache.get("682617467767357453")
+                let sected = message.guild.channels.cache.find(x => x.name == "sect-members")
                 let leader
                 if (hunt != "0") {
                     for (let k = 1; k <= 16; k++) {
@@ -3162,7 +3162,7 @@ module.exports = {
                 let role = db.get(`role_${guy.id}`)
 
                 // solo killers, cursed and wolves
-                if (strongww.includes(role) || role == "Cursed" || soloKillers.includes(role) || role == "Sorcerer" || role == "Sect Leader" || role == "Accomplice" || message.guild.channels.cache.get("682617467767357453").permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                if (strongww.includes(role) || role == "Cursed" || soloKillers.includes(role) || role == "Sorcerer" || role == "Sect Leader" || role == "Accomplice" || message.guild.channels.cache.find(x => x.name == "sect-members").permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     brains[i] = "0"
                     zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                 }

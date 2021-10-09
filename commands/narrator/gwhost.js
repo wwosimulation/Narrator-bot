@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "gwhost",
@@ -7,7 +8,7 @@ module.exports = {
     usage: `${process.env.PREFIX}gwhost [supervisor] <game...>`,
     narratorOnly: true,
     run: async (message, args, client) => {
-        let mininarr = message.guild.roles.cache.get("606123620732895232")
+        let mininarr = message.guild.roles.cache.get(ids.minisim)
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let sup = ""
         if (message.member.roles.cache.has(mininarr.id)) {

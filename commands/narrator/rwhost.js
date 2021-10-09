@@ -1,12 +1,13 @@
 const db = require("quick.db")
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "rwhost",
     description: "Host a ranked game.",
     usage: `${process.env.PREFIX}rwhost <game...>`,
     run: async (message, args, client) => {
-        let narrator = message.guild.roles.cache.get("606123619999023114")
+        let narrator = message.guild.roles.cache.get(ids.narratorsim)
         if (!message.member.roles.cache.has(narrator.id)) return
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let rs = db.get("rankedseason")

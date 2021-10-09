@@ -1,5 +1,6 @@
 const { MessageActionRow } = require("discord.js")
 const db = require("quick.db")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "cancel",
@@ -10,13 +11,13 @@ module.exports = {
         if (db.get(`game`) == null) return message.channel.send("No game is being hosted")
 
         message.guild.channels.cache.find((c) => c.name === "game-announcements").send(`Game was canceled. Sorry for the inconvenience!`)
-        let t = message.guild.roles.cache.get("606123676668133428").members
+        let t = message.guild.roles.cache.get(ids.server.sim).members
         t.forEach((e) => {
-            e.roles.remove("606123676668133428")
+            e.roles.remove("606123676668133428") //joining role
         })
         let mid = db.get("game")
         message.guild.channels.cache
-            .get("606123818305585167")
+            .get("606123818305585167") //game warning
             .messages.fetch(mid)
             .then((m) => {
                 let allc = m.components
