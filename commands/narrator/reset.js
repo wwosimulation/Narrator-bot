@@ -76,7 +76,7 @@ module.exports = {
                 VIEW_CHANNEL: true,
             })
 
-            let t = client.guilds.cache.get(ids.sim).roles.cache.get("606123676668133428").members
+            let t = client.guilds.cache.get(ids.server.sim).roles.cache.get("606123676668133428").members
 
             t.forEach((e) => {
                 e.roles.remove("606123676668133428") // joining role
