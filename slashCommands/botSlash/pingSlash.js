@@ -6,7 +6,7 @@ module.exports = {
     },
     permissions: {
         sim: [{ id: "606138123260264488", type: "ROLE", permission: true }],
-        game: [{ id: "606131215526789120", type: "ROLE", permission: true }],
+        game: [{ id: "892046210536468500", type: "ROLE", permission: true }],
     },
     server: ["sim", "game"],
     run: async (interaction, client) => {
