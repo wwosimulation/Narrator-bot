@@ -8,7 +8,7 @@ module.exports = {
     usage: `${process.env.PREFIX}reset`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.member.roles.cache.has("606139219395608603") || message.member.roles.cache.has("606276949689499648")) {
+        if (message.member.roles.cache.has(ids.narrator) || message.member.roles.cache.has(ids.mini)) {
             let times = [10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000]
             times = times[Math.floor(Math.random() * times.length)]
             let gunner = message.guild.channels.cache.filter((c) => c.name === "priv-gunner").map((x) => x.id) // gunner
