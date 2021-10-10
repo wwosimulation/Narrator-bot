@@ -417,10 +417,14 @@ module.exports = {
                         if (qah == bandits.map((x) => x.id).length) {
                             let t = await interaction.guild.channels.create("bandits", {
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 parent: "892046231516368906",
 =======
                                 parent: "606250714355728395",
 >>>>>>> d672ecb (Move srole to slash commands (#162))
+=======
+                                parent: "892046231516368906",
+>>>>>>> 20ab93d (id replace)
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -479,10 +483,14 @@ module.exports = {
                         if (qah == sect.map((x) => x.id).length) {
                             let t = await interaction.guild.channels.create("sect-members", {
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 parent: "892046231516368906",
 =======
                                 parent: "606250714355728395",
 >>>>>>> d672ecb (Move srole to slash commands (#162))
+=======
+                                parent: "892046231516368906",
+>>>>>>> 20ab93d (id replace)
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
