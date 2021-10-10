@@ -1,7 +1,7 @@
 const shuffle = require("shuffle-array")
 const db = require("quick.db")
 const pull = require("array-pull")
-const { getRole, fn } = require("../../config")
+const { getRole, fn, ids } = require("../../config")
 
 module.exports = {
     command: {
@@ -51,9 +51,9 @@ module.exports = {
     },
     permissions: {
         game: [
-            { id: "606139219395608603", type: "ROLE", permission: true }, // @Narrator
-            { id: "606276949689499648", type: "ROLE", permission: true }, // @Narrator Trainee
-            { id: "606131215526789120", type: "ROLE", permission: false }, // @Player
+            { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
+            { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
+            { id: "892046210536468500", type: "ROLE", permission: false }, // @Player
         ],
     },
     server: ["game"],
