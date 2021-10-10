@@ -72,7 +72,7 @@ const clearMainChannels = async (message) => {
 }
 
 const clearSettings = async (message) => {
-    let settings = message.guild.channels.cache.filter((c) => c.parentID === "606250714355728395")
+    let settings = message.guild.channels.cache.filter((c) => c.parentID === "892046231516368906")
     asyncForEach(settings, async (e) => {
         let oki = await e.messages.fetch()
         let hmm = oki.filter((m) => !m.pinned && Date.now() - m.createdTimestamp < 60 * 60 * 24 * 14)

@@ -304,7 +304,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == bandits.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("bandits", {
-                                parent: "606250714355728395",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -362,7 +362,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == sect.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("sect-members", {
-                                parent: "606250714355728395",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
