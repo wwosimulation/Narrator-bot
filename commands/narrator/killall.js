@@ -8,8 +8,6 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        if (message.guild.id != "472261911526768642") return
-
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
 
