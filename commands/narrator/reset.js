@@ -82,6 +82,7 @@ module.exports = {
                 })
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             message.guild.channels.cache
                 .find((x) => x.name == "game-lobby")
                 .permissionOverwrites.edit(ids.alive, {
@@ -93,6 +94,9 @@ module.exports = {
             let t = client.guilds.cache.get(ids.server.sim).roles.cache.get("606123676668133428").members
 =======
             message.guild.channels.cache.get("606132387587293195").permissionOverwrites.edit(ids.alive, {
+=======
+            message.guild.channels.cache.find(x => x.name == "game-lobby").permissionOverwrites.edit(ids.alive, {
+>>>>>>> 7898930 (game lobby)
                 SEND_MESSAGES: true,
                 READ_MESSAGE_HISTORY: true,
                 VIEW_CHANNEL: true,
