@@ -1,15 +1,7 @@
 const shuffle = require("shuffle-array")
 const db = require("quick.db")
 const pull = require("array-pull")
-<<<<<<< HEAD
-<<<<<<< HEAD
 const { getRole, fn, ids } = require("../../config")
-=======
-const { getRole, fn } = require("../../config")
->>>>>>> d672ecb (Move srole to slash commands (#162))
-=======
-const { getRole, fn, ids } = require("../../config")
->>>>>>> 2684237 (fix ids)
 
 module.exports = {
     command: {
@@ -59,21 +51,9 @@ module.exports = {
     },
     permissions: {
         game: [
-<<<<<<< HEAD
-<<<<<<< HEAD
             { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
             { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
             { id: "892046210536468500", type: "ROLE", permission: false }, // @Player
-=======
-            { id: "606139219395608603", type: "ROLE", permission: true }, // @Narrator
-            { id: "606276949689499648", type: "ROLE", permission: true }, // @Narrator Trainee
-            { id: "606131215526789120", type: "ROLE", permission: false }, // @Player
->>>>>>> d672ecb (Move srole to slash commands (#162))
-=======
-            { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
-            { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
-            { id: "892046210536468500", type: "ROLE", permission: false }, // @Player
->>>>>>> 2684237 (fix ids)
         ],
     },
     server: ["game"],
@@ -88,11 +68,8 @@ module.exports = {
         if (hideOnDeath === "false") hideOnDeath = false
         if (hideRoles === "false") hideOnDeath = false
 
-<<<<<<< HEAD
         console.log(hideOnDeath, hideRoles)
 
-=======
->>>>>>> d672ecb (Move srole to slash commands (#162))
         let alive = interaction.guild.roles.cache.find((r) => r.name === "Alive")
         let mininarr = interaction.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = interaction.guild.roles.cache.find((r) => r.name === "Narrator")
@@ -121,19 +98,12 @@ module.exports = {
         }
         if (exists == true) {
             interaction.reply("A player has a channel occupied already! Use `+nmanual [player number] [role]` to remove them from their channel!")
-<<<<<<< HEAD
             client.commands.get("playerinfo").run(interaction, [], client)
             return
         }
 
         await interaction.deferReply()
 
-=======
-            client.commands.get("playerinfo").run(interaction, args, client)
-            return
-        }
-
->>>>>>> d672ecb (Move srole to slash commands (#162))
         let revealed = interaction.guild.roles.cache.find((r) => r.name === "Revealed")
         let bot = interaction.guild.roles.cache.find((r) => r.name === "Bots")
         let wwsChat = interaction.guild.channels.cache.find((c) => c.name === "werewolves-chat")
@@ -154,11 +124,7 @@ module.exports = {
             args[args.indexOf(arg)] = arg.toLowerCase()
         })
         if (args.length != alive.members.size && gamemode == "custom") {
-<<<<<<< HEAD
             return interaction.editReply("The number of roles do not match the number of players!")
-=======
-            return interaction.reply("The number of roles do not match the number of players!")
->>>>>>> d672ecb (Move srole to slash commands (#162))
         }
 
         let rolelist = []
@@ -167,11 +133,7 @@ module.exports = {
         let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch"]
         let rsv = ["detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer"]
         let rww = ["alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman"]
-<<<<<<< HEAD
         let rk = ["alchemist", "arsonist", "bomber", "cannibal", "corruptor", "illusionist", "serial-killer"]
-=======
-        let rk = ["alchemist", "arsonist", "bomber", "cannibal", "corruptor", "illusionist", "serial-killer", "zombie"]
->>>>>>> d672ecb (Move srole to slash commands (#162))
         let rv = ["fool", "headhunter"]
         let seerdet = ["seer", "detective"]
         let auraspirit = ["aura-seer", "spirit-seer"]
@@ -304,7 +266,6 @@ module.exports = {
             let role = getRole(x)
             if (!role || role.name == "Unknown Role") {
                 cancel = true
-<<<<<<< HEAD
                 return interaction.editReply(`Unable to find the ${x} role!`)
             }
             if (!role.description) {
@@ -318,21 +279,6 @@ module.exports = {
             if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
         if (cancel) return interaction.editReply("srole canceled")
-=======
-                return interaction.reply(`Unable to find the ${x} role!`)
-            }
-            if (!role.description) {
-                cancel = true
-                return interaction.reply(`The information for the ${x} role is missing! Please report this using \`+bug\``)
-            }
-            if (["Bandit", "Accomplice", "Sect Leader", "Grave Robber"].includes(role.name)) {
-                cancel = true
-                return interaction.reply(`The ${role.name} role is currently not available`)
-            }
-            if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
-        })
-        if (cancel) return interaction.reply("srole canceled")
->>>>>>> d672ecb (Move srole to slash commands (#162))
         shuffle(finalRoleList)
         let sorcChats = []
         for (let k = 0; k < alive.members.size; k++) {
@@ -342,11 +288,7 @@ module.exports = {
             let guy = interaction.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
             db.delete(`suicided_${guy.id}`)
             let lol = await interaction.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
-<<<<<<< HEAD
                 parent: "892046231516368906",
-=======
-                parent: "748959630520090626",
->>>>>>> d672ecb (Move srole to slash commands (#162))
             })
             lol.permissionOverwrites.create(interaction.guild.id, {
                 VIEW_CHANNEL: false,
@@ -416,15 +358,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == bandits.map((x) => x.id).length) {
                             let t = await interaction.guild.channels.create("bandits", {
-<<<<<<< HEAD
-<<<<<<< HEAD
                                 parent: "892046231516368906",
-=======
-                                parent: "606250714355728395",
->>>>>>> d672ecb (Move srole to slash commands (#162))
-=======
-                                parent: "892046231516368906",
->>>>>>> 20ab93d (id replace)
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -482,15 +416,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == sect.map((x) => x.id).length) {
                             let t = await interaction.guild.channels.create("sect-members", {
-<<<<<<< HEAD
-<<<<<<< HEAD
                                 parent: "892046231516368906",
-=======
-                                parent: "606250714355728395",
->>>>>>> d672ecb (Move srole to slash commands (#162))
-=======
-                                parent: "892046231516368906",
->>>>>>> 20ab93d (id replace)
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -547,12 +473,8 @@ module.exports = {
             READ_MESSAGE_HISTORY: true,
         })
         client.commands.get("playerinfo").run(interaction, args, client)
-<<<<<<< HEAD
         interaction.editReply("If everything looks correct, use `+startgame` to start the game!")
         db.set(`gamePhase`, -1)
-=======
-        interaction.reply("If everything looks correct, use `+startgame` to start the game!")
->>>>>>> d672ecb (Move srole to slash commands (#162))
         db.set(`gamemode`, gamemode)
     },
 }
