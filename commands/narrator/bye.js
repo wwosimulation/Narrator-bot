@@ -11,7 +11,7 @@ module.exports = {
         await sleep(3000)
         await clearMainChannels(message)
         await sleep(1000)
-        message.guild.channels.cache.filter((c) => c.parentID === "748959630520090626").forEach((x) => x.delete())
+        message.guild.channels.cache.filter((c) => c.parentID === "892046231516368906").forEach((x) => x.delete())
         await sleep(1000)
         await clearSettings(message)
         await sleep(1000)

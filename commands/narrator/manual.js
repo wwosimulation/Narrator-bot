@@ -64,7 +64,7 @@ module.exports = {
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
         let uwu = await message.guild.channels.create(`priv-${real}`, {
-            parent: "748959630520090626",
+            parent: "892046231516368906",
         })
         uwu.permissionOverwrites.create(message.guild.id, {
             VIEW_CHANNEL: false,

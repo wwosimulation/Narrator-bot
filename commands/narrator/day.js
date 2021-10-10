@@ -1702,7 +1702,7 @@ module.exports = {
                         if (thecurse.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
                             z = 99
                             let t = await message.guild.channels.create("priv-werewolf", {
-                                parent: "748959630520090626",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -2923,7 +2923,7 @@ module.exports = {
                                             }
                                         })
                                         let ff = await message.guild.channels.create("priv-werewolf", {
-                                            parent: "748959630520090626",
+                                            parent: "892046231516368906",
                                         })
                                         ff.permissionOverwrites.create(guy.id, {
                                             SEND_MESSAGES: true,
@@ -2972,7 +2972,7 @@ module.exports = {
                                                         if (rlguy.roles.cache.has(alive.id)) {
                                                             if (chan.permissionsFor(rlguy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                                                 let eij = await message.guild.channels.create("priv-werewolf", {
-                                                                    parent: "748959630520090626",
+                                                                    parent: "892046231516368906",
                                                                 })
                                                                 eij.permissionOverwrites.create(rlguy.id, {
                                                                     SEND_MESSAGES: true,
@@ -3087,7 +3087,7 @@ module.exports = {
                                 })
 
                                 let ff = await message.guild.channels.create("priv-zombie", {
-                                    parent: "748959630520090626",
+                                    parent: "892046231516368906",
                                 })
                                 ff.permissionOverwrites.create(tempguy.id, {
                                     SEND_MESSAGES: true,
