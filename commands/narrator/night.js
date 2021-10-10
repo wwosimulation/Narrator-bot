@@ -16,8 +16,6 @@ module.exports = {
     usage: `${process.env.PREFIX}night <player | 0>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.guild.id != "472261911526768642") return
-
         let sww = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").map((x) => x.id)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
