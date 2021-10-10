@@ -318,7 +318,7 @@ module.exports = {
                                         console.log("hi")
                                         chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
                                         let chan1 = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`, {
-                                            parent: "748959630520090626",
+                                            parent: "892046231516368906",
                                         })
                                         chan1.permissionOverwrites.edit(player.id, {
                                             SEND_MESSAGES: true,
@@ -393,7 +393,7 @@ module.exports = {
                         }
 
                         let nbrole1 = await message.guild.channels.create(`priv-${nbr2.replace(" ", "-").toLowerCase()}`, {
-                            parent: "748959630520090626",
+                            parent: "892046231516368906",
                         })
                         nbrole1.permissionOverwrites.create(guy1.id, {
                             SEND_MESSAGES: true,
@@ -424,7 +424,7 @@ module.exports = {
                         await nbrole1.send(`${alive}`)
 
                         let nbrole2 = await message.guild.channels.create(`priv-${nbr1.replace(" ", "-").toLowerCase()}`, {
-                            parent: "748959630520090626",
+                            parent: "892046231516368906",
                         })
                         nbrole2.permissionOverwrites.create(guy2.id, {
                             SEND_MESSAGES: true,

@@ -109,7 +109,7 @@ module.exports = (client) => {
                     }
                     if (guy) {
                         let abc = await newMember.guild.channels.create(`priv-${role.toLowerCase().replace(" ", "-")}`, {
-                            parent: "748959630520090626",
+                            parent: "892046231516368906",
                             permissionOverwrites: [
                                 {
                                     id: guy.id,
@@ -246,7 +246,7 @@ module.exports = (client) => {
                             if (chan.permissionsFor(toGuy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 guy = toGuy
                                 let ff = await newMember.guild.channels.create(`priv-${role.toLowerCase().replace(" ", "-")}`, {
-                                    parent: "748959630520090626",
+                                    parent: "892046231516368906",
                                     permissionOverwrites: [
                                         {
                                             id: guy.id,
@@ -314,7 +314,7 @@ module.exports = (client) => {
                         if (db.get(`role_${guy.id}`) == "Seer Apprentice") {
                             a = 99
                             let ff = await newMember.guild.channels.create("priv-seer", {
-                                parent: "748959630520090626",
+                                parent: "892046231516368906",
                                 permissionOverwrites: [
                                     {
                                         id: guy.id,

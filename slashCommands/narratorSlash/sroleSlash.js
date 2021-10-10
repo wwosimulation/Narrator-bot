@@ -284,7 +284,7 @@ module.exports = {
             let guy = interaction.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
             db.delete(`suicided_${guy.id}`)
             let lol = await interaction.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
-                parent: "748959630520090626",
+                parent: "892046231516368906",
             })
             lol.permissionOverwrites.create(interaction.guild.id, {
                 VIEW_CHANNEL: false,
