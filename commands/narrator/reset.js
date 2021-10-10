@@ -70,7 +70,7 @@ module.exports = {
                     VIEW_CHANNEL: true,
                 })
 
-            message.guild.channels.cache.get("606132387587293195").permissionOverwrites.edit(ids.alive, {
+            message.guild.channels.cache.find(x => x.name == "game-lobby").permissionOverwrites.edit(ids.alive, {
                 SEND_MESSAGES: true,
                 READ_MESSAGE_HISTORY: true,
                 VIEW_CHANNEL: true,
