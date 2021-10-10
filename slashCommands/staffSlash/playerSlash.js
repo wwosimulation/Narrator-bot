@@ -5,6 +5,7 @@
 ["set", "add", "remove"]
 */
 const players = require("../../schemas/players")
+const { ids } = require("../../config")
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
