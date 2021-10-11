@@ -63,7 +63,22 @@ module.exports = {
                             return
                         } else skiped.push(arg)
                     })
+<<<<<<< HEAD
                 })
+=======
+                }
+                if (skiped.length !== 0) answer += `\n**Following arguments couln't be resolved:**\n${skiped.map((element) => `\`${element}\``).join(" ")}\nValid CommandResolvables are \`commandID\`, \`commandName\`, \`sim\` and \`game\`!\nUse \`${process.env.PREFIX}nuke here <commands...>\` to delete commands in the current server only.`
+                return message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
+            } else {
+                client.guilds.cache
+                    .filter((guild) => guild.id === ids.server.sim || guild.id === ids.server.game)
+                    .each((server) => {
+                        server.commands.set([])
+                        answer += `Bulk delete of server: \`${server.name}\`\n`
+                    })
+                answer += `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\n\`Game: ${client.guilds.resolve(ids.server.game).commands.cache.size}\``
+                return message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
+>>>>>>> ebdb43c (Prettified Code!)
             }
             if (skiped.length !== 0) answer = answer + `\n**Following arguments couln't be resolved:**\n${skiped.map((element) => `\`${element}\``).join(" ")}\nValid CommandResolvables are \`commandID\`, \`commandName\`, \`sim\` and \`game\`!\nUse \`${process.env.PREFIX}nuke here <commands...>\` to delete commands in the current server only.`
             return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
