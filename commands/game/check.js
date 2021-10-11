@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { soloKillers, roles, getRole, fn } = require("../../config")
+const { soloKillers, roles, getRole, fn, ids } = require("../../config")
 
 module.exports = {
     name: "check",
@@ -20,7 +20,7 @@ module.exports = {
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
-            if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.reply("You or the person you are checking is not alive.")
+            if (!guy.roles.cache.has(ids.alive) || !ownself.roles.cache.has(ids.alive)) return await message.reply("You or the person you are checking is not alive.")
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`You are in control of them, why would you ever want to waste their ability?`)
             if (guy == ownself) return message.channel.send("Checking yourself? Trust issues, hah! lol")
             let ability = await db.fetch(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `auraCheck_${dc.chan.id}` : `auraCheck_${message.channel.id}`}`)
@@ -55,7 +55,7 @@ module.exports = {
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             else if (guy == ownself) {
                 return message.channel.send("Checking yourself? Trust issues, hah! lol")
-            } else if (!guy.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) return await message.channel.send("You or the person you are checking is not alive.")
+            } else if (!guy.roles.cache.has(ids.alive) || !ownself.roles.cache.has(ids.alive)) return await message.channel.send("You or the person you are checking is not alive.")
             let checked = await db.fetch(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `seer_${dc.chan.id}` : `seer_${message.channel.id}`}`)
             if (checked == "yes") return await message.channel.send("You already used your ability for tonight!")
             let role = await db.fetch(`role_${guy.id}`)
@@ -92,7 +92,7 @@ module.exports = {
             else if (guy1 == ownself || guy2 == ownself) {
                 return message.channel.send("Checking with yourself? Trust issues, hah! lol")
             }
-            if (!guy1.roles.cache.has("606140092213624859") || !guy2.roles.cache.has("606140092213624859") || !ownself.roles.cache.has("606140092213624859")) {
+            if (!guy1.roles.cache.has(ids.alive) || !guy2.roles.cache.has(ids.alive) || !ownself.roles.cache.has(ids.alive)) {
                 return await message.channel.send("You or the person you are checking is not alive.")
             }
 

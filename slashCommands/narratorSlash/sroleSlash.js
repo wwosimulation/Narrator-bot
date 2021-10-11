@@ -68,6 +68,8 @@ module.exports = {
         if (hideOnDeath === "false") hideOnDeath = false
         if (hideRoles === "false") hideOnDeath = false
 
+        console.log(hideOnDeath, hideRoles)
+
         let alive = interaction.guild.roles.cache.find((r) => r.name === "Alive")
         let mininarr = interaction.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = interaction.guild.roles.cache.find((r) => r.name === "Narrator")
@@ -96,7 +98,7 @@ module.exports = {
         }
         if (exists == true) {
             interaction.reply("A player has a channel occupied already! Use `+nmanual [player number] [role]` to remove them from their channel!")
-            client.commands.get("playerinfo").run(interaction, args, client)
+            client.commands.get("playerinfo").run(interaction, [], client)
             return
         }
 
