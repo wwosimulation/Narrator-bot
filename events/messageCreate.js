@@ -52,11 +52,11 @@ module.exports = (client) => {
   `)
             }
 
-            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has("606140092213624859") && message.content.length > 140) {
+            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has(config.ids.alive) && message.content.length > 140) {
                 message.delete()
                 return message.channel.send("Maximum length for messages are 140 characters!")
             }
-            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has("606140092213624859") && message.content.includes("\n")) {
+            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has(config.ids.alive) && message.content.includes("\n")) {
                 message.delete()
                 return message.channel.send("You can only send one line per message!")
             }

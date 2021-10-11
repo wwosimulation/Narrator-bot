@@ -21,7 +21,7 @@ module.exports = {
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             if (!guy) return await message.channel.send("The player is not in game! Mention the correct player number.")
             if (guy == ownself) return await message.channel.send("You cannot revive yourself.")
-            if (!guy.roles.cache.has("606131202814115882") || !ownself.roles.cache.has("606140092213624859")) return await message.channel.send("You cannot revive an alive player.")
+            if (!guy.roles.cache.has("606131202814115882") || !ownself.roles.cache.has(config.ids.alive)) return await message.channel.send("You cannot revive an alive player.")
             let night = await db.fetch(`isNight`)
             if (night != "yes") return await message.channel.send("You can use your ability only at night!")
             let role = db.get(`role_${guy.id}`)
