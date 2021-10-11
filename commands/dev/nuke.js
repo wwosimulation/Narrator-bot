@@ -5,7 +5,7 @@ module.exports = {
     name: "nuke",
     description: "Deletes all or specific slash commands of the bot you are using.",
     usage: `${process.env.PREFIX}nuke [(here) <commands...>]`,
-    run: (message, args, client) => {
+    run: async (message, args, client) => {
         if (!message.member.roles.cache.has("859099415515627540") && !message.member.roles.cache.has("606123616228343812")) return message.reply({ content: "You are missing permissions to do that!" })
         let s = ["sim", "game"]
         var answer = "**Following actions were executed:**\n"
@@ -31,11 +31,12 @@ module.exports = {
                 // Seaching in all servers
                 args.forEach((arg) => {
                     // Nuking one server
-                    if (s.includes(arg))
-                        return client.guilds.fetch(ids.server[arg]).then((server) => {
+                    if (s.includes(arg)){
+                        client.guilds.fetch(ids.server[arg]).then((server) => {
                             server.commands.set([])
                             answer = answer + `Bulk delete of server: \`${server.name}\`\n`
                         })
+                    }
                     // Nuking command IDs and names
                     s.forEach((ser) => {
                         if (client.guilds.resolve(ids.server[ser]).commands.cache.has(arg))
@@ -55,7 +56,7 @@ module.exports = {
                 })
             }
             if (skiped.length !== 0) answer = answer + `\n**Following arguments couln't be resolved:**\n${skiped.map((element) => `\`${element}\``).join(" ")}\nValid CommandResolvables are \`commandID\`, \`commandName\`, \`sim\` and \`game\`!\nUse \`${process.env.PREFIX}nuke here <commands...>\` to delete commands in the current server only.`
-            return message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
+            return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
         } else {
             client.guilds.cache
                 .filter((guild) => guild.id === ids.server.sim || guild.id === ids.server.game)
