@@ -102,6 +102,8 @@ module.exports = {
             return
         }
 
+        await interaction.deferReply()
+
         let revealed = interaction.guild.roles.cache.find((r) => r.name === "Revealed")
         let bot = interaction.guild.roles.cache.find((r) => r.name === "Bots")
         let wwsChat = interaction.guild.channels.cache.find((c) => c.name === "werewolves-chat")
@@ -122,7 +124,7 @@ module.exports = {
             args[args.indexOf(arg)] = arg.toLowerCase()
         })
         if (args.length != alive.members.size && gamemode == "custom") {
-            return interaction.reply("The number of roles do not match the number of players!")
+            return interaction.editReply("The number of roles do not match the number of players!")
         }
 
         let rolelist = []
@@ -264,19 +266,19 @@ module.exports = {
             let role = getRole(x)
             if (!role || role.name == "Unknown Role") {
                 cancel = true
-                return interaction.reply(`Unable to find the ${x} role!`)
+                return interaction.editReply(`Unable to find the ${x} role!`)
             }
             if (!role.description) {
                 cancel = true
-                return interaction.reply(`The information for the ${x} role is missing! Please report this using \`+bug\``)
+                return interaction.editReply(`The information for the ${x} role is missing! Please report this using \`+bug\``)
             }
             if (["Bandit", "Accomplice", "Sect Leader", "Grave Robber"].includes(role.name)) {
                 cancel = true
-                return interaction.reply(`The ${role.name} role is currently not available`)
+                return interaction.editReply(`The ${role.name} role is currently not available`)
             }
             if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
-        if (cancel) return interaction.reply("srole canceled")
+        if (cancel) return interaction.editReply("srole canceled")
         shuffle(finalRoleList)
         let sorcChats = []
         for (let k = 0; k < alive.members.size; k++) {
@@ -471,7 +473,7 @@ module.exports = {
             READ_MESSAGE_HISTORY: true,
         })
         client.commands.get("playerinfo").run(interaction, args, client)
-        interaction.reply("If everything looks correct, use `+startgame` to start the game!")
+        interaction.editReply("If everything looks correct, use `+startgame` to start the game!")
         db.set(`gamemode`, gamemode)
     },
 }
