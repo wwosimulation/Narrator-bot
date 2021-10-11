@@ -35,7 +35,11 @@ module.exports = {
                 // Seaching in all servers
                 args.forEach((arg) => {
                     // Nuking one server
+<<<<<<< HEAD
                     if (s.includes(arg)) {
+=======
+                    if (s.includes(arg)){
+>>>>>>> c51234d (err fix)
                         client.guilds.fetch(ids.server[arg]).then((server) => {
                             server.commands.set([])
                             return answer = answer + `Bulk delete of server: \`${server.name}\`\n`
