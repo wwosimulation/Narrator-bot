@@ -7,7 +7,7 @@ module.exports = {
     usage: `${process.env.PREFIX}nuke [(here) <commands...>]`,
     run: async (message, args, client) => {
         if (!message.member.roles.cache.has("859099415515627540") && !message.member.roles.cache.has("606123616228343812")) return message.reply({ content: "You are missing permissions to do that!" })
-        let s = ["sim", "game"]
+        const s = ["sim", "game"]
         var answer = "**Following actions were executed:**\n"
         let skiped = []
         if (args.length !== 0) {
@@ -39,7 +39,7 @@ module.exports = {
                     if (s.includes(arg)) {
                         client.guilds.fetch(ids.server[arg]).then((server) => {
                             server.commands.set([])
-                            return (answer = answer + `Bulk delete of server: \`${server.name}\`\n`)
+                            return answer = answer + `Bulk delete of server: \`${server.name}\`\n`
                         })
                     }
                     // Nuking command IDs and names
