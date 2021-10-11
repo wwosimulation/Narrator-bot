@@ -38,7 +38,7 @@ module.exports = {
                     if (s.includes(arg)) {
                         client.guilds.fetch(ids.server[arg]).then((server) => {
                             server.commands.set([])
-                            return (answer = answer + `Bulk delete of server: \`${server.name}\`\n`)
+                            return answer = answer + `Bulk delete of server: \`${server.name}\`\n`
                         })
                     }
                     // Nuking command IDs and names
