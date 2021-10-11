@@ -15,16 +15,21 @@ module.exports = {
                 let cmdManager = message.guild.commands
                 args.slice(1).forEach((arg) => {
                     // Nuking command IDs and names
-                    if (cmdManager.cache.has(arg))
+                    if (cmdManager.cache.has(arg)){
                         cmdManager.cache
                             .get(arg)
                             .delete()
-                            .then((cmd) => (answer = answer + `Delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
-                    else if (cmdManager.cache.find((cmd) => cmd.name === arg).size == 1)
+                            .then((cmd) => {
+                                return answer = answer + `Delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`
+                            })}
+                    else if (cmdManager.cache.find((cmd) => cmd.name === arg)) {
                         cmdManager.cache
                             .find((cmd) => cmd.name === arg)
                             .delete()
-                            .then((cmd) => (answer = answer + `Delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
+                            .then((cmd) => {
+                                return answer = answer + `Delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`
+                            })
+                    }
                     else skiped.push(arg)
                 })
             } else {
@@ -39,18 +44,26 @@ module.exports = {
                     }
                     // Nuking command IDs and names
                     s.forEach((ser) => {
-                        if (client.guilds.resolve(ids.server[ser]).commands.cache.has(arg))
+                        if (client.guilds.resolve(ids.server[ser]).commands.cache.has(arg)){
                             client.guilds
                                 .resolve(ids.server[ser])
                                 .commands.cache.get(arg)
                                 .delete()
-                                .then((cmd) => (answer = answer + `ID delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
-                        else if (client.guilds.resolve(ids.server[ser]).commands.cache.find((cmd) => cmd.name === arg)/*.size == 1*/)
+                                .then((cmd) => {
+                                    answer = answer + `ID delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`
+                                })
+                                return
+                            }
+                        else if (client.guilds.resolve(ids.server[ser]).commands.cache.find((cmd) => cmd.name === arg)/*.size == 1*/){
                             client.guilds
                                 .resolve(ids.server[ser])
                                 .commands.cache.find((cmd) => cmd.name === arg)
                                 .delete()
-                                .then((cmd) => (answer = answer + `Name delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
+                                .then((cmd) => {
+                                    answer = answer + `Name delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`
+                                })
+                                return
+                            }
                         else skiped.push(arg)
                     })
                 })
@@ -65,7 +78,7 @@ module.exports = {
                     answer = answer + `Bulk delete of server: \`${server.name}\`\n`
                 })
             answer = answer + `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\nGame: \`${client.guilds.resolve(ids.server.game).commands.cache.size}\``
-            return message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
+            return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
         }
     },
 }
