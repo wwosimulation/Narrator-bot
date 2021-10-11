@@ -31,18 +31,18 @@ module.exports = {
                 // Seaching in all servers
                 args.forEach((arg) => {
                     // Nuking one server
-                    if (s.includes(arg)) return client.guilds.resolve(ids[arg]).commands.set([])((answer += `Bulk delete of server: \`${client.guilds.resolve(ids[arg]).name}\`\n`))
+                    if (s.includes(arg)) return client.guilds.resolve(ids.server[arg]).commands.set([])((answer += `Bulk delete of server: \`${client.guilds.resolve(ids[arg]).name}\`\n`))
                     // Nuking command IDs and names
                     s.forEach((ser) => {
-                        if (client.guilds.resolve(ids[ser]).commands.cache.has(arg))
+                        if (client.guilds.resolve(ids.server[ser]).commands.cache.has(arg))
                             client.guilds
-                                .resolve(ids[ser])
+                                .resolve(ids.server[ser])
                                 .commands.cache.get(arg)
                                 .delete()
                                 .then((cmd) => (answer += `ID delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
-                        else if (client.guilds.resolve(ids[ser]).commands.cache.find((cmd) => cmd.name === arg).size == 1)
+                        else if (client.guilds.resolve(ids.server[ser]).commands.cache.find((cmd) => cmd.name === arg).size == 1)
                             client.guilds
-                                .resolve(ids[ser])
+                                .resolve(ids.server[ser])
                                 .commands.cache.find((cmd) => cmd.name === arg)
                                 .delete()
                                 .then((cmd) => (answer += `Name delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
