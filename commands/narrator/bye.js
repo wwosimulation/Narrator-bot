@@ -47,10 +47,8 @@ const kickPlayers = async (message) => {
 const kickSpectators = async (message) => {
     let spec = await message.guild.roles.cache.find((r) => r.name === "Spectator")
     await spec.members.forEach(async (e) => {
-        if (e.id != "306566013791633408") {
-            await e.kick()
-            console.log(`Kicked ${e.user.tag}`)
-        }
+        await e.kick()
+        console.log(`Kicked ${e.user.tag}`)
     })
 }
 
