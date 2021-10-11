@@ -19,12 +19,12 @@ module.exports = {
                         cmdManager.cache
                             .get(arg)
                             .delete()
-                            .then((cmd) => (answer += `Delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
+                            .then((cmd) => (answer = answer + `Delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
                     else if (cmdManager.cache.find((cmd) => cmd.name === arg).size == 1)
                         cmdManager.cache
                             .find((cmd) => cmd.name === arg)
                             .delete()
-                            .then((cmd) => (answer += `Delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
+                            .then((cmd) => (answer = answer + `Delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
                     else skiped.push(arg)
                 })
             } else {
@@ -34,7 +34,7 @@ module.exports = {
                     if (s.includes(arg))
                         return client.guilds.fetch(ids.server[arg]).then((server) => {
                             server.commands.set([])
-                            answer += `Bulk delete of server: \`${server.name}\`\n`
+                            answer = answer + `Bulk delete of server: \`${server.name}\`\n`
                         })
                     // Nuking command IDs and names
                     s.forEach((ser) => {
@@ -43,18 +43,18 @@ module.exports = {
                                 .resolve(ids.server[ser])
                                 .commands.cache.get(arg)
                                 .delete()
-                                .then((cmd) => (answer += `ID delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
+                                .then((cmd) => (answer = answer + `ID delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
                         else if (client.guilds.resolve(ids.server[ser]).commands.cache.find((cmd) => cmd.name === arg).size == 1)
                             client.guilds
                                 .resolve(ids.server[ser])
                                 .commands.cache.find((cmd) => cmd.name === arg)
                                 .delete()
-                                .then((cmd) => (answer += `Name delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
+                                .then((cmd) => (answer = answer + `Name delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
                         else skiped.push(arg)
                     })
                 })
             }
-            if (skiped.length !== 0) answer += `\n**Following arguments couln't be resolved:**\n${skiped.map((element) => `\`${element}\``).join(" ")}\nValid CommandResolvables are \`commandID\`, \`commandName\`, \`sim\` and \`game\`!\nUse \`${process.env.PREFIX}nuke here <commands...>\` to delete commands in the current server only.`
+            if (skiped.length !== 0) answer = answer + `\n**Following arguments couln't be resolved:**\n${skiped.map((element) => `\`${element}\``).join(" ")}\nValid CommandResolvables are \`commandID\`, \`commandName\`, \`sim\` and \`game\`!\nUse \`${process.env.PREFIX}nuke here <commands...>\` to delete commands in the current server only.`
             return message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
 
         } else {
@@ -64,7 +64,7 @@ module.exports = {
                     server.commands.set([])
                     answer = answer + `Bulk delete of server: \`${server.name}\`\n`
                 })
-            answer = answer + `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\n\`Game: ${client.guilds.resolve(ids.server.game).commands.cache.size}\``
+            answer = answer + `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\nGame: \`${client.guilds.resolve(ids.server.game).commands.cache.size}\``
             return message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
         }
     },
