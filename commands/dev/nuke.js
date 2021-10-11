@@ -34,7 +34,7 @@ module.exports = {
                     if (s.includes(arg)) {
                         client.guilds.fetch(ids.server[arg]).then((server) => {
                             server.commands.set([])
-                            return answer = answer + `Bulk delete of server: \`${server.name}\`\n`
+                            return (answer = answer + `Bulk delete of server: \`${server.name}\`\n`)
                         })
                     }
                     // Nuking command IDs and names
@@ -45,7 +45,7 @@ module.exports = {
                                 .commands.cache.get(arg)
                                 .delete()
                                 .then((cmd) => (answer = answer + `ID delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
-                        else if (client.guilds.resolve(ids.server[ser]).commands.cache.find((cmd) => cmd.name === arg)/*.size == 1*/)
+                        else if (client.guilds.resolve(ids.server[ser]).commands.cache.find((cmd) => cmd.name === arg) /*.size == 1*/)
                             client.guilds
                                 .resolve(ids.server[ser])
                                 .commands.cache.find((cmd) => cmd.name === arg)
