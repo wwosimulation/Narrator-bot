@@ -23,7 +23,7 @@ module.exports = {
             return await message.channel.send("You can douse only in night!")
         }
         if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't douse anyone." })
-        if (ignited == db.get(`nightCount`)) return message.channel.send("You just ignited the players!")
+        if (ignited == Math.floor(gamePhase/3)+1) return message.channel.send("You just ignited the players!")
         if (args.length == 0) {
             return await message.channel.send("Mention the players to douse with!")
         } else {

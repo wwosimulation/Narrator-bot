@@ -17,7 +17,7 @@ module.exports = (client) => {
                 let chan = newMember.guild.channels.cache.get(prog[a])
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     // peace
-                    if (db.get(`peace_${chan.id}`) > db.get(`nightCount`)) {
+                    if (db.get(`peace_${chan.id}`) > Math.floor(db.get(`gamePhase`)/3)+1) {
                         db.set(`peace_${chan.id}`, 0)
                     }
                     // terror

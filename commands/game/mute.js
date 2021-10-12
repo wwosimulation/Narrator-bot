@@ -13,8 +13,8 @@ module.exports = {
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-grumpy-grandma") {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let night = await db.fetch(`nightCount`)
             let gamePhase = await db.fetch(`gamePhase`)
+            let night = Math.floor(gamePhase/3)+1
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`That's funny but no.`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
@@ -36,8 +36,8 @@ module.exports = {
             }
         } else if (message.channel.name == "priv-hacker") {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let night = await db.fetch(`nightCount`)
             let gamePhase = await db.fetch(`gamePhase`)
+            let night = Math.floor(gamePhase/3)+1
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             if (!guy) return message.reply("Invalid target!")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)

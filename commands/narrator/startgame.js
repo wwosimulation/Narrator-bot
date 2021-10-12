@@ -28,7 +28,6 @@ module.exports = {
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
 
         db.set(`gamePhase`, 0)
-        db.set(`nightCount`, 1)
         db.set(`dayCount`, 0)
         db.set(`wwsVote`, "yes")
         db.set(`commandEnabled`, "no")

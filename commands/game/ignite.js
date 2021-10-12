@@ -20,7 +20,7 @@ module.exports = {
             if (gamePhase % 3 != 0) return await message.channel.send("You can use your ability only at night!")
             if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't convert anyone." })
 
-            if (didCmd == db.get(`nightCount`)) return message.channel.send("You have used your ability tonight.")
+            if (didCmd == Math.floor(gamePhase/3)+1) return message.channel.send("You have used your ability tonight.")
             if (doused.length == 0) return await message.channel.send("Who are you igniting? You haven't doused player yet.")
 
             for (let i = 0; i < doused.length; i++) {
@@ -35,7 +35,7 @@ module.exports = {
                     }
                 }
             }
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`, db.get(`nightCount`))
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`, Math.floor(gamePhase/3)+1)
             db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `doused_${dc.chan.id}` : `doused_${message.channel.id}`}`)
         }
     },

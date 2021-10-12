@@ -29,8 +29,9 @@ module.exports = {
         let bh = message.guild.channels.cache.filter((c) => c.name === "priv-beast-hunter").map((x) => x.id)
         let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
         let med = message.guild.channels.cache.filter((c) => c.name === "priv-medium").map((x) => x.id)
-        let day = db.get(`dayCount`)
-        let night = db.get(`nightCount`)
+        let gamePhase = db.get(`gamePhase`)
+        let day = Math.floor(gamePhase/3)+1
+        let night = Math.floor(gamePhase/3)+1
         let arso = message.guild.channels.cache.filter((c) => c.name === "priv-arsonist").map((x) => x.id)
         let shunt = message.guild.channels.cache.filter((c) => c.name === "priv-sect-hunter").map((x) => x.id)
         let sel = message.guild.channels.cache.filter((c) => c.name === "priv-sect-leader").map((x) => x.id)
@@ -3557,7 +3558,7 @@ module.exports = {
 
         // lovers
         setTimeout(async () => {
-            if (db.get(`nightCount`) == 1) {
+            if (Math.floor(db.get(`gamePhase`)/3)+1 == 1) {
                 for (let x = 0; x < cupid.length; x++) {
                     let channel = message.guild.channels.cache.get(cupid[x])
                     let player

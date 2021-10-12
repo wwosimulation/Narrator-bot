@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["revenge", "avenge", "target"],
     gameOnly: true,
     run: async (message, args, client) => {
-        let night = db.get(`nightCount`) || 1
+        let night = Math.floor(gamePhase/3)+1
         let gamePhase = db.get(`gamePhase`)
         let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
         let jtag = await db.fetch(`jwwtag_${message.author.id}`)
