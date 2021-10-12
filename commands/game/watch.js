@@ -9,7 +9,7 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name == "priv-mortician") {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            let dayCount = await db.fetch(`dayCount`)
+            let dayCount = Math.floor(db.fetch(`gamePhase`)/3)+1
             let nightCount = Math.floor(db.fetch(`gamePhase`)/3)+1
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)

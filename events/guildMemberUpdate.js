@@ -21,7 +21,7 @@ module.exports = (client) => {
                         db.set(`peace_${chan.id}`, 0)
                     }
                     // terror
-                    if (db.get(`terror_${chan.id}.day`) <= db.get(`dayCount`)) {
+                    if (db.get(`terror_${chan.id}.day`) <= Math.floor(db.get(`gamePhase`)/3)+1) {
                         db.set(`terror_${chan.id}.guy`, 0)
                     }
                 }

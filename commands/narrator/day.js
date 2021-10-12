@@ -1791,7 +1791,6 @@ module.exports = {
         //console.log("Oh hi there Bandit Conversion is ok")
 
         dayChat.send(`Day ${day + 1} has started! Get ready to discuss!`)
-        db.add(`dayCount`, 1)
         db.add(`gamePhase`, 1)
 
         console.log("Ok so it is day")
@@ -3708,6 +3707,6 @@ module.exports = {
         // if (args[1] == "test") {
         //   dayChat.send(`${alive}`)
         // }
-        console.log(`Day: ${db.get(`dayCount`)}`)
+        console.log(`Day: ${Math.floor(db.fetch(`gamePhase`)/3)+1}`)
     },
 }
