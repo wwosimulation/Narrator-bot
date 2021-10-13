@@ -13,7 +13,7 @@ module.exports = {
 
         let guy = await players.findOne({ user: message.author.id })
         if (guy.badges.invite.code && guy.badges.invite.code !== "none") {
-            response.setColor("GREEN").setDescription(message.i10n("registeredInvite", { code: guy.badges.invite.code, uses: guy.badges.invite.members }))
+            response.setColor("GREEN").setDescription(message.l10n("registeredInvite", { code: guy.badges.invite.code, uses: guy.badges.invite.members }))
             return message.channel.send({ embeds: [response] })
         } else {
             let sim = client.guilds.resolve(ids.server.sim)
@@ -22,8 +22,8 @@ module.exports = {
                 client.allInvites.set(invite.code, sim.invites.resolve(invite.code))
                 response
                     .setColor("GREEN")
-                    .setDescription(message.i10n("inviteRegistered", { code: invite.code }))
-                    .setTitle(message.i10n("inviteAdded"))
+                    .setDescription(message.l10n("inviteRegistered", { code: invite.code }))
+                    .setTitle(message.l10n("inviteAdded"))
 
                 return message.channel.send({ embeds: [response] })
             })

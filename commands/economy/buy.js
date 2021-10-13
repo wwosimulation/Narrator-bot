@@ -19,7 +19,7 @@ module.exports = {
             amount = 0,
             dontbuy = false
 
-        if (args.length < 1) return message.channel.send(message.i10n("noItemProvided"))
+        if (args.length < 1) return message.channel.send(message.l10n("noItemProvided"))
 
         args.forEach((x, i) => {
             args[i] = x.toLowerCase()
@@ -47,7 +47,7 @@ module.exports = {
                 item = config.shop.items.find((x) => x.id == "cmi")
         }
         console.log(item, args)
-        if (!item) return message.channel.send(message.i10n("noItemProvided"))
+        if (!item) return message.channel.send(message.l10n("noItemProvided"))
 
         let price = item.price || 0
         let userHas = item.currency == "coin" ? data.coins : item.currency == "rose" ? data.roses : data.gems
@@ -57,13 +57,13 @@ module.exports = {
         if (item.role) {
             if (rolehas(item.role)) {
                 dontbuy = true
-                return message.channel.send(message.i10n("alreadyPurchasedRole"))
+                return message.channel.send(message.l10n("alreadyPurchasedRole"))
             }
         }
         if (item.id == "color") {
             if (rolehas(color.id)) {
                 dontbuy = true
-                return message.channel.send(message.i10n("alreadyPurchasedColor"))
+                return message.channel.send(message.l10n("alreadyPurchasedColor"))
             }
         }
 
@@ -71,7 +71,7 @@ module.exports = {
             let cmicheck = data.cmi
             if (cmicheck) {
                 dontbuy = true
-                return message.channel.send(message.i10n("alreadyPurchasedItem", { item: item.name }))
+                return message.channel.send(message.l10n("alreadyPurchasedItem", { item: item.name }))
             }
         }
 
@@ -86,7 +86,7 @@ module.exports = {
                     if (!data.customRole) data.customRole = e.id
                 }
             })
-            if (hassprole == true) return message.channel.send(message.i10n("alreadyPurchasedItem", { item: "special role" }))
+            if (hassprole == true) return message.channel.send(message.l10n("alreadyPurchasedItem", { item: "special role" }))
         }
 
         if (["rose", "bouquet"].includes(item.id)) {
@@ -97,7 +97,7 @@ module.exports = {
         if (dontbuy) return
         let totalPrice = (amount ? amount : 1) * item.price
         console.log(userHas, totalPrice)
-        if (totalPrice > userHas) return message.channel.send(message.i10n("notEnoughCurrency", { currency: pluralize(item.currency) }))
+        if (totalPrice > userHas) return message.channel.send(message.l10n("notEnoughCurrency", { currency: pluralize(item.currency) }))
         if (item.currency) data[item.currency] = data[item.currency] - totalPrice
         switch (item.currency) {
             case "coin":
@@ -143,7 +143,7 @@ module.exports = {
                     },
                 ],
             })
-            await message.channel.send(message.i10n("channelPurchaseSuccess", { channelLink: `${t}` }))
+            await message.channel.send(message.l10n("channelPurchaseSuccess", { channelLink: `${t}` }))
             data.privateChannel = t.id
         }
         data.save()

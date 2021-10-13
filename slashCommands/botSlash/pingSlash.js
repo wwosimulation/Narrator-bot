@@ -10,6 +10,6 @@ module.exports = {
     },
     server: ["sim", "game"],
     run: async (interaction, client) => {
-        interaction.reply(`${interaction.i10n("ping")}! ${Math.ceil(interaction.client.ws.ping)} ms.`)
+        interaction.reply(`${interaction.l10n("ping")}! ${Math.ceil(interaction.client.ws.ping)} ms.`)
     },
 }

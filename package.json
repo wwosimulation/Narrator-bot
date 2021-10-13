@@ -5,7 +5,7 @@
     "main": "server.js",
     "scripts": {
         "pullall": "git submodule update --init --recursive",
-        "setup-i10n": "cd /home/container/l10n && npm i",
+        "setup-l10n": "cd /home/container/l10n && npm i",
         "setup-config": "cd /home/container/config && npm i",
         "test": "mocha",
         "devstart": "pm2 start server.js --name sim-bot",

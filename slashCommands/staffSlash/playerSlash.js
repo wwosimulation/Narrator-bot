@@ -101,7 +101,7 @@ module.exports = {
             let operatorObj = {}
 
             let amount = value
-            if (isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({ content: interaction.i10n("amountInvalid", { amount: amount }), ephemeral: true })
+            if (isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: amount }), ephemeral: true })
 
             switch (operator) {
                 case "set":
@@ -142,7 +142,7 @@ module.exports = {
                 }
                 operatorObj = { $set: update }
                 await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-                return interaction.reply({ content: interaction.i10n("done") })
+                return interaction.reply({ content: interaction.l10n("done") })
             }
 
             let updateStr
@@ -161,7 +161,7 @@ module.exports = {
                     return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-            return interaction.reply({ content: interaction.i10n("done") })
+            return interaction.reply({ content: interaction.l10n("done") })
         }
     },
 }
