@@ -1852,7 +1852,6 @@ module.exports = {
 
         //console.log("Shut up you stupid pests, i am trying to sleep over here. Can't a granny get some rest?")
         // sect leader converting
-<<<<<<< HEAD
         // let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
         // setTimeout(async () => {
         //     for (let q = 0; q < sel.length; q++) {
@@ -2082,230 +2081,10 @@ module.exports = {
         //         }
         //     }
         // }, 3500)
-=======
-        let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-        setTimeout(async () => {
-            for (let q = 0; q < sel.length; q++) {
-                let sl = message.guild.channels.cache.get(sel[q])
-                if (sl) {
-                    let sect = db.get(`sect_${sl.id}`) || "0"
-                    guy = message.guild.members.cache.find((m) => m.nickname === sect)
-                    let leader
-                    for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
-                        let lol = message.guild.members.cache.find((m) => m.nickname === j.toString())
-                        if (sl.permissionsFor(lol).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            leader = lol
-                        }
-                    }
-
-                    if (sect != "0") {
-                        if (guy) {
-                            role = db.get(`role_${guy.id}`)
-                            for (let j = 0; j < hh.length; hh++) {
-                                let target = db.get(`hhtarget_${hh[j]}`)
-                                if (target == guy.nickname) {
-                                    role = "targetofhh"
-                                }
-                            }
-                            if (leader) {
-                                //return; // I FOUND THE PROBLEM
-                                if (leader.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
-                                    if (role.toLowerCase().includes("wolf") || role == "Arsonist" || role == "Zombie" || role == "Bandit" || role == "Accomplice" || role == "Sorcerer" || role == "Serial Killer" || role == "Corruptor" || role == "Illusinist" || role == "Cannibal" || role == "targetofhh" || role == "Cursed" || role == "Doppelganger" || role == "Alchemist" || role == "Grave Robber") {
-                                        sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                        sl.send(`${alive}`)
-                                        sect = "0"
-                                    } else {
-                                        let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
-
-                                        // protection from non-village
-                                        for (let l = 0; l < thechan.length; l++) {
-                                            if (db.get(`bitten_${thechan[l]}`) == true) {
-                                                sect = "0"
-                                                sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                sl.send(`${alive}`)
-                                            } else if (strongww.includes(role) || role == "Cursed" || soloKillers.includes(role) || role == "Sorcerer" || role == "Zombie" || role == "Doppelganger" || role == "Accomplice" || message.guild.channels.cache.find(x => x.name == "sect-members").permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                sl.send(`${alive}`)
-                                                sect = "0"
-                                            }
-                                        }
-
-                                        // protection from bh
-                                        if (sect != "0") {
-                                            for (let l = 0; l < bh.length; l++) {
-                                                let trap = db.get(`setTrap_${bh[l]}`)
-                                                let active = db.get(`trapActive_${bh[l]}`)
-                                                for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
-                                                    let hhhhh = message.guild.members.cache.find((me) => me.nickname === m.toString())
-                                                    let chan = message.guild.channels.cache.get(bh[l])
-                                                    if (chan.permissionsFor(hhhhh).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                        m = 99
-                                                        if (!hhhhh.roles.cache.has(alive.id)) {
-                                                            trap = null
-                                                            active = false
-                                                        }
-                                                    }
-                                                }
-                                                if (trap == guy.nickname && active == true) {
-                                                    sect = "0" // makes the serial killer's attack towards the player none
-                                                    let toSend = message.guild.channels.cache.get(bh[l])
-                                                    sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                    sl.send(`${alive}`)
-                                                    toSend.send(`${getEmoji("trap", client)} Your trap was triggered last night but your target was too strong.`)
-                                                    toSend.send(`${alive}`)
-                                                    db.set(`setTrap_${bh[l]}`, null)
-                                                    db.set(`trapActive_${bh[l]}`, false)
-                                                    j = 99
-                                                }
-                                            }
-                                        }
-
-                                        // protection from being jailed
-                                        if (sect != "0") {
-                                            for (let k = 0; k < thechan.length; k++) {
-                                                if (jailed.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) {
-                                                    k = 99
-                                                    sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                    sl.send(`${alive}`)
-                                                    sect = "0"
-                                                }
-                                            }
-                                        }
-
-                                        // protection from being healed by doctor
-                                        if (sect != "0") {
-                                            for (let o = 0; o < doc.length; o++) {
-                                                let protection = db.get(`heal_${doc[o]}`)
-                                                if (protection == guy.nickname) {
-                                                    sect = "0" // makes the serial killer's attack towards the player none
-                                                    sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                    sl.send(`${alive}`)
-                                                    let toSend = message.guild.channels.cache.get(doc[o])
-                                                    toSend.send(`${alive}`)
-                                                    toSend.send(`${getEmoji("heal", client)} Your protection saved **${guy.nickname} ${guy.user.username}**!`)
-                                                    o = 99
-                                                }
-                                            }
-                                        }
-
-                                        // protection from potion by witch
-                                        if (sect != "0") {
-                                            for (let o = 0; o < witch.length; o++) {
-                                                let potion = db.get(`potion_${witch[o]}`)
-                                                if (potion == guy.nickname) {
-                                                    sect = "0" // makes the serial killer's attack towards the player none
-                                                    db.set(`potion_${witch[o]}`, null)
-                                                    db.set(`witchAbil_${witch[o]}`, 1)
-                                                    let toSend = message.guild.channels.cache.get(witch[o])
-                                                    sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                    sl.send(`${alive}`)
-                                                    toSend.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
-                                                    toSend.send(`${alive}`)
-                                                    o = 99
-                                                }
-                                            }
-                                        }
-
-                                        if (sect != "0") {
-                                            let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
-                                            for (let k = 0; k < chans.length; k++) {
-                                                let tempchan = message.guild.channels.cache.get(chans[k])
-                                                if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                    let shield = db.get(`shield_${tempchan.id}`)
-                                                    if (shield == true) {
-                                                        tempchan.send(`${getEmoji("guard", client)} You were attacked but your shield saved you!`)
-                                                        tempchan.send(`${alive}`)
-                                                        sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                        sl.send(`${alive}`)
-                                                        sect = "0"
-                                                        db.set(`shield_${tempchan.id}`, false)
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        // protection from guard by bodyguard
-                                        if (sect != "0") {
-                                            for (let o = 0; o < bg.length; o++) {
-                                                let toSend = message.guild.channels.cache.get(bg[o])
-                                                let lives = db.get(`lives_${bg[o]}`)
-                                                let guard = db.get(`lives_${bg[o]}`)
-
-                                                if (guard == guy.nickname) {
-                                                    let thecha = message.guild.channels.cache.get(bg[o])
-                                                    if (lives == 2) {
-                                                        sect = "0" // makes the serial killer's attack towards the player none
-                                                        thecha.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
-                                                        thecha.send(`${alive}`)
-                                                        sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                        sl.send(`${alive}`)
-                                                        db.subtract(`lives_${bg[o]}`, 1)
-                                                    }
-                                                } else if (role == "Bodyguard") {
-                                                    for (let p = 0; p < bg.length; p++) {
-                                                        let thecha = message.guild.channels.cache.get(bg[p])
-                                                        if (thecha.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                            p = 89
-                                                            if (db.get(`lives_${bg[p]}`) == 2) {
-                                                                sect = "0" // makes the serial killer's attack towards the player none
-                                                                thecha.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`)
-                                                                thecha.send(`${alive}`)
-                                                                sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                                sl.send(`${alive}`)
-                                                                db.subtract(`lives_${bg[p]}`, 1)
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        // red lady
-                                        if (sect != "0") {
-                                            if (db.get(`role_${guy.id}`) == "Red Lady") {
-                                                for (let k = 0; k < rl.length; k++) {
-                                                    let chan = message.guild.channels.cache.get(rl[k])
-                                                    if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                                        if (db.get(`visit_${chan.id}`)) {
-                                                            sl.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, Cursed, a werewolf, a solo killer or the Headhunter's target!`)
-                                                            sl.send(`${alive}`)
-                                                            sect = "0"
-                                                            chan.send(`${getEmoji("guard", client)} Somebody tried to attack you while you were away!`)
-                                                            chan.send(`${alive}`)
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            if (sect != "0") {
-                                                sected.permissionOverwrites.edit(guy.id, {
-                                                    VIEW_CHANNEL: true,
-                                                    READ_MESSAGE_HISTORY: true,
-                                                })
-                                                sected.send(`${alive}\n${guy.user.username} is now a sect member`)
-                                                let thechan = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
-                                                for (let k = 0; k < thechan.length; k++) {
-                                                    let chan = message.guild.channels.cache.get(thechan[k])
-                                                    if (chan.permissionsFor(guy).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
-                                                        chan.send(`You have been converted by the Sect Leader! The leader is **${leader.nickname} ${leader.user.username}**!`)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }, 3500)
->>>>>>> 580ec30 (Update IDs to new server)
 
         //console.log("btw, i am sect leader not SEXT leader")
         // sect hunter killing
 
-<<<<<<< HEAD
         // setTimeout(async () => {
         //     for (let i = 0; i < shunt.length; i++) {
         //         let hunt = db.get(`hunt_${shunt[i]}`) || "0"
@@ -2334,36 +2113,6 @@ module.exports = {
         //         }
         //     }
         // }, 3750)
-=======
-        setTimeout(async () => {
-            for (let i = 0; i < shunt.length; i++) {
-                let hunt = db.get(`hunt_${shunt[i]}`) || "0"
-                let schan = message.guild.channels.cache.get(shunt[i])
-                let guy = message.guild.members.cache.find((m) => m.nickname === hunt)
-                let sected = message.guild.channels.cache.find(x => x.name == "sect-members")
-                let leader
-                if (hunt != "0") {
-                    for (let k = 1; k <= 16; k++) {
-                        let tempguy = message.guild.members.cache.find((m) => m.nickname === k.toString())
-                        if (tempguy) {
-                            if (tempguy.roles.cache.has(alive.id)) {
-                                if (schan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "SEND_MESSAGES"])) {
-                                    let role = db.get(`role_${guy.id}`)
-                                    if (guy.roles.cache.has(alive.id)) {
-                                        if (role == "Sect Leader" || sected.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                            dayChat.send(`${getEmoji("arrow", client)} The Sect Hunter killed **${guy.nickname} ${guy.user.username} (${role})**`)
-                                            guy.roles.add(dead.id)
-                                            guy.roles.remove(alive.id)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }, 3750)
->>>>>>> 580ec30 (Update IDs to new server)
         //console.log("time to f*** you up sect")
 
         // allowing players to speak in #day-chat
@@ -3425,7 +3174,6 @@ module.exports = {
                 let role = db.get(`role_${guy.id}`)
 
                 // solo killers, cursed and wolves
-<<<<<<< HEAD
                 if (
                     strongww.includes(role) ||
                     role == "Cursed" ||
@@ -3438,9 +3186,6 @@ module.exports = {
                         .permissionsFor(guy)
                         .has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])
                 ) {
-=======
-                if (strongww.includes(role) || role == "Cursed" || soloKillers.includes(role) || role == "Sorcerer" || role == "Sect Leader" || role == "Accomplice" || message.guild.channels.cache.find(x => x.name == "sect-members").permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
->>>>>>> 580ec30 (Update IDs to new server)
                     brains[i] = "0"
                     zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                 }

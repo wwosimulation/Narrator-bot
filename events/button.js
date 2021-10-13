@@ -22,11 +22,7 @@ module.exports = (client) => {
                 .add(ids.alive)
                 .then((g) => g.setNickname(role.members.size.toString()).catch((e) => interaction.reply(`Error: ${e.message}`)))
                 .catch((e) => interaction.reply(`Error: ${e.message}`))
-<<<<<<< HEAD
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
-=======
-            await interaction.guild.channels.cache.find(x => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
->>>>>>> 580ec30 (Update IDs to new server)
             interaction.deferUpdate()
         }
         if (interaction.customId == "igspec") {
@@ -42,39 +38,19 @@ module.exports = (client) => {
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
             if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
             interaction.deferUpdate()
-<<<<<<< HEAD
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
-=======
-            await interaction.guild.channels.cache.find(x => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
->>>>>>> 580ec30 (Update IDs to new server)
         }
         if (interaction.customId == "ashish-ignarr") {
             let guild = client.guilds.cache.get(ids.server.sim)
             let member = await guild.members.fetch({ user: interaction.member.id, force: true }).catch((e) => e)
             if (!member.id) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
             if (!member.roles.cache.has(ids.minisim) && !member.roles.cache.has(ids.narratorsim) && !member.roles.cache.has(ids.supervisor)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
-<<<<<<< HEAD
-<<<<<<< HEAD
             if (member.roles.cache.has(ids.minisim)) {
-=======
-            if (member.roles.cache.has(mininarr.id)) {
->>>>>>> 580ec30 (Update IDs to new server)
-=======
-            if (member.roles.cache.has(ids.minisim)) {
->>>>>>> 2473642 (fix references)
                 if (interaction.member.roles.cache.has(ids.mini)) return interaction.reply({ content: "You already have this role!", ephemeral: true })
                 if (db.get(`hoster`) != interaction.member.id && db.get(`game`)) return interaction.reply({ content: "Unfortunately, you aren't the host, and because you're a narrator in training, you aren't allowed to narrate spectate!", ephemeral: true })
                 interaction.member.roles.add(ids.mini)
             }
-<<<<<<< HEAD
-<<<<<<< HEAD
             if (member.roles.cache.has(ids.narratorsim)) {
-=======
-            if (member.roles.cache.has(narrator.id)) {
->>>>>>> 580ec30 (Update IDs to new server)
-=======
-            if (member.roles.cache.has(ids.narratorsim)) {
->>>>>>> 2473642 (fix references)
                 if (interaction.member.roles.cache.has(ids.narrator)) return interaction.reply({ content: "You already have this role!", ephemeral: true })
                 interaction.member.roles.add(ids.narrator)
             }

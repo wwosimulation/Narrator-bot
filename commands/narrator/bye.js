@@ -82,10 +82,6 @@ const clearSettings = async (message) => {
 }
 
 const removeRoles = async (message) => {
-<<<<<<< HEAD
     const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
-=======
-    const temproles = message.guild.channels.cache.find(x => x.name == "private channels")
->>>>>>> 580ec30 (Update IDs to new server)
     temproles.children.forEach((channel) => channel.delete())
 }
