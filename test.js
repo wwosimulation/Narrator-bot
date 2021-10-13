@@ -53,20 +53,20 @@ describe("Config", () => {
     })
 })
 
-describe("i10n", () => {
-    const languageFiles = fs.readdirSync("./i10n").filter((file) => file.endsWith(".json") && !file.startsWith("package"))
+describe("l10n", () => {
+    const languageFiles = fs.readdirSync("./l10n").filter((file) => file.endsWith(".json") && !file.startsWith("package"))
     for (const file of languageFiles) {
         it(`should load the ${file} language correctly`, () => {
-            const language = require(`./i10n/${file}`)
+            const language = require(`./l10n/${file}`)
             expect(language).to.be.an("object")
         })
     }
     it(`should load the main function correctly`, () => {
-        let i10n = require("./i10n")
-        expect(i10n).to.be.a("function")
+        let l10n = require("./l10n")
+        expect(l10n).to.be.a("function")
     })
     it(`should load allLanguages correctly`, () => {
-        let allLang = require("./i10n/allLanguages")
+        let allLang = require("./l10n/allLanguages")
         expect(allLang).to.be.a("array")
     })
 })

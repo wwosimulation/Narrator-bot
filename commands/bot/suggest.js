@@ -5,7 +5,7 @@
 //     description: "Suggest something.",
 //     usage: `${process.env.PREFIX}suggest <description...>`,
 //     run: async (message, args, client) => {
-//         if (!args[0]) return message.channel.send(message.i10n("suggestNoArguments"))
+//         if (!args[0]) return message.channel.send(message.l10n("suggestNoArguments"))
 //         let t = ""
 //         if (message.attachments.size > 0) {
 //             if (message.guild.id == ids.server.game) {
@@ -24,6 +24,6 @@
 //         }
 
 //         let done = await client.github.request(`POST /repos/${github.org}/${github.repo}/issues`, issue)
-//         message.channel.send(message.i10n("suggestSuccess", { url: done.data.html_url }))
+//         message.channel.send(message.l10n("suggestSuccess", { url: done.data.html_url }))
 //     },
 // }
