@@ -4,4 +4,4 @@
 	branch = main
 [submodule "i10n"]
 	path = i10n
-	url = https://github.com/wwosimulation/i10n
+	url = https://github.com/wwosimulation/l10n

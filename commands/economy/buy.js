@@ -43,8 +43,6 @@ module.exports = {
                 break
             case "private":
                 item = config.shop.items.find((x) => x.id == "channel")
-            case "custom":
-                item = config.shop.items.find((x) => x.id == "cmi")
         }
         console.log(item, args)
         if (!item) return message.channel.send(message.i10n("noItemProvided"))
@@ -111,9 +109,7 @@ module.exports = {
                 break
         }
 
-        if (item.id == "cmi") {
-            data.cmi = true
-        } else if (item.role) {
+        if (item.role) {
             roleadd(item.role)
         } else if (item.color) {
             roleadd(color.id)
