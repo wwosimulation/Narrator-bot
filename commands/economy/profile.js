@@ -18,9 +18,9 @@ module.exports = {
         let data = await players.findOne({ user: guy.id })
         let inventory = data.profile
 
-        if (inventory != true && !client.botAdmin(message.author.id)) return message.channel.send(message.i10n("profileNeedToBuy"))
+        if (inventory != true && !client.botAdmin(message.author.id)) return message.channel.send(message.l10n("profileNeedToBuy"))
 
-        if (!data.profile && !fn.isNarrator(message.member)) return message.channel.send(message.i10n("profileLocked"))
+        if (!data.profile && !fn.isNarrator(message.member)) return message.channel.send(message.l10n("profileLocked"))
 
         let badges = ""
         for (const badge in data.badges) {
@@ -31,7 +31,7 @@ module.exports = {
         console.log(data.roses)
         // TODO: reformat this
         let embed = new Discord.MessageEmbed()
-            .setTitle(`${guy.user ? guy.user.tag : guy.tag}'s ${message.i10n("profile")}`)
+            .setTitle(`${guy.user ? guy.user.tag : guy.tag}'s ${message.l10n("profile")}`)
             .setDescription(data.profileDesc)
             .setThumbnail(data.profileIcon)
             .addField("XP", `${data.xp} XP`, true)

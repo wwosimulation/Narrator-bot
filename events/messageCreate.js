@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const config = require("../config")
 const db = require("quick.db")
-const i10n = require("../i10n")
+const l10n = require("../l10n")
 //const mongo = require("../roles.find(x => x.name.toLowerCase() == role2.replace("-", " "))")
 const { players, botbans } = require("../db.js")
 const cooldowns = new Discord.Collection()
@@ -17,9 +17,9 @@ module.exports = (client) => {
         message.dbUser = await players.findOne({ user: message.author.id }).exec()
         if (!message.dbUser) message.dbUser = await players.create({ user: message.author.id })
 
-        message.i10n = (key, replaceKeys = {}, language = message.dbUser.language) => {
+        message.l10n = (key, replaceKeys = {}, language = message.dbUser.language) => {
             if (!language) language = "en"
-            let string = i10n(key, language, replaceKeys)
+            let string = l10n(key, language, replaceKeys)
             return string
         }
 
@@ -124,7 +124,7 @@ module.exports = (client) => {
         await command.run(message, args, client)?.catch((error) => {
             client.Sentry.captureException(error)
             console.error(error)
-            message.channel.send(message.i10n("error"))
+            message.channel.send(message.l10n("error"))
         })
     })
 }
