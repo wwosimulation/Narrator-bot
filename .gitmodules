@@ -2,6 +2,7 @@
 	path = config
 	url = https://github.com/wwosimulation/config
 	branch = main
+	
 [submodule "l10n"]
 	path = l10n
 	url = https://github.com/wwosimulation/l10n
