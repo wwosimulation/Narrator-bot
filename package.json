@@ -5,13 +5,13 @@
     "main": "server.js",
     "scripts": {
         "pullall": "git submodule update --init --recursive",
-        "setup-i10n": "cd /home/container/i10n && npm i",
+        "setup-i10n": "cd /home/container/l10n && npm i",
         "setup-config": "cd /home/container/config && npm i",
         "test": "mocha",
         "devstart": "pm2 start server.js --name sim-bot",
         "start": "node .",
         "prettier": "npx prettier --check .",
-        "module-setup": "npm run pullall && cd /home/circleci/project/i10n && npm i && cd /home/circleci/project/i10n && npm i"
+        "module-setup": "npm run pullall && cd /home/circleci/project/l10n && npm i && cd /home/circleci/project/config && npm i"
     },
     "author": "Wolvesville Simulation",
     "license": "ISC",
