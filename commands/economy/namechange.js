@@ -21,14 +21,14 @@ module.exports = {
                 }
             })
         }
-        if (!role) return message.channel.send(message.i10n("specialRoleMissing"))
+        if (!role) return message.channel.send(message.l10n("specialRoleMissing"))
 
-        if (args.length < 1) return message.channel.send(message.i10n("nameInvalid"))
-        if (args.join(" ").length > 99) return message.channel.send(message.i10n("nameInvalid"))
+        if (args.length < 1) return message.channel.send(message.l10n("nameInvalid"))
+        if (args.join(" ").length > 99) return message.channel.send(message.l10n("nameInvalid"))
         client.guilds.cache
             .get("465795320526274561")
             .roles.cache.get(role)
             .edit({ name: args.join(" ") })
-        message.channel.send(message.i10n("nameSuccess", { name: args.join(" ") }))
+        message.channel.send(message.l10n("nameSuccess", { name: args.join(" ") }))
     },
 }

@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const schema = new mongoose.Schema({
     user: { type: String, unique: true, required: true }, // user id
-    coins: { type: Number, default: 0 }, // coins aka balance
+    coins: { type: Number, default: 25 }, // coins aka balance
     roses: { type: Number, default: 0 }, // roses CURRENCY
     gems: { type: Number, default: 0 }, // gems
     xp: { type: Number, default: 0 }, // xp

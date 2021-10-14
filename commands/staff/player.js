@@ -26,7 +26,7 @@ module.exports = {
         let operators = ["set", "add", "remove"]
         let force = false
 
-        if (!target) return message.channel.send({ content: message.i10n("userInvalid", { user: target }) + `Use\n\`${this.usage}\`` })
+        if (!target) return message.channel.send({ content: message.l10n("userInvalid", { user: target }) + `Use\n\`${this.usage}\`` })
         if (!columns.includes(column)) return message.channel.send({ content: `Invalid column! Available columns are ${columns.map((column) => `\`${column}\``).join(" ")}` })
         if (!operators.includes(operator)) return message.channel.send({ content: `Invalid operator! Available operators are ${operators.map((operator) => `\`${operator}\``).join(" ")}` })
         if (!value) return message.channel.send({ content: `Invalid usage! Use\n\`${this.usage}\`` })
@@ -41,7 +41,7 @@ module.exports = {
             let operatorObj = {}
 
             let amount = args[3]
-            if (isNaN(args[3]) || amount % 1 != 0 || amount <= 0) return message.channel.send({ content: message.i10n("amountInvalid", { amount: amount }) })
+            if (isNaN(args[3]) || amount % 1 != 0 || amount <= 0) return message.channel.send({ content: message.l10n("amountInvalid", { amount: amount }) })
 
             switch (operator) {
                 case "set":
@@ -81,7 +81,7 @@ module.exports = {
                 }
                 operatorObj["$set"] = update
                 await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-                return message.channel.send({ content: message.i10n("done") })
+                return message.channel.send({ content: message.l10n("done") })
             }
 
             let updateStr
@@ -101,7 +101,7 @@ module.exports = {
                     return message.channel.send({ content: "This operator does not work for badges." })
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-            return message.channel.send({ content: message.i10n("done") })
+            return message.channel.send({ content: message.l10n("done") })
         }
     },
 }

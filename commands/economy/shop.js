@@ -8,12 +8,12 @@ module.exports = {
     usage: `${process.env.PREFIX}shop [color]`,
     run: async (message, args, client) => {
         if (["color", "colors", "colour", "colours"].includes(args[0])) {
-            let embed = new MessageEmbed().setDescription(`${message.i10n("availableColors")}:\n\n`)
+            let embed = new MessageEmbed().setDescription(`${message.l10n("availableColors")}:\n\n`)
             shop.colors.forEach((x) => {
                 embed.description += `${x.name} Color\n`
             })
-            embed.setTitle(message.i10n("shopTitle")).setColor("#1FFF43")
-            embed.setFooter(message.i10n("shopFooter"))
+            embed.setTitle(message.l10n("shopTitle")).setColor("#1FFF43")
+            embed.setFooter(message.l10n("shopFooter"))
             return message.channel.send({ embeds: [embed] })
         } else {
             let row = new MessageActionRow()
@@ -21,7 +21,7 @@ module.exports = {
                 row.addComponents(
                     new MessageButton()
                         .setStyle("SUCCESS")
-                        .setLabel(`${message.i10n("page")} ${i + 1}`)
+                        .setLabel(`${message.l10n("page")} ${i + 1}`)
                         .setCustomId(`shoppage-${i + 1}`)
                 )
             }

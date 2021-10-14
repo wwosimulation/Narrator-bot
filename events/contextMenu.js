@@ -26,7 +26,7 @@ module.exports = (client) => {
                     user.setNickname(user.user.username)
                 }
                 user.roles.add("606140764682190849")
-                if (user.roles.cache.has("606140092213624859")) user.roles.remove("606140092213624859") //alive
+                if (user.roles.cache.has(ids.alive)) user.roles.remove(ids.alive) //alive
                 interaction.reply({ content: "Done!", ephemeral: true })
                 daychat.send(`${user.user.tag} is now spectating the game!`)
             }

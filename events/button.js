@@ -2,7 +2,7 @@ const { MessageActionRow } = require("discord.js")
 const { MessageButton } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
-const { shop } = require("../config")
+const { shop, ids } = require("../config")
 
 const canHost = new MessageButton().setLabel("I can host").setStyle("SUCCESS").setCustomId(`hostrequest-yes;`)
 const canNotHost = new MessageButton().setLabel("No one can host").setStyle("DANGER").setCustomId(`hostrequest-no;`)
@@ -14,49 +14,45 @@ module.exports = (client) => {
         if (interaction.customId == "igjoin") {
             //if (db.get("started") == "yes") return interaction.reply(`The game has already started!`, { ephemeral: true })
             let guy = interaction.member
-            if (guy.roles.cache.has("606140764682190849")) guy.roles.remove("606140764682190849") //spec
-            if (guy.roles.cache.has("606276949689499648")) guy.roles.remove("606276949689499648") //narr
-            if (guy.roles.cache.has("606139219395608603")) guy.roles.remove("606139219395608603") //mininarr
-            let role = interaction.guild.roles.cache.get("606140092213624859")
+            if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) //spec
+            if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
+            if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
+            let role = interaction.guild.roles.cache.get(ids.alive)
             await guy.roles
-                .add("606140092213624859")
-                .then((g) => g.setNickname(role.members.size.toString()).catch((e) => message.channel.send(`Error: ${e.message}`)))
-                .catch((e) => message.channel.send(`Error: ${e.message}`))
-            await interaction.guild.channels.cache.get("606132387587293195").send(`${interaction.member.user.tag} joined the game!`)
+                .add(ids.alive)
+                .then((g) => g.setNickname(role.members.size.toString()).catch((e) => interaction.reply(`Error: ${e.message}`)))
+                .catch((e) => interaction.reply(`Error: ${e.message}`))
+            await interaction.guild.channels.cache.find(x => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
             interaction.deferUpdate()
         }
         if (interaction.customId == "igspec") {
             let guy = interaction.member
-            if (guy.roles.cache.has("606131202814115882")) return interaction.reply({ content: `Sorry, you're dead! You can't spectate after you've already played!`, ephemeral: true })
-            if (!guy.roles.cache.has("691298564508352563")) {
+            if (guy.roles.cache.has(ids.dead)) return interaction.reply({ content: `Sorry, you're dead! You can't spectate after you've already played!`, ephemeral: true })
+            if (!guy.roles.cache.has(ids.immunity)) {
                 guy.setNickname("lazy spectatorz")
             } else {
                 guy.setNickname(guy.user.username)
             }
-            guy.roles.add("606140764682190849")
-            if (guy.roles.cache.has("606140092213624859")) guy.roles.remove("606140092213624859") //alive
-            if (guy.roles.cache.has("606276949689499648")) guy.roles.remove("606276949689499648") //narr
-            if (guy.roles.cache.has("606139219395608603")) guy.roles.remove("606139219395608603") //mininarr
-            if (guy.roles.cache.has("606138907817672714")) guy.roles.remove("606138907817672714") //yoloofwwo
+            guy.roles.add(ids.spectator)
+            if (guy.roles.cache.has(ids.alive)) guy.roles.remove(ids.alive) //alive
+            if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
+            if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
             interaction.deferUpdate()
-            await interaction.guild.channels.cache.get("606132387587293195").send(`${interaction.member.user.tag} is now spectating the game!`)
+            await interaction.guild.channels.cache.find(x => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
         }
         if (interaction.customId == "ashish-ignarr") {
-            let guild = client.guilds.cache.get("465795320526274561")
+            let guild = client.guilds.cache.get(ids.server.sim)
             let member = await guild.members.fetch({ user: interaction.member.id, force: true }).catch((e) => e)
             if (!member.id) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
-            let mininarr = guild.roles.cache.get("606123620732895232")
-            let narrator = guild.roles.cache.get("606123619999023114")
-            let supervisor = guild.roles.cache.get("762061739848106024")
-            if (!member.roles.cache.has(mininarr.id) && !member.roles.cache.has(narrator.id) && !member.roles.cache.has(supervisor.id)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
-            if (member.roles.cache.has(mininarr.id)) {
-                if (interaction.member.roles.cache.has("606276949689499648")) return interaction.reply({ content: "You already have this role!", ephemeral: true })
+            if (!member.roles.cache.has(ids.minisim) && !member.roles.cache.has(ids.narratorsim) && !member.roles.cache.has(ids.supervisor)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
+            if (member.roles.cache.has(ids.minisim)) {
+                if (interaction.member.roles.cache.has(ids.mini)) return interaction.reply({ content: "You already have this role!", ephemeral: true })
                 if (db.get(`hoster`) != interaction.member.id && db.get(`game`)) return interaction.reply({ content: "Unfortunately, you aren't the host, and because you're a narrator in training, you aren't allowed to narrate spectate!", ephemeral: true })
-                interaction.member.roles.add("606276949689499648")
+                interaction.member.roles.add(ids.mini)
             }
-            if (member.roles.cache.has(narrator.id)) {
-                if (interaction.member.roles.cache.has("606139219395608603")) return interaction.reply({ content: "You already have this role!", ephemeral: true })
-                interaction.member.roles.add("606139219395608603")
+            if (member.roles.cache.has(ids.narratorsim)) {
+                if (interaction.member.roles.cache.has(ids.narrator)) return interaction.reply({ content: "You already have this role!", ephemeral: true })
+                interaction.member.roles.add(ids.narrator)
             }
             interaction.deferUpdate()
         }

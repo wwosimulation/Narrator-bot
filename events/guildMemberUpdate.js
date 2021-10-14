@@ -17,11 +17,11 @@ module.exports = (client) => {
                 let chan = newMember.guild.channels.cache.get(prog[a])
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     // peace
-                    if (db.get(`peace_${chan.id}`) > db.get(`nightCount`)) {
+                    if (db.get(`peace_${chan.id}`) > Math.floor(db.get(`gamePhase`)/3)+1) {
                         db.set(`peace_${chan.id}`, 0)
                     }
                     // terror
-                    if (db.get(`terror_${chan.id}.day`) <= db.get(`dayCount`)) {
+                    if (db.get(`terror_${chan.id}.day`) <= Math.floor(db.get(`gamePhase`)/3)+1) {
                         db.set(`terror_${chan.id}.guy`, 0)
                     }
                 }
@@ -109,7 +109,7 @@ module.exports = (client) => {
                     }
                     if (guy) {
                         let abc = await newMember.guild.channels.create(`priv-${role.toLowerCase().replace(" ", "-")}`, {
-                            parent: "748959630520090626",
+                            parent: "892046231516368906",
                             permissionOverwrites: [
                                 {
                                     id: guy.id,
@@ -152,10 +152,10 @@ module.exports = (client) => {
                     a = 99
                     let tag = db.get(`jwwtag_${oldMember.id}`)
                     let guy = newMember.guild.members.cache.find((m) => m.nickname === tag)
-                    if (guy.roles.cache.has("606140092213624859") && newMember.roles.cache.has("606131202814115882")) {
+                    if (guy.roles.cache.has(ids.alive) && newMember.roles.cache.has("606131202814115882")) {
                         await newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("revenge", client)} The Junior Werewolf's death has been avenged! **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** is dead!`)
                         await guy.roles.add("606131202814115882")
-                        await guy.roles.remove("606140092213624859")
+                        await guy.roles.remove(ids.alive)
                     }
                 }
             }
@@ -169,10 +169,10 @@ module.exports = (client) => {
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     let tag = db.get(`atag_${oldMember.id}`)
                     let guy = newMember.guild.members.cache.find((m) => m.nickname === tag)
-                    if (guy.roles.cache.has("606140092213624859")) {
+                    if (guy.roles.cache.has(ids.alive)) {
                         newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("avenge", client)} The Avenger avenged **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
                         guy.roles.add("606131202814115882")
-                        guy.roles.remove("606140092213624859")
+                        guy.roles.remove(ids.alive)
                     }
                 }
             }
@@ -186,7 +186,7 @@ module.exports = (client) => {
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     let tag = db.get(`mouth_${oldMember.id}`)
                     let guy = newMember.guild.members.cache.find((m) => m.nickname === tag)
-                    if (guy.roles.cache.has("606140092213624859")) {
+                    if (guy.roles.cache.has(ids.alive)) {
                         newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("loudmouthed", client)} The Loudmouth's last will was to reveal **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
                         guy.roles.add("822806480099999774")
                     }
@@ -242,11 +242,11 @@ module.exports = (client) => {
                     let toGuy = newMember.guild.members.cache.find((m) => m.nickname === b.toString())
                     //console.log(toGuy.nickname)
                     if (toGuy) {
-                        if (toGuy.roles.cache.has("606140092213624859")) {
+                        if (toGuy.roles.cache.has(ids.alive)) {
                             if (chan.permissionsFor(toGuy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 guy = toGuy
                                 let ff = await newMember.guild.channels.create(`priv-${role.toLowerCase().replace(" ", "-")}`, {
-                                    parent: "748959630520090626",
+                                    parent: "892046231516368906",
                                     permissionOverwrites: [
                                         {
                                             id: guy.id,
@@ -287,11 +287,11 @@ module.exports = (client) => {
             for (let b = 1; b < 17; b++) {
                 let guy = newMember.guild.members.cache.find((m) => m.nickname === b.toString())
                 if (guy) {
-                    if (guy.roles.cache.has("606140092213624859")) {
+                    if (guy.roles.cache.has(ids.alive)) {
                         if (sectMember.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) != "Sect Leader") {
                             newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("sect_member", client)} Sect Member **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** commited suicide!`)
                             guy.roles.add("606131202814115882")
-                            guy.roles.remove("606140092213624859")
+                            guy.roles.remove(ids.alive)
                             sectMember.permissionOverwrites.edit(guy.id, { VIEW_CHANNEL: false })
                         }
                     }
@@ -310,11 +310,11 @@ module.exports = (client) => {
             for (let a = 1; a < 17; a++) {
                 let guy = newMember.guild.members.cache.find((m) => m.nickname === a.toString())
                 if (guy) {
-                    if (guy.roles.cache.has("606140092213624859")) {
+                    if (guy.roles.cache.has(ids.alive)) {
                         if (db.get(`role_${guy.id}`) == "Seer Apprentice") {
                             a = 99
                             let ff = await newMember.guild.channels.create("priv-seer", {
-                                parent: "748959630520090626",
+                                parent: "892046231516368906",
                                 permissionOverwrites: [
                                     {
                                         id: guy.id,

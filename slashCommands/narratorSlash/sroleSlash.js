@@ -1,7 +1,7 @@
 const shuffle = require("shuffle-array")
 const db = require("quick.db")
 const pull = require("array-pull")
-const { getRole, fn } = require("../../config")
+const { getRole, fn, ids } = require("../../config")
 
 module.exports = {
     command: {
@@ -51,9 +51,9 @@ module.exports = {
     },
     permissions: {
         game: [
-            { id: "606139219395608603", type: "ROLE", permission: true }, // @Narrator
-            { id: "606276949689499648", type: "ROLE", permission: true }, // @Narrator Trainee
-            { id: "606131215526789120", type: "ROLE", permission: false }, // @Player
+            { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
+            { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
+            { id: "892046210536468500", type: "ROLE", permission: false }, // @Player
         ],
     },
     server: ["game"],
@@ -67,6 +67,8 @@ module.exports = {
         if (hideRoles === "true") hideOnDeath = true
         if (hideOnDeath === "false") hideOnDeath = false
         if (hideRoles === "false") hideOnDeath = false
+
+        console.log(hideOnDeath, hideRoles)
 
         let alive = interaction.guild.roles.cache.find((r) => r.name === "Alive")
         let mininarr = interaction.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
@@ -96,9 +98,11 @@ module.exports = {
         }
         if (exists == true) {
             interaction.reply("A player has a channel occupied already! Use `+nmanual [player number] [role]` to remove them from their channel!")
-            client.commands.get("playerinfo").run(interaction, args, client)
+            client.commands.get("playerinfo").run(interaction, [], client)
             return
         }
+
+        await interaction.deferReply()
 
         let revealed = interaction.guild.roles.cache.find((r) => r.name === "Revealed")
         let bot = interaction.guild.roles.cache.find((r) => r.name === "Bots")
@@ -120,7 +124,7 @@ module.exports = {
             args[args.indexOf(arg)] = arg.toLowerCase()
         })
         if (args.length != alive.members.size && gamemode == "custom") {
-            return interaction.reply("The number of roles do not match the number of players!")
+            return interaction.editReply("The number of roles do not match the number of players!")
         }
 
         let rolelist = []
@@ -262,19 +266,19 @@ module.exports = {
             let role = getRole(x)
             if (!role || role.name == "Unknown Role") {
                 cancel = true
-                return interaction.reply(`Unable to find the ${x} role!`)
+                return interaction.editReply(`Unable to find the ${x} role!`)
             }
             if (!role.description) {
                 cancel = true
-                return interaction.reply(`The information for the ${x} role is missing! Please report this using \`+bug\``)
+                return interaction.editReply(`The information for the ${x} role is missing! Please report this using \`+bug\``)
             }
             if (["Bandit", "Accomplice", "Sect Leader", "Grave Robber"].includes(role.name)) {
                 cancel = true
-                return interaction.reply(`The ${role.name} role is currently not available`)
+                return interaction.editReply(`The ${role.name} role is currently not available`)
             }
             if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
-        if (cancel) return interaction.reply("srole canceled")
+        if (cancel) return interaction.editReply("srole canceled")
         shuffle(finalRoleList)
         let sorcChats = []
         for (let k = 0; k < alive.members.size; k++) {
@@ -284,7 +288,7 @@ module.exports = {
             let guy = interaction.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
             db.delete(`suicided_${guy.id}`)
             let lol = await interaction.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
-                parent: "748959630520090626",
+                parent: "892046231516368906",
             })
             lol.permissionOverwrites.create(interaction.guild.id, {
                 VIEW_CHANNEL: false,
@@ -354,7 +358,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == bandits.map((x) => x.id).length) {
                             let t = await interaction.guild.channels.create("bandits", {
-                                parent: "606250714355728395",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -412,7 +416,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == sect.map((x) => x.id).length) {
                             let t = await interaction.guild.channels.create("sect-members", {
-                                parent: "606250714355728395",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -469,7 +473,8 @@ module.exports = {
             READ_MESSAGE_HISTORY: true,
         })
         client.commands.get("playerinfo").run(interaction, args, client)
-        interaction.reply("If everything looks correct, use `+startgame` to start the game!")
+        interaction.editReply("If everything looks correct, use `+startgame` to start the game!")
+        db.set(`gamePhase`, -1)
         db.set(`gamemode`, gamemode)
     },
 }

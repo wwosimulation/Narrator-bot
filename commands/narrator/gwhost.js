@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "gwhost",
@@ -7,7 +8,7 @@ module.exports = {
     usage: `${process.env.PREFIX}gwhost [supervisor] <game...>`,
     narratorOnly: true,
     run: async (message, args, client) => {
-        let mininarr = message.guild.roles.cache.get("606123620732895232")
+        let mininarr = message.guild.roles.cache.get(ids.minisim)
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let sup = ""
         if (message.member.roles.cache.has(mininarr.id)) {
@@ -27,5 +28,6 @@ module.exports = {
         let m = await message.guild.channels.cache.get("606123818305585167").send({ content: `<@&606123686633799680>, we are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#862712560511221791> and react with 🎮${sup ? `\n\n${sup}` : ""}`, embeds: [embed], components: [row] })
         db.set(`game`, m.id)
         db.set(`hoster`, message.author.id)
+        db.set(`gamePhase`, -5)
     },
 }

@@ -234,7 +234,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
             db.delete(`suicided_${guy.id}`)
             let lol = await message.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
-                parent: "748959630520090626",
+                parent: "892046231516368906",
             })
             lol.permissionOverwrites.create(message.guild.id, {
                 VIEW_CHANNEL: false,
@@ -304,7 +304,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == bandits.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("bandits", {
-                                parent: "606250714355728395",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -362,7 +362,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == sect.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("sect-members", {
-                                parent: "606250714355728395",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -420,6 +420,7 @@ module.exports = {
         })
         client.commands.get("playerinfo").run(message, args, client)
         message.channel.send("If everything looks correct, use `+startgame` to start the game!")
+        db.set(`gamePhase`, -1)
         db.set(`gamemode`, args[0])
     },
 }

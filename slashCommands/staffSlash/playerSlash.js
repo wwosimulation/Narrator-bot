@@ -5,6 +5,7 @@
 ["set", "add", "remove"]
 */
 const players = require("../../schemas/players")
+const { ids } = require("../../config")
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -68,9 +69,9 @@ module.exports = {
             { id: "606167032425218084", type: "ROLE", permission: false }, // @Member
         ],
         game: [
-            { id: "606139219395608603", type: "ROLE", permission: true }, // @Narrator
-            { id: "606276949689499648", type: "ROLE", permission: true }, // @Narrator Trainee
-            { id: "606131215526789120", type: "ROLE", permission: false }, // @Player
+            { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
+            { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
+            { id: "892046210536468500", type: "ROLE", permission: false }, // @Player
         ],
     },
     server: ["sim", "game"],
@@ -100,7 +101,7 @@ module.exports = {
             let operatorObj = {}
 
             let amount = value
-            if (isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({ content: interaction.i10n("amountInvalid", { amount: amount }), ephemeral: true })
+            if (isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: amount }), ephemeral: true })
 
             switch (operator) {
                 case "set":
@@ -141,7 +142,7 @@ module.exports = {
                 }
                 operatorObj = { $set: update }
                 await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-                return interaction.reply({ content: interaction.i10n("done") })
+                return interaction.reply({ content: interaction.l10n("done") })
             }
 
             let updateStr
@@ -160,7 +161,7 @@ module.exports = {
                     return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-            return interaction.reply({ content: interaction.i10n("done") })
+            return interaction.reply({ content: interaction.l10n("done") })
         }
     },
 }

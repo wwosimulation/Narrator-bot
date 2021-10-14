@@ -7,7 +7,7 @@ module.exports = {
     run: async (message, args, client) => {
         let dc
         if (message.channel.name == "priv-hacker") {
-            let isNight = db.get(`isNight`)
+            let gamePhase = db.get(`gamePhase`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             if (args[0] == "cancel") {
@@ -24,7 +24,7 @@ module.exports = {
             firsthack.forEach((person) => lol.push(person))
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You cannot use the ability now!`)
             if (!args[0]) return message.channel.send("who are you hacking? Mention the player.")
-            if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
             if (args.length > 2) return message.channel.send("You cannot hack more than 2 players.")
             if (alrhacked) return message.channel.send("You have already hacked a player.")
 

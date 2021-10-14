@@ -11,11 +11,11 @@ module.exports = {
             let disguises = db.get(`disguised_${message.channel.id}`) || []
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let isDay = db.get(`isDay`)
+            let gamePhase = db.get(`gamePhase`)
             let commandEnabled = db.get(`commandEnabled`)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (disguises.length == 0) return message.channel.send("You haven't disguised any player yet!")
-            if (isDay != "yes") return message.channel.send("You can kill players during the day, when it's the discussion time.")
+            if (gamePhase % 3 != 1) return message.channel.send("You can kill players during the day, when it's the discussion time.")
             if (commandEnabled == "yes") return message.channel.send("You can kill players during the day, when it's the discussion time.")
             for (let i = 0; i < disguises.length; i++) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === disguises[i])

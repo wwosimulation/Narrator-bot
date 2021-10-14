@@ -3,7 +3,7 @@ const config = require("../config")
 const { Collection, Util } = require("discord.js")
 const cooldowns = new Collection()
 const players = require("../schemas/players")
-const i10n = require("../i10n")
+const l10n = require("../l10n")
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
@@ -16,15 +16,14 @@ module.exports = (client) => {
         interaction.dbUser = await players.findOne({ user: interaction.user.id }).exec()
         if (!interaction.dbUser) interaction.dbUser = await players.create({ user: interaction.author.id })
 
-
-        interaction.i10n = (key, replaceKeys = {}, language = interaction.dbUser.language) => {
+        interaction.l10n = (key, replaceKeys = {}, language = interaction.dbUser.language) => {
             if (!language) language = "en"
-            let string = i10n(key, language, replaceKeys)
+            let string = l10n(key, language, replaceKeys)
             return string
         }
 
-        if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({ content: interaction.i10n("maintenance"), ephemeral: true })
-        if (blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({ content: interaction.i10n("blacklisted"), ephemeral: true })
+        if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({ content: interaction.l10n("maintenance"), ephemeral: true })
+        if (blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({ content: interaction.l10n("blacklisted"), ephemeral: true })
 
         if ((commandFile.narratorOnly && !config.fn.isNarrator(interaction.member)) || (commandFile.staffOnly && !config.fn.isStaff(interaction.member))) return interaction.reply({ content: "You are missing permissions to do that!", ephemeral: true })
 
@@ -55,7 +54,7 @@ module.exports = (client) => {
         client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id})`) })
         await commandFile.run(interaction, client).catch((error) => {
             console.error(error)
-            interaction.reply({ content: interaction.i10n("error"), ephemeral: true })
+            interaction.reply({ content: interaction.l10n("error"), ephemeral: true })
         })
     })
 }

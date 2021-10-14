@@ -2,7 +2,7 @@ const db = require("quick.db")
 const { getEmoji, getRole, fn } = require("../../config")
 function peaceCheck(message) {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
-    let nightCount = db.get(`nightCount`)
+    let nightCount = Math.floor(db.get(`gamePhase`)/3)+1
     let res = false
     for (let i = 0; i < prog.length; i++) {
         let peace = db.get(`peace_${prog[i]}`) || "none"
@@ -16,8 +16,6 @@ module.exports = {
     usage: `${process.env.PREFIX}night <player | 0>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.guild.id != "472261911526768642") return
-
         let sww = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").map((x) => x.id)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
@@ -318,7 +316,7 @@ module.exports = {
                                         console.log("hi")
                                         chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
                                         let chan1 = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`, {
-                                            parent: "748959630520090626",
+                                            parent: "892046231516368906",
                                         })
                                         chan1.permissionOverwrites.edit(player.id, {
                                             SEND_MESSAGES: true,
@@ -393,7 +391,7 @@ module.exports = {
                         }
 
                         let nbrole1 = await message.guild.channels.create(`priv-${nbr2.replace(" ", "-").toLowerCase()}`, {
-                            parent: "748959630520090626",
+                            parent: "892046231516368906",
                         })
                         nbrole1.permissionOverwrites.create(guy1.id, {
                             SEND_MESSAGES: true,
@@ -424,7 +422,7 @@ module.exports = {
                         await nbrole1.send(`${alive}`)
 
                         let nbrole2 = await message.guild.channels.create(`priv-${nbr1.replace(" ", "-").toLowerCase()}`, {
-                            parent: "748959630520090626",
+                            parent: "892046231516368906",
                         })
                         nbrole2.permissionOverwrites.create(guy2.id, {
                             SEND_MESSAGES: true,
@@ -752,12 +750,10 @@ module.exports = {
                 }
             }, 60000)
         }, 3000)
-        dayChat.send(`${alive} Night ${db.get(`nightCount`) + 1} has started!`)
-        db.set(`isDay`, "no")
-        db.set(`isNight`, "yes")
-        db.add(`nightCount`, 1)
+        dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`)/3) + 2} has started!`)
+        db.add(`gamePhase`, 1)
         db.set(`wwsVote`, "yes")
         db.set(`commandEnabled`, "no")
-        console.log(`Night: ${db.get(`nightCount`)}`)
+        console.log(`Night: ${Math.floor(db.get(`gamePhase`)/3)+1}`)
     },
 }

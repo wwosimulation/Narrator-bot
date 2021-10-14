@@ -26,6 +26,6 @@
 //     }
 
 //         let done = await client.github.request(`POST /repos/${github.org}/${github.repo}/issues`, issue)
-//         message.channel.send(message.i10n("bugSuccess", { url: done.data.html_url }))
+//         message.channel.send(message.l10n("bugSuccess", { url: done.data.html_url }))
 //     },
 // }
