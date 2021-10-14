@@ -43,6 +43,10 @@ module.exports = {
                 break
             case "private":
                 item = config.shop.items.find((x) => x.id == "channel")
+                break
+            case "game":
+                item = config.shop.items.find((x) => x.id == "gamegifs")
+                break
         }
         console.log(item, args)
         if (!item) return message.channel.send(message.l10n("noItemProvided"))
