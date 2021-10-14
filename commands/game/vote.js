@@ -4,7 +4,7 @@ const db = require("quick.db")
 let voteForwws = ["0"]
 function terrorCheck(message) {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
-    let dayCount = db.get(`dayCount`)
+    let dayCount = Math.floor(db.get(`gamePhase`)/3)+1
     let res = false
     for (let i = 0; i < prog.length; i++) {
         let terrorDay = db.get(`terror_${prog[i]}.day`) || "no"

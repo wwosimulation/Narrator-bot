@@ -16,7 +16,6 @@ module.exports = (client) => {
         interaction.dbUser = await players.findOne({ user: interaction.user.id }).exec()
         if (!interaction.dbUser) interaction.dbUser = await players.create({ user: interaction.author.id })
 
-
         interaction.l10n = (key, replaceKeys = {}, language = interaction.dbUser.language) => {
             if (!language) language = "en"
             let string = l10n(key, language, replaceKeys)

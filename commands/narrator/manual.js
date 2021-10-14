@@ -20,13 +20,11 @@ module.exports = {
 
         message.react("💋")
         let content = args[1]
-        let night = await db.fetch(`nightCount`)
-        let day = await db.fetch(`dayCount`)
+        let night = Math.floor(db.fetch(`gamePhase`)/3)+1
+        let day = Math.floor(db.fetch(`gamePhase`)/3)+1
         let amtD = day - day * 2 + 1
         let amtN = night - night * 2 + 1
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        db.set(`dayCount`, 0)
-        db.set(`nightCount`, 0)
         let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
         let role = await db.fetch(`role_${guy.id}`, args[1])
         let real = args[1].toLowerCase()

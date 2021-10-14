@@ -16,7 +16,7 @@ module.exports = {
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let priest = await db.fetch(`priest_${message.channel.id}`)
             let isDay = await db.fetch(`isDay`)
-            let dayCount = await db.fetch(`dayCount`)
+            let dayCount = Math.floor(db.get(`gamePhase`)/3)+1
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             if (!guy || guy == ownself) {
                 return await message.reply("The player is not in game! Mention the correct player number.")

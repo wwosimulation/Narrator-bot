@@ -8,14 +8,14 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        let isNight = db.get(`isNight`)
+        let gamePhase = db.get(`gamePhase`)
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
         let dc
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
 
         if (message.channel.name == "priv-sect-leader") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Honey you cannot convert being dead.")
-            if (isNight != "yes") return message.channel.send("You can convert players during the night only.")
+            if (gamePhase % 3 != 0) return message.channel.send("You can convert players during the night only.")
             if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't convert anyone." })
             if (!args[0]) return message.channel.send("Who you want to check? Insert the player number next time.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
@@ -42,7 +42,7 @@ module.exports = {
                 }
             }
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You are dead! Now here's a great idea, Act like a medium or Wolf Medium, and try reviving wolves...")
-            if (isNight != "yes") return message.channel.send("It's day! You can convert during nights only!")
+            if (gamePhase % 3 != 0) return message.channel.send("It's day! You can convert during nights only!")
             if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't convert anyone." })
             if (!args[0]) return message.channel.send("Who you want to convert? Insert the player number next time.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
@@ -52,7 +52,7 @@ module.exports = {
             message.channel.send(`${getEmoji("kidnap", client)} You decided to make player **${guy.nickname} ${guy.user.username}** into your Accomplice!`)
         } else if (message.channel.name == "priv-zombie") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("Honey you cannot bite being dead.")
-            if (isNight != "yes") return message.channel.send("It's day! You can convert during nights only!")
+            if (gamePhase % 3 != 0) return message.channel.send("It's day! You can convert during nights only!")
             if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't convert anyone." })
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (!guy || guy.id == message.author.id) return message.reply("The player is not in game! Mention the correct player number.")
