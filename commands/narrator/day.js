@@ -1790,7 +1790,7 @@ module.exports = {
         //console.log("Hello there Janet")
         //console.log("Oh hi there Bandit Conversion is ok")
 
-        dayChat.send(`Day ${day + 1} has started! Get ready to discuss!`)
+        dayChat.send(`Day ${day} has started! Get ready to discuss!`)
         db.add(`gamePhase`, 1)
 
         console.log("Ok so it is day")
