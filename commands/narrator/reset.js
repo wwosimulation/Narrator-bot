@@ -56,11 +56,13 @@ module.exports = {
 
             db.delete(`excludes`)
 
-            message.guild.channels.cache.find(x => x.name == "day-chat").permissionOverwrites.edit(ids.alive, {
-                SEND_MESSAGES: false,
-                READ_MESSAGE_HISTORY: false,
-                VIEW_CHANNEL: false,
-            })
+            message.guild.channels.cache
+                .find((x) => x.name == "day-chat")
+                .permissionOverwrites.edit(ids.alive, {
+                    SEND_MESSAGES: false,
+                    READ_MESSAGE_HISTORY: false,
+                    VIEW_CHANNEL: false,
+                })
 
             message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
@@ -70,11 +72,13 @@ module.exports = {
                     VIEW_CHANNEL: true,
                 })
 
-            message.guild.channels.cache.find(x => x.name == "game-lobby").permissionOverwrites.edit(ids.alive, {
-                SEND_MESSAGES: true,
-                READ_MESSAGE_HISTORY: true,
-                VIEW_CHANNEL: true,
-            })
+            message.guild.channels.cache
+                .find((x) => x.name == "game-lobby")
+                .permissionOverwrites.edit(ids.alive, {
+                    SEND_MESSAGES: true,
+                    READ_MESSAGE_HISTORY: true,
+                    VIEW_CHANNEL: true,
+                })
 
             let t = client.guilds.cache.get(ids.server.sim).roles.cache.get("606123676668133428").members
 

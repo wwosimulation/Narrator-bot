@@ -9,7 +9,7 @@ module.exports = {
             let ability = db.get(`peace_${message.channel.id}`) || "no"
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let gamePhase = db.get(`gamePhase`)
-            let nightCount = Math.floor(gamePhase/3)+1
+            let nightCount = Math.floor(gamePhase / 3) + 1
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send({ content: "You are dead..." })
             if (!ability == "no") return message.channel.send({ content: "You already used that ability!" })
             if (gamePhase % 3 == 0 && nightCount > 1) {

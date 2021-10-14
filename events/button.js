@@ -22,7 +22,7 @@ module.exports = (client) => {
                 .add(ids.alive)
                 .then((g) => g.setNickname(role.members.size.toString()).catch((e) => interaction.reply(`Error: ${e.message}`)))
                 .catch((e) => interaction.reply(`Error: ${e.message}`))
-            await interaction.guild.channels.cache.find(x => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
+            await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
             interaction.deferUpdate()
         }
         if (interaction.customId == "igspec") {
@@ -38,7 +38,7 @@ module.exports = (client) => {
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
             if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
             interaction.deferUpdate()
-            await interaction.guild.channels.cache.find(x => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
+            await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
         }
         if (interaction.customId == "ashish-ignarr") {
             let guild = client.guilds.cache.get(ids.server.sim)
