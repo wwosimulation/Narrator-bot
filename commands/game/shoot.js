@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji, fn } = require("../../config")
+const { getEmoji, fn, ids } = require("../../config")
 
 module.exports = {
     name: "shoot",
@@ -64,7 +64,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             let jailed = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `jail_${dc.chan.id}` : `jail_${message.channel.id}`}`)
             let guy = message.guild.members.cache.find((m) => m.nickname === jailed)
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("The player is already dead.")
+            if (!guy.roles.cache.has(ids.alive)) return message.channel.send("The player is already dead.")
             let bullet = db.get(`bullet_jail`) ? db.get(`bullet_jail`) : 1
             if (gamePhase % 3 == 1) return message.channel.send("You cannot shoot during the day without jailing someone!")
             if (bullet == 0) return message.channel.send("You have already used your bullet.")
