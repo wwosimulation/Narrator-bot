@@ -5,10 +5,7 @@
 ["set", "add", "remove"]
 */
 const players = require("../../schemas/players")
-const { ids } = require("../../config")
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-}
+const { ids, fn } = require("../../config")
 
 module.exports = {
     command: {
@@ -122,7 +119,7 @@ module.exports = {
                     break
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
-            interaction.reply({ content: `${capitalizeFirstLetter(column.replace("inventory.", ""))} updated for ${target.tag}` })
+            interaction.reply({ content: `${fn.capitalizeFirstLetter(column.replace("inventory.", ""))} updated for ${target.tag}` })
         }
         if (column === "badge") {
             console.log(operator)

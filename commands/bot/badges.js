@@ -2,10 +2,6 @@ const players = require("../../schemas/players")
 const { MessageEmbed } = require("discord.js")
 const { fn } = require("../../config")
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-}
-
 module.exports = {
     name: "badges",
     description: "Displays all your badges.",
@@ -24,8 +20,8 @@ module.exports = {
         let playerData = await players.findOne({ user: guy.id })
 
         for (const badge in playerData.badges) {
-            if (badge === "invite" && playerData.badges.invite.unlocked) desc = desc + `\`${capitalizeFirstLetter(badge)}\``
-            if (badge !== "invite") desc = desc + `\`${capitalizeFirstLetter(badge)}\``
+            if (badge === "invite" && playerData.badges.invite.unlocked) desc = desc + `\`${fn.capitalizeFirstLetter(badge)}\``
+            if (badge !== "invite") desc = desc + `\`${fn.capitalizeFirstLetter(badge)}\``
         }
 
         if (desc === "") desc = `${guy.user.tag} does not have any badges.`

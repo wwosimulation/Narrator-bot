@@ -1,8 +1,5 @@
 const { MessageEmbed } = require("discord.js")
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-}
+const { fn } = require("../../config")
 
 module.exports = {
     name: "help",
@@ -19,7 +16,7 @@ module.exports = {
         // If args[0] is a command, send a specific command card.
         if (cmd_target) {
             embed
-                .setTitle(capitalizeFirstLetter(cmd_target.name))
+                .setTitle(fn.capitalizeFirstLetter(cmd_target.name))
                 .setDescription(
                     `Prefix: \`${process.env.PREFIX}\`
 Use ${process.env.PREFIX}help to see all commands.
