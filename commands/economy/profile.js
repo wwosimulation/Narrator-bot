@@ -24,8 +24,8 @@ module.exports = {
 
         let badges = ""
         for (const badge in data.badges) {
-            if (badge === "invite" && data.badges.invite.unlocked) badges = badges + capitalizeFirstLetter(badge)
-            if (badge !== "invite") badges = badges + `\`${capitalizeFirstLetter(badge)}\``
+            if (badge === "invite" && data.badges.invite.unlocked) badges = badges + fn.capitalizeFirstLetter(badge)
+            if (badge !== "invite") badges = badges + `\`${fn.capitalizeFirstLetter(badge)}\``
         }
 
         console.log(data.roses)
