@@ -31,6 +31,7 @@ module.exports = {
         let row = new MessageActionRow().addComponents(droppy)
         let m = voteChat.send({ content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row] })
         db.set(`commandEnabled`, `yes`)
+        db.add(`gamePhase`, 1)
         message.channel.send(`Setting the vote time for ${ms(timer)}`)
         setTimeout(() => {
             voteChat.send(`Time is up!`)
