@@ -21,11 +21,7 @@ module.exports = {
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
             let didCmd = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `didCmd_${dc.chan.id}` : `didCmd_${message.channel.id}`}`)
             let gamePhase = await db.fetch(`gamePhase`)
-<<<<<<< HEAD
             let night = Math.floor(gamePhase / 3) + 1
-=======
-            let night = Math.floor(gamePhase/3)+1
->>>>>>> 25bce14 (Merge isDay and isNight (#168))
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0])
             let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])

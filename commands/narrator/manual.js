@@ -20,13 +20,8 @@ module.exports = {
 
         message.react("💋")
         let content = args[1]
-<<<<<<< HEAD
         let night = Math.floor(db.fetch(`gamePhase`) / 3) + 1
         let day = Math.floor(db.fetch(`gamePhase`) / 3) + 1
-=======
-        let night = Math.floor(db.fetch(`gamePhase`)/3)+1
-        let day = Math.floor(db.fetch(`gamePhase`)/3)+1
->>>>>>> 25bce14 (Merge isDay and isNight (#168))
         let amtD = day - day * 2 + 1
         let amtN = night - night * 2 + 1
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")

@@ -17,19 +17,11 @@ module.exports = (client) => {
                 let chan = newMember.guild.channels.cache.get(prog[a])
                 if (chan.permissionsFor(newMember.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     // peace
-<<<<<<< HEAD
                     if (db.get(`peace_${chan.id}`) > Math.floor(db.get(`gamePhase`) / 3) + 1) {
                         db.set(`peace_${chan.id}`, 0)
                     }
                     // terror
                     if (db.get(`terror_${chan.id}.day`) <= Math.floor(db.get(`gamePhase`) / 3) + 1) {
-=======
-                    if (db.get(`peace_${chan.id}`) > Math.floor(db.get(`gamePhase`)/3)+1) {
-                        db.set(`peace_${chan.id}`, 0)
-                    }
-                    // terror
-                    if (db.get(`terror_${chan.id}.day`) <= Math.floor(db.get(`gamePhase`)/3)+1) {
->>>>>>> 25bce14 (Merge isDay and isNight (#168))
                         db.set(`terror_${chan.id}.guy`, 0)
                     }
                 }

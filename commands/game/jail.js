@@ -16,11 +16,7 @@ module.exports = {
         if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
         if (!args[0]) return message.channel.send("Who are you jailing? Mention the player.")
         let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
-<<<<<<< HEAD
         if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
-=======
-        if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only during the day!")
->>>>>>> 25bce14 (Merge isDay and isNight (#168))
         if (!guy || message.member == guy) return message.reply("Invalid Target")
         db.set(`jail_${message.channel.id}`, guy.nickname)
         message.channel.send("You have decided to jail **" + guy.nickname + " " + guy.user.username + "**!")
