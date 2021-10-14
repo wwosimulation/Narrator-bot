@@ -27,8 +27,8 @@ module.exports = {
         /* args[1] is the page */
         if (!isNaN(args[1])) page = parseInt(args[1])
 
-        if(isNaN(args[0]) && !sortedByOptions.includes(args[0])) errorReply = `\`${args[0]}\` is neither a valid page nor a valid leaderboard type!\n`
-        if(isNaN(args[1]) && !sortedByOptions.includes(args[0])) errorReply += `\`${args[1]}\` is neither a valid page nor a valid leaderboard type!\n`
+        if (isNaN(args[0]) && !sortedByOptions.includes(args[0])) errorReply = `\`${args[0]}\` is neither a valid page nor a valid leaderboard type!\n`
+        if (isNaN(args[1]) && !sortedByOptions.includes(args[0])) errorReply += `\`${args[1]}\` is neither a valid page nor a valid leaderboard type!\n`
 
         let obj = {}
         obj[sortedBy] = -1
@@ -63,7 +63,7 @@ module.exports = {
         embedItemArray.forEach(async (arr, i, embedItemArr) => {
             let description = ""
             arr.forEach((item) => {
-                if(getTag(item.userID).includes("#")) description = description + `${item.value} - ${getTag(item.userID)}\n`
+                if (getTag(item.userID).includes("#")) description = description + `${item.value} - ${getTag(item.userID)}\n`
             })
             embed = new MessageEmbed()
                 .setDescription(description)
@@ -79,7 +79,7 @@ module.exports = {
 
         if (!embeds[page - 1]) (msg = await message.channel.send({ content: errorReply + `${message.author}, page ${page} does not exist on this leader board!`, embeds: [embeds[0]] })), (page = 1)
         else {
-            if(errorReply !== "") msg = await message.channel.send({ content: errorReply, embeds: [embeds[page - 1]] })
+            if (errorReply !== "") msg = await message.channel.send({ content: errorReply, embeds: [embeds[page - 1]] })
             else msg = await message.channel.send({ embeds: [embeds[page - 1]] })
         }
 
