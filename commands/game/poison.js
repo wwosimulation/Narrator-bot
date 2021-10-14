@@ -13,7 +13,11 @@ module.exports = {
             let ability = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`)
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let gamePhase = await db.fetch(`gamePhase`)
+<<<<<<< HEAD
             let night = Math.floor(gamePhase / 3) + 1
+=======
+            let night = Math.floor(gamePhase/3)+1
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yeah... let's don't shall we, you will kill them anyway.`)
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")

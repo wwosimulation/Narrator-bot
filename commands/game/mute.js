@@ -14,7 +14,11 @@ module.exports = {
         if (message.channel.name == "priv-grumpy-grandma") {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let gamePhase = await db.fetch(`gamePhase`)
+<<<<<<< HEAD
             let night = Math.floor(gamePhase / 3) + 1
+=======
+            let night = Math.floor(gamePhase/3)+1
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`That's funny but no.`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
@@ -37,7 +41,11 @@ module.exports = {
         } else if (message.channel.name == "priv-hacker") {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let gamePhase = await db.fetch(`gamePhase`)
+<<<<<<< HEAD
             let night = Math.floor(gamePhase / 3) + 1
+=======
+            let night = Math.floor(gamePhase/3)+1
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             if (!guy) return message.reply("Invalid target!")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)

@@ -172,8 +172,13 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
 
 client.debug = async (options = { game: false }) => {
     let data = {}
+<<<<<<< HEAD
     data.night = Math.floor(db.get(`gamePhase`) / 3) + 1
     data.day = Math.floor(db.get(`gamePhase`) / 3) + 1
+=======
+    data.night = Math.floor(db.get(`gamePhase`)/3)+1
+    data.day = Math.floor(db.get(`gamePhase`)/3)+1
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
     data.gamePhase = db.get(`gamePhase`)
     let alive = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Alive")
     let dead = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Dead")

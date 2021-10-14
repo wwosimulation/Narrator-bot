@@ -27,12 +27,20 @@ module.exports = {
             if (given == false) return message.channel.send("You have to give an item before you can forge another item.")
 
             if (forged == 2 || forged == 3) {
+<<<<<<< HEAD
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forging_${dc.chan.id}` : `forging_${message.channel.id}`}`, Math.floor(gamePhase / 3) + 1)
+=======
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forging_${dc.chan.id}` : `forging_${message.channel.id}`}`, Math.floor(gamePhase/3)+1)
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
                 db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forged_${dc.chan.id}` : `forged_${message.channel.id}`}`, 1)
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `given_${dc.chan.id}` : `given_${message.channel.id}`}`, false)
                 message.channel.send(`${getEmoji("forgeshield", client)} You have started to forge a shield!`)
             } else if (forged == 1) {
+<<<<<<< HEAD
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forging_${dc.chan.id}` : `forging_${message.channel.id}`}`, db.get(`gamePhase`) % 3 == 0 ? true : false)
+=======
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forging_${dc.chan.id}` : `forging_${message.channel.id}`}`, (db.get(`gamePhase`) % 3) == 0 ? true : false)
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
                 db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forged_${dc.chan.id}` : `forged_${message.channel.id}`}`, 1)
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `given_${dc.chan.id}` : `given_${message.channel.id}`}`, false)
                 message.channel.send(`${getEmoji("forgesword", client)} You have started forging a sword!`)

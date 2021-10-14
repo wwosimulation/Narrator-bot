@@ -23,7 +23,11 @@ module.exports = {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let gamePhase = db.get(`gamePhase`)
+<<<<<<< HEAD
             let dayCount = Math.floor(gamePhase / 3) + 1
+=======
+            let dayCount = Math.floor(gamePhase/3)+1
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
             let voting = db.get(`commandEnabled`)
             console.log("tets")
             if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")

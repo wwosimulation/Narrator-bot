@@ -2,7 +2,11 @@ const db = require("quick.db")
 const { getEmoji, getRole, fn } = require("../../config")
 function peaceCheck(message) {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+<<<<<<< HEAD
     let nightCount = Math.floor(db.get(`gamePhase`) / 3) + 1
+=======
+    let nightCount = Math.floor(db.get(`gamePhase`)/3)+1
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
     let res = false
     for (let i = 0; i < prog.length; i++) {
         let peace = db.get(`peace_${prog[i]}`) || "none"
@@ -750,10 +754,18 @@ module.exports = {
                 }
             }, 60000)
         }, 3000)
+<<<<<<< HEAD
         dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`) / 3) + 2} has started!`)
         db.add(`gamePhase`, 1)
         db.set(`wwsVote`, "yes")
         db.set(`commandEnabled`, "no")
         console.log(`Night: ${Math.floor(db.get(`gamePhase`) / 3) + 1}`)
+=======
+        dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`)/3) + 2} has started!`)
+        db.add(`gamePhase`, 1)
+        db.set(`wwsVote`, "yes")
+        db.set(`commandEnabled`, "no")
+        console.log(`Night: ${Math.floor(db.get(`gamePhase`)/3)+1}`)
+>>>>>>> 25bce14 (Merge isDay and isNight (#168))
     },
 }
