@@ -30,7 +30,6 @@ module.exports = {
         if (args[0] && isNaN(args[0]) && !sortedByOptions.includes(args[0])) errorReply = `\`${args[0]}\` is neither a valid page nor a valid leaderboard type!\n`
         if (args[1] && isNaN(args[1]) && !sortedByOptions.includes(args[0])) errorReply += `\`${args[1]}\` is neither a valid page nor a valid leaderboard type!\n`
 
-
         let obj = {}
         obj[sortedBy] = -1
         let obj2 = {}
