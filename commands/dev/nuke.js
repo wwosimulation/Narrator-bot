@@ -9,7 +9,7 @@ module.exports = {
         if (!message.member.roles.cache.has("859099415515627540") && !message.member.roles.cache.has("606123616228343812")) return message.reply({ content: "You are missing permissions to do that!" })
         const s = ["sim", "game"]
         var answer = "**Following actions were executed:**\n"
-        let skiped = []
+        /*let skiped = []
         if (args.length !== 0) {
             if (args[0] === "here" && args[1]) {
                 let cmdManager = message.guild.commands
@@ -52,7 +52,7 @@ module.exports = {
                                     answer = answer + `ID delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`
                                 })
                             return
-                        } else if (client.guilds.resolve(ids.server[ser]).commands.cache.find((cmd) => cmd.name === arg) /*.size == 1*/) {
+                        } else if (client.guilds.resolve(ids.server[ser]).commands.cache.find((cmd) => cmd.name === arg) /*.size == 1*\/) {
                             client.guilds
                                 .resolve(ids.server[ser])
                                 .commands.cache.find((cmd) => cmd.name === arg)
@@ -67,7 +67,7 @@ module.exports = {
             }
             if (skiped.length !== 0) answer = answer + `\n**Following arguments couln't be resolved:**\n${skiped.map((element) => `\`${element}\``).join(" ")}\nValid CommandResolvables are \`commandID\`, \`commandName\`, \`sim\` and \`game\`!\nUse \`${process.env.PREFIX}nuke here <commands...>\` to delete commands in the current server only.`
             return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
-        } else {
+        } else {*/
             client.guilds.cache
                 .filter((guild) => guild.id === ids.server.sim || guild.id === ids.server.game)
                 .each((server) => {
@@ -76,6 +76,6 @@ module.exports = {
                 })
             answer = answer + `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\nGame: \`${client.guilds.resolve(ids.server.game).commands.cache.size}\``
             return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
-        }
+        //}
     },
 }
