@@ -35,6 +35,7 @@ module.exports = {
                 // Seaching in all servers
                 args.forEach((arg) => {
                     // Nuking one server
+<<<<<<< HEAD
                     if (s.includes(arg)) {
                         client.guilds.fetch(ids.server[arg]).then((server) => {
                             server.commands.set([])
@@ -83,14 +84,46 @@ module.exports = {
             if (skiped.length !== 0) answer = answer + `\n**Following arguments couln't be resolved:**\n${skiped.map((element) => `\`${element}\``).join(" ")}\nValid CommandResolvables are \`commandID\`, \`commandName\`, \`sim\` and \`game\`!\nUse \`${process.env.PREFIX}nuke here <commands...>\` to delete commands in the current server only.`
             return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
         } else {*/
+=======
+                    if (s.includes(arg)) return client.guilds.resolve(ids[arg]).commands.set([])((answer += `Bulk delete of server: \`${client.guilds.resolve(ids[arg]).name}\`\n`))
+                    // Nuking command IDs and names
+                    s.forEach((ser) => {
+                        if (client.guilds.resolve(ids[ser]).commands.cache.has(arg))
+                            client.guilds
+                                .resolve(ids[ser])
+                                .commands.cache.get(arg)
+                                .delete()
+                                .then((cmd) => (answer += `ID delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
+                        else if (client.guilds.resolve(ids[ser]).commands.cache.find((cmd) => cmd.name === arg).size == 1)
+                            client.guilds
+                                .resolve(ids[ser])
+                                .commands.cache.find((cmd) => cmd.name === arg)
+                                .delete()
+                                .then((cmd) => (answer += `Name delete \`${cmd.name}\` (\`${cmd.id}\`, \`${cmd.guild.name}\`)\n`))
+                        else skiped.push(arg)
+                    })
+                })
+            }
+            if (skiped.length !== 0) answer += `\n**Following arguments couln't be resolved:**\n${skiped.map((element) => `\`${element}\``).join(" ")}\nValid CommandResolvables are \`commandID\`, \`commandName\`, \`sim\` and \`game\`!\nUse \`${process.env.PREFIX}nuke here <commands...>\` to delete commands in the current server only.`
+            return message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
+        } else {
+>>>>>>> 84f1fd4 (rebase (6))
             client.guilds.cache
                 .filter((guild) => guild.id === ids.server.sim || guild.id === ids.server.game)
                 .each((server) => {
                     server.commands.set([])
+<<<<<<< HEAD
                     answer = answer + `Bulk delete of server: \`${server.name}\`\n`
                 })
             answer = answer + `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\nGame: \`${client.guilds.resolve(ids.server.game).commands.cache.size}\``
             return await message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
         //}
+=======
+                    answer += `Bulk delete of server: \`${server.name}\`\n`
+                })
+            answer += `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\n\`Game: ${client.guilds.resolve(ids.server.game).commands.cache.size}\``
+            return message.channel.send({ embeds: [new MessageEmbed().setDescription(answer).setColor(0x7419b4).setThumbnail(client.user.avatarURL())] })
+        }
+>>>>>>> 84f1fd4 (rebase (6))
     },
 }
