@@ -29,7 +29,7 @@ module.exports = {
         } else if (message.channel.name == "priv-pacifist" || message.channel.name == "priv-wolf-pacifist") {
             let ability = await db.fetch(`paci_${message.channel.id}`)
             let gamePhase = await db.fetch(`gamePhase`)
-            let day = Math.floor(gamePhase/3)+1
+            let day = Math.floor(gamePhase / 3) + 1
             if (ability == "yes") return await message.reply("You have already used your ability!")
             let cmd = await db.fetch(`commandEnabled`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
@@ -81,4 +81,3 @@ module.exports = {
         }
     },
 }
-

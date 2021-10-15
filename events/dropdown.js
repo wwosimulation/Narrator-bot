@@ -4,7 +4,7 @@ const { shop, ids } = require("../config")
 const { players } = require("../db")
 function terrorCheck(message) {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
-    let dayCount = Math.floor(db.get(`gamePhase`)/3)+1
+    let dayCount = Math.floor(db.get(`gamePhase`) / 3) + 1
     let res = false
     for (let i = 0; i < prog.length; i++) {
         let terrorDay = db.get(`terror_${prog[i]}.day`) || "no"
@@ -24,7 +24,7 @@ module.exports = (client) => {
         }
 
         if (interaction.customId.startsWith("votephase")) {
-            let day = Math.floor(db.get(`gamePhase`)/3)+1
+            let day = Math.floor(db.get(`gamePhase`) / 3) + 1
             if (terrorCheck(interaction)) return interaction.reply({ content: "The Prognosticator prevents you from voting.", ephemeral: true })
             let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
             for (let x = 0; x < allpaci.length; x++) {

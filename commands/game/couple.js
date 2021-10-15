@@ -9,7 +9,7 @@ module.exports = {
         if (message.channel.name == "priv-cupid") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let gamePhase = db.get(`gamePhase`)
-            let nightCount = Math.floor(gamePhase/3)+1 || 1
+            let nightCount = Math.floor(gamePhase / 3) + 1 || 1
             let lovers = message.guild.channels.cache.find((c) => c.name === "lovers")
             if (nightCount != 1 || gamePhase % 3 != 0 || !message.member.roles.cache.has(alive.id)) return message.channel.send("You already used your ability!")
 

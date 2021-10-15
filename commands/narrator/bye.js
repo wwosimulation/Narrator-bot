@@ -82,6 +82,6 @@ const clearSettings = async (message) => {
 }
 
 const removeRoles = async (message) => {
-    const temproles = message.guild.channels.cache.find(x => x.name == "private channels")
+    const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
     temproles.children.forEach((channel) => channel.delete())
 }

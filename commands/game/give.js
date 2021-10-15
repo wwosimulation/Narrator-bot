@@ -52,7 +52,7 @@ module.exports = {
         } else if (message.channel.name == "priv-forger") {
             let alive = message.guild.roles.cache.find((m) => m.name === "Alive")
             let gamePhase = db.get(`gamePhase`)
-            let night = Math.floor(gamePhase/3)+1
+            let night = Math.floor(gamePhase / 3) + 1
             let forged = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forged_${dc.chan.id}` : `forged_${message.channel.id}`}`)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args.join(" ")) || message.guild.members.cache.find((m) => m.user.tag === args.join(" "))
 
@@ -66,7 +66,7 @@ module.exports = {
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
 
             if (forged < 0) return message.channel.send("You have already used your ability.")
-            if (db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forging_${dc.chan.id}` : `forging_${message.channel.id}`}`) == Math.floor(gamePhase/3)+1) return message.channel.send("You cannot give the item now!")
+            if (db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forging_${dc.chan.id}` : `forging_${message.channel.id}`}`) == Math.floor(gamePhase / 3) + 1) return message.channel.send("You cannot give the item now!")
 
             if (forged == 2 || forged == 1) {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toGiveS_${dc.chan.id}` : `toGiveS_${message.channel.id}`}`, guy.nickname)

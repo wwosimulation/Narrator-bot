@@ -6,9 +6,6 @@
 
 const players = require("../../schemas/players")
 const { fn } = require("../../config")
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-}
 
 module.exports = {
     name: "player",
@@ -62,7 +59,7 @@ module.exports = {
                     break
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
-            message.channel.send({ content: `${capitalizeFirstLetter(column.replace("inventory.", ""))} updated for ${target.user ? target.user.tag : target.tag}` })
+            message.channel.send({ content: `${fn.capitalizeFirstLetter(column.replace("inventory.", ""))} updated for ${target.user ? target.user.tag : target.tag}` })
         }
         if (column === "badge") {
             let update = {}
