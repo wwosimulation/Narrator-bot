@@ -13,6 +13,7 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name == "priv-pumpkin-king") {
             if (db.get(`pk_${message.channel.id}`)?.length > 0) return message.channel.send("You already sent your bucket!")
+            if (args[0] == message.member.nickname) return message.channel.send("You can't pass the bucket to yourself!")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
 
             let droppy = new MessageSelectMenu().setCustomId("pumpkinking")
@@ -29,16 +30,13 @@ module.exports = {
                 }
             }
             let row = new MessageActionRow().addComponents(droppy)
-            let sendChan
-            let chan = message.guild.channels.cache.filter((c) => c.name === `priv-`).map((x) => x.id)
-            for (let j = 0; j < chan.length; j++) {
-                let tempchan = message.guild.channels.cache.get(chan[j])
-                if (tempchan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    sendChan = tempchan
-                    break
-                }
-            }
-            sendChan.send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking")}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
+            let chan = message.guild.channels.cache
+                .filter((c) => c.name === `priv-`)
+                .forEach((x) => {
+                    if (x.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        x.send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking")}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
+                    }
+                })
             db.set(`pk_${message.channel.id}`, [message.author.id])
         }
     },
