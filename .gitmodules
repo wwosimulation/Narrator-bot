@@ -6,3 +6,4 @@
 [submodule "l10n"]
 	path = l10n
 	url = https://github.com/wwosimulation/l10n
+	branch = main
