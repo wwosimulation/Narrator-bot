@@ -1,6 +1,6 @@
 [submodule "config"]
 	path = config
-	url = https://github.com/wwosimulation/config.git
+	url = https://github.com/wwosimulation/config
 	branch = main
 
 [submodule "l10n"]
