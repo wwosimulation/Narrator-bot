@@ -23,7 +23,7 @@ module.exports = {
                 let chan = message.guild.channels.cache.filter((c) => c.name.startsWith(`priv-`)).map((x) => x.id)
                 for (let j = 0; j < chan.length; j++) {
                     let tempchan = message.guild.channels.cache.get(chan[j])
-                    if (tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    if (player && tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         shuffle(emojis)
                         droppy.addOptions({ label: `${i}`, value: `${message.channel.id}-pass:${i}`, description: `Pass the bucket to ${player.user.tag}`, emoji: emojis[0] })
                     }

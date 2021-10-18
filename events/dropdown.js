@@ -48,7 +48,7 @@ module.exports = (client) => {
                 droppy.addOptions({ label: `Return`, value: `${message.channel.id}-return`, description: `Return the bucket`, emoji: "🎃" })
                 for (let i = 1; i <= 16; i++) {
                     let player = message.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(aliveRole.id))
-                    if (!db.get(`pk_${king}`).includes(player.id)) {
+                    if (player && !db.get(`pk_${king}`).includes(player.id)) {
                         let chan = message.guild.channels.cache.filter((c) => c.name === `priv-`).map((x) => x.id)
                         for (let j = 0; j < chan.length; j++) {
                             let tempchan = message.guild.channels.cache.get(chan[j])
