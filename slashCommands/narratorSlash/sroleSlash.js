@@ -2,10 +2,14 @@ const shuffle = require("shuffle-array")
 const db = require("quick.db")
 const pull = require("array-pull")
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { getRole, fn, ids } = require("../../config")
 =======
 const { getRole, fn } = require("../../config")
 >>>>>>> d672ecb (Move srole to slash commands (#162))
+=======
+const { getRole, fn, ids } = require("../../config")
+>>>>>>> 2684237 (fix ids)
 
 module.exports = {
     command: {
@@ -56,6 +60,7 @@ module.exports = {
     permissions: {
         game: [
 <<<<<<< HEAD
+<<<<<<< HEAD
             { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
             { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
             { id: "892046210536468500", type: "ROLE", permission: false }, // @Player
@@ -64,6 +69,11 @@ module.exports = {
             { id: "606276949689499648", type: "ROLE", permission: true }, // @Narrator Trainee
             { id: "606131215526789120", type: "ROLE", permission: false }, // @Player
 >>>>>>> d672ecb (Move srole to slash commands (#162))
+=======
+            { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
+            { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
+            { id: "892046210536468500", type: "ROLE", permission: false }, // @Player
+>>>>>>> 2684237 (fix ids)
         ],
     },
     server: ["game"],
