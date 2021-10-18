@@ -44,7 +44,7 @@ module.exports = (client) => {
                         userMap += `${didGive ? "+" : "-"} ${x.nickname} (${x.user.tag})\n`
                     }
                 }
-                interaction.guild.channels.cache.get(king).send({ content: `Your candy basket has returned! ${users.length}/${interaction.guild.members.cache.filter((x) => x.roles.cache.has(ids.alive)).size} players gave candy:\n\`\`\`diff\n${userMap}\`\`\`` })
+                interaction.guild.channels.cache.get(king).send({ content: `Your candy basket has returned! ${users.length}/${interaction.guild.members.cache.filter((x) => x.roles.cache.has(ids.alive)).size} players gave candy:\n\`\`\`diff\n${userMap}\`\`\`\nBe sure to ask the narrator of the game to give each player marked with a \`+\` 5 coins.` })
                 interaction.message.edit({ components: [], content: interaction.message.content })
                 interaction.reply("You have returned the candy bucket!")
             }
