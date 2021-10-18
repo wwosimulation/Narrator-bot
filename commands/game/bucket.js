@@ -20,7 +20,7 @@ module.exports = {
             droppy.addOptions({ label: `Return`, value: `${message.channel.id}-return`, description: `Return the bucket`, emoji: "🎃" })
             for (let i = 1; i <= 16; i++) {
                 let player = message.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(ids.alive))
-                let chan = message.guild.channels.cache.filter((c) => c.name === `priv-`).map((x) => x.id)
+                let chan = message.guild.channels.cache.filter((c) => c.name.startsWith(`priv-`)).map((x) => x.id)
                 for (let j = 0; j < chan.length; j++) {
                     let tempchan = message.guild.channels.cache.get(chan[j])
                     if (tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
@@ -31,13 +31,14 @@ module.exports = {
             }
             let row = new MessageActionRow().addComponents(droppy)
             let chan = message.guild.channels.cache
-                .filter((c) => c.name === `priv-`)
+                .filter((c) => c.name.startsWith(`priv-`))
                 .forEach((x) => {
                     if (x.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        x.send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking")}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
+                        x.send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking", client)}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
                     }
                 })
             db.set(`pk_${message.channel.id}`, [message.author.id])
+            message.react(fn.getEmoji("pumpkinking", client))
         }
     },
 }
