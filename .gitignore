@@ -8,3 +8,4 @@ ghnb.pem
 .cache/
 .config/
 package-lock.json
+.vscode/*

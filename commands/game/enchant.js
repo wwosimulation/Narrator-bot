@@ -31,7 +31,7 @@ module.exports = {
                         return await message.reply("You can't use your abilities on other werewolves!")
                     } else {
                         db.set(`shaman_${message.channel.id}`, args[0])
-                        message.react("475776068431904769")
+                        message.react("475776068431904769").catch(() => {})
                     }
                 }
             }

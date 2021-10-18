@@ -1,8 +1,12 @@
+const { MessageSelectMenu, MessageActionRow } = require("discord.js")
 const db = require("quick.db")
+const shuffle = require("shuffle-array")
 const leaderboard = require("../commands/economy/leaderboard")
-const { shop, ids } = require("../config")
+const { shop, ids, fn } = require("../config")
+
+const emojis = ["🍬", "🍭", "🍫"]
 const { players } = require("../db")
-function terrorCheck(message) {
+const terrorCheck = (message) => {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
     let dayCount = Math.floor(db.get(`gamePhase`) / 3) + 1
     let res = false
@@ -21,6 +25,53 @@ module.exports = (client) => {
             let user = interaction.member.id
             await players.findOneAndUpdate({ user }, { language: interaction.values[0] }).exec()
             interaction.reply({ content: `Your language has been set to ${interaction.values[0]}!`, ephemeral: true })
+        }
+
+        if (interaction.customId.startsWith("pumpkinking")) {
+            //if (!interaction.member.roles.cache.has(ids.alive) && !interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: "Only players can give candy!", ephemeral: true })
+            let args = interaction.values[0].split("-")
+            console.log(args, interaction.member.id)
+            let king = args[0] // channel ID of king
+            let action = args[1] // pass:channelID or return
+            if (action.startsWith("return")) {
+                db.push(`pk_${king}`, interaction.member.id)
+                let users = db.get(`pk_${king}`)
+                let userMap = ""
+                for (let i = 1; i <= 16; i++) {
+                    let x = interaction.guild.members.cache.find((x) => x.nickname == `${i}`)
+                    if (x) {
+                        let didGive = users.includes(x.id)
+                        userMap += `${didGive ? "+" : "-"} ${x.nickname} (${x.user.tag})\n`
+                    }
+                }
+                interaction.guild.channels.cache.get(king).send({ content: `Your candy basket has returned! ${users.length}/${interaction.guild.members.cache.filter((x) => x.roles.cache.has(ids.alive)).size} players gave candy:\n\`\`\`diff\n${userMap}\`\`\`\nBe sure to ask the narrator of the game to give each player marked with a \`+\` 5 coins.` })
+                interaction.message.edit({ components: [], content: interaction.message.content })
+                interaction.reply("You have returned the candy bucket!")
+            }
+            if (action.startsWith("pass")) {
+                let passTo = action.split(":")[1]
+                let droppy = new MessageSelectMenu().setCustomId("pumpkinking")
+                if (passTo == interaction.channel.id) return interaction.reply("Don't be greedy and pass to yourself >:(")
+                db.push(`pk_${king}`, interaction.member.id)
+                droppy.addOptions({ label: `Return`, value: `${king}-return`, description: `Return the bucket`, emoji: "🎃" })
+                for (let i = 1; i <= 16; i++) {
+                    let player = interaction.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(ids.alive))
+                    let chan = interaction.guild.channels.cache.filter((c) => c.name.startsWith(`priv-`)).map((x) => x.id)
+                    for (let j = 0; j < chan.length; j++) {
+                        let tempchan = interaction.guild.channels.cache.get(chan[j])
+                        if (player && tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                            if (!db.get(`pk_${king}`).includes(player.id)) {
+                                shuffle(emojis)
+                                droppy.addOptions({ label: `${i}`, value: `${king}-pass:${tempchan.id}`, description: `Pass the bucket to ${player.user.tag}`, emoji: emojis[0] })
+                            }
+                        }
+                    }
+                }
+                let row = new MessageActionRow().addComponents(droppy)
+                interaction.guild.channels.cache.get(passTo).send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking", client)}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
+                interaction.message.edit({ components: [], content: interaction.message.content })
+                interaction.reply("You have passed on the candy bucket!")
+            }
         }
 
         if (interaction.customId.startsWith("votephase")) {
