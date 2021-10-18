@@ -48,6 +48,23 @@ module.exports = (client) => {
                 interaction.guild.channels.cache.get(passTo).send({ content: interaction.message.content, components: interaction.message.components })
                 interaction.message.delete()
                 interaction.reply("You have passed on the candy bucket!")
+                let droppy = new MessageSelectMenu().setCustomId("pumpkinking")
+                droppy.addOptions({ label: `Return`, value: `${message.channel.id}-return`, description: `Return the bucket`, emoji: "🎃" })
+                for (let i = 1; i <= 16; i++) {
+                    let player = message.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(aliveRole.id))
+                    if (!db.get(`pk_${king}`).includes(player.id)) {
+                        let chan = message.guild.channels.cache.filter((c) => c.name === `priv-`).map((x) => x.id)
+                        for (let j = 0; j < chan.length; j++) {
+                            let tempchan = message.guild.channels.cache.get(chan[j])
+                            if (tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                shuffle(emojis)
+                                droppy.addOptions({ label: `${i}`, value: `${message.channel.id}-pass:${i}`, description: `Pass the bucket to ${player.user.tag}`, emoji: emojis[0] })
+                            }
+                        }
+                    }
+                }
+                let row = new MessageActionRow().addComponents(droppy)
+                interaction.guild.channels.cache.get(passTo).send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking")}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
             }
         }
 

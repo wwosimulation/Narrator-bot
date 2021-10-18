@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
-const { fn } = require("../../config")
+const { fn, ids } = require("../../config")
 
 const emojis = ["🍬", "🍭", "🍫"]
 
@@ -31,7 +31,16 @@ module.exports = {
                 }
             }
             let row = new MessageActionRow().addComponents(droppy)
-            // TODO: send to correct channel
+            let sendChan
+            let chan = message.guild.channels.cache.filter((c) => c.name === `priv-`).map((x) => x.id)
+            for (let j = 0; j < chan.length; j++) {
+                let tempchan = message.guild.channels.cache.get(chan[j])
+                if (tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                    sendChan = tempchan
+                    break
+                }
+            }
+            sendChan.send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking")}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
         }
     },
 }
