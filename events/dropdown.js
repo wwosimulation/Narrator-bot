@@ -26,7 +26,7 @@ module.exports = (client) => {
         if (interaction.customId.startsWith("pumpkinking")) {
             if (!interaction.member.roles.cache.has(ids.alive) && !interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: "Only players can give candy!", ephemeral: true })
             let args = interaction.customId.split("-")
-            let king = args[0].split(":")[1] // channel ID of king
+            let king = args[0] // channel ID of king
             let action = args[1] // pass:channelID or return
             if (action == "return") {
                 let count = db.get(`pk_${king}`).size
