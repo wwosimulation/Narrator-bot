@@ -45,7 +45,7 @@ module.exports = (client) => {
             }
             if (action == "pass") {
                 let passTo = action.split(":")[1]
-                interaction.guild.channels.cache.get(passTo).send({content: interaction.message.content, components: interaction.message.components})
+                interaction.guild.channels.cache.get(passTo).send({ content: interaction.message.content, components: interaction.message.components })
                 interaction.message.delete()
                 interaction.reply("You have passed on the candy bucket!")
             }
