@@ -2,7 +2,7 @@ const db = require("quick.db")
 const leaderboard = require("../commands/economy/leaderboard")
 const { shop, ids } = require("../config")
 const { players } = require("../db")
-function terrorCheck(message) {
+const terrorCheck = (message) => {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
     let dayCount = Math.floor(db.get(`gamePhase`) / 3) + 1
     let res = false
@@ -21,6 +21,34 @@ module.exports = (client) => {
             let user = interaction.member.id
             await players.findOneAndUpdate({ user }, { language: interaction.values[0] }).exec()
             interaction.reply({ content: `Your language has been set to ${interaction.values[0]}!`, ephemeral: true })
+        }
+
+        if (interaction.customId.startsWith("pumpkinking")) {
+            if (!interaction.member.roles.cache.has(ids.alive) && !interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: "Only players can give candy!", ephemeral: true })
+            let args = interaction.customId.split("-")
+            let king = args[0].split(":")[1] // channel ID of king
+            let action = args[1] // pass:channelID or return
+            if (action == "return") {
+                let count = db.get(`pk_${king}`).size
+                let users = db.get(`pk_${king}`)
+                let userMap = ""
+                interaction.guild.members.cache
+                    .filter((x) => x.roles.cache.has(ids.alive) || x.roles.cache.has(ids.dead))
+                    .forEach((x) => {
+                        let didGive = users.includes(x.id)
+                        usermap += `${didGive ? "+" : "-"} ${x.nickname} (${x.user.tag})`
+                    })
+                    .map((x) => interaction.guild.members.cache.find((m) => m.id == x)?.nickname || "Unknown User")
+                king.send({ content: `Your candy basket has returned! ${count}/${interaction.guild.roles.cache.get(ids.alive).members.cache.size} players gave candy:\n${userMap}` })
+                interaction.message.delete()
+                interaction.reply("You have returned the candy bucket!")
+            }
+            if (action == "pass") {
+                let passTo = action.split(":")[1]
+                interaction.guild.channels.cache.get(passTo).send({content: interaction.message.content, components: interaction.message.components})
+                interaction.message.delete()
+                interaction.reply("You have passed on the candy bucket!")
+            }
         }
 
         if (interaction.customId.startsWith("votephase")) {
