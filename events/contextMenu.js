@@ -16,7 +16,7 @@ module.exports = (client) => {
                 user.roles.add(ids.dead)
                 user.roles.remove(ids.alive)
                 daychat.send(`**${user.nickname} ${user.user.username} (${db.get(`role_${user.id}`)})** was killed by the narrator!`)
-                intereaction.reply({ content: "Done!", ephemeral: true })
+                interaction.reply({ content: "Done!", ephemeral: true })
             }
 
             if (action == "Spectate") {
