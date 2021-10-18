@@ -15,7 +15,6 @@ const terrorCheck = (message) => {
     return res
 }
 
-
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isSelectMenu()) return
