@@ -87,10 +87,10 @@ module.exports = (client) => {
                 case "request":
                     let nextTime = db.get("nextRequest")
                     if (nextTime && nextTime > Date.now()) return interaction.reply({ content: `A game can only be requested once per every 30 minutes! The next game can be requested <t:${Math.round(nextTime / 1000)}:R>`, ephemeral: true })
-                    canHost.customId += interaction.member.id
-                    canNotHost.customId += interaction.member.id
+                    canHost.customId += `hostrequest-no;${interaction.member.id}`
+                    canNotHost.customId += `hostrequest-yes;${interaction.member.id}`
                     const row = new MessageActionRow().addComponents(canHost, canNotHost)
-                    client.channels.cache.get("606123759514025985").send({ content: `${interaction.member} is requesting a game! ||@here||\n\nThe below buttons will send a DM to the requesting user about your choice.`, components: [row] })
+                    client.channels.cache.get("606123759514025985").send({ content: `${interaction.member} is requesting a game! \n\nThe below buttons will send a DM to the requesting user about your choice.`, components: [row] })
                     interaction.reply({ content: "Your request has been sent to the narrators!", ephemeral: true })
                     db.set("nextRequest", Date.now() + ms("30m"))
                     break
