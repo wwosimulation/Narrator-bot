@@ -65,7 +65,7 @@ module.exports = {
             arr.forEach((item) => {
                 if (getTag(item.userID).includes("#")) description = description + `${item.value} - ${getTag(item.userID)}\n`
             })
-            embed = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setDescription(description)
                 .setColor("#1FFF43")
                 .setTimestamp()

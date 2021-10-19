@@ -2229,6 +2229,7 @@ module.exports = {
                                 }
                             }
 
+                            //shield
                             if (glitch != "0") {
                                 let chans = message.guild.channels.cache.filter((c) => c.name === `priv-${corrrole.toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                                 for (let k = 0; k < chans.length; k++) {
@@ -2297,6 +2298,7 @@ module.exports = {
                                     }
                                 }
                             }
+                            if(glitch == "0") db.delete(`corrupt_${corruptor.id}`)
                         }
 
                         // tough guy guard
