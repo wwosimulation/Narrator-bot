@@ -3104,7 +3104,7 @@ module.exports = {
                                     parent: "892046231516368906",
                                 })
                                 ff.permissionOverwrites.create(tempguy.id, {
-                                    SEND_MESSAGES: true,
+                                    SEND_MESSAGES: false,
                                     VIEW_CHANNEL: true,
                                     READ_MESSAGE_HISTORY: true,
                                 })
