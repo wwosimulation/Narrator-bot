@@ -110,16 +110,17 @@ module.exports = (client) => {
                 case "no":
                     foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` })
                     interaction.reply(`No one can host, so the user has been informed. Thank you ${interaction.member}`)
-                    canHost.customId = -canNotHost.customId.replace(user, "")
+                    canHost.customId =- canNotHost.customId.replace(user, "")
                     canNotHost.customId = canNotHost.customId.replace(user, "")
-                    console.log(interaction.message.components)
-                    interaction.message.resolveComponent(canHost).setDisabled(true)
-                    interaction.message.resolveComponent(canNotHost).setDisabled(true)
+                    canHost.disable = true
+                    canNotHost.disable = true
+                    const row = new MessageActionRow().addComponents(canHost, canNotHost)
+                    interaction.message.edit({components: [row] })
                     break
                 case "yes":
                     foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.member} is starting one soon!.` })
                     interaction.reply(`${interaction.member} is now hosting a game! The user has been informed.`)
-                    canHost.customId = -canNotHost.customId.replace(user, "")
+                    canHost.customId =- canNotHost.customId.replace(user, "")
                     canNotHost.customId = canNotHost.customId.replace(user, "")
                     interaction.message.components[0].setDisabled(true)
                     interaction.message.components[1].setDisabled(true)
