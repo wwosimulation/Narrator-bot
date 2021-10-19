@@ -112,7 +112,7 @@ module.exports = (client) => {
                     interaction.reply(`No one can host, so the user has been informed. Thank you ${interaction.member}`)
                     canHost.customId = canNotHost.customId.replace(user, "")
                     canNotHost.customId = canNotHost.customId.replace(user, "")
-                    interaction.message.edit({components: [] })
+                    interaction.message.edit({ components: [] })
                     break
                 case "yes":
                     foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.member} is starting one soon!.` })
