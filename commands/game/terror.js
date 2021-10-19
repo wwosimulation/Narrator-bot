@@ -14,7 +14,7 @@ module.exports = {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send({ content: "You are dead..." })
             if (ability !== "no") return message.channel.send({ content: "You already used that ability!" })
             if (!guy || !guy.roles.cache.has(alive.id)) return message.channel.send({ content: "Invalid target!" })
-            if (gamePhase % 3 == 1) {
+            if (gamePhase % 3 == 1 || gamePhase % 3 == 2) {
                 dayChat.send({ content: `**${guy.nickname + " " + guy.user.username || guy}** won't be able to vote anymore from tomorrow on.` })
                 db.set(`terror_${message.channel.id}`, { day: dayCount + 1, guy: guy.nickname })
                 message.channel.send({ content: "The villagers are informed!" })
