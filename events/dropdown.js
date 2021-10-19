@@ -87,14 +87,14 @@ module.exports = (client) => {
                 }
             }
             let hackers = interaction.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
-            for (let hacker = 0; hacker < hackers.length; hacker ++) {
-              let mute = db.get(`mute_${hackers[hacker]}`)
-              if (mute == interaction.member.nickname ? interaction.member.nickname : "0") {
-                return interaction.reply({
-                  content: "You are muted! You can't vote today.", 
-                  ephemeral: true
-                })
-              }
+            for (let hacker = 0; hacker < hackers.length; hacker++) {
+                let mute = db.get(`mute_${hackers[hacker]}`)
+                if (mute == interaction.member.nickname ? interaction.member.nickname : "0") {
+                    return interaction.reply({
+                        content: "You are muted! You can't vote today.",
+                        ephemeral: true,
+                    })
+                }
             }
             let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
             for (let x = 0; x < allpaci.length; x++) {
