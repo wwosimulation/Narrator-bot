@@ -18,8 +18,7 @@ module.exports = {
                     newz += `${e}`
                 } else newz += `${letter}`
             })
-        if (message.channel.permissionsFor(message.guild.me).has("MANAGE_WEBHOOKS")) {
-            message.channel.send("here")
+        if (message.channel.permissionsFor(message.guild.me).has("MANAGE_WEBHOOKS") && message.guild.roles.cache.get(message.guild.id).permissions.has("USE_EXTERNAL_EMOJIS")) {
             let allHooks = await message.channel.fetchWebhooks()
             let hook = allHooks.find((x) => x.owner.id == client.user.id)
             if (!hook)
@@ -27,10 +26,8 @@ module.exports = {
                     avatar: client.user.avatarURL(),
                     reason: `${process.env.PREFIX}emoji command`,
                 })
-            message.channel.send(newz)
             hook.send({ content: newz, username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
         } else {
-            message.channel.send("no here")
             let userEmbed = new Discord.MessageEmbed().setDescription(`<@${message.author.id}>`).setColor("#1FFF43")
             message.channel.send(`${newz}`, userEmbed)
         }
