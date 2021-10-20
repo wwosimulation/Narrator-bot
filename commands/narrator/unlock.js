@@ -15,10 +15,10 @@ module.exports = {
         message.channel.send("Done")
 
         let vote_channel = message.guild.channels.cache.find((c) => c.name === "vote-chat")
-        vote_channel.bulkDelete(vote_channel.messages.filter((msg) => !msg.pinned))
+        vote_channel.bulkDelete(vote_channel.messages.cache.filter((msg) => !msg.pinned))
 
         let wwvote_channel = message.guild.channels.cache.find((c) => c.name === "wwvote")
-        wwvote_channel.bulkDelete(wwvote_channel.messages.filter((msg) => !msg.pinned))
+        wwvote_channel.bulkDelete(wwvote_channel.messages.cache.filter((msg) => !msg.pinned))
 
         message.channel.send("Vote chats are cleared.")
     },
