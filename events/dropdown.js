@@ -119,6 +119,21 @@ module.exports = (client) => {
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
         }
+        if (interaction.customId.startsWith("votemode")) {
+            if (interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
+            if (interaction.member.roles.cache.has(ids.spectator)) return interaction.reply({ content: `You're spectating, you can't vote!`, ephemeral: true })
+            await interaction.deferUpdate()
+            let voted = db.get(`votemodeid_${interaction.member.id}`)
+            if (voted) {
+                let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
+                if (tmestodel) {
+                    await tmestodel.delete()
+                }
+            }
+            let omg = await interaction.message.channel.send(`${interaction.member.nickname} voted to play ${interaction.values[0]}`)
+            db.set(`votemode_${interaction.member.id}`, interaction.values[0])
+            db.set(`votemodeid_${interaction.member.id}`, omg.id)
+        }
         if (interaction.customId.startsWith("leaderboard")) {
             let arg = interaction.customId.slice(11).split("-") // ['', sort, message.id]
             let new_page = interaction.values[0]
