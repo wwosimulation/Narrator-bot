@@ -27,6 +27,7 @@ module.exports = {
                     avatar: client.user.avatarURL(),
                     reason: `${process.env.PREFIX}emoji command`,
                 })
+            message.channel.send(newz)
             hook.send({ content: newz, username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
         } else {
             message.channel.send("no here")
