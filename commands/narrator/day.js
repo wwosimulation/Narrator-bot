@@ -2298,7 +2298,7 @@ module.exports = {
                                     }
                                 }
                             }
-                            if(glitch == "0") db.delete(`corrupt_${corruptor.id}`)
+                            if (glitch == "0") db.delete(`corrupt_${corruptor.id}`)
                         }
 
                         // tough guy guard
