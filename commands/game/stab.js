@@ -38,7 +38,7 @@ module.exports = {
                 }
             }
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `stab_${dc.chan.id}` : `stab_${message.channel.id}`}`, guy.nickname)
-            message.react("774088736861978666").catch((x) => message.react("✅"))
+            message.react("774088736861978666").catch((x) => message.react(fn.getEmoji("skknife", client)))
         } else if (message.channel.name == "priv-bandit" || message.channel.name == "priv-accomplice") {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let allBandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
