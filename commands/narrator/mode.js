@@ -10,12 +10,12 @@ module.exports = {
     alias: ["csr", "cs", "gamemode"],
     run: async (message, args, client) => {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        let voteChat = message.guild.channels.cache.find(x => x.name == "vote-chat")
+        let voteChat = message.guild.channels.cache.find((x) => x.name == "vote-chat")
         let droppy = new MessageSelectMenu().setCustomId("votemode")
-        gameModes.forEach(x => {
-            droppy.addOptions({label: `${x}`, value: `${x}`})
+        gameModes.forEach((x) => {
+            droppy.addOptions({ label: `${x}`, value: `${x}` })
         })
         let row = new MessageActionRow().addComponents(droppy)
-        let m = await voteChat.send({content: `${alive}, which game mode should we play?`, components: [row]})
+        let m = await voteChat.send({ content: `${alive}, which game mode should we play?`, components: [row] })
     },
 }
