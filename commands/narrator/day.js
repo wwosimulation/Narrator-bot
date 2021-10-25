@@ -326,8 +326,7 @@ module.exports = {
                 
             }
             }
-        }
-        */
+        }*/
         // removing all kills if peace is activated
         for (let i = 0; i < prog.length; i++) {
             let peace = db.get(`peace_${prog[i]}`) || "no"
