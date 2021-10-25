@@ -252,10 +252,11 @@ module.exports = {
                     }
                 }
             }
-            /* for (let a = 0; a < jack.length; a++) {
+            for (let a = 0; a < jack.length; a++) {
                 let thejack = message.guild.channels.cache.get(jack[a])
                 let tot = db.get(`trickortreat_${jack[a]}`)
                 let players = tot
+                if (players != null) {
                 for (let b = 0; b < tot.length; b++) {
                     console.log(tot[b])
                     let guy = message.guild.members.cache.find((m) => m.nickname === tot[b])
@@ -304,6 +305,7 @@ module.exports = {
                         db.set(`trickortreat_${jack[a]}`, players)
                     }
                 }
+            }
             }
             */
             for (let a = 0; a < corr.length; a++) {
