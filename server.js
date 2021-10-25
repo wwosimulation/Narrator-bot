@@ -24,6 +24,8 @@ const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
 const players = require("./schemas/players.js")
 
+if(process.env.DEBUG) client.on("debug", console.debug)
+
 client.commands = new Discord.Collection()
 fs.readdir("./commands/", (err, files) => {
     files.forEach((file) => {
