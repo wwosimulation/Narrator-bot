@@ -252,7 +252,7 @@ module.exports = {
                     }
                 }
             }
-           /* for (let a = 0; a < jack.length; a++) {
+            /* for (let a = 0; a < jack.length; a++) {
                 let thejack = message.guild.channels.cache.get(jack[a])
                 let tot = db.get(`trickortreat_${jack[a]}`)
                 let players = tot
