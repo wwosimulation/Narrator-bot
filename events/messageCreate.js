@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const config = require("../config")
 const db = require("quick.db")
-const i10n = require("../i10n")
+const l10n = require("../l10n")
 //const mongo = require("../roles.find(x => x.name.toLowerCase() == role2.replace("-", " "))")
 const { players, botbans } = require("../db.js")
 const cooldowns = new Discord.Collection()
@@ -15,11 +15,11 @@ module.exports = (client) => {
         //let guy = message.member.nickname;
         if (message.author.bot) return //Ignore bots and dms
         message.dbUser = await players.findOne({ user: message.author.id }).exec()
-        if (!message.dbUser) message.dbUser = new players({ user: message.author.id }).save()
+        if (!message.dbUser) message.dbUser = await players.create({ user: message.author.id })
 
-        message.i10n = (key, replaceKeys = {}, language = message.dbUser.language) => {
+        message.l10n = (key, replaceKeys = {}, language = message.dbUser.language) => {
             if (!language) language = "en"
-            let string = i10n(key, language, replaceKeys)
+            let string = l10n(key, language, replaceKeys)
             return string
         }
 
@@ -52,11 +52,11 @@ module.exports = (client) => {
   `)
             }
 
-            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has("606140092213624859") && message.content.length > 140) {
+            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has(config.ids.alive) && message.content.length > 140) {
                 message.delete()
                 return message.channel.send("Maximum length for messages are 140 characters!")
             }
-            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has("606140092213624859") && message.content.includes("\n")) {
+            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has(config.ids.alive) && message.content.includes("\n")) {
                 message.delete()
                 return message.channel.send("You can only send one line per message!")
             }
@@ -81,7 +81,7 @@ module.exports = (client) => {
             return message.reply("I can't execute that command in DMs!")
         }
 
-        if (command.gameOnly && message.guild.id != "472261911526768642") return message.channel.send("That command can only be used in the game server!")
+        if (command.gameOnly && message.guild.id != config.ids.server.game) return message.channel.send("That command can only be used in the game server!")
         if (command.narratorOnly && !config.fn.isNarrator(message.member)) return
         if (command.staffOnly && !config.fn.isStaff(message.member)) return
 
@@ -120,10 +120,11 @@ module.exports = (client) => {
         //     message.reply("Something went wrong...")
         // }
 
-        client.channels.cache.get("832884582315458570").send(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`)
-        await command.run(message, args, client).catch((error) => {
+        client.channels.cache.get("832884582315458570").send(Discord.Util.removeMentions(`Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`))
+        await command.run(message, args, client)?.catch((error) => {
+            client.Sentry.captureException(error)
             console.error(error)
-            message.channel.send(`❌ An error occurred when trying to execute this command. Please contact a dev assistant.`)
+            message.channel.send(message.l10n("error"))
         })
     })
 }

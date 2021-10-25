@@ -10,17 +10,17 @@ module.exports = {
     run: async (message, args, client) => {
         let dc
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+        let gamePhase = db.get(`gamePhase`)
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-wolf-shaman") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, that's funny. disguising a wolf shaman as a wolf shaman!`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
-            let isDay = db.get(`isDay`)
             if (!args[0]) return message.channel.send("Who are you enchanting? Mention the player.")
             let role = await db.fetch(`role_${guy.id}`)
             let toShaman = role.toLowerCase()
-            if (isDay != "yes") return message.channel.send("You can enchant only during the day.")
+            if (gamePhase % 3 != 1) return message.channel.send("You can enchant only during the day.")
             if (!guy || guy == ownself) {
                 return await message.reply("The player is not in game! Mention the correct player number.")
             } else {
@@ -31,16 +31,16 @@ module.exports = {
                         return await message.reply("You can't use your abilities on other werewolves!")
                     } else {
                         db.set(`shaman_${message.channel.id}`, args[0])
-                        message.react("475776068431904769")
+                        message.react("475776068431904769").catch(() => {})
                     }
                 }
             }
         } else if (message.channel.name == "priv-illusionist") {
             let disguised = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `disguised_${dc.chan.id}` : `disguised_${message.channel.id}`}`) || []
-            let isNight = db.get(`isNight`)
+            if (gamePhase % 3 != 0) return message.channel.send("You can enchant only during the night.")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't disguise anyone." })
             if (!args[0]) return message.channel.send("Who are you enchanting? Mention the player.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            if (isNight != "yes") return message.channel.send("You can enchant only during the night.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Although this would be a great strategy I will have to stop you.`)
             if (!guy || guy == message.member) return message.reply("Invalid Target!")

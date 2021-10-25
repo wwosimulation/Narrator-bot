@@ -11,26 +11,24 @@ module.exports = {
     narratorOnly: true,
     run: async (message, args, client) => {
         let mid = db.get("entermsg")
-        message.guild.channels.cache
-            .find((x) => x.name == "enter-game")
-            .messages.fetch(mid)
-            .then((m) => {
-                let allc = m.components
-                //                let row = allc[0]
-                // let jgbutton = row.components[0]
-                //                let specbutton = row.components[1]
-                //                let narrbutton = row.components[2]
-                //                jgbutton.disabled = true
-                //                m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
-            })
-
+        if (mid) {
+            message.guild.channels.cache
+                .find((x) => x.name == "enter-game")
+                .messages.fetch(mid)
+                .then((m) => {
+                    let allc = m.components
+                    let row = allc[0]
+                    let jgbutton = row.components[0]
+                    let specbutton = row.components[1]
+                    let narrbutton = row.components[2]
+                    jgbutton.disabled = true
+                    m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
+                })
+        }
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
 
-        db.set(`isDay`, "no")
-        db.set(`nightCount`, 1)
-        db.set(`isNight`, "yes")
-        db.set(`dayCount`, 0)
+        db.set(`gamePhase`, 0)
         db.set(`wwsVote`, "yes")
         db.set(`commandEnabled`, "no")
 
@@ -164,7 +162,9 @@ module.exports = {
         }
         message.channel.send("The game has started! Ping @Alive in #day-chat when you are ready to start Night 1")
         await client.channels.cache.find((c) => c.id === "606123818305585167").send("Game is starting. You can no longer join. Feel free to spectate!")
-        message.guild.channels.cache.find((x) => x.name == "enter-game").send("The game is starting, you can no longer join. Feel free to spectate!")
+        let gamemode = db.get(`gamemode`)
+        message.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
         db.set("started", "yes")
+        db.delete(`gamemode`)
     },
 }

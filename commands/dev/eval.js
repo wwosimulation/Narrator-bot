@@ -11,7 +11,7 @@ module.exports = {
     usage: `${process.env.PREFIX}eval <code...>`,
     run: async (message, args, client) => {
         if (message.content.includes("TOKEN")) return await message.channel.send("Trying to get token, aren't you? 😏")
-        if (!["439223656200273932", "801726595378315264", "263472056753061889"].includes(message.author.id)) return
+        if (!["439223656200273932", "801726595378315264", "263472056753061889", "517335997172809728"].includes(message.author.id)) return
         try {
             if (!args[0]) return message.channel.send("undefined", { code: "js" })
 

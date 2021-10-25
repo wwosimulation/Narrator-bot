@@ -12,14 +12,19 @@ module.exports = {
         let dc
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-serial-killer") {
+            if (args[0] == "cancel") {
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `stab_${dc.chan.id}` : `stab_${message.channel.id}`}`, null)
+                return message.channel.send("Okay, your action has been canceled")
+            }
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`NO! just use \`+suicide\` (please don't)`)
-            let isNight = db.get(`isNight`)
+            let gamePhase = db.get(`gamePhase`)
+            if (gamePhase % 3 == 0 && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't kill anyone." })
             if (!args[0]) return message.channel.send("Who are you stabbing? Mention the player.")
             if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
             if (guy == message.member) return message.channel.send("Why are you stabbing yourself? lol")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
             let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
@@ -33,10 +38,11 @@ module.exports = {
                 }
             }
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `stab_${dc.chan.id}` : `stab_${message.channel.id}`}`, guy.nickname)
-            message.react("774088736861978666")
+            message.react("774088736861978666").catch((x) => message.react(fn.getEmoji("skknife", client)))
         } else if (message.channel.name == "priv-bandit" || message.channel.name == "priv-accomplice") {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let allBandits = message.guild.channels.cache.filter((c) => c.name.startsWith("bandits")).map((x) => x.id)
+            if (db.get(`gamePhase`) % 3 == 0 && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't convert anyone." })
             if (message.channel.name == "priv-bandit") {
                 for (let i = 0; i < allBandits.length; i++) {
                     let channel = message.guild.channels.cache.get(allBandits[i])

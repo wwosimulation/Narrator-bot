@@ -4,6 +4,9 @@ require("dotenv").config()
 const fs = require("fs")
 const db = require("quick.db")
 
+const Sentry = require("@sentry/node")
+const Tracing = require("@sentry/tracing")
+
 if (db.get("emergencystop")) {
     console.log("Bot has been emergency stopped")
     process.exit(0)
@@ -15,9 +18,11 @@ const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_R
 const config = require("./config")
 client.db = db
 client.dbs = mongo
+client.Sentry = Sentry
 
 const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
+const players = require("./schemas/players.js")
 
 client.commands = new Discord.Collection()
 fs.readdir("./commands/", (err, files) => {
@@ -36,6 +41,28 @@ fs.readdir("./commands/", (err, files) => {
                 try {
                     client.commands.set(props.name, props)
                     if (props.alias) props.alias.forEach((alias) => client.commands.set(alias, props))
+                } catch (err) {
+                    if (err) console.error(err)
+                }
+            })
+        })
+    })
+})
+client.slashCommands = new Discord.Collection()
+fs.readdir("./slashCommands/", (err, files) => {
+    files.forEach((file) => {
+        let path = `./slashCommands/${file}`
+        fs.readdir(path, (err, files) => {
+            if (err) console.error(err)
+            let jsfile = files.filter((f) => f.split(".").pop() === "js")
+            if (jsfile.length <= 0) {
+                console.error(`Couldn't find slash commands in the ${file} category.`)
+            }
+            jsfile.forEach((f, i) => {
+                let props = require(`./slashCommands/${file}/${f}`)
+                props.category = file
+                try {
+                    client.slashCommands.set(props.command.name, props)
                 } catch (err) {
                     if (err) console.error(err)
                 }
@@ -145,10 +172,9 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
 
 client.debug = async (options = { game: false }) => {
     let data = {}
-    data.night = db.get(`nightCount`)
-    data.day = db.get(`dayCount`)
-    data.isNight = db.get(`isNight`)
-    data.isDay = db.get(`isDay`)
+    data.night = Math.floor(db.get(`gamePhase`) / 3) + 1
+    data.day = Math.floor(db.get(`gamePhase`) / 3) + 1
+    data.gamePhase = db.get(`gamePhase`)
     let alive = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Alive")
     let dead = client.guilds.cache.get(config.ids.server.game).roles.cache.find((r) => r.name === "Dead")
     let players = []
@@ -161,13 +187,17 @@ client.debug = async (options = { game: false }) => {
 //Bot on startup
 client.on("ready", async () => {
     client.config = {}
-
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
+    client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
     if (!client.user.username.includes("Beta")) {
+        Sentry.init({
+            dsn: process.env.SENTRY,
+            tracesSampleRate: 1.0,
+        })
         // let privateKey = fs.readFileSync("./ghnb.pem")
         // client.github = new Octokit({
         //     authStrategy: createAppAuth,
@@ -179,6 +209,9 @@ client.on("ready", async () => {
         //     },
         // })
     }
+
+    //Invite Tracker
+    client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
 })
 
 let maint = db.get("maintenance")
@@ -187,10 +220,8 @@ if (typeof maint == "string" && maint.startsWith("config-")) {
     db.set("maintenance", false)
 }
 //require("./slash.js")(client)
-client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
 
 client.login(process.env.TOKEN)
-
 
 client.on("error", (e) => console.error)
 

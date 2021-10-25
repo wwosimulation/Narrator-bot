@@ -11,7 +11,7 @@ module.exports = {
         if (message.channel.name != "priv-arsonist") return
         let doused = await db.fetch(`doused_${message.channel.id}`)
         let dc
-        let isNight = await db.fetch(`isNight`)
+        let gamePhase = await db.fetch(`gamePhase`)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
@@ -19,10 +19,11 @@ module.exports = {
         if (doused == null) {
             doused = []
         }
-        if (isNight != "yes") {
+        if (gamePhase % 3 != 0) {
             return await message.channel.send("You can douse only in night!")
         }
-        if (ignited == db.get(`nightCount`)) return message.channel.send("You just ignited the players!")
+        if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't douse anyone." })
+        if (ignited == Math.floor(gamePhase / 3) + 1) return message.channel.send("You just ignited the players!")
         if (args.length == 0) {
             return await message.channel.send("Mention the players to douse with!")
         } else {

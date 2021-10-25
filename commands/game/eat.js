@@ -9,15 +9,20 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name == "priv-cannibal") {
             // getting all the variables
-            let isNight = db.get(`isNight`)
+            let gamePhase = db.get(`gamePhase`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dc
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+            if (args[0] == "cancel") {
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `eat_${dc.chan.id}` : `eat_${message.channel.id}`}`, null)
+                return message.channel.send("Okay, your action has been canceled")
+            }
             let hunger = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hunger_${dc.chan.id}` : `hunger_${message.channel.id}`}`) || 1
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You are dead. You cannot use the command now!`)
+            if (gamePhase % 3 != 0 && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't eat anyone." })
             if (!args[0]) return message.channel.send("Who you are going to eat? Mention the player.")
             if (hunger < args.length) return message.channel.send("You cannot eat more than your hunger!")
-            if (isNight != "yes") return message.channel.send("You cannot eat players during the day!")
+            if (gamePhase % 3 != 0) return message.channel.send("You cannot eat players during the day!")
 
             for (let i = 0; i < args.length; i++) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[i]) || message.guild.members.cache.find((m) => m.id === args[i]) || message.guild.members.cache.find((m) => m.user.username === args[i])

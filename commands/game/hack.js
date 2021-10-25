@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const config = require("../../config")
+const { fn } = require("../../config")
 
 module.exports = {
     name: "hack",
@@ -7,9 +7,13 @@ module.exports = {
     run: async (message, args, client) => {
         let dc
         if (message.channel.name == "priv-hacker") {
-            let isNight = db.get(`isNight`)
+            let gamePhase = db.get(`gamePhase`)
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+            if (args[0] == "cancel") {
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hack_${dc.chan.id}` : `hack_${message.channel.id}`}`, null)
+                return message.channel.send("Okay, your action has been canceled")
+            }
             let alrhacked = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hashacked_${dc.chan.id}` : `hashacked_${message.channel.id}`}`)
 
             let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
@@ -20,7 +24,7 @@ module.exports = {
             firsthack.forEach((person) => lol.push(person))
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You cannot use the ability now!`)
             if (!args[0]) return message.channel.send("who are you hacking? Mention the player.")
-            if (isNight != "yes") return message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
             if (args.length > 2) return message.channel.send("You cannot hack more than 2 players.")
             if (alrhacked) return message.channel.send("You have already hacked a player.")
 
@@ -34,6 +38,7 @@ module.exports = {
 
                 //if player is already hacked
                 if (firsthack.includes(guy.nickname)) {
+                    if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't hack anyone for the second time." })
                     sech.push(guy.nickname)
                     message.channel.send(`:white_check_mark: You decided to hack **${guy.nickname} ${guy.user.username}** to DEATH!`)
 

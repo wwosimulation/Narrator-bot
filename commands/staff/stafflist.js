@@ -6,7 +6,7 @@ module.exports = {
         if (message.member.permissions.has("MANAGE_ROLES")) {
             message.react("👍")
             client.emit("stafflist")
-            message.channel.send(message.i10n("stafflistQueued"))
+            message.channel.send(message.l10n("stafflistQueued"))
         }
     },
 }

@@ -8,7 +8,7 @@ module.exports = {
     alises: ["burn", "fire"],
     gameOnly: true,
     run: async (message, args, client) => {
-        let isNight = db.get(`isNight`)
+        let gamePhase = db.get(`gamePhase`)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dc
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
@@ -17,9 +17,10 @@ module.exports = {
         let didCmd = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`) || "-1"
         if (message.channel.name == "priv-arsonist") {
             if (!message.member.roles.cache.has(alive.id)) return await message.channel.send("You cannot use the ability now!")
-            if (isNight != "yes") return await message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 != 0) return await message.channel.send("You can use your ability only at night!")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't convert anyone." })
 
-            if (didCmd == db.get(`nightCount`)) return message.channel.send("You have used your ability tonight.")
+            if (didCmd == Math.floor(gamePhase / 3) + 1) return message.channel.send("You have used your ability tonight.")
             if (doused.length == 0) return await message.channel.send("Who are you igniting? You haven't doused player yet.")
 
             for (let i = 0; i < doused.length; i++) {
@@ -34,7 +35,7 @@ module.exports = {
                     }
                 }
             }
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`, db.get(`nightCount`))
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`, Math.floor(gamePhase / 3) + 1)
             db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `doused_${dc.chan.id}` : `doused_${message.channel.id}`}`)
         }
     },

@@ -9,10 +9,15 @@ module.exports = {
     aliases: ["glitch"],
     run: async (message, args, client) => {
         let dc
+        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+        if (args[0] == "cancel") {
+            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `corrupt_${dc.chan.id}` : `corrupt_${message.channel.id}`}`, null)
+            return message.channel.send("Okay, your action has been canceled")
+        }
         if (message.channel.name == "priv-corruptor") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot corrupt someone being dead!")
+            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't corrupt anyone." })
             if (!args[0]) return message.channel.send("Who are you glitching? Mention the player.")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, this is probably not a good idea...`)

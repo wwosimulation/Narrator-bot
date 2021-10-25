@@ -18,7 +18,7 @@ module.exports = {
                     newz += `${e}`
                 } else newz += `${letter}`
             })
-        if (message.channel.permissionsFor(message.guild.me).has("MANAGE_WEBHOOKS")) {
+        if (message.channel.permissionsFor(message.guild.me).has("MANAGE_WEBHOOKS") && message.guild.roles.cache.get(message.guild.id).permissions.has("USE_EXTERNAL_EMOJIS")) {
             let allHooks = await message.channel.fetchWebhooks()
             let hook = allHooks.find((x) => x.owner.id == client.user.id)
             if (!hook)

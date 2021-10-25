@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const schema = new mongoose.Schema({
     user: { type: String, unique: true, required: true }, // user id
-    coins: { type: Number, default: 0 }, // coins aka balance
+    coins: { type: Number, default: 25 }, // coins aka balance
     roses: { type: Number, default: 0 }, // roses CURRENCY
     gems: { type: Number, default: 0 }, // gems
     xp: { type: Number, default: 0 }, // xp
@@ -43,6 +43,7 @@ const schema = new mongoose.Schema({
     },
     winStreak: { type: Number, default: 0 },
     language: { type: String, default: "en" },
+    badges: { type: Object, default: { invite: { code: "none", members: 0, unlocked: false } } },
 })
 
 module.exports = mongoose.model(`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`, schema)

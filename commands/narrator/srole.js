@@ -12,6 +12,7 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
+        return message.channel.send("This command has moved to the /srole slash command!")
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
@@ -83,15 +84,15 @@ module.exports = {
         let auraspirit = ["aura-seer", "spirit-seer"]
         let beastbunny = ["beast-hunter"] // , "easter-bunny"]
         let jailerwitch = ["jailer", "witch"]
-        let jailerftwitch = jailerwitch.concat("fortune-teller")
+        let mortrrv = ["mortician", "rrv"]
         let alphashaman = ["alpha-werewolf", "wolf-shaman"]
-        let skcanni = ["illusionist", "cannibal"]
+        let skcanni = ["serial-killer", "cannibal"]
         let foolhh = ["fool", "headhunter"]
+        let foolhhrv = foolhh.concat("rv")
+        let ftprog = ["fortune-teller", "prognosticator"]
+        let dcrk = ["dreamcatcher", "rk"]
         let docbg = ["doctor", "bodyguard"]
         let gunnermarks = ["gunner", "marksman"]
-        let alcrk = ["alchemist", "rk"]
-        let pacishadownmber = ["wolf pacifist", "shadow wolf", "nightmare werewolf", "werewolf berserk"]
-        let juniorrww = ["junior-werewolf", "rw"]
         let cupidgr = ["cupid"] //, "grave-robber"]
 
         random = shuffle(random)
@@ -120,7 +121,7 @@ module.exports = {
             seerdet = shuffle(seerdet)
             roleOptions = [
                 ["Aura Seer", "Wolf Seer", "Doctor", "Avenger", "Detective", "Wolf Shaman", "Gunner", rv[0], "Witch", "Cannibal", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Werewolf", "Cupid"],
-                ["Aura Seer", "Wolf Seer", "Doctor", "Beast Hunter", "Aura", "Wolf Shaman", "Gunner", rv[0], "Witch", "Bomber", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Avenger", "Werewolf"],
+                ["Aura Seer", "Wolf Seer", "Doctor", "Beast Hunter", "Aura Seer", "Wolf Shaman", "Gunner", rv[0], "Witch", "Bomber", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Avenger", "Werewolf"],
                 ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Tough Guy", alphashaman[0], "Marksman", foolhh[0], jailerwitch[0], skcanni[0], "Medium", seerdet[0], "Junior Werewolf", "Cursed", "Beast Hunter", "Werewolf"],
                 ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Detective", "Wolf Shaman", "Gunner", foolhh[0], "Jailer", "Arsonist", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Bodyguard", "Werewolf"],
             ]
@@ -133,8 +134,10 @@ module.exports = {
             }
 
             roleOptions = [
-                ["Aura Seer", "rww", "rrv", "Doctor", "rrv", "Wolf Seer", "Marksman", "Headhunter", "Junior Werewolf", "Medium", "Jailer", "Arsonist", "Detective", "rww", "Priest", "rrv"],
-                ["Spirit Seer", "rww", "rrv", "Doctor", "rrv", "Wolf Seer", "Gunner", "Fool", "Junior Werewolf", "Medium", "Witch", "Cannibal", "Detective", "rww", "Priest", "rrv"],
+                ["Aura Seer", "rww", "rrv", "Doctor", "Detective", "Wolf Seer", "Marksman", "Headhunter", "Junior Werewolf", "Medium", "Jailer", "Arsonist", "rrv", "rww", "Priest", "rrv"],
+                ["Aura Seer", "rww", "rrv", "Doctor", "Detective", "Wolf Seer", "Marksman", "Headhunter", "Junior Werewolf", "Medium", "Witch", "Cannibal", "rrv", "rww", "Priest", "rrv"],
+                ["Detective", "Wolf Seer", "rrv", "Bodyguard", "Spirit Seer", "Wolf Shaman", "Gunner", "rv", "Nightmare Werewolf", "Medium", "Aura Seer", "Jailer", "Arsonist", "Corruptor", "Beast Hunter", "Priest", "Alpha Werewolf"],
+                ["Detective", "Wolf Seer", "rrv", "Bodyguard", "Spirit Seer", "Wolf Shaman", "Gunner", "rv", "Nightmare Werewolf", "Medium", "Aura Seer", "Jailer", "Illusionist", "Cannibal", "Beast Hunter", "Priest", "Alpha Werewolf"],
             ]
         } else if (gamemode == "sandbox") {
             shuffle(auraspirit)
@@ -142,11 +145,12 @@ module.exports = {
             shuffle(rrv)
             shuffle(beastbunny)
             shuffle(gunnermarks)
-            shuffle(alcrk)
-            shuffle(pacishadownmber)
-            shuffle(juniorrww)
+
             shuffle(cupidgr)
-            roleOptions.push([auraspirit[0], "alpha-werewolf", docbg[0], "rrv", beastbunny[0], "wolf-seer", gunnermarks[0], "rv", jailerftwitch[0], alcrk[0], "medium", "seer", pacishadownmber[0], "rrv", juniorrww[0], cupidgr[0]])
+            roleOptions = [
+                [auraspirit[0], "alpha-werewolf", docbg[0], "rrv", beastbunny[0], "wolf-seer", gunnermarks[0], foolhhrv[0], ftprog[0], dcrk[0], "medium", "seer", "werewolf-berserk", "rrv", "rww", cupidgr[0]],
+                ["aura-seer", "alpha-werewolf", "bodyguard", "rrv", mortrrv[0], "wolf-seer", "gunner", "rv", "jailer", "hacker", "medium", "seer", "shadow-wolf", "rrv", "rww", "cupid"],
+            ]
         } else if (gamemode == "custom" || gamemode == "customhide") {
             args.shift()
             excludes.forEach((role) => {
@@ -230,7 +234,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
             db.delete(`suicided_${guy.id}`)
             let lol = await message.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
-                parent: "748959630520090626",
+                parent: "892046231516368906",
             })
             lol.permissionOverwrites.create(message.guild.id, {
                 VIEW_CHANNEL: false,
@@ -300,7 +304,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == bandits.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("bandits", {
-                                parent: "606250714355728395",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -358,7 +362,7 @@ module.exports = {
                     if (occupied == true) {
                         if (qah == sect.map((x) => x.id).length) {
                             let t = await message.guild.channels.create("sect-members", {
-                                parent: "606250714355728395",
+                                parent: "892046231516368906",
                             })
                             t.permissionOverwrites.create(guy.id, {
                                 SEND_MESSAGES: true,
@@ -394,6 +398,7 @@ module.exports = {
             }
 
             await lol.send(role.description)
+            await lol.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
             db.set(`role_${guy.id}`, theirRole)
 
             db.delete(`atag_${guy.id}`)
@@ -406,7 +411,7 @@ module.exports = {
             sorcChats.forEach((x) => x.send(allWolves.join("\n")))
         }
 
-        let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes ? `Excluded roles: ${excludes.map(x => getRole(x).name ? getRole(x).name : "").join(", ")}` : ""}`)
+        let dcSent = await dayChat.send(gamemode.includes("hide") ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`)
         dcSent.pin()
         dayChat.permissionOverwrites.edit(alive, {
             SEND_MESSAGES: false,
@@ -415,5 +420,7 @@ module.exports = {
         })
         client.commands.get("playerinfo").run(message, args, client)
         message.channel.send("If everything looks correct, use `+startgame` to start the game!")
+        db.set(`gamePhase`, -1)
+        db.set(`gamemode`, args[0])
     },
 }

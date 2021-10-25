@@ -8,7 +8,7 @@ module.exports = {
     usage: `${process.env.PREFIX}reset`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.member.roles.cache.has("606139219395608603") || message.member.roles.cache.has("606276949689499648")) {
+        if (message.member.roles.cache.has(ids.narrator) || message.member.roles.cache.has(ids.mini)) {
             let times = [10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000]
             times = times[Math.floor(Math.random() * times.length)]
             let gunner = message.guild.channels.cache.filter((c) => c.name === "priv-gunner").map((x) => x.id) // gunner
@@ -53,33 +53,38 @@ module.exports = {
             let zombie = message.guild.channels.cache.filter((c) => c.name === "priv-zombie").map((x) => x.id)
             let mortician = message.guild.channels.cache.filter((c) => c.name === "priv-mortician").map((x) => x.id)
             let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
+            let king = message.guild.channels.cache.filter((c) => c.name === "priv-pumpkin-king").map((x) => x.id)
 
             db.delete(`excludes`)
 
-            message.guild.channels.cache.get("606132999389708330").permissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
-                SEND_MESSAGES: false,
-                READ_MESSAGE_HISTORY: false,
-                VIEW_CHANNEL: false,
-            })
+            message.guild.channels.cache
+                .find((x) => x.name == "day-chat")
+                .permissionOverwrites.edit(ids.alive, {
+                    SEND_MESSAGES: false,
+                    READ_MESSAGE_HISTORY: false,
+                    VIEW_CHANNEL: false,
+                })
 
             message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
-                .permissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
+                .permissionOverwrites.edit(ids.alive, {
                     SEND_MESSAGES: false,
                     READ_MESSAGE_HISTORY: true,
                     VIEW_CHANNEL: true,
                 })
 
-            message.guild.channels.cache.get("606132387587293195").permissionOverwrites.edit(message.guild.roles.cache.get("606140092213624859").id, {
-                SEND_MESSAGES: true,
-                READ_MESSAGE_HISTORY: true,
-                VIEW_CHANNEL: true,
-            })
+            message.guild.channels.cache
+                .find((x) => x.name == "game-lobby")
+                .permissionOverwrites.edit(ids.alive, {
+                    SEND_MESSAGES: true,
+                    READ_MESSAGE_HISTORY: true,
+                    VIEW_CHANNEL: true,
+                })
 
-            let t = client.guilds.cache.get("465795320526274561").roles.cache.get("606123676668133428").members
+            let t = client.guilds.cache.get(ids.server.sim).roles.cache.get("606123676668133428").members
 
             t.forEach((e) => {
-                e.roles.remove("606123676668133428")
+                e.roles.remove("606123676668133428") // joining role
             })
 
             client.channels.cache.get("606123818305585167").send(`Game ended! ${db.get(`winner`)} won the match!`)
@@ -90,15 +95,16 @@ module.exports = {
                 .messages.fetch(mid)
                 .then((m) => {
                     let allc = m.components
-                    if(allc) {
-                    let row = allc[0]
-                    let button = row.components[0]
-                    button.disabled = true
-                    m.edit({ components: [new MessageActionRow().addComponents(button)] })
+                    if (allc) {
+                        let row = allc[0]
+                        let button = row.components[0]
+                        button.disabled = true
+                        m.edit({ components: [new MessageActionRow().addComponents(button)] })
                     }
                 })
 
             db.set(`game`, null)
+            db.set(`gamePhase`, -10)
             for (let i = 0; i < gunner.length; i++) {
                 db.set(`bullets_${gunner[i]}`, 2)
                 db.set(`did_${gunner[i]}`, 555)
@@ -287,6 +293,11 @@ module.exports = {
             for (let i = 0; i < zombie.length; i++) {
                 db.set(`bite_${zombie[i]}`, null)
             }
+
+            for (let i = 0; i < king.length; i++) {
+                db.delete(`pk_${shadow[i]}`)
+            }
+
             // removing cards, shield and sword from players
             let allChannels = message.guild.channels.cache.filter((c) => c.name.startsWith("priv-")).map((x) => x.id)
             for (let i = 0; i < allChannels.length; i++) {

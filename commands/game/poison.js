@@ -12,20 +12,20 @@ module.exports = {
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
             let ability = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`)
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let day = await db.fetch(`isDay`)
-            let night = await db.fetch(`nightCount`)
-            let isNight = await db.fetch(`isNight`)
+            let gamePhase = await db.fetch(`gamePhase`)
+            let night = Math.floor(gamePhase / 3) + 1
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yeah... let's don't shall we, you will kill them anyway.`)
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
+            if (gamePhase % 3 == 0 && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't poison anyone." })
             if (!args[0]) return message.channel.send("Who are you poisoning? Mention the player.")
             if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            if (isNight == "yes") {
+            if (gamePhase % 3 == 0) {
                 if (night == 1) return message.channel.send("You cannot poison someone on night 1. Figure out the roles and then play.")
             }
-            if (day == "yes") return message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
             if (ability == 1) return message.channel.send("You have already used your ability.")
             if (db.get(`role_${guy.id}`) == "President") return message.channel.send("You cannot poison the President.")
             if (sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {

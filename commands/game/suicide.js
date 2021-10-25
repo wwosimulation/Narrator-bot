@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "suicide",
@@ -14,18 +15,18 @@ module.exports = {
                     db.set(`suicided_${guy.id}`, true)
                     let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
                     day.send("**" + guy.nickname + " " + guy.user.username + " (" + role + ")** has commited suicide!")
-                    guy.roles.add("606131202814115882")
-                    guy.roles.remove("606140092213624859")
+                    guy.roles.add(ids.dead)
+                    guy.roles.remove(ids.alive)
                 }
             }
         } else if (message.channel.name.includes("priv") || message.channel.name == "day-chat") {
-            if (!message.member.roles.cache.has("606140092213624859")) return
+            if (!message.member.roles.cache.has(ids.alive)) return
             db.set(`suicided_${message.author.id}`, true)
             let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let role = await db.fetch(`role_${message.author.id}`)
             day.send("**" + message.member.nickname + " " + message.author.username + " (" + role + ")** has commited suicide!")
-            message.member.roles.add("606131202814115882")
-            message.member.roles.remove("606140092213624859")
+            message.member.roles.add(ids.dead)
+            message.member.roles.remove(ids.alive)
         }
     },
 }

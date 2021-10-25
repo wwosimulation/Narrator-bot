@@ -15,18 +15,19 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name == "priv-bomber") {
-            let night = await db.fetch(`nightCount`)
             let dc
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
             let didCmd = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `didCmd_${dc.chan.id}` : `didCmd_${message.channel.id}`}`)
-            let isNight = await db.fetch(`isNight`)
+            let gamePhase = await db.fetch(`gamePhase`)
+            let night = Math.floor(gamePhase / 3) + 1
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0])
             let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])
             let guy3 = message.guild.members.cache.find((m) => m.nickname === args[2])
-            if (isNight != "yes") return await message.channel.send("Placing bombs in broad day light is good. You should do it often!")
+            if (gamePhase % 3 != 0) return await message.channel.send("Placing bombs in broad day light is good. You should do it often!")
+            if (config.fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't place any bombs." })
             if (!args.length == 3) return await message.channel.send("I know you wanna be the arso but you're not. Select 3 players to place the bomb at.") // change with fix
             if (!guy1 || !guy2 || !guy3) return await message.channel.send("Invalid Target!")
             if ((!guy1.roles.cache.has(alive.id) && !guy2.roles.cache.has(alive.id) && !guy3.roles.cache.has(alive.id)) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("Listen, placing bombs aren't possible when dead or to dead players. Now be a lamb and SHUT UP. ")

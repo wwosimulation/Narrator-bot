@@ -11,7 +11,7 @@ module.exports = {
         await sleep(3000)
         await clearMainChannels(message)
         await sleep(1000)
-        message.guild.channels.cache.filter((c) => c.parentID === "748959630520090626").forEach((x) => x.delete())
+        message.guild.channels.cache.filter((c) => c.parentID === "892046231516368906").forEach((x) => x.delete())
         await sleep(1000)
         await clearSettings(message)
         await sleep(1000)
@@ -47,10 +47,8 @@ const kickPlayers = async (message) => {
 const kickSpectators = async (message) => {
     let spec = await message.guild.roles.cache.find((r) => r.name === "Spectator")
     await spec.members.forEach(async (e) => {
-        if (e.id != "306566013791633408") {
-            await e.kick()
-            console.log(`Kicked ${e.user.tag}`)
-        }
+        await e.kick()
+        console.log(`Kicked ${e.user.tag}`)
     })
 }
 
@@ -72,7 +70,7 @@ const clearMainChannels = async (message) => {
 }
 
 const clearSettings = async (message) => {
-    let settings = message.guild.channels.cache.filter((c) => c.parentID === "606250714355728395")
+    let settings = message.guild.channels.cache.filter((c) => c.parentID === "892046231516368906")
     asyncForEach(settings, async (e) => {
         let oki = await e.messages.fetch()
         let hmm = oki.filter((m) => !m.pinned && Date.now() - m.createdTimestamp < 60 * 60 * 24 * 14)
@@ -84,6 +82,6 @@ const clearSettings = async (message) => {
 }
 
 const removeRoles = async (message) => {
-    const temproles = message.guild.channels.cache.get("748959630520090626")
+    const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
     temproles.children.forEach((channel) => channel.delete())
 }

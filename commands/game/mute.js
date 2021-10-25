@@ -13,8 +13,8 @@ module.exports = {
         if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
         if (message.channel.name == "priv-grumpy-grandma") {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let night = await db.fetch(`nightCount`)
-            let isNight = await db.fetch(`isNight`)
+            let gamePhase = await db.fetch(`gamePhase`)
+            let night = Math.floor(gamePhase / 3) + 1
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`That's funny but no.`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
@@ -23,7 +23,7 @@ module.exports = {
             } else if (args[0] === message.member.nickname) {
                 return await message.reply("You can not mute yourself!")
             } else {
-                if (isNight != "yes") {
+                if (gamePhase % 3 != 0) {
                     return await message.reply("You can use your ability only at night!")
                 } else {
                     if (night == 1) {
@@ -36,8 +36,8 @@ module.exports = {
             }
         } else if (message.channel.name == "priv-hacker") {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let night = await db.fetch(`nightCount`)
-            let isNight = await db.fetch(`isNight`)
+            let gamePhase = await db.fetch(`gamePhase`)
+            let night = Math.floor(gamePhase / 3) + 1
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             if (!guy) return message.reply("Invalid target!")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
@@ -46,7 +46,7 @@ module.exports = {
                 return await message.reply("Invalid target!")
             } else if (args[0] === message.member.nickname) {
                 return await message.reply("You can not mute yourself!")
-            } else if (isNight != "yes") {
+            } else if (gamePhase % 3 != 0) {
                 return await message.reply("You can use your ability only at night!")
             } else if (night == 1) {
                 return await message.reply("You can mute a player after the first night!")

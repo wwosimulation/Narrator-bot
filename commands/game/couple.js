@@ -8,10 +8,10 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.channel.name == "priv-cupid") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let nightCount = db.get(`nightCount`) || 1
-            let isNight = db.get(`isNight`)
+            let gamePhase = db.get(`gamePhase`)
+            let nightCount = Math.floor(gamePhase / 3) + 1 || 1
             let lovers = message.guild.channels.cache.find((c) => c.name === "lovers")
-            if (nightCount != 1 || isNight != "yes" || !message.member.roles.cache.has(alive.id)) return message.channel.send("You already used your ability!")
+            if (nightCount != 1 || gamePhase % 3 != 0 || !message.member.roles.cache.has(alive.id)) return message.channel.send("You already used your ability!")
 
             for (let a = 1; a <= 16; a++) {
                 let guy = message.guild.members.cache.find((c) => c.name === a.toString())

@@ -11,6 +11,7 @@ module.exports = {
         let page = 1 //default
         let sortedBy = "coins" // default
         let lbType = "Coin" //default
+        let errorReply = ""
 
         // extended arrays to check arguments and modify embed title
         let sortedByOptions = ["coins", "roses", "gems", "xp"]
@@ -25,6 +26,9 @@ module.exports = {
         if (isNaN(args[1]) && sortedByOptions.includes(args[1])) (sortedBy = args[1]), (lbType = lbTypes[sortedByOptions.indexOf(sortedBy)])
         /* args[1] is the page */
         if (!isNaN(args[1])) page = parseInt(args[1])
+
+        if (args[0] && isNaN(args[0]) && !sortedByOptions.includes(args[0])) errorReply = `\`${args[0]}\` is neither a valid page nor a valid leaderboard type!\n`
+        if (args[1] && isNaN(args[1]) && !sortedByOptions.includes(args[0])) errorReply += `\`${args[1]}\` is neither a valid page nor a valid leaderboard type!\n`
 
         let obj = {}
         obj[sortedBy] = -1
@@ -59,9 +63,9 @@ module.exports = {
         embedItemArray.forEach(async (arr, i, embedItemArr) => {
             let description = ""
             arr.forEach((item) => {
-                description = description + `${item.value} - ${getTag(item.userID)}\n`
+                if (getTag(item.userID).includes("#")) description = description + `${item.value} - ${getTag(item.userID)}\n`
             })
-            embed = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setDescription(description)
                 .setColor("#1FFF43")
                 .setTimestamp()
@@ -73,9 +77,10 @@ module.exports = {
 
         let msg
 
-        if (!embeds[page - 1]) (msg = await message.channel.send({ content: `${message.author}, page ${page} does not exist on this leader board!`, embeds: [embeds[0]] })), (page = 1)
+        if (!embeds[page - 1]) (msg = await message.channel.send({ content: errorReply + `${message.author}, page ${page} does not exist on this leader board!`, embeds: [embeds[0]] })), (page = 1)
         else {
-            msg = await message.channel.send({ embeds: [embeds[page - 1]] })
+            if (errorReply !== "") msg = await message.channel.send({ content: errorReply, embeds: [embeds[page - 1]] })
+            else msg = await message.channel.send({ embeds: [embeds[page - 1]] })
         }
 
         client.buttonPaginator(message.author.id, msg, embeds, page)

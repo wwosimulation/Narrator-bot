@@ -9,13 +9,13 @@ module.exports = {
     aliases: ["quests"],
     narratorOnly: true,
     run: async (message, args, client) => {
-        if (args.length < 3) return message.channel.send(message.i10n("questFormatInvalid"))
+        if (args.length < 3) return message.channel.send(message.l10n("questFormatInvalid"))
 
         let guy = fn.getUser(args[0], message)
-        if (!guy) return message.channel.send(message.i10n("userInvalid", { user: args[0] }))
+        if (!guy) return message.channel.send(message.l10n("userInvalid", { user: args[0] }))
         let data = players.findOne({ user: guy.id })
 
-        if (isNaN(args[1])) return message.channel.send(message.i10n("invalidAmount", { amount: args[1] }))
+        if (isNaN(args[1])) return message.channel.send(message.l10n("invalidAmount", { amount: args[1] }))
 
         data.xp += parseInt(args[1])
         data.save()

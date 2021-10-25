@@ -1,15 +1,23 @@
 const db = require("quick.db")
-const { getEmoji, getRole } = require("../../config")
 const { MessageButton, MessageActionRow } = require("discord.js")
 
+const { getEmoji, getRole, fn } = require("../../config")
+function peaceCheck(message) {
+    let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+    let nightCount = Math.floor(db.get(`gamePhase`) / 3) + 1
+    let res = false
+    for (let i = 0; i < prog.length; i++) {
+        let peace = db.get(`peace_${prog[i]}`) || "none"
+        if (peace !== "none" && peace === nightCount) return true
+    }
+    return res
+}
 module.exports = {
     name: "night",
     description: "Night 👀.",
     usage: `${process.env.PREFIX}night <player | 0>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.guild.id != "472261911526768642") return
-
         let sww = message.guild.channels.cache.filter((c) => c.name === "priv-shadow-wolf").map((x) => x.id)
         let nmww = message.guild.channels.cache.filter((c) => c.name === "priv-nightmare-werewolf").map((x) => x.id)
         let jailers = message.guild.channels.cache.filter((c) => c.name === "priv-jailer").map((x) => x.id)
@@ -309,6 +317,11 @@ module.exports = {
                             for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
                                 let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
                                 if (corruptor.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                    if (!player.roles.cache.has(alive.id)) {
+                                        chan.permissionOverwrites.edit(guy.id, {
+                                            SEND_MESSAGES: true,
+                                        })
+                                    }
                                     if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                         db.set(`corrupt_${corr[a]}`, null)
                                         dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${guy.nickname} ${guy.user.username}**!`)
@@ -360,7 +373,7 @@ module.exports = {
                                         console.log("hi")
                                         chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
                                         let chan1 = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`, {
-                                            parent: "748959630520090626",
+                                            parent: "892046231516368906",
                                         })
                                         chan1.permissionOverwrites.edit(player.id, {
                                             SEND_MESSAGES: true,
@@ -435,7 +448,7 @@ module.exports = {
                         }
 
                         let nbrole1 = await message.guild.channels.create(`priv-${nbr2.replace(" ", "-").toLowerCase()}`, {
-                            parent: "748959630520090626",
+                            parent: "892046231516368906",
                         })
                         nbrole1.permissionOverwrites.create(guy1.id, {
                             SEND_MESSAGES: true,
@@ -466,7 +479,7 @@ module.exports = {
                         await nbrole1.send(`${alive}`)
 
                         let nbrole2 = await message.guild.channels.create(`priv-${nbr1.replace(" ", "-").toLowerCase()}`, {
-                            parent: "748959630520090626",
+                            parent: "892046231516368906",
                         })
                         nbrole2.permissionOverwrites.create(guy2.id, {
                             SEND_MESSAGES: true,
@@ -776,6 +789,7 @@ module.exports = {
                 for (let i = 0; i < bb.length; i++) {
                     let bombs = db.get(`bombs_${bb[i]}`) || []
                     if (bombs.length > 0) {
+                        if (peaceCheck(message) === true) return message.guild.channels.fetch(bb[i]).then((chnl) => chnl.send({ content: "We have a peaceful night. Your bombs will explade next night." }))
                         bombs.forEach((e) => {
                             let goy = message.guild.members.cache.find((m) => m.nickname === e.toString())
                             if (goy) {
@@ -791,12 +805,10 @@ module.exports = {
                 }
             }, 60000)
         }, 3000)
-        dayChat.send(`${alive} Night ${db.get(`nightCount`) + 1} has started!`)
-        db.set(`isDay`, "no")
-        db.set(`isNight`, "yes")
-        db.add(`nightCount`, 1)
+        dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`) / 3) + 2} has started!`)
+        db.add(`gamePhase`, 1)
         db.set(`wwsVote`, "yes")
         db.set(`commandEnabled`, "no")
-        console.log(`Night: ${db.get(`nightCount`)}`)
+        console.log(`Night: ${Math.floor(db.get(`gamePhase`) / 3) + 1}`)
     },
 }

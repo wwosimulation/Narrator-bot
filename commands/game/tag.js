@@ -8,8 +8,8 @@ module.exports = {
     aliases: ["revenge", "avenge", "target"],
     gameOnly: true,
     run: async (message, args, client) => {
-        let night = db.get(`nightCount`) || 1
-        let isNight = db.get(`isNight`) || "yes"
+        let gamePhase = db.get(`gamePhase`)
+        let night = Math.floor(gamePhase / 3) + 1
         let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
         let jtag = await db.fetch(`jwwtag_${message.author.id}`)
         let atag = await db.fetch(`atag_${message.author.id}`)
@@ -40,7 +40,7 @@ module.exports = {
             }
 
             // check if the player tagged is a couple of the jww
-            let lovers = message.guild.channels.cache.get("606289146700496916")
+            let lovers = message.guild.channels.cache.find((x) => x.name == "lovers")
             if (lovers.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (lovers.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     return message.channel.send("You can not tag your couple!")
@@ -52,7 +52,7 @@ module.exports = {
         }
         if (message.channel.name == "priv-avenger") {
             if (night == 1) {
-                if (isNight == "yes") return message.channel.send("You can tag a player day 1 onwards.")
+                if (gamePhase % 3 == 0) return message.channel.send("You can tag a player day 1 onwards.")
             }
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
             if (!args[0]) return message.channel.send("Who are you tagging? Mention the player.")
@@ -70,7 +70,7 @@ module.exports = {
             }
 
             // check if the player tagged is a couple of the avenger
-            let lovers = message.guild.channels.cache.get("606289146700496916")
+            let lovers = message.guild.channels.cache.find((x) => x.name == "lovers")
             if (lovers.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (lovers.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     return message.channel.send("You can not tag your couple.")
@@ -78,7 +78,7 @@ module.exports = {
             }
 
             // check if the player tagged is a sect leader and if you are a sect member
-            let sl = message.guild.channels.cache.get("682617467767357453")
+            let sl = message.guild.channels.cache.find((x) => x.name == "sect-members")
             if (sl.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (role == "Sect Leader") {
                     return message.channel.send("You cannot tag your sect leader being part of the sect!")
@@ -99,7 +99,7 @@ module.exports = {
             if (!guy || guy == message.member || !guy.roles.cache.has(alive.id)) return message.reply("The player is not in game! Mention the correct player number.")
 
             if (night == 1) {
-                if (isNight == "yes") {
+                if (gamePhase % 3 == 0) {
                     return message.channel.send("You can not select a player to reveal during the first night!")
                 }
             }
@@ -113,7 +113,7 @@ module.exports = {
             }
 
             // check if the player tagged is a couple of the loudmouth
-            let lovers = message.guild.channels.cache.get("606289146700496916")
+            let lovers = message.guild.channels.cache.find((x) => x.name == "lovers")
             if (lovers.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (lovers.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     return message.channel.send("You can not reveal your couple!")
@@ -121,7 +121,7 @@ module.exports = {
             }
 
             // check if the player tagged is a sect leader and if you are a sect member
-            let sl = message.guild.channels.cache.get("682617467767357453")
+            let sl = message.guild.channels.cache.find((x) => x.name == "sect-members")
             if (sl.permissionsFor(ownself).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                 if (role == "Sect Leader") {
                     return message.channel.send("You can not reveal the Sect Leader being part of the sect.")

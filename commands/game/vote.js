@@ -1,6 +1,19 @@
 const Discord = require("discord.js")
+const { ids } = require("../../config")
 const db = require("quick.db")
 let voteForwws = ["0"]
+function terrorCheck(message) {
+    let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+    let dayCount = Math.floor(db.get(`gamePhase`) / 3) + 1
+    let res = false
+    for (let i = 0; i < prog.length; i++) {
+        let terrorDay = db.get(`terror_${prog[i]}.day`) || "no"
+        let terrorGuy = db.get(`terror_${prog[i]}.guy`) || "no"
+        if (terrorDay !== "no" && terrorGuy !== "no" && terrorDay >= dayCount && message.member.nickname === terrorGuy) res = true
+    }
+    return res
+}
+
 module.exports = {
     name: "vote",
     description: "Vote someone to get them possibly killed.",
@@ -13,6 +26,7 @@ module.exports = {
         let wwvote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
         let wwsVote = await db.fetch(`wwsVote`)
         let commandEnabled = await db.fetch(`commandEnabled`)
+        let voteBanned = terrorCheck(message)
         if (wwsVote == "yes") {
             if (!message.channel.name.includes("wolf")) return
 
@@ -69,6 +83,7 @@ module.exports = {
             if (!message.channel.name.includes("priv")) {
                 return
             } else {
+                if (voteBanned) message.channel.send({ content: "The Prognosticator prevents you from voting." })
                 if (message.channel.name == "priv-idiot") {
                     let killed = await db.fetch(`idiot_${message.channel.id}`)
                     if (killed == "yes") return await message.channel.send("You cannot vote now!")
@@ -87,7 +102,7 @@ module.exports = {
                 }
                 if (!votedGuy || votedGuy.roles.cache.has(dead.id) || votedGuy == message.member) {
                     return await message.reply("The player is not in game! Mention the correct player number.")
-                } else if (!votedGuy.roles.cache.has("606140092213624859") || !message.member.roles.cache.has("606140092213624859")) {
+                } else if (!votedGuy.roles.cache.has(ids.alive) || !message.member.roles.cache.has(ids.alive)) {
                     return await message.reply("You can play with alive people only!")
                 } else {
                     let voteChat = message.guild.channels.cache.find((c) => c.name === "vote-chat")

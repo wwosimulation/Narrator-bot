@@ -16,11 +16,11 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             let setTrap = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `setTrap_${dc.chan.id}` : `setTrap_${message.channel.id}`}`)
             let trapActive = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `trapActive_${dc.chan.id}` : `trapActive_${message.channel.id}`}`)
-            let night = await db.fetch(`nightCount`)
-            let isNight = db.get(`isNight`)
+            let gamePhase = db.get(`gamePhase`)
+            let night = Math.floor(gamePhase / 3) + 1
             if (!args[0]) return message.reply("Who are you trapping? Mention the player.")
             if (!guy) return await message.reply("The player is not in game! Mention the correct player number.")
-            if (isNight != "yes") return message.reply("You can use your ability only at night!")
+            if (gamePhase % 3 != 0) return message.reply("You can use your ability only at night!")
 
             if (!message.member.roles.cache.has(alive.id) || !guy.roles.cache.has(alive.id)) return await message.reply("You or the player isn't alive!")
 

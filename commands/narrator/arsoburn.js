@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "arsoburn",
@@ -18,7 +19,7 @@ module.exports = {
             guy.addRole(dead.id)
             if (role == "Junior Werewolf") {
                 let tag = await db.fetch(`jtag_${guy.id}`)
-                if (tag.roles.has("606140092213624859") || tag != null) {
+                if (tag.roles.has(alive.id) || tag != null) {
                     let byebye = message.guild.members.find((m) => m.nickname === tag)
                     let gg = await db.fetch(`role_${byebye.id}`)
                     day.send(`The Junior Werewolf's death has been avenged! **${tag} ${byebye.username} (${gg})** has died!`)

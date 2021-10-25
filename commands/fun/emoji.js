@@ -10,7 +10,7 @@ module.exports = {
         if (!client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).roles.cache.has("663389088354664477")) return
         message.delete()
         let emoji = client.userEmojis.find((x) => x.name.toLowerCase() == args.join(" ").toLowerCase())
-        if (!emoji) return message.author.send(message.i10n("emojiNotFound"))
+        if (!emoji) return message.author.send(message.l10n("emojiNotFound"))
         if (message.channel.permissionsFor(message.guild.me).has("MANAGE_WEBHOOKS")) {
             let allHooks = await message.channel.fetchWebhooks()
             let hook = allHooks.find((x) => x.owner.id == client.user.id)

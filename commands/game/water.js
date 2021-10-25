@@ -16,7 +16,7 @@ module.exports = {
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let priest = await db.fetch(`priest_${message.channel.id}`)
             let isDay = await db.fetch(`isDay`)
-            let dayCount = await db.fetch(`dayCount`)
+            let dayCount = Math.floor(db.get(`gamePhase`) / 3) + 1
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             if (!guy || guy == ownself) {
                 return await message.reply("The player is not in game! Mention the correct player number.")
@@ -32,7 +32,7 @@ module.exports = {
                         if (isDay != "yes") return message.channel.send("You can use your ability only during the day!")
                         if (dayCount == 1) {
                             let cmd = await db.fetch(`commandEnabled`)
-                            if (cmd != "yes") return await message.reply("You can only throw the water once!")
+                            if (cmd != "yes") return await message.reply("You can not water before the first voting phase of the game.")
                         } else {
                             let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
                             if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not water the Sect Leader being part of the sect!")
