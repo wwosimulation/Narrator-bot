@@ -28,7 +28,7 @@ module.exports = {
             if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Sorcerer" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber") return message.channel.send("You can only revive villagers.")
             if (guy.roles.cache.has("777400587276255262")) return message.channel.send("You can't revive corruted players!")
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `revive_${dc.chan.id}` : `revive_${message.channel.id}`}`, args[0])
-            message.react("767252118788243456")
+            message.channel.send("Done")
         }
     },
 }
