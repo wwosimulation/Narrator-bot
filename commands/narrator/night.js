@@ -307,7 +307,6 @@ module.exports = {
                 }
             }
             }
-            */
             for (let a = 0; a < corr.length; a++) {
                 let glitch = db.get(`corrupt_${corr[a]}`)
                 let corruptor = message.guild.channels.cache.get(corr[a])
