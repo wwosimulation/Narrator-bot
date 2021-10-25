@@ -121,7 +121,7 @@ module.exports = (client) => {
         }
         if (interaction.customId.startsWith("trick")) {
             let channelID = interaction.customId.split("_")[1]
-            client.channels.cache.get(channelID).send(`You have decided to trick`)
+            interaction.reply(`You have decided to trick`)
             button1 = interaction.message.components[0].components[0]
             button2 = interaction.message.components[0].components[1]
             button1.disabled = true
@@ -131,7 +131,7 @@ module.exports = (client) => {
         }
         if (interaction.customId.startsWith("treat")) {
             let channelID = interaction.customId.split("_")[1]
-            client.channels.cache.get(channelID).send(`You have decided to treat`)
+            interaction.reply(`You have decided to treat`)
             button1 = interaction.message.components[0].components[0]
             button2 = interaction.message.components[0].components[1]
             button1.disabled = true
