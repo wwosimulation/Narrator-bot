@@ -6,7 +6,7 @@ module.exports = {
     description: "Check players during the night. This command works for every seer in game.",
     usage: `${process.env.PREFIX}check <player> [<player>]`,
     gameOnly: true,
-    run: async (message, args) => {
+    run: async (message, args, client) => {
         let shaman = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-shaman").map((x) => x.id)
         let illu = message.guild.channels.cache.filter((c) => c.name === "priv-illusionist").map((x) => x.id)
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
