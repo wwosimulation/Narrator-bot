@@ -205,7 +205,7 @@ module.exports = {
         }
 
         // jack
-        /*       for (let i = 0; i < jack.length; i++) {
+        for (let i = 0; i < jack.length; i++) {
             let tempchan = message.guild.channels.cache.get(jack[i])
 
             let theJack
@@ -327,7 +327,7 @@ module.exports = {
             }
             }
         }
-        */
+
         // removing all kills if peace is activated
         for (let i = 0; i < prog.length; i++) {
             let peace = db.get(`peace_${prog[i]}`) || "no"
