@@ -119,5 +119,25 @@ module.exports = (client) => {
                     break
             }
         }
+        if (interaction.customId.startsWith("trick")) {
+            let channelID = interaction.customId.split("_")[1]
+            interaction.reply(`You have decided to trick`)
+            button1 = interaction.message.components[0].components[0]
+            button2 = interaction.message.components[0].components[1]
+            button1.disabled = true
+            button2.disabled = true
+            interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
+            db.set(`choice_${channelID}`, "trick")
+        }
+        if (interaction.customId.startsWith("treat")) {
+            let channelID = interaction.customId.split("_")[1]
+            interaction.reply(`You have decided to treat`)
+            button1 = interaction.message.components[0].components[0]
+            button2 = interaction.message.components[0].components[1]
+            button1.disabled = true
+            button2.disabled = true
+            interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
+            db.set(`choice_${channelID}`, "treat")
+        }
     })
 }
