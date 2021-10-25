@@ -205,7 +205,7 @@ module.exports = {
         }
 
         // jack
- /*       for (let i = 0; i < jack.length; i++) {
+        /*       for (let i = 0; i < jack.length; i++) {
             let tempchan = message.guild.channels.cache.get(jack[i])
 
             let theJack
