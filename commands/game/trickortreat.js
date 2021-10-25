@@ -28,7 +28,6 @@ module.exports = {
             }
             if (guy1 == ownself || guy2 == ownself) return message.channel.send("You canmot select yourself")
             if (guy1 == guy2) return message.channel.send("You cannot select the same person")
-            if (db.get(`punish_${message.channel.id}`) == null) return message.channel.send("Please select which option will cause death first with `+punish`")
             db.set(`trickortreat_${message.channel.id}`, [args[0], args[1]])
             message.channel.send(`You have selected **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}**, the option that will be punished is **${args[2]}**`)
         }
