@@ -24,7 +24,10 @@ const { createAppAuth } = require("@octokit/auth-app")
 const { Octokit } = require("@octokit/core")
 const players = require("./schemas/players.js")
 
-if(process.env.DEBUG) client.on("debug", console.debug)
+if(process.env.DEBUG) {
+    client.on("debug", console.debug)
+    client.on("messageCreate", x => console.debug(`${x.content} - ${x.author.tag} ${x.author.id}`))
+}
 
 client.commands = new Discord.Collection()
 fs.readdir("./commands/", (err, files) => {
