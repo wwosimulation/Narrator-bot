@@ -205,7 +205,7 @@ module.exports = {
         }
 
         // jack
-        for (let i = 0; i < jack.length; i++) {
+ /*       for (let i = 0; i < jack.length; i++) {
             let tempchan = message.guild.channels.cache.get(jack[i])
 
             let theJack
@@ -219,7 +219,7 @@ module.exports = {
             }
             let players = db.get(`trickortreat_${jack[i]}`)
             if (players != null) {
-                for (let a = 0; a < players.length; a++) {
+            for (let a = 0; a < players.length; a++) {
                     let guy = message.guild.members.cache.find((m) => m.nickname === players[a])
                     let allChannels = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).toLowerCase().replace(" ", "-")}`).map((x) => x.id)
                     for (let b = 0; b < allChannels.length; b++) {
@@ -323,9 +323,11 @@ module.exports = {
                             }
                         }
                     }
-                }
+                
+            }
             }
         }
+        */
         // removing all kills if peace is activated
         for (let i = 0; i < prog.length; i++) {
             let peace = db.get(`peace_${prog[i]}`) || "no"
