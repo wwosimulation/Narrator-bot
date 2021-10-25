@@ -252,7 +252,7 @@ module.exports = {
                     }
                 }
             }
-            for (let a = 0; a < jack.length; a++) {
+           /* for (let a = 0; a < jack.length; a++) {
                 let thejack = message.guild.channels.cache.get(jack[a])
                 let tot = db.get(`trickortreat_${jack[a]}`)
                 let players = tot
@@ -305,6 +305,7 @@ module.exports = {
                     }
                 }
             }
+            */
             for (let a = 0; a < corr.length; a++) {
                 let glitch = db.get(`corrupt_${corr[a]}`)
                 let corruptor = message.guild.channels.cache.get(corr[a])
