@@ -252,26 +252,25 @@ module.exports = {
                     }
                 }
             }
-            /* for (let a = 0; a < jack.length; a++) {
+            for (let a = 0; a < jack.length; a++) {
                 let thejack = message.guild.channels.cache.get(jack[a])
                 let tot = db.get(`trickortreat_${jack[a]}`)
                 let players = tot
                 if (players != null) {
-                    for (let b = 0; b < tot.length; b++) {
-                        console.log(tot[b])
-                        let guy = message.guild.members.cache.find((m) => m.nickname === tot[b])
-                        if (guy.roles.cache.has(alive.id)) {
-                            if (players[b] != null) {
-                                for (let x = 0; x < jailers.length; x++) {
-                                    if (players[b] == db.get(`jail_${jailers[x]}`)) {
-                                        players[b] = null
-                                        console.log(players)
-                                    } else {
-                                        for (let y = 0; y < nmww.length; y++) {
-                                            if (players[b] == db.get(`nightmare_${nmww[y]}`)) {
-                                                players[b] = null
-                                                console.log(players)
-                                            }
+                for (let b = 0; b < tot.length; b++) {
+                    console.log(tot[b])
+                    let guy = message.guild.members.cache.find((m) => m.nickname === tot[b])
+                    if (guy.roles.cache.has(alive.id)) {
+                        if (players[b] != null) {
+                            for (let x = 0; x < jailers.length; x++) {
+                                if (players[b] == db.get(`jail_${jailers[x]}`)) {
+                                    players[b] = null
+                                    console.log(players)
+                                } else {
+                                    for (let y = 0; y < nmww.length; y++) {
+                                        if (players[b] == db.get(`nightmare_${nmww[y]}`)) {
+                                            players[b] = null
+                                            console.log(players)
                                         }
                                     }
                                 }
@@ -302,16 +301,18 @@ module.exports = {
                                 }
                             }
 
-                            chan.permissionOverwrites.edit(guy.id, {
-                                SEND_MESSAGES: false,
-                            })
-                        } else {
-                            db.set(`trickortreat_${jack[a]}`, players)
-                        }
+               
+                        
+                        chan.permissionOverwrites.edit(guy.id, {
+                          "SEND_MESSAGES": false
+                          
+                        })
+                    } else {
+                        db.set(`trickortreat_${jack[a]}`, players)
                     }
                 }
             }
-            */
+            }
             for (let a = 0; a < corr.length; a++) {
                 let glitch = db.get(`corrupt_${corr[a]}`)
                 let corruptor = message.guild.channels.cache.get(corr[a])
