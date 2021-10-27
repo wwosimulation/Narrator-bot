@@ -3,14 +3,16 @@ const { gameModes } = require("../../config")
 
 module.exports = {
     name: "mode",
-    description: "Pings the alive role and asks which gamemode to play",
+    description: "Pings the alive role and asks which gamemode to play.\nAdd gamemodes as desired by adding to the end of this command.",
     usage: `${process.env.PREFIX}mode`,
     gameOnly: true,
     narratorOnly: true,
-    alias: ["csr", "cs", "gamemode"],
+    aliases: ["csr", "cs", "gamemode"],
     run: async (message, args, client) => {
         let modesSent = gameModes
-        if (args[0].toLowerCase() == "modded") gameModes.push("Modded")
+        args.forEach((match) => {
+            modesSent.push(match.charAt(0).toUpperCase() + match.slice(1))
+        })
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let voteChat = message.guild.channels.cache.find((x) => x.name == "vote-chat")
         let droppy = new MessageSelectMenu().setCustomId("votemode")
