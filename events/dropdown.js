@@ -114,7 +114,7 @@ module.exports = (client) => {
                         await tmestodel.delete()
                     }
                 }
-                let omg = await interaction.message.channel.send(`${interaction.member.nickname} voted ${interaction.values[0].split("-")[1]}`)
+                let omg = await interaction.message.channel.send(`${interaction.member.displayName} voted ${interaction.values[0].split("-")[1]}`)
                 db.set(`vote_${interaction.member.id}`, interaction.values[0].split("-")[1])
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
@@ -130,9 +130,22 @@ module.exports = (client) => {
                     await tmestodel.delete()
                 }
             }
-            let omg = await interaction.message.channel.send(`${interaction.member.nickname} voted to play ${interaction.values[0]}`)
+            let omg = await interaction.message.channel.send(`${interaction.member.displayName} voted to play ${interaction.values[0]}`)
             db.set(`votemode_${interaction.member.id}`, interaction.values[0])
             db.set(`votemodeid_${interaction.member.id}`, omg.id)
+        }
+        if (interaction.customId.startsWith("poll")) {
+            await interaction.deferUpdate()
+            let voted = db.get(`poll${interaction.message.id}id_${interaction.member.id}`)
+            if (voted) {
+                let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
+                if (tmestodel) {
+                    await tmestodel.delete()
+                }
+            }
+            let omg = await interaction.message.channel.send(`${interaction.member.displayName} voted ${interaction.values[0]}`)
+            db.set(`poll${interaction.message.id}_${interaction.member.id}`, interaction.values[0])
+            db.set(`poll${interaction.message.id}id_${interaction.member.id}`, omg.id)
         }
         if (interaction.customId.startsWith("leaderboard")) {
             let arg = interaction.customId.slice(11).split("-") // ['', sort, message.id]

@@ -45,7 +45,7 @@ fs.readdir("./commands/", (err, files) => {
                 props.category = file
                 try {
                     client.commands.set(props.name, props)
-                    if (props.alias) props.alias.forEach((alias) => client.commands.set(alias, props))
+                    if (props.aliases) props.aliases.forEach((alias) => client.commands.set(alias, props))
                 } catch (err) {
                     if (err) console.error(err)
                 }
