@@ -9,10 +9,12 @@ module.exports = {
     narratorOnly: true,
     alias: ["csr", "cs", "gamemode"],
     run: async (message, args, client) => {
+        let modesSent = gameModes
+        if (args[0].toLowerCase() == "modded") gameModes.push("Modded")
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let voteChat = message.guild.channels.cache.find((x) => x.name == "vote-chat")
         let droppy = new MessageSelectMenu().setCustomId("votemode")
-        gameModes.forEach((x) => {
+        modesSent.forEach((x) => {
             droppy.addOptions({ label: `${x}`, value: `${x}` })
         })
         let row = new MessageActionRow().addComponents(droppy)
