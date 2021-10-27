@@ -4,7 +4,7 @@ const { gameModes } = require("../../config")
 module.exports = {
     name: "mode",
     description: "Pings the alive role and asks which gamemode to play.\nAdd gamemodes as desired by adding to the end of this command.",
-    usage: `${process.env.PREFIX}mode`,
+    usage: `${process.env.PREFIX}mode [more gamemodes]`,
     gameOnly: true,
     narratorOnly: true,
     aliases: ["csr", "cs", "gamemode"],
