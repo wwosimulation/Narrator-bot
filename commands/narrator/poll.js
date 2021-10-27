@@ -3,12 +3,13 @@ const { gameModes } = require("../../config")
 
 module.exports = {
     name: "poll",
-    description: "Asks for game modifiers to choose, similar to the mode and vt command.",
+    description: "Asks for game modifiers to choose, similar to the mode and vt command. Separate arguments with |",
     usage: `${process.env.PREFIX}poll <options>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
         let items = []
+        args = args.join(" ").split("|")
         args.forEach((match) => {
             items.push(match.charAt(0).toUpperCase() + match.slice(1))
         })
