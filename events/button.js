@@ -109,11 +109,11 @@ module.exports = (client) => {
             switch (action) {
                 case "no":
                     foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` })
-                    interaction.reply(`No one can host, so the user has been informed. Thank you ${interaction.member}`)
+                    interaction.reply({ content: `No one can host, so the user has been informed. Thank you ${interaction.member}` })
                     break
                 case "yes":
                     foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.member} is starting one soon!.` })
-                    interaction.reply(`${interaction.member} is now hosting a game! The user has been informed.`)
+                    interaction.reply({ content: `${interaction.user} is now hosting a game! The user has been informed.` })
                     break
                 default:
                     break
