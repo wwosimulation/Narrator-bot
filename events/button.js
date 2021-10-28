@@ -108,14 +108,14 @@ module.exports = (client) => {
             foundUser = interaction.guild.members.resolve(user)
             switch (action) {
                 case "no":
-                    interaction.deferUpdate()
                     foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` })
                     interaction.reply(`No one can host, so the user has been informed. Thank you ${interaction.member}`)
+                    interaction.deferUpdate()
                     break
                 case "yes":
-                    interaction.deferUpdate()
                     foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.member} is starting one soon!.` })
                     interaction.reply(`${interaction.member} is now hosting a game! The user has been informed.`)
+                    interaction.deferUpdate()
                     break
                 default:
                     break
