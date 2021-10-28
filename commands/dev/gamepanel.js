@@ -5,7 +5,7 @@ module.exports = {
     description: "Send the game panel.",
     usage: `${process.env.PREFIX}gamepanel`,
     run: async (message, args, client) => {
-        if (message.author.id != "439223656200273932") return
+        if (!client.botAdmin(message.author.id)) return
 
         let button1 = new MessageButton().setStyle("SUCCESS").setLabel("Start a Quick Game").setCustomId("gp-start").setDisabled()
         let button2 = new MessageButton().setStyle("PRIMARY").setLabel("Request a Full Game").setCustomId("gp-request")
