@@ -113,7 +113,7 @@ module.exports = (client) => {
                     break
                 case "yes":
                     foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.member} is starting one soon!.` })
-                    interaction.reply({ content: `${interaction.member} is now hosting a game! The user has been informed.` })
+                    interaction.reply({ content: `${interaction.user} is now hosting a game! The user has been informed.` })
                     break
                 default:
                     break
