@@ -12,6 +12,7 @@ module.exports = (client) => {
             if (user.roles.cache.has(ids.dead)) return interaction.reply("You cannot use this action on a Dead player!")
 
             if (action == "Kill") {
+                if (!interaction.member.roles.cache.has(ids.mini) && !interaction.member.roles.cache.has(ids.narrator)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
                 if (!user.roles.cache.has(ids.alive)) return interaction.reply({ content: "You cannot use this action on spectators!", ephemeral: true })
                 user.roles.add(ids.dead)
                 user.roles.remove(ids.alive)
@@ -20,6 +21,7 @@ module.exports = (client) => {
             }
 
             if (action == "Spectate") {
+                if (!interaction.member.roles.cache.has(ids.mini) && !interaction.member.roles.cache.has(ids.narrator)) return interaction.reply({ content: "You aren't a narrator!", ephemeral: true })
                 if (!user.roles.cache.has("691298564508352563")) {
                     user.setNickname("lazy spectatorz")
                 } else {
