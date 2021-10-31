@@ -241,7 +241,7 @@ module.exports = {
                 }
             }
             db.set(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `spirit_${dc.chan.id}` : `spirit_${message.channel.id}`}`, check)
-            message.react(fn.getEmoji("sscheck", client)).catch(()=>{})
+            message.react(fn.getEmoji("sscheck", client)).catch(() => {})
         }
     },
 }
