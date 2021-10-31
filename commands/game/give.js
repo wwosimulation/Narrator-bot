@@ -71,11 +71,11 @@ module.exports = {
             if (forged == 2 || forged == 1) {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toGiveS_${dc.chan.id}` : `toGiveS_${message.channel.id}`}`, guy.nickname)
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `given_${dc.chan.id}` : `given_${message.channel.id}`}`, true)
-                message.channel.send(`${getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
+                message.channel.send(`${fn.getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
             } else {
                 db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forged_${dc.chan.id}` : `forged_${message.channel.id}`}}`, 1)
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toGiveK_${dc.tempguy.id}` : `toGiveK_${message.author.id}`}}`, guy.nickname)
-                message.channel.send(`${getEmoji("getsword", client)} You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
+                message.channel.send(`${fn.getEmoji("getsword", client)} You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
             }
         } else if (message.channel.name == "priv-alchemist") {
             let gamePhase = db.get(`gamePhase`)
@@ -91,10 +91,10 @@ module.exports = {
             if (!["red", "black"].includes(args[0].toLowerCase())) return message.channel.send("Which potion you are giving? Those are either `red` or `black`.")
             if (args[0].toLowerCase() == "red") {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `redpotion_${dc.chan.id}` : `redpotion_${message.channel.id}`}`, guy.nickname)
-                message.react("821920816596910100")
+                message.react(fn.getEmoji("redp", client))
             } else if (args[0].toLowerCase() == "black") {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `blackpotion_${dc.chan.id}` : `blackpotion_${message.channel.id}`}`, guy.nickname)
-                message.react("821920932989239296")
+                message.react(fn.getEmoji("blackp", client))
             }
         }
     },

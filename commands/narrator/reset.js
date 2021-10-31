@@ -8,9 +8,11 @@ module.exports = {
     usage: `${process.env.PREFIX}reset`,
     gameOnly: true,
     run: async (message, args, client) => {
+        console.log("hi")
         if (message.member.roles.cache.has(ids.narrator) || message.member.roles.cache.has(ids.mini)) {
             let times = [10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000]
             times = times[Math.floor(Math.random() * times.length)]
+            console.log("hi")
             let gunner = message.guild.channels.cache.filter((c) => c.name === "priv-gunner").map((x) => x.id) // gunner
             let grumpy = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id) // gg
             let seer = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map((x) => x.id) // seer
@@ -54,6 +56,7 @@ module.exports = {
             let mortician = message.guild.channels.cache.filter((c) => c.name === "priv-mortician").map((x) => x.id)
             let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
             let king = message.guild.channels.cache.filter((c) => c.name === "priv-pumpkin-king").map((x) => x.id)
+            console.log("hi")
 
             db.delete(`excludes`)
 
@@ -64,6 +67,7 @@ module.exports = {
                     READ_MESSAGE_HISTORY: false,
                     VIEW_CHANNEL: false,
                 })
+            console.log("hi")
 
             message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
@@ -72,6 +76,7 @@ module.exports = {
                     READ_MESSAGE_HISTORY: true,
                     VIEW_CHANNEL: true,
                 })
+            console.log("hi")
 
             message.guild.channels.cache
                 .find((x) => x.name == "game-lobby")
@@ -80,12 +85,14 @@ module.exports = {
                     READ_MESSAGE_HISTORY: true,
                     VIEW_CHANNEL: true,
                 })
+            console.log("hi")
 
             let t = client.guilds.cache.get(ids.server.sim).roles.cache.get("606123676668133428").members
 
             t.forEach((e) => {
                 e.roles.remove("606123676668133428") // joining role
             })
+            console.log("hi")
 
             client.channels.cache.get("606123818305585167").send(`Game ended! ${db.get(`winner`)} won the match!`)
             let mid = db.get("game")
@@ -102,6 +109,7 @@ module.exports = {
                         m.edit({ components: [new MessageActionRow().addComponents(button)] })
                     }
                 })
+            console.log("hi")
 
             db.set(`game`, null)
             db.set(`gamePhase`, -10)
@@ -109,6 +117,7 @@ module.exports = {
                 db.set(`bullets_${gunner[i]}`, 2)
                 db.set(`did_${gunner[i]}`, 555)
             }
+            console.log("hi")
 
             for (let i = 0; i < grumpy.length; i++) {
                 db.set(`mute_${grumpy[i]}`, null)
@@ -130,6 +139,7 @@ module.exports = {
                 db.set(`setTrap_${beasthunter[i]}`, null)
                 db.set(`trapActive_${beasthunter[i]}`, false)
             }
+            console.log("hi")
 
             for (let i = 0; i < witch.length; i++) {
                 db.set(`potion_${witch[i]}`, null)
@@ -156,6 +166,7 @@ module.exports = {
                 db.set(`secondhack_${message.channel.id}`, null)
                 db.set(`usedmute_${message.channel.id}`, null)
             }
+            console.log("hi")
 
             for (let i = 0; i < priest.length; i++) {
                 db.set(`priest_${priest[i]}`, null)
@@ -184,6 +195,7 @@ module.exports = {
                 db.set(`wwseer_${wwseer[i]}`, "no")
                 db.set(`resign_${wwseer[i]}`, false)
             }
+            console.log("hi")
 
             for (let i = 0; i < skiller.length; i++) {
                 db.set(`stab_${skiller[i]}`, null)
@@ -211,6 +223,7 @@ module.exports = {
             for (let i = 0; i < sorcerer.length; i++) {
                 db.set(`sorcerer_${sorcerer[i]}`, "no")
             }
+            console.log("hi")
 
             for (let i = 0; i < wwshaman.length; i++) {
                 db.set(`shaman_${wwshaman[i]}`, null)
@@ -243,6 +256,7 @@ module.exports = {
                 db.delete(`disguised_${illu[i]}`)
                 db.delete(`toDisguise_${illu[i]}`)
             }
+            console.log("hi")
 
             for (let i = 0; i < corr.length; i++) {
                 db.set(`corrupt_${corr[i]}`, null)
@@ -281,6 +295,7 @@ module.exports = {
             for (let i = 0; i < dp.length; i++) {
                 db.delete(`copy_${dp[i]}`, null)
             }
+            console.log("hi")
 
             for (let i = 0; i < kww.length; i++) {
                 db.delete(`scratch_${kww[i]}`)
@@ -314,6 +329,7 @@ module.exports = {
                     db.delete(`bitten_${allChannels[i]}`)
                 }
             }
+            console.log("hi")
 
             message.channel
                 .send("Reset in progress")
@@ -323,6 +339,7 @@ module.exports = {
                     }, times)
                 })
                 .catch((e) => message.channel.send(`Error: ${e.message}`))
+            console.log("hi")
         }
     },
 }

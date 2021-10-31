@@ -99,7 +99,7 @@ module.exports = {
 
         if (real.includes("wolf")) {
             wwvote.permissionOverwrites.edit(guy.id, {
-                SEND_MESSAGES: true,
+                SEND_MESSAGES: false,
                 VIEW_CHANNEL: true,
                 READ_MESSAGE_HISTORY: true,
             })
