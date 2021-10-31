@@ -86,16 +86,6 @@ module.exports = (client) => {
                     return interaction.reply({ content: "You are corrupted! You can't vote today.", ephemeral: true })
                 }
             }
-            let hackers = interaction.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
-            for (let hacker = 0; hacker < hackers.length; hacker++) {
-                let mute = db.get(`mute_${hackers[hacker]}`)
-                if (mute == interaction.member.nickname ? interaction.member.nickname : "0") {
-                    return interaction.reply({
-                        content: "You are muted! You can't vote today.",
-                        ephemeral: true,
-                    })
-                }
-            }
             let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
             for (let x = 0; x < allpaci.length; x++) {
                 let dayactivated = db.get(`pacday_${allpaci[x]}`)
@@ -124,10 +114,38 @@ module.exports = (client) => {
                         await tmestodel.delete()
                     }
                 }
-                let omg = await interaction.message.channel.send(`${interaction.member.nickname} voted ${interaction.values[0].split("-")[1]}`)
+                let omg = await interaction.message.channel.send(`${interaction.member.displayName} voted ${interaction.values[0].split("-")[1]}`)
                 db.set(`vote_${interaction.member.id}`, interaction.values[0].split("-")[1])
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
+        }
+        if (interaction.customId.startsWith("votemode")) {
+            if (interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
+            if (interaction.member.roles.cache.has(ids.spectator)) return interaction.reply({ content: `You're spectating, you can't vote!`, ephemeral: true })
+            await interaction.deferUpdate()
+            let voted = db.get(`votemodeid_${interaction.member.id}`)
+            if (voted) {
+                let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
+                if (tmestodel) {
+                    await tmestodel.delete()
+                }
+            }
+            let omg = await interaction.message.channel.send(`${interaction.member.displayName} voted to play ${interaction.values[0]}`)
+            db.set(`votemode_${interaction.member.id}`, interaction.values[0])
+            db.set(`votemodeid_${interaction.member.id}`, omg.id)
+        }
+        if (interaction.customId.startsWith("poll")) {
+            await interaction.deferUpdate()
+            let voted = db.get(`poll${interaction.message.id}id_${interaction.member.id}`)
+            if (voted) {
+                let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
+                if (tmestodel) {
+                    await tmestodel.delete()
+                }
+            }
+            let omg = await interaction.message.channel.send(`${interaction.member.displayName} voted ${interaction.values[0]}`)
+            db.set(`poll${interaction.message.id}_${interaction.member.id}`, interaction.values[0])
+            db.set(`poll${interaction.message.id}id_${interaction.member.id}`, omg.id)
         }
         if (interaction.customId.startsWith("leaderboard")) {
             let arg = interaction.customId.slice(11).split("-") // ['', sort, message.id]
