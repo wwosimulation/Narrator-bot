@@ -31,8 +31,8 @@ module.exports = {
         let wins = 0,
             losses = 0
         for (let team in xp.teamMultipliers) {
-            wins = wins + data.stats[team].win
-            losses = losses + data.stats[team].loss
+            wins = wins + (data.stats[team]?.win || 0)
+            losses = losses + (data.stats[team]?.loss || 0)
             console.log(data.stats[team])
         }
 
