@@ -17,6 +17,7 @@ module.exports = (client) => {
             if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) //spec
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
             if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
+            if (guy.roles.cache.has(ids.jowov)) guy.roles.remove(ids.jowov) //jowov
             let role = interaction.guild.roles.cache.get(ids.alive)
             await guy.roles
                 .add(ids.alive)
