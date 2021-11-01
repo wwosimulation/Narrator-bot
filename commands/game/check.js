@@ -58,10 +58,10 @@ module.exports = {
             } else if (!guy.roles.cache.has(ids.alive) || !ownself.roles.cache.has(ids.alive)) return await message.channel.send("You or the person you are checking is not alive.")
             let checked = await db.fetch(`${db.get(`role_${ownself.id}`) == "Dreamcatcher" ? `seer_${dc.chan.id}` : `seer_${message.channel.id}`}`)
             if (checked == "yes") return await message.channel.send("You already used your ability for tonight!")
-            let role = await db.fetch(`role_${guy.id}`)
+            let role = db.fetch(`role_${guy.id}`)
 
             for (let i = 0; i < illu.length; i++) {
-                console.log(illu[i])
+              console.log(illu[i])
                 let disguised = db.get(`disguised_${illu[i]}`) || []
                 if (disguised.length != 0) {
                     if (disguised.includes([args[0]])) {
