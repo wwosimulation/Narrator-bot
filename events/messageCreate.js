@@ -27,7 +27,7 @@ module.exports = (client) => {
         let blacklists = db.get(`blacklistss`) || []
         //console.log(blacklists)
         if (message.channel.type != "dm") {
-            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat") {
+            if (message.guild?.id == "472261911526768642" && message.channel.name == "day-chat") {
                 if ((message.content.includes("#priv") || message.content.includes("<#")) && !message.member.permissions.has(["MANAGE_ROLES"])) {
                     message.delete()
                     message.channel.send(`${message.author} This is a warning! Do not mention your channel!`)

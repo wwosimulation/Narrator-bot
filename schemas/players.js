@@ -27,11 +27,27 @@ const schema = new mongoose.Schema({
             win: { type: Number, default: 0 },
             lose: { type: Number, default: 0 },
         },
-        solo: {
+        couple: {
             win: { type: Number, default: 0 },
             lose: { type: Number, default: 0 },
         },
-        soloKiller: {
+        sect: {
+            win: { type: Number, default: 0 },
+            lose: { type: Number, default: 0 },
+        },
+        zombie: {
+            win: { type: Number, default: 0 },
+            lose: { type: Number, default: 0 },
+        },
+        bandit: {
+            win: { type: Number, default: 0 },
+            lose: { type: Number, default: 0 },
+        },
+        solovoting: {
+            win: { type: Number, default: 0 },
+            lose: { type: Number, default: 0 },
+        },
+        solokiller: {
             win: { type: Number, default: 0 },
             lose: { type: Number, default: 0 },
         },
