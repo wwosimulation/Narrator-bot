@@ -9,7 +9,8 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        // All the variables
+      let gamephase = db.get(`gamePhase`)
+        if (gamephase % 3 != 0) return message.channel.send("Please first use `+night`")
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
         let narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
