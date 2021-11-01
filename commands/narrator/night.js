@@ -359,7 +359,7 @@ module.exports = {
                         }
                     }
                 }
-console.log(dc)
+                console.log(dc)
                 for (let a = 0; a < dc.length; a++) {
                     let hypnotize = db.get(`hypnotize_${dc[a]}`)
                     if (hypnotize != null) {
