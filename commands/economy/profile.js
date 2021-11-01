@@ -1,6 +1,6 @@
 const { players } = require("../../db.js")
 const Discord = require("discord.js")
-const { emojis, fn } = require("../../config")
+const { emojis, fn, xp } = require("../../config")
 
 module.exports = {
     name: "profile",
@@ -28,16 +28,21 @@ module.exports = {
             if (badge !== "invite") badges = badges + `\`${fn.capitalizeFirstLetter(badge)}\``
         }
 
-        console.log(data.roses)
-        // TODO: reformat this
+        let wins = 0,
+            losses = 0
+        for (let team in xp.teamMultipliers) {
+            wins = wins + data.stats[team].win
+            losses = losses + data.stats[team].loss
+            console.log(data.stats[team])
+        }
+
         let embed = new Discord.MessageEmbed()
             .setTitle(`${guy.user ? guy.user.tag : guy.tag}'s ${message.l10n("profile")}`)
             .setDescription(data.profileDesc)
             .setThumbnail(data.profileIcon)
             .addField("XP", `${data.xp} XP`, true)
             .addField("Badges", badges === "" ? "No badges" : badges)
-            .addField("Stats", "Coming soon!")
-        //.addField("Stats", `Wins: ${wins}\nLoses: ${lost}\nTies: ${tie}\nWin Streak: ${winstreak}\n\nWin as Village: ${villagewin}\nLost as Village: ${villagelost}\n\nWin as Werewolf: ${wwwin}\nLost as Werewolf: ${wwlost}\n\nWin as Solo Voting: ${solovwin}\nLost as Solo Voting: ${solovlost}\n\nWin as Solo Killer: ${solokwin}\nLost as Solo Killing: ${soloklost}\n\nWins as Couple: ${couplewin}\nLost as Couple: ${couplelost}`)
+            .addField("Stats", `Wins: ${wins}\nLosses: ${losses}\nTies: ${data.stats.tie}\nWin Streak: ${data.winStreak}`)
 
         message.channel.send({ embeds: [embed] })
     },
