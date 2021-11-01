@@ -63,7 +63,7 @@ module.exports = {
             for (let i = 0; i < illu.length; i++) {
                 let disguised = db.get(`disguised_${illu[i]}`) || []
                 if (disguised.length != 0) {
-                    if (disguised.includes[args[0]]) {
+                    if (disguised.includes([args[0]])) {
                         role = "Illusionist"
                     }
                 }
