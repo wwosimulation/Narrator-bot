@@ -362,6 +362,7 @@ module.exports = {
 
                 for (let a = 0; a < dc.length; a++) {
                     let hypnotize = db.get(`hypnotize_${dc[a]}`)
+                    console.log(hypnotize)
                     if (hypnotize != null) {
                         console.log(hypnotize)
                         let guy = message.guild.members.cache.find((c) => c.nickname === hypnotize)
