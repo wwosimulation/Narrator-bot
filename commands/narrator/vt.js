@@ -9,7 +9,7 @@ module.exports = {
     narratorOnly: true,
     gameOnly: true,
     run: async (message, args, client) => {
-      let gamephase = db.get(`gamePhase`)
+        let gamephase = db.get(`gamePhase`)
         if (gamephase % 3 != 1) return message.channel.send("Please first use `+day`")
         if (args[0] == "nm") return message.channel.send("Invalid format! The way you use this command has changed, check the pins in <#606123759514025985>")
         let timer = ms(args.join(" "))
