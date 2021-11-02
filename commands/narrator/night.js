@@ -30,8 +30,11 @@ module.exports = {
         let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
         let lynched = "yes"
+        let gamephase = db.get("gamephase")
 
         if (!message.member.roles.cache.has(mininarr.id) && !message.member.roles.cache.has(narrator.id)) return
+
+        if (gamephase % 3 != 2) return message.channel.send("Please first use `+vt`")
 
         let allvotes = []
         let votenumber = []
@@ -359,7 +362,7 @@ module.exports = {
                         }
                     }
                 }
-
+                console.log(dc)
                 for (let a = 0; a < dc.length; a++) {
                     let hypnotize = db.get(`hypnotize_${dc[a]}`)
                     if (hypnotize != null) {

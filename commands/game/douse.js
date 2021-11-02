@@ -48,7 +48,7 @@ module.exports = {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0], args[1]])
                 console.log(db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`))
                 message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username} & ${args[1]} ${guy2.user.username}**!`)
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, db.get(`nightCount_${message.author.id}`))
+                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, Math.floor(gamePhase / 3) + 1)
             } else if (args.length == 1) {
                 if (!guy1 || guy1 == ownself) {
                     return await message.channel.send("The player is not in game! Mention the correct player number.")
