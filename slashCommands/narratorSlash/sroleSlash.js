@@ -17,6 +17,7 @@ module.exports = {
                     { name: "Quick", value: "quick" },
                     { name: "Sandbox", value: "sandbox" },
                     { name: "Custom", value: "custom" },
+                    { name: "Chain Reaction", value: "chainreaction" },
                     { name: "Ranked", value: "ranked" },
                 ],
             },
@@ -180,6 +181,8 @@ module.exports = {
                 ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Tough Guy", alphashaman[0], "Marksman", foolhh[0], jailerwitch[0], skcanni[0], "Medium", seerdet[0], "Junior Werewolf", "Cursed", "Beast Hunter", "Werewolf"],
                 ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Detective", "Wolf Shaman", "Gunner", foolhh[0], "Jailer", "Arsonist", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Bodyguard", "Werewolf"],
             ]
+        } else if (gamemode == "chainreaction") {
+            roleOptions = [['avenger', 'witch', 'avenger', 'detective', 'avenger', 'witch', 'avenger', 'corruptor', 'fool', 'avenger', 'avenger', 'aura', 'illusionist', 'avenger', 'fool', 'avenger', 'medium' ]]
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
                 rww.splice(rww.indexOf("Shadow Wolf"), 1)
