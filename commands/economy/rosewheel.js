@@ -8,12 +8,12 @@ module.exports = {
     usage: `${process.env.PREFIX}rosewheel`,
     aliases: ["rw", "spin"],
     run: async (message, args, client) => {
-        let guy = await players.findOne({user: message.author.id})
-        if(!guy || !guy.roses >= 30) return message.channel.send(message.l10n("notEnoughCurrency", {currency: "roses"}))
+        let guy = await players.findOne({ user: message.author.id })
+        if (!guy || !guy.roses >= 30) return message.channel.send(message.l10n("notEnoughCurrency", { currency: "roses" }))
         let prizes = []
-        
+
         rosewheel.forEach((item) => {
-            for(let i = item.rate; i > 0; i--){
+            for (let i = item.rate; i > 0; i--) {
                 prizes.push(item)
             }
         })
@@ -25,11 +25,11 @@ module.exports = {
         await sleep(2500)
 
         let update = {}
-        
-        let response = message.l10n("rosewheel" + res[Math.floor(Math.random() * res.length)], {prize: prize.name, prizeAmount: prize.amount, prizeName: prize.name.split(" ").slice(-1)[0]})
+
+        let response = message.l10n("rosewheel" + res[Math.floor(Math.random() * res.length)], { prize: prize.name, prizeAmount: prize.amount, prizeName: prize.name.split(" ").slice(-1)[0] })
 
         update[prize.item] = prize.amount
-        await guy.updateOne({$inc:update, $inc:{roses: -30}})
+        await guy.updateOne({ $inc: update, $inc: { roses: -30 } })
         msg.edit(response)
-    }
+    },
 }
