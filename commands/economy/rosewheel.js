@@ -21,15 +21,14 @@ module.exports = {
         let prize = rosewheel[Math.floor(Math.random() * rosewheel.length)]
         let res = ["1", "2", "3", "4"]
 
-        let msg = message.reply("The wheel is spinning...")
-        await sleep(2500)
-
         let update = {}
-
         let response = message.l10n("rosewheel" + res[Math.floor(Math.random() * res.length)], { prize: prize.name, prizeAmount: prize.amount, prizeName: prize.name.split(" ").slice(-1)[0] })
 
         update[prize.item] = prize.amount
         await guy.updateOne({ $inc: update, $inc: { roses: -30 } })
-        msg.edit(response)
+        message.reply("The wheel is spinning...").then(msg => {
+            await sleep(2500)
+            msg.edit(response)
+        })
     },
 }
