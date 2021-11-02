@@ -21,7 +21,7 @@ module.exports = {
         let prize = rosewheel[Math.floor(Math.random() * rosewheel.length)]
         let res = ["1", "2", "3", "4"]
 
-        let msg = message.channel.reply("The wheel is spinning...")
+        let msg = message.reply("The wheel is spinning...")
         await sleep(2500)
 
         let update = {}
