@@ -45,7 +45,7 @@ module.exports = {
             if (winners.includes(x)) {
                 xpBase = winXP
                 data.winStreak += 1
-                data.stats[winTeam].win += 1
+                data.stats[winTeam]?.win += 1
             } else if (losers.includes(x)) {
                 xpBase = loseXP
                 client.channels.cache.get("606123726966358037").send(`Add one loss to ${x} for the ${db.get(`role_${x}`)} role in game ${db.get("game")}.`)
