@@ -10,46 +10,26 @@ module.exports = {
     run: async (message, args, client) => {
         let guy = await players.findOne({user: message.author.id})
         if(!guy || !guy.roses >= 30) return message.channel.send(message.l10n("notEnoughCurrency", {currency: "roses"}))
+        let prizes = []
+        
+        rosewheel.forEach((item) => {
+            for(let i = item.rate; i > 0; i--){
+                prizes.push(item)
+            }
+        })
 
         let prize = rosewheel[Math.floor(Math.random() * rosewheel.length)]
-        let res = [
-            "Congratulations! You won {prize}!",
-            "{prizeAmount} wild {prizeName} appeared! You successfully cought the {prizeName}.",
-            "You found {prize}!",
-            "The rosewheel reveals {prize}!"
-        ] // Will be replaced with l10n strings later
-        let msg = message.channel.send("The wheel is spinning...")
-        await sleep(2500)
-        let update = {}
-        let response = res[Math.floor(Math.random() * res.length)]
-            .replace(/{prize}/g, prize.name)
-            .replace(/{prizeAmount}/g, prize.amount)
-            .replace(/{prizeName}/g, prize.name.split(" ").slice(-1)[0])
+        let res = ["1", "2", "3", "4"]
 
-        switch(prize.item){
-            case("coin"):{
-                update["coins"] = prize.amount
-                break
-            }
-            case("lootbox"):{
-                update["inventory.lootbox"] = prize.amount
-                break
-            }
-            case("rose"):{
-                update["inventory.rose"] = prize.amount
-                break
-            }
-            case("other"):{
-                update["coins"] = prize.amount
-                break
-            }
-            default: {
-                update[prize.item] = prize.amount
-                break
-            }
-        }
-        await guy.updateOne({$inc:update})
-        msg.edit(response)
+        let msg = message.channel.reply("The wheel is spinning...")
+        await sleep(2500)
+
+        let update = {}
         
+        let response = message.l10n("rosewheel" + res[Math.floor(Math.random() * res.length)], {prize: prize.name, prizeAmount: prize.amount, prizeName: prize.name.split(" ").slice(-1)[0]})
+
+        update[prize.item] = prize.amount
+        await guy.updateOne({$inc:update, $inc:{roses: -30}})
+        msg.edit(response)
     }
 }
