@@ -27,8 +27,9 @@ module.exports = {
         update[prize.item] = prize.amount
         await guy.updateOne({ $inc: update, $inc: { roses: -30 } })
         message.reply("The wheel is spinning...").then(msg => {
-            sleep(2500)
-            msg.edit(response)
+            setTimeout(() => {
+                msg.edit(response)
+            }, 2500)
         })
     },
 }
