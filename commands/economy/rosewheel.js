@@ -32,7 +32,7 @@ module.exports = {
         ]}).then((msg) => {
             setTimeout(() => {
                 msg.edit({embeds:[
-                    new MessageEmbed().setColor("#1FFF43").setTimestamp().setTitle(`You won ${prize.name}!`).setDescription(response).setAuthor(message.author.tag +"'s rose wheel", message.author.avatarURL()).setThumbnail(`https://www.wolvesville.com/static/media/${prize.icon}.png` || "https://static.thenounproject.com/png/340719-200.png")
+                    new MessageEmbed().setColor("#1FFF43").setTimestamp().setTitle(`You won ${prize.name}!`).setDescription(response).setAuthor(message.author.tag +"'s rose wheel", message.author.avatarURL()).setThumbnail(prize.icon ? `https://www.wolvesville.com/static/media/${prize.icon}.png` : "https://static.thenounproject.com/png/340719-200.png")
                 ]})
             }, 2500)
         })
