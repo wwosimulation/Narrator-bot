@@ -1,0 +1,11 @@
+name: Pull Request
+description: Create a PR
+body:
+  - type: textarea
+    id: fixes
+    attributes:
+      label: What issues does this fix?
+      description: Start each link with "Fixes " and then the URL of the GitHub issue
+      value: "A bug happened!"
+    validations:
+      required: true
