@@ -1,6 +1,7 @@
 const { rosewheel } = require("../../config/src")
 const { sleep } = require("../../config/src/fn")
 const players = require("../../schemas/players")
+const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "rosewheel",
@@ -26,9 +27,13 @@ module.exports = {
 
         update[prize.item] = prize.amount
         await guy.updateOne({ $inc: update})
-        message.reply("The wheel is spinning...").then((msg) => {
+        message.reply({embeds:[
+            new MessageEmbed().setColor("#1FFF43").setImage("https://i.imgur.com/NZzTW8h.gif" ).setTimestamp().setTitle("The wheel is spinning...").setAuthor(message.author.tag +"'s rose wheel", message.author.avatarURL())
+        ]}).then((msg) => {
             setTimeout(() => {
-                msg.edit(response)
+                msg.edit({embeds:[
+                    new MessageEmbed().setColor("#1FFF43").setTimestamp().setTitle(`You won ${prize.name}!`).setDescription(response).setAuthor(message.author.tag +"'s rose wheel", message.author.avatarURL()).setThumbnail(`https://www.wolvesville.com/static/media/${prize.icon}.png`)
+                ]})
             }, 2500)
         })
     },
