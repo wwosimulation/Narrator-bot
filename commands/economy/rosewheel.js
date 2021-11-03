@@ -26,15 +26,32 @@ module.exports = {
         let response = message.l10n("rosewheel" + res[Math.floor(Math.random() * res.length)], { prize: prize.name, prizeAmount: prize.amount, prizeName: prize.name.split(" ").slice(-1)[0] })
 
         update[prize.item] = prize.amount
-        await guy.updateOne({ $inc: update})
-        message.reply({embeds:[
-            new MessageEmbed().setColor("#1FFF43").setImage("https://i.imgur.com/NZzTW8h.gif" ).setTimestamp().setTitle("The wheel is spinning...").setAuthor(message.author.tag +"'s rose wheel", message.author.avatarURL())
-        ]}).then((msg) => {
-            setTimeout(() => {
-                msg.edit({embeds:[
-                    new MessageEmbed().setColor("#1FFF43").setTimestamp().setTitle(`You won ${prize.name}!`).setDescription(response).setAuthor(message.author.tag +"'s rose wheel", message.author.avatarURL()).setThumbnail(`https://www.wolvesville.com/static/media/${prize.icon}.png`)
-                ]})
-            }, 2500)
-        })
+        await guy.updateOne({ $inc: update })
+        message
+            .reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor("#1FFF43")
+                        .setImage("https://i.imgur.com/NZzTW8h.gif")
+                        .setTimestamp()
+                        .setTitle("The wheel is spinning...")
+                        .setAuthor(message.author.tag + "'s rose wheel", message.author.avatarURL()),
+                ],
+            })
+            .then((msg) => {
+                setTimeout(() => {
+                    msg.edit({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor("#1FFF43")
+                                .setTimestamp()
+                                .setTitle(`You won ${prize.name}!`)
+                                .setDescription(response)
+                                .setAuthor(message.author.tag + "'s rose wheel", message.author.avatarURL())
+                                .setThumbnail(`https://www.wolvesville.com/static/media/${prize.icon}.png`),
+                        ],
+                    })
+                }, 2500)
+            })
     },
 }
