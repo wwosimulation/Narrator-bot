@@ -40,8 +40,13 @@ module.exports = {
     usage: `${process.env.PREFIX}profile [user]`,
     run: async (message, args, client) => {
         let guyz
-        if(args[0]) guyz = fn.getUser(args[0], message) || message.member
-
+        if (args[0]) {
+            guyz = fn.getUser(args[0], message)
+        } else {
+            guyz = message.author
+        }
+        if (!guyz) return message.channel.send("Unable to find that user.")
+        if (guyz.author) guyz = guyz.author
         let guy = await players.findOne({ user: guyz.id })
         let inventory = guy.profile
         if (inventory != true && !client.botAdmin(message.author.id)) return message.channel.send(message.l10n("profileNeedToBuy"))
