@@ -4,9 +4,6 @@ const ms = require("ms")
 const db = require("quick.db")
 const { shop, ids } = require("../config")
 
-const canHost = new MessageButton().setLabel("I can host").setStyle("SUCCESS").setCustomId(`hostrequest-yes;`)
-const canNotHost = new MessageButton().setLabel("No one can host").setStyle("DANGER").setCustomId(`hostrequest-no;`)
-
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
@@ -86,6 +83,8 @@ module.exports = (client) => {
             let cmd = interaction.customId.split("-")[1]
             switch (cmd) {
                 case "request":
+                    let canHost = new MessageButton().setLabel("I can host").setStyle("SUCCESS").setCustomId(`hostrequest-yes;`)
+                    let canNotHost = new MessageButton().setLabel("No one can host").setStyle("DANGER").setCustomId(`hostrequest-no;`)
                     let nextTime = db.get("nextRequest")
                     if (nextTime && nextTime > Date.now()) return interaction.reply({ content: `A game can only be requested once per every 30 minutes! The next game can be requested <t:${Math.round(nextTime / 1000)}:R>`, ephemeral: true })
                     canHost.customId += interaction.member.id

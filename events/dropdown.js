@@ -82,7 +82,7 @@ module.exports = (client) => {
             let corrs = interaction.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((corr) => corr.id)
             for (let corr = 0; corr < corrs.length; corr++) {
                 let corrupted = db.get(`corrupt_${corrs[corr]}`)
-                if (corrupted == interaction.member.nickname ? interaction.member.nickname : "0") {
+                if (corrupted == interaction.member.displayName) {
                     return interaction.reply({ content: "You are corrupted! You can't vote today.", ephemeral: true })
                 }
             }
