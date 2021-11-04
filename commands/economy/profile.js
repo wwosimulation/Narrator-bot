@@ -38,7 +38,7 @@ module.exports = {
     name: "profile",
     description: "Sends your or another user's profile if unlocked already.",
     usage: `${process.env.PREFIX}profile [user]`,
-    run: async (message, args, client) =>{
+    run: async (message, args, client) => {
         let guyz
         if(args[0]) guyz = fn.getUser(args[0], message) || message.member
 
@@ -105,5 +105,5 @@ module.exports = {
         
         const attachment = new MessageAttachment(canvas.toBuffer(), `profile-${message.author.username}-${Date.now()}.png`)
         message.channel.send({files: [attachment]})
-        }
     }
+}
