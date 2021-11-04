@@ -51,7 +51,7 @@ module.exports = {
         if (inventory != true && !client.botAdmin(message.author.id)) return message.channel.send(message.l10n("profileNeedToBuy"))
         if (!guy.profile && !fn.isNarrator(message.member)) return message.channel.send(message.l10n("profileLocked"))
 
-        let name = guyz.user ? guyz.user.tag : guy.tag
+        let name = guyz.user ? guyz.user.tag : guyz.tag
         if (name.length > 20) {
             name = name.slice(0, 15) + "...#" + message.author.discriminator
         }
