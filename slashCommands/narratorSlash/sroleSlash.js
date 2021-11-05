@@ -27,16 +27,16 @@ module.exports = {
                 description: "List the roles for the game, separated by spaces.",
                 required: false,
             },
-            {
-                type: "STRING",
-                name: "hideondeath",
-                description: "Should players roles be hidden on death? (Default: false)",
-                required: false,
-                choices: [
-                    { name: "True", value: "true" },
-                    { name: "False", value: "false" },
-                ],
-            },
+            // {
+            //     type: "STRING",
+            //     name: "hideondeath",
+            //     description: "Should players roles be hidden on death? (Default: false)",
+            //     required: false,
+            //     choices: [
+            //         { name: "True", value: "true" },
+            //         { name: "False", value: "false" },
+            //     ],
+            // },
             {
                 type: "STRING",
                 name: "hideroles",
@@ -61,8 +61,9 @@ module.exports = {
     run: async (interaction, client) => {
         let gamemode = interaction.options.getString("gamemode")
         let roles = interaction.options.getString("roles")
-        let hideOnDeath = interaction.options.getString("hideondeath") || "false"
-        let hideRoles = interaction.options.getString("hideroles") || "false"
+        let hideOnDeath = false
+        //let hideOnDeath = interaction.options.getString("hideondeath") || false
+        let hideRoles = interaction.options.getString("hideroles") || false
 
         if (hideOnDeath === "true") hideOnDeath = true
         if (hideRoles === "true") hideOnDeath = true
@@ -182,7 +183,7 @@ module.exports = {
                 ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Detective", "Wolf Shaman", "Gunner", foolhh[0], "Jailer", "Arsonist", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Bodyguard", "Werewolf"],
             ]
         } else if (gamemode == "chainreaction") {
-            roleOptions = [['avenger', 'witch', 'avenger', 'detective', 'avenger', 'witch', 'avenger', 'corruptor', 'fool', 'avenger', 'avenger', 'aura', 'illusionist', 'avenger', 'fool', 'avenger', 'medium' ]]
+            roleOptions = [["avenger", "witch", "avenger", "detective", "avenger", "witch", "avenger", "corruptor", "fool", "avenger", "avenger", "aura", "illusionist", "avenger", "fool", "avenger", "medium"]]
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
                 rww.splice(rww.indexOf("Shadow Wolf"), 1)
@@ -468,8 +469,10 @@ module.exports = {
             sorcChats.forEach((x) => x.send(allWolves.join("\n")))
         }
 
-        let dcSent = await dayChat.send(hideRoles ? "Role list is hidden" : `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes.size > 0 ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`)
-        dcSent.pin()
+        let roleMsg = `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes.size > 0 ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`
+        if (hideRoles) roleMsg = "Role list is hidden"
+        await dayChat.send(roleMsg)
+        console.log(roleMsg)
         dayChat.permissionOverwrites.edit(alive, {
             SEND_MESSAGES: false,
             VIEW_CHANNEL: true,
