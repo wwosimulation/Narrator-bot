@@ -90,7 +90,7 @@ module.exports = {
         context.fillStyle = "#000"
         context.textAlign = "end"
         context.textBaseline = "middle"
-        currencies.forEach((curr, i) => context.fillText(curr, canvas.width - 240, 1255 + i * 80, canvas.width / 2 - 240)) 
+        currencies.forEach((curr, i) => context.fillText(curr, canvas.width - 240, 1255 + i * 80, canvas.width / 2 - 240))
 
         // BADGES
         let desc = ""
