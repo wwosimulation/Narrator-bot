@@ -119,7 +119,6 @@ module.exports = {
 
         const attachment = new MessageAttachment(canvas.toBuffer(), `profile-${message.author.username}-${Date.now()}.png`)
         if (guy.profileDesc !== "" || guy.profileIcon !== "") return message.channel.send({ files: [attachment], embeds: [embed] })
-        else return message.channel.send({ files: [attachment]})
-        
+        else return message.channel.send({ files: [attachment] })
     },
 }
