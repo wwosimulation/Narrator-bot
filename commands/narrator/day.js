@@ -72,8 +72,7 @@ module.exports = {
                 for (let b = 0; b < allChannels.length; b++) {
                     let tempchan = message.guild.channels.cache.get(allChannels[b])
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        console.log("hi")
-                        if (!tempchan.name.includes("dreamcatcher")) tempchan.delete()
+                                     if (!tempchan.name.includes("dreamcatcher")) tempchan.delete()
                     }
                 }
             }

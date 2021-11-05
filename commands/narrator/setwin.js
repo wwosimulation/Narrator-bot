@@ -11,5 +11,6 @@ module.exports = {
         db.set(`gamePhase`, -10)
         db.set(`commandEnabled`, "yes")
         message.guild.channels.cache.find((x) => x.name == "day-chat").send(`Game over! ${args.join(" ")} has won!`)
+        client.channels.cache.get("606123818305585167").send(`Game ended! ${db.get(`winner`)} won the match!`)
     },
 }

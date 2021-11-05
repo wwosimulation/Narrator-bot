@@ -379,8 +379,7 @@ module.exports = {
                                     if (db.get(`role_${player.id}`) == "Dreamcatcher") {
                                         if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
                                             db.set(`hypnotize_${dc[a]}`, null)
-                                            console.log("hi")
-                                            chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
+                                                                             chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
                                             let chan1 = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`, {
                                                 parent: "892046231516368906",
                                             })
