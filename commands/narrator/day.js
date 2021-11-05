@@ -9,7 +9,7 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-      let gamephase = db.get(`gamePhase`)
+        let gamephase = db.get(`gamePhase`)
         if (gamephase % 3 != 0) return message.channel.send("Please first use `+night`")
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
@@ -72,7 +72,7 @@ module.exports = {
                 for (let b = 0; b < allChannels.length; b++) {
                     let tempchan = message.guild.channels.cache.get(allChannels[b])
                     if (tempchan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                                     if (!tempchan.name.includes("dreamcatcher")) tempchan.delete()
+                        if (!tempchan.name.includes("dreamcatcher")) tempchan.delete()
                     }
                 }
             }
