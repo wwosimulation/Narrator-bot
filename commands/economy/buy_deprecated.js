@@ -28,7 +28,7 @@ module.exports = {
         if (["color", "colour"].includes(args[1]) && !["gray", "grey"].includes(args[0])) args.reverse()
 
         let item = config.shop.items.find((x) => x.id == args[0])
-        
+
         switch (args[0]) {
             case "roses":
                 item = config.shop.items.find((x) => x.id == "rose")
