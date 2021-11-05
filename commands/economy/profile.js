@@ -1,7 +1,7 @@
 const { players } = require("../../db.js")
-const { emojis, fn, xp } = require("../../config")
+const { fn } = require("../../config")
 const Canvas = require("canvas")
-const { MessageAttachment } = require("discord.js")
+const { MessageAttachment, MessageEmbed } = require("discord.js")
 
 const applyName = (canvas, name) => {
     const context = canvas.getContext("2d")
@@ -88,7 +88,7 @@ module.exports = {
         let currencies = `${[guy.coins, guy.roses, guy.gems].join("\n")}`
         context.font = "80px sans-serif"
         context.fillStyle = "#000"
-        context.textAlign = "right"
+        context.textAlign = "start"
         context.textBaseline = "middle"
         context.fillText(currencies, canvas.width - 240, 1255, canvas.width / 2 - 240)
 
@@ -113,7 +113,13 @@ module.exports = {
         context.textBaseline = "middle"
         context.fillText(new Date().toLocaleString("en-GB"), canvas.width - 240, 2112, canvas.width - 2 * 235)
 
+        let embed = new MessageEmbed().setTitle(name.split("#")[0 + "'s Profile"])
+        if(guy.profileDesc !== "") embed.setDescription(guy.profileDesc)
+        if(guy.profileIcon !== "") embed.setThumbnail(guy.profileIcon, {dynamic: true})
+
         const attachment = new MessageAttachment(canvas.toBuffer(), `profile-${message.author.username}-${Date.now()}.png`)
-        message.channel.send({ files: [attachment] })
+        if (guy.profileDesc !== "" || guy.profileIcon !== "") return message.channel.send({ files: [attachment], embeds: [embed] })
+        else return message.channel.send({ files: [attachment]})
+        
     },
 }
