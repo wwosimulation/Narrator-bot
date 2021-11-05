@@ -113,9 +113,9 @@ module.exports = {
         context.textBaseline = "middle"
         context.fillText(new Date().toLocaleString("en-GB"), canvas.width - 240, 2112, canvas.width - 2 * 235)
 
-        let embed = new MessageEmbed().setTitle(name.split("#")[0]  + "'s Profile").setColor(guy.displayHexColor || "#1FFF43")
-        if(guy.profileDesc !== "") embed.setDescription(guy.profileDesc)
-        if(guy.profileIcon !== "") embed.setThumbnail(guy.profileIcon, {dynamic: true})
+        let embed = new MessageEmbed().setTitle(name.split("#")[0] + "'s Profile").setColor(guy.displayHexColor || "#1FFF43")
+        if (guy.profileDesc !== "") embed.setDescription(guy.profileDesc)
+        if (guy.profileIcon !== "") embed.setThumbnail(guy.profileIcon, { dynamic: true })
 
         const attachment = new MessageAttachment(canvas.toBuffer(), `profile-${message.author.username}-${Date.now()}.png`)
         if (guy.profileDesc !== "" || guy.profileIcon !== "") return message.channel.send({ files: [attachment], embeds: [embed] })
