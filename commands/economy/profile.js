@@ -82,7 +82,7 @@ module.exports = {
         context.fillStyle = "#000"
         context.textAlign = "end"
         context.textBaseline = "middle"
-        stats.forEach((stat) => context.fillText(stat, canvas.width - 240, 623 + i * 80, canvas.width / 2 - 240))
+        stats.forEach((stat, i) => context.fillText(stat, canvas.width - 240, 623 + i * 80, canvas.width / 2 - 240))
 
         // COINS ROSES GEMS
         let currencies = [guy.coins, guy.roses, guy.gems]
