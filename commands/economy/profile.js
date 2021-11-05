@@ -71,7 +71,13 @@ module.exports = {
         context.fillText(name, canvas.width / 2, 516 - 115, canvas.width - 2 * 233)
 
         // XP WINS LOSSES TIES WIN_STREAK
-        let stats = `${[guy.xp, guy.stats.wins, guy.stats.losses, guy.stats.ties, guy.stats.streak].join("\n")}`
+        let wins = 0
+        let losses = 0
+        for(const team in guy.stats){
+            if(guy.stats[team].win) wins += guy.stats[team].win
+            if(guy.stats[team].lose) losses += guy.stats[team].lose
+        }
+        let stats = `${[guy.xp, wins, losses, guy.stats.ties, guy.winStreak].join("\n")}`
         context.font = "80px sans-serif"
         context.fillStyle = "#000"
         context.textAlign = "end"
@@ -82,7 +88,7 @@ module.exports = {
         let currencies = `${[guy.coins, guy.roses, guy.gems].join("\n")}`
         context.font = "80px sans-serif"
         context.fillStyle = "#000"
-        context.textAlign = "end"
+        context.textAlign = "right"
         context.textBaseline = "middle"
         context.fillText(currencies, canvas.width - 240, 1255, canvas.width / 2 - 240)
 
