@@ -59,7 +59,7 @@ module.exports = {
         const canvas = Canvas.createCanvas(1392, 2475)
         const context = canvas.getContext("2d")
 
-        const background = await Canvas.loadImage("https://media.discordapp.net/attachments/840938544129638420/905840884195688538/profile_raw.png")
+        const background = await Canvas.loadImage("https://i.imgur.com/RgMrkyD.png")
 
         context.drawImage(background, 0, 0, canvas.width, canvas.height)
 
