@@ -90,7 +90,7 @@ module.exports = {
         context.fillStyle = "#000"
         context.textAlign = "end"
         context.textBaseline = "middle"
-        currencies.forEach((curr, i) => context.fillText(curr, canvas.width - 240, 1255 + i * 80, canvas.width / 2 - 240)) 
+        currencies.forEach((curr, i) => context.fillText(curr, canvas.width - 240, 1255 + i * 80, canvas.width / 2 - 240))
 
         // BADGES
         let desc = ""
@@ -118,7 +118,7 @@ module.exports = {
         if (guy.profileIcon !== "") embed.setThumbnail(guy.profileIcon, { dynamic: true })
 
         const attachment = new MessageAttachment(canvas.toBuffer(), `profile-${message.author.username}-${Date.now()}.png`)
-        if (guy.profileDesc !== "" || guy.profileIcon !== "") return message.channel.send({ embeds: [embed], files: [attachment]})
+        if (guy.profileDesc !== "" || guy.profileIcon !== "") return message.channel.send({ embeds: [embed], files: [attachment] })
         else return message.channel.send({ files: [attachment] })
     },
 }
