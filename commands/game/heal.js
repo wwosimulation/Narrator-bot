@@ -1,6 +1,6 @@
-const db = require("quick.db")
 const config = require("../../config")
 const { ids } = require("../../config")
+const db = require("quick.db")
 
 module.exports = {
     name: "heal",
