@@ -55,6 +55,7 @@ module.exports = {
             let mortician = message.guild.channels.cache.filter((c) => c.name === "priv-mortician").map((x) => x.id)
             let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
             let king = message.guild.channels.cache.filter((c) => c.name === "priv-pumpkin-king").map((x) => x.id)
+            let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
 
             db.delete(`excludes`)
 
@@ -274,6 +275,11 @@ module.exports = {
 
             for (let i = 0; i < king.length; i++) {
                 db.delete(`pk_${shadow[i]}`)
+            }
+
+            for (let i = 0; i < prog.length; i++) {
+                db.delete(`peace_${prog[i]}`)
+                db.delete(`terror_${prog[i]}`)
             }
 
             // removing cards, shield and sword from players
