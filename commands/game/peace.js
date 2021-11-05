@@ -11,7 +11,7 @@ module.exports = {
             let gamePhase = db.get(`gamePhase`)
             let nightCount = Math.floor(gamePhase / 3) + 1
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send({ content: "You are dead..." })
-            if (isNaN(ability) || ability === null) return message.channel.send({ content: "You already used that ability!" })
+            if (isNaN(ability) && ability !== null) return message.channel.send({ content: "You already used that ability!" })
             if (gamePhase % 3 == 0 && nightCount > 1) {
                 dayChat.send({ content: `${alive}\nPeace be upon you dear villagers. No one can die next night!` })
                 db.set(`peace_${message.channel.id}`, nightCount + 1)
