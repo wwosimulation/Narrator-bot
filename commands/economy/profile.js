@@ -53,7 +53,7 @@ module.exports = {
 
         let name = guyz.user ? guyz.user.tag : guyz.tag
         if (name.length > 20) {
-            name = name.slice(0, 15) + "...#" + message.author.discriminator
+            name = name.slice(0, 15) + "...#" + (guyz.tag || guyz.user.tag || "N/A")
         }
 
         const canvas = Canvas.createCanvas(1392, 2475)
@@ -81,8 +81,8 @@ module.exports = {
         context.font = "80px sans-serif"
         context.fillStyle = "#000"
         context.textAlign = "end"
-        context.textBaseline = "middle"
-        stats.forEach((stat, i) => context.fillText(stat, canvas.width - 240, 623 + i * 80, canvas.width / 2 - 240))
+        context.textBaseline = "bottom"
+        stats.forEach((stat, i) => context.fillText(stat, canvas.width - 240, 655 + i * 99, canvas.width / 2 - 240))
 
         // COINS ROSES GEMS
         let currencies = [guy.coins, guy.roses, guy.gems]
@@ -90,7 +90,7 @@ module.exports = {
         context.fillStyle = "#000"
         context.textAlign = "end"
         context.textBaseline = "middle"
-        currencies.forEach((curr, i) => context.fillText(curr, canvas.width - 240, 1255 + i * 80, canvas.width / 2 - 240))
+        currencies.forEach((curr, i) => context.fillText(curr, canvas.width - 240, 1295 + i * 99, canvas.width / 2 - 240))
 
         // BADGES
         let desc = ""
