@@ -53,7 +53,7 @@ module.exports = {
 
         let name = guyz.user ? guyz.user.tag : guyz.tag
         if (name.length > 20) {
-            name = name.slice(0, 15) + "...#" + (guyz.tag || guyz.user.tag || "N/A")
+            name = name.slice(0, 15) + "...#" + (guyz.discriminator || guyz.user.discriminator || "N/A")
         }
 
         const canvas = Canvas.createCanvas(1392, 2475)
