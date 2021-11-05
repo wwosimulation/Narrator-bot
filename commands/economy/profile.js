@@ -113,7 +113,7 @@ module.exports = {
         context.textBaseline = "middle"
         context.fillText(new Date().toLocaleString("en-GB"), canvas.width - 240, 2112, canvas.width - 2 * 235)
 
-        let embed = new MessageEmbed().setTitle(name.split("#")[0 + "'s Profile"]).setColor(guy.displayHexColor || "#1FFF43")
+        let embed = new MessageEmbed().setTitle(name.split("#")[0]  + "'s Profile").setColor(guy.displayHexColor || "#1FFF43")
         if(guy.profileDesc !== "") embed.setDescription(guy.profileDesc)
         if(guy.profileIcon !== "") embed.setThumbnail(guy.profileIcon, {dynamic: true})
 
