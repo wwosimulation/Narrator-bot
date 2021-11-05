@@ -77,12 +77,12 @@ module.exports = {
             if (guy.stats[team].win) wins += guy.stats[team].win
             if (guy.stats[team].lose) losses += guy.stats[team].lose
         }
-        let stats = `${[guy.xp, wins, losses, guy.stats.tie, guy.winStreak].join("\n")}`
+        let stats = [guy.xp, wins, losses, guy.stats.tie, guy.winStreak]
         context.font = "80px sans-serif"
         context.fillStyle = "#000"
         context.textAlign = "end"
         context.textBaseline = "middle"
-        context.fillText(stats, canvas.width - 240, 623, canvas.width / 2 - 240)
+        stats.forEach((stat) => context.fillText(stat, canvas.width - 240, 623 + i * 80, canvas.width / 2 - 240))
 
         // COINS ROSES GEMS
         let currencies = [guy.coins, guy.roses, guy.gems]
@@ -118,7 +118,7 @@ module.exports = {
         if (guy.profileIcon !== "") embed.setThumbnail(guy.profileIcon, { dynamic: true })
 
         const attachment = new MessageAttachment(canvas.toBuffer(), `profile-${message.author.username}-${Date.now()}.png`)
-        if (guy.profileDesc !== "" || guy.profileIcon !== "") return message.channel.send({ embeds: [embed], files: [attachment]})
-        else return message.channel.send({ files: [attachment] })
+        if (guy.profileDesc !== "" || guy.profileIcon !== "") message.channel.send({ embeds: [embed]})
+        return message.channel.send({ files: [attachment] })
     },
 }
