@@ -20,9 +20,9 @@ module.exports = {
             } else {
                 let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+                if (!guy) return await message.reply("The player is not in game! Mention the correct player number.")
                 if (typeof dc === "undefined" && guy.id == message.author.id) return message.channel.send("You will not protect yourself, selfish prick.")
                 if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`You will not force the doctor to protect themselves to make them look like they are selfish, that's pure evil!`)
-                if (!guy) return await message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has(ids.alive) || !ownself.roles.cache.has(ids.alive)) return await message.reply("You or your target isn't alive!")
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `heal_${dc.chan.id}` : `heal_${message.channel.id}`}`, args[0])
                 message.react("475775251297337344")
