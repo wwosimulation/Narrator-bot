@@ -89,7 +89,7 @@ module.exports = {
         context.font = "80px sans-serif"
         context.fillStyle = "#000"
         context.textAlign = "end"
-        context.textBaseline = "middle"
+        context.textBaseline = "bottom"
         currencies.forEach((curr, i) => context.fillText(curr, canvas.width - 240, 1295 + i * 99, canvas.width / 2 - 240))
 
         // BADGES
