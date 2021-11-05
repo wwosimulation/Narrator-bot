@@ -73,9 +73,9 @@ module.exports = {
         // XP WINS LOSSES TIES WIN_STREAK
         let wins = 0
         let losses = 0
-        for(const team in guy.stats){
-            if(guy.stats[team].win) wins += guy.stats[team].win
-            if(guy.stats[team].lose) losses += guy.stats[team].lose
+        for (const team in guy.stats) {
+            if (guy.stats[team].win) wins += guy.stats[team].win
+            if (guy.stats[team].lose) losses += guy.stats[team].lose
         }
         let stats = `${[guy.xp, wins, losses, guy.stats.tie, guy.winStreak].join("\n")}`
         context.font = "80px sans-serif"
