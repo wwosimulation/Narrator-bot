@@ -15,8 +15,8 @@ module.exports = {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let priest = await db.fetch(`priest_${message.channel.id}`)
-            let isDay = await db.fetch(`isDay`)
-            let dayCount = Math.floor(db.get(`gamePhase`) / 3) + 1
+            let gamePhase = await db.fetch(`gamePhase`)
+            let dayCount = Math.floor(gamePhase / 3) + 1
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             if (!guy || guy == ownself) {
                 return await message.reply("The player is not in game! Mention the correct player number.")
@@ -29,7 +29,7 @@ module.exports = {
                     } else {
                         let role = await db.fetch(`role_${guy.id}`)
                         let toKill = role.toLowerCase()
-                        if (isDay != "yes") return message.channel.send("You can use your ability only during the day!")
+                        if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
                         if (dayCount == 1) {
                             let cmd = await db.fetch(`commandEnabled`)
                             if (cmd != "yes") return await message.reply("You can not water before the first voting phase of the game.")
