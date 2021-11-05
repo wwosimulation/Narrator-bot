@@ -15,7 +15,7 @@ module.exports = {
         await sleep(1000)
         await clearSettings(message)
         await sleep(1000)
-        await clearJoin(message)
+        await clearJoin(client)
         await endGame(message)
         m.edit("Clearing is complete!").catch(() => {})
     },
@@ -82,26 +82,28 @@ const clearSettings = async (message) => {
     })
 }
 
-const clearJoin = async (message) => {
+const clearJoin = async (client) => {
     let t = client.guilds.cache.get(ids.server.sim).roles.cache.get("606123676668133428").members
     t.forEach((e) => {
         e.roles.remove("606123676668133428") // joining role
     })
 }
 
-const endGame = async (message) => {
+const endGame = async (client) => {
     let mid = db.get("game")
     let s = client.guilds.cache.get(ids.server.sim)
     s.channels.cache
         .get("606123818305585167")
         .messages.fetch(mid)
         .then((m) => {
-            let allc = m.components
-            if (allc) {
-                let row = allc[0]
-                let button = row.components[0]
-                button.disabled = true
-                m.edit({ components: [new MessageActionRow().addComponents(button)] })
+            if (m && m.author.id == client.user.id) {
+                let allc = m.components
+                if (allc) {
+                    let row = allc[0]
+                    let button = row.components[0]
+                    button.disabled = true
+                    m.edit({ components: [new MessageActionRow().addComponents(button)] })
+                }
             }
         })
 
