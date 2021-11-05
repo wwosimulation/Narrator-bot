@@ -49,7 +49,7 @@ module.exports = {
             } else if (losers.includes(x)) {
                 xpBase = loseXP
                 client.channels.cache.get("606123726966358037").send(`Add one loss to ${x} for the ${db.get(`role_${x}`)} role in game ${db.get("game")}.`)
-                await players.findOneAndUpdate({ user: x }, { winStreak: 0 }).exec()
+                data.winStreak = 0
             }
             if (data.winStreak > 0) {
                 xpStreak = xp.streakXP(data.winStreak) || 0
