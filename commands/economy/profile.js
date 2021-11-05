@@ -77,7 +77,7 @@ module.exports = {
             if(guy.stats[team].win) wins += guy.stats[team].win
             if(guy.stats[team].lose) losses += guy.stats[team].lose
         }
-        let stats = `${[guy.xp, wins, losses, guy.stats.ties, guy.winStreak].join("\n")}`
+        let stats = `${[guy.xp, wins, losses, guy.stats.tie, guy.winStreak].join("\n")}`
         context.font = "80px sans-serif"
         context.fillStyle = "#000"
         context.textAlign = "end"
@@ -88,7 +88,7 @@ module.exports = {
         let currencies = `${[guy.coins, guy.roses, guy.gems].join("\n")}`
         context.font = "80px sans-serif"
         context.fillStyle = "#000"
-        context.textAlign = "start"
+        context.textAlign = "end"
         context.textBaseline = "middle"
         context.fillText(currencies, canvas.width - 240, 1255, canvas.width / 2 - 240)
 
@@ -113,7 +113,7 @@ module.exports = {
         context.textBaseline = "middle"
         context.fillText(new Date().toLocaleString("en-GB"), canvas.width - 240, 2112, canvas.width - 2 * 235)
 
-        let embed = new MessageEmbed().setTitle(name.split("#")[0 + "'s Profile"])
+        let embed = new MessageEmbed().setTitle(name.split("#")[0 + "'s Profile"]).setColor(guy.displayHexColor || "#1FFF43")
         if(guy.profileDesc !== "") embed.setDescription(guy.profileDesc)
         if(guy.profileIcon !== "") embed.setThumbnail(guy.profileIcon, {dynamic: true})
 
