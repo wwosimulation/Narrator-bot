@@ -5,29 +5,30 @@ const { players } = require("../../db.js")
 module.exports = {
     name: "buy",
     description: "Buy an item from the shop.",
-    usage: `${process.env.PREFIX} <item | color>`,
+    usage: `${process.env.PREFIX}buy <item | color>`,
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
         const sim = client.guilds.cache.get(config.ids.server.sim)
+        // functions
         const roleadd = (x) => {
             sim.members.cache.get(message.author.id).roles.add(`${x}`)
         }
         const rolehas = (x) => {
             return sim.members.cache.get(message.author.id).roles.cache.has(x)
         }
+        // variables
         let color,
             amount = 0,
             dontbuy = false
-
+        // arguments
         if (args.length < 1) return message.channel.send(message.l10n("noItemProvided"))
-
         args.forEach((x, i) => {
             args[i] = x.toLowerCase()
         })
-
         if (["color", "colour"].includes(args[1]) && !["gray", "grey"].includes(args[0])) args.reverse()
 
         let item = config.shop.items.find((x) => x.id == args[0])
+        
         switch (args[0]) {
             case "roses":
                 item = config.shop.items.find((x) => x.id == "rose")
