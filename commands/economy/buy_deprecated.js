@@ -3,7 +3,7 @@ const pluralize = require("pluralize")
 const { players } = require("../../db.js")
 
 module.exports = {
-    name: "buy",
+    name: "buydeprecated",
     description: "Buy an item from the shop.",
     usage: `${process.env.PREFIX}buy <item | color>`,
     run: async (message, args, client) => {
