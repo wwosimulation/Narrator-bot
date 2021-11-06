@@ -471,7 +471,8 @@ module.exports = {
 
         let roleMsg = `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes.size > 0 ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`
         if (hideRoles) roleMsg = "Role list is hidden"
-        await dayChat.send(roleMsg)
+        let dcSent = await dayChat.send(roleMsg)
+        dcSent.pin()
         console.log(roleMsg)
         dayChat.permissionOverwrites.edit(alive, {
             SEND_MESSAGES: false,
