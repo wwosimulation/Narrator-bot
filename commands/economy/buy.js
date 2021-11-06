@@ -113,7 +113,7 @@ module.exports = {
                                 position: colorRolesStart.position + 1,
                                 reason: message.author.tag + " bought special role item",
                             })
-                            .then((role) => {
+                            .then(async (role) => {
                                 appplyRole(role.id)
                                 await guy.updateOne({ $set: obj })
                                 charge({ item: item })
@@ -131,7 +131,7 @@ module.exports = {
                                     },
                                 ],
                             })
-                            .then((c) => {
+                            .then(async (c) => {
                                 charge({ l10nSupport: true, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` }, item: item })
                                 obj[dbName] = c.id
                                 await guy.updateOne({ $set: obj })
