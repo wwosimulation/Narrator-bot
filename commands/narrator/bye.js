@@ -1,4 +1,5 @@
 const { ids } = require("../../config")
+const db = require("quick.db")
 
 module.exports = {
     name: "bye",
