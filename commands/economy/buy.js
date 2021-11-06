@@ -28,7 +28,7 @@ module.exports = {
             else guyz.roles.cache.has(roleID) ? (color === false ? failMessage("alreadyPurchasedRole") : failMessage("alreadyPurchasedColor")) : guyz.roles.add(roleID)
         }
         let charge = async ({ item, amount = 1, l10nCode = null, toReplace = {}, color = null }) => {
-            if(color && item) item.currency = item.currency + 's' // ONLY TEMPORARY !
+            if (color && item) item.currency = item.currency + "s" // ONLY TEMPORARY !
             if (!item) return failMessage("noItemProvided")
             if (guy[item.currency] < item.price) return failMessage("notEnoughCurrency", { currency: item.currency })
             let update = {}
