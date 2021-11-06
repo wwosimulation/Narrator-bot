@@ -1,4 +1,4 @@
-const { shop } = require("../../config/src")
+const { shop, getEmoji } = require("../../config/src")
 const pluralize = require("pluralize")
 const { players } = require("../../db.js")
 const { colors, items } = require("../../config/src/shop")
@@ -10,50 +10,56 @@ module.exports = {
     usage: `${process.env.PREFIX}buy <item | <color> (color)>`,
     run: async (message, args, client) => {
         // functions
+        args.forEach((x, i) => {
+            args[i] = x.toLowerCase()
+        })
         let sim = client.guilds.resolve(server.sim)
         let guy = await players.findOne({user: message.author.id})
         let failMessage = (l10nCode, toReplace = {}) => {
-            return message.channel.send(message.l10n(l10nCode, toReplace)), false
+            return message.channel.send(message.l10n(l10nCode, toReplace))
         }
-        let successMsg = ({l10nSupport = false, l10nCode = "", toReplace = {}, amount = null, color = null, item = null}) => {
-            if(l10nSupport) return message.channel.send(message.l10n(l10nCode, toReplace))
-            else return message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${item.price} ${pluralize(item.currency)} ${config.getEmoji(item.currency, client)}!${item.response ? `\n${item.response}` : ""}`)
+        let successMsg = ({l10nCode = null, toReplace = {}, item = null, amount = null, color = null}) => {
+            if(l10nCode) return message.channel.send(message.l10n(l10nCode, toReplace))
+            else return message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name}` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(item.currency), item.price, true)} ${getEmoji(pluralize.singular(item.currency), client)}!${item.response ? `\n${item.response}` : ""}`)
         }
         let appplyRole = (roleID, color = false) => {
             let guyz = sim.members.find((member) => member.id === message.author.id)
             if(!guyz) return failMessage("userInvalid", {user: message.author})
             else guyz.roles.cache.has(roleID) ? (color === false ? failMessage("alreadyPurchasedRole") : failMessage("alreadyPurchasedColor")) : guyz.roles.add(roleID)
         }
-        let charge = async (itemID, success = {amount = 1, l10nSupport = false, l10nCode = "", toReplace = {}, amount = null, color = null, item: itemID = null}) => {
-            let itemm = items.find((itemz) => itemz.id === itemID)
-            if(!itemm) return failMessage("noItemProvided")
-            if(guy[itemm.currency] < itemm.price) return failMessage("notEnoughCurrency", {currency: itemm.currency})
+        let charge = async ({item, amount = 1, l10nCode = null, toReplace = {}, amount = null, color = null}) => {
+            if(!item) return failMessage("noItemProvided")
+            if(guy[item.currency] < item.price) return failMessage("notEnoughCurrency", {currency: item.currency})
             let update = {}
-            update[itemm.currency] = itemm.price * amount
+            update[item.currency] = item.price * amount
             await guy.updateOne({$inc:update})
-            return successMsg(success)
+            return successMsg({l10nCode: l10nCode, toReplace: toReplace, item: item, amount: amount, color: color})
         }
-
         //checking arguments
         if(!args[0]) return failMessage("noItemProvided")
-        if(["color", "colour"].includes(args[0]) && !args[1]) return message.reply({content:`Please choose a color from \`${process.env.PREFIX}shop colors\`!\nThe correct usage for this command is \`${process.env.PREFIX}buy color <color>\``, allowMention:{repliedUser: false}})
-        
+        args.forEach((arg, i) => {
+            ["grey", "private", "game"].findIndex(arg) === -1 ? args[i] = arg : args[i] = ["gray", "channel", "gamegifs"][["grey", "private", "game"].findIndex(arg)]
+        })
+        if(["color", "colour"].includes(args[0]) && !args[1]) return message.reply({content:`Please choose a color from \`${process.env.PREFIX}shop colors\`!\nThe correct usage for this command is \`${process.env.PREFIX}buy color <color>\``, allowedMentions:{repliedUser: false}})
+
         // Color Roles:
         if(["color", "colour"].includes(args[0]) || ["color", "colour"].includes(args[1])) {
             if(["color", "colour"].includes(args[0])) args.shift()
-            colors.forEach(color => {
+            for(let color of colors){
                 if(color.name === args[0]) {
-                    charge("color", {color: color})
+                    charge({item: items.find(i => i.id === "color"), color: color})
                     return appplyRole(color.id, true)
                 }
-            })
+            }
+            return failMessage("unknownColor", {color: args[0] ? args[0] : "` ` (Nothing)"})
         }
         else {
+            if(args[0] === "rose" && args[1] && args[1] === "bouquet") args.shift()
             for(let item of items){
-                if(!item.id === args[0]) return
+                if(!item.id === args[0]) return failMessage("noItemProvided")
                 // Other Roles
                 if(item.role) {
-                    charge(item.id, {item: item})
+                    charge({item: item})
                     return appplyRole(item.role)
                 }
                 // Inventory Items
@@ -61,7 +67,7 @@ module.exports = {
                     let obj = {}
                     obj[`inventory.${item.id}`] = parseInt(args[2]) || 1
                     await guy.updateOne({$inc:obj})
-                    return charge(item.id, {amount: parseInt(args[2]) || 1, item: item})
+                    return charge({amount: parseInt(args[2]) || 1, item: item})
                 }
                 let dbName
                 switch(item.id){
@@ -77,7 +83,7 @@ module.exports = {
                     let obj = {}
                     obj[dbName] = true
                     await guy.updateOne({$set:obj})
-                    return charge(item, {item: item})
+                    return charge({item: item})
                 }
                 // Description + Icon
                 if(["description", "icon"].includes(item.id)) {
@@ -86,7 +92,7 @@ module.exports = {
                     let obj = {}
                     obj[dbName] = value
                     await guy.updateOne({$set:obj})
-                    return charge(item.id, {item:item})
+                    return charge({item:item})
                 }
                 // Custom Role and Channel
                 if(["special", "channel"].includes(item.id)) {
@@ -102,7 +108,7 @@ module.exports = {
                         }).then((role) => {
                             appplyRole(role.id)
                             await guy.updateOne({$set:obj})
-                            charge(item.id, {item: item})
+                            charge({item: item})
                             obj[dbName] = role.id
                         })
                     }
@@ -116,7 +122,7 @@ module.exports = {
                                 },
                             ],
                         }).then((c) => {
-                            charge(item.id, {l10nSupport: true, l10nCode: "channelPurchaseSuccess", toReplace: {channelLink: `${c}`}})
+                            charge({l10nSupport: true, l10nCode: "channelPurchaseSuccess", toReplace: {channelLink: `${c}`}, item: item})
                             obj[dbName] = c.id
                             await guy.updateOne({$set:obj})
                         })
