@@ -1,4 +1,4 @@
-const { shop, getEmoji } = require("../../config/src")
+const { getEmoji } = require("../../config/src")
 const pluralize = require("pluralize")
 const { players } = require("../../db.js")
 const { colors, items } = require("../../config/src/shop")
