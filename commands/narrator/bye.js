@@ -1,3 +1,5 @@
+const { ids } = require("../../config")
+
 module.exports = {
     name: "bye",
     description: "Clean the game server.",
