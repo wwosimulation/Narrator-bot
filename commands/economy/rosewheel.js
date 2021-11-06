@@ -10,7 +10,7 @@ module.exports = {
     aliases: ["rw", "spin"],
     run: async (message, args, client) => {
         let guy = await players.findOne({ user: message.author.id })
-        if (!guy || !guy.roses >= 30) return message.channel.send(message.l10n("notEnoughCurrency", { currency: "roses" }))
+        if (!guy || guy.roses < 30) return message.channel.send(message.l10n("notEnoughCurrency", { currency: "roses" }))
         let prizes = []
 
         rosewheel.forEach((item) => {
