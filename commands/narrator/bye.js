@@ -1,5 +1,6 @@
 const { ids } = require("../../config")
 const db = require("quick.db")
+const { MessageActionRow } = require("discord.js")
 
 module.exports = {
     name: "bye",
@@ -99,7 +100,7 @@ const endGame = async (client) => {
         .get("606123818305585167")
         .messages.fetch(mid)
         .then((m) => {
-            if (m && m.author.id == client.user.id) {
+            if (m?.author?.id == client.user.id) {
                 let allc = m.components
                 if (allc) {
                     let row = allc[0]

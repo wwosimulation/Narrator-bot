@@ -9,3 +9,4 @@ ghnb.pem
 .config/
 package-lock.json
 .vscode/*
+.DS_Store
