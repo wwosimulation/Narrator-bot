@@ -27,14 +27,14 @@ module.exports = {
             if (!guyz) return failMessage("userInvalid", { user: message.author })
             else guyz.roles.cache.has(roleID) ? (color === false ? failMessage("alreadyPurchasedRole") : failMessage("alreadyPurchasedColor")) : guyz.roles.add(roleID)
         }
-        let charge = async ({ item, amount = 1, l10nCode = null, toReplace = {}, amount = null, color = null }) => {
+        let charge = async ({ item, amount = 1, l10nCode = null, toReplace = {}, color = null }) => {
             if(color && item) item.currency = item.currency + 's' // ONLY TEMPORARY !
             if (!item) return failMessage("noItemProvided")
             if (guy[item.currency] < item.price) return failMessage("notEnoughCurrency", { currency: item.currency })
             let update = {}
             update[item.currency] = item.price * amount
             await guy.updateOne({ $inc: update })
-            return successMsg({ l10nCode: l10nCode, toReplace: toReplace, item: item, amount: amount, color: color })
+            return successMsg({ l10nCode: l10nCode, toReplace: toReplace, item: item, amount: amount === 1 && !["rose", "bouquet"].includes(item.id) ? 0 : amount, color: color })
         }
         //checking arguments
         if (!args[0]) return failMessage("noItemProvided")
