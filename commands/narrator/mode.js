@@ -9,7 +9,7 @@ module.exports = {
     narratorOnly: true,
     aliases: ["csr", "cs", "gamemode"],
     run: async (message, args, client) => {
-        let modesSent = gameModes
+        let modesSent = [...gameModes]
         args.forEach((match) => {
             modesSent.push(match.charAt(0).toUpperCase() + match.slice(1))
         })
