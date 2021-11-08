@@ -8,9 +8,7 @@ module.exports = {
     usage: `${process.env.PREFIX}day [wolf_kill]`,
     gameOnly: true,
     narratorOnly: true,
-    run: async (message, args, client) => {
-        
-    }
+    run: async (message, args, client) => {},
 }
 
 // function to check bodyguard protection
