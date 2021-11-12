@@ -138,7 +138,7 @@ module.exports = {
                 let petal = db.get(`flower_${fcss[i]}`)
                 if (petal == args[0]) {
                     if (db.get(`protest_${fcss[i]}`) != "yes") {
-                        dayChat.send(`${getEmoji("votingme", client)} Player **${guy.nickname} ${guy.user.username}** could not be lynched!`)
+                        dayChat.send(`${getEmoji("votingme", client)} The villagers tried to lynch **${guy.nickname} ${guy.user.username}**, but they were protected!`)
                         db.set(`protest_${fcss[i]}`, "no")
                         i = 99
                         lynched = "no"
@@ -153,7 +153,7 @@ module.exports = {
                     let guardian = db.get(`guardian_${gwwss[i]}`)
                     if (guardian == args[0]) {
                         if (db.get(`protest_${gwwss[i]}`) != "yes") {
-                            dayChat.send(`${getEmoji("votingme", client)} Player **${guy.nickname} ${guy.user.username}** could not be lynched!`)
+                        dayChat.send(`${getEmoji("votingme", client)} The villagers tried to lynch **${guy.nickname} ${guy.user.username}**, but they were protected!`)
                             db.set(`protest_${gwwss[i]}`, "no")
                             i = 99
                             lynched = "no"
@@ -165,7 +165,7 @@ module.exports = {
             if (lynched == "yes") {
                 if (db.get(`role_${guy.id}`) == "Handsome Prince") {
                     lynched = "no"
-                    dayChat.send(`${getEmoji("votingme", client)} The Villagers tried to lynch **${guy.nickname} ${guy.user.username} (Handsome Prince) but they were too handsome to be killed today.`)
+                    dayChat.send(`${getEmoji("votingme", client)} The Villagers tried to lynch **${guy.nickname} ${guy.user.username} (Handsome Prince), but they were too handsome to be killed today.`)
                 }
             }
 
@@ -180,7 +180,7 @@ module.exports = {
                         }
                     }
                     lynched = "no"
-                    dayChat.send(`${getEmoji("votingme", client)} The Villagers tried to lynch **${guy.nickname} ${guy.user.username} (Idiot) but instead made them lose their ability to vote.`)
+                    dayChat.send(`${getEmoji("votingme", client)} The Villagers tried to lynch **${guy.nickname} ${guy.user.username} (Idiot), but instead made them lose their ability to vote.`)
                 }
             }
 
