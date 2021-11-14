@@ -4,7 +4,7 @@ const { getEmoji } = require("../../config")
 module.exports = {
     name: "snap",
     description: "Kill all players you have disguised.",
-    aliases: ["clap","comeinlikeawreckingball"]
+    aliases: ["clap", "comeinlikeawreckingball"],
     usage: `${process.env.PREFIX}snap`,
     gameOnly: true,
     run: async (message, args, client) => {
