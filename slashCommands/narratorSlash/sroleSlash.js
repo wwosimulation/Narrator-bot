@@ -18,6 +18,7 @@ module.exports = {
                     { name: "Sandbox", value: "sandbox" },
                     { name: "Custom", value: "custom" },
                     { name: "Chain Reaction", value: "chainreaction" },
+                    { name: "Pure Random", value: "random" },
                     { name: "Ranked", value: "ranked" },
                 ],
             },
@@ -184,6 +185,8 @@ module.exports = {
             ]
         } else if (gamemode == "chainreaction") {
             roleOptions = [["avenger", "witch", "avenger", "detective", "avenger", "witch", "avenger", "corruptor", "fool", "avenger", "avenger", "aura", "illusionist", "avenger", "fool", "avenger", "medium"]]
+        } else if (gamemode == "random") {
+            roleOptions = [["random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random"]]
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
                 rww.splice(rww.indexOf("Shadow Wolf"), 1)
