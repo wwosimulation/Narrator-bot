@@ -112,10 +112,9 @@ module.exports = {
                     break
                 case "remove":
                     if ((first && playerData && playerData[column] > amount) || (first && force)) {
-                        update[first+"."+column] = -amount
+                        update[first + "." + column] = -amount
                         operatorObj["$inc"] = update
                     } else if ((playerData && playerData[column] > amount) || force) {
-                    
                     } else {
                         return interaction.reply({ content: `You try to remove more ${column} than the user has. If you want to continue run this command again with \`force\` as option.`, ephemeral: true })
                     }
