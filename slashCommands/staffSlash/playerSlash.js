@@ -82,6 +82,7 @@ module.exports = {
         let columns = ["coins", "roses", "gems", "xp", "rose", "bouquet", "lootbox", "badge"]
         let operators = ["set", "add", "remove"]
         let force = false
+        let first
 
         if (options !== "none") {
             ;["-f", "force", "--force"].forEach((option) => {
@@ -92,7 +93,7 @@ module.exports = {
         let playerData = await players.findOne({ user: target.id })
 
         if (column !== "badge") {
-            if (["rose", "bouquet", "lootbox"].includes(column)) column = `inventory.${column}`
+            if (["rose", "bouquet", "lootbox"].includes(column)) first = "inventory"
 
             let update = {}
             let operatorObj = {}
@@ -110,16 +111,18 @@ module.exports = {
                     operatorObj["$inc"] = update
                     break
                 case "remove":
-                    if ((playerData && playerData[column] > amount) || force) {
-                        update[column] = -amount
+                    if ((first && playerData && playerData[column] > amount) || (first && force)) {
+                        update[first+"."+column] = -amount
                         operatorObj["$inc"] = update
-                    } else if (!playerData || !playerData[column] < amount) {
-                        return interaction.reply({ content: `You try to remove more ${column.replace("inventory.", "")} than the user has. If you want to continue run this command again with \`force\` as option.`, ephemeral: true })
+                    } else if ((playerData && playerData[column] > amount) || force) {
+                    
+                    } else {
+                        return interaction.reply({ content: `You try to remove more ${column} than the user has. If you want to continue run this command again with \`force\` as option.`, ephemeral: true })
                     }
                     break
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
-            interaction.reply({ content: `${fn.capitalizeFirstLetter(column.replace("inventory.", ""))} updated for ${target.tag}` })
+            interaction.reply({ content: `${fn.capitalizeFirstLetter(column)} updated for ${target.tag}` })
         }
         if (column === "badge") {
             console.log(operator)
