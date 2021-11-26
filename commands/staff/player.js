@@ -54,7 +54,7 @@ module.exports = {
                     if ((first && playerData && playerData[first][column] > amount) || (first && force)) {
                         update[first + "." + column] = -amount
                         operatorObj["$inc"] = update
-                    } else if ((playerData && playerData[column]) || force) {
+                    } else if ((playerData && playerData[column] > amount) || force) {
                         update[column] = -amount
                         operatorObj["$inc"] = update
                     } else {
