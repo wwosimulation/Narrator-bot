@@ -52,7 +52,7 @@ module.exports = {
                     break
                 case "remove":
                     if ((first && playerData && playerData[first][column] > amount) || (first && force)) {
-                        update[first+"."+column] = -amount
+                        update[first + "." + column] = -amount
                         operatorObj["$inc"] = update
                     } else if ((playerData && playerData[column]) || force) {
                         update[column] = -amount
