@@ -18,6 +18,7 @@ module.exports = {
         let operator = args[2]
         let value = args[3]
         let options = args[4] || "none"
+        let first
 
         let columns = ["coins", "roses", "gems", "xp", "rose", "bouquet", "lootbox", "badge"]
         let operators = ["set", "add", "remove"]
@@ -32,7 +33,7 @@ module.exports = {
         let playerData = await players.findOne({ user: target.id })
 
         if (columns.slice(0, 7).includes(column)) {
-            if (["rose", "bouquet", "lootbox"].includes(column)) column = `inventory.${column}`
+            if (["rose", "bouquet", "lootbox"].includes(column)) first = `inventory`
 
             let update = {}
             let operatorObj = {}
@@ -50,10 +51,13 @@ module.exports = {
                     operatorObj["$inc"] = update
                     break
                 case "remove":
-                    if ((playerData && playerData.coins > amount) || force) {
+                    if ((first && playerData && playerData[first][column] > amount) || (first && force)) {
+                        update[first + "." + column] = -amount
+                        operatorObj["$inc"] = update
+                    } else if ((playerData && playerData[column] > amount) || force) {
                         update[column] = -amount
                         operatorObj["$inc"] = update
-                    } else if (!playerData || !playerData[column] < amount) {
+                    } else {
                         return message.channel.send({ content: `You try to remove more ${column.replace("inventory.", "")} than the user has. If you want to continue run this command again with \`force\` at the end.` })
                     }
                     break
