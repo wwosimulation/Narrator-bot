@@ -80,20 +80,21 @@ module.exports = {
                 switch (item.id) {
                     case "description":
                         dbName = "profileDesc"
+                        break
                     case "icon":
                         dbName = "profileIcon"
+                        break
                     case "special":
                         dbName = "customRole"
+                        break
                     case "channel":
                         dbName = "privateChannel"
+                        break
                     default:
                         dbName = item.id
+                        break
                 }
-                console.log("worked till checkpoint a")
-                console.log(guy)
-                console.log(item)
                 if (guy[dbName] !== false || guy[dbName] !== "") return failMessage("alreadyPurchasedItem", { item: item.name })
-                console.log("worked till checkpoint b")
                 // Boolean values
                 if (["profile", "cmi"].includes(dbName)) {
                     let obj = {}
