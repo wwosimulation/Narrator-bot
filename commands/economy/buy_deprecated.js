@@ -53,7 +53,7 @@ module.exports = {
         if (!item) return message.channel.send(message.l10n("noItemProvided"))
 
         let price = item.price || 0
-        let userHas = item.currency == "coin" ? data.coins : item.currency == "rose" ? data.roses : data.gems
+        let userHas = item.currency == "coins" ? data.coins : item.currency == "roses" ? data.roses : data.gems
 
         if (item.id == "color" && !color) return message.channel.send(`${args[1]} is not in the available colors.\nMake sure you choose a proper color from \`+shop colors\`!`)
 
