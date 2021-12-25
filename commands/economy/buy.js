@@ -39,7 +39,7 @@ module.exports = {
         //checking arguments
         if (!args[0]) return failMessage("noItemProvided")
         args.forEach((arg, i) => {
-            if(["grey", "private", "game"].indexOf(arg) === -1) {
+            if (["grey", "private", "game"].indexOf(arg) === -1) {
                 args[i] = arg
             } else {
                 let ind = ["grey", "private", "game"].indexOf(arg)
