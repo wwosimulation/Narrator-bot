@@ -25,7 +25,17 @@ module.exports = {
         let appplyRole = (roleID, color = false) => {
             let guyz = sim.members.find((member) => member.id === message.author.id)
             if (!guyz) return failMessage("userInvalid", { user: message.author })
-            else guyz.roles.cache.has(roleID) ? (color === false ? failMessage("alreadyPurchasedRole") : failMessage("alreadyPurchasedColor")) : guyz.roles.add(roleID)
+            else {
+                if(guyz.roles.cache.has(roleID)) {
+                    if(color === false) {
+                        failMessage("alreadyPurchasedRole")
+                    } else {
+                        failMessage("alreadyPurchasedColor")
+                    }
+                } else {
+                    guyz.roles.add(roleID)
+                }
+            }
         }
         let charge = async ({ item, amount = 1, l10nCode = null, toReplace = {}, color = null }) => {
             if (color && item) item.currency = item.currency + "s" // ONLY TEMPORARY !
