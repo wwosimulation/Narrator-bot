@@ -32,9 +32,9 @@ module.exports = {
             else {
                 if (guyz.roles.cache.has(roleID)) {
                     if (color === false) {
-                        failMessage("alreadyPurchasedRole")
+                        return failMessage("alreadyPurchasedRole")
                     } else {
-                        failMessage("alreadyPurchasedColor")
+                        return failMessage("alreadyPurchasedColor")
                     }
                 } else {
                     guyz.roles.add(roleID)
@@ -73,7 +73,7 @@ module.exports = {
             }
             return failMessage("unknownColor", { color: args[0] ? args[0] : "` ` (Nothing)" })
         } else {
-            if (args[0] === "rose" && args[1] && args[1] === "bouquet") args.shift()
+            if (args[0] === "roses" && args[1] && args[1] === "bouquet") args.shift()
             let item = items.find((element) => element.id === args[0])
             if (!item) return failMessage("noItemProvided")
             item.currency = item.currency
