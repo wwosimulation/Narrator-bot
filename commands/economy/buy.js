@@ -30,8 +30,8 @@ module.exports = {
             let guyz = sim.members.find((member) => member.id === message.author.id)
             if (!guyz) return failMessage("userInvalid", { user: message.author })
             else {
-                if(guyz.roles.cache.has(roleID)) {
-                    if(color === false) {
+                if (guyz.roles.cache.has(roleID)) {
+                    if (color === false) {
                         failMessage("alreadyPurchasedRole")
                     } else {
                         failMessage("alreadyPurchasedColor")
