@@ -9,6 +9,10 @@ module.exports = {
     description: "Buy an item from the shop.",
     usage: `${process.env.PREFIX}buy <item | <color> (color)>`,
     run: async (message, args, client) => {
+        if (!["439223656200273932", "801726595378315264", "263472056753061889", "517335997172809728", "840938038028533782", "719564153072910407", "802145702531825685"].includes(message.author.id)) {
+            return message.channel.send("We are currently testing a new buy system. The buy, the shop and the use command might not work for some time.")
+        }
+
         // functions
         args.forEach((x, i) => {
             args[i] = x.toLowerCase()
