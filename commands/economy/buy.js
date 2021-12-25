@@ -39,7 +39,7 @@ module.exports = {
         //checking arguments
         if (!args[0]) return failMessage("noItemProvided")
         args.forEach((arg, i) => {
-            ;["grey", "private", "game"].findIndex(arg) === -1 ? (args[i] = arg) : (args[i] = ["gray", "channel", "gamegifs"][["grey", "private", "game"].findIndex(arg)])
+            ["grey", "private", "game"].indexOf(arg) === -1 ? (args[i] = arg) : (args[i] = ["gray", "channel", "gamegifs"][["grey", "private", "game"].indexOf(arg)])
         })
         if (["color", "colour"].includes(args[0]) && !args[1]) return message.reply({ content: `Please choose a color from \`${process.env.PREFIX}shop colors\`!\nThe correct usage for this command is \`${process.env.PREFIX}buy color <color>\``, allowedMentions: { repliedUser: false } })
 
