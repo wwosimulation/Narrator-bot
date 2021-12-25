@@ -94,7 +94,7 @@ module.exports = {
                     dbName = item.id
                     break
             }
-            if (guy[dbName] !== false || guy[dbName] !== "") return failMessage("alreadyPurchasedItem", { item: item.name })
+            if (guy[dbName] !== false && guy[dbName] !== "") return failMessage("alreadyPurchasedItem", { item: item.name })
             // Boolean values
             if (["profile", "cmi"].includes(dbName)) {
                 let obj = {}
