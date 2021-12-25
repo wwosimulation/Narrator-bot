@@ -32,7 +32,7 @@ module.exports = {
             if (!item) return failMessage("noItemProvided")
             if (guy[item.currency] < item.price) return failMessage("notEnoughCurrency", { currency: item.currency })
             let update = {}
-            update[item.currency] = - item.price * amount
+            update[item.currency] = -item.price * amount
             await guy.updateOne({ $inc: update })
             return successMsg({ l10nCode: l10nCode, toReplace: toReplace, item: item, amount: amount === 1 && !["rose", "bouquet"].includes(item.id) ? 0 : amount, color: color })
         }
