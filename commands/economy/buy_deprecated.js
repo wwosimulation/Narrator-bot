@@ -4,8 +4,9 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "buydeprecated",
-    description: "Buy an item from the shop.",
+    description: "Buy an item from the shop. *This is the old command and will be replaced in the future.*",
     usage: `${process.env.PREFIX}buy <item | color>`,
+    aliases: ["buydep"],
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
         const sim = client.guilds.cache.get(config.ids.server.sim)
@@ -53,7 +54,8 @@ module.exports = {
         if (!item) return message.channel.send(message.l10n("noItemProvided"))
 
         let price = item.price || 0
-        let userHas = item.currency == "coins" ? data.coins : item.currency == "roses" ? data.roses : data.gems
+        item.currency = item.currency.slice(0, -1)
+        let userHas = item.currency == "coin" ? data.coins : item.currency == "rose" ? data.roses : data.gems
 
         if (item.id == "color" && !color) return message.channel.send(`${args[1]} is not in the available colors.\nMake sure you choose a proper color from \`+shop colors\`!`)
 

@@ -37,7 +37,7 @@ module.exports = {
             return message.channel.send("Icons are currently unavailable!")
         } else if (args[0].toLowerCase() === "description") {
             if (data.description === "") return message.channel.send("You don't have a profile description yet. You can buy it in the shop!")
-            args[1] ? (args.shift(), data.updateOne({ $set: { profileDesc: args.join(" ") } })) : message.channel.send("Please state your description after `description`")
+            args[1] ? (args.shift(), await data.updateOne({ $set: { profileDesc: args.join(" ") } })) : message.channel.send("Please state your description after `description`")
             return
         } else {
             return message.channel.send("This item does not exist!")
