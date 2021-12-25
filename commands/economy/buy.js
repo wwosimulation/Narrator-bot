@@ -39,8 +39,14 @@ module.exports = {
         //checking arguments
         if (!args[0]) return failMessage("noItemProvided")
         args.forEach((arg, i) => {
-            ["grey", "private", "game"].indexOf(arg) === -1 ? (args[i] = arg) : (args[i] = ["gray", "channel", "gamegifs"][["grey", "private", "game"].indexOf(arg)])
+            if(["grey", "private", "game"].indexOf(arg) === -1) {
+                args[i] = arg
+            } else {
+                let ind = ["grey", "private", "game"].indexOf(arg)
+                args[i] = ["gray", "channel", "gamegifs"][ind]
+            }
         })
+        console.log("Check for aliases worked \n" + args)
         if (["color", "colour"].includes(args[0]) && !args[1]) return message.reply({ content: `Please choose a color from \`${process.env.PREFIX}shop colors\`!\nThe correct usage for this command is \`${process.env.PREFIX}buy color <color>\``, allowedMentions: { repliedUser: false } })
 
         // Color Roles:
@@ -56,7 +62,7 @@ module.exports = {
         } else {
             if (args[0] === "rose" && args[1] && args[1] === "bouquet") args.shift()
             for (let item of items) {
-                item.currency = item.currency + "s" // ONLY TEMPORARY
+                item.currency = item.currency
                 if (!item.id === args[0]) return failMessage("noItemProvided")
                 // Other Roles
                 if (item.role) {
@@ -83,7 +89,11 @@ module.exports = {
                     default:
                         dbName = item.id
                 }
+                console.log("worked till checkpoint a")
+                console.log(guy)
+                console.log(item)
                 if (guy[dbName] !== false || guy[dbName] !== "") return failMessage("alreadyPurchasedItem", { item: item.name })
+                console.log("worked till checkpoint b")
                 // Boolean values
                 if (["profile", "cmi"].includes(dbName)) {
                     let obj = {}
