@@ -61,93 +61,92 @@ module.exports = {
             return failMessage("unknownColor", { color: args[0] ? args[0] : "` ` (Nothing)" })
         } else {
             if (args[0] === "rose" && args[1] && args[1] === "bouquet") args.shift()
-            for (let item of items) {
-                item.currency = item.currency
-                if (!item.id === args[0]) return failMessage("noItemProvided")
-                // Other Roles
-                if (item.role) {
-                    charge({ item: item })
-                    return appplyRole(item.role)
+            let item = items.find(element => element.id === args[0])
+            if(!item) return failMessage("noItemProvided")
+            item.currency = item.currency
+            // Other Roles
+            if (item.role) {
+                charge({ item: item })
+                return appplyRole(item.role)
+            }
+            // Inventory Items
+            if (["rose", "bouquet"].includes(item.id)) {
+                let obj = {}
+                obj[`inventory.${item.id}`] = parseInt(args[2]) || 1
+                await guy.updateOne({ $inc: obj })
+                return charge({ amount: parseInt(args[2]) || 1, item: item })
+            }
+            let dbName
+            switch (item.id) {
+                case "description":
+                    dbName = "profileDesc"
+                    break
+                case "icon":
+                    dbName = "profileIcon"
+                    break
+                case "special":
+                    dbName = "customRole"
+                    break
+                case "channel":
+                    dbName = "privateChannel"
+                    break
+                default:
+                    dbName = item.id
+                    break
+            }
+            if (guy[dbName] !== false || guy[dbName] !== "") return failMessage("alreadyPurchasedItem", { item: item.name })
+            // Boolean values
+            if (["profile", "cmi"].includes(dbName)) {
+                let obj = {}
+                obj[dbName] = true
+                await guy.updateOne({ $set: obj })
+                return charge({ item: item })
+            }
+            // Description + Icon
+            if (["description", "icon"].includes(item.id)) {
+                args.shift()
+                let value = args[0] ? args.join(" ") : item.id === "description" ? `Hey there! I am <@${message.author.id}>` : "https://i.imgur.com/6fL8AD2.png"
+                let obj = {}
+                obj[dbName] = value
+                await guy.updateOne({ $set: obj })
+                return charge({ item: item })
+            }
+            // Custom Role and Channel
+            if (["special", "channel"].includes(item.id)) {
+                let obj = {}
+                // Role
+                if (item.id === "special") {
+                    let colorRolesStart = sim.roles.cache.get("606247387496972292")
+                    sim.roles
+                        .create({
+                            name: `${message.author.username}'s Special Role`,
+                            color: "#007880",
+                            position: colorRolesStart.position + 1,
+                            reason: message.author.tag + " bought special role item",
+                        })
+                        .then(async (role) => {
+                            appplyRole(role.id)
+                            await guy.updateOne({ $set: obj })
+                            charge({ item: item })
+                            obj[dbName] = role.id
+                        })
                 }
-                // Inventory Items
-                if (["rose", "bouquet"].includes(item.id)) {
-                    let obj = {}
-                    obj[`inventory.${item.id}`] = parseInt(args[2]) || 1
-                    await guy.updateOne({ $inc: obj })
-                    return charge({ amount: parseInt(args[2]) || 1, item: item })
-                }
-                let dbName
-                switch (item.id) {
-                    case "description":
-                        dbName = "profileDesc"
-                        break
-                    case "icon":
-                        dbName = "profileIcon"
-                        break
-                    case "special":
-                        dbName = "customRole"
-                        break
-                    case "channel":
-                        dbName = "privateChannel"
-                        break
-                    default:
-                        dbName = item.id
-                        break
-                }
-                if (guy[dbName] !== false || guy[dbName] !== "") return failMessage("alreadyPurchasedItem", { item: item.name })
-                // Boolean values
-                if (["profile", "cmi"].includes(dbName)) {
-                    let obj = {}
-                    obj[dbName] = true
-                    await guy.updateOne({ $set: obj })
-                    return charge({ item: item })
-                }
-                // Description + Icon
-                if (["description", "icon"].includes(item.id)) {
-                    args.shift()
-                    let value = args[0] ? args.join(" ") : item.id === "description" ? `Hey there! I am <@${message.author.id}>` : "https://i.imgur.com/6fL8AD2.png"
-                    let obj = {}
-                    obj[dbName] = value
-                    await guy.updateOne({ $set: obj })
-                    return charge({ item: item })
-                }
-                // Custom Role and Channel
-                if (["special", "channel"].includes(item.id)) {
-                    let obj = {}
-                    // Role
-                    if (item.id === "special") {
-                        let colorRolesStart = sim.roles.cache.get("606247387496972292")
-                        sim.roles
-                            .create({
-                                name: `${message.author.username}'s Special Role`,
-                                color: "#007880",
-                                position: colorRolesStart.position + 1,
-                                reason: message.author.tag + " bought special role item",
-                            })
-                            .then(async (role) => {
-                                appplyRole(role.id)
-                                await guy.updateOne({ $set: obj })
-                                charge({ item: item })
-                                obj[dbName] = role.id
-                            })
-                    }
-                    if (item.id === "channel") {
-                        sim.channels
-                            .create(`${message.author.username}-channel`, {
-                                parent: "627536301008224275",
-                                permissionOverwrites: [
-                                    {
-                                        id: message.author.id,
-                                        allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES"],
-                                    },
-                                ],
-                            })
-                            .then(async (c) => {
-                                charge({ l10nSupport: true, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` }, item: item })
-                                obj[dbName] = c.id
-                                await guy.updateOne({ $set: obj })
-                            })
-                    }
+                if (item.id === "channel") {
+                    sim.channels
+                        .create(`${message.author.username}-channel`, {
+                            parent: "627536301008224275",
+                            permissionOverwrites: [
+                                {
+                                    id: message.author.id,
+                                    allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES"],
+                                },
+                            ],
+                        })
+                        .then(async (c) => {
+                            charge({ l10nSupport: true, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` }, item: item })
+                            obj[dbName] = c.id
+                            await guy.updateOne({ $set: obj })
+                        })
                 }
             }
         }
