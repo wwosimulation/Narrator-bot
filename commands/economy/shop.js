@@ -16,7 +16,7 @@ module.exports = {
             embed.setFooter(message.l10n("shopFooter"))
             return message.channel.send({ embeds: [embed] })
         } else {
-            message.channel.send("We are currently testing a new buy system. During this time we have some chnages as well:\n`buy` - doesn't work. use `+buydep` instead\n`shop` - does not contain the currecies\n`profile` - is back to the original format")
+            message.channel.send("We are currently testing a new buy system. During this time we have some changes as well:\n`buy` - doesn't work. use `+buydep` instead\n`shop` - does not contain the currecies\n`profile` - is back to the original format")
             let row = new MessageActionRow()
             for (let i = 0; i < shop.embeds.length; i++) {
                 row.addComponents(

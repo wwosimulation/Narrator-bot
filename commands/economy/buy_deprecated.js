@@ -5,7 +5,7 @@ const { players } = require("../../db.js")
 module.exports = {
     name: "buydeprecated",
     description: "Buy an item from the shop. *This is the old command and will be replaced in the future.*",
-    usage: `${process.env.PREFIX}buy <item | color>`,
+    usage: `${process.env.PREFIX}buydeprecated <item | color>`,
     aliases: ["buydep"],
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })

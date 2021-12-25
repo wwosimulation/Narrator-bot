@@ -44,7 +44,7 @@ module.exports = {
             .addField("Badges", badges === "" ? "No badges" : badges)
             .addField("Stats", `Wins: ${wins}\nLosses: ${losses}\nTies: ${data.stats.tie}\nWin Streak: ${data.winStreak}`)
 
-        message.channel.send("We are currently testing a new buy system. During this time we have some chnages as well:\n`buy` - doesn't work. use `+buydep` instead\n`shop` - does not contain the currecies\n`profile` - is back to the original format")
+        message.channel.send("We are currently testing a new buy system. During this time we have some changes as well:\n`buy` - doesn't work. use `+buydep` instead\n`shop` - does not contain the currecies\n`profile` - is back to the original format")
         message.channel.send({ embeds: [embed] })
     },
 }
