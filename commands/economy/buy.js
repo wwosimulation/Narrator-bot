@@ -137,6 +137,7 @@ module.exports = {
                 if (item.id === "channel") {
                     sim.channels
                         .create(`${message.author.username}-channel`, {
+                            type: "GUILD_TEXT",
                             parent: "627536301008224275",
                             permissionOverwrites: [
                                 {
@@ -146,7 +147,7 @@ module.exports = {
                             ],
                         })
                         .then(async (c) => {
-                            charge({ l10nSupport: true, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` }, item: item })
+                            charge({ item: item, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` }})
                             obj[dbName] = c.id
                             await guy.updateOne({ $set: obj })
                         })
