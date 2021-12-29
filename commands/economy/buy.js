@@ -3,6 +3,7 @@ const pluralize = require("pluralize")
 const { players } = require("../../db.js")
 const { colors, items } = require("../../config/src/shop")
 const { server } = require("../../config/src/ids")
+const ids = require("../../config/src/ids")
 
 module.exports = {
     name: "buy",
@@ -70,7 +71,6 @@ module.exports = {
             // Other Roles
             if (item.role) {
                 if (appplyRole(item.role) === true) charge({ item: item })
-                return
             }
             // Inventory Items
             if (["rose", "bouquet"].includes(item.id)) {
