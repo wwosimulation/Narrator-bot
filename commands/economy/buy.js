@@ -147,7 +147,7 @@ module.exports = {
                             ],
                         })
                         .then(async (c) => {
-                            charge({ item: item, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` }})
+                            charge({ item: item, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` } })
                             obj[dbName] = c.id
                             await guy.updateOne({ $set: obj })
                         })
