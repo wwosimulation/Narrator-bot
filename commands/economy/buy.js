@@ -58,8 +58,8 @@ module.exports = {
             if (["color", "colour"].includes(args[0])) args.shift()
             for (let color of colors) {
                 if (color.name === args[0]) {
-                    if(appplyRole(color.id, true) === true) charge({ item: items.find((i) => i.id === "color"), color: color })
-                    return 
+                    if (appplyRole(color.id, true) === true) charge({ item: items.find((i) => i.id === "color"), color: color })
+                    return
                 }
             }
             return failMessage("unknownColor", { color: args[0] ? args[0] : "` ` (Nothing)" })
@@ -69,7 +69,7 @@ module.exports = {
             if (!item) return failMessage("noItemProvided")
             // Other Roles
             if (item.role) {
-                if(appplyRole(item.role) === true) charge({ item: item })
+                if (appplyRole(item.role) === true) charge({ item: item })
                 return
             }
             // Inventory Items
