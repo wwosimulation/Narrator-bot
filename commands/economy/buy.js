@@ -27,9 +27,10 @@ module.exports = {
             else return message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name}` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(item.currency), item.price, true)} ${getEmoji(pluralize.singular(item.currency), client)}!${item.response ? `\n${item.response}` : ""}`)
         }
         let appplyRole = (roleID, color = false) => {
+            let applied = false
             let guyz = sim.members.cache.find((member) => member.id === message.author.id)
-            !guyz ? failMessage("userInvalid", { user: message.author }) : guyz.roles.cache.has(roleID) ? (color === false ? failMessage("alreadyPurchasedRole") : failMessage("alreadyPurchasedColor")) : guyz.roles.add(roleID)
-            return
+            !guyz ? failMessage("userInvalid", { user: message.author }) : guyz.roles.cache.has(roleID) ? (color === false ? failMessage("alreadyPurchasedRole") : failMessage("alreadyPurchasedColor")) : (guyz.roles.add(roleID), applied = true)
+            return applied
         }
         let charge = async ({ item, amount = 1, l10nCode = null, toReplace = {}, color = null }) => {
             if (color && item) item.currency = item.currency + "s" // ONLY TEMPORARY !
@@ -69,8 +70,7 @@ module.exports = {
             item.currency = item.currency + "s"
             // Other Roles
             if (item.role) {
-                appplyRole(item.role)
-                charge({ item: item })
+                appplyRole(item.role) === true ? charge({ item: item }) : undefined
                 return
             }
             // Inventory Items
