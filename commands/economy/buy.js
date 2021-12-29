@@ -67,7 +67,6 @@ module.exports = {
             if (args[0] === "roses" && args[1] && args[1] === "bouquet") args.shift()
             let item = items.find((element) => element.id === args[0])
             if (!item) return failMessage("noItemProvided")
-            item.currency = item.currency + "s"
             // Other Roles
             if (item.role) {
                 appplyRole(item.role) === true ? charge({ item: item }) : undefined
