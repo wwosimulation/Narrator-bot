@@ -69,8 +69,9 @@ module.exports = {
             item.currency = item.currency + "s"
             // Other Roles
             if (item.role) {
+                appplyRole(item.role)
                 charge({ item: item })
-                return appplyRole(item.role)
+                return
             }
             // Inventory Items
             if (["rose", "bouquet"].includes(item.id)) {
