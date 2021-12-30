@@ -34,7 +34,7 @@ module.exports = {
             return applied
         }
         let hasRole = (roleID) => {
-            if(sim.members.cache.find(m => m.id === message.author.id).roles.cache.has(roleID)) return true
+            if (sim.members.cache.find((m) => m.id === message.author.id).roles.cache.has(roleID)) return true
             else return false
         }
         let charge = async ({ item, amount = 1, l10nCode = null, toReplace = {}, color = null }) => {
@@ -80,8 +80,7 @@ module.exports = {
                 if (!hasRole(item.role)) {
                     if (charge({ item: item }) === false) return
                     appplyRole(item.role)
-                }
-                else return failMessage("alreadyPurchasedItem", {item: item.name})
+                } else return failMessage("alreadyPurchasedItem", { item: item.name })
             }
             // Inventory Items
             if (["roses", "bouquet"].includes(item.id)) {
