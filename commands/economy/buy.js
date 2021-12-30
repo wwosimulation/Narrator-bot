@@ -66,7 +66,7 @@ module.exports = {
             if (["color", "colour"].includes(args[0])) args.shift()
             for (let color of colors) {
                 if (color.name === args[0]) {
-                    if (!hasRole(color.id)) charge({ item: items.find((i) => i.id === "color"), color: color })
+                    if (!hasRole(color.id)) if (charge({ item: items.find((i) => i.id === "color"), color: color }) !== false) return appplyRole(color.id, true) === true
                     return
                 }
             }
