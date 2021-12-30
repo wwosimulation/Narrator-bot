@@ -36,7 +36,8 @@ module.exports = {
         let charge = async ({ item, amount = 1, l10nCode = null, toReplace = {}, color = null }) => {
             if (color && item) item.currency = item.currency + "s" // ONLY TEMPORARY !
             if (!item) return failMessage("noItemProvided")
-            if (guy[item.currency] < item.price) return failMessage("notEnoughCurrency", { currency: item.currency })
+            if (guy[item.currency] < item.price) {failMessage("notEnoughCurrency", { currency: item.currency })
+            return false}
             let update = {}
             update[item.currency] = -item.price * amount
             await guy.updateOne({ $inc: update })
@@ -70,7 +71,7 @@ module.exports = {
             if (!item) return failMessage("noItemProvided")
             // Other Roles
             if (item.role) {
-                if (appplyRole(item.role) === true) charge({ item: item })
+                if (appplyRole(item.role) === true) if(charge({ item: item }) === false)  return
             }
             // Inventory Items
             if (["roses", "bouquet"].includes(item.id)) {
