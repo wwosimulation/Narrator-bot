@@ -45,11 +45,11 @@ module.exports = {
         //checking arguments
         if (!args[0]) return failMessage("noItemProvided")
         args.forEach((arg, i) => {
-            if (["grey", "private", "game"].indexOf(arg) === -1) {
+            if (["grey", "private", "game", "rose"].indexOf(arg) === -1) {
                 args[i] = arg
             } else {
-                let ind = ["grey", "private", "game"].indexOf(arg)
-                args[i] = ["gray", "channel", "gamegifs"][ind]
+                let ind = ["grey", "private", "game", "rose"].indexOf(arg)
+                args[i] = ["gray", "channel", "gamegifs", "roses"][ind]
             }
         })
         if (["color", "colour"].includes(args[0]) && !args[1]) return message.reply({ content: `Please choose a color from \`${process.env.PREFIX}shop colors\`!\nThe correct usage for this command is \`${process.env.PREFIX}buy color <color>\``, allowedMentions: { repliedUser: false } })
@@ -73,7 +73,7 @@ module.exports = {
                 if (appplyRole(item.role) === true) charge({ item: item })
             }
             // Inventory Items
-            if (["rose", "bouquet"].includes(item.id)) {
+            if (["roses", "bouquet"].includes(item.id)) {
                 let obj = {}
                 obj[`inventory.${item.id}`] = parseInt(args[2]) || 1
                 await guy.updateOne({ $inc: obj })
