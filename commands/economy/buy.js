@@ -33,8 +33,12 @@ module.exports = {
             !guyz ? failMessage("userInvalid", { user: message.author }) : guyz.roles.cache.has(roleID) ? (color === false ? failMessage("alreadyPurchasedRole") : failMessage("alreadyPurchasedColor")) : (guyz.roles.add(roleID), (applied = true))
             return applied
         }
+        let hasRole = (roleID) => {
+            if(sim.members.cache.find(m => m.id === message.author.id).roles.cache.has(roleID)) return true
+            else return false
+        }
         let charge = async ({ item, amount = 1, l10nCode = null, toReplace = {}, color = null }) => {
-            if (color && item) item.currency = item.currency + "s" // ONLY TEMPORARY !
+            if (color && item) item.currency = item.currency + "s"
             if (!item) return failMessage("noItemProvided")
             if (guy[item.currency] < item.price) {
                 failMessage("notEnoughCurrency", { currency: item.currency })
@@ -62,7 +66,7 @@ module.exports = {
             if (["color", "colour"].includes(args[0])) args.shift()
             for (let color of colors) {
                 if (color.name === args[0]) {
-                    if (appplyRole(color.id, true) === true) charge({ item: items.find((i) => i.id === "color"), color: color })
+                    if (!hasRole(color.id)) charge({ item: items.find((i) => i.id === "color"), color: color })
                     return
                 }
             }
@@ -73,7 +77,11 @@ module.exports = {
             if (!item) return failMessage("noItemProvided")
             // Other Roles
             if (item.role) {
-                if (appplyRole(item.role) === true) if (charge({ item: item }) === false) return
+                if (!hasRole(item.role)) {
+                    if (charge({ item: item }) === false) return
+                    appplyRole(item.role)
+                }
+                else return failMessage("alreadyPurchasedItem", {item: item.name})
             }
             // Inventory Items
             if (["roses", "bouquet"].includes(item.id)) {
