@@ -45,11 +45,11 @@ module.exports = {
         //checking arguments
         if (!args[0]) return failMessage("noItemProvided")
         args.forEach((arg, i) => {
-            if (["grey", "private", "game", "roses"].indexOf(arg) === -1) {
+            if (["grey", "private", "game"].indexOf(arg) === -1) {
                 args[i] = arg
             } else {
-                let ind = ["grey", "private", "game", "roses"].indexOf(arg)
-                args[i] = ["gray", "channel", "gamegifs", "rose"][ind]
+                let ind = ["grey", "private", "game"].indexOf(arg)
+                args[i] = ["gray", "channel", "gamegifs"][ind]
             }
         })
         if (["color", "colour"].includes(args[0]) && !args[1]) return message.reply({ content: `Please choose a color from \`${process.env.PREFIX}shop colors\`!\nThe correct usage for this command is \`${process.env.PREFIX}buy color <color>\``, allowedMentions: { repliedUser: false } })
@@ -150,6 +150,7 @@ module.exports = {
                             charge({ item: item, amount: 0, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` } })
                             obj[dbName] = c.id
                             await guy.updateOne({ $set: obj })
+                            c.send({content:`${message.author}, here is your private channel!`})
                         })
                 }
             }
