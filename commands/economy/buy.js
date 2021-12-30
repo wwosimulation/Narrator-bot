@@ -79,7 +79,7 @@ module.exports = {
             if (item.role) {
                 if (!hasRole(item.role)) {
                     if (charge({ item: item }) === false) return
-                    appplyRole(item.role)
+                    else appplyRole(item.role)
                 } else return failMessage("alreadyPurchasedItem", { item: item.name })
             }
             // Inventory Items
