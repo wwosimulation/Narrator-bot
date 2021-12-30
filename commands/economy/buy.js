@@ -150,7 +150,7 @@ module.exports = {
                             charge({ item: item, amount: 0, l10nCode: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` } })
                             obj[dbName] = c.id
                             await guy.updateOne({ $set: obj })
-                            c.send({content:`${message.author}, here is your private channel!`})
+                            c.send({ content: `${message.author}, here is your private channel!` })
                         })
                 }
             }
