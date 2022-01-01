@@ -50,6 +50,7 @@ module.exports = {
                 name: "value",
                 description: "Add the value you want to use with the operator.",
                 required: true,
+                autocomplete: true,
             },
             {
                 type: "STRING",
@@ -127,6 +128,7 @@ module.exports = {
             console.log(operator)
             let update = {}
             let operatorObj = {}
+            value.replace(/ /g, "_")
 
             if (value === "invite") {
                 switch (operator) {
