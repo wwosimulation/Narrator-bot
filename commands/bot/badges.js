@@ -21,7 +21,7 @@ module.exports = {
 
         for (const badge in playerData.badges) {
             if (badge === "invite" && playerData.badges.invite.unlocked) desc = desc + `\`${fn.capitalizeFirstLetter(badge)}\``
-            if (badge !== "invite") desc = desc + `\`${fn.capitalizeFirstLetter(badge)}\``
+            if (badge !== "invite") desc = desc + `\`${fn.capitalizeFirstLetter(badge).replace(/_/g, " ")}\``
         }
 
         if (desc === "") desc = `${guy.user.tag} does not have any badges.`
