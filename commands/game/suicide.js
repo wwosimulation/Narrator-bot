@@ -27,12 +27,17 @@ module.exports = {
                 const collector = msg.createMessageComponentCollector({ idle: 15000 })
                 collector.on("collect", async (interaction) => {
                     if (interaction.user.id !== message.author.id) return interaction.reply({ content: "This is not your suicide message. Don't try to trick me!", ephemeral: true })
-                    db.set(`suicided_${message.author.id}`, true)
-                    let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
-                    let role = await db.fetch(`role_${message.author.id}`)
-                    day.send("**" + message.member.nickname + " " + message.author.username + " (" + role + ")** has commited suicide!")
-                    message.member.roles.add(ids.dead)
-                    message.member.roles.remove(ids.alive)
+                    if(interaction.customId === "suicide"){
+                        interaction.reply("Suiciding...")
+                        db.set(`suicided_${message.author.id}`, true)
+                        let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
+                        let role = await db.fetch(`role_${message.author.id}`)
+                        day.send("**" + message.member.nickname + " " + message.author.username + " (" + role + ")** has commited suicide!")
+                        message.member.roles.add(ids.dead)
+                        message.member.roles.remove(ids.alive)
+                    } else {
+                        interaction.reply("Successfully canceled!")
+                    }
                     collector.stop()
                 })
                 collector.on("end", (collected) => {
