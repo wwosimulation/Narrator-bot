@@ -27,7 +27,7 @@ module.exports = {
                 const collector = msg.createMessageComponentCollector({ idle: 15000 })
                 collector.on("collect", async (interaction) => {
                     if (interaction.user.id !== message.author.id) return interaction.reply({ content: "This is not your suicide message. Don't try to trick me!", ephemeral: true })
-                    if(interaction.customId === "suicide"){
+                    if (interaction.customId === "suicide") {
                         interaction.reply("Suiciding...")
                         db.set(`suicided_${message.author.id}`, true)
                         let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
