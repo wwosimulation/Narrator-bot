@@ -1,21 +1,4 @@
 module.exports = (client) => {
-<<<<<<< HEAD
-    client.on("interactionCreate", interaction => {
-        if(!interaction.isAutocomplete()) return
-        let res = []
-        switch(interaction.commandName) {
-            case "player": {
-                if(interaction.options.getString("column") !== "badge") res = []
-                let possible = [
-                    {name: "staff", value: "staff"},
-                    {name: "suggestor", value: "suggestor"},
-                    {name: "item_roulette_master", value: "item_roulette_master"}
-                ]
-                let typed = interaction.options.getString("value")
-                typed.replace(/ /g, "") === "" ? res = possible : possible.forEach(e => {
-                    if(e.name.startsWith(typed.toLowerCase())) res.push(e)
-                })
-=======
     client.on("interactionCreate", (interaction) => {
         if (!interaction.isAutocomplete()) return
         let res = []
@@ -26,6 +9,12 @@ module.exports = (client) => {
                     { name: "staff", value: "staff" },
                     { name: "suggestor", value: "suggestor" },
                     { name: "item_roulette_master", value: "item_roulette_master" },
+                    { name: "active_player_bronze", value: "active_player_bronze" },
+                    { name: "active_player_silver", value: "active_player_silver" },
+                    { name: "active_player_gold", value: "active_player_gold" },
+                    { name: "pro_player_bronze", value: "pro_player_bronze" },
+                    { name: "pro_player_silver", value: "pro_player_silver" },
+                    { name: "pro_player_gold", value: "pro_player_gold" },
                 ]
                 let typed = interaction.options.getString("value")
                 typed.replace(/ /g, "") === ""
@@ -33,7 +22,6 @@ module.exports = (client) => {
                     : possible.forEach((e) => {
                           if (e.name.startsWith(typed.toLowerCase())) res.push(e)
                       })
->>>>>>> 4699c5720dccb20364dfd91739d24829a21b595f
                 break
             }
             default: {
@@ -42,8 +30,4 @@ module.exports = (client) => {
         }
         interaction.respond(res)
     })
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 4699c5720dccb20364dfd91739d24829a21b595f
