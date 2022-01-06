@@ -15,7 +15,7 @@ pull_request_rules:
                   - "Waiting for Testing"
     - name: Auto-Label Changes
       conditions:
-          - changes-requested-reviews-by=thewilloftheshadow
+          - changes-requested-reviews-by=hackante
       actions:
           label:
               add:
@@ -46,4 +46,4 @@ pull_request_rules:
       actions:
           request_reviews:
               users:
-                  - thewilloftheshadow
+                  - hackante

@@ -18,7 +18,8 @@ This bot was started in October of 2020 by Ashish who designed much of the core 
             .addField(
                 "**__Credits:__**",
                 `
-Lead Developer: <@439223656200273932>
+Bot Host, Retired Lead Developer: <@439223656200273932>
+Lead Developer: Hackante#1482
 Originally created by: Ashish#0540
 Beta Testers: <@!159717599993790464> <@!719564153072910407> <@!801726595378315264> <@!406412325973786624> <@!620964363729371137> <@!452632560795648000>
 Economy Designers: <@!801726595378315264> <@!406412325973786624>
