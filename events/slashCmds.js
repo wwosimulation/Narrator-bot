@@ -51,7 +51,7 @@ module.exports = (client) => {
             })
         }
         if (!args[0]) args = ["None"]
-        client.channels.cache.get("832884582315458570").send({ content: Util.removeMentions(`Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id})`) })
+        client.channels.cache.get("832884582315458570").send({ content: `Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id})`, allowedMentions: { parse: [] } })
         await commandFile.run(interaction, client).catch((error) => {
             console.error(error)
             interaction.reply({ content: interaction.l10n("error"), ephemeral: true })
