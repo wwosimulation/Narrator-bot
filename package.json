@@ -20,6 +20,7 @@
         "@octokit/core": "^3.5.1",
         "@sentry/node": "^6.11.0",
         "@sentry/tracing": "^6.11.0",
+        "@types/mongodb": "^4.0.7",
         "array-pull": "^0.2.1",
         "axios": "^0.24.0",
         "callsite-record": "^4.1.3",
