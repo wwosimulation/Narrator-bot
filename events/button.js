@@ -4,6 +4,8 @@ const ms = require("ms")
 const db = require("quick.db")
 const { shop, ids } = require("../config")
 
+// Custom id "cancel" and "suicide" are used in "../commands/game/suicide.js"
+
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
