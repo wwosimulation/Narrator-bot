@@ -16,10 +16,10 @@ const mongoose = require("mongoose")
 const fs = require("fs")
 
 mongoose.connect(process.env.MONGODB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
+    // useNewUrlParser: true, -> default: true
+    // useUnifiedTopology: true, -> default: true
+    // useFindAndModify: false, -> set to false
+    // useCreateIndex: true, -> set to true
 })
 
 module.exports = {}
