@@ -190,72 +190,72 @@ module.exports = {
                 guy.roles.remove(alive.id)
             }
         }
-        setTimeout(async ()  => {
-        let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
-        let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id)
-        let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
-        let s = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map((x) => x.id)
-        let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").map((x) => x.id)
-        let sorc = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").map((x) => x.id)
-        let wwseer = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-seer").map((x) => x.id)
-        let healer1 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // doctor
-        let healer3 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // witch
-        let healer2 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // bodyguard
-        let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map((x) => x.id)
-        let serialkiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map((x) => x.id)
-        let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").map((x) => x.id)
-        let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
-        let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
+        setTimeout(async () => {
+            let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
+            let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id)
+            let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
+            let s = message.guild.channels.cache.filter((c) => c.name === "priv-seer").map((x) => x.id)
+            let det = message.guild.channels.cache.filter((c) => c.name === "priv-detective").map((x) => x.id)
+            let sorc = message.guild.channels.cache.filter((c) => c.name === "priv-sorcerer").map((x) => x.id)
+            let wwseer = message.guild.channels.cache.filter((c) => c.name === "priv-wolf-seer").map((x) => x.id)
+            let healer1 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // doctor
+            let healer3 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // witch
+            let healer2 = message.guild.channels.cache.filter((c) => c.name === "priv-doctor").map((x) => x.id) // bodyguard
+            let alchemist = message.guild.channels.cache.filter((c) => c.name === "priv-alchemist").map((x) => x.id)
+            let serialkiller = message.guild.channels.cache.filter((c) => c.name === "priv-serial-killer").map((x) => x.id)
+            let nb = message.guild.channels.cache.filter((c) => c.name === "priv-naughty-boy").map((x) => x.id)
+            let gg = message.guild.channels.cache.filter((c) => c.name === "priv-grumpy-grandma").map((x) => x.id)
+            let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
 
-        for (let i = 0; i < as.length; i++) {
-            db.set(`auraCheck_${as[i]}`, "no")
-        }
-        for (let i = 0; i < s.length; i++) {
-            db.set(`seer_${s[i]}`, "no")
-        }
-        for (let i = 0; i < hacker.length; i++) {
-            db.set(`hashacked_${hacker[i]}`, false)
-            db.set(`mute_${hacker[i]}`, false)
-            db.set(`secondhack_${hacker[i]}`, null)
-        }
-        for (let i = 0; i < det.length; i++) {
-            db.set(`detCheck_${det[i]}`, "no")
-        }
-        for (let i = 0; i < sorc.length; i++) {
-            db.set(`sorcerer_${sorc[i]}`, "no")
-        }
-        for (let i = 0; i < wwseer.length; i++) {
-            db.set(`wwseer_${wwseer[i]}`, "no")
-        }
-        for (let i = 0; i < healer1.length; i++) {
-            db.set(`heal_${healer1[i]}`, null)
-        }
-        for (let i = 0; i < healer2.length; i++) {
-            db.set(`potion_${healer2[i]}`, null)
-        }
-        for (let i = 0; i < healer3.length; i++) {
-            db.set(`guard_${healer3[i]}`, null)
-        }
-        for (let i = 0; i < serialkiller.length; i++) {
-            db.set(`stab_${serialkiller[i]}`, null)
-        }
-        for (let i = 0; i < gg.length; i++) {
-            db.set(`mute_${gg[i]}`, null)
-        }
-        for (let a = 1; a < alive.members.size + dead.members.size; a++) {
-            let guy = message.guild.members.cache.find((m) => m.nickname === a.toString())
-            if (guy) {
-                let role = db.get(`role_${guy.id}`)
-                if (role != "Drunk") {
-                    dayChat.permissionOverwrites.edit(guy.id, {
-                        SEND_MESSAGES: null,
-                        READ_MESSAGE_HISTORY: null,
-                        VIEW_CHANNEL: null,
-                    })
+            for (let i = 0; i < as.length; i++) {
+                db.set(`auraCheck_${as[i]}`, "no")
+            }
+            for (let i = 0; i < s.length; i++) {
+                db.set(`seer_${s[i]}`, "no")
+            }
+            for (let i = 0; i < hacker.length; i++) {
+                db.set(`hashacked_${hacker[i]}`, false)
+                db.set(`mute_${hacker[i]}`, false)
+                db.set(`secondhack_${hacker[i]}`, null)
+            }
+            for (let i = 0; i < det.length; i++) {
+                db.set(`detCheck_${det[i]}`, "no")
+            }
+            for (let i = 0; i < sorc.length; i++) {
+                db.set(`sorcerer_${sorc[i]}`, "no")
+            }
+            for (let i = 0; i < wwseer.length; i++) {
+                db.set(`wwseer_${wwseer[i]}`, "no")
+            }
+            for (let i = 0; i < healer1.length; i++) {
+                db.set(`heal_${healer1[i]}`, null)
+            }
+            for (let i = 0; i < healer2.length; i++) {
+                db.set(`potion_${healer2[i]}`, null)
+            }
+            for (let i = 0; i < healer3.length; i++) {
+                db.set(`guard_${healer3[i]}`, null)
+            }
+            for (let i = 0; i < serialkiller.length; i++) {
+                db.set(`stab_${serialkiller[i]}`, null)
+            }
+            for (let i = 0; i < gg.length; i++) {
+                db.set(`mute_${gg[i]}`, null)
+            }
+            for (let a = 1; a < alive.members.size + dead.members.size; a++) {
+                let guy = message.guild.members.cache.find((m) => m.nickname === a.toString())
+                if (guy) {
+                    let role = db.get(`role_${guy.id}`)
+                    if (role != "Drunk") {
+                        dayChat.permissionOverwrites.edit(guy.id, {
+                            SEND_MESSAGES: null,
+                            READ_MESSAGE_HISTORY: null,
+                            VIEW_CHANNEL: null,
+                        })
+                    }
                 }
             }
-        }
-       /* for (let a = 0; a < jack.length; a++) {
+            /* for (let a = 0; a < jack.length; a++) {
             let thejack = message.guild.channels.cache.get(jack[a])
             let tot = db.get(`trickortreat_${jack[a]}`)
             let players = tot
@@ -812,8 +812,7 @@ module.exports = {
                     db.delete(`bombs_${bb[i]}`)
                 }
             }, 60000)
-        }
-    , 3000)
+        }, 3000)
 
         dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`) / 3) + 2} has started!`)
         db.add(`gamePhase`, 1)
