@@ -813,7 +813,7 @@ module.exports = {
                 }
             }, 60000)
         }
-    }, 3000)
+    , 3000)
 
         dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`) / 3) + 2} has started!`)
         db.add(`gamePhase`, 1)
