@@ -7,4 +7,4 @@ const schema = new mongoose.Schema({
     date: { type: Date, default: Date.now }, // time they were banned
 })
 
-module.exports = mongoose.model(`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`, schema)
+module.exports = mongoose.model("botban", schema)
