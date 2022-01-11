@@ -190,7 +190,7 @@ module.exports = {
                 guy.roles.remove(alive.id)
             }
         }
-
+        setTimeout(async ()  => {
         let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
         let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id)
         let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
@@ -255,7 +255,7 @@ module.exports = {
                 }
             }
         }
-        for (let a = 0; a < jack.length; a++) {
+       /* for (let a = 0; a < jack.length; a++) {
             let thejack = message.guild.channels.cache.get(jack[a])
             let tot = db.get(`trickortreat_${jack[a]}`)
             let players = tot
@@ -312,7 +312,7 @@ module.exports = {
                         }
                     }
                 }
-            }
+            } */
 
             for (let a = 0; a < corr.length; a++) {
                 let glitch = db.get(`corrupt_${corr[a]}`)
@@ -813,6 +813,7 @@ module.exports = {
                 }
             }, 60000)
         }
+    }, 3000)
 
         dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`) / 3) + 2} has started!`)
         db.add(`gamePhase`, 1)
