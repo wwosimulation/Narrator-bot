@@ -190,7 +190,7 @@ module.exports = {
                 guy.roles.remove(alive.id)
             }
         }
-        setTimeout(async () => {
+        
             let corr = message.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((x) => x.id)
             let as = message.guild.channels.cache.filter((c) => c.name === "priv-aura-seer").map((x) => x.id)
             let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
@@ -813,7 +813,7 @@ module.exports = {
                     }
                 }, 60000)
             }
-        }, 3000)
+        
         dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`) / 3) + 2} has started!`)
         db.add(`gamePhase`, 1)
         db.set(`wwsVote`, "yes")
