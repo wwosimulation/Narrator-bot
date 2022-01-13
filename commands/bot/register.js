@@ -9,7 +9,7 @@ module.exports = {
     run: async (message, args, client) => {
         return message.channel.send({ content: "This command is currently not available! We hope it will be released soon!" })
 
-        let response = new MessageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter(`Want to check which invite you registered? Use ${process.env.PREFIX}register`)
+        let response = new MessageEmbed().setThumbnail(message.author.avatarURL()).setTimestamp().setFooter({text: `Want to check which invite you registered? Use ${process.env.PREFIX}register`})
 
         let guy = await players.findOne({ user: message.author.id })
         if (guy.badges.invite.code && guy.badges.invite.code !== "none") {
