@@ -69,7 +69,7 @@ module.exports = {
                 .setDescription(description)
                 .setColor("#1FFF43")
                 .setTimestamp()
-                .setFooter(`Page ${i + 1}/${embedItemArr.length}`)
+                .setFooter({text: `Page ${i + 1}/${embedItemArr.length}`})
                 .setTitle(`${lbType} Leaderboard`)
 
             embeds.push(embed)
