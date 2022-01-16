@@ -14,7 +14,7 @@ module.exports = {
 
         // prettier-ignore
         let embed = new Discord.MessageEmbed().setTitle(message.l10n("inventory"))
-          .setAuthor(message.author.tag, message.author.avatarURL())
+          .setAuthor({name: message.author.tag, avatarURL: message.author.avatarURL()})
           .addField("Coins", `${data.coins} ${emojis.coin}`, true)
           .addField("Gems", `${data.gems} ${emojis.gem}`, true)
           .addField("Roses", `${data.roses} ${emojis.rose}`, true)

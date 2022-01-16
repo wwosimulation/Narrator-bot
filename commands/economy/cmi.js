@@ -23,7 +23,7 @@ module.exports = {
         addFooter = true
 
         for (let [i, embed] of embeds.entries()) {
-            if (addFooter == true) embed.setFooter(`Page ${i + 1}/${embeds.length}`)
+            if (addFooter == true) embed.setFooter({text: `Page ${i + 1}/${embeds.length}`})
             embed.setTitle("CMI Store").setColor("#1FFF43")
         }
 

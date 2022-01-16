@@ -19,6 +19,7 @@ const config = {
         devassist: "859099415515627540",
         quest: "606123622192381982",
         translator: "870177738361806908",
+        eventhost: "923164465330028574",
     },
 }
 
@@ -90,6 +91,10 @@ module.exports = (client) => {
             .join("\n> ")}\n`
         m3 += `**Translators**\n> ${wovsim.members.cache
             .filter((x) => x.roles.cache.has(config.roles.translator))
+            .map((x) => `<@${x.id}> - ${x.user.tag}`)
+            .join("\n> ")}\n`
+        m3 += `**Event Hosts**\n> ${wovsim.members.cache
+            .filter((x) => x.roles.cache.has(config.roles.eventhost))
             .map((x) => `<@${x.id}> - ${x.user.tag}`)
             .join("\n> ")}\n`
         if (!msg) {
