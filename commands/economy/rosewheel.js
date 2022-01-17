@@ -18,8 +18,9 @@ module.exports = {
                 prizes.push(item)
             }
         })
-
-        let prize = rosewheel[Math.floor(Math.random() * rosewheel.length)]
+        let y = Math.floor(Math.random() * (prizes.length))
+        console.log(y)
+        let prize = prizes[y]
         let res = ["1", "2", "3", "4"]
 
         let update = { roses: -30 }
@@ -34,7 +35,7 @@ module.exports = {
                 msg.edit({embeds:[
                     new MessageEmbed().setColor("#1FFF43").setTimestamp().setTitle(`You won ${prize.name}!`).setDescription(response).setAuthor({name: message.author.tag +"'s rose wheel", avatarURL: message.author.avatarURL()}).setThumbnail(prize.icon ? `https://www.wolvesville.com/static/media/${prize.icon}.png` : "https://static.thenounproject.com/png/340719-200.png")
                 ]})
-            }, 2500)
+            }, 4000)
         })
     },
 }
