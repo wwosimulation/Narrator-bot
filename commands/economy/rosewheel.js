@@ -18,7 +18,7 @@ module.exports = {
                 prizes.push(item)
             }
         })
-        let prize = prizes[Math.random() * (prizes.length)]
+        let prize = prizes[Math.random() * prizes.length]
         let res = ["1", "2", "3", "4"]
 
         let update = { roses: -30 }
