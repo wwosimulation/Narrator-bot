@@ -148,14 +148,13 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
 
     // rows
     let activeRow = new Discord.MessageActionRow().addComponents([buttonBegin, buttonBack, buttonNext, buttonEnd])
-    let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
 
     // adding buttons
     if (addButtons) msg.edit({ components: [activeRow] })
 
     // collecting interactions
     let filter = (interaction) => interaction.isButton() === true && interaction.user.id === authorID
-    let collector = msg.createMessageComponentCollector({ filter, time: 30 * 1000 })
+    let collector = msg.createMessageComponentCollector({ filter, idle: 15 * 1000 })
 
     let p = --page
 
@@ -171,6 +170,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
         await button.update({ embeds: [embeds[p]] })
     })
     collector.on("end", () => {
+        let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
         msg.edit({ components: [deadRow] })
     })
 }
