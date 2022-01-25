@@ -3,20 +3,23 @@ module.exports = {
     description: "Sends your or another user's profile if unlocked already.",
     usage: `${process.env.PREFIX}profile [user]`,
     run: async (message, args, client) => {
-        message.reply("The profile command is currently unavailable due to technical issues.")
-    },
+      message.reply({content: "Sadly this command is currently not available due to technical problems with the hosting platform."})
+    }
 }
+
 
 // const { players } = require("../../db.js")
 // const { fn } = require("../../config")
 // const Canvas = require("canvas")
 // const { MessageAttachment, MessageEmbed } = require("discord.js")
 
+// Canvas.registerFont("../../.config/fonts", {familiy: "sans-serif, ffont"})
+
 // const applyName = (canvas, name) => {
 //     const context = canvas.getContext("2d")
 //     let fontSize = 110
 //     do {
-//         context.font = `${(fontSize -= 5)}px sans-serif`
+//         context.font = `${(fontSize -= 5)}px sans-serif, ffont`
 //     } while (context.measureText(name).width > canvas.width - 2 * 240)
 //     return context.font
 // }
@@ -87,7 +90,7 @@ module.exports = {
 //             if (guy.stats[team].lose) losses += guy.stats[team].lose
 //         }
 //         let stats = [guy.xp, wins, losses, guy.stats.tie, guy.winStreak]
-//         context.font = "80px sans-serif"
+//         context.font = "80px sans-serif, ffont"
 //         context.fillStyle = "#000"
 //         context.textAlign = "end"
 //         context.textBaseline = "bottom"
@@ -95,7 +98,7 @@ module.exports = {
 
 //         // COINS ROSES GEMS
 //         let currencies = [guy.coins, guy.roses, guy.gems]
-//         context.font = "80px sans-serif"
+//         context.font = "80px sans-serif, ffont"
 //         context.fillStyle = "#000"
 //         context.textAlign = "end"
 //         context.textBaseline = "bottom"
@@ -108,7 +111,7 @@ module.exports = {
 //             if (badge === "invite" && guy.badges.invite.unlocked) (desc += `${fn.capitalizeFirstLetter(badge)} `), (count += 1)
 //             if (guy.badges[badge] === true && badge !== "invite") (desc += `${fn.capitalizeFirstLetter(badge)} `), (count += 1)
 //         }
-//         context.font = "70px sans-serif"
+//         context.font = "70px sans-serif, ffont"
 //         context.fillStyle = "#000"
 //         context.textAlign = "start"
 //         context.textBaseline = "middle"
@@ -116,7 +119,7 @@ module.exports = {
 //         wrapText(context, desc, 250, 1690 + 85, canvas.width - 2 * 235, 80)
 
 //         // DATE
-//         context.font = "50px sans-serif"
+//         context.font = "50px sans-serif, ffont"
 //         context.fillStyle = "#7F7F7F"
 //         context.textAlign = "end"
 //         context.textBaseline = "middle"

@@ -10,3 +10,7 @@ ghnb.pem
 package-lock.json
 .vscode/*
 .DS_Store
+.replit
+replit.nix
+index.js
+.breakpoints
