@@ -21,8 +21,8 @@ module.exports = {
                 })
             hook.send({ content: emoji, username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
         } else {
-            let userEmbed = new Discord.MessageEmbed().setDescription(`<@${message.author.id}>`).setColor("#1FFF43")
-            message.channel.send(`${emoji}`, userEmbed)
+            let userEmbed = new Discord.MessageEmbed({ description: `<@${message.author.id}>`, color: "#1FFF43" })
+            message.channel.send({ content: `${emoji}`, embeds: [userEmbed] })
         }
     },
 }

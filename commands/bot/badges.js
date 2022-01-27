@@ -9,11 +9,7 @@ module.exports = {
     run: async (message, args, client) => {
         let guy = fn.getUser(args[0], message)
 
-        let embed = new MessageEmbed()
-            .setThumbnail(guy.user.avatarURL())
-            .setTitle(guy.user.tag + "'s Badges")
-            .setColor(guy.displayHexColor ? guy.displayHexColor : "#1FFF43")
-            .setTimestamp()
+        let embed = new MessageEmbed({ title: guy.user.tag + "'s Badges", thumbnail: guy.user.avatarURL(), color: guy.displayHexColor ? guy.displayHexColor : "#1FFF43" }).setTimestamp()
 
         let desc = ""
 
