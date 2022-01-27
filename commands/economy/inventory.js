@@ -13,8 +13,7 @@ module.exports = {
         let data = await players.findOne({ user: message.author.id })
 
         // prettier-ignore
-        let embed = new Discord.MessageEmbed().setTitle(message.l10n("inventory"))
-          .setAuthor({name: message.author.tag, avatarURL: message.author.avatarURL()})
+        let embed = new Discord.MessageEmbed({ title: message.l10n("inventory"), author: {name: message.author.tag, iconURL: message.author.avatarURL()} })
           .addField("Coins", `${data.coins} ${emojis.coin}`, true)
           .addField("Gems", `${data.gems} ${emojis.gem}`, true)
           .addField("Roses", `${data.roses} ${emojis.rose}`, true)

@@ -7,7 +7,7 @@ module.exports = {
     usage: `${process.env.PREFIX}help [command | arguments]`,
     run: async (message, args, client) => {
         // help embed
-        let embed = new MessageEmbed().setColor(0x7419b4).setThumbnail(client.user.avatarURL())
+        let embed = new MessageEmbed({ color: 0x7419b4, thumbnail: { url: client.user.avatarURL() } })
         let cmd_target
         // Checking if args[0] is a command
         if (args[0]) {
@@ -43,7 +43,7 @@ Use ${process.env.PREFIX}help to see all commands.
 \`<no_limit...>\``
                 )
                 .setTimestamp()
-                .setFooter({text: `Requested by ${message.author.tag}`, iconURL: message.author.avatarURL()})
+                .setFooter({ text: `Requested by ${message.author.tag}`, iconURL: message.author.avatarURL() })
                 .addField(
                     "Arguments",
                     `
