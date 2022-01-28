@@ -361,40 +361,27 @@ module.exports = {
                         }
                     }
                 }
-            }
-            console.log(dc)
-            for (let a = 0; a < dc.length; a++) {
-                let hypnotize = db.get(`hypnotize_${dc[a]}`)
-                if (hypnotize != null) {
-                    console.log(hypnotize)
-                    let guy = message.guild.members.cache.find((c) => c.nickname === hypnotize)
-                    let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
-                    for (let b = 0; b < role.length; b++) {
-                        console.log(guy.id)
-                        let chann = message.guild.channels.cache.get(role[b])
-                        if (chann.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            let chan = chann
-                            for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
-                                let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
-                                if (db.get(`role_${player.id}`) == "Dreamcatcher") {
-                                    if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
-                                        db.set(`hypnotize_${dc[a]}`, null)
-                                        chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
-                                        let chan1 = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`, {
-                                            parent: "892046231516368906",
-                                        })
-                                        chan1.permissionOverwrites.edit(player.id, {
-                                            SEND_MESSAGES: true,
-                                            READ_MESSAGE_HISTORY: true,
-                                            VIEW_CHANNEL: true,
-                                        })
-                                        chan1.send(`${guy.nickname} ${guy.user.username} is ${db.get(`role_${guy.id}`)}`)
-                                        chan.permissionOverwrites.edit(guy.id, {
-                                            SEND_MESSAGES: false,
-                                        })
-                                        chan1.send(`<@&${alive.id}>\n` + getRole(db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()).description)
-                                        db.set(`hypnotized_${dc[a]}`, guy.nickname)
-                                        if (db.get(`role_${guy.id}`) == "Bomber") {
+                console.log(dc)
+                for (let a = 0; a < dc.length; a++) {
+                    let hypnotize = db.get(`hypnotize_${dc[a]}`)
+                    if (hypnotize != null) {
+                        console.log(hypnotize)
+                        let guy = message.guild.members.cache.find((c) => c.nickname === hypnotize)
+                        let role = message.guild.channels.cache.filter((c) => c.name === `priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`).map((x) => x.id)
+                        for (let b = 0; b < role.length; b++) {
+                            console.log(guy.id)
+                            let chann = message.guild.channels.cache.get(role[b])
+                            if (chann.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                                let chan = chann
+                                for (let c = 1; c <= alive.members.size + dead.members.size; c++) {
+                                    let player = message.guild.members.cache.find((m) => m.nickname === c.toString())
+                                    if (db.get(`role_${player.id}`) == "Dreamcatcher") {
+                                        if (player.roles.cache.has(alive.id) && guy.roles.cache.has(alive.id)) {
+                                            db.set(`hypnotize_${dc[a]}`, null)
+                                            chan.send("You have been hypnotized, The only thing you can do now is wait and die...")
+                                            let chan1 = await message.guild.channels.create(`priv-${db.get(`role_${guy.id}`).replace(" ", "-").toLowerCase()}`, {
+                                                parent: "892046231516368906",
+                                            })
                                             chan1.permissionOverwrites.edit(player.id, {
                                                 SEND_MESSAGES: false,
                                             })
