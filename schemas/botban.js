@@ -7,4 +7,4 @@ const schema = new mongoose.Schema({
     date: { type: Date, default: Date.now }, // time they were banned
 })
 
-module.exports = mongoose.model("botban", schema)
+module.exports = mongoose.model("botban_beta", schema)

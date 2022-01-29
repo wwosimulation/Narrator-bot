@@ -62,4 +62,4 @@ const schema = new mongoose.Schema({
     badges: { type: Object, default: { invite: { code: "none", members: 0, unlocked: false } } },
 })
 
-module.exports = mongoose.model("players", schema)
+module.exports = mongoose.model("players_beta", schema)
