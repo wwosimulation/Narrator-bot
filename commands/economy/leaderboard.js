@@ -65,12 +65,7 @@ module.exports = {
             arr.forEach((item) => {
                 if (getTag(item.userID).includes("#")) description = description + `${item.value} - ${getTag(item.userID)}\n`
             })
-            let embed = new MessageEmbed()
-                .setDescription(description)
-                .setColor("#1FFF43")
-                .setTimestamp()
-                .setFooter({text: `Page ${i + 1}/${embedItemArr.length}`})
-                .setTitle(`${lbType} Leaderboard`)
+            let embed = new MessageEmbed({ title: `${lbType} Leaderboard`, description: description, color: "#1FFF43", footer: { text: `Page ${i + 1}/${embedItemArr.length}` } }).setTimestamp()
 
             embeds.push(embed)
         })

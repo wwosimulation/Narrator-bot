@@ -3,7 +3,6 @@ const db = require("quick.db")
 const { fn, xp, roles, soloKillers } = require("../../config")
 const { players } = require("../../db.js")
 
-
 module.exports = {
     name: "win",
     description: "Announce the winning team and its players.",
@@ -45,7 +44,7 @@ module.exports = {
             if (winners.includes(x)) {
                 xpBase = winXP
                 data.winStreak += 1
-                if(data.stats[winTeam]) data.stats[winTeam].win += 1
+                if (data.stats[winTeam]) data.stats[winTeam].win += 1
             } else if (losers.includes(x)) {
                 xpBase = loseXP
                 client.channels.cache.get("606123726966358037").send(`Add one loss to ${x} for the ${db.get(`role_${x}`)} role in game ${db.get("game")}.`)
@@ -56,12 +55,7 @@ module.exports = {
             }
 
             // send each x an embed with their xp
-            let xpEmbed = new Discord.MessageEmbed()
-                .setColor("#008800")
-                .setTitle(`Game ended!`)
-                .setThumbnail(client.user.avatarURL())
-                .setDescription(`Result: ${winners.includes(x) ? "You won!" : "You lost."}\n\nXP gained: ${xpBase} XP${data.winStreak > 1 ? `\n${data.winStreak} Game Streak - ${xpStreak} Bonus XP` : ""}`)
-            client.users.cache.get(x).send({ embeds: [xpEmbed] })
+            let xpEmbed = new Discord.MessageEmbed({ color: "#008800", title: "Game ended!", thumbnail: { url: client.user.avatarURL() }, description: `Result: ${winners.includes(x) ? "You won!" : "You lost."}\n\nXP gained: ${xpBase} XP${data.winStreak > 1 ? `\n${data.winStreak} Game Streak - ${xpStreak} Bonus XP` : ""}` })
             console.log(xpBase, xpStreak)
             data.xp += xpBase + xpStreak
             data.save()

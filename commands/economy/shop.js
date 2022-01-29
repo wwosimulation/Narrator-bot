@@ -8,12 +8,10 @@ module.exports = {
     usage: `${process.env.PREFIX}shop [color]`,
     run: async (message, args, client) => {
         if (["color", "colors", "colour", "colours"].includes(args[0])) {
-            let embed = new MessageEmbed().setDescription(`${message.l10n("availableColors")}:\n\n`)
+            let embed = new MessageEmbed({ title: message.l10n("shopTitle"), color: "#1FFF43", description: `${message.l10n("availableColors")}:\n\n`, footer: { text: message.l10n("shopFooter") } })
             shop.colors.forEach((x) => {
                 embed.description += `${x.name} Color\n`
             })
-            embed.setTitle(message.l10n("shopTitle")).setColor("#1FFF43")
-            embed.setFooter(message.l10n("shopFooter"))
             return message.channel.send({ embeds: [embed] })
         } else {
             let row = new MessageActionRow()

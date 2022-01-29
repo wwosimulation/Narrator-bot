@@ -38,7 +38,7 @@ module.exports = {
                 }
             }
         }
-        let embed = new Discord.MessageEmbed().setTitle("Playerinfo").setDescription(content).setColor("#648620")
+        let embed = new Discord.MessageEmbed({ title: "Playerinfo", description: content, color: "#648620" })
         message.channel.send({ embeds: [embed] }).catch((e) => message.channel.send(`An error occured: ${e.message}`))
     },
 }

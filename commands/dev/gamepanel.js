@@ -12,13 +12,7 @@ module.exports = {
         let button3 = new MessageButton().setStyle("SECONDARY").setLabel("See the Last Game's Stats").setCustomId("gp-stats")
         let row = new MessageActionRow().addComponents(button1, button2, button3)
         message.channel.send({
-            embeds: [
-                new MessageEmbed()
-                    .setTitle(message.guild.name)
-                    .setDescription("Welcome to Wolvesville Simulation! Select an option below!")
-                    .setColor("PURPLE")
-                    .setThumbnail(message.guild.iconURL({ dynamic: true })),
-            ],
+            embeds: [new MessageEmbed({ title: message.guild.name, description: "Welcome to wolvesville Simulation! Select an option below!", color: "PURPLE", thumbnail: { url: message.guild.iconURL({ dynamic: true }) } })],
             components: [row],
         })
     },
