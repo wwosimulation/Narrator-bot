@@ -13,18 +13,29 @@ module.exports = {
         if (!["439223656200273932", "801726595378315264", "263472056753061889", "517335997172809728", "840938038028533782", "719564153072910407", "802145702531825685"].includes(message.author.id)) {
             return message.channel.send("We are currently testing a new buy system. During this time we have some changes as well:\n`buy` - doesn't work. use `+buydep` instead\n`shop` - does not contain the currencies\n`profile` - is back to the original format")
         }
-        function l10nMesssage({code, toReplace = {}}) {message.channel.send(message.l10n(code, toReplace))}
-        function hasRole(roleID) {return client.guilds.resolve(server.sim).members.cache.find((m) => m.id === message.author.id).roles.cache.has(roleID) ? true : false}
-        function enoughMoney(item, amount = 1) {return message.dbUser[item.currency + "s"] < item.price * amount ? false : true}
+        function l10nMesssage({ code, toReplace = {} }) {
+            message.channel.send(message.l10n(code, toReplace))
+        }
+        function hasRole(roleID) {
+            return client.guilds
+                .resolve(server.sim)
+                .members.cache.find((m) => m.id === message.author.id)
+                .roles.cache.has(roleID)
+                ? true
+                : false
+        }
+        function enoughMoney(item, amount = 1) {
+            return message.dbUser[item.currency + "s"] < item.price * amount ? false : true
+        }
 
         let sim = client.guilds.resolve(server.sim)
         let guy = await players.findOne({ user: message.author.id })
-        let l10n = {code: "noItemProvided"}
+        let l10n = { code: "noItemProvided" }
         var chart = {}
         obj = {}
-        let info = {amount: null, roleID: "", channelID: ""}
+        let info = { amount: null, roleID: "", channelID: "" }
 
-        if(!args[0]) l10nMesssage(l10n)
+        if (!args[0]) l10nMesssage(l10n)
         args.forEach((x, i) => {
             args[i] = x.toLowerCase()
         })
@@ -41,20 +52,20 @@ module.exports = {
         if (["color", "colour"].includes(args[0]) || ["color", "colour"].includes(args[1])) {
             if (["color", "colour"].includes(args[0])) args.shift()
 
-            let color = colors.find(c => c.name.toLowerCase() === args[0])
-            if(!color) return l10nMesssage({code: "unknownColor", toReplace: {color: args[0]}})
+            let color = colors.find((c) => c.name.toLowerCase() === args[0])
+            if (!color) return l10nMesssage({ code: "unknownColor", toReplace: { color: args[0] } })
 
-            if (!hasRole(color.id)) chart = items.find((i) => i.id === "color"), chart["color"] = color
+            if (!hasRole(color.id)) (chart = items.find((i) => i.id === "color")), (chart["color"] = color)
             else return l10nMesssage("alreadyPurchasedColor")
-            if(!enoughMoney(chart)) return l10nMesssage({code: "notEnoughCurrency", toReplace: {currency: chart.currency + "s"}})
+            if (!enoughMoney(chart)) return l10nMesssage({ code: "notEnoughCurrency", toReplace: { currency: chart.currency + "s" } })
         } else {
             if (args[0] === "rose" && args[1] && args[1] === "bouquet") args.shift()
             let item = items.find((element) => element.id === args[0])
-            if(!item) return l10nMesssage(l10n)
+            if (!item) return l10nMesssage(l10n)
 
             if (item.role) {
                 if (!hasRole(item.role)) chart = item
-                else return l10nMesssage({code: "alreadyPurchasedItem", toReplace: { item: item.name }})
+                else return l10nMesssage({ code: "alreadyPurchasedItem", toReplace: { item: item.name } })
             }
 
             if (["rose", "bouquet"].includes(item.id)) {
@@ -76,12 +87,12 @@ module.exports = {
                     dbName = "privateChannel"
                     break
                 default:
-                    if(!obj[`inventory.${item.id}`]) dbName = item.id
+                    if (!obj[`inventory.${item.id}`]) dbName = item.id
                     break
             }
-            if (dbName && guy[dbName] !== false && guy[dbName] !== "") return l10nMesssage({code: "alreadyPurchasedItem", toReplace: { item: item.name }})
+            if (dbName && guy[dbName] !== false && guy[dbName] !== "") return l10nMesssage({ code: "alreadyPurchasedItem", toReplace: { item: item.name } })
 
-            if(!enoughMoney(item, info.amount || 1)) return l10nMesssage({code: "notEnoughCurrency", toReplace: {currency: item.currency + "s"}})
+            if (!enoughMoney(item, info.amount || 1)) return l10nMesssage({ code: "notEnoughCurrency", toReplace: { currency: item.currency + "s" } })
 
             if (["profile", "cmi"].includes(dbName)) {
                 obj[dbName] = true
@@ -92,47 +103,49 @@ module.exports = {
                 let value = args[0] ? args.join(" ") : item.id === "description" ? `Hey there! I am <@${message.author.id}>` : "https://i.imgur.com/6fL8AD2.png"
                 obj[dbName] = value
             }
-            
+
             if (["special", "channel"].includes(item.id)) {
                 if (item.id === "special") {
                     let colorRolesStart = sim.roles.cache.get("606247387496972292")
                     await sim.roles
-                    .create({
-                        name: `${message.author.username}'s Special Role`,
-                        color: "#007880",
-                        position: colorRolesStart.position + 1,
-                        reason: message.author.tag + " bought special role item",
-                    })
-                    .then((role) => {
-                        sim.members.resolve(message.author.id).roles.add(role.id)
-                        obj[dbName] = role.id
-                    })
+                        .create({
+                            name: `${message.author.username}'s Special Role`,
+                            color: "#007880",
+                            position: colorRolesStart.position + 1,
+                            reason: message.author.tag + " bought special role item",
+                        })
+                        .then((role) => {
+                            sim.members.resolve(message.author.id).roles.add(role.id)
+                            obj[dbName] = role.id
+                        })
                 }
                 if (item.id === "channel") {
                     await sim.channels
-                    .create(`${message.author.username}-channel`, {
-                        type: "GUILD_TEXT",
-                        parent: "627536301008224275",
-                        permissionOverwrites: [{
-                            id: message.author,
-                            allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES", "MANAGE_ROLES"],
-                            type: "member"
-                        }]
-                    })
-                    .then(async (c) => {
-                        l10nMesssage({code: "channelPurchaseSuccess", toReplace: { channelLink: `${c}`}})
-                        obj[dbName] = c.id
-                        c.send({ content: `${message.author}, here is your private channel!` })
-                    })
+                        .create(`${message.author.username}-channel`, {
+                            type: "GUILD_TEXT",
+                            parent: "627536301008224275",
+                            permissionOverwrites: [
+                                {
+                                    id: message.author,
+                                    allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES", "MANAGE_ROLES"],
+                                    type: "member",
+                                },
+                            ],
+                        })
+                        .then(async (c) => {
+                            l10nMesssage({ code: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` } })
+                            obj[dbName] = c.id
+                            c.send({ content: `${message.author}, here is your private channel!` })
+                        })
                 }
             }
             chart = item
         }
-        
+
         let update = {}
         let price = chart.price * (info.amount || 1)
         let op = "$set"
-        if(["rose", "bouquet"].includes(chart.id)) {
+        if (["rose", "bouquet"].includes(chart.id)) {
             op = "$inc"
             obj[chart.currency + "s"] = -price
         } else {
@@ -142,18 +155,18 @@ module.exports = {
         }
         update[op] = obj
         console.log(chart)
-        await players.findOneAndUpdate({user: message.author.id}, update)
+        await players.findOneAndUpdate({ user: message.author.id }, update)
         message.channel.send(`You have successfully purchased ${info.amount ? info.amount : "the"} ${chart.color ? `${chart.color.name}` : ""}${chart.name.includes(" ") ? chart.name : pluralize(chart.name, info.amount ? info.amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(chart.currency), price, true)} ${getEmoji(pluralize.singular(chart.currency), client)}!${chart.response ? `\n${chart.response}` : ""}`)
 
         let roleID = chart.color ? chart.color.id : chart.role ? chart.role : null
-        if(roleID) sim.members.resolve(message.author.id).roles.add(roleID)
+        if (roleID) sim.members.resolve(message.author.id).roles.add(roleID)
         console.log(update)
         return
-    }
+    },
 }
 /**
  * REWRIVE NUMBER 2
- * 
+ *
  * - add a chart
  * - check after chart for role
  * - bought item already
