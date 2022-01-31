@@ -70,23 +70,9 @@ module.exports = {
                 info["amount"] = parseInt(args[2] || args[1]) || 1
             }
             let dbName
-            switch (item.id) {
-                case "description":
-                    dbName = "profileDesc"
-                    break
-                case "icon":
-                    dbName = "profileIcon"
-                    break
-                case "special":
-                    dbName = "customRole"
-                    break
-                case "channel":
-                    dbName = "privateChannel"
-                    break
-                default:
-                    if (!obj[`inventory.${item.id}`] && !chart.id) dbName = item.id
-                    break
-            }
+            let i = ["desciption", "icon", "special", "channel"].indexOf(item.id)
+            if(i == -1 && !obj[`inventory.${item.id}`] && !chart.id) dbName = item.id
+            else dbName = ["profileDesc", "profileIcon", "customRole", "privateChannel"][i]
             if (dbName && guy[dbName] !== false && guy[dbName] !== "") return l10nMesssage({ code: "alreadyPurchasedItem", toReplace: { item: item.name } })
 
             if (!enoughMoney(item, info.amount || 1)) return l10nMesssage({ code: "notEnoughCurrency", toReplace: { currency: item.currency + "s" } })
