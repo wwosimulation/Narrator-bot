@@ -139,7 +139,7 @@ module.exports = {
         }
         update[op] = obj
         await players.findOneAndUpdate({ user: message.author.id }, update)
-        message.channel.send(`You have successfully purchased ${info.amount ? info.amount : "the"} ${chart.color ? `${chart.color.name}` : ""}${chart.name.includes(" ") ? chart.name : pluralize(chart.name, info.amount ? info.amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(chart.currency), price, true)} ${getEmoji(pluralize.singular(!chart.currency == "rose" ? chart.currency : "rosesingle"), client)}!${chart.response ? `\n${chart.response}` : ""}`)
+        message.channel.send(`You have successfully purchased ${info.amount ? info.amount : "the"} ${chart.color ? `${chart.color.name}` : ""}${chart.name.includes(" ") ? chart.name : pluralize(chart.name, info.amount ? info.amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(chart.currency), price, true)} ${getEmoji(pluralize.singular(chart.currency == "rose" ? "rosesingle" : chart.currency), client)}!${chart.response ? `\n${chart.response}` : ""}`)
 
         let roleID = chart.color ? chart.color.id : chart.role ? chart.role : null
         if (roleID) sim.members.resolve(message.author.id).roles.add(roleID)
