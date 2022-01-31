@@ -31,10 +31,10 @@ module.exports = {
 
         // aliases for items
         args.forEach((arg, i) => {
-            if (["gray", "private", "gamegifs", "roses"].indexOf(arg) === -1) args[i] = arg
+            if (["gray", "private", "game", "roses"].indexOf(arg) === -1) args[i] = arg
             else {
-                let ind = ["gray", "private", "gamegifs", "roses"].indexOf(arg)
-                args[i] = ["grey", "channel", "game", "rose"][ind]
+                let ind = ["gray", "private", "game", "roses"].indexOf(arg)
+                args[i] = ["grey", "channel", "gamegifs", "rose"][ind]
             }
         })
         if (["color", "colour"].includes(args[0]) && !args[1]) return message.reply({ content: `Please choose a color from \`${process.env.PREFIX}shop colors\`!\nThe correct usage for this command is \`${process.env.PREFIX}buy color <color>\``, allowedMentions: { repliedUser: false } })
@@ -76,7 +76,7 @@ module.exports = {
                     dbName = "privateChannel"
                     break
                 default:
-                    if(!obj[`inventory.${item.id}`]) dbName = item.id
+                    if(!obj[`inventory.${item.id}`] && !chart.id) dbName = item.id
                     break
             }
             if (dbName && guy[dbName] !== false && guy[dbName] !== "") return l10nMesssage({code: "alreadyPurchasedItem", toReplace: { item: item.name }})
@@ -113,16 +113,17 @@ module.exports = {
                     .create(`${message.author.username}-channel`, {
                         type: "GUILD_TEXT",
                         parent: "627536301008224275",
+                        topic: `Owned by: <@${message.author.id}>`,
                         permissionOverwrites: [{
                             id: message.author,
-                            allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES", "MANAGE_ROLES"],
+                            allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES"],
                             type: "member"
                         }]
                     })
                     .then(async (c) => {
                         l10nMesssage({code: "channelPurchaseSuccess", toReplace: { channelLink: `${c}`}})
                         obj[dbName] = c.id
-                        c.send({ content: `${message.author}, here is your private channel!` })
+                        c.send({ content: `${message.author}, here is your private channel!\n Please contact a staff memeber to adjust the channel permissions.` })
                     })
                 }
             }
@@ -141,9 +142,8 @@ module.exports = {
             update["$inc"] = pay
         }
         update[op] = obj
-        console.log(chart)
         await players.findOneAndUpdate({user: message.author.id}, update)
-        message.channel.send(`You have successfully purchased ${info.amount ? info.amount : "the"} ${chart.color ? `${chart.color.name}` : ""}${chart.name.includes(" ") ? chart.name : pluralize(chart.name, info.amount ? info.amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(chart.currency), price, true)} ${getEmoji(pluralize.singular(chart.currency), client)}!${chart.response ? `\n${chart.response}` : ""}`)
+        message.channel.send(`You have successfully purchased ${info.amount ? info.amount : "the"} ${chart.color ? `${chart.color.name}` : ""}${chart.name.includes(" ") ? chart.name : pluralize(chart.name, info.amount ? info.amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(chart.currency), price, true)} ${getEmoji(pluralize.singular(!chart.currency == "rose" ? chart.currency : "rosesingle"), client)}!${chart.response ? `\n${chart.response}` : ""}`)
 
         let roleID = chart.color ? chart.color.id : chart.role ? chart.role : null
         if(roleID) sim.members.resolve(message.author.id).roles.add(roleID)
@@ -151,12 +151,3 @@ module.exports = {
         return
     }
 }
-/**
- * REWRIVE NUMBER 2
- * 
- * - add a chart
- * - check after chart for role
- * - bought item already
- * - currenies
- * - actually buy and apply
- */
