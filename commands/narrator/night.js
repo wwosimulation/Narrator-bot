@@ -81,7 +81,6 @@ module.exports = {
       }
     }
     allvotes.sort((a,b) => a - b)
-
     let tv = 0
     for (let i = 0 ; i < allvotes.length ; i++) {
       for (let j = i ; j < allvotes.length ; j++) {
@@ -97,22 +96,18 @@ module.exports = {
         }
       }
     }
-
     console.log(allvotes)
     console.log(votenumber)
-
     for (let i = 0 ; i < allvotes.length ; i++) {
       if (allvotes[i] == allvotes[i+1]) {
         allvotes.splice(i, 1)
         i = i + 1
       }
     }
-
     let requiredvotes = Math.floor(alive.members.size / 2)
     let highestvote = Math.max(...votenumber)
     votenumber.splice(votenumber.indexOf(highestvote), 1)
     let sndvote = Math.max(...votenumber)
-
     if (highestvote == sndvote || highestvote < requiredvotes) {
       args[0] = "0"
     } else {
@@ -303,7 +298,6 @@ module.exports = {
                                     chan.send({ content: "Jack is trick-or-treating and has decided to visit your house, Will you choose to trick or treat?", components: [row] })
                                 }
                             }
-
                             chan.permissionOverwrites.edit(guy.id, {
                                 SEND_MESSAGES: false,
                             })

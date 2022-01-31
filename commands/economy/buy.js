@@ -1,152 +1,149 @@
-const config = require("../../config")
+const { getEmoji } = require("../../config/src")
 const pluralize = require("pluralize")
 const { players } = require("../../db.js")
+const { colors, items } = require("../../config/src/shop")
+const { server } = require("../../config/src/ids")
+const ids = require("../../config/src/ids")
 
 module.exports = {
     name: "buy",
     description: "Buy an item from the shop.",
-    usage: `${process.env.PREFIX} <item | color>`,
+    usage: `${process.env.PREFIX}buy <item | <color> (color)>`,
     run: async (message, args, client) => {
-        let data = await players.findOne({ user: message.author.id })
-        const sim = client.guilds.cache.get(config.ids.server.sim)
-        const roleadd = (x) => {
-            sim.members.cache.get(message.author.id).roles.add(`${x}`)
+        function l10nMesssage({ code, toReplace = {} }) {
+            message.channel.send(message.l10n(code, toReplace))
         }
-        const rolehas = (x) => {
-            return sim.members.cache.get(message.author.id).roles.cache.has(x)
+        function hasRole(roleID) {
+            return client.guilds
+                .resolve(server.sim)
+                .members.cache.find((m) => m.id === message.author.id)
+                .roles.cache.has(roleID)
+                ? true
+                : false
         }
-        let color,
-            amount = 0,
-            dontbuy = false
+        function enoughMoney(item, amount = 1) {
+            return message.dbUser[item.currency + "s"] < item.price * amount ? false : true
+        }
 
-        if (args.length < 1) return message.channel.send(message.l10n("noItemProvided"))
+        let sim = client.guilds.resolve(server.sim)
+        let guy = await players.findOne({ user: message.author.id })
+        let l10n = { code: "noItemProvided" }
+        var chart = {}
+        obj = {}
+        let info = { amount: null, roleID: "", channelID: "" }
 
+        if (!args[0]) l10nMesssage(l10n)
         args.forEach((x, i) => {
             args[i] = x.toLowerCase()
         })
 
-        if (["color", "colour"].includes(args[1]) && !["gray", "grey"].includes(args[0])) args.reverse()
-
-        let item = config.shop.items.find((x) => x.id == args[0])
-        switch (args[0]) {
-            case "roses":
-                item = config.shop.items.find((x) => x.id == "rose")
-                break
-            case "rose":
-                if (args[1] == "bouquet") item = config.shop.items.find((x) => x.id == "bouquet")
-                break
-            case "color":
-                color = config.shop.colors.find((x) => x.name.toLowerCase() == args[1])
-                break
-            case "gray":
-                color = config.shop.items.find((x) => x.id == "grey")
-                break
-            case "private":
-                item = config.shop.items.find((x) => x.id == "channel")
-                break
-            case "game":
-                item = config.shop.items.find((x) => x.id == "gamegifs")
-                break
-        }
-        console.log(item, args)
-        if (!item) return message.channel.send(message.l10n("noItemProvided"))
-
-        let price = item.price || 0
-        let userHas = item.currency == "coin" ? data.coins : item.currency == "rose" ? data.roses : data.gems
-
-        if (item.id == "color" && !color) return message.channel.send(`${args[1]} is not in the available colors.\nMake sure you choose a proper color from \`+shop colors\`!`)
-
-        if (item.role) {
-            if (rolehas(item.role)) {
-                dontbuy = true
-                return message.channel.send(message.l10n("alreadyPurchasedRole"))
+        // aliases for items
+        args.forEach((arg, i) => {
+            if (["gray", "private", "game", "roses"].indexOf(arg) === -1) args[i] = arg
+            else {
+                let ind = ["gray", "private", "game", "roses"].indexOf(arg)
+                args[i] = ["grey", "channel", "gamegifs", "rose"][ind]
             }
-        }
-        if (item.id == "color") {
-            if (rolehas(color.id)) {
-                dontbuy = true
-                return message.channel.send(message.l10n("alreadyPurchasedColor"))
-            }
-        }
+        })
+        if (["color", "colour"].includes(args[0]) && !args[1]) return message.reply({ content: `Please choose a color from \`${process.env.PREFIX}shop colors\`!\nThe correct usage for this command is \`${process.env.PREFIX}buy color <color>\``, allowedMentions: { repliedUser: false } })
+        if (["color", "colour"].includes(args[0]) || ["color", "colour"].includes(args[1])) {
+            if (["color", "colour"].includes(args[0])) args.shift()
 
-        if (item.id == "cmi") {
-            let cmicheck = data.cmi
-            if (cmicheck) {
-                dontbuy = true
-                return message.channel.send(message.l10n("alreadyPurchasedItem", { item: item.name }))
-            }
-        }
+            let color = colors.find((c) => c.name.toLowerCase() === args[0])
+            if (!color) return l10nMesssage({ code: "unknownColor", toReplace: { color: args[0] } })
 
-        if (item.id == "special") {
-            let specialrolesname = sim.roles.cache.get("606247032553865227")
-            let colorsrolename = sim.roles.cache.get("606247387496972292")
-            let allsprole = sim.roles.cache.filter((r) => r.position < specialrolesname.position && r.position > colorsrolename.position)
-            let hassprole = false
-            allsprole.forEach((e) => {
-                if (sim.members.cache.get(message.author.id).roles.cache.has(e.id)) {
-                    hassprole = true
-                    if (!data.customRole) data.customRole = e.id
+            if (!hasRole(color.id)) (chart = items.find((i) => i.id === "color")), (chart["color"] = color)
+            else return l10nMesssage("alreadyPurchasedColor")
+            if (!enoughMoney(chart)) return l10nMesssage({ code: "notEnoughCurrency", toReplace: { currency: chart.currency + "s" } })
+        } else {
+            if (args[0] === "rose" && args[1] && args[1] === "bouquet") args.shift()
+            let item = items.find((element) => element.id === args[0])
+            if (!item) return l10nMesssage(l10n)
+
+            if (item.role) {
+                if (!hasRole(item.role)) chart = item
+                else return l10nMesssage({ code: "alreadyPurchasedItem", toReplace: { item: item.name } })
+            }
+
+            if (["rose", "bouquet"].includes(item.id)) {
+                obj[`inventory.${item.id}`] = parseInt(args[2] || args[1]) || 1
+                info["amount"] = parseInt(args[2] || args[1]) || 1
+            }
+            let dbName
+            let i = ["desciption", "icon", "special", "channel"].indexOf(item.id)
+            if (i == -1 && !obj[`inventory.${item.id}`] && !chart.id) dbName = item.id
+            else dbName = ["profileDesc", "profileIcon", "customRole", "privateChannel"][i]
+            if (dbName && guy[dbName] !== false && guy[dbName] !== "") return l10nMesssage({ code: "alreadyPurchasedItem", toReplace: { item: item.name } })
+
+            if (!enoughMoney(item, info.amount || 1)) return l10nMesssage({ code: "notEnoughCurrency", toReplace: { currency: item.currency + "s" } })
+
+            if (["profile", "cmi"].includes(dbName)) {
+                obj[dbName] = true
+            }
+
+            if (["description", "icon"].includes(item.id)) {
+                args.shift()
+                let value = args[0] ? args.join(" ") : item.id === "description" ? `Hey there! I am <@${message.author.id}>` : "https://i.imgur.com/6fL8AD2.png"
+                obj[dbName] = value
+            }
+
+            if (["special", "channel"].includes(item.id)) {
+                if (item.id === "special") {
+                    let colorRolesStart = sim.roles.cache.get("606247387496972292")
+                    await sim.roles
+                        .create({
+                            name: `${message.author.username}'s Special Role`,
+                            color: "#007880",
+                            position: colorRolesStart.position + 1,
+                            reason: message.author.tag + " bought special role item",
+                        })
+                        .then((role) => {
+                            sim.members.resolve(message.author.id).roles.add(role.id)
+                            obj[dbName] = role.id
+                        })
                 }
-            })
-            if (hassprole == true) return message.channel.send(message.l10n("alreadyPurchasedItem", { item: "special role" }))
+                if (item.id === "channel") {
+                    await sim.channels
+                        .create(`${message.author.username}-channel`, {
+                            type: "GUILD_TEXT",
+                            parent: "627536301008224275",
+                            topic: `Owned by: <@${message.author.id}>`,
+                            permissionOverwrites: [
+                                {
+                                    id: message.author,
+                                    allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES"],
+                                    type: "member",
+                                },
+                            ],
+                        })
+                        .then(async (c) => {
+                            l10nMesssage({ code: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` } })
+                            obj[dbName] = c.id
+                            c.send({ content: `${message.author}, here is your private channel!\n Please contact a staff memeber to adjust the channel permissions.` })
+                        })
+                }
+            }
+            chart = item
         }
 
-        if (["rose", "bouquet"].includes(item.id)) {
-            amount = parseInt(args[args.length - 1])
-            if (!amount) amount = 1
+        let update = {}
+        let price = chart.price * (info.amount || 1)
+        let op = "$set"
+        if (["rose", "bouquet"].includes(chart.id)) {
+            op = "$inc"
+            obj[chart.currency + "s"] = -price
+        } else {
+            let pay = {}
+            pay[chart.currency + "s"] = -price
+            update["$inc"] = pay
         }
+        update[op] = obj
+        await players.findOneAndUpdate({ user: message.author.id }, update)
+        message.channel.send(`You have successfully purchased ${info.amount ? info.amount : "the"} ${chart.color ? `${chart.color.name}` : ""}${chart.name.includes(" ") ? chart.name : pluralize(chart.name, info.amount ? info.amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(chart.currency), price, true)} ${getEmoji(pluralize.singular(chart.currency == "rose" ? "rosesingle" : chart.currency), client)}!${chart.response ? `\n${chart.response}` : ""}`)
 
-        if (dontbuy) return
-        let totalPrice = (amount ? amount : 1) * item.price
-        console.log(userHas, totalPrice)
-        if (totalPrice > userHas) return message.channel.send(message.l10n("notEnoughCurrency", { currency: pluralize(item.currency) }))
-        if (item.currency) data[item.currency] = data[item.currency] - totalPrice
-        switch (item.currency) {
-            case "coin":
-                data.coins -= totalPrice
-                break
-            case "rose":
-                data.roses -= totalPrice
-                break
-            case "gem":
-                data.gems -= totalPrice
-                break
-        }
-
-        if (item.role) {
-            roleadd(item.role)
-        } else if (item.color) {
-            roleadd(color.id)
-        } else if (item.id == "profile") {
-            data.profile = true
-        } else if (item.id == "special") {
-            let colorsrolename = sim.roles.cache.get("606247387496972292")
-            sim.roles
-                .create({
-                    name: `${message.author.username}'s Special role`,
-                    color: "#007880",
-                    position: colorsrolename.position + 1,
-                })
-                .then((role) => {
-                    data.customRole = role.id
-                    roleadd(role.id)
-                })
-        } else if (["rose", "bouquet", "description"].includes(item.id)) {
-            data.inventory[item.id] += amount
-        } else if (item.id == "private") {
-            let t = await sim.channels.create(`${message.author.username}-channel`, {
-                parent: "627536301008224275",
-                permissionOverwrites: [
-                    {
-                        id: message.author.id,
-                        allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES"],
-                    },
-                ],
-            })
-            await message.channel.send(message.l10n("channelPurchaseSuccess", { channelLink: `${t}` }))
-            data.privateChannel = t.id
-        }
-        data.save()
-        message.channel.send(`You have successfully purchased ${amount ? amount : "the"} ${color ? `${color.name} ` : ""}${pluralize(item.name, amount ? amount : 1)}!\nYou have been charged ${totalPrice} ${pluralize(item.currency)} ${config.getEmoji(item.currency, client)}!${item.response ? `\n${item.response}` : ""}`)
+        let roleID = chart.color ? chart.color.id : chart.role ? chart.role : null
+        if (roleID) sim.members.resolve(message.author.id).roles.add(roleID)
+        console.log(update)
+        return
     },
 }
