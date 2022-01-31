@@ -10,9 +10,6 @@ module.exports = {
     description: "Buy an item from the shop.",
     usage: `${process.env.PREFIX}buy <item | <color> (color)>`,
     run: async (message, args, client) => {
-        if (!["439223656200273932", "801726595378315264", "263472056753061889", "517335997172809728", "840938038028533782", "719564153072910407", "802145702531825685"].includes(message.author.id)) {
-            return message.channel.send("We are currently testing a new buy system. During this time we have some changes as well:\n`buy` - doesn't work. use `+buydep` instead\n`shop` - does not contain the currencies\n`profile` - is back to the original format")
-        }
         function l10nMesssage({ code, toReplace = {} }) {
             message.channel.send(message.l10n(code, toReplace))
         }
