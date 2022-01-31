@@ -87,7 +87,7 @@ module.exports = {
                     dbName = "privateChannel"
                     break
                 default:
-                    if(!obj[`inventory.${item.id}`] && !chart.id) dbName = item.id
+                    if (!obj[`inventory.${item.id}`] && !chart.id) dbName = item.id
                     break
             }
             if (dbName && guy[dbName] !== false && guy[dbName] !== "") return l10nMesssage({ code: "alreadyPurchasedItem", toReplace: { item: item.name } })
@@ -121,21 +121,23 @@ module.exports = {
                 }
                 if (item.id === "channel") {
                     await sim.channels
-                    .create(`${message.author.username}-channel`, {
-                        type: "GUILD_TEXT",
-                        parent: "627536301008224275",
-                        topic: `Owned by: <@${message.author.id}>`,
-                        permissionOverwrites: [{
-                            id: message.author,
-                            allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES"],
-                            type: "member"
-                        }]
-                    })
-                    .then(async (c) => {
-                        l10nMesssage({code: "channelPurchaseSuccess", toReplace: { channelLink: `${c}`}})
-                        obj[dbName] = c.id
-                        c.send({ content: `${message.author}, here is your private channel!\n Please contact a staff memeber to adjust the channel permissions.` })
-                    })
+                        .create(`${message.author.username}-channel`, {
+                            type: "GUILD_TEXT",
+                            parent: "627536301008224275",
+                            topic: `Owned by: <@${message.author.id}>`,
+                            permissionOverwrites: [
+                                {
+                                    id: message.author,
+                                    allow: ["MANAGE_CHANNELS", "SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "ATTACH_FILES"],
+                                    type: "member",
+                                },
+                            ],
+                        })
+                        .then(async (c) => {
+                            l10nMesssage({ code: "channelPurchaseSuccess", toReplace: { channelLink: `${c}` } })
+                            obj[dbName] = c.id
+                            c.send({ content: `${message.author}, here is your private channel!\n Please contact a staff memeber to adjust the channel permissions.` })
+                        })
                 }
             }
             chart = item
@@ -153,12 +155,12 @@ module.exports = {
             update["$inc"] = pay
         }
         update[op] = obj
-        await players.findOneAndUpdate({user: message.author.id}, update)
+        await players.findOneAndUpdate({ user: message.author.id }, update)
         message.channel.send(`You have successfully purchased ${info.amount ? info.amount : "the"} ${chart.color ? `${chart.color.name}` : ""}${chart.name.includes(" ") ? chart.name : pluralize(chart.name, info.amount ? info.amount : 1)}!\nYou have been charged ${pluralize(pluralize.singular(chart.currency), price, true)} ${getEmoji(pluralize.singular(!chart.currency == "rose" ? chart.currency : "rosesingle"), client)}!${chart.response ? `\n${chart.response}` : ""}`)
 
         let roleID = chart.color ? chart.color.id : chart.role ? chart.role : null
         if (roleID) sim.members.resolve(message.author.id).roles.add(roleID)
         console.log(update)
         return
-    }
+    },
 }
