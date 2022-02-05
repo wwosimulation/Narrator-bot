@@ -20,7 +20,7 @@ module.exports = (client) => {
                 typed.replace(/ /g, "") === ""
                     ? (res = possible)
                     : possible.forEach((e) => {
-                          if (e.name.startsWith(typed.toLowerCase())) res.push(e)
+                          if (e.name.toLowerCase().startsWith(typed.toLowerCase())) res.push(e)
                       })
                 break
             }
