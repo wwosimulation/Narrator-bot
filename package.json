@@ -27,7 +27,7 @@
         "canvas": "^2.9.0",
         "colornames": "^1.1.1",
         "discord.js": "^13.6.0",
-        "dotenv": "^15.0.0",
+        "dotenv": "^16.0.0",
         "express": "^4.17.2",
         "language-name-map": "^0.3.0",
         "moment": "^2.29.1",
