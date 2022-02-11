@@ -63,7 +63,7 @@ ${interaction.options.getString("part") ?? "Other"}
 
 ${interaction.options.getString("origin") ?? "Other"}`
 
-        body += `\n<hr>\nThe above suggestion was sent by ${interaction.user.tag}\nUser ID: ${interaction.user.id}\Location: ${(interaction.guildId == ids.server.game ? "" : `[#${interaction.channel.name}](https://discord.com/channels/${interaction.guildId + "/" + interaction.channelId}) (${interaction.channel.id}) in `) + `[${interaction.guild.name}](https://discord.com/channels/${interaction.guildId})`}`
+        body += `\n<hr>\n\nThe above suggestion was sent by ${interaction.user.tag}\nUser ID: ${interaction.user.id}\nLocation: ${(interaction.guildId == ids.server.game ? "" : `[#${interaction.channel.name}](https://discord.com/channels/${interaction.guildId + "/" + interaction.channelId}) (${interaction.channel.id}) in `) + `[${interaction.guild.name}](https://discord.com/channels/${interaction.guildId})`}`
 
         let labels = ["Suggestion"]
         if (interaction.options.getString("part") == "Economy") labels.push("Economy")
