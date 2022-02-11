@@ -1,8 +1,10 @@
 const mongoose = require("mongoose")
+const qdb = require("quick.db")
 
 const schema = new mongoose.Schema({
     index: { type: Number, index: true, unique: true, default: async () => {
-        await mongoose.model("gamewarns", schema).find({}).transform((doc) => doc.length)
+        qdb.set("gamewarnIndex", qdb.get("gamewarnIndex") + 1) 
+        return qdb.get("gamewarnIndex")
     }},
     user: { type: String, required: true },
     reason: { type: String, default: "*No reason given*" },
@@ -10,7 +12,7 @@ const schema = new mongoose.Schema({
     date: {
         type: Date,
         default: () => {
-            return Date.now()
+            return new Date(parseInt((Date.now()/1000).toFixed()))
         },
     },
 })

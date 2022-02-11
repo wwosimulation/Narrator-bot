@@ -29,5 +29,6 @@ module.exports = {
         db.set(`game`, m.id)
         db.set(`hoster`, message.author.id)
         db.set(`gamePhase`, -5)
+        db.set("gameCode", args.join(" "))
     },
 }

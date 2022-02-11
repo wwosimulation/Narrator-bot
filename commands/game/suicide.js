@@ -1,6 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 const db = require("quick.db")
 const { ids } = require("../../config")
+const gamewarns = require("../../schemas/gamewarns")
 
 module.exports = {
     name: "suicide",
@@ -35,6 +36,15 @@ module.exports = {
                         day.send("**" + message.member.nickname + " " + message.author.username + " (" + role + ")** has commited suicide!")
                         message.member.roles.add(ids.dead)
                         message.member.roles.remove(ids.alive)
+
+                        let warn = await gamewarns.create({user: message.author.id, reason: "Suiciding during a game", gamecode: db.get("gameCode")})
+                        let embed = new MessageEmbed({title: "You have received a gamewarn!", description: 
+`You have received a gamewarn in ${message.guild.name}!
+**Reason:** ${warn.reason}
+**Gamecode:** ${warn.gamecode}
+**Date:** <t:${(Date.now()/1000).toFixed()}:f>`, color: "DARK_RED"})
+                        await message.channel.send({embeds: [embed]})
+
                     } else {
                         interaction.reply("Successfully canceled!")
                     }
