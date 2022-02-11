@@ -203,16 +203,16 @@ client.on("ready", async () => {
             dsn: process.env.SENTRY,
             tracesSampleRate: 1.0,
         })
-        // let privateKey = fs.readFileSync("./ghnb.pem")
-        // client.github = new Octokit({
-        //     authStrategy: createAppAuth,
-        //     auth: {
-        //         appId: 120523,
-        //         privateKey,
-        //         clientSecret: process.env.GITHUB,
-        //         installationId: 17541999,
-        //     },
-        // })
+        let privateKey = fs.readFileSync("./ghnb.pem")
+        client.github = new Octokit({
+            authStrategy: createAppAuth,
+            auth: {
+                appId: 120523,
+                privateKey,
+                clientSecret: process.env.GITHUB,
+                installationId: 17541999,
+            },
+        })
     }
 
     //Invite Tracker
