@@ -53,7 +53,7 @@ ${interaction.options.getString("description")}
 ${interaction.options.getString("part") || "Other"}`
 
         if (interaction.options.getString("part").startsWith("Game") && interaction.options.getString("gamecode")) body += `\n### Game Code\n\n${interaction.options.getString("gamecode")}`
-        body += `\n<hr>\nThe above bug was reported by ${interaction.user.tag}\nUser ID: ${interaction.user.id}\Location: ${(interaction.guildId == ids.server.game ? "" : `[#${interaction.channel.name}](https://discord.com/channels/${interaction.guildId + "/" + interaction.channelId}) (${interaction.channel.id}) in `) + `[${interaction.guild.name}](https://discord.com/channels/${interaction.guildId})`}`
+        body += `\n<hr>\n\nThe above bug was reported by ${interaction.user.tag}\nUser ID: ${interaction.user.id}\nLocation: ${(interaction.guildId == ids.server.game ? "" : `[#${interaction.channel.name}](https://discord.com/channels/${interaction.guildId + "/" + interaction.channelId}) (${interaction.channel.id}) in `) + `[${interaction.guild.name}](https://discord.com/channels/${interaction.guildId})`}`
 
         let labels = ["Bug", "Unverified"]
         if (interaction.options.getString("part") == "Economy") labels.push("Economy")
