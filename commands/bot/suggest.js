@@ -4,6 +4,7 @@ module.exports = {
     name: "suggest",
     description: "Suggest something.",
     usage: `${process.env.PREFIX}suggest <description...>`,
+    aliases: ["suggestion"],
     run: async (message, args, client) => {
         if (!args[0]) return message.channel.send(message.l10n("suggestNoArguments"))
         let t = ""
