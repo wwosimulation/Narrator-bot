@@ -37,4 +37,9 @@ Object.filter = (obj, predicate) =>
         .filter((key) => predicate(obj[key]))
         .reduce((res, key) => ((res[key] = obj[key]), res), {})
 
-gamewarns.find({}).countDocuments((err, res) => qdb.set("gamewarnIndex", res) || -1)
+let x = -1
+setTimeout(async () => {
+    x = await module.exports.gamewarns.findOne({}).sort({index: -1})
+    console.log(x.index)
+    await qdb.set("gamewarnIndex", x.index)
+}, 1000)

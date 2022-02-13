@@ -2,8 +2,8 @@ const mongoose = require("mongoose")
 const qdb = require("quick.db")
 
 const schema = new mongoose.Schema({
-    index: { type: Number, index: true, unique: true, default: async () => {
-        qdb.set("gamewarnIndex", qdb.get("gamewarnIndex") + 1) 
+    index: { type: Number, index: true, unique: true, default: () => {
+        qdb.set("gamewarnIndex", qdb.get("gamewarnIndex") + 1)
         return qdb.get("gamewarnIndex")
     }},
     user: { type: String, required: true },
