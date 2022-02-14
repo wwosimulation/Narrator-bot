@@ -47,9 +47,9 @@ module.exports = (client) => {
 
         if (interaction.options.data.lenght !== 0) {
             interaction.options.data.forEach((arg, i) => {
-                if(arg.options) {
+                if (arg.options) {
                     args.push(arg.name)
-                    arg.options.forEach(ar => {
+                    arg.options.forEach((ar) => {
                         args.push("`" + ar.name + ":`", ar.value)
                     })
                 } else {
