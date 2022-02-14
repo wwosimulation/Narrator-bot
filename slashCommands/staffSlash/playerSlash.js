@@ -64,7 +64,7 @@ module.exports = {
     permissions: {
         sim: [
             { id: ids.staff, type: "ROLE", permission: true }, // @Staff
-            { id: ids.afkstaff, type: "ROLE", permissions: true }, //@AFK STAFF
+            { id: ids.afkstaff, type: "ROLE", permission: true }, //@AFK STAFF
             { id: "606167032425218084", type: "ROLE", permission: false }, // @Member
         ],
         game: [
