@@ -152,26 +152,31 @@ ${warn}
                 interaction.reply({ content: "Successfully deleted the document.", ephemeral: true })
                 client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
                 break
-            } case "list": {
+            }
+            case "list": {
                 let guy = interaction.options.getUser("user", false)
                 /*if(client.guilds.cache.get(ids.server.sim).members.cache.get(user.id).roles.has(ids.staff) || client.guilds.cache.get(ids.server.sim).members.cache.get(user.id).roles.has(ids.afkstaff)) {
                     let warns = await gamewarns.find({user: guy.id})
                 } else {*/
-                    let active = Date.now() - 3333333333333333
-                    let warns = await gamewarns.find({user: interaction.user.id,  date: {$gt: active}})
-                    console.log(warns)
-                    let warnEmbeds = []
-                    warns.forEach((warn, i, arr) => {
-                        let e = new MessageEmbed({title: `Case: ${warn.index}`, description:
-`**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})
+                let active = Date.now() - 3333333333333333
+                let warns = await gamewarns.find({ user: interaction.user.id, date: { $gt: active } })
+                console.log(warns)
+                let warnEmbeds = []
+                warns.forEach((warn, i, arr) => {
+                    let e = new MessageEmbed({
+                        title: `Case: ${warn.index}`,
+                        description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})
 **Reason:** ${warn.reason}
 **Gamecode:** ${warn.gamecode}
-**Date:** <t:${(warn.date/1000).toFixed()}:f>`, color: "GOLD", footer: {text: `Warn ${i+1}/${arr.length}`}})
-                        warnEmbeds.push(e)
+**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
+                        color: "GOLD",
+                        footer: { text: `Warn ${i + 1}/${arr.length}` },
                     })
-                    await interaction.reply({content: warnEmbeds.length + " warns below."})
-                    let msg = await interaction.followUp({embeds: [warnEmbeds[0]]})
-                    await client.buttonPaginator(interaction.user.id, msg, warnEmbeds, 1)
+                    warnEmbeds.push(e)
+                })
+                await interaction.reply({ content: warnEmbeds.length + " warns below." })
+                let msg = await interaction.followUp({ embeds: [warnEmbeds[0]] })
+                await client.buttonPaginator(interaction.user.id, msg, warnEmbeds, 1)
                 /*}
 
                 if(warns.length != 0) {
@@ -180,7 +185,8 @@ ${warn}
                     interaction.reply({content: "This user doesn't have any warnings."})
                 }*/
                 break
-            } case "show": {
+            }
+            case "show": {
                 let guy = interaction.options.getUser("mention", false)
                 let index = interaction.options.getInteger("index")
                 let warn = await gamewarns.findOne({ index })
@@ -192,7 +198,9 @@ ${warn}
                     description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})
 **Reason:** ${warn.reason}
 **Gamecode:** ${warn.gamecode}
-**Date:** <t:${warn.date/1000}:f>`, color: "GREYPLE"})
+**Date:** <t:${warn.date / 1000}:f>`,
+                    color: "GREYPLE",
+                })
                 x.embeds = [embed]
                 interaction.reply(x)
             }
