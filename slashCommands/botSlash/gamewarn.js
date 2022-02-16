@@ -189,12 +189,12 @@ ${warn}
                             color: "GOLD",
                             footer: { text: `Warn ${i + 1}/${arr.length}` },
                         })
-                    warnEmbeds.push(e)
-                })
-                await interaction.reply({ content: warnEmbeds.length + " warns below." })
-                let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || new MessageEmbed({title: "No active gamewarns found."})] })
-                await client.buttonPaginator(interaction.user.id, msg, warnEmbeds, 1)
-                client.emit("gamebanned", interaction.user)
+                        warnEmbeds.push(e)
+                    })
+                    await interaction.reply({ content: warnEmbeds.length + " warns below." })
+                    let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || new MessageEmbed({ title: "No active gamewarns found." })] })
+                    await client.buttonPaginator(interaction.user.id, msg, warnEmbeds, 1)
+                    client.emit("gamebanned", interaction.user)
                 }
                 break
             }
