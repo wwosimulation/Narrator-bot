@@ -19,6 +19,7 @@ module.exports = {
                     day.send("**" + guy.nickname + " " + guy.user.username + " (" + role + ")** has commited suicide!")
                     guy.roles.add(ids.dead)
                     guy.roles.remove(ids.alive)
+                    message.reply({content: "Please use `/gamewarn add` to warn the user if necessary."})
                 }
             }
         } else if (message.channel.name.includes("priv") || message.channel.name == "day-chat") {
@@ -52,7 +53,7 @@ If you think this gamewarn was given by accident please [open a ticket](https://
                             interaction.editReply({embeds: [embed]})
                             message.channel.send("Unable to send direct message.")
                         }
-
+                        client.emit("gamebanned", message.author)
                     } else {
                         interaction.reply("Successfully canceled!")
                     }

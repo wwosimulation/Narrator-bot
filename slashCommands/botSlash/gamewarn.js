@@ -131,6 +131,7 @@ If you think this gamewarn was given by accident please [open a ticket](https://
                 client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
 
                 interaction.reply({ content: "User has been warned!", ephemeral: true })
+                client.emit("gamebanned", guy)
                 break
             }
             case "remove": {
@@ -151,6 +152,7 @@ ${warn}
                 })
                 interaction.reply({ content: "Successfully deleted the document.", ephemeral: true })
                 client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
+                client.emit("gamebanned", client.users.cache.get(warn.user))
                 break
             }
             case "list": {
@@ -192,6 +194,7 @@ ${warn}
                 await interaction.reply({ content: warnEmbeds.length + " warns below." })
                 let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || new MessageEmbed({title: "No active gamewarns found."})] })
                 await client.buttonPaginator(interaction.user.id, msg, warnEmbeds, 1)
+                client.emit("gamebanned", interaction.user)
                 }
                 break
             }
