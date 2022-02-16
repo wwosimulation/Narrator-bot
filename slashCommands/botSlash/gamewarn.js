@@ -157,8 +157,8 @@ ${warn}
             }
             case "list": {
                 let guy = interaction.options.getUser("user", false)
-                if((client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.staff) || client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.afkstaff)) && guy) {
-                    let warns = await gamewarns.find({user: guy.id})
+                if ((client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.staff) || client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.afkstaff)) && guy) {
+                    let warns = await gamewarns.find({ user: guy.id })
                     let warnEmbeds = []
                     warns.forEach((warn, i, arr) => {
                         let e = new MessageEmbed({
@@ -173,22 +173,22 @@ ${warn}
                         warnEmbeds.push(e)
                     })
                     await interaction.reply({ content: warnEmbeds.length + " warns below." })
-                    let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || new MessageEmbed({title: "No gamewarns found."})] })
+                    let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || new MessageEmbed({ title: "No gamewarns found." })] })
                     await client.buttonPaginator(interaction.user.id, msg, warnEmbeds, 1)
                 } else {
-                let active = (new Date().getTime() - 7889400000).toFixed() // 3 months
-                let warns = await gamewarns.find({ user: interaction.user.id, date: { $gt: active } })
-                let warnEmbeds = []
-                warns.forEach((warn, i, arr) => {
-                    let e = new MessageEmbed({
-                        title: `Case: ${warn.index}`,
-                        description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})
+                    let active = (new Date().getTime() - 7889400000).toFixed() // 3 months
+                    let warns = await gamewarns.find({ user: interaction.user.id, date: { $gt: active } })
+                    let warnEmbeds = []
+                    warns.forEach((warn, i, arr) => {
+                        let e = new MessageEmbed({
+                            title: `Case: ${warn.index}`,
+                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})
 **Reason:** ${warn.reason}
 **Gamecode:** ${warn.gamecode}
 **Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
-                        color: "GOLD",
-                        footer: { text: `Warn ${i + 1}/${arr.length}` },
-                    })
+                            color: "GOLD",
+                            footer: { text: `Warn ${i + 1}/${arr.length}` },
+                        })
                     warnEmbeds.push(e)
                 })
                 await interaction.reply({ content: warnEmbeds.length + " warns below." })
@@ -218,7 +218,7 @@ ${warn}
                 break
             }
             default: {
-                interaction.reply({content: interaction.l10n("error")})
+                interaction.reply({ content: interaction.l10n("error") })
             }
         }
     },
