@@ -17,7 +17,7 @@ const schema = new mongoose.Schema({
     date: {
         type: Date,
         default: () => {
-            return new Date(parseInt((Date.now()).toFixed())).getTime()
+            return new Date().getTime()
         },
     },
 })
