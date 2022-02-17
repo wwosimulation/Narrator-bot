@@ -39,7 +39,6 @@ Object.filter = (obj, predicate) =>
 
 let x = -1
 setTimeout(async () => {
-    x = await module.exports.gamewarns.findOne({}).sort({index: -1})
-    console.log(x.index)
-    await qdb.set("gamewarnIndex", x.index)
+    x = qdb.get("gamewarnIndex") || await module.exports.gamewarns.findOne({}).sort({index: -1})
+    await qdb.set("gamewarnIndex", (typeof x == "number" ? x : x.index) ?? -1)
 }, 1000)
