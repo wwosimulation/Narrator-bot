@@ -98,7 +98,7 @@ module.exports = {
         let sub = interaction.options.getSubcommand()
         switch (sub) {
             case "add": {
-                if(!client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.staff) && !client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.afkstaff)) return interaction.reply({content: "You are missing permissions to do that.", ephemeral: true})
+                if (!client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.staff) && !client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.afkstaff)) return interaction.reply({ content: "You are missing permissions to do that.", ephemeral: true })
                 let guy = interaction.options.getUser("user")
                 let warn = { user: guy.id, reason: interaction.options.getString("reason", false) ?? undefined, gamecode: interaction.options.getString("gamecode", false) ?? undefined }
                 warn = await gamewarns.create(warn)
@@ -136,7 +136,7 @@ If you think this gamewarn was given by accident please [open a ticket](https://
                 break
             }
             case "remove": {
-                if(!client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.staff) && !client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.afkstaff)) return interaction.reply({content: "You are missing permissions to do that.", ephemeral: true})
+                if (!client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.staff) && !client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.afkstaff)) return interaction.reply({ content: "You are missing permissions to do that.", ephemeral: true })
                 let index = interaction.options.getInteger("index")
                 let w = await gamewarns.findOne({ index })
                 if (!w) return interaction.reply({ content: "This infraction does not exist." })
@@ -201,7 +201,7 @@ ${warn}
                 break
             }
             case "show": {
-                if(!client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.staff) && !client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.afkstaff)) return interaction.reply({content: "You are missing permissions to do that.", ephemeral: true})
+                if (!client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.staff) && !client.guilds.cache.get(ids.server.sim).members.cache.get(interaction.user.id).roles.cache.has(ids.afkstaff)) return interaction.reply({ content: "You are missing permissions to do that.", ephemeral: true })
                 let guy = interaction.options.getUser("mention", false)
                 let index = interaction.options.getInteger("index")
                 let warn = await gamewarns.findOne({ index })
