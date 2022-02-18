@@ -56,6 +56,7 @@ module.exports = {
 
             // send each x an embed with their xp
             let xpEmbed = new Discord.MessageEmbed({ color: "#008800", title: "Game ended!", thumbnail: { url: client.user.avatarURL() }, description: `Result: ${winners.includes(x) ? "You won!" : "You lost."}\n\nXP gained: ${xpBase} XP${data.winStreak > 1 ? `\n${data.winStreak} Game Streak - ${xpStreak} Bonus XP` : ""}` })
+            client.users.cache.get(x).send({ embeds: [xpEmbed] })
             console.log(xpBase, xpStreak)
             data.xp += xpBase + xpStreak
             data.save()
