@@ -41,7 +41,7 @@ module.exports = {
                 }
             }
             await data.updateOne({ $inc: { "inventory.bouquet": -1 } })
-            
+
             message.guild.channels.cache.find((c) => c.name === "day-chat").send(`**${(message.member.nickname ? message.member.nickname : "") + message.author.tag}** sent a rose to everyone!`)
             message.guild.channels.cache.find((c) => c.name === "game-lobby").send(`**${(message.member.nickname ? message.member.nickname : "") + message.author.tag}** sent a rose to everyone!`)
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
