@@ -161,7 +161,7 @@ module.exports = {
         rk = shuffle(rk)
         rv = shuffle(rv)
 
-        banned.forEach(role => {
+        banned.forEach((role) => {
             role = role.toLowerCase().replace(/ /g, "-")
             random = pull(random, role)
             rrv = pull(rrv, role)
