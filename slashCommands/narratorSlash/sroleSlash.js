@@ -122,7 +122,7 @@ module.exports = {
         let usedChannels = []
         db.set(`usedChannels`, usedChannels)
 
-        args = roles ? roles.split(" ") : []
+        let args = roles ? roles.split(" ") : []
         args.forEach((arg) => {
             args[args.indexOf(arg)] = arg.toLowerCase()
         })
@@ -215,6 +215,7 @@ module.exports = {
             ]
         } else if (gamemode == "custom") {
             excludes.forEach((role) => {
+                role = role.replace(/ /g, "-")
                 random = pull(random, role)
                 rrv = pull(rrv, role)
                 rsv = pull(rsv, role)
