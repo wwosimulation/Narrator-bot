@@ -529,6 +529,8 @@ module.exports = (client) => {
                         db.delete(`sleepy_${chan.id}`)
                     } else if (role == "Naughty Boy") {
                         db.delete(`switch_${chan.id}`)
+                    } else if (role == "Flower Child" || role == "Guardian Wolf" && parseInt(db.get(`protest_${chan.id}`)).toString() != "NaN") {
+                        db.set(`protest_${chan.id}`, null)
                     } else if (role.toLowerCase().includes("wolf")) {
                         db.delete(`wolvesKill_${chan.id}`)
                     } else if (role == "Spirit Seer") {

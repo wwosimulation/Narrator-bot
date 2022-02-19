@@ -14,7 +14,7 @@ module.exports = {
             let ability = await db.fetch(`protest_${message.channel.id}`)
             let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            if (!ability == "no") return await message.channel.send("You have already used your ability.")
+            if (ability == "no") return await message.channel.send("You have already used your ability.")
             if (gamePhase % 3 != 1) return await message.channel.send("You can use your ability only during the day!")
             if (!guy) return await message.channel.send("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) return await message.channel.send("You can play with alive people only!")
