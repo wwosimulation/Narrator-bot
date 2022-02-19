@@ -17,7 +17,7 @@ module.exports = {
         if (message.channel.name == "priv-mayor") {
             let ability = await db.fetch(`ability_${message.channel.id}`)
             if (ability == "yes") return await message.channel.send("You have already used your ability!")
-            if (gamePhase % 3 != 1) return await message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 == 0) return await message.channel.send("You can use your ability only at night!")
             dayChat.send(`${getEmoji("mayoring", client)} **${message.member.nickname} ${message.author.username} (Mayor)** has revealed himself!`)
             message.member.roles.add(revealed.id)
             db.set(`ability_${message.channel.id}`, "yes")
