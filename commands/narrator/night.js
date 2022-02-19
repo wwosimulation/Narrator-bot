@@ -343,7 +343,7 @@ module.exports = {
                                                             dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${cguy.nickname} ${cguy.user.username}**!`)
                                                             cguy.roles.add(dead.id)
                                                             cguy.roles.remove(alive.id)
-                                                            cguy.roles.add("777400587276255262")
+                                                            cguy.roles.add(ids.corrupted)
                                                         }
                                                     }
                                                 }
