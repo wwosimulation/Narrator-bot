@@ -14,6 +14,8 @@ message.channel.send(ban)
 
 const mongoose = require("mongoose")
 const fs = require("fs")
+const qdb = require("quick.db")
+const gamewarns = require("./schemas/gamewarns")
 
 mongoose.connect(process.env.MONGODB, {
     // useNewUrlParser: true, -> default: true
@@ -34,3 +36,9 @@ Object.filter = (obj, predicate) =>
     Object.keys(obj)
         .filter((key) => predicate(obj[key]))
         .reduce((res, key) => ((res[key] = obj[key]), res), {})
+
+let x = -1
+setTimeout(async () => {
+    x = qdb.get("gamewarnIndex") || (await module.exports.gamewarns.findOne({}).sort({ index: -1 }))
+    await qdb.set("gamewarnIndex", (typeof x == "number" ? x : x.index) ?? -1)
+}, 1000)

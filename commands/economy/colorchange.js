@@ -5,6 +5,7 @@ module.exports = {
     name: "colorchange",
     description: "Change the color of your special role.",
     usage: `${process.env.PREFIX}colorchange <color>`,
+    aliases: ["colourchange"],
     run: async (message, args, client) => {
         let data = await players.findOne({ user: message.author.id })
         let role = data.customRole

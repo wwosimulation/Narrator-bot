@@ -17,7 +17,6 @@ const config = {
         botdev: "606123616228343812",
         manager: "890227016035602474",
         devassist: "859099415515627540",
-        quest: "606123622192381982",
         translator: "870177738361806908",
         eventhost: "923164465330028574",
     },
@@ -81,10 +80,10 @@ module.exports = (client) => {
             .map((x) => `<@${x.id}> - ${x.user.tag}`)
             .join("\n> ")}\n`
         m3 += "** **\n\n\n**Non-Staff Teams**\n\n"
-        m3 += `**Quest Makers**\n> ${wovsim.members.cache
+        /*m3 += `**Quest Makers**\n> ${wovsim.members.cache
             .filter((x) => x.roles.cache.has(config.roles.quest))
             .map((x) => `<@${x.id}> - ${x.user.tag}`)
-            .join("\n> ")}\n`
+            .join("\n> ")}\n`*/
         m3 += `**Dev Assistants**\n> ${wovsim.members.cache
             .filter((x) => x.roles.cache.has(config.roles.devassist))
             .map((x) => `<@${x.id}> - ${x.user.tag}`)
