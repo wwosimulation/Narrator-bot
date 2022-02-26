@@ -474,7 +474,7 @@ module.exports = {
                                                 secondhack[j] = "0"
                                                 player.roles.add(dead.id)
                                                 player.roles.remove(alive.id)
-                                                dayChat.send(`${getEmoji("normal_gravestone", client)} The Hacker hacked **${player.nickname} ${player.user.username} (Bodyguard)**!`)
+                                                dayChat.send(`${getEmoji("hack", client)} The Hacker hacked **${player.nickname} ${player.user.username} (Bodyguard)**!`)
                                                 killedplayers.push(player.id)
                                                 thekiller.push(theHacker.id)
                                             }
@@ -572,7 +572,7 @@ module.exports = {
                         // killing players
                         if (secondhack[j] != "0") {
                             if (db.get(`hypnotized_${drc}`) != theHacker.nickname) {
-                                dayChat.send(`${getEmoji("eat", client)} The Hacker hacked **${guy.nickname} ${guy.user.username} (${role})**!`)
+                                dayChat.send(`${getEmoji("hack", client)} The Hacker hacked **${guy.nickname} ${guy.user.username} (${role})**!`)
                             } else {
                                 dayChat.send(`${getEmoji("eat", client)} The Dreamcatcher compelled the Hacker to hack **${guy.nickname} ${guy.user.username} (${role})**`)
                             }
