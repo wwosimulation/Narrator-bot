@@ -676,6 +676,12 @@ module.exports = {
                     VIEW_CHANNEL: true,
                 })
 
+            message.guild.channels.cache
+                .find((c) => c.name === "vote-chat")
+                .permissionOverwrites.edit(dead.id, {
+                    VIEW_CHANNEL: true,
+                })
+
             let mm = message.guild.channels.cache.filter((c) => c.name === "priv-marksman").map((x) => x.id)
             for (let a = 0; a < mm.length; a++) {
                 if (db.get(`mark_${mm[a]}`) != null) {
