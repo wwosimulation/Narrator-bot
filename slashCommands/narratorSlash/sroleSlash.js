@@ -122,7 +122,7 @@ module.exports = {
         let usedChannels = []
         db.set(`usedChannels`, usedChannels)
 
-        args = roles ? roles.split(" ") : []
+        let args = roles ? roles.split(" ") : []
         args.forEach((arg) => {
             args[args.indexOf(arg)] = arg.toLowerCase()
         })
@@ -152,6 +152,7 @@ module.exports = {
         let docbg = ["doctor", "bodyguard"]
         let gunnermarks = ["gunner", "marksman"]
         let cupidgr = ["cupid"] //, "grave-robber"]
+        let banned = ["Bandit", "Accomplice", "Sect Leader", "Grave Robber", "Baker", "Astral Wolf", "Easter Bunny", "Vigilante", "Split Wolf", "Preacher", "Wolf Trickser", "Ghost Lady", "Evil Detective"]
 
         random = shuffle(random)
         rrv = shuffle(rrv)
@@ -159,6 +160,16 @@ module.exports = {
         rww = shuffle(rww)
         rk = shuffle(rk)
         rv = shuffle(rv)
+
+        banned.forEach((role) => {
+            role = role.toLowerCase().replace(/ /g, "-")
+            random = pull(random, role)
+            rrv = pull(rrv, role)
+            rsv = pull(rsv, role)
+            rww = pull(rww, role)
+            rk = pull(rk, role)
+            rv = pull(rv, role)
+        })
 
         if (gamemode == "ranked") excludes = ["grave-robber", "villager", "mayor", "pacifist", "seer-apprentice", "werewolf", "kitten-wolf", "wolf-pacifist"]
         excludes.forEach((role) => {
@@ -215,6 +226,7 @@ module.exports = {
             ]
         } else if (gamemode == "custom") {
             excludes.forEach((role) => {
+                role = role.replace(/ /g, "-")
                 random = pull(random, role)
                 rrv = pull(rrv, role)
                 rsv = pull(rsv, role)
@@ -279,7 +291,7 @@ module.exports = {
                 cancel = true
                 return interaction.editReply(`The information for the ${x} role is missing! Please report this using \`+bug\``)
             }
-            if (["Bandit", "Accomplice", "Sect Leader", "Grave Robber"].includes(role.name)) {
+            if (banned.includes(role.name)) {
                 cancel = true
                 return interaction.editReply(`The ${role.name} role is currently not available`)
             }

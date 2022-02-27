@@ -17,11 +17,11 @@ module.exports = {
         if (message.channel.name == "priv-mayor") {
             let ability = await db.fetch(`ability_${message.channel.id}`)
             if (ability == "yes") return await message.channel.send("You have already used your ability!")
-            if (gamePhase % 3 != 1) return await message.channel.send("You can use your ability only at night!")
+            if (gamePhase % 3 == 0) return await message.channel.send("You can use your ability only at night!")
             dayChat.send(`${getEmoji("mayoring", client)} **${message.member.nickname} ${message.author.username} (Mayor)** has revealed himself!`)
             message.member.roles.add(revealed.id)
             db.set(`ability_${message.channel.id}`, "yes")
-        } else if (db.get(`card_${message.channel.id}`)) {
+        } else if ((db.get(`card_${message.channel.id}`) && !args[0] && (message.channel.name == "priv-pacifist" || message.channel.name == "priv-wolf-pacifist")) || (message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist")) {
             if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can not reveal when dead!")
             db.set(`card_${message.channel.id}`, false)
             message.member.roles.add(revealed.id)
