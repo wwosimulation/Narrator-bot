@@ -1,12 +1,3 @@
-/*module.exports = {
-    name: "profile",
-    description: "Sends your or another user's profile if unlocked already.",
-    usage: `${process.env.PREFIX}profile [user]`,
-    run: async (message, args, client) => {
-        message.reply({ content: "Sadly this command is currently not available due to technical problems with the hosting platform." })
-    },
-}*/
-
 const { players } = require("../../db.js")
 const { fn } = require("../../config")
 const Canvas = require("canvas")
