@@ -28,7 +28,7 @@ module.exports = {
             console.log("tets")
             if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (gamePhase % 3 != 1 || gamePhase % 3 != 2) return message.channel.send("You can use your ability only during the day!")
+            if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
             if (!guy || guy == message.member || !guy.roles.cache.has(alive.id)) return message.reply("The player is not in game! Mention the correct player number.")
             if (bullets > 0) {
                 if (dayCount == 1) {

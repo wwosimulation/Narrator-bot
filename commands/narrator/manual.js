@@ -10,7 +10,7 @@ module.exports = {
     narratorOnly: true,
     run: async (message, args, client) => {
         for (const key in aliases) {
-            if (args[1].includes(key)) {
+            if (args[1].toLowerCase() == key) {
                 if (Object.hasOwnProperty.call(aliases, key)) {
                     const element = aliases[key]
                     args[1] = element

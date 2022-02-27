@@ -18,7 +18,7 @@ module.exports = {
     if (message.member.roles.cache.has(mininarr.id) || message.member.roles.cache.has(narrator.id)) return message.channel.send("You can't give the rose as a narrator!")
     */
         if (!["single", "bouquet"].includes(args[0])) return message.channel.send(`Invalid format! Please use ${process.env.PREFIX}rose <bouquet | single <user> [amount]>`)
-        if (!args[0]) return message.channel.send("You need to state if you want to give a rose to a player or as a bouquet!\n\nOptions: `single [player] [amount]` or `bouquet`")
+        if (!args[0]) return message.channel.send("You need to state if you want to give a rose to a player or as a bouquet!\n\nOptions: `single <player> [amount]` or `bouquet`")
         if ((args[2] && isNaN(args[2])) || (args[2] && !isNaN(args[2]) && parseInt(args[2]) % 1 != 0) || parseInt(args[2]) <= 0) return message.channel.send("Please state an integer as amount!")
 
         if (args[0] == "single") {
@@ -41,6 +41,9 @@ module.exports = {
                 }
             }
             await data.updateOne({ $inc: { "inventory.bouquet": -1 } })
+
+            message.guild.channels.cache.find((c) => c.name === "day-chat").send(`**${(message.member.nickname ? message.member.nickname : "") + message.author.tag}** sent a rose to everyone!`)
+            message.guild.channels.cache.find((c) => c.name === "game-lobby").send(`**${(message.member.nickname ? message.member.nickname : "") + message.author.tag}** sent a rose to everyone!`)
             return message.channel.send(`You have successfully given a rose to every player in the server!`)
         }
     },

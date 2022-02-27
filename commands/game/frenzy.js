@@ -14,7 +14,7 @@ module.exports = {
             let gamePhase = db.get(`gamePhase`)
             const abil = db.get(`abil_${message.channel.id}`) || "no"
 
-            if (gamePhase % 3 != 1) return message.channel.send("You can only use frenzy during the day!")
+            if (gamePhase % 3 == 0) return message.channel.send("You can only use frenzy during the day!")
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
 
             if (abil == "yes") return message.channel.send("You have used your ability already.")

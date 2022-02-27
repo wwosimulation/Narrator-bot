@@ -90,9 +90,11 @@ module.exports = {
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             if (!["red", "black"].includes(args[0].toLowerCase())) return message.channel.send("Which potion you are giving? Those are either `red` or `black`.")
             if (args[0].toLowerCase() == "red") {
+                if (db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `blackpotion_${dc.chan.id}` : `blackpotion_${message.channel.id}`}`) == guy.nickname) return message.channel.send({ content: "You can't give two potions to one player!" })
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `redpotion_${dc.chan.id}` : `redpotion_${message.channel.id}`}`, guy.nickname)
                 message.react(fn.getEmoji("redp", client))
             } else if (args[0].toLowerCase() == "black") {
+                if (db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `redpotion_${dc.chan.id}` : `redpotion_${message.channel.id}`}`) == guy.nickname) return message.channel.send({ content: "You can't give two potions to one player!" })
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `blackpotion_${dc.chan.id}` : `blackpotion_${message.channel.id}`}`, guy.nickname)
                 message.react(fn.getEmoji("blackp", client))
             }

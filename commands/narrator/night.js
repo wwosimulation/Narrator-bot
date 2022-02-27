@@ -1,7 +1,7 @@
 const db = require("quick.db")
 const { MessageButton, MessageActionRow } = require("discord.js")
 
-const { getEmoji, getRole, fn } = require("../../config")
+const { getEmoji, getRole, fn, ids } = require("../../config")
 function peaceCheck(message) {
     let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
     let nightCount = Math.floor(db.get(`gamePhase`) / 3) + 1
@@ -330,7 +330,7 @@ module.exports = {
                                         dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${guy.nickname} ${guy.user.username}**!`)
                                         guy.roles.add(dead.id)
                                         guy.roles.remove(alive.id)
-                                        guy.roles.add("777400587276255262")
+                                        guy.roles.add(ids.corrupted)
                                     }
                                     if (player.roles.cache.has(alive.id)) {
                                         for (let d = 1; d < 17; d++) {
@@ -343,7 +343,7 @@ module.exports = {
                                                             dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${cguy.nickname} ${cguy.user.username}**!`)
                                                             cguy.roles.add(dead.id)
                                                             cguy.roles.remove(alive.id)
-                                                            cguy.roles.add("777400587276255262")
+                                                            cguy.roles.add(ids.corrupted)
                                                         }
                                                     }
                                                 }
@@ -673,6 +673,12 @@ module.exports = {
             message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
                 .permissionOverwrites.edit(alive.id, {
+                    VIEW_CHANNEL: true,
+                })
+
+            message.guild.channels.cache
+                .find((c) => c.name === "vote-chat")
+                .permissionOverwrites.edit(dead.id, {
                     VIEW_CHANNEL: true,
                 })
 

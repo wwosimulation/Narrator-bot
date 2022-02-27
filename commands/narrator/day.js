@@ -254,6 +254,7 @@ module.exports = {
                                             let channe = message.guild.channels.cache.get(witch[k])
                                             channe.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
                                             channe.send(`${alive}`)
+                                            db.set(`witchAbil_${witch[k]}`, 1)
                                             players[a] = null
                                             k = 99
                                         }
@@ -430,6 +431,7 @@ module.exports = {
                                     tempchan.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     tempchan.send(`${alive}`)
                                     secondhack[j] = "0"
+                                    db.set(`witchAbil_${witch[k]}`, 1)
                                 }
                             }
                         }
@@ -672,6 +674,7 @@ module.exports = {
                                 if (potion == eat[j]) {
                                     let channe = message.guild.channels.cache.get(witch[k])
                                     channe.send(`${getEmoji("potion", client)} Your potion saved **${guy.nickname} ${guy.user.username}**!`)
+                                    db.set(`witchAbil_${witch[k]}`, 1)
                                     channe.send(`${alive}`)
                                     cannibal.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be killed!`)
                                     cannibal.send(`${alive}`)
@@ -2340,7 +2343,7 @@ module.exports = {
                                     let potion = db.get(`potion_${witch[b]}`)
                                     if (potion == glitch) {
                                         db.set(`potion_${witch[b]}`, null)
-                                        db.set(`witchAbil_${witch[b]}`, "yes")
+                                        db.set(`witchAbil_${witch[j]}`, 1)
                                         let chan = message.guild.channels.cache.get(witch[b])
                                         chan.send(`${getEmoji("potion", client)} Your potion saved **${corrupted.nickname} ${corrupted.user.username}**!`)
                                         chan.send(`${alive}`)
@@ -2820,7 +2823,7 @@ module.exports = {
                                         c = 99
                                         if (player.roles.cache.has(alive.id)) {
                                             db.set(`potion_${witch[b]}`, null)
-                                            db.set(`witchAbil_${witch[b]}`, "yes")
+                                            db.set(`witchAbil_${witch[b]}`, 1)
                                             illusionist.send(`${getEmoji("guard", client)} Player **${disguise.nickname} ${disguise.user.username}** could not be disguised!`)
                                             illusionist.send(`${alive}`)
                                             chan.send(`${getEmoji("potion", client)} Your potion saved **${disguise.nickname} ${disguise.user.username}**!`)
@@ -2986,8 +2989,8 @@ module.exports = {
                                                 ctar.send(`${alive}`)
                                                 wwChat.send(`Player **${guy.nickname} ${guy.user.username}** could not be converted! They were either protected, a solo killer, the Cursed or the Headhunter's target!`)
                                                 conversion = "0"
-                                                db.set(`potion_${chan.id}`, null)
-                                                db.set(`witchAbil_${chan.id}`, "1")
+                                                db.set(`potion_${witch[x]}`, null)
+                                                db.set(`witchAbil_${witch[x]}`, 1)
                                             }
                                         }
                                     }
@@ -3371,7 +3374,7 @@ module.exports = {
                             zombies.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** could not be bitten!`)
                             brains[i] = "0"
                             db.set(`potion_${chan.id}`, null)
-                            db.set(`witchAbil_${chan.id}`, "yes")
+                            db.set(`witchAbil_${witch[j]}`, 1)
                         }
                     }
                 }
