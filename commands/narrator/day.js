@@ -3505,11 +3505,10 @@ module.exports = {
             }
         }
 
-        for(let i = 0; i < baker.length; i++) {
+        for (let i = 0; i < baker.length; i++) {
             let tempchan = message.guild.channels.cache.get(baker[i])
-            for(let f = 1; f < alive.members.size + dead.members.size; f++) {
-                if(db.get(`bread_${tempchan.id}`) == f) {
-                    
+            for (let f = 1; f < alive.members.size + dead.members.size; f++) {
+                if (db.get(`bread_${tempchan.id}`) == f) {
                 }
             }
         }
