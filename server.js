@@ -175,6 +175,23 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     })
 }
 
+const { fn, getEmoji } = require('./config')
+setInterval(() => {
+  let lotteries = await lottery.find()
+  if (lotteries.length != 0) {
+    let lot = lotteries[0]
+    if(new Date().getTime() > lot.endDate) {
+      let chan = client.channels.cache.get('947930500725616700')
+      if (lot.participants.length == 0) {
+        chan.send(`No one has joined this lottery, so no winner.`)
+      }
+      let winner = fn.randomWeight(lot.participants)
+      let person = client.users.cache.find((u) => u.id === user);
+      chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${getEmoji("coin", client)}, they have been added to your balance.`)
+    }
+  }
+})
+
 client.debug = async (options = { game: false }) => {
     let data = {}
     data.night = Math.floor(db.get(`gamePhase`) / 3) + 1
