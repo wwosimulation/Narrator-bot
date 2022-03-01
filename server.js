@@ -190,7 +190,7 @@ setInterval(() => {
             chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${getEmoji("coin", client)}, they have been added to your balance.`)
         }
     }
-})
+}, 1000)
 
 client.debug = async (options = { game: false }) => {
     let data = {}
