@@ -176,6 +176,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
 }
 
 const { fn, getEmoji } = require("./config")
+const { lottery } = require("./db")
 setInterval(async () => {
     let lotteries = await lottery.find()
     if (lotteries.length != 0) {
