@@ -181,26 +181,26 @@ module.exports = (client) => {
             interaction.update({ embeds: [interaction.message.embeds[0]] })
         }
         if (interaction.customId == `yes`) {
-          let player = await players.findOne({ user: interaction.user.id })
-          let lot = await lottery.find()
-          lot = lot[0]
-          let tickets = parseInt(interaction.message.embeds[0].fields[0].value)
-          let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
-          lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
-          let lotsLeft = lot.max - lotsBought
-          if (tickets > lot.max) {
-            interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
-            interaction.message.embeds[0].fields[0].value = `\u200b`
-            return interaction.update({ embeds: [interaction.message.embeds[0]] })
-          } else {
-            let cost = lot.cost * tickets
-            if (cost > player.coins) {
-            interaction.reply({ content: `You don't have enough coins for that amount of tickets!`, ephemeral: true })
-            interaction.message.embeds[0].fields[0].value = `\u200b`
-            return interaction.update({ embeds: [interaction.message.embeds[0]] })
+            let player = await players.findOne({ user: interaction.user.id })
+            let lot = await lottery.find()
+            lot = lot[0]
+            let tickets = parseInt(interaction.message.embeds[0].fields[0].value)
+            let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
+            lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
+            let lotsLeft = lot.max - lotsBought
+            if (tickets > lot.max) {
+                interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
+                interaction.message.embeds[0].fields[0].value = `\u200b`
+                return interaction.update({ embeds: [interaction.message.embeds[0]] })
+            } else {
+                let cost = lot.cost * tickets
+                if (cost > player.coins) {
+                    interaction.reply({ content: `You don't have enough coins for that amount of tickets!`, ephemeral: true })
+                    interaction.message.embeds[0].fields[0].value = `\u200b`
+                    return interaction.update({ embeds: [interaction.message.embeds[0]] })
+                }
+                interaction.reply({ content: `You have bought ${tickets} tickets!`, ephemeral: true })
             }
-            interaction.reply({ content: `You have bought ${tickets} tickets!`, ephemeral: true })
-          }
         }
     })
 }
