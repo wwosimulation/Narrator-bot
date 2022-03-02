@@ -165,15 +165,21 @@ module.exports = (client) => {
             }
             let no = new MessageButton().setStyle("DANGER").setEmoji("606610883170271236").setCustomId(`no`)
             let zero = new MessageButton().setStyle("SECONDARY").setLabel(`0`).setCustomId(`0`)
-            let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`).setDisabled(true)
+            let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
             row4.addComponents(no, zero, yes)
             interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}\nHow many lots do you want to buy? `, ephemeral: true, components: [row1, row2, row3, row4] })
         }
 
         for (let i = 0; i <= 9; i++) {
+<<<<<<< HEAD
             if (interaction.customId == `${i}`) {
                 interaction.message.content += `${i}`
             }
+=======
+          if (interaction.customId == `${i}`) {
+             interaction.channel.send(`${interaction.message.content}`)
+          }
+>>>>>>> c1df7f7 (commiting to much)
         }
     })
 }
