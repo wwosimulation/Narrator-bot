@@ -56,7 +56,7 @@ module.exports = {
       .setEmoji("🎟") 
       .setCustomId("lottery")
       
-      let row = new discord MessageActionRow().addComponents(button)
+      let row = new discord.MessageActionRow().addComponents(button)
       
       
       let msg = interaction.channel.send({ embeds: [embed], components: [row] })
