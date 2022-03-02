@@ -172,7 +172,8 @@ module.exports = (client) => {
 
         for (let i = 0; i <= 9; i++) {
             if (interaction.customId == `${i}`) {
-                interaction.update({ content: interaction.message.embeds[0].fields[0].value + `${i}` })
+              interaction.message.embeds[0].fields[0].value += `${i}`
+                interaction.update({ embeds: [interactions.message.embed[0]] })
             }
         }
     })
