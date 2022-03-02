@@ -153,7 +153,7 @@ module.exports = (client) => {
             let row2 = new MessageActionRow()
             let row3 = new MessageActionRow()
             let row4 = new MessageActionRow()
-            for (let i = 1; i == 9; i++) {
+            for (let i = 1; i <= 9; i++) {
                 let button = new MessageButton().setStyle("PRIMARY").setLabel(`${i}`).setCustomId(`${i}`)
                 if (i <= 3) {
                     row1.addComponents(button)
