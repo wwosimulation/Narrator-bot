@@ -177,23 +177,23 @@ module.exports = (client) => {
             }
         }
         if (interaction.customId == `no`) {
-          interaction.message.embeds[0].fields[0].value = `\u200b`
-          interaction.update({ embeds: [interaction.message.embeds[0]] })
+            interaction.message.embeds[0].fields[0].value = `\u200b`
+            interaction.update({ embeds: [interaction.message.embeds[0]] })
         }
         if (interaction.customId == `yes`) {
-          let lot = await lottery.find()
-          lot = lot[0]
-          let tickets = interaction.message.embeds[0].fields[0].value
-          let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
-          lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
-          let lotsLeft = lot.max - lotsBought
-          if (tickets > lot.max) {
-            interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
-            interaction.message.embeds[0].fields[0].value = `\u200b`
-            return interaction.update({ embeds: [interaction.message.embeds[0]] })
-          } else {
-            interaction.reply({ content: `You have bought ${tickets} tickets!`, ephemeral: true })
-          }
+            let lot = await lottery.find()
+            lot = lot[0]
+            let tickets = interaction.message.embeds[0].fields[0].value
+            let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
+            lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
+            let lotsLeft = lot.max - lotsBought
+            if (tickets > lot.max) {
+                interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
+                interaction.message.embeds[0].fields[0].value = `\u200b`
+                return interaction.update({ embeds: [interaction.message.embeds[0]] })
+            } else {
+                interaction.reply({ content: `You have bought ${tickets} tickets!`, ephemeral: true })
+            }
         }
     })
 }
