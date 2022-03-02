@@ -169,11 +169,11 @@ module.exports = (client) => {
             row4.addComponents(no, zero, yes)
             interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}\nHow many lots do you want to buy? `, ephemeral: true, components: [row1, row2, row3, row4] })
         }
-        
+
         for (let i = 0; i <= 9; i++) {
-          if (interaction.customId == `${i}`) {
-             interaction.message.content += `${i}`
-          }
+            if (interaction.customId == `${i}`) {
+                interaction.message.content += `${i}`
+            }
         }
     })
 }
