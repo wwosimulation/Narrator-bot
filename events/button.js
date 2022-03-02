@@ -3,7 +3,7 @@ const { MessageButton } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
 const { shop, ids } = require("../config")
-const { lottery, players } = require("../../db")
+const { lottery, players } = require("../db")
 
 // Custom id "cancel" and "suicide" are used in "../commands/game/suicide.js"
 
