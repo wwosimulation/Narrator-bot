@@ -185,7 +185,7 @@ module.exports = (client) => {
             let lot = await lottery.find()
             lot = lot[0]
             let tickets = interaction.message.embeds[0].fields[0].value
-            tickets = parseFloat(tickets.replace( /^\D+/g, ''))
+            tickets = parseFloat(tickets.replace(/^\D+/g, ""))
             let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
             lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
             let lotsLeft = lot.max - lotsBought
