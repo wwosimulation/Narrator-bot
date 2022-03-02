@@ -148,8 +148,38 @@ module.exports = (client) => {
             let lot = await lottery.find()
             lot = lot[0]
             let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
-            lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
-            interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}`, ephemeral: true })
+            lotsBought ? lotsBought = Object.values(lotsBought) : lotsBought = 0
+            let row1 = new MessageActionRow()
+            let row2 = new MessageActionRow()
+            let row3 = new MessageActionRow()
+            let row4 = new MessageActionRow()
+            for (let i = 1; i == 9; i++ ) {
+              let button = new discord.MessageButton()
+              .setStyle("PRIMARY")
+              .setLabel(`${i}`)
+              .setCustomId(`${i}`)
+              if (i <= 3) {
+                row1.addComponents(button)
+              } else if ( i <= 6) {
+                row2.addComponents(button)
+              } else {
+                row3.addComponents(button)
+              }
+            }
+            let no = new discord.MessageButton()
+              .setStyle("DANGER")
+              .setEmoji('606610883170271236')
+              .setCustomId(`no`)
+              let zero = new discord.MessageButton()
+              .setStyle("PRIMARY")
+              .setLabel(`0`)
+              .setCustomId(`0`)
+              let yes = new discord.MessageButton()
+              .setStyle("SUCCESS")
+              .setEmoji(`606770420687044618`)
+              .setCustomId(`yes`)
+              row4.addComponents(no, zero, yes)
+            interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}`, ephemeral: true, components: [row1, row2, row3, row4]})
         }
     })
 }
