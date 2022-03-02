@@ -141,9 +141,9 @@ module.exports = (client) => {
             interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
             db.set(`choice_${channelID}`, "treat")
         }
-        
-        if(interaction.customId == "joinlottery") {
-          interaction.message.reply({ content: "hi", ephemeral: true})
+
+        if (interaction.customId == "joinlottery") {
+            interaction.message.reply({ content: "hi", ephemeral: true })
         }
     })
 }
