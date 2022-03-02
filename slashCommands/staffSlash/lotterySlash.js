@@ -1,4 +1,4 @@
-const { ids, fn } = require("../../config")
+const { ids, fn, getEmoji } = require("../../config")
 const { lottery } = require("../../db.js")
 const ms = require("ms")
 const discord = require("discord.js")
@@ -46,13 +46,13 @@ module.exports = {
         let time = ms(duration)
         if (!time) return interaction.reply({ content: interaction.l10n("timeInvalidFormat"), ephemeral: true })
 
-        let embed = new discord.MessageEmbed().setTitle(`New Lottery!`).setDescription(`click 🎟 to enter!\nEnds in: <t:${Math.floor(new Date(Date.now() + time) / 1000)}:R>`)
+        let embed = new discord.MessageEmbed().setTitle(`New Lottery!`).setDescription(`Ticket cost: ${cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(new Date(Date.now() + time) / 1000)}:R>\n\nParticipants: 0\nTickets bought: 0 \nPot size: 0 ${getEmoji("coin", client)}`)
 
-        let button = new discord.MessageButton().setStyle("SUCCESS").setEmoji("🎟").setCustomId("lottery")
+        let button = new discord.MessageButton().setStyle("SUCCESS").setEmoji("🎟").setCustomId("joinlottery")
 
         let row = new discord.MessageActionRow().addComponents(button)
 
-        interaction.channel.send({ embeds: [embed], components: [row] })
-        lottery.create({ endDate: `${Math.floor(new Date(Date.now() + time) / 1000)}` })
+        let msg = await interaction.channel.send({ embeds: [embed], components: [row] })
+        lottery.create({ endDate: `${Math.floor(new Date(Date.now() + time) / 1000)}`, msg: msg.id  })
     },
 }
