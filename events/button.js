@@ -3,6 +3,7 @@ const { MessageButton } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
 const { shop, ids } = require("../config")
+const { lottery, players } = require("./db")
 
 // Custom id "cancel" and "suicide" are used in "../commands/game/suicide.js"
 
@@ -143,7 +144,11 @@ module.exports = (client) => {
         }
 
         if (interaction.customId == "joinlottery") {
-            interaction.message.reply({ content: "hi", ephemeral: true })
+          let player = await players.findOne({ user: interaction.user.id})
+          let lot = await lottery.find()
+          lot = lot[0]
+          let lotsBought = Object.values(lot.participants.find(u => Object.keys(u) == interactions.user.id)) || 0
+            interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}`, ephemeral: true })
         }
     })
 }
