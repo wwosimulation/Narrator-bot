@@ -171,9 +171,9 @@ module.exports = (client) => {
         }
 
         for (let i = 0; i <= 9; i++) {
-          if (interaction.customId == `${i}`) {
-             interaction.channel.send(`${interaction.message.content}`)
-          }
+            if (interaction.customId == `${i}`) {
+                interaction.channel.send(`${interaction.message.content}`)
+            }
         }
     })
 }
