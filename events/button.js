@@ -154,7 +154,7 @@ module.exports = (client) => {
             let row3 = new MessageActionRow()
             let row4 = new MessageActionRow()
             for (let i = 1; i == 9; i++) {
-                let button = new discord.MessageButton().setStyle("PRIMARY").setLabel(`${i}`).setCustomId(`${i}`)
+                let button = new MessageButton().setStyle("PRIMARY").setLabel(`${i}`).setCustomId(`${i}`)
                 if (i <= 3) {
                     row1.addComponents(button)
                 } else if (i <= 6) {
@@ -163,9 +163,9 @@ module.exports = (client) => {
                     row3.addComponents(button)
                 }
             }
-            let no = new discord.MessageButton().setStyle("DANGER").setEmoji("606610883170271236").setCustomId(`no`)
-            let zero = new discord.MessageButton().setStyle("PRIMARY").setLabel(`0`).setCustomId(`0`)
-            let yes = new discord.MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
+            let no = new MessageButton().setStyle("DANGER").setEmoji("606610883170271236").setCustomId(`no`)
+            let zero = new MessageButton().setStyle("PRIMARY").setLabel(`0`).setCustomId(`0`)
+            let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
             row4.addComponents(no, zero, yes)
             interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}`, ephemeral: true, components: [row1, row2, row3, row4] })
         }
