@@ -190,8 +190,6 @@ setInterval(async () => {
                 let person = client.users.cache.find((u) => u.id === user)
                 chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${getEmoji("coin", client)}, they have been added to your balance.`)
             }
-            let message = await chan.messages.fetch(lot.msg)
-            message.edit({ components: [] })
             lot.remove()
         }
     }
