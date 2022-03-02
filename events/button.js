@@ -166,12 +166,7 @@ module.exports = (client) => {
             let zero = new MessageButton().setStyle("SECONDARY").setLabel(`0`).setCustomId(`0`)
             let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
             row4.addComponents(no, zero, yes)
-            let embed = new MessageEmbed()
-            .setTitle(`Lottery ticket shop`)
-            .setDescription(`Your coins: ${player.coins}\nYour lottery tickets bought: ${lotsBought}\nMax lottery tickets allowed: ${lot.max}`)
-            .addFields(
-              { name: "How many lottery tickets do you want to buy?", value: '\u200b'}
-              )
+            let embed = new MessageEmbed().setTitle(`Lottery ticket shop`).setDescription(`Your coins: ${player.coins}\nYour lottery tickets bought: ${lotsBought}\nMax lottery tickets allowed: ${lot.max}`).addFields({ name: "How many lottery tickets do you want to buy?", value: "\u200b" })
             interaction.reply({ embeds: [embed], ephemeral: true, components: [row1, row2, row3, row4] })
         }
 
