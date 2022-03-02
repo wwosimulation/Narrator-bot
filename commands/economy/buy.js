@@ -70,7 +70,7 @@ module.exports = {
                 info["amount"] = parseInt(args[2] || args[1]) || 1
             }
             let dbName
-            let i = ["desciption", "icon", "special", "channel"].indexOf(item.id)
+            let i = ["description", "icon", "special", "channel"].indexOf(item.id)
             if (i == -1 && !obj[`inventory.${item.id}`] && !chart.id) dbName = item.id
             else dbName = ["profileDesc", "profileIcon", "customRole", "privateChannel"][i]
             if (dbName && guy[dbName] !== false && guy[dbName] !== "") return l10nMesssage({ code: "alreadyPurchasedItem", toReplace: { item: item.name } })
