@@ -1,5 +1,4 @@
-const { MessageActionRow } = require("discord.js")
-const { MessageButton } = require("discord.js")
+const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
 const { shop, ids } = require("../config")
@@ -167,7 +166,13 @@ module.exports = (client) => {
             let zero = new MessageButton().setStyle("SECONDARY").setLabel(`0`).setCustomId(`0`)
             let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
             row4.addComponents(no, zero, yes)
-            interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}\nHow many lots do you want to buy? `, ephemeral: true, components: [row1, row2, row3, row4] })
+            let embed = new MessageEmbed()
+            .setTitle(`Lottery ticket shop`)
+            .setDescription(`Your coins: ${player.coins} Your lottery tickets bought: ${lotsBought} Max lottery tickets allowed: ${lot.max}`)
+            .addFields(
+              { name: "How many lottery tickets do you want to buy?", value: '\u200b 0'}
+              )
+            interaction.reply({ embeds: [embed], ephemeral: true, components: [row1, row2, row3, row4] })
         }
 
         for (let i = 0; i <= 9; i++) {
