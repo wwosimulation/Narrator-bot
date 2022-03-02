@@ -144,10 +144,10 @@ module.exports = (client) => {
         }
 
         if (interaction.customId == "joinlottery") {
-          let player = await players.findOne({ user: interaction.user.id})
-          let lot = await lottery.find()
-          lot = lot[0]
-          let lotsBought = Object.values(lot.participants.find(u => Object.keys(u) == interactions.user.id)) || 0
+            let player = await players.findOne({ user: interaction.user.id })
+            let lot = await lottery.find()
+            lot = lot[0]
+            let lotsBought = Object.values(lot.participants.find((u) => Object.keys(u) == interactions.user.id)) || 0
             interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}`, ephemeral: true })
         }
     })
