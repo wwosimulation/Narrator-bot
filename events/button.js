@@ -166,13 +166,18 @@ module.exports = (client) => {
             let zero = new MessageButton().setStyle("SECONDARY").setLabel(`0`).setCustomId(`0`)
             let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
             row4.addComponents(no, zero, yes)
-            let embed = new MessageEmbed().setTitle(`Lottery ticket shop`).setDescription(`Your coins: ${player.coins} Your lottery tickets bought: ${lotsBought} Max lottery tickets allowed: ${lot.max}`).addFields({ name: "How many lottery tickets do you want to buy?", value: "\u200b 0" })
+            let embed = new MessageEmbed()
+            .setTitle(`Lottery ticket shop`)
+            .setDescription(`Your coins: ${player.coins}\nYour lottery tickets bought: ${lotsBought}\nMax lottery tickets allowed: ${lot.max}`)
+            .addFields(
+              { name: "How many lottery tickets do you want to buy?", value: '\u200b'}
+              )
             interaction.reply({ embeds: [embed], ephemeral: true, components: [row1, row2, row3, row4] })
         }
 
         for (let i = 0; i <= 9; i++) {
             if (interaction.customId == `${i}`) {
-                interaction.update({ content: interaction.message.content + `${i}` })
+                interaction.update({ content: interaction.message.embeds[0].fields[0].value + `${i}` })
             }
         }
     })
