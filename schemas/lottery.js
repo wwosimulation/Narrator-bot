@@ -5,6 +5,7 @@ const schema = new mongoose.Schema({
     msg: { type: String, default: "" },
     pot: { type: Number, default: 0 },
     max: { type: Number, default: 0 },
+    coat: { type: Number, default: 0 },
     ticketsBought: { type: Number, default: 0 },
     endDate: { type: String, default: "" },
 })
