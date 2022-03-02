@@ -154,7 +154,7 @@ module.exports = (client) => {
             let row3 = new MessageActionRow()
             let row4 = new MessageActionRow()
             for (let i = 1; i <= 9; i++) {
-                let button = new MessageButton().setStyle("PRIMARY").setLabel(`${i}`).setCustomId(`${i}`)
+                let button = new MessageButton().setStyle("SECONDARY").setLabel(`${i}`).setCustomId(`${i}`)
                 if (i <= 3) {
                     row1.addComponents(button)
                 } else if (i <= 6) {
@@ -164,10 +164,16 @@ module.exports = (client) => {
                 }
             }
             let no = new MessageButton().setStyle("DANGER").setEmoji("606610883170271236").setCustomId(`no`)
-            let zero = new MessageButton().setStyle("PRIMARY").setLabel(`0`).setCustomId(`0`)
-            let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
+            let zero = new MessageButton().setStyle("SECONDARY").setLabel(`0`).setCustomId(`0`)
+            let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`).setDisabled(true)
             row4.addComponents(no, zero, yes)
-            interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}`, ephemeral: true, components: [row1, row2, row3, row4] })
+            interaction.reply({ content: `Your coins: ${player.coins} Your lots bought: ${lotsBought} Max lots allowed: ${lot.max}\nHow many lots do you want to buy? `, ephemeral: true, components: [row1, row2, row3, row4] })
+        }
+        
+        for (let i = 0; i <= 9; i++) {
+          if (interaction.customId == `${i}`) {
+             interaction.message.content += `${i}`
+          }
         }
     })
 }
