@@ -172,7 +172,7 @@ module.exports = (client) => {
 
         for (let i = 0; i <= 9; i++) {
             if (interaction.customId == `${i}`) {
-                interaction.message.edit({ content: interaction.message.content + `${i}` })
+                interaction.update({ content: interaction.message.content + `${i}`})
             }
         }
     })
