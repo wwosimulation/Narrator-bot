@@ -171,15 +171,9 @@ module.exports = (client) => {
         }
 
         for (let i = 0; i <= 9; i++) {
-<<<<<<< HEAD
-            if (interaction.customId == `${i}`) {
-                interaction.message.content += `${i}`
-            }
-=======
           if (interaction.customId == `${i}`) {
              interaction.channel.send(`${interaction.message.content}`)
           }
->>>>>>> c1df7f7 (commiting to much)
         }
     })
 }
