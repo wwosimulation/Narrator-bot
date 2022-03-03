@@ -55,8 +55,8 @@ module.exports = {
         let button = new discord.MessageButton().setStyle("SUCCESS").setEmoji("🎟").setCustomId("joinlottery")
 
         let row = new discord.MessageActionRow().addComponents(button)
-
-        let msg = await interaction.channel.send({ embeds: [embed], components: [row] })
+        let chan = client.channels.cache.get("947930500725616700")
+        let msg = await chan.send({ embeds: [embed], components: [row] })
         lottery.create({ endDate: `${Math.floor(new Date(Date.now() + time))}`, msg: msg.id, max: max, cost: cost })
     },
 }
