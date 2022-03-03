@@ -51,11 +51,11 @@ module.exports = {
                 let winner = fn.randomWeight(lot.participants)
                 let person = client.users.cache.find((u) => u.id === winner)
                 chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${getEmoji("coin", client)}, they have been added to your balance.`)
-                let msg = await interaction.channel.messages.fetch(lot.msg)
+                let msg = await chan.messages.fetch(lot.msg)
                 msg.edit({ components: [] })
             }
             interaction.reply({ content: `The lottery has ended!`, ephemeral: true })
-            let player = players.findOne({ user: person.id })
+            let player = await players.findOne({ user: person.id })
             player.coins += lot.pot
             player.save()
             lot.remove()
