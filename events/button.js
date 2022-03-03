@@ -187,19 +187,20 @@ module.exports = (client) => {
             let tickets = interaction.message.embeds[0].fields[0].value
             tickets = parseFloat(tickets.replace(/^\D+/g, ""))
             let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
+            let inter = interaction
             lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
             let lotsLeft = lot.max - lotsBought
             if (tickets > lot.max) {
                 await interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
-                interaction.message.embeds[0].fields[0].value = `\u200b`
-                interaction.editReply({ embeds: [interaction.message.embeds[0]] })
+                inter.message.embeds[0].fields[0].value = `\u200b`
+                inter.editReply({ embeds: [interaction.message.embeds[0]] })
                 return
             } else {
                 let cost = lot.cost * tickets
                 if (cost > player.coins) {
                     await interaction.reply({ content: `You don't have enough coins for that amount of lottery tickets!`, ephemeral: true })
-                    interaction.message.embeds[0].fields[0].value = `\u200b`
-                    interaction.update({ embeds: [interaction.message.embeds[0]] })
+                    inter.message.embeds[0].fields[0].value = `\u200b`
+                    inter.update({ embeds: [interaction.message.embeds[0]] })
                     return
                 }
                 interaction.followUp({ content: `You have bought ${tickets} tickets!`, ephemeral: true })
