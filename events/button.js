@@ -206,7 +206,6 @@ module.exports = (client) => {
             } else {
                 lot.participants.push({ [interaction.user.id]: tickets })
             }
-            lot.pot += lot.cost * tickets
             let allTickets
             lot.participants.forEach((parti) => {
                 allTickets += Object.values(parti)
@@ -214,6 +213,7 @@ module.exports = (client) => {
             let embed = new MessageEmbed().setTitle("New Lottery!").setDescription(`Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${lot.endDate / 1000}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${allTickets} \nPot size: ${lot.pot + lot.cost * tickets} ${getEmoji("coin", client)}`)
             let msg = await interaction.channel.messages.fetch(lot.msg)
             msg.edit({ embeds: [embed] })
+            lot.save()
         }
     })
 }
