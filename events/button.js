@@ -146,7 +146,7 @@ module.exports = (client) => {
             let player = await players.findOne({ user: interaction.user.id })
             let lot = await lottery.find()
             lot = lot[0]
-            let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
+            let lotsBought = lot.participants.find((u) => Object.keys(u) == interaction.user.id)
             lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
             let row1 = new MessageActionRow()
             let row2 = new MessageActionRow()
@@ -186,7 +186,7 @@ module.exports = (client) => {
             lot = lot[0]
             let tickets = interaction.message.embeds[0].fields[0].value
             tickets = parseFloat(tickets.replace(/^\D+/g, ""))
-            let lotsBought = lot.participants.find((u) => Object.keys(u) == interactions.user.id)
+            let lotsBought = lot.participants.find((u) => Object.keys(u) == interaction.user.id)
             lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
             let lotsLeft = lot.max - lotsBought
             if (tickets > lot.max) {
