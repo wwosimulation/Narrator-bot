@@ -191,7 +191,7 @@ module.exports = (client) => {
             let lotsLeft = lot.max - lotsBought
             console.log(tickets)
             console.log(lotsLeft)
-            if (tickets + lotsLeft >= lot.max) {
+            if (lotsLeft < tickets) {
                 interaction.update({ content: `You can only buy ${lotsLeft} more tickets!`, embeds: [], components: [] })
                 return
             } else {
