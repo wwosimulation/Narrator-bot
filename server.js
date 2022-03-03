@@ -191,11 +191,11 @@ setInterval(async () => {
                 chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${getEmoji("coin", client)}, they have been added to your balance.`)
                 // let msg = await chan.messages.fetch(lot.msg)
                 // msg.edit({ components: [] })
-            }
             let player = players.findOne({ user: person.id })
             player.coins += lot.pot
             player.save()
             lot.remove()
+            }
         }
     }
 }, 2000)
