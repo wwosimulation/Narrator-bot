@@ -189,8 +189,8 @@ setInterval(async () => {
                 let winner = fn.randomWeight(lot.participants)
                 let person = client.users.cache.find((u) => u.id === winner)
                 chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${getEmoji("coin", client)}, they have been added to your balance.`)
-                let msg = await chan.messages.fetch(lot.msg)
-                msg.edit({ components: [] })
+                // let msg = await chan.messages.fetch(lot.msg)
+                // msg.edit({ components: [] })
             }
             let player = players.findOne({ user: person.id })
             player.coins += lot.pot
