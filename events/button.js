@@ -203,16 +203,13 @@ module.exports = (client) => {
             let guy = lot.participants.find((parti) => Object.keys(parti) == interaction.user.id)
             if (guy) {
                 console.log(guy)
-                lot.participants.splice(lot.participants.indexOf(guy), 1, { [interaction.user.id]: Object.values(guy) + parseInt(tickets) })
+                lot.participants.splice(lot.participants.indexOf(guy), 1, { [interaction.user.id]: parseInt(Object.values(guy)) + parseInt(tickets) })
             } else {
                 lot.participants.push({ [interaction.user.id]: parseInt(tickets) })
             }
-            let allTickets = 0
-            lot.participants.forEach((parti) => {
-                allTickets += parseInt(Object.values(parti))
-            })
+            lot.ticketsBought += parseInt(tickets)
             lot.pot += lot.cost * parseInt(tickets)
-            let embed = new MessageEmbed().setTitle("New Lottery!").setDescription(`Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(lot.endDate / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${allTickets} \nPot size: ${lot.pot} ${getEmoji("coin", client)}`)
+            let embed = new MessageEmbed().setTitle("New Lottery!").setDescription(`Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(lot.endDate / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${lot.ticketsBought} \nPot size: ${lot.pot} ${getEmoji("coin", client)}`)
             let msg = await interaction.channel.messages.fetch(lot.msg)
             msg.edit({ embeds: [embed] })
             lot.save()
