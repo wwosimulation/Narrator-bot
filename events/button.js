@@ -206,10 +206,9 @@ module.exports = (client) => {
             lot.participants.forEach((parti) => {
                 allTickets += Object.values(parti)
             })
+            console.log(interaction.channel)
             let embed = new MessageEmbed().setTitle("New Lottery!").setDescription(`Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(new Date(lot.endDate) / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${allTickets} \nPot size: ${lot.pot + lot.cost * tickets} ${getEmoji("coin", client)}`)
             let msg = interaction.channel.messages.fetch(lot.msg)
-            msg.edit({ embeds: [embed] })
-            lot.save()
         }
     })
 }
