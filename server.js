@@ -187,7 +187,7 @@ setInterval(async () => {
                 chan.send(`No one has joined this lottery, so no winner.`)
             } else {
                 let winner = fn.randomWeight(lot.participants)
-                let person = client.users.cache.find((u) => u.id === user)
+                let person = client.users.cache.find((u) => u.id === winner)
                 chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${getEmoji("coin", client)}, they have been added to your balance.`)
             }
             lot.remove()
