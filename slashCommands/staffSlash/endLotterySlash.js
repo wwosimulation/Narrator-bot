@@ -54,7 +54,9 @@ module.exports = {
                 let msg = await interaction.channel.messages.fetch(lot.msg)
                 msg.edit({ components: [] })
             }
-            return interaction.reply({ content: `The lottery has ended!`, ephemeral: true })
+            interaction.reply({ content: `The lottery has ended!`, ephemeral: true })
+            player.coins += lot.pot
+            player.save()
             lot.remove()
         }
     },
