@@ -53,6 +53,6 @@ module.exports = {
         let row = new discord.MessageActionRow().addComponents(button)
 
         let msg = await interaction.channel.send({ embeds: [embed], components: [row] })
-        lottery.create({ endDate: `${Math.floor(new Date(Date.now() + time))}`, msg: msg.id, max: max })
+        lottery.create({ endDate: `${Math.floor(new Date(Date.now() + time))}`, msg: msg.id, max: max, cost: cost })
     },
 }
