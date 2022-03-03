@@ -4,7 +4,7 @@ const ms = require("ms")
 const discord = require("discord.js")
 module.exports = {
     command: {
-        name: "endLottery",
+        name: "endlottery",
         description: "end an lottery",
         options: [
             {
