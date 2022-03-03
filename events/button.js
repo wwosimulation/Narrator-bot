@@ -189,7 +189,7 @@ module.exports = (client) => {
             let lotsBought = lot.participants.find((u) => Object.keys(u) == interaction.user.id)
             lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
             let lotsLeft = lot.max - lotsBought
-            if (tickets > lot.max) {
+            if (tickets + lotsLeft => lot.max) {
                 interaction.update({ content: `You can only buy ${lotsLeft} more tickets!`, embeds: [], components: [] })
                 return
             } else {
