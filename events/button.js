@@ -198,12 +198,20 @@ module.exports = (client) => {
                     await interaction.update({ content: `You don't have enough coins for that amount of lottery tickets!`, embeds: [], components: [] })
                     return
                 }
-                interaction.update({ content: `You have bought ${tickets} tickets!`, embeds: [], components: [] })
-                lot.participants.push({ [interaction.user.id]: tickets })
-                let msg = interaction.channel.messages.fetch(lottery.msg)
-                msg.embeds[0].description = msg.embeds[0].description.replace(`Participants: ` + /[0-9]/g, `Participants: ${lot.participants.length}`)
-                msg.edit({ embeds: [msg.embeds[0]] })
             }
-        }
+                interaction.update({ content: `You have bought ${tickets} tickets!`, embeds: [], components: []})
+                lot.participants.push({[interaction.user.id]: tickets})
+                lot.pot += lot.cost * tickets
+                let allTickets
+                lot.participants.forEach(parti => {
+                  allTickets += Object.values(parti)
+                })
+                let embed = new MessageEmbed()
+                .setTitle('New Lottery!')
+                .setDescription(`Ticket cost: ${cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(new Date(lot.endDate) / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${allTickets} \nPot size: ${lot.pot + lot.cost * tickets} ${getEmoji("coin", client)}`)
+                let msg = interaction.channel.messages.fetch(lot.msg)
+                msg.edit({ embeds: [embed})
+                lot.save()
+            }
     })
 }
