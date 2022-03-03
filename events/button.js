@@ -200,7 +200,7 @@ module.exports = (client) => {
                     interaction.update({ embeds: [interaction.message.embeds[0]] })
                     return interaction.followUp({ content: `You don't have enough coins for that amount of lottery tickets!`, ephemeral: true })
                 }
-                interaction.followUp({content: `You have bought ${tickets} tickets!`, ephemeral: true })
+                interaction.followUp({ content: `You have bought ${tickets} tickets!`, ephemeral: true })
             }
         }
     })
