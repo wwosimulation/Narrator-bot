@@ -32,7 +32,7 @@ module.exports = {
         let winner = interaction.options.getString("winner")
         let lot = await lottery.find()
 
-        if (lot.length == 1) {
+        if (lot.length == 0) {
             return interaction.reply({ content: `There is no lottery going on.`, ephemeral: true })
         }
         lot = lot[0]
