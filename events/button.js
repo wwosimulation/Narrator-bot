@@ -193,7 +193,7 @@ module.exports = (client) => {
                 console.log(interaction)
                 interaction.message.embeds[0].fields[0].value = `\u200b`
                 interaction.update({ embeds: [interaction.message.embeds[0]] })
-                interaction.deferUpdate()
+                interaction.defer()
                 interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
                 return
             } else {
