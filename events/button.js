@@ -192,7 +192,7 @@ module.exports = (client) => {
             if (tickets > lot.max) {
                 console.log(interaction)
                 interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
-                interaction.message.delete({ timeout: 1000})
+                interaction.message.delete({ timeout: 1000 })
                 return
             } else {
                 let cost = lot.cost * tickets
