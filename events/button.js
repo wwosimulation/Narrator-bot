@@ -190,9 +190,11 @@ module.exports = (client) => {
             lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
             let lotsLeft = lot.max - lotsBought
             if (tickets > lot.max) {
+              console.log(interaction)
                 interaction.message.embeds[0].fields[0].value = `\u200b`
-                interaction.edit({ embeds: [interaction.message.embeds[0]] })
-                await interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
+                interaction.update({ embeds: [interaction.message.embeds[0]] })
+                console.log(interaction)
+                interaction.reply({ content: `You can only buy ${lotsLeft} more tickets!`, ephemeral: true })
                 return
             } else {
                 let cost = lot.cost * tickets
