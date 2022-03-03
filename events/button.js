@@ -198,7 +198,11 @@ module.exports = (client) => {
                     await interaction.update({ content: `You don't have enough coins for that amount of lottery tickets!`, embeds: [], components: [] })
                     return
                 }
-                interaction.update({ content: `You have bought ${tickets} tickets!`, embeds: [], components: [] })
+                interaction.update({ content: `You have bought ${tickets} tickets!`, embeds: [], components: []})
+                lottery.participants.push(interaction.user.id: tickets)
+                let msg = interaction.channel.messages.fetch(lottery.msg)
+                msg.embeds[0].description = msg.embeds[0].description.replace(`Participants: ` + /[0-9]/g, `Participants: ${lot.participants.length}`)
+                msg.edit({ embeds: [msg.embeds[0]]})
             }
         }
     })
