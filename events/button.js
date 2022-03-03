@@ -191,8 +191,8 @@ module.exports = (client) => {
             let lotsLeft = lot.max - lotsBought
             if (tickets > lot.max) {
                 console.log(interaction)
-                interaction.update({ content: `You can only buy ${lotsLeft} more tickets!`, embeds: [], components: []}).then(msg => {
-                  msg.delete({timeout: 1000})
+                interaction.update({ content: `You can only buy ${lotsLeft} more tickets!`, embeds: [], components: [] }).then((msg) => {
+                    msg.delete({ timeout: 1000 })
                 })
                 return
             } else {
