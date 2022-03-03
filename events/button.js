@@ -200,10 +200,10 @@ module.exports = (client) => {
                 }
             }
             interaction.update({ content: `You have bought ${tickets} tickets!`, embeds: [], components: [] })
-            let guy = lot.participants.find((parti) => Object.keys(parti) == interaction.user.id)
-            console.log(guy)
+            let guy = lot.participants.find(parti => Object.keys(parti) == interaction.user.id)
             if (guy) {
-                lot.participants.splice(lot.participants.indexOf(guy), 0, { [interaction.user.id]: Object.values(guy) + parseInt(tickets) })
+              console.log(guy)
+                lot.participants.splice(lot.participants.indexOf(guy), 1, { [interaction.user.id]: Object.values(guy) + parseInt(tickets) })
             } else {
                 lot.participants.push({ [interaction.user.id]: parseInt(tickets) })
             }
