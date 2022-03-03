@@ -196,7 +196,7 @@ module.exports = (client) => {
             } else {
                 let cost = lot.cost * tickets
                 if (cost > player.coins) {
-                    interaction.reply({ content: `You don't have enough coins for that amount of tickets!`, ephemeral: true })
+                    interaction.reply({ content: `You don't have enough coins for that amount of lottery tickets!`, ephemeral: true })
                     interaction.message.embeds[0].fields[0].value = `\u200b`
                     return interaction.update({ embeds: [interaction.message.embeds[0]] })
                 }
