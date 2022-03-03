@@ -42,7 +42,7 @@ module.exports = {
         let max = interaction.options.getString("max")
         let lot = lottery.find()
         if (lot.length == 1) {
-          return interaction.reply({ content: `There already is a lottery going on, please wait for it to end or end it yourself.`, ephemeral: true })
+            return interaction.reply({ content: `There already is a lottery going on, please wait for it to end or end it yourself.`, ephemeral: true })
         }
 
         if (isNaN(cost) || cost <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: cost }), ephemeral: true })

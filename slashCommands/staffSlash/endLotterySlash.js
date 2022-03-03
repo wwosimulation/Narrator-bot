@@ -13,8 +13,8 @@ module.exports = {
                 description: "Decide if there should be a winner or not.",
                 required: true,
                 choices: [
-                  { name: "yes", value: "yes" },
-                  { name: "no", value: "no" }
+                    { name: "yes", value: "yes" },
+                    { name: "no", value: "no" },
                 ],
             },
         ],
@@ -31,17 +31,17 @@ module.exports = {
     run: async (interaction, client) => {
         let winner = interaction.options.getString("winner")
         let lot = await lottery.find()
-        
+
         if (lot.length == 1) {
-          return interaction.reply({ content: `There is no lottery going on.`, ephemeral: true })
+            return interaction.reply({ content: `There is no lottery going on.`, ephemeral: true })
         }
         lot = lot[0]
-        
+
         if (winner == "no") {
             let msg = await interaction.channel.messages.fetch(lot.msg)
             msg.edit({ components: [] })
             lot.remove()
-            
+
             return interaction.reply({ content: `The lottery has been ended without a winner being chosen!`, ephemeral: true })
         } else {
             let chan = client.channels.cache.get("947930500725616700")
