@@ -190,7 +190,7 @@ module.exports = (client) => {
             lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
             let lotsLeft = lot.max - lotsBought
             if (tickets > lot.max) {
-              console.log(interaction)
+                console.log(interaction)
                 interaction.message.embeds[0].fields[0].value = `\u200b`
                 interaction.update({ embeds: [interaction.message.embeds[0]] })
                 console.log(interaction)
