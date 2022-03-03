@@ -211,7 +211,7 @@ module.exports = (client) => {
                 allTickets += parseInt(Object.values(parti))
             })
             lot.pot += lot.cost * parseInt(tickets)
-            let embed = new MessageEmbed().setTitle("New Lottery!").setDescription(`Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.float(lot.endDate / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${allTickets} \nPot size: ${lot.pot} ${getEmoji("coin", client)}`)
+            let embed = new MessageEmbed().setTitle("New Lottery!").setDescription(`Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(lot.endDate / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${allTickets} \nPot size: ${lot.pot} ${getEmoji("coin", client)}`)
             let msg = await interaction.channel.messages.fetch(lot.msg)
             msg.edit({ embeds: [embed] })
             lot.save()
