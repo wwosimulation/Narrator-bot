@@ -192,6 +192,9 @@ setInterval(async () => {
                 let msg = await interaction.channel.messages.fetch(lot.msg)
                 msg.edit({ components: [] })
             }
+            let player = players.findOne({ user: person.id })
+            player.coins += lot.pot
+            player.save()
             lot.remove()
         }
     }
