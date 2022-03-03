@@ -195,10 +195,10 @@ module.exports = (client) => {
             } else {
                 let cost = lot.cost * tickets
                 if (cost > player.coins) {
-                    await interaction.update({ content: `You don't have enough coins for that amount of lottery tickets!`, embeds: [], components: []})
+                    await interaction.update({ content: `You don't have enough coins for that amount of lottery tickets!`, embeds: [], components: [] })
                     return
                 }
-                interaction.update({ content: `You have bought ${tickets} tickets!`, embeds: [], components: []})
+                interaction.update({ content: `You have bought ${tickets} tickets!`, embeds: [], components: [] })
             }
         }
     })
