@@ -141,5 +141,82 @@ module.exports = (client) => {
             interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
             db.set(`choice_${channelID}`, "treat")
         }
+        if (interaction.customId == "joinlottery") {
+            let player = await players.findOne({ user: interaction.user.id })
+            let lot = await lottery.find()
+            lot = lot[0]
+            let lotsBought = lot.participants.find((u) => Object.keys(u) == interaction.user.id)
+            lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
+            let row1 = new MessageActionRow()
+            let row2 = new MessageActionRow()
+            let row3 = new MessageActionRow()
+            let row4 = new MessageActionRow()
+            for (let i = 1; i <= 9; i++) {
+                let button = new MessageButton().setStyle("SECONDARY").setLabel(`${i}`).setCustomId(`${i}`)
+                if (i <= 3) {
+                    row1.addComponents(button)
+                } else if (i <= 6) {
+                    row2.addComponents(button)
+                } else {
+                    row3.addComponents(button)
+                }
+            }
+            let no = new MessageButton().setStyle("DANGER").setEmoji("606610883170271236").setCustomId(`no`)
+            let zero = new MessageButton().setStyle("SECONDARY").setLabel(`0`).setCustomId(`0`)
+            let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
+            row4.addComponents(no, zero, yes)
+            let embed = new MessageEmbed().setTitle(`Lottery ticket shop`).setDescription(`Your coins: ${player.coins}\nYour lottery tickets bought: ${lotsBought}\nMax lottery tickets allowed: ${lot.max}`).addFields({ name: "How many lottery tickets do you want to buy?", value: "\u200b" })
+            interaction.reply({ embeds: [embed], ephemeral: true, components: [row1, row2, row3, row4] })
+        }
+
+        for (let i = 0; i <= 9; i++) {
+            if (interaction.customId == `${i}`) {
+                interaction.message.embeds[0].fields[0].value += `${i}`
+                interaction.update({ embeds: [interaction.message.embeds[0]] })
+            }
+        }
+        if (interaction.customId == `no`) {
+            interaction.message.embeds[0].fields[0].value = `\u200b`
+            interaction.update({ embeds: [interaction.message.embeds[0]] })
+        }
+        if (interaction.customId == `yes`) {
+            let player = await players.findOne({ user: interaction.user.id })
+            let lot = await lottery.find()
+            lot = lot[0]
+            let tickets = interaction.message.embeds[0].fields[0].value
+            tickets = parseFloat(tickets.replace(/^\D+/g, ""))
+            let lotsBought = lot.participants.find((u) => Object.keys(u) == interaction.user.id)
+            lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
+            let lotsLeft = lot.max - lotsBought
+            console.log(tickets)
+            console.log(lotsLeft)
+            if (lotsLeft == 0) {
+                return interaction.update({ content: `You can not buy more tickets!`, embeds: [], components: [] })
+            } else if (lotsLeft < tickets) {
+                return interaction.update({ content: `You can only buy ${lotsLeft} more tickets!`, embeds: [], components: [] })
+            } else {
+                let cost = lot.cost * tickets
+                if (cost > player.coins) {
+                    await interaction.update({ content: `You don't have enough coins for that amount of lottery tickets!`, embeds: [], components: [] })
+                    return
+                }
+            }
+            interaction.update({ content: `You have bought ${tickets} tickets!`, embeds: [], components: [] })
+            let guy = lot.participants.find((parti) => Object.keys(parti) == interaction.user.id)
+            if (guy) {
+                console.log(guy)
+                lot.participants.splice(lot.participants.indexOf(guy), 1, { [interaction.user.id]: parseInt(Object.values(guy)) + parseInt(tickets) })
+            } else {
+                lot.participants.push({ [interaction.user.id]: parseInt(tickets) })
+            }
+            lot.ticketsBought += parseInt(tickets)
+            lot.pot += lot.cost * parseInt(tickets)
+            let embed = new MessageEmbed().setTitle("New Lottery!").setDescription(`Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(lot.endDate / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${lot.ticketsBought} \nPot size: ${lot.pot} ${getEmoji("coin", client)}`)
+            let msg = await interaction.channel.messages.fetch(lot.msg)
+            msg.edit({ embeds: [embed] })
+            player.coins -= lot.cost * parseInt(tickets)
+            player.save()
+            lot.save()
+        }
     })
 }
