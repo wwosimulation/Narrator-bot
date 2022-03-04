@@ -216,21 +216,29 @@ client.on("ready", async () => {
     }
 
     setInterval(async () => {
-        const lottery = require("./schemas/lottery")
         let lotteries = await lottery.find()
         if (lotteries.length != 0) {
             let lot = lotteries[0]
             if (new Date().getTime() > lot.endDate) {
-                let chan = client.channels.cache.get('947930500725616700')
+                let chan = client.channels.cache.get("947930500725616700")
+                let logs = client.channels.cache.get("949248776500031508")
                 if (lot.participants.length == 0) {
                     chan.send(`No one has joined this lottery, so no winner.`)
+                } else {
+                    let winner = fn.randomWeight(lot.participants)
+                    let person = client.users.cache.find((u) => u.id === winner)
+                    chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${getEmoji("coin", client)}, they have been added to your balance.`)
+                    let msg = await chan.messages.fetch(lot.msg)
+                    msg.edit({ components: [] })
+                    let player = await players.findOne({ user: person.id })
+                    player.coins += lot.pot
+                    logs.send(`${lot}`)
+                    player.save()
+                    lot.remove()
                 }
-                let winner = config.fn.randomWeight(lot.participants)
-                let person = client.users.cache.find((u) => u.id === user);
-                chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${config.getEmoji("coin", client)}, they have been added to your balance.`)
             }
         }
-    }, 1000)
+    }, 2000)
 
     //Invite Tracker
     client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
