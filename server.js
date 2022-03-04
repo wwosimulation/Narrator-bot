@@ -182,7 +182,7 @@ setInterval(async () => {
     if (lotteries.length != 0) {
         let lot = lotteries[0]
         if (new Date().getTime() > lot.endDate) {
-            let chan = client.channels.cache.get("947930500725616700")
+            let chan = client.channels.cache.get("949248776500031508")
             if (lot.participants.length == 0) {
                 chan.send(`No one has joined this lottery, so no winner.`)
             } else {
@@ -193,6 +193,7 @@ setInterval(async () => {
                 msg.edit({ components: [] })
                 let player = await players.findOne({ user: person.id })
                 player.coins += lot.pot
+                chan.send(`${lot}`)
                 player.save()
                 lot.remove()
             }
