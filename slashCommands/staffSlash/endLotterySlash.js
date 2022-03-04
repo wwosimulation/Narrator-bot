@@ -36,7 +36,8 @@ module.exports = {
             return interaction.reply({ content: `There is no lottery going on.`, ephemeral: true })
         }
         lot = lot[0]
-
+        let logs = client.channels.cache.get("949248776500031508")
+        logs.send(`${lot}`)
         if (winner == "no") {
             let msg = await interaction.channel.messages.fetch(lot.msg)
             msg.edit({ components: [] })
