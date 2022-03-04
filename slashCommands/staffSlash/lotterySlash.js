@@ -45,7 +45,6 @@ module.exports = {
             return interaction.reply({ content: `There already is a lottery going on, please wait for it to end or end it yourself.`, ephemeral: true })
         }
 
-        if (isNaN(cost) || cost <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: cost }), ephemeral: true })
         if (isNaN(max) || max <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: max }), ephemeral: true })
         let time = ms(duration)
         if (!time) return interaction.reply({ content: interaction.l10n("timeInvalidFormat"), ephemeral: true })
