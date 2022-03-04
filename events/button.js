@@ -1,8 +1,8 @@
-const { MessageActionRow } = require("discord.js")
-const { MessageButton } = require("discord.js")
+const { MessageActionRow, MessageButton } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
-const { shop, ids } = require("../config")
+const { shop, ids, getEmoji } = require("../config")
+const { lottery, players } = require("../db")
 
 // Custom id "cancel" and "suicide" are used in "../commands/game/suicide.js"
 
