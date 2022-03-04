@@ -216,6 +216,7 @@ client.on("ready", async () => {
     }
 
     setInterval(async () => {
+        let lottery = require("./schemas/lottery")
         let lotteries = await lottery.find()
         if (lotteries.length != 0) {
             let lot = lotteries[0]
