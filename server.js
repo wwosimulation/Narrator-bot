@@ -94,8 +94,8 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
         await msg.react("▶️")
         await msg.react("⏩")
     }
-    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
-    if (!reaction) return msg.reactions.removeAll().catch(() => {})
+    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => { })
+    if (!reaction) return msg.reactions.removeAll().catch(() => { })
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
     if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
@@ -214,6 +214,23 @@ client.on("ready", async () => {
             },
         })
     }
+
+    setInterval(async () => {
+        const lottery = require("./schemas/lottery")
+        let lotteries = await lottery.find()
+        if (lotteries.length != 0) {
+            let lot = lotteries[0]
+            if (new Date().getTime() > lot.endDate) {
+                let chan = client.channels.cache.get('947930500725616700')
+                if (lot.participants.length == 0) {
+                    chan.send(`No one has joined this lottery, so no winner.`)
+                }
+                let winner = config.fn.randomWeight(lot.participants)
+                let person = client.users.cache.find((u) => u.id === user);
+                chan.send(`Congratulations to ${person} for winning the lottery! You have won ${lot.pot} ${config.getEmoji("coin", client)}, they have been added to your balance.`)
+            }
+        }
+    }, 1000)
 
     //Invite Tracker
     client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
