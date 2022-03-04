@@ -192,10 +192,9 @@ module.exports = (client) => {
             console.log(tickets)
             console.log(lotsLeft)
             if (lotsLeft == 0) {
-                interaction.update({ content: `You can not buy more tickets!`, embeds: [], components: [] })
+                return interaction.update({ content: `You can not buy more tickets!`, embeds: [], components: [] })
             } else if (lotsLeft < tickets) {
-                interaction.update({ content: `You can only buy ${lotsLeft} more tickets!`, embeds: [], components: [] })
-                return
+                return interaction.update({ content: `You can only buy ${lotsLeft} more tickets!`, embeds: [], components: [] })
             } else {
                 let cost = lot.cost * tickets
                 if (cost > player.coins) {
