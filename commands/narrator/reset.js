@@ -56,6 +56,7 @@ module.exports = {
             let hacker = message.guild.channels.cache.filter((c) => c.name === "priv-hacker").map((x) => x.id)
             let king = message.guild.channels.cache.filter((c) => c.name === "priv-pumpkin-king").map((x) => x.id)
             let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
+            let baker = message.guild.channels.cache.filter((c) => c.name === "priv-baker").map((x) => x.id)
 
             db.delete(`excludes`)
 
@@ -297,6 +298,10 @@ module.exports = {
                 if (db.get(`bitten_${allChannels[i]}`) == true) {
                     db.delete(`bitten_${allChannels[i]}`)
                 }
+            }
+
+            for(let i = 0; i < baker.length; i++) {
+                db.delete(`bread_${baker[i]}`)
             }
 
             const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
