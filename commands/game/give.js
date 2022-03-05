@@ -101,15 +101,15 @@ module.exports = {
             }
         } else if (message.channel.name == "priv-baker") {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let guy = message.guild.members.cache.find(m => m.nickname == args[0])
+            let guy = message.guild.members.cache.find((m) => m.nickname == args[0])
 
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You tried to share your bread. Sadly nobody saw you and the bread. You are dead.")
-            if(!args[0]) return message.channel.send("Please mention a player. Usage: `+give <player>`")
-            if(!guy || !guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Hmm. I couldn't find this person. Please make sure they are alive, exist and are not you.")
+            if (!args[0]) return message.channel.send("Please mention a player. Usage: `+give <player>`")
+            if (!guy || !guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Hmm. I couldn't find this person. Please make sure they are alive, exist and are not you.")
             if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
 
             db.set(`bread_${message.channel.id}`, guy.nickname)
-            message.channel.send({content: `${getEmoji("baker_bread", client)} You gave your bread to **${guy.nickname} ${guy.user.tag}**`})
+            message.channel.send({ content: `${getEmoji("baker_bread", client)} You gave your bread to **${guy.nickname} ${guy.user.tag}**` })
         }
     },
 }
