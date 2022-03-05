@@ -736,7 +736,7 @@ module.exports = {
             })
 
             // baker bread
-            for(let i = 0; i < baker.length; i++) {
+            for (let i = 0; i < baker.length; i++) {
                 db.delete(`bread_${baker[i]}`)
             }
 
