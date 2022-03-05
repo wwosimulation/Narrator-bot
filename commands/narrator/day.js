@@ -3510,9 +3510,11 @@ module.exports = {
             for (let f = 1; f <= alive.members.size + dead.members.size; f++) {
                 let guy = message.guild.members.cache.find((m) => m.displayName == f)
                 if (db.get(`bread_${tempchan.id}`) == f && guy) {
-                    message.guild.channels.cache.find((x) => x.name == "private channels").children.each((chan) => {
-                        if(chan.permissionsFor(guy).has("VIEW_CHANNEL")) chan.send(`${getEmoji("baker_bread", client)} You received a bread from the baker. Your vote will count twice today.`)
-                    })
+                    message.guild.channels.cache
+                        .find((x) => x.name == "private channels")
+                        .children.each((chan) => {
+                            if (chan.permissionsFor(guy).has("VIEW_CHANNEL")) chan.send(`${getEmoji("baker_bread", client)} You received a bread from the baker. Your vote will count twice today.`)
+                        })
                 }
             }
         }
