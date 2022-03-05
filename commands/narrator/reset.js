@@ -42,7 +42,7 @@ module.exports = {
                 if (!save.includes(i.ID)) db.delete(i.ID)
             })
 
-            for(let i = 0; i < baker.length; i++) {
+            for (let i = 0; i < baker.length; i++) {
                 db.delete(`bread_${baker[i]}`)
             }
 
