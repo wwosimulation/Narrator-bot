@@ -745,9 +745,10 @@ module.exports = {
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === i.toString())
                 if (tempguy) {
                     if (tempguy.roles.cache.has(alive.id)) {
-                        if (zombies.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        if (db.get(`role_${tempguy.id}`) === "Zombie") {
                             zombies.permissionOverwrites.edit(tempguy.id, {
                                 SEND_MESSAGES: true,
+                                READ_MESSAGE_HISTORY: true
                             })
                         }
                     }
