@@ -63,7 +63,10 @@ module.exports = {
         let thekiller = []
         let hhtarget = []
         let drc
-        let currentAliveRoles = db.all().filter(data => data.ID.startsWith("role_") && message.guild.members.cache.get(data.ID.split("_")[1])?.roles.cache.has(alive.id)).map(data => [data.ID.split("_")[1], db.get(data.ID)])
+        let currentAliveRoles = db
+            .all()
+            .filter((data) => data.ID.startsWith("role_") && message.guild.members.cache.get(data.ID.split("_")[1])?.roles.cache.has(alive.id))
+            .map((data) => [data.ID.split("_")[1], db.get(data.ID)])
 
         // delete's dc their temp channel
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
@@ -89,7 +92,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === x.toString())
             if (guy) {
                 if (guy.roles.cache.has(alive.id)) {
-                    dayChat.permissionOverwrites.delete(guy.id, "Removed all overwrites to start the day.")                    
+                    dayChat.permissionOverwrites.delete(guy.id, "Removed all overwrites to start the day.")
                     let role = db.get(`role_${guy.id}`)
                     let allchans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`)
                     allchans.forEach((chan) => {
@@ -1486,16 +1489,16 @@ module.exports = {
                     }
                 }
             }
-            
+
             if (db.get(`kittenWolfConvert`) === true) {
                 let beforerole = db.get(`role_${guy.id}`)
-                let allChanRole = message.guild.channels.cache.filter(c => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
-                allChanRole.forEach(roleChan => {
+                let allChanRole = message.guild.channels.cache.filter((c) => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
+                allChanRole.forEach((roleChan) => {
                     if (roleChan.permissionsFor(guy.id).has("VIEW_CHANNEL")) {
                         roleChan.permissionOverwrites.edit(guy.id, {
                             VIEW_CHANNEL: false,
                             SEND_MESSAGES: false,
-                            READ_MESSAGE_HISTORY: false
+                            READ_MESSAGE_HISTORY: false,
                         })
                     }
                 })
@@ -1504,39 +1507,41 @@ module.exports = {
                 wwChat.permissionOverwrites.edit(guy.id, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: false,
-                    READ_MESSAGE_HISTORY: true
+                    READ_MESSAGE_HISTORY: true,
                 })
-                message.guild.channels.create("priv-werewolf", {
-                    parent: "892046231516368906"
-                }).then(async newWwChan => {
-                    newWwChan.permissionOverwrites.create(guy.id, {
-                        SEND_MESSAGES: true,
-                        VIEW_CHANNEL: true,
-                        READ_MESSAGE_HISTORY: true,
+                message.guild.channels
+                    .create("priv-werewolf", {
+                        parent: "892046231516368906",
                     })
-                    newWwChan.permissionOverwrites.create(message.guild.id, {
-                        VIEW_CHANNEL: false,
+                    .then(async (newWwChan) => {
+                        newWwChan.permissionOverwrites.create(guy.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                        })
+                        newWwChan.permissionOverwrites.create(message.guild.id, {
+                            VIEW_CHANNEL: false,
+                        })
+                        newWwChan.permissionOverwrites.create(narrator.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                            MANAGE_CHANNELS: true,
+                            MENTION_EVERYONE: true,
+                            ATTACH_FILES: true,
+                        })
+                        newWwChan.permissionOverwrites.create(narrator.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                            MANAGE_CHANNELS: true,
+                            MENTION_EVERYONE: true,
+                            ATTACH_FILES: true,
+                        })
+                        await newWwChan.send(getRole("werewolf").description)
+                        await newWwChan.send("You have been bitten! You are a werewolf now!")
+                        kills[0] = "0"
                     })
-                    newWwChan.permissionOverwrites.create(narrator.id, {
-                        SEND_MESSAGES: true,
-                        VIEW_CHANNEL: true,
-                        READ_MESSAGE_HISTORY: true,
-                        MANAGE_CHANNELS: true,
-                        MENTION_EVERYONE: true,
-                        ATTACH_FILES: true,
-                    })
-                    newWwChan.permissionOverwrites.create(narrator.id, {
-                        SEND_MESSAGES: true,
-                        VIEW_CHANNEL: true,
-                        READ_MESSAGE_HISTORY: true,
-                        MANAGE_CHANNELS: true,
-                        MENTION_EVERYONE: true,
-                        ATTACH_FILES: true,
-                    })
-                    await newWwChan.send(getRole("werewolf").description)
-                    await newWwChan.send("You have been bitten! You are a werewolf now!")
-                    kills[0] = "0"                
-                })
             }
 
             if (kills[0] != "0") {
@@ -1619,7 +1624,7 @@ module.exports = {
                             shush.roles.remove(alive.id)
                             killedplayers.push(shush.id)
                             thekiller.push(THEBH.id)
-                            l = 99999;
+                            l = 99999
                         }
                     }
                 }
@@ -1875,18 +1880,18 @@ module.exports = {
                     }
                 }
             }
-            
+
             // if kitten wolf convert exists
-            
+
             if (db.get(`kittenWolfConvert`) === true) {
                 let beforerole = db.get(`role_${guy.id}`)
-                let allChanRole = message.guild.channels.cache.filter(c => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
-                allChanRole.forEach(roleChan => {
+                let allChanRole = message.guild.channels.cache.filter((c) => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
+                allChanRole.forEach((roleChan) => {
                     if (roleChan.permissionsFor(guy.id).has("VIEW_CHANNEL")) {
                         roleChan.permissionOverwrites.edit(guy.id, {
                             VIEW_CHANNEL: false,
                             SEND_MESSAGES: false,
-                            READ_MESSAGE_HISTORY: false
+                            READ_MESSAGE_HISTORY: false,
                         })
                     }
                 })
@@ -1895,39 +1900,41 @@ module.exports = {
                 wwChat.permissionOverwrites.edit(guy.id, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: false,
-                    READ_MESSAGE_HISTORY: true
+                    READ_MESSAGE_HISTORY: true,
                 })
-                message.guild.channels.create("priv-werewolf", {
-                    parent: "892046231516368906"
-                }).then(async newWwChan => {
-                    newWwChan.permissionOverwrites.create(guy.id, {
-                        SEND_MESSAGES: true,
-                        VIEW_CHANNEL: true,
-                        READ_MESSAGE_HISTORY: true,
+                message.guild.channels
+                    .create("priv-werewolf", {
+                        parent: "892046231516368906",
                     })
-                    newWwChan.permissionOverwrites.create(message.guild.id, {
-                        VIEW_CHANNEL: false,
+                    .then(async (newWwChan) => {
+                        newWwChan.permissionOverwrites.create(guy.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                        })
+                        newWwChan.permissionOverwrites.create(message.guild.id, {
+                            VIEW_CHANNEL: false,
+                        })
+                        newWwChan.permissionOverwrites.create(narrator.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                            MANAGE_CHANNELS: true,
+                            MENTION_EVERYONE: true,
+                            ATTACH_FILES: true,
+                        })
+                        newWwChan.permissionOverwrites.create(mininarr.id, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true,
+                            MANAGE_CHANNELS: true,
+                            MENTION_EVERYONE: true,
+                            ATTACH_FILES: true,
+                        })
+                        await newWwChan.send(getRole("werewolf").description)
+                        await newWwChan.send("You have been bitten! You are a werewolf now!")
+                        wwKill = "0"
                     })
-                    newWwChan.permissionOverwrites.create(narrator.id, {
-                        SEND_MESSAGES: true,
-                        VIEW_CHANNEL: true,
-                        READ_MESSAGE_HISTORY: true,
-                        MANAGE_CHANNELS: true,
-                        MENTION_EVERYONE: true,
-                        ATTACH_FILES: true,
-                    })
-                    newWwChan.permissionOverwrites.create(mininarr.id, {
-                        SEND_MESSAGES: true,
-                        VIEW_CHANNEL: true,
-                        READ_MESSAGE_HISTORY: true,
-                        MANAGE_CHANNELS: true,
-                        MENTION_EVERYONE: true,
-                        ATTACH_FILES: true,
-                    })
-                    await newWwChan.send(getRole("werewolf").description)
-                    await newWwChan.send("You have been bitten! You are a werewolf now!")
-                    wwKill = "0"                
-                })
             }
 
             // killing the player
@@ -2633,7 +2640,7 @@ module.exports = {
             let chan = message.guild.channels.cache.get(alchemist[a])
             let redpotion = db.get(`redpotion_${chan.id}`)
             let blackpotion = db.get(`blackpotion_${chan.id}`)
-            let theAlchemist = message.guild.members.cache.find(m => m.roles.cache.has(alive.id) && chan.permissionsFor(m.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]))
+            let theAlchemist = message.guild.members.cache.find((m) => m.roles.cache.has(alive.id) && chan.permissionsFor(m.id).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]))
             if (theAlchemist) {
                 if (redpotion) {
                     let guy = message.guild.members.cache.find((m) => m.nickname === redpotion)
@@ -3587,10 +3594,13 @@ module.exports = {
                 }
             }
         }
-        
+
         // kill zombies
-        let allZombiePlayers = db.all().filter(data => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie").map(data => data.split("_")[1])
-        allZombiePlayers.forEach(zombPlayer => {
+        let allZombiePlayers = db
+            .all()
+            .filter((data) => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie")
+            .map((data) => data.split("_")[1])
+        allZombiePlayers.forEach((zombPlayer) => {
             if (db.get(`bittenAt_${zombPlayer}`) + 3 <= day) {
                 let zombGuy = message.guild.members.cache.get(zombPlayer)
                 dayChat.send(`${getEmoji("zombie", client)} Player **${zombGuy.nickname} ${zombGuy.user.username}** was the Zombie. They have lived for 3 days and will now rot to death.`)
@@ -3713,9 +3723,9 @@ module.exports = {
                 let suspects = []
                 let targetFailed = true
                 let chan = message.guild.channels.cache.get(sheriff[i])
-                let theSheriffs = alive.members.cache.filter(mem => db.get(`role_${mem.id}`) === "Sheriff")
+                let theSheriffs = alive.members.cache.filter((mem) => db.get(`role_${mem.id}`) === "Sheriff")
                 let theOneSheriff = null
-                theSheriffs.forEach(sheriffPlayer => {
+                theSheriffs.forEach((sheriffPlayer) => {
                     if (chan.permissionsFor(sheriffPlayer.id).has("VIEW_CHANNEL")) {
                         theOneSheriff = sheriffPlayer
                     }
