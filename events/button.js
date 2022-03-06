@@ -110,11 +110,11 @@ module.exports = (client) => {
             foundUser = interaction.guild.members.resolve(user)
             switch (action) {
                 case "no":
-                    foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` })
+                    foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` }).catch(e => { interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." }) })
                     interaction.reply({ content: `No one can host, so the user has been informed. Thank you ${interaction.member}` })
                     break
                 case "yes":
-                    foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.user.tag} is starting one soon!.` })
+                    foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.user.tag} is starting one soon!.` }).catch(e => { interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." }) })
                     interaction.reply({ content: `${interaction.user} is now hosting a game! The user has been informed.` })
                     break
                 default:
