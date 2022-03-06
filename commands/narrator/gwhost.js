@@ -4,7 +4,7 @@ const { ids } = require("../../config")
 
 module.exports = {
     name: "gwhost",
-    description: "",
+    description: "Creates a game.",
     usage: `${process.env.PREFIX}gwhost [supervisor] <game...>`,
     narratorOnly: true,
     run: async (message, args, client) => {
