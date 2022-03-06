@@ -1,5 +1,6 @@
 module.exports = {
     name: "progpeace",
+    description: "Manually do peace action of prognosticator if bot bugs!",
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
