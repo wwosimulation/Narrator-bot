@@ -3710,8 +3710,15 @@ module.exports = {
                 let suspects = []
                 let targetFailed = true
                 let chan = message.guild.channels.cache.get(sheriff[i])
-                let snipe = db.get(`snipe_${chan.id}`)
-                if (snipe != null) {
+                let theSheriffs = alive.members.cache.filter(mem => db.get(`role_${mem.id}`) === "Sheriff")
+                let theOneSheriff = null
+                theSheriffs.forEach(sheriffPlayer => {
+                    if (chan.permissionsFor(sheriffPlayer.id).has("VIEW_CHANNEL")) {
+                        theOneSheriff = sheriffPlayer
+                    }
+                })
+                let snipe = db.get(`snipe_${chan.id}`) || false
+                if (snipe && theOneSheriff !== null) {
                     let guy = message.guild.members.cache.find((m) => m.nickname === snipe)
                     if (guy) {
                         console.log(snipe)
@@ -3770,8 +3777,8 @@ module.exports = {
                             chan.send(`${getEmoji("suspect", client)} You could not get any information last night!`)
                         }
                     }
-                    db.set(`snipe_${chan.id}`, null)
                 }
+                db.set(`snipe_${chan.id}`, null)
             }
         }, 4000)
 
