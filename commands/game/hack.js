@@ -3,6 +3,7 @@ const { fn } = require("../../config")
 
 module.exports = {
     name: "hack",
+    description: "Hack people as hacker.",
     gameOnly: true,
     run: async (message, args, client) => {
         let dc
