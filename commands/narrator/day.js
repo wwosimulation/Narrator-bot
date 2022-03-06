@@ -3589,7 +3589,7 @@ module.exports = {
         }
         
         // kill zombies
-        let allZombiePlayers = db.all().filter(data => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie").map(data => data.split("_")[1]))
+        let allZombiePlayers = db.all().filter(data => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie").map(data => data.split("_")[1])
         allZombiePlayers.forEach(zombPlayer => {
             if (db.get(`bittenAt_${zombPlayer}`) + 3 <= day) {
                 let zombGuy = message.guild.members.cache.get(zombPlayer)
