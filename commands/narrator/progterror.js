@@ -1,6 +1,7 @@
 const db = require("quick.db")
 module.exports = {
     name: "progterror",
+    description: "Manually do terror action of prognosticator if bot bugs!",
     usage: `${process.env.PREFIX}progterror <channelID> <player>`,
     gameOnly: true,
     narratorOnly: true,
