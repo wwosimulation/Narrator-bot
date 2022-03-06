@@ -3328,7 +3328,7 @@ module.exports = {
                 for (let j = 1; j <= alive.members.size + dead.members.size; j++) {
                     let tempguy = message.guild.members.cache.find((m) => m.nickname === j.toString())
                     if (tempguy) {
-                        if (tempguy.roles.cache.has(alive.id)) {
+                        if (tempguy.roles.cache.has(alive.id) && !killedplayers.includes(tempguy.id)) {
                             if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 db.set(`role_${tempguy.id}`, "Zombie")
                                 db.set(`bittenAt_${tempguy.id}`, day)
