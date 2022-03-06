@@ -39,12 +39,12 @@ module.exports = {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")
-            if (!args[0]) return message.channel.send("Please use the command correctly: `+give <player>`" + (role == "Santa Claus" ? " or `+give ho`": ""))
+            if (!args[0]) return message.channel.send("Please use the command correctly: `+give <player>`" + (role == "Santa Claus" ? " or `+give ho`" : ""))
             if (args[0] == "ho" && role == "Sante Claus") {
                 message.guild.channels.cache.find((c) => c.name === "day-chat").send("HO HO HO")
             } else {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-                if(role == "Easter Bunny" && db.get(`bunny_${message.channel.id}` == 0)) return message.channel.send("You don't have any gifts left.")
+                if (role == "Easter Bunny" && db.get(`bunny_${message.channel.id}` == 0)) return message.channel.send("You don't have any gifts left.")
                 if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has(dead.id)) return message.channel.send("You can't send a gift to an alive player!")
                 if (guy.presence.status === "offline") return message.channel.send("This player is offline!")
