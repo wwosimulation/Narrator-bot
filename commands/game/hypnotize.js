@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "hypnotize",
+    description: "The ability to control someone at night.",
+    usage: `${process.env.PREFIX}hypnotise (cancel | <player>)`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.channel.name != "priv-dreamcatcher") return

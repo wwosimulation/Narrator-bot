@@ -3,7 +3,7 @@ const config = require("../../config")
 
 module.exports = {
     name: "revive",
-    description: "Revive a dead player.",
+    description: "Revive a dead player if you are medium.",
     usage: `${process.env.PREFIX}revive <player>`,
     aliases: ["rev", "resurrect"],
     gameOnly: true,
