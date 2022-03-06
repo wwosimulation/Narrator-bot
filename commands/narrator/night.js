@@ -631,6 +631,10 @@ module.exports = {
                                                         SEND_MESSAGES: false,
                                                     })
                                                     jailedchat.send(`You are in a deep sleep! You cannot use your abilities this night!`)
+                                                    // send a message for jailer
+                                                    jailers.forEach(jailerPlayer => {
+                                                        jailerPlayer.send(`${getEmoji("nightmared", client)} The player you have jailed has been nightmared!`)
+                                                    })
                                                 }
                                             }, 3000)
 
