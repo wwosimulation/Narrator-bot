@@ -3858,7 +3858,7 @@ module.exports = {
                                         for (let z = 1; z <= alive.members.size + dead.members.size; z++) {
                                             let guuy = message.guild.members.cache.find((m) => m.nickname === z.toString())
                                             if (guuy.roles.cache.has(alive.id)) {
-                                                if (db.get(`role_${guuy.id}`) != "President") {
+                                                if (db.get(`role_${guuy.id}`) !== "President" && db.get(`role_${guuy.id}`) !== "Cupid") {
                                                     alivePlayers.push(guuy.id)
                                                 }
                                             }
@@ -3874,7 +3874,7 @@ module.exports = {
                                         for (let z = 1; z <= alive.members.size + dead.members.size; z++) {
                                             let guuy = message.guild.members.cache.find((m) => m.nickname === z.toString())
                                             if (guuy.roles.cache.has(alive.id)) {
-                                                if (db.get(`role_${guuy.id}`) != "President" && guuy != guy1) {
+                                                if (db.get(`role_${guuy.id}`) != "President" && guuy != guy1 && db.get(`role_${guuy.id}`) !== "Cupid") {
                                                     alivePlayers.push(guuy.id)
                                                 }
                                             }
