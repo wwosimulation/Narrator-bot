@@ -3591,7 +3591,7 @@ module.exports = {
         // kill zombies
         let allZombiePlayers = db.all().filter(data => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie").map(data => data.split("_")[1]))
         allZombiePlayers.forEach(zombPlayer => {
-            if (db.get(`bittenAt_${zombPlayer}`) + 3 >= day) {
+            if (db.get(`bittenAt_${zombPlayer}`) + 3 <= day) {
                 let zombGuy = message.guild.members.cache.get(zombPlayer)
                 dayChat.send(`${getEmoji("zombie", client)} Player **${zombGuy.nickname} ${zombGuy.user.username}** was the Zombie. They have lived for 3 days and will now rot to death.`)
                 zombGuy.roles.add(dead.id)
