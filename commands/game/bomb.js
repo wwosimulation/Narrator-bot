@@ -9,7 +9,7 @@ const config = require("../../config")
 
 module.exports = {
     name: "bomb",
-    description: "Place your bombs as arsonist.",
+    description: "Place your bombs as bomber.",
     usage: `${process.env.PREFIX}bomb <player> <player> <player>`,
     aliases: ["explode"],
     gameOnly: true,
