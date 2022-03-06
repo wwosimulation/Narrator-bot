@@ -1891,7 +1891,7 @@ module.exports = {
                     }
                 })
                 db.set(`role_${guy.id}`, "Werewolf")
-                wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** has been converted into a werewolf!`)
+                wwChat.send(`${getEmoji("werewolf", client)} Player **${guy.nickname} ${guy.user.username}** has been converted into a werewolf!`)
                 wwChat.permissionOverwrites.edit(guy.id, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: false,
@@ -1916,7 +1916,7 @@ module.exports = {
                         MENTION_EVERYONE: true,
                         ATTACH_FILES: true,
                     })
-                    newWwChan.permissionOverwrites.create(narrator.id, {
+                    newWwChan.permissionOverwrites.create(mininarr.id, {
                         SEND_MESSAGES: true,
                         VIEW_CHANNEL: true,
                         READ_MESSAGE_HISTORY: true,
