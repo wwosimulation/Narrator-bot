@@ -3,7 +3,7 @@ const { MessageActionRow } = require("discord.js")
 
 module.exports = {
     name: "enable",
-    description: "Enable button at #enter-game",
+    description: "Enable buttons in #enter-game",
     usage: `${process.env.PREFIX}enable (join | spec)`,
     gameOnly: true,
     narratorOnly: true,
