@@ -1618,6 +1618,7 @@ module.exports = {
                             shush.roles.remove(alive.id)
                             killedplayers.push(shush.id)
                             thekiller.push(THEBH.id)
+                            l = 99999;
                         }
                     }
                 }
