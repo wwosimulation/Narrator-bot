@@ -339,6 +339,9 @@ module.exports = {
                 sorcChats.push(lol)
                 allWolves.push(`**${guy.nickname} ${guy.user.username}** is the ${role.name}!`)
             }
+            if (role.name === "Zombie") {
+                db.set(`bittenAt_${guy.id}`, 0)
+            }
             if (role.name == "President") {
                 guy.roles.add(revealed)
                 setTimeout(() => {
