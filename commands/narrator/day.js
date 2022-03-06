@@ -63,6 +63,7 @@ module.exports = {
         let thekiller = []
         let hhtarget = []
         let drc
+        let currentAliveRoles = db.all().filter(data => data.ID.startsWith("role_") && message.guild.members.cache.get(data.ID.split("_")[1])?.roles.cache.has(alive.id)).map(data => [data.ID.split("_")[1], db.get(data.ID)])
 
         // delete's dc their temp channel
         for (let m = 1; m <= alive.members.size + dead.members.size; m++) {
@@ -1484,6 +1485,58 @@ module.exports = {
                     }
                 }
             }
+            
+            if (db.get(`kittenWolfConvert`) === true) {
+                let beforerole = db.get(`role_${guy.id}`)
+                let allChanRole = message.guild.channels.cache.filter(c => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
+                allChanRole.forEach(roleChan => {
+                    if (roleChan.permissionsFor(guy.id).has("VIEW_CHANNEL")) {
+                        roleChan.permissionOverwrites.edit(guy.id, {
+                            VIEW_CHANNEL: false,
+                            SEND_MESSAGES: false,
+                            READ_MESSAGE_HISTORY: false
+                        })
+                    }
+                })
+                db.set(`role_${guy.id}`, "Werewolf")
+                wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** has been converted into a werewolf!`)
+                wwChat.permissionOverwrites.edit(guy.id, {
+                    VIEW_CHANNEL: true,
+                    SEND_MESSAGES: false,
+                    READ_MESSAGE_HISTORY: true
+                })
+                message.guild.channels.create("priv-werewolf", {
+                    parent: "892046231516368906"
+                }).then(async newWwChan => {
+                    newWwChan.permissionOverwrites.create(guy.id, {
+                        SEND_MESSAGES: true,
+                        VIEW_CHANNEL: true,
+                        READ_MESSAGE_HISTORY: true,
+                    })
+                    newWwChan.permissionOverwrites.create(message.guild.id, {
+                        VIEW_CHANNEL: false,
+                    })
+                    newWwChan.permissionOverwrites.create(narrator.id, {
+                        SEND_MESSAGES: true,
+                        VIEW_CHANNEL: true,
+                        READ_MESSAGE_HISTORY: true,
+                        MANAGE_CHANNELS: true,
+                        MENTION_EVERYONE: true,
+                        ATTACH_FILES: true,
+                    })
+                    newWwChan.permissionOverwrites.create(narrator.id, {
+                        SEND_MESSAGES: true,
+                        VIEW_CHANNEL: true,
+                        READ_MESSAGE_HISTORY: true,
+                        MANAGE_CHANNELS: true,
+                        MENTION_EVERYONE: true,
+                        ATTACH_FILES: true,
+                    })
+                    await newWwChan.send(getRole("werewolf").description)
+                    await newWwChan.send("You have been bitten! You are a werewolf now!")
+                    kills[0] = "0"                
+                })
+            }
 
             if (kills[0] != "0") {
                 wwKill = "0"
@@ -1496,12 +1549,14 @@ module.exports = {
                 killedplayers.push(guy.id)
                 thekiller.push("Werewolf")
             }
-            for (let a = 1; a < kills.length; a++) {
-                dayChat.send(`${getEmoji("frenzy", client)} The Werewolf frenzy killed **${kills[a].nickname} ${kills[a].user.username} (${db.get(`role_${kills[a].id}`)})**!`)
-                kills[a].roles.add(dead.id)
-                kills[a].roles.remove(alive.id)
-                killedplayers.push(kills[a].id)
-                thekiller.push("Werewolf")
+            if (db.get(`kittenWolfConvert`) !== true) {
+                for (let a = 1; a < kills.length; a++) {
+                    dayChat.send(`${getEmoji("frenzy", client)} The Werewolf frenzy killed **${kills[a].nickname} ${kills[a].user.username} (${db.get(`role_${kills[a].id}`)})**!`)
+                    kills[a].roles.add(dead.id)
+                    kills[a].roles.remove(alive.id)
+                    killedplayers.push(kills[a].id)
+                    thekiller.push("Werewolf")
+                }
             }
         }
         if (wwKill != "0" && frenzy == false) {
@@ -1818,6 +1873,60 @@ module.exports = {
                     }
                 }
             }
+            
+            // if kitten wolf convert exists
+            
+            if (db.get(`kittenWolfConvert`) === true) {
+                let beforerole = db.get(`role_${guy.id}`)
+                let allChanRole = message.guild.channels.cache.filter(c => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
+                allChanRole.forEach(roleChan => {
+                    if (roleChan.permissionsFor(guy.id).has("VIEW_CHANNEL")) {
+                        roleChan.permissionOverwrites.edit(guy.id, {
+                            VIEW_CHANNEL: false,
+                            SEND_MESSAGES: false,
+                            READ_MESSAGE_HISTORY: false
+                        })
+                    }
+                })
+                db.set(`role_${guy.id}`, "Werewolf")
+                wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** has been converted into a werewolf!`)
+                wwChat.permissionOverwrites.edit(guy.id, {
+                    VIEW_CHANNEL: true,
+                    SEND_MESSAGES: false,
+                    READ_MESSAGE_HISTORY: true
+                })
+                message.guild.channels.create("priv-werewolf", {
+                    parent: "892046231516368906"
+                }).then(async newWwChan => {
+                    newWwChan.permissionOverwrites.create(guy.id, {
+                        SEND_MESSAGES: true,
+                        VIEW_CHANNEL: true,
+                        READ_MESSAGE_HISTORY: true,
+                    })
+                    newWwChan.permissionOverwrites.create(message.guild.id, {
+                        VIEW_CHANNEL: false,
+                    })
+                    newWwChan.permissionOverwrites.create(narrator.id, {
+                        SEND_MESSAGES: true,
+                        VIEW_CHANNEL: true,
+                        READ_MESSAGE_HISTORY: true,
+                        MANAGE_CHANNELS: true,
+                        MENTION_EVERYONE: true,
+                        ATTACH_FILES: true,
+                    })
+                    newWwChan.permissionOverwrites.create(narrator.id, {
+                        SEND_MESSAGES: true,
+                        VIEW_CHANNEL: true,
+                        READ_MESSAGE_HISTORY: true,
+                        MANAGE_CHANNELS: true,
+                        MENTION_EVERYONE: true,
+                        ATTACH_FILES: true,
+                    })
+                    await newWwChan.send(getRole("werewolf").description)
+                    await newWwChan.send("You have been bitten! You are a werewolf now!")
+                    wwKill = "0"                
+                })
+            }
 
             // killing the player
             if (wwKill != "0") {
@@ -1888,6 +1997,7 @@ module.exports = {
             }
         }
         //console.log("Ok so the ww kill is passed")
+        db.delete(`kittenWolfConvert`)
 
         // red lady visting
         for (let i = 0; i < rl.length; i++) {
@@ -3208,7 +3318,7 @@ module.exports = {
         // zombie CONVERSION
         let bitten = db
             .all()
-            .filter((data) => data.ID.startsWith("bitten"))
+            .filter((data) => data.ID.startsWith("bitten_"))
             .sort((a, b) => b.data - a.data)
         for (let i = 0; i < bitten.length; i++) {
             let chan = message.guild.channels.cache.get(bitten[i].ID.split("_")[1])
@@ -3219,6 +3329,7 @@ module.exports = {
                         if (tempguy.roles.cache.has(alive.id)) {
                             if (chan.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                                 db.set(`role_${tempguy.id}`, "Zombie")
+                                db.set(`bittenAt_${tempguy.id}`, day)
                                 db.delete(`bitten_${chan.id}`)
                                 chan.permissionOverwrites.edit(tempguy.id, {
                                     VIEW_CHANNEL: false,
@@ -3255,7 +3366,7 @@ module.exports = {
                                 })
                                 await ff.send(getRole("zombie").description)
                                 let tee = await ff.send(`${alive}`)
-                                await tee.delete({ timeout: 3000 })
+                                setTimeout(() => tee.delete(), 3000)
                                 zombies.permissionOverwrites.edit(tempguy.id, {
                                     SEND_MESSAGES: true,
                                     VIEW_CHANNEL: true,
@@ -3472,6 +3583,17 @@ module.exports = {
                 }
             }
         }
+        
+        // kill zombies
+        let allZombiePlayers = db.all().filter(data => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie").map(data => data.split("_")[1]))
+        allZombiePlayers.forEach(zombPlayer => {
+            if (db.get(`bittenAt_${zombPlayer}`) + 3 >= day) {
+                let zombGuy = message.guild.members.cache.get(zombPlayer)
+                dayChat.send(`${getEmoji("zombie", client)} Player **${zombGuy.nickname} ${zombGuy.user.username}** was the Zombie. They have lived for 3 days and will now rot to death.`)
+                zombGuy.roles.add(dead.id)
+                zombGuy.roles.remove(alive.id)
+            }
+        })
 
         // bandits unable to speak in their chat
         for (let i = 0; i < bandits.length; i++) {
