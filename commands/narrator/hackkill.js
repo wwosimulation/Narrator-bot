@@ -2,6 +2,8 @@ const db = require("quick.db")
 
 module.exports = {
     name: "hackkill",
+    description: "Manually do action of hacker if bot bugs!",
+    usage: `${process.env.PREFIX}hackkill <player>`,
     aliases: ["hackerkill"],
     gameOnly: true,
     narratorOnly: true,
