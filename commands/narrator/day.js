@@ -88,6 +88,7 @@ module.exports = {
             let guy = message.guild.members.cache.find((m) => m.nickname === x.toString())
             if (guy) {
                 if (guy.roles.cache.has(alive.id)) {
+                    dayChat.permissionOverwrites.delete(guy.id, "Removed all overwrites to start the day.")
                     let role = db.get(`role_${guy.id}`)
                     let allchans = message.guild.channels.cache.filter((c) => c.name === `priv-${role.toLowerCase().replace(" ", "-")}`)
                     allchans.forEach((chan) => {
