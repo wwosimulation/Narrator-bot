@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji, fn } = require("../../config")
+const { getEmoji, fn, getRole } = require("../../config")
 
 module.exports = {
     name: "give",
@@ -35,18 +35,20 @@ module.exports = {
             message.channel.send(`${getEmoji("moon", client)} You gave a card to **${guy.nickname} ${guy.user.username}**`)
             db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`, 1)
         } else if (message.channel.name == "priv-santa-claus") {
+            let role = getRole(message.channel.name.split("priv-")[1]).name
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")
-            if (!args[0]) return message.channel.send("You can use it as `+give ho` or `+give [player number]`")
-            if (args[0] == "ho") {
+            if (!args[0]) return message.channel.send("Please use the command correctly: `+give <player>`" + (role == "Santa Claus" ? " or `+give ho`": ""))
+            if (args[0] == "ho" && role == "Sante Claus") {
                 message.guild.channels.cache.find((c) => c.name === "day-chat").send("HO HO HO")
             } else {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+                if(role == "Easter Bunny" && db.get(`bunny_${message.channel.id}` == 0)) return message.channel.send("You don't have any gifts left.")
                 if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has(dead.id)) return message.channel.send("You can't send a gift to an alive player!")
                 if (guy.presence.status === "offline") return message.channel.send("This player is offline!")
-                guy.send("You have recieved a gift from Santa Claus! Find out what you have received!").catch((e) => message.channel.send(`An error occured: ${e.message}`))
+                guy.send(`You have recieved a gift from ${role}! Find out what you have received!`).catch((e) => message.channel.send(`An error occured: ${e.message}`))
                 db.add(`roses_${guy.id}`, 1)
             }
         } else if (message.channel.name == "priv-forger") {
