@@ -5,12 +5,12 @@ const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "rosewheel",
-    description: "Spin the rosewheel for 30 roses and win awsome prizes!",
+    description: "Spin the rosewheel for 20 roses and win awsome prizes!",
     usage: `${process.env.PREFIX}rosewheel`,
     aliases: ["rw", "spin"],
     run: async (message, args, client) => {
         let guy = await players.findOne({ user: message.author.id })
-        if (!guy || guy.roses < 30) return message.channel.send(message.l10n("notEnoughCurrency", { currency: "roses" }))
+        if (!guy || guy.roses < 20) return message.channel.send(message.l10n("notEnoughCurrency", { currency: "roses" }))
         let prizes = []
 
         rosewheel.forEach((item) => {
@@ -21,7 +21,7 @@ module.exports = {
         let prize = prizes[Math.random() * prizes.length]
         let res = ["1", "2", "3", "4"]
 
-        let update = { roses: -30 }
+        let update = { roses: -20 }
         let response = message.l10n("rosewheel" + res[Math.floor(Math.random() * res.length)], { prize: prize.name, prizeAmount: prize.amount, prizeName: prize.name.split(" ").slice(-1)[0] })
 
         update[prize.item] = prize.amount
