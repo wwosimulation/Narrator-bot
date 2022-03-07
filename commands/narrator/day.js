@@ -1884,7 +1884,7 @@ module.exports = {
             // if kitten wolf convert exists
 
             if (db.get(`kittenWolfConvert`) === true) {
-                let beforerole = db.get(`role_${guy.id}`)
+                let beforeRole = db.get(`role_${guy.id}`)
                 let allChanRole = message.guild.channels.cache.filter((c) => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
                 allChanRole.forEach((roleChan) => {
                     if (roleChan.permissionsFor(guy.id).has("VIEW_CHANNEL")) {
@@ -3599,7 +3599,7 @@ module.exports = {
         let allZombiePlayers = db
             .all()
             .filter((data) => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie")
-            .map((data) => data.split("_")[1])
+            .map((data) => data.ID.split("_")[1])
         allZombiePlayers.forEach((zombPlayer) => {
             if (db.get(`bittenAt_${zombPlayer}`) + 3 <= day) {
                 let zombGuy = message.guild.members.cache.get(zombPlayer)
