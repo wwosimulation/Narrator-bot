@@ -66,9 +66,9 @@ module.exports = {
         let sub = interaction.options.getSubcommand()
         switch (sub) {
             case "create": {
-                let cost = interaction.getString("cost")
-                let duration = interaction.getString("duration")
-                let max = interaction.getString("max")
+                let cost = interaction.options.getString("cost")
+                let duration = interaction.options.getString("duration")
+                let max = interaction.options.getString("max")
 
                 if (isNaN(cost) || cost <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: cost }), ephemeral: true })
                 if (isNaN(max) || max <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: max }), ephemeral: true })
