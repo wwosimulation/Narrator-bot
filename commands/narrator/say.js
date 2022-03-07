@@ -4,7 +4,7 @@ const db = require("quick.db")
 module.exports = {
     name: "say",
     description: "Let the bot say something for you.",
-    usage: `${process.env.PREFIX}say [channel] <message...>`,
+    usage: `${process.env.PREFIX}say [channel_id] <message...>`,
     run: async (message, args, client) => {
         if (!client.botAdmin(message.author.id) && (!config.fn.isNarrator(message.member) || db.get("settings.disableSay"))) return
         message.delete()
