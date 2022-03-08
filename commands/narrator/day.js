@@ -1509,11 +1509,13 @@ module.exports = {
                     SEND_MESSAGES: false,
                     READ_MESSAGE_HISTORY: true,
                 })
-                message.guild.channels.cache.find(c => c.name === "ww-vote").permissionOverwrites.create(guy.id, {
-                    SEND_MESSAGES: false,
-                    VIEW_CHANNEL: true,
-                    READ_MESSAGE_HISTORY: true,
-                })
+                message.guild.channels.cache
+                    .find((c) => c.name === "ww-vote")
+                    .permissionOverwrites.create(guy.id, {
+                        SEND_MESSAGES: false,
+                        VIEW_CHANNEL: true,
+                        READ_MESSAGE_HISTORY: true,
+                    })
                 message.guild.channels
                     .create("priv-werewolf", {
                         parent: "892046231516368906",
