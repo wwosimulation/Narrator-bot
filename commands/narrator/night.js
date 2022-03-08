@@ -520,7 +520,9 @@ module.exports = {
                     if (rrrr.includes("wolf")) {
                         if (who.roles.cache.has(alive.id)) {
                             wwChat.permissionOverwrites.edit(who.id, {
+                                VIEW_CHANNEL: true,
                                 SEND_MESSAGES: true,
+                                READ_MESSAGE_HISTORY: true,
                             })
                         } else {
                             wwChat.permissionOverwrites.edit(who.id, {
@@ -632,7 +634,7 @@ module.exports = {
                                                     })
                                                     jailedchat.send(`You are in a deep sleep! You cannot use your abilities this night!`)
                                                     // send a message for jailer
-                                                    jailers.forEach(jailerPlayer => {
+                                                    jailers.forEach((jailerPlayer) => {
                                                         jailerPlayer.send(`${getEmoji("nightmared", client)} The player you have jailed has been nightmared!`)
                                                     })
                                                 }
@@ -748,7 +750,7 @@ module.exports = {
                         if (db.get(`role_${tempguy.id}`) === "Zombie") {
                             zombies.permissionOverwrites.edit(tempguy.id, {
                                 SEND_MESSAGES: true,
-                                READ_MESSAGE_HISTORY: true
+                                READ_MESSAGE_HISTORY: true,
                             })
                         }
                     }
