@@ -520,7 +520,9 @@ module.exports = {
                     if (rrrr.includes("wolf")) {
                         if (who.roles.cache.has(alive.id)) {
                             wwChat.permissionOverwrites.edit(who.id, {
+                                VIEW_CHANNEL: true,
                                 SEND_MESSAGES: true,
+                                READ_MESSAGE_HISTORY: true
                             })
                         } else {
                             wwChat.permissionOverwrites.edit(who.id, {
