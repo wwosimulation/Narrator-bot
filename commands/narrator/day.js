@@ -1550,7 +1550,6 @@ module.exports = {
                         kills[0] = "0"
                     })
             } else {
-
                 if (kills[0] != "0" && db.get(`kittenWolfConvert`) !== true) {
                     wwKill = "0"
                     dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
