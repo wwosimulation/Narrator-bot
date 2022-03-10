@@ -6,6 +6,7 @@ module.exports = {
     usage: `${process.env.PREFIX}suggest <description...>`,
     aliases: ["suggestion"],
     run: async (message, args, client) => {
+        return client.commands.get("movedtoslash").run(message, args, client)
         if (!args[0]) return message.channel.send(message.l10n("suggestNoArguments"))
         let t = ""
         if (message.attachments.size > 0) {
