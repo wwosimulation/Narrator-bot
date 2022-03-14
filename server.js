@@ -3,7 +3,7 @@ require("dotenv").config()
 
 const fs = require("fs")
 const db = require("quick.db")
-const { fn } = require("./config")
+const { fn, getEmoji } = require("./config")
 
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
