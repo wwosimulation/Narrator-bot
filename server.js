@@ -3,6 +3,7 @@ require("dotenv").config()
 
 const fs = require("fs")
 const db = require("quick.db")
+const { fn } = require("./config")
 
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
@@ -94,8 +95,8 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
         await msg.react("▶️")
         await msg.react("⏩")
     }
-    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => { })
-    if (!reaction) return msg.reactions.removeAll().catch(() => { })
+    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
+    if (!reaction) return msg.reactions.removeAll().catch(() => {})
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
     if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
