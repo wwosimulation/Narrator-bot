@@ -3,7 +3,7 @@ const { ids } = require("../../config")
 
 module.exports = {
     name: "arsoburn",
-    description: "Set all doused players on fire.",
+    description: "Burn people as narrator with name of arsonist.",
     usage: `${process.env.PREFIX}arsoburn`,
     gameOnly: true,
     narratorOnly: true,
