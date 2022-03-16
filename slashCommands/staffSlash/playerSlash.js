@@ -70,7 +70,7 @@ module.exports = {
         game: [
             { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
             { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
-            { id: ids.player, type: "ROLE", permission: false }, // @Player 
+            { id: ids.player, type: "ROLE", permission: false }, // @Player
         ],
     },
     server: ["sim", "game"],
@@ -85,13 +85,13 @@ module.exports = {
         let operators = ["set", "add", "remove"]
         let first
 
-        let playerData = await players.findOne({ user: target.id }) || await players.create({user: target.id})
+        let playerData = (await players.findOne({ user: target.id })) || (await players.create({ user: target.id }))
 
-        if(["coins", "roses", "gems", "xp"].includes(column)) {
+        if (["coins", "roses", "gems", "xp"].includes(column)) {
             // player.-column-
-        } else if(["rose", "bouquet", "lootbox"].includes(column)) {
+        } else if (["rose", "bouquet", "lootbox"].includes(column)) {
             // player.inventory.-column-
-        } else if(["badges"].includes(column)) {
+        } else if (["badges"].includes(column)) {
             // player.badges.-value-
         } else {
             return interaction.l10n("error")
