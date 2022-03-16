@@ -24,14 +24,14 @@ module.exports = {
                 description: "Select the column to be updated.",
                 required: true,
                 choices: [
-                    { name: "coins", value: "coins" },
-                    { name: "roses", value: "roses" },
-                    { name: "gems", value: "gems" },
-                    { name: "xp", value: "xp" },
-                    { name: "rose", value: "rose" },
-                    { name: "bouquet", value: "bouquet" },
-                    { name: "lootbox", value: "lootbox" },
-                    { name: "badge", value: "badge" },
+                    { name: "Coins", value: "coins" },
+                    { name: "Roses (currency)", value: "roses" },
+                    { name: "Gems", value: "gems" },
+                    { name: "XP", value: "xp" },
+                    { name: "Rose (tradeable)", value: "rose" },
+                    { name: "Bouquets", value: "bouquet" },
+                    { name: "Lootboxes", value: "lootbox" },
+                    { name: "Badges", value: "badge" },
                 ],
             },
             {
@@ -53,9 +53,9 @@ module.exports = {
                 autocomplete: true,
             },
             {
-                type: "STRING",
-                name: "options",
-                description: "Select options you want to add to your request.",
+                type: "BOOLEAN",
+                name: "forced",
+                description: "Force this action (required for making values negative)",
                 required: false,
             },
         ],
@@ -79,21 +79,24 @@ module.exports = {
         let column = interaction.options.getString("column")
         let operator = interaction.options.getString("operator")
         let value = interaction.options.getString("value")
-        let options = interaction.options.getString("options") || "none"
+        let force = interaction.options.getString("options", false) || false
 
         let columns = ["coins", "roses", "gems", "xp", "rose", "bouquet", "lootbox", "badge"]
         let operators = ["set", "add", "remove"]
-        let force = false
         let first
 
-        if (options !== "none") {
-            ;["-f", "force", "--force"].forEach((option) => {
-                if (options.includes(option)) force = true
-            })
+        let playerData = await players.findOne({ user: target.id }) || await players.create({user: target.id})
+
+        if(["coins", "roses", "gems", "xp"].includes(column)) {
+            // player.-column-
+        } else if(["rose", "bouquet", "lootbox"].includes(column)) {
+            // player.inventory.-column-
+        } else if(["badges"].includes(column)) {
+            // player.badges.-value-
+        } else {
+            return interaction.l10n("error")
         }
-
-        let playerData = await players.findOne({ user: target.id })
-
+        /*
         if (column !== "badge") {
             if (["rose", "bouquet", "lootbox"].includes(column)) first = "inventory"
 
@@ -164,6 +167,6 @@ module.exports = {
             }
             await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
             return interaction.reply({ content: interaction.l10n("done") })
-        }
+        }*/
     },
 }

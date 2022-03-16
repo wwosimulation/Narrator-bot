@@ -15,6 +15,8 @@ module.exports = (client) => {
                     { name: "Pro Player (bronze)", value: "pro_player_bronze" },
                     { name: "Pro Player (silver)", value: "pro_player_silver" },
                     { name: "Pro Player (gold)", value: "pro_player_gold" },
+                    { name: "Beta Tester", value: "beta_tester" },
+                    { name: "Interaction Tester", value: "interaction_tester" }
                 ]
                 let typed = interaction.options.getString("value")
                 typed.replace(/ /g, "") === ""
