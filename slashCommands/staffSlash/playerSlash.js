@@ -111,6 +111,6 @@ module.exports = {
         }
         await playerData.updateOne(update)
 
-        interaction.reply({ content: `${fn.capitalizeFirstLetter(column.split(".")[1])} updated!` })
+        interaction.reply({ content: `${fn.capitalizeFirstLetter(column.split(".")[1] || column)} updated!` })
     },
 }
