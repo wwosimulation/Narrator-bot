@@ -109,9 +109,8 @@ module.exports = {
         } else {
             return interaction.reply(interaction.l10n("error"))
         }
-        console.log(JSON.stringify(update))
         await playerData.updateOne(update)
 
-        interaction.reply({ content: `${column} updated!` })
+        interaction.reply({ content: `${fn.capitalizeFirstLetter(column.split(".")[1])} updated!` })
     },
 }
