@@ -83,30 +83,30 @@ module.exports = {
 
         let playerData = (await players.findOne({ user: target.id })) || (await players.create({ user: target.id }))
         let verifyInt = (int) => {
-            if(int % 1 != 0) return false
-            if(int < 0 && !force) return false
+            if (int % 1 != 0) return false
+            if (int < 0 && !force) return false
             return true
         }
 
-        let update = new Object
-        let changes = new Object
+        let update = new Object()
+        let changes = new Object()
 
         if (["coins", "roses", "gems", "xp", "rose", "bouquet", "lootbox"].includes(column)) {
-            column = ["coins", "roses", "gems", "xp"].includes(column) ? column : ("inventory." + column)
+            column = ["coins", "roses", "gems", "xp"].includes(column) ? column : "inventory." + column
 
-            if(!verifyInt(value)) return interaction.reply({content: interaction.l10n("amountInvalid", {amount: value}), ephemeral: true})
+            if (!verifyInt(value)) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: value }), ephemeral: true })
             value = parseInt(value)
 
-            if(operator == "remove" && playerData[column] < value && !force) return interaction.reply({content: `You are trying to remove more \`${column}\` than the user has. Please use the command again with the \`force\` option set to \`true\` to force this option!`, ephemeral: true})
+            if (operator == "remove" && playerData[column] < value && !force) return interaction.reply({ content: `You are trying to remove more \`${column}\` than the user has. Please use the command again with the \`force\` option set to \`true\` to force this option!`, ephemeral: true })
 
             changes[column] = operator == "remove" ? -value : value
             update[operator == "set" ? "$set" : "$inc"] = changes
         } else if (["badge"].includes(column)) {
-            if(operator == "set") return interaction.reply({content: "This operator does not work for badges."})
+            if (operator == "set") return interaction.reply({ content: "This operator does not work for badges." })
             value.replace(/ /g, "_").replace(/-/g, "_")
             changes["badges." + value] = true
             update[operator == "add" ? "$set" : "$unset"] = changes
-            let x = force ? {"gems": operator == "add" ? 0 : -5} : {"gems": operator == "add" ? 5 : 0}
+            let x = force ? { gems: operator == "add" ? 0 : -5 } : { gems: operator == "add" ? 5 : 0 }
             update["$inc"] = x
             console.log(x)
         } else {
@@ -115,7 +115,6 @@ module.exports = {
         console.log(JSON.stringify(update))
         await playerData.updateOne(update)
 
-        interaction.reply({content: `${column} updated!`})
-
+        interaction.reply({ content: `${column} updated!` })
     },
 }
