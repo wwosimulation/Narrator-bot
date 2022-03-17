@@ -97,7 +97,7 @@ module.exports = {
         let count = 0
         for (const badge in guy.badges) {
             if (badge === "invite" && guy.badges.invite.unlocked) (desc += `${fn.capitalizeFirstLetter(badge)} `), (count += 1)
-            if (guy.badges[badge] === true && badge !== "invite") (desc += `${fn.capitalizeFirstLetter(badge)} `), (count += 1)
+            if (guy.badges[badge] === true && badge !== "invite") (desc += `${fn.capitalizeFirstLetter(badge).replace(/_/g, " ")}, `), (count += 1)
         }
         context.font = "70px sans-serif"
         context.fillStyle = "#000"
