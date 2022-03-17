@@ -3,8 +3,8 @@ const { ids } = require("../../config")
 
 module.exports = {
     name: "arsoburn",
-    description: "Set all doused players on fire.",
-    usage: `${process.env.PREFIX}arsoburn`,
+    description: "Kill someone for the arsonist.",
+    usage: `${process.env.PREFIX}arsoburn <player>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

@@ -1492,7 +1492,7 @@ module.exports = {
 
             if (db.get(`kittenWolfConvert`) === true) {
                 let beforerole = db.get(`role_${guy.id}`)
-                let allChanRole = message.guild.channels.cache.filter((c) => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
+                let allChanRole = message.guild.channels.cache.filter((c) => c.name === `priv-${beforerole.toLowerCase().replace(/\s/g, "-")}`)
                 allChanRole.forEach((roleChan) => {
                     if (roleChan.permissionsFor(guy.id).has("VIEW_CHANNEL")) {
                         roleChan.permissionOverwrites.edit(guy.id, {
@@ -1503,12 +1503,19 @@ module.exports = {
                     }
                 })
                 db.set(`role_${guy.id}`, "Werewolf")
-                wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** has been converted into a werewolf!`)
-                wwChat.permissionOverwrites.edit(guy.id, {
+                wwChat.send(`${getEmoji("werewolf", client)} Player **${guy.nickname} ${guy.user.username}** has been converted into a werewolf!`)
+                wwChat.permissionOverwrites.create(guy.id, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: false,
                     READ_MESSAGE_HISTORY: true,
                 })
+                message.guild.channels.cache
+                    .find((c) => c.name === "ww-vote")
+                    .permissionOverwrites.create(guy.id, {
+                        SEND_MESSAGES: false,
+                        VIEW_CHANNEL: true,
+                        READ_MESSAGE_HISTORY: true,
+                    })
                 message.guild.channels
                     .create("priv-werewolf", {
                         parent: "892046231516368906",
@@ -1542,26 +1549,26 @@ module.exports = {
                         await newWwChan.send("You have been bitten! You are a werewolf now!")
                         kills[0] = "0"
                     })
-            }
-
-            if (kills[0] != "0") {
-                wwKill = "0"
-                dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
-                if (role == "Cupid") {
-                    cupidKilled = true
-                }
-                guy.roles.add(dead.id)
-                guy.roles.remove(alive.id)
-                killedplayers.push(guy.id)
-                thekiller.push("Werewolf")
-            }
-            if (db.get(`kittenWolfConvert`) !== true) {
-                for (let a = 1; a < kills.length; a++) {
-                    dayChat.send(`${getEmoji("frenzy", client)} The Werewolf frenzy killed **${kills[a].nickname} ${kills[a].user.username} (${db.get(`role_${kills[a].id}`)})**!`)
-                    kills[a].roles.add(dead.id)
-                    kills[a].roles.remove(alive.id)
-                    killedplayers.push(kills[a].id)
+            } else {
+                if (kills[0] != "0" && db.get(`kittenWolfConvert`) !== true) {
+                    wwKill = "0"
+                    dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
+                    if (role == "Cupid") {
+                        cupidKilled = true
+                    }
+                    guy.roles.add(dead.id)
+                    guy.roles.remove(alive.id)
+                    killedplayers.push(guy.id)
                     thekiller.push("Werewolf")
+                }
+                if (db.get(`kittenWolfConvert`) !== true) {
+                    for (let a = 1; a < kills.length; a++) {
+                        dayChat.send(`${getEmoji("frenzy", client)} The Werewolf frenzy killed **${kills[a].nickname} ${kills[a].user.username} (${db.get(`role_${kills[a].id}`)})**!`)
+                        kills[a].roles.add(dead.id)
+                        kills[a].roles.remove(alive.id)
+                        killedplayers.push(kills[a].id)
+                        thekiller.push("Werewolf")
+                    }
                 }
             }
         }
@@ -3600,10 +3607,10 @@ module.exports = {
             .all()
             .filter((data) => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie")
             .map((data) => data.ID.split("_")[1])
-        allZombiePlayers.forEach((zombPlayer) => {
+        allZombiePlayers.forEach(async (zombPlayer) => {
             if (db.get(`bittenAt_${zombPlayer}`) + 3 <= day) {
-                let zombGuy = message.guild.members.cache.get(zombPlayer)
-                dayChat.send(`${getEmoji("zombie", client)} Player **${zombGuy.nickname} ${zombGuy.user.username}** was the Zombie. They have lived for 3 days and will now rot to death.`)
+                let zombGuy = await message.guild.members.fetch(zombPlayer)
+                dayChat.send(`${getEmoji("zombie", client)} Player **${zombGuy.nickname} ${zombGuy.user?.username}** was the Zombie. They have lived for 3 days and will now rot to death.`)
                 zombGuy.roles.add(dead.id)
                 zombGuy.roles.remove(alive.id)
             }
