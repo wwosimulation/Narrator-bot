@@ -59,7 +59,7 @@ const schema = new mongoose.Schema({
     },
     winStreak: { type: Number, default: 0 },
     language: { type: String, default: "en" },
-    badges: { type: Object, default: { invite: { code: "none", members: 0, unlocked: false } } },
+    badges: { type: Object, default: { } },
 })
 
 module.exports = mongoose.model("players", schema)

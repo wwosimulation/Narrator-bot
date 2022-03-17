@@ -79,94 +79,43 @@ module.exports = {
         let column = interaction.options.getString("column")
         let operator = interaction.options.getString("operator")
         let value = interaction.options.getString("value")
-        let force = interaction.options.getString("options", false) || false
-
-        let columns = ["coins", "roses", "gems", "xp", "rose", "bouquet", "lootbox", "badge"]
-        let operators = ["set", "add", "remove"]
-        let first
+        let force = interaction.options.getBoolean("forced", false) || false
 
         let playerData = (await players.findOne({ user: target.id })) || (await players.create({ user: target.id }))
+        let verifyInt = (int) => {
+            if(int % 1 != 0) return false
+            if(int < 0 && !force) return false
+            return true
+        }
 
-        if (["coins", "roses", "gems", "xp"].includes(column)) {
-            // player.-column-
-        } else if (["rose", "bouquet", "lootbox"].includes(column)) {
-            // player.inventory.-column-
-        } else if (["badges"].includes(column)) {
-            // player.badges.-value-
+        let update = new Object
+        let changes = new Object
+
+        if (["coins", "roses", "gems", "xp", "rose", "bouquet", "lootbox"].includes(column)) {
+            column = ["coins", "roses", "gems", "xp"].includes(column) ? column : ("inventory." + column)
+
+            if(!verifyInt(value)) return interaction.reply({content: interaction.l10n("amountInvalid", {amount: value}), ephemeral: true})
+            value = parseInt(value)
+
+            if(operator == "remove" && playerData[column] < value && !force) return interaction.reply({content: `You are trying to remove more \`${column}\` than the user has. Please use the command again with the \`force\` option set to \`true\` to force this option!`, ephemeral: true})
+
+            changes[column] = operator == "remove" ? -value : value
+            update[operator == "set" ? "$set" : "$inc"] = changes
+        } else if (["badge"].includes(column)) {
+            if(operator == "set") return interaction.reply({content: "This operator does not work for badges."})
+            value.replace(/ /g, "_").replace(/-/g, "_")
+            changes["badges." + value] = true
+            update[operator == "add" ? "$set" : "$unset"] = changes
+            let x = force ? {"gems": operator == "add" ? 0 : -5} : {"gems": operator == "add" ? 5 : 0}
+            update["$inc"] = x
+            console.log(x)
         } else {
-            return interaction.l10n("error")
+            return interaction.reply(interaction.l10n("error"))
         }
-        /*
-        if (column !== "badge") {
-            if (["rose", "bouquet", "lootbox"].includes(column)) first = "inventory"
+        console.log(JSON.stringify(update))
+        await playerData.updateOne(update)
 
-            let update = {}
-            let operatorObj = {}
+        interaction.reply({content: `${column} updated!`})
 
-            let amount = value
-            if (isNaN(value) || amount % 1 != 0 || amount <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: amount }), ephemeral: true })
-
-            switch (operator) {
-                case "set":
-                    update[column] = amount
-                    operatorObj["$set"] = update
-                    break
-                case "add":
-                    update[column] = amount
-                    operatorObj["$inc"] = update
-                    break
-                case "remove":
-                    if ((first && playerData && playerData[column] > amount) || (first && force)) {
-                        update[first + "." + column] = -amount
-                        operatorObj["$inc"] = update
-                    } else if ((playerData && playerData[column] > amount) || force) {
-                    } else {
-                        return interaction.reply({ content: `You try to remove more ${column} than the user has. If you want to continue run this command again with \`force\` as option.`, ephemeral: true })
-                    }
-                    break
-            }
-            await players.updateOne({ user: target.id }, operatorObj, { upsert: true }) //upsert in case there is no player with this id
-            interaction.reply({ content: `${fn.capitalizeFirstLetter(column)} updated for ${target.tag}` })
-        }
-        if (column === "badge") {
-            console.log(operator)
-            let update = {}
-            let operatorObj = {}
-            value.replace(/ /g, "_")
-
-            if (value === "invite") {
-                switch (operator) {
-                    case "add":
-                        update = { "badges.invite.unlocked": true }
-                        break
-                    case "remove":
-                        update = { "badges.invite.unlocked": false }
-                        break
-                    case "set":
-                        return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
-                }
-                operatorObj = { $set: update }
-                await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-                return interaction.reply({ content: interaction.l10n("done") })
-            }
-
-            let updateStr
-            switch (operator) {
-                case "add":
-                    updateStr = `badges.${value.toLowerCase()}`
-                    update[updateStr] = true
-                    operatorObj = { $set: update }
-                    break
-                case "remove":
-                    updateStr = `badges.${value.toLowerCase()}`
-                    update[updateStr] = true
-                    operatorObj = { $unset: update }
-                    break
-                case "set":
-                    return interaction.reply({ content: "This operator does not work for badges.", ephemeral: true })
-            }
-            await players.updateOne({ user: target.id }, operatorObj, { upsert: true })
-            return interaction.reply({ content: interaction.l10n("done") })
-        }*/
     },
 }
