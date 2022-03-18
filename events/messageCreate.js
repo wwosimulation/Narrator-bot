@@ -25,6 +25,7 @@ module.exports = (client) => {
 
         // blacklists
         let blacklists = db.get(`blacklistss`) || []
+        if(!Array.isArray(blacklists)) blacklists = []
         //console.log(blacklists)
         if (message.channel.type != "dm") {
             if (message.guild?.id == "472261911526768642" && message.channel.name == "day-chat") {
