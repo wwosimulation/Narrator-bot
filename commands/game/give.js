@@ -39,8 +39,8 @@ module.exports = {
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")
-            if (!args[0]) return message.channel.send("Please use the command correctly: `+give <player>`" + (role == "Santa Claus" ? " or `+give ho`": ""))
-            if (args[0] == "ho" && role.name == "Sante Claus") {
+            if (!args[0]) return message.channel.send("Please use the command correctly: `+give <player>`" + (role == "Santa Claus" ? " or `+give ho`" : ""))
+            if (args[0] == "ho" && role == "Sante Claus") {
                 message.guild.channels.cache.find((c) => c.name === "day-chat").send("HO HO HO")
             } else {
                 if(role.name == "Easter Bunny") {
