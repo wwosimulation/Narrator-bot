@@ -43,7 +43,7 @@ module.exports = {
             if (args[0] == "ho" && role == "Sante Claus") {
                 message.guild.channels.cache.find((c) => c.name === "day-chat").send("HO HO HO")
             } else {
-                if(role.name == "Easter Bunny") {
+                if (role.name == "Easter Bunny") {
                     db.get(`bunny_${message.channel.id}`) || db.set(`bunny_${message.channel.id}`)
                     if (db.get(`bunny_${message.channel.id}`) == 0) return message.channel.send("You don't have any gifts left.")
                 }
