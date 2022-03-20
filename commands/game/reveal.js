@@ -21,7 +21,7 @@ module.exports = {
             dayChat.send(`${getEmoji("mayoring", client)} **${message.member.nickname} ${message.author.username} (Mayor)** has revealed himself!`)
             message.member.roles.add(revealed.id)
             db.set(`ability_${message.channel.id}`, "yes")
-        } else if ((db.get(`card_${message.channel.id}`) && !args[0] && (message.channel.name == "priv-pacifist" || message.channel.name == "priv-wolf-pacifist")) || (message.channel.name != "priv-pacifist" && message.channel.name != "priv-wolf-pacifist")) {
+        } else if (db.get(`card_${message.channel.id}`) && (!args[0] || args[0] == "card")) {
             if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can not reveal when dead!")
             db.set(`card_${message.channel.id}`, false)
             message.member.roles.add(revealed.id)
@@ -48,7 +48,7 @@ module.exports = {
                     return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
                 }
             }
-            if (gamePhase % 3 != 1) return await message.reply("You can use your ability only during the day!")
+            if (gamePhase % 3 == 0) return await message.reply("You can use your ability only during the day!")
             if (day == 1) {
                 if (cmd != "yes") return await message.reply("You can reveal after discussion phase of day 1!")
             }
@@ -78,6 +78,24 @@ module.exports = {
                     db.set(`card_${message.channel.id}`, false)
                 }
             }
+        } else if (message.channel.name == "priv-vigilante" && args?.[0].toLowerCase() != "card") {
+            let ability = db.get(`reveal_${message.channel.id}`) ?? true
+            if(!ability) {
+                message.channel.send("You already used that ability!")
+                return console.log("%d already revealed a player", message.member?.nickname)
+            }
+            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
+            let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
+            let gamePhase = db.get(`gamePhase`)
+            let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+            let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
+            if (message.member.roles.has(dead.id)) return message.channel.send("You can't your ability right now!")
+            if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
+            if (!guy || guy.member == message.member || !guy.roles.cache.has(alive.id)) return message.channel.send({ content: "The player is not in game! Mention the correct player number." })
+            if (db.get(`did_${message.channel.id}`) == gamePhase || db.get(`did_${message.channel.id}`) == gamePhase - 1) return message.channel.send("You already used one of your abilities today.")
+            if(db.get(`role_${guy.id}`) == "President") return message.channel.send({content: "You can't reveal the president!"})
+            dayChat.send({content: `${getEmoji("whistle")} The Vigilante revealed ${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})`})
+            guy.roles.add(revealed.id)
         }
     },
 }
