@@ -55,6 +55,7 @@ module.exports = {
         let ss = message.guild.channels.cache.filter((c) => c.name === "priv-spirit-seer").map((x) => x.id)
         let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
         let dc = message.guild.channels.cache.filter((c) => c.name === "priv-dreamcatcher").map((x) => x.id)
+        let baker = message.guild.channels.cache.filter((c) => c.name === "priv-baker").map((x) => x.id)
         let cupidKilled = false
         let soloKillers = ["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker"]
         let strongww = ["Werewolf", "Junior Werewolf", "Nightmare Werewolf", "Kitten Wolf", "Wolf Shaman", "Wolf Pacifist", "Shadow Wolf", "Guardian Wolf", "Werewolf Berserk", "Alpha Werewolf", "Wolf Seer", "Lone Wolf"]
@@ -3636,6 +3637,20 @@ module.exports = {
                     zombies.permissionOverwrites.edit(tempguy.id, {
                         SEND_MESSAGES: false,
                     })
+                }
+            }
+        }
+
+        for (let i = 0; i < baker.length; i++) {
+            let tempchan = message.guild.channels.cache.get(baker[i])
+            for (let f = 1; f <= alive.members.size + dead.members.size; f++) {
+                let guy = message.guild.members.cache.find((m) => m.displayName == f)
+                if (db.get(`bread_${tempchan.id}`) == f && guy) {
+                    message.guild.channels.cache
+                        .find((x) => x.name == "private channels")
+                        .children.each((chan) => {
+                            if (chan.permissionsFor(guy).has("VIEW_CHANNEL")) chan.send(`${getEmoji("baker_bread", client)} You received a bread from the baker. Your vote will count twice today.`)
+                        })
                 }
             }
         }

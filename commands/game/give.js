@@ -1,9 +1,10 @@
 const db = require("quick.db")
-const { getEmoji, fn } = require("../../config")
+const { getEmoji, fn, getRole } = require("../../config")
 
 module.exports = {
     name: "give",
     description: "Give something to another player. No matter what. A shield, a gift, cards or poisonous drinks!",
+    aliases: ["bread"],
     usage: `${process.env.PREFIX}give <player | <red | black> player>`,
     run: async (message, args, client) => {
         let dc
@@ -34,19 +35,24 @@ module.exports = {
             }
             message.channel.send(`${getEmoji("moon", client)} You gave a card to **${guy.nickname} ${guy.user.username}**`)
             db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`, 1)
-        } else if (message.channel.name == "priv-santa-claus") {
+        } else if (message.channel.name == "priv-santa-claus" || message.channel.name == "priv-easter-bunny") {
+            let role = getRole(message.channel.name.split("priv-")[1]).name
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")
-            if (!args[0]) return message.channel.send("You can use it as `+give ho` or `+give [player number]`")
-            if (args[0] == "ho") {
+            if (!args[0]) return message.channel.send("Please use the command correctly: `+give <player>`" + (role == "Santa Claus" ? " or `+give ho`" : ""))
+            if (args[0] == "ho" && role == "Sante Claus") {
                 message.guild.channels.cache.find((c) => c.name === "day-chat").send("HO HO HO")
             } else {
+                if (role.name == "Easter Bunny") {
+                    db.get(`bunny_${message.channel.id}`) || db.set(`bunny_${message.channel.id}`)
+                    if (db.get(`bunny_${message.channel.id}`) == 0) return message.channel.send("You don't have any gifts left.")
+                }
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
                 if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has(dead.id)) return message.channel.send("You can't send a gift to an alive player!")
                 if (guy.presence.status === "offline") return message.channel.send("This player is offline!")
-                guy.send("You have recieved a gift from Santa Claus! Find out what you have received!").catch((e) => message.channel.send(`An error occured: ${e.message}`))
+                guy.send(`You have recieved a gift from ${role}! Find out what you have received!`).catch((e) => message.channel.send(`An error occured: ${e.message}`))
                 db.add(`roses_${guy.id}`, 1)
             }
         } else if (message.channel.name == "priv-forger") {
@@ -98,6 +104,17 @@ module.exports = {
                 db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `blackpotion_${dc.chan.id}` : `blackpotion_${message.channel.id}`}`, guy.nickname)
                 message.react(fn.getEmoji("blackp", client))
             }
+        } else if (message.channel.name == "priv-baker") {
+            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
+            let guy = message.guild.members.cache.find((m) => m.nickname == args[0])
+
+            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You tried to share your bread. Sadly nobody saw you and the bread. You are dead.")
+            if (!args[0]) return message.channel.send("Please mention a player. Usage: `+give <player>`")
+            if (!guy || !guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Hmm. I couldn't find this person. Please make sure they are alive, exist and are not you.")
+            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+
+            db.set(`bread_${message.channel.id}`, guy.nickname)
+            message.channel.send({ content: `${getEmoji("baker_bread", client)} You gave your bread to **${guy.nickname} ${guy.user.tag}**` })
         }
     },
 }
