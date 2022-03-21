@@ -7,7 +7,6 @@ module.exports = {
     usage: `${process.env.PREFIX}ithost <game...>`,
     staffOnly: true,
     run: async (message, args, client) => {
-        let staff = message.guild.roles.cache.get(ids.minisim)
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let button = new MessageButton().setStyle("SUCCESS").setLabel("Join Game").setCustomId("gwjoin-" + args.join(" "))
         const row = new MessageActionRow().addComponents(button)
@@ -16,10 +15,5 @@ module.exports = {
             description: "** **", color: 0x327210
         })
         let m = await message.guild.channels.cache.get("606123818305585167").send({ content: `<@&955141762010202173>, we are now starting an interaction test ${args.join(" ")}. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#862712560511221791> and click on 🧪.}) 
-m.crosspost()
-        db.set(`game`, m.id)
-        db.set(`hoster`, message.author.id)
-        db.set(`gamePhase`, -5)
-        db.set("gameCode", args.join(" "))
     },
 } 
