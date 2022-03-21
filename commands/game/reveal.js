@@ -80,7 +80,7 @@ module.exports = {
             }
         } else if (message.channel.name == "priv-vigilante" && args?.[0].toLowerCase() != "card") {
             let ability = db.get(`reveal_${message.channel.id}`) ?? true
-            if(!ability) {
+            if (!ability) {
                 message.channel.send("You already used that ability!")
                 return console.log("%d already revealed a player", message.member?.nickname)
             }
@@ -93,8 +93,8 @@ module.exports = {
             if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
             if (!guy || guy.member == message.member || !guy.roles.cache.has(alive.id)) return message.channel.send({ content: "The player is not in game! Mention the correct player number." })
             if (db.get(`did_${message.channel.id}`) == gamePhase || db.get(`did_${message.channel.id}`) == gamePhase - 1) return message.channel.send("You already used one of your abilities today.")
-            if(db.get(`role_${guy.id}`) == "President") return message.channel.send({content: "You can't reveal the president!"})
-            dayChat.send({content: `${getEmoji("whistle")} The Vigilante revealed ${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})`})
+            if (db.get(`role_${guy.id}`) == "President") return message.channel.send({ content: "You can't reveal the president!" })
+            dayChat.send({ content: `${getEmoji("whistle")} The Vigilante revealed ${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})` })
             guy.roles.add(revealed.id)
         }
     },
