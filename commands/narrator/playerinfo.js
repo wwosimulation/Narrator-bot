@@ -38,9 +38,9 @@ module.exports = {
                 }
             }
         }
-        if(args[0] == "raw") {
+        if (args[0] == "raw") {
             message.channel.send(`**Player Info**\n${content}`)
-        } else if(args[0] == "block") {
+        } else if (args[0] == "block") {
             message.channel.send(`\`\`\`**Player Info**\n${content}\`\`\``)
         } else {
             let embed = new Discord.MessageEmbed({ title: "Player Info", description: content, color: "#648620" })
