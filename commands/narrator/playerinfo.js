@@ -38,7 +38,13 @@ module.exports = {
                 }
             }
         }
-        let embed = new Discord.MessageEmbed({ title: "Playerinfo", description: content, color: "#648620" })
-        message.channel.send({ embeds: [embed] }).catch((e) => message.channel.send(`An error occured: ${e.message}`))
+        if (args[0] == "raw") {
+            message.channel.send(`**Player Info**\n${content}`)
+        } else if (args[0] == "block") {
+            message.channel.send(`\`\`\`**Player Info**\n${content}\`\`\``)
+        } else {
+            let embed = new Discord.MessageEmbed({ title: "Player Info", description: content, color: "#648620" })
+            message.channel.send({ embeds: [embed] }).catch((e) => message.channel.send(`An error occured: ${e.message}`))
+        }
     },
 }
