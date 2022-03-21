@@ -146,7 +146,7 @@ module.exports = {
             message.member.roles.add(revealed.id)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
-            db.set(`bullets_${message.channel.id}`, false)
+            db.set(`bullet_${message.channel.id}`, false)
             db.set(`did_${message.channel.id}`, gamePhase)
             console.log("%d was shot", guy?.nickname)
         }
