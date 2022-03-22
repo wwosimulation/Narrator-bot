@@ -9,7 +9,7 @@ module.exports = {
     run: async (message, args, client) => {
         if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
         let button = new MessageButton().setStyle("SECONDARY").setLabel("Join Test").setCustomId("itest-" + args.join(" "))
-        const row = new MessageActionRow().addComponents(button) `, {components: [row]}
+        const row = new MessageActionRow().addComponents(button), components: [row]}
         const embed = new MessageEmbed({
             title: "Interaction Test Participants:",
             description: "** **", color: 0x327210
