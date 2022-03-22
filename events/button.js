@@ -217,6 +217,24 @@ module.exports = (client) => {
             player.coins -= lot.cost * parseInt(tickets)
             player.save()
             lot.save()
+
+            if (interaction.customId.startsWith("itest")) {
+                let gameName = interaction.customId.split("-")[1]
+                let guy = interaction.member
+                if (guy.roles.cache.has("606123628693684245")) return interaction.reply({ content: "You are game banned! You cannot join any games", ephemeral: true })
+                if (guy.roles.cache.has("606123676668133428")) return interaction.reply({ content: "You have already joined the game! Check <#606123823074377740> for the link!", ephemeral: true })
+                guy.roles.add("606123676668133428").catch((e) => interaction.guild.channels.cache.get("606123821656702987").send(`Error: ${e.message}`))
+                interaction.guild.channels.cache.find((x) => x.name == "tests").send(`${guy.user.tag} joins match ${gameName}\nUser ID: ${guy.id}`)
+                let jl = await interaction.guild.channels.cache.find((x) => x.name == "tests")
+                jl.send(`<@${guy.id}>, follow the instructions above to join the test!`).then((m) =>
+                    setTimeout(() => {
+                        m.delete()
+                    }, 5000)
+                )
+                let embed = interaction.message.embeds[0]
+                embed.description += `\n${guy.user.tag}`
+                interaction.update({ embeds: [embed] })
+            }
         }
     })
 }
