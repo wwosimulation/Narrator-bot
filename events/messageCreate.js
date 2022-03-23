@@ -121,7 +121,7 @@ module.exports = (client) => {
         //     message.reply("Something went wrong...")
         // }
 
-        client.channels.cache.get("832884582315458570").send({ content: `Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})`, allowedMentions: { parse: [] } })
+        client.channels.cache.get("832884582315458570").send({ content: `Command ran: **${commandName}**\nArguments: **${args.join(" ") || "None"}**\nAuthor: ${message.author.tag} (${message.author.id})\nChannel: ${message.channel.id}`, allowedMentions: { parse: [] } })
         await command.run(message, args, client)?.catch((error) => {
             client.Sentry.captureException(error)
             console.error(error)
