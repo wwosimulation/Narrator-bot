@@ -59,7 +59,7 @@ module.exports = (client) => {
             })
         }
         if (!args[0]) args = ["None"]
-        client.channels.cache.get("832884582315458570").send({ content: `Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id})`, allowedMentions: { parse: [] } })
+        client.channels.cache.get("832884582315458570").send({ content: `Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id}\nChannel: ${interaction.channel.id}`, allowedMentions: { parse: [] } })
         await commandFile.run(interaction, client).catch((error) => {
             console.log(error)
             if (interaction.replied) interaction.followUp({ content: interaction.l10n("error") })
