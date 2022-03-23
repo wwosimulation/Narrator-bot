@@ -632,6 +632,10 @@ module.exports = {
                                                         SEND_MESSAGES: false,
                                                     })
                                                     jailedchat.send(`You are in a deep sleep! You cannot use your abilities this night!`)
+                                                    // send a message for jailer
+                                                    jailers.forEach(jailerPlayer => {
+                                                        jailerPlayer.send(`${getEmoji("nightmared", client)} The player you have jailed has been nightmared!`)
+                                                    })
                                                 }
                                             }, 3000)
 
@@ -747,9 +751,10 @@ module.exports = {
                 let tempguy = message.guild.members.cache.find((m) => m.nickname === i.toString())
                 if (tempguy) {
                     if (tempguy.roles.cache.has(alive.id)) {
-                        if (zombies.permissionsFor(tempguy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
+                        if (db.get(`role_${tempguy.id}`) === "Zombie") {
                             zombies.permissionOverwrites.edit(tempguy.id, {
                                 SEND_MESSAGES: true,
+                                READ_MESSAGE_HISTORY: true
                             })
                         }
                     }

@@ -31,6 +31,7 @@ module.exports = {
         db.set(`gamePhase`, 0)
         db.set(`wwsVote`, "yes")
         db.set(`commandEnabled`, "no")
+        db.delete(`kittenWolfConvert`)
 
         // changing perms for alive in game-lobby
         message.guild.channels.cache.find((c) => c.name === "game-lobby").send("Game starting in 5 ...")

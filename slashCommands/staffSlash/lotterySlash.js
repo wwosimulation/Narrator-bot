@@ -1,7 +1,7 @@
 const { ids, fn, getEmoji } = require("../../config")
 const { lottery } = require("../../db.js")
-const ms = require('ms')
-const discord = require('discord.js')
+const ms = require("ms")
+const discord = require("discord.js")
 
 module.exports = {
     command: {
@@ -28,9 +28,8 @@ module.exports = {
                     {
                         type: "STRING",
                         name: "max",
-                        description: 'Enter how many tickets players are allowed to buy',
+                        description: "Enter how many tickets players are allowed to buy",
                         required: true,
-
                     },
                 ],
             },
@@ -50,7 +49,7 @@ module.exports = {
                         ],
                     },
                 ],
-            }
+            },
         ],
         defaultPermission: false,
     },
@@ -66,31 +65,30 @@ module.exports = {
         let sub = interaction.options.getSubcommand()
         switch (sub) {
             case "create": {
-                let cost = interaction.getString("cost")
-                let duration = interaction.getString("duration")
-                let max = interaction.getString("max")
+                let cost = interaction.options.getString("cost")
+                let duration = interaction.options.getString("duration")
+                let max = interaction.options.getString("max")
 
+                let lot = lottery.find()
+                if (lot.length == 1) {
+                    return interaction.reply({ content: `There already is a lottery going on, please wait for it to end or end it yourself.`, ephemeral: true })
+                }
                 if (isNaN(cost) || cost <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: cost }), ephemeral: true })
                 if (isNaN(max) || max <= 0) return interaction.reply({ content: interaction.l10n("amountInvalid", { amount: max }), ephemeral: true })
+
                 let time = ms(duration)
                 if (!time) return interaction.reply({ content: interaction.l10n("timeInvalidFormat"), ephemeral: true })
 
-                let embed = new discord.MessageEmbed()
-                    .setTitle(`New Lottery!`)
-                    .setDescription(`click 🎟 to enter!\nEnds in: <t:${Math.floor(new Date(Date.now() + time) / 1000)}:R>`)
-
-                let button = new discord.MessageButton()
-                    .setStyle("SUCCESS")
-                    .setEmoji("🎟")
-                    .setCustomId("lottery")
-
+                let embed = new discord.MessageEmbed().setTitle(`New Lottery!`).setDescription(`Ticket cost: ${cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(new Date(Date.now() + time) / 1000)}:R>\n\nParticipants: 0\nTickets bought: 0 \nPot size: 0 ${getEmoji("coin", client)}`)
+                let button = new discord.MessageButton().setStyle("SUCCESS").setEmoji("🎟").setCustomId("joinlottery")
                 let row = new discord.MessageActionRow().addComponents(button)
 
-
-                let msg = interaction.channel.send({ embeds: [embed], components: [row] })
-                lottery.create({ id: msg.id })
+                let chan = client.channels.cache.get("947930500725616700")
+                let msg = await chan.send({ embeds: [embed], components: [row] })
+                lottery.create({ endDate: `${Math.floor(new Date(Date.now() + time))}`, msg: msg.id, max: max, cost: cost })
                 break
-            } case "end": {
+            }
+            case "end": {
                 let winner = interaction.options.getString("winner")
                 let lot = await lottery.find()
 
@@ -124,11 +122,11 @@ module.exports = {
                     lot.remove()
                 }
                 break
-            } default: {
+            }
+            default: {
                 interaction.reply({ content: "An error occurred!" })
                 break
             }
         }
-
-    }
+    },
 }

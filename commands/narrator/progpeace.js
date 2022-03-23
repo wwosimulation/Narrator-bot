@@ -1,5 +1,7 @@
 module.exports = {
     name: "progpeace",
+    description: "Manually do peace action of prognosticator if bot bugs!",
+    usage: `${process.env.PREFIX}progpeace`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {

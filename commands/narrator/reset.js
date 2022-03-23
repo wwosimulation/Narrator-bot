@@ -57,6 +57,7 @@ module.exports = {
             let king = message.guild.channels.cache.filter((c) => c.name === "priv-pumpkin-king").map((x) => x.id)
             let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
             let baker = message.guild.channels.cache.filter((c) => c.name === "priv-baker").map((x) => x.id)
+            let vig = message.guild.channels.cache.filter((c) => c.name === "priv-vigilante").map((x) => x.id)
 
             db.delete(`excludes`)
 
@@ -88,6 +89,11 @@ module.exports = {
             for (let i = 0; i < gunner.length; i++) {
                 db.set(`bullets_${gunner[i]}`, 2)
                 db.set(`did_${gunner[i]}`, 555)
+            }
+
+            for(let i = 0; i < vig.length; i++) {
+                db.delete(`reveal_${vig[i]}`)
+                db.delete(`bullet_${vig[i]}`)
             }
 
             for (let i = 0; i < grumpy.length; i++) {
