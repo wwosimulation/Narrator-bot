@@ -1,10 +1,9 @@
 const db = require("quick.db")
-const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
 const { ids } = require("../../config")
 
 module.exports = {
     name: "endtest",
-    description: "Start a interaction test.",
+    description: "End a interaction test.",
     usage: `${process.env.PREFIX}endtest`,
     staffOnly: true,
     run: async (message, args, client) => {
