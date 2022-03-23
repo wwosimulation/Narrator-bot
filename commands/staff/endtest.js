@@ -10,7 +10,10 @@ module.exports = {
     run: async (message, args, client) => {
         if (db.get(`game`) == null) return message.channel.send("No test is being hosted.")
         db.set("game", null)
-        client.guilds.cache.get(ids.server.sim).roles.cache.get(ids.joinTest).members.each(m => m.roles.remove(ids.joinTest, "Test ended!"))
+        client.guilds.cache
+            .get(ids.server.sim)
+            .roles.cache.get(ids.joinTest)
+            .members.each((m) => m.roles.remove(ids.joinTest, "Test ended!"))
         message.channel.send("Test ended and roles cleared!")
     },
 }
