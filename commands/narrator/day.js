@@ -1493,7 +1493,11 @@ module.exports = {
 
             if (db.get(`kittenWolfConvert`) === true) {
                 let beforerole = db.get(`role_${guy.id}`)
+<<<<<<< HEAD
                 let allChanRole = message.guild.channels.cache.filter((c) => c.name === `priv-${beforerole.toLowerCase().replace(/\s/g, "-")}`)
+=======
+                let allChanRole = message.guild.channels.cache.filter((c) => c.name === `priv-${beforeRole.toLowerCase().replace(/\s/g, "-")}`)
+>>>>>>> 595205e (Vig (#290))
                 allChanRole.forEach((roleChan) => {
                     if (roleChan.permissionsFor(guy.id).has("VIEW_CHANNEL")) {
                         roleChan.permissionOverwrites.edit(guy.id, {
@@ -1504,12 +1508,18 @@ module.exports = {
                     }
                 })
                 db.set(`role_${guy.id}`, "Werewolf")
+<<<<<<< HEAD
                 wwChat.send(`${getEmoji("werewolf", client)} Player **${guy.nickname} ${guy.user.username}** has been converted into a werewolf!`)
                 wwChat.permissionOverwrites.create(guy.id, {
+=======
+                wwChat.send(`${getEmoji("guard", client)} Player **${guy.nickname} ${guy.user.username}** has been converted into a werewolf!`)
+                wwChat.permissionOverwrites.edit(guy.id, {
+>>>>>>> 595205e (Vig (#290))
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: false,
                     READ_MESSAGE_HISTORY: true,
                 })
+<<<<<<< HEAD
                 message.guild.channels.cache
                     .find((c) => c.name === "ww-vote")
                     .permissionOverwrites.create(guy.id, {
@@ -1517,6 +1527,8 @@ module.exports = {
                         VIEW_CHANNEL: true,
                         READ_MESSAGE_HISTORY: true,
                     })
+=======
+>>>>>>> 595205e (Vig (#290))
                 message.guild.channels
                     .create("priv-werewolf", {
                         parent: "892046231516368906",
@@ -1550,6 +1562,7 @@ module.exports = {
                         await newWwChan.send("You have been bitten! You are a werewolf now!")
                         kills[0] = "0"
                     })
+<<<<<<< HEAD
             } else {
                 if (kills[0] != "0" && db.get(`kittenWolfConvert`) !== true) {
                     wwKill = "0"
@@ -1571,6 +1584,29 @@ module.exports = {
                         thekiller.push("Werewolf")
                     }
                 }
+=======
+            }
+
+            if (kills[0] != "0") {
+                wwKill = "0"
+                dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${guy.nickname} ${guy.user.username} (${role})**!`)
+                if (role == "Cupid") {
+                    cupidKilled = true
+                }
+                guy.roles.add(dead.id)
+                guy.roles.remove(alive.id)
+                killedplayers.push(guy.id)
+                thekiller.push("Werewolf")
+            }
+            if (db.get(`kittenWolfConvert`) !== true) {
+                for (let a = 1; a < kills.length; a++) {
+                    dayChat.send(`${getEmoji("frenzy", client)} The Werewolf frenzy killed **${kills[a].nickname} ${kills[a].user.username} (${db.get(`role_${kills[a].id}`)})**!`)
+                    kills[a].roles.add(dead.id)
+                    kills[a].roles.remove(alive.id)
+                    killedplayers.push(kills[a].id)
+                    thekiller.push("Werewolf")
+                }
+>>>>>>> 595205e (Vig (#290))
             }
         }
         if (wwKill != "0" && frenzy == false) {
@@ -3608,10 +3644,17 @@ module.exports = {
             .all()
             .filter((data) => data.ID.startsWith("role_") && db.get(data.ID) === "Zombie")
             .map((data) => data.ID.split("_")[1])
+<<<<<<< HEAD
         allZombiePlayers.forEach(async (zombPlayer) => {
             if (db.get(`bittenAt_${zombPlayer}`) + 3 <= day) {
                 let zombGuy = await message.guild.members.fetch(zombPlayer)
                 dayChat.send(`${getEmoji("zombie", client)} Player **${zombGuy.nickname} ${zombGuy.user?.username}** was the Zombie. They have lived for 3 days and will now rot to death.`)
+=======
+        allZombiePlayers.forEach((zombPlayer) => {
+            if (db.get(`bittenAt_${zombPlayer}`) + 3 <= day) {
+                let zombGuy = message.guild.members.cache.get(zombPlayer)
+                dayChat.send(`${getEmoji("zombie", client)} Player **${zombGuy.nickname} ${zombGuy.user.username}** was the Zombie. They have lived for 3 days and will now rot to death.`)
+>>>>>>> 595205e (Vig (#290))
                 zombGuy.roles.add(dead.id)
                 zombGuy.roles.remove(alive.id)
             }
@@ -3745,7 +3788,11 @@ module.exports = {
                 let suspects = []
                 let targetFailed = true
                 let chan = message.guild.channels.cache.get(sheriff[i])
+<<<<<<< HEAD
                 let theSheriffs = message.guild.members.cache.filter((mem) => db.get(`role_${mem.id}`) === "Sheriff" && mem.roles.cache.has(alive.id))
+=======
+                let theSheriffs = alive.members.cache.filter((mem) => db.get(`role_${mem.id}`) === "Sheriff")
+>>>>>>> 595205e (Vig (#290))
                 let theOneSheriff = null
                 theSheriffs.forEach((sheriffPlayer) => {
                     if (chan.permissionsFor(sheriffPlayer.id).has("VIEW_CHANNEL")) {

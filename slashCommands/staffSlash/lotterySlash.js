@@ -79,9 +79,15 @@ module.exports = {
                 let time = ms(duration)
                 if (!time) return interaction.reply({ content: interaction.l10n("timeInvalidFormat"), ephemeral: true })
 
+<<<<<<< HEAD
                 let embed = { title: `New Lottery!`, description: `Ticket cost: ${cost} ${getEmoji("coin", client)}\nClick 🎟  to enter!\nEnds in <t:${Math.floor(new Date(Date.now() + time) / 1000)}:R>\n\nParticipants: 0\nTickets bought: 0\nPot size: 0 ${getEmoji("coin", client)}` }
                 let button = { type: 2, style: 3, custom_id: "joinlottery", emoji: { name: "🎟" } }
                 let row = { type: 1, components: [button] }
+=======
+                let embed = new discord.MessageEmbed().setTitle(`New Lottery!`).setDescription(`Ticket cost: ${cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(new Date(Date.now() + time) / 1000)}:R>\n\nParticipants: 0\nTickets bought: 0 \nPot size: 0 ${getEmoji("coin", client)}`)
+                let button = new discord.MessageButton().setStyle("SUCCESS").setEmoji("🎟").setCustomId("joinlottery")
+                let row = new discord.MessageActionRow().addComponents(button)
+>>>>>>> 595205e (Vig (#290))
 
                 let chan = client.channels.cache.get("947930500725616700")
                 let msg = await chan.send({ embeds: [embed], components: [row] })
