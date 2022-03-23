@@ -1,7 +1,7 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
-const { shop, ids, getEmoji } = require("../config")
+const { shop, ids, getEmoji, fn } = require("../config")
 const { lottery, players } = require("../db")
 
 // Custom id "cancel" and "suicide" are used in "../commands/game/suicide.js"
@@ -124,6 +124,8 @@ module.exports = (client) => {
                 default:
                     break
             }
+            let x = fn.disableButtons(interaction.message)
+            interaction.message.edit(x)
         }
         if (interaction.customId.startsWith("trick")) {
             let channelID = interaction.customId.split("_")[1]
