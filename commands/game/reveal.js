@@ -9,7 +9,7 @@ module.exports = {
     gameOnly: true,
     aliases: ["show"],
     run: async (message, args, client) => {
-        let aliveRole = message.guild.roles.cache.find((r) => r.name === "Alive")
+        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let deadRole = message.guild.roles.cache.find((r) => r.name === "Dead")
         let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
         let gamePhase = db.get(`gamePhase`)
@@ -22,7 +22,7 @@ module.exports = {
             message.member.roles.add(revealed.id)
             db.set(`ability_${message.channel.id}`, "yes")
         } else if (db.get(`card_${message.channel.id}`) && (!args[0] || args[0] == "card")) {
-            if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can not reveal when dead!")
+            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can not reveal when dead!")
             db.set(`card_${message.channel.id}`, false)
             message.member.roles.add(revealed.id)
             return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
@@ -39,10 +39,10 @@ module.exports = {
             let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
             let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
             let dchat = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            if (!message.member.roles.cache.has(aliveRole.id) || !guy.roles.cache.has(aliveRole.id)) return message.channel.send("You can play with alive people only!")
+            if (!message.member.roles.cache.has(alive.id) || !guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
             if (args[0] == "card") {
                 if (db.get(`card_${message.channel.id}`) == true) {
-                    if (!message.member.roles.cache.has(aliveRole.id)) return message.channel.send("You can't reveal when dead!")
+                    if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can't reveal when dead!")
                     db.set(`card_${message.channel.id}`, false)
                     message.member.roles.add(revealed.id)
                     return dayChat.send(`${getEmoji("sun", client)} **${message.member.nickname} ${message.author.username} (${db.get(`role_${message.author.id}`)})** used the Fortune Teller's card to reveal their role!`)
@@ -87,15 +87,17 @@ module.exports = {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let gamePhase = db.get(`gamePhase`)
+            let dayCount = Math.floor(gamePhase / 3) + 1
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
-            if (message.member.roles.has(dead.id)) return message.channel.send("You can't your ability right now!")
+            if (message.member.roles.cache.has(dead.id)) return message.channel.send("You can't your ability right now!")
             if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
             if (!guy || guy.member == message.member || !guy.roles.cache.has(alive.id)) return message.channel.send({ content: "The player is not in game! Mention the correct player number." })
-            if (db.get(`did_${message.channel.id}`) == gamePhase || db.get(`did_${message.channel.id}`) == gamePhase - 1) return message.channel.send("You already used one of your abilities today.")
+            if (db.get(`did_${message.channel.id}`) == dayCount) return message.channel.send("You already used one of your abilities today.")
             if (db.get(`role_${guy.id}`) == "President") return message.channel.send({ content: "You can't reveal the president!" })
-            dayChat.send({ content: `${getEmoji("whistle")} The Vigilante revealed ${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})` })
+            dayChat.send({ content: `${getEmoji("whistle", client)} The Vigilante revealed ${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})` })
             guy.roles.add(revealed.id)
+            db.set(`did_${message.channel.id}`)
         }
     },
 }
