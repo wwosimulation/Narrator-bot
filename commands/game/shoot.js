@@ -136,18 +136,19 @@ module.exports = {
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
             let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             let gamePhase = db.get(`gamePhase`)
+            let dayCount = Math.floor(gamePhase / 3) + 1
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
             let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
-            if (message.member.roles.has(dead.id)) return message.channel.send("You can't your ability right now!")
+            if (message.member.roles.cache.has(dead.id)) return message.channel.send("You can't your ability right now!")
             if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
             if (!guy || guy.member == message.member || !guy.roles.cache.has(alive.id)) return message.channel.send({ content: "The player is not in game! Mention the correct player number." })
-            if (db.get(`did_${message.channel.id}`) == gamePhase || db.get(`did_${message.channel.id}`) == gamePhase - 1) return message.channel.send("You already used one of your abilities today.")
+            if (db.get(`did_${message.channel.id}`) == dayCount) return message.channel.send("You already used one of your abilities today.")
             dayChat.send(`${getEmoji("bullet", client)} **${message.member.nickname} ${message.author.username} (Vigilante)** shot **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
             message.member.roles.add(revealed.id)
             guy.roles.add(dead.id)
             guy.roles.remove(alive.id)
             db.set(`bullet_${message.channel.id}`, false)
-            db.set(`did_${message.channel.id}`, gamePhase)
+            db.set(`did_${message.channel.id}`, dayCount)
             console.log("%d was shot", guy?.nickname)
         }
     },

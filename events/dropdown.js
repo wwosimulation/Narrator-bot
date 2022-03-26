@@ -129,7 +129,7 @@ module.exports = (client) => {
                 let baker = interaction.guild.channels.cache.filter((c) => c.name === "priv-baker").map((x) => x.id)
                 let doubled = false
                 for (let i; i < baker.length; i++) {
-                    if (db.get(`bread_${baker[i]}` == interaction.displayName)) doubled = true
+                    if (db.get(`bread_${baker[i]}` == interaction.member.displayName)) doubled = true
                 }
 
                 let omg = await interaction.message.channel.send(`${interaction.member.displayName} voted ${interaction.values[0].split("-")[1]} ${doubled ? " (**2x**)" : ""}`)

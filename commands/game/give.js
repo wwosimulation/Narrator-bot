@@ -36,6 +36,7 @@ module.exports = {
             message.channel.send(`${getEmoji("moon", client)} You gave a card to **${guy.nickname} ${guy.user.username}**`)
             db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`, 1)
         } else if (message.channel.name == "priv-santa-claus" || message.channel.name == "priv-easter-bunny") {
+            if(db.get(`did_${message.channel.id}`) == db.get("gamePhase")) return message.channel.send("You already used your ability!")
             let role = getRole(message.channel.name.split("priv-")[1]).name
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
@@ -55,6 +56,7 @@ module.exports = {
                 guy.send(`You have recieved a gift from ${role}! Find out what you have received!`).catch((e) => message.channel.send(`An error occured: ${e.message}`))
                 db.add(`roses_${guy.id}`, 1)
             }
+            db.set(`did_${message.channel.id}`, db.get("gamePhase"))
         } else if (message.channel.name == "priv-forger") {
             let alive = message.guild.roles.cache.find((m) => m.name === "Alive")
             let gamePhase = db.get(`gamePhase`)
