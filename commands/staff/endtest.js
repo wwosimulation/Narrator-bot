@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { ids } = require("../../config")
+const { ids, fn } = require("../../config")
 
 module.exports = {
     name: "endtest",
@@ -8,6 +8,8 @@ module.exports = {
     staffOnly: true,
     run: async (message, args, client) => {
         if (db.get(`game`) == null) return message.channel.send("No test is being hosted.")
+        let m = await client.guilds?.fetch(ids.server.sim)?.channels.fetch("606123818305585167")?.messages?.fetch(db.get("game"))
+        m.edit(fn.disableButtons(m))
         db.set("game", null)
         client.guilds.cache
             .get(ids.server.sim)
