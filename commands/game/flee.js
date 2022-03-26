@@ -4,9 +4,9 @@ const { ids } = require("../../config")
 const gamewarns = require("../../schemas/gamewarns")
 
 module.exports = {
-    name: "suicide",
-    description: "Kill yourself... In game! NOT IN REAL LIFE!",
-    usage: `${process.env.PREFIX}suicide [player]`,
+    name: "flee",
+    description: "Flee from the game!",
+    usage: `${process.env.PREFIX}flee [player]`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.member.permissions.has("MANAGE_CHANNELS")) {
@@ -16,7 +16,7 @@ module.exports = {
                     let role = db.get(`role_${guy.id}`)
                     db.set(`suicided_${guy.id}`, true)
                     let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
-                    day.send("**" + guy.nickname + " " + guy.user.username + " (" + role + ")** has commited suicide!")
+                    day.send("**" + guy.nickname + " " + guy.user.username + " (" + role + ")** has fled from the village!")
                     guy.roles.add(ids.dead)
                     guy.roles.remove(ids.alive)
                     message.reply({content: "Please use `/gamewarn add` to warn the user if necessary."})
@@ -24,7 +24,7 @@ module.exports = {
             }
         } else if (message.channel.name.includes("priv") || message.channel.name == "day-chat") {
             if (!message.member.roles.cache.has(ids.alive)) return
-            let row = new MessageActionRow({ components: [new MessageButton({ style: "SUCCESS", label: "Suicide", customId: "suicide" }), new MessageButton({ style: "DANGER", label: "Cancel", customId: "cancel" })] })
+            let row = new MessageActionRow({ components: [new MessageButton({ style: "SUCCESS", label: "Flee", customId: "flee" }), new MessageButton({ style: "DANGER", label: "Cancel", customId: "cancel" })] })
             message.channel.send({ embeds: [new MessageEmbed({ color: "DARK_ORANGE", title: "Are you sure you want to commit suicide?", description: "You will get a game warn if you commit suicide now." })], components: [row] }).then((msg) => {
                 const collector = msg.createMessageComponentCollector({ idle: 15000 })
                 collector.on("collect", async (interaction) => {
