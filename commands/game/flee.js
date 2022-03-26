@@ -37,19 +37,22 @@ module.exports = {
                         message.member.roles.add(ids.dead)
                         message.member.roles.remove(ids.alive)
 
-                        let warn = await gamewarns.create({user: message.author.id, reason: "Fled from a game", gamecode: db.get("gameCode")})
-                        let embed = new MessageEmbed({title: `You have received a gamewarn! Case: ${warn.index}`, description: 
-`You have received a gamewarn in ${message.guild.name}!
+                        let warn = await gamewarns.create({ user: message.author.id, reason: "Fled from a game", gamecode: db.get("gameCode") })
+                        let embed = new MessageEmbed({
+                            title: `You have received a gamewarn! Case: ${warn.index}`,
+                            description: `You have received a gamewarn in ${message.guild.name}!
 **Reason:** ${warn.reason}
 **Gamecode:** ${warn.gamecode}
-**Date:** <t:${(Date.now()/1000).toFixed()}:f>
+**Date:** <t:${(Date.now() / 1000).toFixed()}:f>
 
 If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).
-**Warn ID:** ${warn.index}`, color: "DARK_RED"})
-                        try{
-                            await message.author.send({embeds: [embed]})
-                        } catch(err) {
-                            interaction.editReply({embeds: [embed]})
+**Warn ID:** ${warn.index}`,
+                            color: "DARK_RED",
+                        })
+                        try {
+                            await message.author.send({ embeds: [embed] })
+                        } catch (err) {
+                            interaction.editReply({ embeds: [embed] })
                             message.channel.send("Unable to send direct message.")
                         }
                         client.emit("gamebanned", message.author)
