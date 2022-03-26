@@ -4,7 +4,7 @@ module.exports = {
     name: "killall",
     description: "Kill everyone who is still alive.",
     usage: `${process.env.PREFIX}killall`,
-    aliases: ["suicideall", "gameend", "alldie", "dieall"],
+    aliases: ["gameend", "alldie", "dieall"],
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
