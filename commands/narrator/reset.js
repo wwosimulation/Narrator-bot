@@ -91,7 +91,7 @@ module.exports = {
                 db.set(`did_${gunner[i]}`, 555)
             }
 
-            for(let i = 0; i < vig.length; i++) {
+            for (let i = 0; i < vig.length; i++) {
                 db.delete(`reveal_${vig[i]}`)
                 db.delete(`bullet_${vig[i]}`)
             }

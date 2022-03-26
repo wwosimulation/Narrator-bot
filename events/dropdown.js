@@ -80,14 +80,14 @@ module.exports = (client) => {
             if (interaction.member.roles.cache.has(ids.spectator)) return interaction.reply({ content: `You're spectating, you can't vote!`, ephemeral: true })
             if (terrorCheck(interaction)) return interaction.reply({ content: "The Prognosticator prevents you from voting.", ephemeral: true })
             let corrs = interaction.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((corr) => corr.id)
-            
+
             for (let corr = 0; corr < corrs.length; corr++) {
                 let corrupted = db.get(`corrupt_${corrs[corr]}`)
                 if (corrupted == interaction.member.displayName) {
                     return interaction.reply({ content: "You are corrupted! You can't vote today.", ephemeral: true })
                 }
             }
-            
+
             let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
             for (let x = 0; x < allpaci.length; x++) {
                 let dayactivated = db.get(`pacday_${allpaci[x]}`)
@@ -95,18 +95,18 @@ module.exports = (client) => {
                     return interaction.reply({ content: `A pacifist has revealed someone's role you can't vote today.`, ephemeral: true })
                 }
             }
-            
+
             // check if channel is not sendable
             let yourRole = db.get(`role_${interaction.user.id}`) || "None"
-            let allChannels = interaction.guild.channels.cache.filter(c => c.name === `priv-${yourRole}?.toLowerCase().replace(/\s/g, "-")`)
-            allChannels.forEach(yourChan => {
+            let allChannels = interaction.guild.channels.cache.filter((c) => c.name === `priv-${yourRole}?.toLowerCase().replace(/\s/g, "-")`)
+            allChannels.forEach((yourChan) => {
                 if (yourChan.permissionsFor(interaction.member.id).has("VIEW_CHANNEL")) {
                     if (!yourChan.permissionsFor(interaction.member.id).has("SEND_MESSAGES")) {
                         return interaction.reply({ content: "You are muted! You can't vote today.", ephemeral: true })
                     }
                 }
             })
-            
+
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
