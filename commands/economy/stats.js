@@ -5,7 +5,7 @@ const { players } = require("../../db")
 module.exports = {
     name: "stats",
     description: "",
-    usage: `${process.env.PREFIX}stats <user>`,
+    usage: `${process.env.PREFIX}stats [user]`,
     run: async (message, args, client) => {
         let member = fn.getUser(args.join(" "), message)
         if (!member) member = message.author

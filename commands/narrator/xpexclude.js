@@ -1,8 +1,8 @@
 const db = require("quick.db")
 module.exports = {
-    name: "unlock",
-    description: "Unlock the day-chat channel.",
-    usage: `${process.env.PREFIX}unlock`,
+    name: "xpexclude",
+    description: "Exclude players from getting xp with the +win command",
+    usage: `${process.env.PREFIX}xpexclude <players...>`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
