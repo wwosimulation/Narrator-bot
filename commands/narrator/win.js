@@ -44,13 +44,13 @@ module.exports = {
             if (winners.includes(x)) {
                 xpBase = winXP
                 data.winStreak += 1
-                data.stats[winTeam] ? data.stats[winTeam].win += 1 : data.stats.modded.win += 1
+                data.stats[winTeam] ? (data.stats[winTeam].win += 1) : (data.stats.modded.win += 1)
             } else if (losers.includes(x)) {
                 let role = getRole(db.get(`role_${x}`))
-                let team = role.name == "Unknown Role" ? "modded" : (role.team != "Solo" ? role.team : (role.soloKiller == true ? "solokiller" : "solovoting"))
+                let team = role.name == "Unknown Role" ? "modded" : role.team != "Solo" ? role.team : role.soloKiller == true ? "solokiller" : "solovoting"
                 xpBase = loseXP
                 data.winStreak = 0
-                data.stats[team] ? data.stats[team].lose += 1 : data.stats.modded.lose += 1
+                data.stats[team] ? (data.stats[team].lose += 1) : (data.stats.modded.lose += 1)
             }
             if (data.winStreak > 0) {
                 xpStreak = xp.streakXP(data.winStreak) || 0
@@ -58,9 +58,12 @@ module.exports = {
 
             // send each x an embed with their xp
             let xpEmbed = new Discord.MessageEmbed({ color: "#008800", title: "Game ended!", thumbnail: { url: client.user.avatarURL() }, description: `Result: ${winners.includes(x) ? "You won!" : "You lost."}\n\nXP gained: ${xpBase} XP${data.winStreak > 1 ? `\n${data.winStreak} Game Streak - ${xpStreak} Bonus XP` : ""}` })
-            client.users.cache.get(x).send({ embeds: [xpEmbed] }).catch(e => {
-                client.channels.cache.get("892046258737385473")?.send({ embeds: [xpEmbed], content: `<@${x}>, I couldn't DM you!` })
-            })
+            client.users.cache
+                .get(x)
+                .send({ embeds: [xpEmbed] })
+                .catch((e) => {
+                    client.channels.cache.get("892046258737385473")?.send({ embeds: [xpEmbed], content: `<@${x}>, I couldn't DM you!` })
+                })
             console.log(xpBase, xpStreak)
             data.xp += xpBase + xpStreak
             data.save()
