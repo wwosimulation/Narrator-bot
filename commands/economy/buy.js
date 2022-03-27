@@ -25,7 +25,7 @@ module.exports = {
             return message.dbUser[item.currency + "s"] < item.price * amount ? false : true
         }
 
-        if(client.user.username.includes("Beta")) return message.channel.send("You can't buy anything from Beta Bot!")
+        if (client.user.username.includes("Beta")) return message.channel.send("You can't buy anything from Beta Bot!")
 
         let sim = client.guilds.resolve(server.sim)
         let guy = await players.findOne({ user: message.author.id })
