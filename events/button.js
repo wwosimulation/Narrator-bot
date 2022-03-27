@@ -4,7 +4,7 @@ const db = require("quick.db")
 const { shop, ids, getEmoji, fn } = require("../config")
 const { lottery, players } = require("../db")
 
-// Custom id "cancel" and "suicide" are used in "../commands/game/suicide.js"
+// Custom id "cancel" and "flee" are used in "../commands/game/flee.js"
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {

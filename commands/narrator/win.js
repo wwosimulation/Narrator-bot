@@ -14,7 +14,7 @@ module.exports = {
         if (args.length < 2 || !xp.teamMultipliers[winTeam]) return message.channel.send("Please specify the winning team and its players! Valid teams are the following:\n" + Object.keys(xp.teamMultipliers).join(", "))
 
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        if (alive.members.size != "0") return message.channel.send('To use this command, everyone must have the "Dead" role! Use `+suicideall` if you need to kill everyone at once.')
+        if (alive.members.size != "0") return message.channel.send('To use this command, everyone must have the "Dead" role! Use `+killall` if you need to kill everyone at once.')
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
 
         let allPlayers = [],
