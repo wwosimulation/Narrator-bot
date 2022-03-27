@@ -7,7 +7,7 @@ module.exports = {
     narratorOnly: true,
     run: async (message, args, client) => {
         let ex = db.get("xpExclude")
-        args.forEach(i => ex.push(i))
+        args.forEach((i) => ex.push(i))
         db.set("xpExclude", ex)
     },
 }
