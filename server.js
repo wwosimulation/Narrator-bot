@@ -234,10 +234,10 @@ client.on("ready", async () => {
                     msg.edit({ components: [] })
                     let player = await players.findOne({ user: person.id })
                     player.coins += lot.pot
-                    if(!client.guilds.resolve(ids.server.sim).members.fetch(winner.id).roles.cache.has("947629828771831888")) client.guilds.resolve(ids.server.sim).members.fetch(winner.id).roles.add("947629828771831888")
+                    if (!client.guilds.resolve(ids.server.sim).members.fetch(winner.id).roles.cache.has("947629828771831888")) client.guilds.resolve(ids.server.sim).members.fetch(winner.id).roles.add("947629828771831888")
                     let part = []
                     lot.participants.forEach(async (p) => {
-                        let arr = p.entries()
+                        let arr = Object.entries(p)
                         let userTag = await client.users.fetch(arr[0]).tag
                         part.push(`${userTag} (${arr[0]}): ${arr[1]}`)
                     })
