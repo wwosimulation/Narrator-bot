@@ -24,7 +24,7 @@ module.exports = {
         } else if (message.channel.name.includes("priv") || message.channel.name == "day-chat") {
             if (!message.member.roles.cache.has(ids.alive)) return
             let row = new MessageActionRow({ components: [new MessageButton({ style: "SUCCESS", label: "Flee", customId: "flee" }), new MessageButton({ style: "DANGER", label: "Cancel", customId: "cancel" })] })
-            message.channel.send({ embeds: [new MessageEmbed({ color: "DARK_ORANGE", title: "Are you sure you want to commit suicide?", description: "You will get a game warn if you commit suicide now." })], components: [row] }).then((msg) => {
+            message.channel.send({ embeds: [new MessageEmbed({ color: "DARK_ORANGE", title: "Are you sure you want to commit flee?", description: "You will get a game warn if you flee from the game." })], components: [row] }).then((msg) => {
                 const collector = msg.createMessageComponentCollector({ idle: 15000 })
                 collector.on("collect", async (interaction) => {
                     if (interaction.user.id !== message.author.id) return interaction.reply({ content: "This is not your flee message. Don't try to trick me!", ephemeral: true })
