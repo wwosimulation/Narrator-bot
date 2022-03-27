@@ -305,7 +305,7 @@ module.exports = {
             let role = getRole(theirRole)
             rolelist.push(theirRole)
             let guy = interaction.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
-            db.delete(`suicided_${guy.id}`)
+            db.delete(`fled_${guy.id}`)
             let lol = await interaction.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
                 parent: "892046231516368906",
             })

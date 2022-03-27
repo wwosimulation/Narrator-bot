@@ -294,7 +294,7 @@ module.exports = (client) => {
                 if (guy) {
                     if (guy.roles.cache.has(ids.alive)) {
                         if (sectMember.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) != "Sect Leader") {
-                            newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("sect_member", client)} Sect Member **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** commited suicide!`)
+                            newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("sect_member", client)} Sect Member **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** fled from the village!`)
                             guy.roles.add("606131202814115882")
                             guy.roles.remove(ids.alive)
                             sectMember.permissionOverwrites.edit(guy.id, { VIEW_CHANNEL: false })
@@ -443,8 +443,8 @@ module.exports = (client) => {
                 if (guy) {
                     if (cupid.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         if (guy != newMember) {
-                            if (guy.roles.cache.has(alive.id) && newMember.presence.status != "offline" && !db.get(`suicided_${newMember.id}`)) {
-                                newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("couple", client)} Player **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** lost the love of their live and commited suicide!`)
+                            if (guy.roles.cache.has(alive.id) && newMember.presence.status != "offline" && !db.get(`fled_${newMember.id}`)) {
+                                newMember.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("couple", client)} Player **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** lost the love of their live and fled from the village!`)
                                 guy.roles.add(dead)
                                 guy.roles.remove(alive.id)
                             }

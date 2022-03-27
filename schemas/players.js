@@ -51,6 +51,10 @@ const schema = new mongoose.Schema({
             win: { type: Number, default: 0 },
             lose: { type: Number, default: 0 },
         },
+        modded: {
+            win: { type: Number, default: 0 },
+            lose: { type: Number, default: 0 },
+        },
         tie: { type: Number, default: 0 },
     },
     daily: {

@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const db = require("quick.db")
-const { fn, xp, roles, soloKillers } = require("../../config")
+const { fn, xp, roles, getRole } = require("../../config")
 const { players } = require("../../db.js")
 
 module.exports = {
@@ -14,14 +14,14 @@ module.exports = {
         if (args.length < 2 || !xp.teamMultipliers[winTeam]) return message.channel.send("Please specify the winning team and its players! Valid teams are the following:\n" + Object.keys(xp.teamMultipliers).join(", "))
 
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        if (alive.members.size != "0") return message.channel.send('To use this command, everyone must have the "Dead" role! Use `+suicideall` if you need to kill everyone at once.')
+        if (alive.members.size != "0") return message.channel.send('To use this command, everyone must have the "Dead" role! Use `+killall` if you need to kill everyone at once.')
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
 
         let allPlayers = [],
             winners = [],
             losers = []
         for (let i = 1; i <= dead.members.size; i++) {
-            let guy = message.guild.members.cache.find((m) => m.nickname === i.toString() && m.roles.cache.has(dead.id))
+            let guy = message.guild.members.cache.find((m) => m.nickname === i.toString() && m.roles.cache.has(dead.id) && !db.get("xpExclude").includes(m.nickname))
 
             if (guy) {
                 allPlayers.push(guy.id)
@@ -44,11 +44,13 @@ module.exports = {
             if (winners.includes(x)) {
                 xpBase = winXP
                 data.winStreak += 1
-                if (data.stats[winTeam]) data.stats[winTeam].win += 1
+                data.stats[winTeam] ? (data.stats[winTeam].win += 1) : (data.stats.modded.win += 1)
             } else if (losers.includes(x)) {
+                let role = getRole(db.get(`role_${x}`))
+                let team = role.name == "Unknown Role" ? "modded" : role.team != "Solo" ? role.team : role.soloKiller == true ? "solokiller" : "solovoting"
                 xpBase = loseXP
-                client.channels.cache.get("606123726966358037").send(`Add one loss to ${x} for the ${db.get(`role_${x}`)} role in game ${db.get("game")}.`)
                 data.winStreak = 0
+                data.stats[team] ? (data.stats[team].lose += 1) : (data.stats.modded.lose += 1)
             }
             if (data.winStreak > 0) {
                 xpStreak = xp.streakXP(data.winStreak) || 0
@@ -56,9 +58,12 @@ module.exports = {
 
             // send each x an embed with their xp
             let xpEmbed = new Discord.MessageEmbed({ color: "#008800", title: "Game ended!", thumbnail: { url: client.user.avatarURL() }, description: `Result: ${winners.includes(x) ? "You won!" : "You lost."}\n\nXP gained: ${xpBase} XP${data.winStreak > 1 ? `\n${data.winStreak} Game Streak - ${xpStreak} Bonus XP` : ""}` })
-            client.users.cache.get(x).send({ embeds: [xpEmbed] }).catch(e => {
-                client.channels.cache.get("892046258737385473")?.send({ embeds: [xpEmbed], content: `<@${x}>, I couldn't DM you!` })
-            })
+            client.users.cache
+                .get(x)
+                .send({ embeds: [xpEmbed] })
+                .catch((e) => {
+                    client.channels.cache.get("892046258737385473")?.send({ embeds: [xpEmbed], content: `<@${x}>, I couldn't DM you!` })
+                })
             console.log(xpBase, xpStreak)
             data.xp += xpBase + xpStreak
             data.save()
