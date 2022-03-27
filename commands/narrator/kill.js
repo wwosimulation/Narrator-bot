@@ -9,7 +9,7 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        if(!args) return message.channels.send(`Invalid format. Please use \`${process.env.PREFIX}kill <all | player...>\``)
+        if(!args) return message.channel.send(`Invalid format. Please use \`${process.env.PREFIX}kill <all | player...>\``)
         if(args[0] === "all") {
             return killAll.run(message, args ,client)
         }
