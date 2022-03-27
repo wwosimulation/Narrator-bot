@@ -38,7 +38,7 @@ module.exports = {
 
             db.set(`gamePhase`, -10)
             let save = ["rankedseason", "stafflist", "stafflist2", "stafflist3", "entermsg", "hoster", "gamePhase", "started", "usedChannels", "wwsVote", "winner", "vtshadow", "xpGiven", "nextRequest", "gamewarnIndex", "gamewarnCount", "logs", "gameCode", "game", "maintance"]
-            db.all().forEach(i => {
+            db.all().forEach((i) => {
                 if (!save.includes(i.ID)) db.delete(i.ID)
             })
 
