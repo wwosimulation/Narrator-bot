@@ -97,6 +97,7 @@ module.exports = {
                 }
                 lot = lot[0]
                 let logs = client.channels.cache.get("949248776500031508")
+                if(!client.guilds.resolve(ids.server.sim).members.fetch(winner.id).roles.cache.has("947629828771831888")) client.guilds.resolve(ids.server.sim).members.fetch(winner.id).roles.add("947629828771831888")
                 let part = []
                 lot.participants.forEach(async (p) => {
                     let arr = p.entries()
