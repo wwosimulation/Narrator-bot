@@ -235,10 +235,10 @@ client.on("ready", async () => {
                     let player = await players.findOne({ user: person.id })
                     player.coins += lot.pot
                     let part = []
-                    logs.participants.forEach(async (p) => {
+                    lot.participants.forEach(async (p) => {
                         let arr = p.entries()
-                        let userName = await client.users.fetch(arr[0]).username
-                        part.push(`${userName} (${arr[0]}): ${arr[1]}`)
+                        let userTag = await client.users.fetch(arr[0]).tag
+                        part.push(`${userTag} (${arr[0]}): ${arr[1]}`)
                     })
                     logs.send({
                         embeds: [

@@ -98,10 +98,10 @@ module.exports = {
                 lot = lot[0]
                 let logs = client.channels.cache.get("949248776500031508")
                 let part = []
-                logs.participants.forEach(async (p) => {
+                lot.participants.forEach(async (p) => {
                     let arr = p.entries()
-                    let userName = await client.users.fetch(arr[0]).username
-                    part.push(`${userName} (${arr[0]}): ${arr[1]}`)
+                    let userTag = await client.users.fetch(arr[0]).tag
+                    part.push(`${userTag} (${arr[0]}): ${arr[1]}`)
                 })
                 logs.send({
                     embeds: [
