@@ -3,7 +3,7 @@ require("dotenv").config()
 
 const fs = require("fs")
 const db = require("quick.db")
-const { fn, getEmoji } = require("./config")
+const { fn, getEmoji, ids } = require("./config")
 
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
@@ -234,6 +234,7 @@ client.on("ready", async () => {
                     msg.edit({ components: [] })
                     let player = await players.findOne({ user: person.id })
                     player.coins += lot.pot
+                    if(!client.guilds.resolve(ids.server.sim).members.fetch(winner.id).roles.cache.has("947629828771831888")) client.guilds.resolve(ids.server.sim).members.fetch(winner.id).roles.add("947629828771831888")
                     let part = []
                     lot.participants.forEach(async (p) => {
                         let arr = p.entries()
