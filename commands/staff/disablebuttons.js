@@ -5,6 +5,7 @@ module.exports = {
     name: "disablebuttons",
     description: "Disable buttons of a message.",
     usage: `${process.env.PREFIX}disablebuttons <msg_id | msg_link> [channel_id]`,
+    aliases: ["disablebutton"],
     staffOnly: true,
     run: async (message, args, client) => {
         let chan = args[1] ?? "606123818305585167"
