@@ -18,7 +18,7 @@ module.exports = {
                 let guy = message.guild.members.cache.find((m) => m.nickname === player)
                 if (guy) {
                     let role = db.get(`role_${guy.id}`)
-                    db.set(`suicided_${guy.id}`, true)
+                    db.set(`fled_${guy.id}`, true)
                     let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
                     day.send("**" + guy.nickname + " " + guy.user.username + " (" + role + ")** was killed by the narrator!")
                     guy.roles.add(ids.dead)
