@@ -1,7 +1,7 @@
 const db = require("quick.db")
 module.exports = {
     name: "xpexclude",
-    description: "Exclude pleayers from geeting xp with the +win command",
+    description: "Exclude players from getting xp with the +win command",
     usage: `${process.env.PREFIX}xpexclude <players...>`,
     gameOnly: true,
     narratorOnly: true,
