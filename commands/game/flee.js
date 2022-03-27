@@ -30,7 +30,7 @@ module.exports = {
                     if (interaction.user.id !== message.author.id) return interaction.reply({ content: "This is not your flee message. Don't try to trick me!", ephemeral: true })
                     if (interaction.customId === "flee") {
                         interaction.reply("Fleeing...")
-                        db.set(`suicided_${message.author.id}`, true)
+                        db.set(`fled_${message.author.id}`, true)
                         let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
                         let role = await db.fetch(`role_${message.author.id}`)
                         day.send("**" + message.member.nickname + " " + message.author.username + " (" + role + ")** has fled from village!")
