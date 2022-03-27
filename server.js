@@ -234,7 +234,29 @@ client.on("ready", async () => {
                     msg.edit({ components: [] })
                     let player = await players.findOne({ user: person.id })
                     player.coins += lot.pot
-                    logs.send(`${lot}`)
+                    let part = []
+                    logs.participants.forEach(async (p) => {
+                        let arr = p.entries()
+                        let userName = await client.users.fetch(arr[0]).username
+                        part.push(`${userName} (${arr[0]}): ${arr[1]}`)
+                    })
+                    logs.send({
+                        embeds: [
+                            new Discord.MessageEmbed({
+                                description: `
+**Pot:** ${lot.pot}
+**Max Tickets:** ${lot.max}
+**Cost:** ${lot.cost}
+**Total Tickets:** ${lot.ticketsBought}
+**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>
+**Message ID:** ${lot.msg}
+
+**Participants:**
+${part.join(",\n")}`,
+                                color: "GREEN",
+                            }),
+                        ],
+                    })
                     player.save()
                     lot.remove()
                 }
