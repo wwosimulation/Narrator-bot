@@ -98,21 +98,28 @@ module.exports = {
                 lot = lot[0]
                 let logs = client.channels.cache.get("949248776500031508")
                 let part = []
-                logs.participants.forEach(async p => {
+                logs.participants.forEach(async (p) => {
                     let arr = p.entries()
                     let userName = await client.users.fetch(arr[0]).username
                     part.push(`${userName} (${arr[0]}): ${arr[1]}`)
                 })
-                logs.send({embeds: [new discord.MessageEmbed({description: `
+                logs.send({
+                    embeds: [
+                        new discord.MessageEmbed({
+                            description: `
 **Pot:** ${lot.pot}
 **Max Tickets:** ${lot.max}
 **Cost:** ${lot.cost}
 **Total Tickets:** ${lot.ticketsBought}
-**End Date:** <t:${Math.floor(lot.endDate/1000)}:f>
+**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>
 **Message ID:** ${lot.msg}
 
 **Participants:**
-${part.join(",\n")}`, color: "GREEN"})]})
+${part.join(",\n")}`,
+                            color: "GREEN",
+                        }),
+                    ],
+                })
                 if (winner == "no") {
                     let msg = await interaction.channel.messages.fetch(lot.msg)
                     msg.edit({ components: [] })
