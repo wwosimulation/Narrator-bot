@@ -24,4 +24,4 @@ jobs:
                   prettier_options: --write .
                   only_changed: True
               env:
-                  GITHUB_TOKEN: ${{ secrets.SHADOW_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
