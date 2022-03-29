@@ -3,6 +3,7 @@ module.exports = {
     name: "xpexclude",
     description: "Exclude players from getting xp with the +win command",
     usage: `${process.env.PREFIX}xpexclude <players...>`,
+    aliases: ["noxp"],
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
