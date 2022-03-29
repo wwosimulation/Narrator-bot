@@ -239,7 +239,7 @@ client.on("ready", async () => {
                     lot.participants.forEach(async (p) => {
                         let arr = Object.entries(p)
                         let userTag = await client.users.fetch(arr[0]).tag
-                        part.push(`${userTag} (${arr[0]}): ${arr[1]}`)
+                        part.push(`${userTag} (${arr[0][0]}): ${arr[0][1]}`)
                     })
                     logs.send({
                         embeds: [
