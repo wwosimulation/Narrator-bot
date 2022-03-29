@@ -9,8 +9,10 @@ const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
 
 if (db.get("emergencystop")) {
-    console.log("Bot has been emergency stopped")
-    process.exit(0)
+    setTimeout(() => {
+        console.log("Bot has been emergency stopped")
+        process.exit(0)
+    }, 10000)
 }
 
 const mongo = require("./db.js")
