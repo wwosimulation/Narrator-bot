@@ -13,8 +13,7 @@ This bot was started in October of 2020 by Ashish who designed much of the core 
 [![Discord](https://img.shields.io/discord/465795320526274561?logo=discord&style=for-the-badge)](https://discord.gg/rwhZGbjPuN) ![GitHub Repo stars](https://img.shields.io/github/stars/wwosimulation/Narrator-bot?logo=github&style=for-the-badge) ![GitHub contributors](https://img.shields.io/github/contributors/wwosimulation/Narrator-bot?style=for-the-badge)
 
 Hosted by: [TheShadow#8124](https://github.com/thewilloftheshadow)  
-Lead Developer: [Hackante#1482](https://github.com/hackante)
-Originally created by: [Ashish#0540](https://github.com/3061LRTAGSPKJMORMRT)
+Lead Developer: [Hackante#1482](https://github.com/hackante) Originally created by: [Ashish#0540](https://github.com/3061LRTAGSPKJMORMRT)
 
 **Special thanks to the following:**  
 [inno on ice#0419](https://github.com/inno14) for helping with many testing games, bug finding, organizing suggestions, and testing everything.  
