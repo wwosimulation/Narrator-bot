@@ -240,7 +240,7 @@ client.on("ready", async () => {
                     let part = []
                     lot.participants.forEach(async (p) => {
                         let arr = Object.entries(p)
-                        let userTag = await client.users.fetch(arr[0]).tag
+                        let userTag = await client.users.cache.get(arr[0]).tag
                         part.push(`${userTag} (${arr[0]}): ${arr[1]}`)
                     })
                     logs.send({
