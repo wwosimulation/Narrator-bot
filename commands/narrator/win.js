@@ -72,5 +72,6 @@ module.exports = {
         message.channel.send("XP is being given! Thanks for playing :)")
         message.channel.send(`Winners: ${winners.map((x) => `<@${x}> `)}\nLosers: ${losers.map((x) => `<@${x}> `)}`)
         db.set("xpGiven", true)
+        db.set("xpExclude", [])
     },
 }
