@@ -20,7 +20,7 @@ module.exports = {
                 })
             hook.send({ content: emoji, username: message.member.nickname ? message.member.nickname : message.author.username, avatarURL: message.author.avatarURL() })
         } else {
-            let userEmbed = { description: `<@${message.author.id}>`, color: 0x1FFF43 }
+            let userEmbed = { description: `<@${message.author.id}>`, color: 0x1fff43 }
             message.channel.send({ content: `${emoji}`, embeds: [userEmbed] })
         }
     },
