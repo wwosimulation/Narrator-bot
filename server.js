@@ -3,14 +3,16 @@ require("dotenv").config()
 
 const fs = require("fs")
 const db = require("quick.db")
-const { fn, getEmoji } = require("./config")
+const { fn, getEmoji, ids } = require("./config")
 
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
 
 if (db.get("emergencystop")) {
-    console.log("Bot has been emergency stopped")
-    process.exit(0)
+    setTimeout(() => {
+        console.log("Bot has been emergency stopped")
+        process.exit(0)
+    }, 10000)
 }
 
 const mongo = require("./db.js")
@@ -234,7 +236,30 @@ client.on("ready", async () => {
                     msg.edit({ components: [] })
                     let player = await players.findOne({ user: person.id })
                     player.coins += lot.pot
-                    logs.send(`${lot}`)
+                    if (!client.guilds.resolve(ids.server.sim).members.cache.get(winner).roles.cache.has("947629828771831888")) client.guilds.resolve(ids.server.sim).members.cache.get(winner).roles.add("947629828771831888")
+                    let part = []
+                    lot.participants.forEach(async (p) => {
+                        let arr = Object.entries(p)
+                        let userTag = client.users.cache.get(arr[0][0]).tag
+                        part.push(`${userTag} (${arr[0][0]}): ${arr[0][1]}`)
+                    })
+                    logs.send({
+                        embeds: [
+                            new Discord.MessageEmbed({
+                                description: `
+**Pot:** ${lot.pot}
+**Max Tickets:** ${lot.max}
+**Cost:** ${lot.cost}
+**Total Tickets:** ${lot.ticketsBought}
+**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>
+**Message ID:** ${lot.msg}
+
+**Participants:**
+${part.join(",\n")}`,
+                                color: "GREEN",
+                            }),
+                        ],
+                    })
                     player.save()
                     lot.remove()
                 }

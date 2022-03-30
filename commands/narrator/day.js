@@ -3730,7 +3730,7 @@ module.exports = {
                 let suspects = []
                 let targetFailed = true
                 let chan = message.guild.channels.cache.get(sheriff[i])
-                let theSheriffs = alive.members.cache.filter((mem) => db.get(`role_${mem.id}`) === "Sheriff")
+                let theSheriffs = message.guild.members.cache.filter((mem) => db.get(`role_${mem.id}`) === "Sheriff" && mem.roles.cache.has(alive.id))
                 let theOneSheriff = null
                 theSheriffs.forEach((sheriffPlayer) => {
                     if (chan.permissionsFor(sheriffPlayer.id).has("VIEW_CHANNEL")) {

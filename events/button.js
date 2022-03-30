@@ -1,10 +1,10 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
-const { shop, ids, getEmoji } = require("../config")
+const { shop, ids, getEmoji, fn } = require("../config")
 const { lottery, players } = require("../db")
 
-// Custom id "cancel" and "suicide" are used in "../commands/game/suicide.js"
+// Custom id "cancel" and "flee" are used in "../commands/game/flee.js"
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
@@ -110,16 +110,22 @@ module.exports = (client) => {
             foundUser = interaction.guild.members.resolve(user)
             switch (action) {
                 case "no":
-                    foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` }).catch(e => { interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." }) })
+                    foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` }).catch((e) => {
+                        interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." })
+                    })
                     interaction.reply({ content: `No one can host, so the user has been informed. Thank you ${interaction.member}` })
                     break
                 case "yes":
-                    foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.user.tag} is starting one soon!.` }).catch(e => { interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." }) })
+                    foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.user.tag} is starting one soon!.` }).catch((e) => {
+                        interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." })
+                    })
                     interaction.reply({ content: `${interaction.user} is now hosting a game! The user has been informed.` })
                     break
                 default:
                     break
             }
+            let x = fn.disableButtons(interaction.message)
+            interaction.message.edit(x)
         }
         if (interaction.customId.startsWith("trick")) {
             let channelID = interaction.customId.split("_")[1]
@@ -217,6 +223,24 @@ module.exports = (client) => {
             player.coins -= lot.cost * parseInt(tickets)
             player.save()
             lot.save()
+        }
+
+        if (interaction.customId.startsWith("itest")) {
+            let gameName = interaction.customId.split("-")[1]
+            let guy = interaction.member
+            if (guy.roles.cache.has(ids.gamebanned)) return interaction.reply({ content: "You are game banned! You cannot join any games", ephemeral: true })
+            if (guy.roles.cache.has(ids.joinTest)) return interaction.reply({ content: "You have already joined the test! Check <#955883046710681660> for the instructions!", ephemeral: true })
+            let jl = await interaction.guild.channels.cache.find((x) => x.name == "tests")
+            guy.roles.add(ids.joinTest).catch((e) => jl.send(`Error: ${e.message}`))
+            interaction.guild.channels.cache.find((x) => x.name == "tests").send(`${guy.user.tag} joins test ${gameName}\nUser ID: ${guy.id}`)
+            jl.send(`<@${guy.id}>, follow the instructions above to join the test!`).then((m) =>
+                setTimeout(() => {
+                    m.delete()
+                }, 5000)
+            )
+            let embed = interaction.message.embeds[0]
+            embed.description += `\n${guy.user.tag}`
+            interaction.update({ embeds: [embed] })
         }
     })
 }
