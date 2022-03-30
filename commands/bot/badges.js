@@ -8,7 +8,7 @@ module.exports = {
     run: async (message, args, client) => {
         let guy = fn.getUser(args[0], message)
 
-        let embed = { title: guy.user.tag + "'s Badges", description: "", thumbnail: { url: guy.user.avatarURL() }, timestamp: Date.now(), color: guy.displayColor ? guy.displayColor : 0x1FFF43 }
+        let embed = { title: guy.user.tag + "'s Badges", description: "", thumbnail: { url: guy.user.avatarURL() }, timestamp: Date.now(), color: guy.displayColor ? guy.displayColor : 0x1fff43 }
 
         let desc = ""
 
