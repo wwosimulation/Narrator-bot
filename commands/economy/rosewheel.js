@@ -27,12 +27,12 @@ module.exports = {
         await guy.updateOne({ $inc: update })
         message
             .reply({
-                embeds: [{ title: "The wheel is spinning...", author: { name: message.author.tag + "'s rose wheel", iconURL: message.author.avatarURL() }, color: 0x1FFF43, image: { url: "https://i.imgur.com/NZzTW8h.gif" }, timestamp: Date.now() }],
+                embeds: [{ title: "The wheel is spinning...", author: { name: message.author.tag + "'s rose wheel", iconURL: message.author.avatarURL() }, color: 0x1fff43, image: { url: "https://i.imgur.com/NZzTW8h.gif" }, timestamp: Date.now() }],
             })
             .then((msg) => {
                 setTimeout(() => {
                     msg.edit({
-                        embeds: [{ color: 0x1FFF43, title: `You won ${prize.name}!`, description: response, author: { name: message.author.tag + "'s rose wheel", iconURL: message.author.avatarURL() }, thumbnail: { url: prize.icon ? `https://www.wolvesville.com/static/media/${prize.icon}.png` : "https://static.thenounproject.com/png/340719-200.png" }, timestamp: Date.now() }],
+                        embeds: [{ color: 0x1fff43, title: `You won ${prize.name}!`, description: response, author: { name: message.author.tag + "'s rose wheel", iconURL: message.author.avatarURL() }, thumbnail: { url: prize.icon ? `https://www.wolvesville.com/static/media/${prize.icon}.png` : "https://static.thenounproject.com/png/340719-200.png" }, timestamp: Date.now() }],
                     })
                 }, 4000)
             })
