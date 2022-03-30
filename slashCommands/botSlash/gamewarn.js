@@ -104,26 +104,18 @@ module.exports = {
 
                 let embed = {
                     title: `You have received a gamewarn! Case: ${warn.index}`,
-                    color: 0x8B0000,
-                    description: `You have received a gamewarn in ${interaction.guild.name}!\n` + 
-                        `**Reason:** ${warn.reason}\n` +
-                        `**Gamecode:** ${warn.gamecode}\n` +
-                        `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` +
-                        `If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).`,
+                    color: 0x8b0000,
+                    description: `You have received a gamewarn in ${interaction.guild.name}!\n` + `**Reason:** ${warn.reason}\n` + `**Gamecode:** ${warn.gamecode}\n` + `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` + `If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).`,
                 }
-                
+
                 let logEmbed = {
                     title: `Case: ${warn.index}`,
-                    color: 0x8B0000,
-                    description: `**User:** ${guy} - ${guy.tag + " (" + guy.id})\n` +
-                        `**Reason:** ${warn.reason}\n` +
-                        `**Gamecode:** ${warn.gamecode}\n` +
-                        `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` +
-                        `**Warned by:** ${interaction.user} (${interaction.user.tag})`,
+                    color: 0x8b0000,
+                    description: `**User:** ${guy} - ${guy.tag + " (" + guy.id})\n` + `**Reason:** ${warn.reason}\n` + `**Gamecode:** ${warn.gamecode}\n` + `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` + `**Warned by:** ${interaction.user} (${interaction.user.tag})`,
                 }
-                
+
                 await interaction.reply({ content: "Done, the gamewarn to the player has been set.", ephemeral: true })
-                
+
                 try {
                     await guy.send({ embeds: [embed] })
                 } catch (err) {
@@ -141,12 +133,8 @@ module.exports = {
                 let warn = await gamewarns.findOneAndDelete({ index })
                 let logEmbed = {
                     title: `Case ${warn.index} deleted`,
-                    color: 0xAD1457,
-                    description: `Warning **${warn.index}** was deleted by ${interaction.user.tag} (${interaction.user.id}) ${interaction.options.getString("reason", false) ? "\n**Reason:** " + interaction.options.getString("reason", false) : ""}\n\n` +
-                        `Raw warning:\n` + 
-                        `\`\`\`js\n` +
-                        `${warn}\n` +
-                        `\`\`\``,
+                    color: 0xad1457,
+                    description: `Warning **${warn.index}** was deleted by ${interaction.user.tag} (${interaction.user.id}) ${interaction.options.getString("reason", false) ? "\n**Reason:** " + interaction.options.getString("reason", false) : ""}\n\n` + `Raw warning:\n` + `\`\`\`js\n` + `${warn}\n` + `\`\`\``,
                 }
                 interaction.reply({ content: "Successfully deleted the document.", ephemeral: true })
                 client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
@@ -161,12 +149,9 @@ module.exports = {
                     warns.forEach((warn, i, arr) => {
                         let e = {
                             title: `Case: ${warn.index} - ${warn.date > (new Date().getTime() - 7889400000).toFixed() ? "Active" : "Inactive"}`,
-                            color: warn.date > (new Date().getTime() - 7889400000).toFixed() ? 0xF1C40F : 0xC27C0E,
+                            color: warn.date > (new Date().getTime() - 7889400000).toFixed() ? 0xf1c40f : 0xc27c0e,
                             footer: { text: `Warn ${i + 1}/${arr.length}` },
-                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` +
-                                `**Reason:** ${warn.reason}\n` +
-                                `**Gamecode:** ${warn.gamecode}\n` +
-                                `**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
+                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` + `**Reason:** ${warn.reason}\n` + `**Gamecode:** ${warn.gamecode}\n` + `**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
                         }
                         warnEmbeds.push(e)
                     })
@@ -180,12 +165,9 @@ module.exports = {
                     warns.forEach((warn, i, arr) => {
                         let e = {
                             title: `Case: ${warn.index}`,
-                            color: 0xF1C40F,
+                            color: 0xf1c40f,
                             footer: { text: `Warn ${i + 1}/${arr.length}` },
-                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` +
-                                `**Reason:** ${warn.reason}\n` +
-                                `**Gamecode:** ${warn.gamecode}\n` +
-                                `**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
+                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` + `**Reason:** ${warn.reason}\n` + `**Gamecode:** ${warn.gamecode}\n` + `**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
                         }
                         warnEmbeds.push(e)
                     })
@@ -206,11 +188,8 @@ module.exports = {
                 if (guy) x.content = `${guy}`
                 let embed = {
                     title: `Case ${warn.index}`,
-                    color: 0x99AAB5,
-                    description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` +
-                        `**Reason:** ${warn.reason}\n` +
-                        `**Gamecode:** ${warn.gamecode}\n` +
-                        `**Date:** <t:${warn.date / 1000}:f>`,
+                    color: 0x99aab5,
+                    description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` + `**Reason:** ${warn.reason}\n` + `**Gamecode:** ${warn.gamecode}\n` + `**Date:** <t:${warn.date / 1000}:f>`,
                 }
                 x.embeds = [embed]
                 interaction.reply(x)
