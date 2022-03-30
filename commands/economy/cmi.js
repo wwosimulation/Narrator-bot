@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js")
 const { cmi, emojis } = require("../../config")
 
 module.exports = {
