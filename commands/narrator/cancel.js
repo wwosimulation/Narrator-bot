@@ -3,7 +3,7 @@ const { ids } = require("../../config")
 
 module.exports = {
     name: "cancel",
-    description: "Cancel a game.", 
+    description: "Cancel a game.",
     usage: `${process.env.PREFIX}cancel`,
     narratorOnly: true,
     run: async (message, client, args) => {
