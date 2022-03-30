@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js")
 const { players } = require("../../db")
 
 module.exports = {
@@ -65,7 +64,7 @@ module.exports = {
             arr.forEach((item) => {
                 if (getTag(item.userID).includes("#")) description = description + `${item.value} - ${getTag(item.userID)}\n`
             })
-            let embed = new MessageEmbed({ title: `${lbType} Leaderboard`, description: description, color: "#1FFF43", footer: { text: `Page ${i + 1}/${embedItemArr.length}` } }).setTimestamp()
+            let embed = { title: `${lbType} Leaderboard`, description: description, color: 0x1FFF43, footer: { text: `Page ${i + 1}/${embedItemArr.length}` }, timestamp: Date.now() }
 
             embeds.push(embed)
         })
