@@ -1,4 +1,3 @@
-const { MessageSelectMenu, MessageActionRow } = require("discord.js")
 const { gameModes } = require("../../config")
 
 module.exports = {
@@ -13,11 +12,11 @@ module.exports = {
         args.forEach((match) => {
             items.push(match.charAt(0).toUpperCase() + match.slice(1))
         })
-        let droppy = new MessageSelectMenu().setCustomId("poll")
+        let droppy = { type: 3, custom_id: "poll", options: [] }
         items.forEach((x) => {
-            droppy.addOptions({ label: `${x}`, value: `${x}` })
+            droppy.options.push({ label: `${x}`, value: `${x}` })
         })
-        let row = new MessageActionRow().addComponents(droppy)
+        let row = { type: 1, components: [droppy] }
         let m = await message.channel.send({ content: `Select an option below:`, components: [row] })
     },
 }
