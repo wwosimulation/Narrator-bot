@@ -1,7 +1,7 @@
 const { players } = require("../../db.js")
 const { fn } = require("../../config")
 const Canvas = require("canvas")
-const { MessageAttachment, MessageEmbed } = require("discord.js")
+const { MessageAttachment } = require("discord.js")
 
 const applyName = (canvas, name) => {
     const context = canvas.getContext("2d")
@@ -113,9 +113,9 @@ module.exports = {
         context.textBaseline = "middle"
         context.fillText(new Date().toLocaleString("en-GB"), canvas.width - 240, 2112, canvas.width - 2 * 235)
 
-        let embed = new MessageEmbed().setTitle(name.split("#")[0] + "'s Profile").setColor(guy.displayHexColor || "#1FFF43")
-        if (guy.profileDesc !== "") embed.setDescription(guy.profileDesc)
-        if (guy.profileIcon !== "") embed.setThumbnail(guy.profileIcon, { dynamic: true })
+        let embed = { title: `${name.split("#")[0]}'s Profile`, color: guyz.displayColor || 0x1FFF43 }
+        if (guy.profileDesc !== "") embed.description = guy.profileDesc
+        if (guy.profileIcon !== "") embed.thumbnail = { url: guy.profileIcon }
 
         const attachment = new MessageAttachment(canvas.toBuffer(), `profile-${message.author.username}-${Date.now()}.png`)
         if (guy.profileDesc !== "" || guy.profileIcon !== "") message.channel.send({ embeds: [embed] })
