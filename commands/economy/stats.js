@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js")
 const { fn, emojis } = require("../../config")
 const { players } = require("../../db")
 
@@ -29,7 +28,7 @@ module.exports = {
         let description = `Win Streak: ${data.winStreak}\nGames played: ${total}\n\nTotal Wins: ${totalWin}\nTotal Losses: ${totalLoss}\nTies: ${data.stats.tie}`
         let title = member.user.tag + "'s Stats"
 
-        let embed = new MessageEmbed({ description, fields, color, title, timestamp: new Date(), footer, thumbnail: { url: member.user.avatarURL() } })
+        let embed = { description, fields, color, title, timestamp: Date.now(), footer, thumbnail: { url: member.user.avatarURL() } }
         message.channel.send({ embeds: [embed] })
     },
 }
