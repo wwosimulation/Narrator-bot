@@ -1,4 +1,3 @@
-const { MessageActionRow } = require("discord.js")
 const db = require("quick.db")
 
 module.exports = {
@@ -23,7 +22,7 @@ module.exports = {
                 let row = allc[0]
                 let button = row.components[0]
                 button.disabled = true
-                m.edit({ components: [new MessageActionRow().addComponents(button)] })
+                m.edit({ components: [{ type: 1, components: [button] }] })
             })
         db.delete(`game`)
     },
