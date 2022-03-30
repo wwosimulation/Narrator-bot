@@ -1,5 +1,4 @@
 const players = require("../../schemas/players")
-const { MessageEmbed } = require("discord.js")
 const { fn } = require("../../config")
 
 module.exports = {
