@@ -113,7 +113,7 @@ module.exports = {
         context.textBaseline = "middle"
         context.fillText(new Date().toLocaleString("en-GB"), canvas.width - 240, 2112, canvas.width - 2 * 235)
 
-        let embed = { title: `${name.split("#")[0]}'s Profile`, color: guyz.displayColor || 0x1FFF43 }
+        let embed = { title: `${name.split("#")[0]}'s Profile`, color: guyz.displayColor || 0x1fff43 }
         if (guy.profileDesc !== "") embed.description = guy.profileDesc
         if (guy.profileIcon !== "") embed.thumbnail = { url: guy.profileIcon }
 
