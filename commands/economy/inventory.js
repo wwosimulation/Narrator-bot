@@ -13,11 +13,11 @@ module.exports = {
         let data = await players.findOne({ user: message.author.id })
 
         // prettier-ignore
-        let embed = new Discord.MessageEmbed({ title: message.l10n("inventory"), author: {name: message.author.tag, iconURL: message.author.avatarURL()} })
-          .addField("Coins", `${data.coins} ${emojis.coin}`, true)
-          .addField("Gems", `${data.gems} ${emojis.gem}`, true)
-          .addField("Roses", `${data.roses} ${emojis.rose}`, true)
-          .addField("Inventory:", `Roses: ${data.inventory.rose} ${emojis.rose}\nBouquets: ${data.inventory.bouquet} ${emojis.bouquet}\nLootboxes: ${data.inventory.lootbox} ${emojis.lootbox}`)
+        let embed = { title: message.l10n("inventory"), author: {name: message.author.tag, iconURL: message.author.avatarURL()}, fields: [] }
+        embed.fields.push({ name: "Coins", value: `${data.coins} ${emojis.coin}`, inline: true })
+        embed.fields.push({ name: "Gems", value: `${data.gems} ${emojis.gem}`, inline: true })
+        embed.fields.push({ name: "Roses", value: `${data.roses} ${emojis.rose}`, inline: true })
+        embed.fields.push({ name: "Inventory:", value: `Roses: ${data.inventory.rose} ${emojis.rose}\nBouquets: ${data.inventory.bouquet} ${emojis.bouquet}\nLootboxes: ${data.inventory.lootbox} ${emojis.lootbox}` })
 
         message.channel.send({ embeds: [embed] })
     },
