@@ -169,9 +169,9 @@ module.exports = (client) => {
             let no = { type: 2, style: 4, custom_id: `no`, emoji: { id: "606610883170271236" } }
             let zero = { type: 2, style: 2, custom_id: `0`, label: `0` }
             let yes = { type: 2, style: 3, custom_id: `yes`, emoji: { id: "606770420687044618" } }
-            
+
             row4.components.push(no, zero, yes)
-            
+
             let embed = { title: `Lottery ticket shop`, description: `Your coins: ${player.coins}\nYour lottery tickets bought: ${lotsBought}\nMax lottery tickets allowed: ${lot.max}`, fields: [{ name: "How many lottery tickets do you want to buy?", value: "\u200b" }] }
             interaction.reply({ embeds: [embed], ephemeral: true, components: [row1, row2, row3, row4] })
         }
