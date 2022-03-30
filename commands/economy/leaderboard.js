@@ -12,10 +12,13 @@ module.exports = {
         let sortedBy = "coins" // default
         let lbType = "Coin" //default
         let errorReply = ""
+        args.forEach((arg, i) => {
+            args[i] = arg.toLowerCase()
+        })
 
         // extended arrays to check arguments and modify embed title
         let sortedByOptions = ["coins", "roses", "gems", "xp"]
-        let lbTypes = ["Coin", "Rose", "Gem", "Xp"]
+        let lbTypes = ["Coin", "Rose", "Gem", "XP"]
 
         //checking args and changeing line 12-14
         /* args[0] is the leader board type (coins etc) */
@@ -33,7 +36,7 @@ module.exports = {
         let obj = {}
         obj[sortedBy] = -1
         let obj2 = {}
-        obj2[sortedBy] = { $gt: 0 }
+        obj2[sortedBy] = { $gt: 25 }
 
         let embeds = []
         let embedItemArray = []
