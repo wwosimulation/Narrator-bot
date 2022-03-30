@@ -20,7 +20,7 @@ module.exports = {
         }
         let button = { type: 2, style: 3, label: "Join Game", custom_id: `gwjoin-${args.join(" ")}` }
         const row = { type: 1, components: [button] }
-        
+
         const embed = { title: "Player and Spectator List:", description: "** **", color: 0x327210 }
         let m = await message.guild.channels.cache.get("606123818305585167").send({ content: `<@&606123686633799680>, we are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#862712560511221791> and react with 🎮${sup ? `\n\n${sup}` : ""}`, embeds: [embed], components: [row] })
         m.crosspost()
