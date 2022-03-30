@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js")
 const { ids } = require("../../config")
 const gamewarns = require("../../schemas/gamewarns")
 
@@ -103,35 +102,34 @@ module.exports = {
                 let warn = { user: guy.id, reason: interaction.options.getString("reason", false) ?? undefined, gamecode: interaction.options.getString("gamecode", false) ?? undefined }
                 warn = await gamewarns.create(warn)
 
-                let embed = new MessageEmbed({
+                let embed = {
                     title: `You have received a gamewarn! Case: ${warn.index}`,
-                    description: `You have received a gamewarn in ${interaction.guild.name}!
-**Reason:** ${warn.reason}
-**Gamecode:** ${warn.gamecode}
-**Date:** <t:${(Date.now() / 1000).toFixed()}:f>
-
-If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).`,
-                    color: "DARK_RED",
-                })
-
-                let logEmbed = new MessageEmbed({
+                    color: 0x8B0000,
+                    description: `You have received a gamewarn in ${interaction.guild.name}!\n` + 
+                        `**Reason:** ${warn.reason}\n` +
+                        `**Gamecode:** ${warn.gamecode}\n` +
+                        `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` +
+                        `If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).`,
+                }
+                
+                let logEmbed = {
                     title: `Case: ${warn.index}`,
-                    description: `**User:** ${guy} - ${guy.tag + " (" + guy.id})
-**Reason:** ${warn.reason}
-**Gamecode:** ${warn.gamecode}
-**Date:** <t:${(Date.now() / 1000).toFixed()}:f>
-
-**Warned by:** ${interaction.user} (${interaction.user.tag})`,
-                    color: "DARK_RED",
-                })
+                    color: 0x8B0000,
+                    description: `**User:** ${guy} - ${guy.tag + " (" + guy.id})\n` +
+                        `**Reason:** ${warn.reason}\n` +
+                        `**Gamecode:** ${warn.gamecode}\n` +
+                        `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` +
+                        `**Warned by:** ${interaction.user} (${interaction.user.tag})`,
+                }
+                
+                await interaction.reply({ content: "Done, the gamewarn to the player has been set.", ephemeral: true })
+                
                 try {
                     await guy.send({ embeds: [embed] })
                 } catch (err) {
-                    message.channel.send("Unable to send direct message! Please show the warning with `/gamewarn show index:" + warn.index + "` in a channel the user can see.")
+                    await interaction.followUp("Unable to send direct message! Please show the warning with `/gamewarn show index:" + warn.index + "` in a channel the user can see.")
                 }
                 client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
-
-                interaction.reply({ content: "User has been warned!", ephemeral: true })
                 client.emit("gamebanned", guy)
                 break
             }
@@ -141,17 +139,15 @@ If you think this gamewarn was given by accident please [open a ticket](https://
                 let w = await gamewarns.findOne({ index })
                 if (!w) return interaction.reply({ content: "This infraction does not exist." })
                 let warn = await gamewarns.findOneAndDelete({ index })
-                let logEmbed = new MessageEmbed({
+                let logEmbed = {
                     title: `Case ${warn.index} deleted`,
-                    description: `Warning **${warn.index}** was deleted by ${interaction.user.tag} (${interaction.user.id}) ${interaction.options.getString("reason", false) ? "\n**Reason:** " + interaction.options.getString("reason", false) : ""}
-
-Raw warning:
-\`\`\`js
-${warn}
-\`\`\`
-`,
-                    color: "DARK_VIVID_PINK",
-                })
+                    color: 0xAD1457,
+                    description: `Warning **${warn.index}** was deleted by ${interaction.user.tag} (${interaction.user.id}) ${interaction.options.getString("reason", false) ? "\n**Reason:** " + interaction.options.getString("reason", false) : ""}\n\n` +
+                        `Raw warning:\n` + 
+                        `\`\`\`js\n` +
+                        `${warn}\n` +
+                        `\`\`\``,
+                }
                 interaction.reply({ content: "Successfully deleted the document.", ephemeral: true })
                 client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
                 client.emit("gamebanned", client.users.cache.get(warn.user))
@@ -163,38 +159,38 @@ ${warn}
                     let warns = await gamewarns.find({ user: guy.id })
                     let warnEmbeds = []
                     warns.forEach((warn, i, arr) => {
-                        let e = new MessageEmbed({
+                        let e = {
                             title: `Case: ${warn.index} - ${warn.date > (new Date().getTime() - 7889400000).toFixed() ? "Active" : "Inactive"}`,
-                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})
-**Reason:** ${warn.reason}
-**Gamecode:** ${warn.gamecode}
-**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
-                            color: warn.date > (new Date().getTime() - 7889400000).toFixed() ? "GOLD" : "DARK_GOLD",
+                            color: warn.date > (new Date().getTime() - 7889400000).toFixed() ? 0xF1C40F : 0xC27C0E,
                             footer: { text: `Warn ${i + 1}/${arr.length}` },
-                        })
+                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` +
+                                `**Reason:** ${warn.reason}\n` +
+                                `**Gamecode:** ${warn.gamecode}\n` +
+                                `**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
+                        }
                         warnEmbeds.push(e)
                     })
                     await interaction.reply({ content: warnEmbeds.length + " warns below." })
-                    let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || new MessageEmbed({ title: "No gamewarns found." })] })
+                    let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || { title: "No gamewarns found." }] })
                     await client.buttonPaginator(interaction.user.id, msg, warnEmbeds, 1)
                 } else {
                     let active = (new Date().getTime() - 7889400000).toFixed() // 3 months
                     let warns = await gamewarns.find({ user: interaction.user.id, date: { $gt: active } })
                     let warnEmbeds = []
                     warns.forEach((warn, i, arr) => {
-                        let e = new MessageEmbed({
+                        let e = {
                             title: `Case: ${warn.index}`,
-                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})
-**Reason:** ${warn.reason}
-**Gamecode:** ${warn.gamecode}
-**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
-                            color: "GOLD",
+                            color: 0xF1C40F,
                             footer: { text: `Warn ${i + 1}/${arr.length}` },
-                        })
+                            description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` +
+                                `**Reason:** ${warn.reason}\n` +
+                                `**Gamecode:** ${warn.gamecode}\n` +
+                                `**Date:** <t:${(warn.date / 1000).toFixed()}:f>`,
+                        }
                         warnEmbeds.push(e)
                     })
                     await interaction.reply({ content: warnEmbeds.length + " warns below." })
-                    let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || new MessageEmbed({ title: "No active gamewarns found." })] })
+                    let msg = await interaction.followUp({ embeds: [warnEmbeds[0] || { title: "No active gamewarns found." }] })
                     await client.buttonPaginator(interaction.user.id, msg, warnEmbeds, 1)
                     client.emit("gamebanned", interaction.user)
                 }
@@ -208,14 +204,14 @@ ${warn}
                 if (!warn) return interaction.reply({ content: "This infraction does not exist." })
                 let x = {}
                 if (guy) x.content = `${guy}`
-                let embed = new MessageEmbed({
+                let embed = {
                     title: `Case ${warn.index}`,
-                    description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})
-**Reason:** ${warn.reason}
-**Gamecode:** ${warn.gamecode}
-**Date:** <t:${warn.date / 1000}:f>`,
-                    color: "GREYPLE",
-                })
+                    color: 0x99AAB5,
+                    description: `**User:** <@${warn.user}> - ${client.users.cache.get(warn.user).tag} (${warn.user})\n` +
+                        `**Reason:** ${warn.reason}\n` +
+                        `**Gamecode:** ${warn.gamecode}\n` +
+                        `**Date:** <t:${warn.date / 1000}:f>`,
+                }
                 x.embeds = [embed]
                 interaction.reply(x)
                 break
