@@ -17,14 +17,15 @@ module.exports = {
 
         for (let roleitem in cmi) {
             let role = cmi[roleitem]
-            embeds.push(new MessageEmbed())
-            embeds[embeds.length - 1].addField(`${role.name}`, `${role.price} ${emojis[role.currency]}`)
+            embeds.push({ fields: [] })
+            embeds[embeds.length - 1].fields.push(`${role.name}`, `${role.price} ${emojis[role.currency]}`)
         }
         addFooter = true
 
         for (let [i, embed] of embeds.entries()) {
-            if (addFooter == true) embed.setFooter({text: `Page ${i + 1}/${embeds.length}`})
-            embed.setTitle("CMI Store").setColor("#1FFF43")
+            if (addFooter == true) embed.footer = { text: `Page ${i + 1}/${embeds.length}` }
+            embed.title = "CMI Store"
+            embed.color = 0x1FFF43
         }
 
         let m = await message.reply({ embeds: [embeds[0]] })
