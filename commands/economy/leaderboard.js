@@ -64,7 +64,7 @@ module.exports = {
             arr.forEach((item) => {
                 if (getTag(item.userID).includes("#")) description = description + `${item.value} - ${getTag(item.userID)}\n`
             })
-            let embed = { title: `${lbType} Leaderboard`, description: description, color: 0x1FFF43, footer: { text: `Page ${i + 1}/${embedItemArr.length}` }, timestamp: Date.now() }
+            let embed = { title: `${lbType} Leaderboard`, description: description, color: 0x1fff43, footer: { text: `Page ${i + 1}/${embedItemArr.length}` }, timestamp: Date.now() }
 
             embeds.push(embed)
         })
