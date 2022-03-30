@@ -1,5 +1,4 @@
 const db = require("quick.db")
-const { MessageActionRow, MessageButton } = require("discord.js")
 
 module.exports = {
     name: "joingame",
