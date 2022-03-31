@@ -22,7 +22,7 @@ module.exports = {
         args.splice(0, 2)
 
         let questchan = message.guild.channels.cache.find((c) => c.name === "paid-quest")
-        let embed ={ title: "Quest Claimed", description: `${guy} claimed ${args.join(" ")}!` }
+        let embed = { title: "Quest Claimed", description: `${guy} claimed ${args.join(" ")}!` }
 
         questchan.send({ content: `${guy}`, embeds: [embed] })
 
