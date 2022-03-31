@@ -5,7 +5,8 @@ module.exports = {
     description: `Get a list of game roles available to buy or buy them using the subcommand \`${process.env.PREFIX}cmi buy <role>\``,
     usage: `${process.env.PREFIX}cmi [buy <role>]`,
     run: async (message, args, client) => {
-        return
+        
+        return  // idk why is this here
         //if (message.channel.type != "dm") return message.channel.send("Please try this command in DMs!")
 
         let msg = ""
