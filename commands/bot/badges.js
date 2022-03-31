@@ -1,5 +1,4 @@
 const players = require("../../schemas/players")
-const { MessageEmbed } = require("discord.js")
 const { fn } = require("../../config")
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
     run: async (message, args, client) => {
         let guy = fn.getUser(args[0], message)
 
-        let embed = new MessageEmbed({ title: guy.user.tag + "'s Badges", thumbnail: { url: guy.user.avatarURL() }, color: guy.displayHexColor ? guy.displayHexColor : "#1FFF43" }).setTimestamp()
+        let embed = { title: guy.user.tag + "'s Badges", description: "", thumbnail: { url: guy.user.avatarURL() }, timestamp: Date.now(), color: guy.displayColor ? guy.displayColor : 0x1fff43 }
 
         let desc = ""
 
@@ -21,7 +20,7 @@ module.exports = {
         }
 
         if (desc === "") desc = `${guy.user.tag} does not have any badges.`
-        embed.setDescription(desc)
+        embed.description = desc
 
         message.channel.send({ embeds: [embed] })
     },
