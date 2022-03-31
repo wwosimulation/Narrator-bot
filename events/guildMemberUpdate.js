@@ -41,7 +41,7 @@ module.exports = (client) => {
                 }
             }
         }
-        
+
         if (db.get(`role_${newMember.id}`) === "Kitten Wolf") {
             newMember.guild.channels.cache.find((c) => c.name === "werewolves-chat").send(`${getEmoji("kitten_wolf", client)} The Kitten Wolf has died! If you try to kill a player the following night, they will be converted instead!`)
             db.set(`kittenWolfConvert`, true)

@@ -22,9 +22,11 @@ module.exports = {
         addFooter = true
 
         for (let [i, embed] of embeds.entries()) {
+
             if (addFooter == true) embed.footer = { text: `Page ${i + 1}/${embeds.length}` }
             embed.title = "CMI Store"
             embed.color = 0x1fff43
+
         }
 
         let m = await message.reply({ embeds: [embeds[0]] })

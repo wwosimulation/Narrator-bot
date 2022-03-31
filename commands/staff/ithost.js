@@ -8,6 +8,7 @@ module.exports = {
     staffOnly: true,
     run: async (message, args, client) => {
         if (db.get(`game`) != null) return message.channel.send("Another game/test is being hosted!")
+
         let button = { type: 2, style: 2, label: "Join Test", custom_id: `itest-${args.join(" ")}` }
         const row = { type: 1, components: [button] }
         const embed = { title: "Interaction Test Participants:", description: "** **", color: 0x327210 }
