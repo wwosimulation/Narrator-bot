@@ -41,7 +41,7 @@ module.exports = {
         } else if (args[0] == "block") {
             message.channel.send(`\`\`\`**Player Info**\n${content}\`\`\``)
         } else {
-            let embed = new { title: "Player Info", description: content, color: 0x648620 }()
+            let embed = { title: "Player Info", description: content, color: 0x648620 }
             message.channel.send({ embeds: [embed] }).catch((e) => message.channel.send(`An error occured: ${e.message}`))
         }
     },
