@@ -116,7 +116,7 @@ module.exports = {
                                 `**Message ID:** ${lot.msg}\n\n` +
                                 `**Participants:**\n` +
                                 `${part.join(",\n")}`,
-                        }),
+                        },
                     ],
                 })
                 if (winner == "no") {
