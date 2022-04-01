@@ -250,14 +250,7 @@ client.on("ready", async () => {
                     logs.send({
                         embeds: [
                             {
-                                description: `**Pot:** ${lot.pot}\n` +
-                                    `**Max Tickets:** ${lot.max}\n` +
-                                    `**Cost:** ${lot.cost}\n` +
-                                    `**Total Tickets:** ${lot.ticketsBought}\n` +
-                                    `**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>\n` +
-                                    `**Message ID:** ${lot.msg}\n\n` +
-                                    `**Participants:**\n` +
-                                    `${part.join(",\n")}`,
+                                description: `**Pot:** ${lot.pot}\n` + `**Max Tickets:** ${lot.max}\n` + `**Cost:** ${lot.cost}\n` + `**Total Tickets:** ${lot.ticketsBought}\n` + `**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>\n` + `**Message ID:** ${lot.msg}\n\n` + `**Participants:**\n` + `${part.join(",\n")}`,
                                 color: "GREEN",
                             },
                         ],
