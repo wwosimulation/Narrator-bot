@@ -1,4 +1,3 @@
-const Discord = require("discord.js")
 const db = require("quick.db")
 const { fn, xp, roles, getRole } = require("../../config")
 const { players } = require("../../db.js")
@@ -57,7 +56,7 @@ module.exports = {
             }
 
             // send each x an embed with their xp
-            let xpEmbed = new Discord.MessageEmbed({ color: "#008800", title: "Game ended!", thumbnail: { url: client.user.avatarURL() }, description: `Result: ${winners.includes(x) ? "You won!" : "You lost."}\n\nXP gained: ${xpBase} XP${data.winStreak > 1 ? `\n${data.winStreak} Game Streak - ${xpStreak} Bonus XP` : ""}` })
+            let xpEmbed = { color: 0x008800, title: "Game ended!", thumbnail: { url: client.user.avatarURL() }, description: `Result: ${winners.includes(x) ? "You won!" : "You lost."}\n\nXP gained: ${xpBase} XP${data.winStreak > 1 ? `\n${data.winStreak} Game Streak - ${xpStreak} Bonus XP` : ""}` }
             client.users.cache
                 .get(x)
                 .send({ embeds: [xpEmbed] })

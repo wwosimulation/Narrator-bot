@@ -144,13 +144,13 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     if (embeds.length <= 1) return
 
     // buttons
-    let buttonBegin = new Discord.MessageButton({ style: "SUCCESS", emoji: "⏪", customId: "begin" })
-    let buttonBack = new Discord.MessageButton({ style: "SUCCESS", emoji: "◀", customId: "back" })
-    let buttonNext = new Discord.MessageButton({ style: "SUCCESS", emoji: "▶", customId: "next" })
-    let buttonEnd = new Discord.MessageButton({ style: "SUCCESS", emoji: "⏩", customId: "end" })
+    let buttonBegin = { type: 2, style: 3, emoji: { name: "⏪" }, custom_id: "begin" }
+    let buttonBack = { type: 2, style: 3, emoji: { name: "◀" }, custom_id: "back" }
+    let buttonNext = { type: 2, style: 3, emoji: { name: "▶" }, custom_id: "next" }
+    let buttonEnd = { type: 2, style: 3, emoji: { name: "⏩" }, custom_id: "end" }
 
     // rows
-    let activeRow = new Discord.MessageActionRow().addComponents([buttonBegin, buttonBack, buttonNext, buttonEnd])
+    let activeRow = { type: 1, components: [buttonBegin, buttonBack, buttonNext, buttonEnd] }
 
     // adding buttons
     if (addButtons) msg.edit({ components: [activeRow] })
@@ -173,7 +173,11 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
         await button.update({ embeds: [embeds[p]] })
     })
     collector.on("end", () => {
-        let deadRow = new Discord.MessageActionRow().addComponents([buttonBegin.setDisabled(), buttonBack.setDisabled(), buttonNext.setDisabled(), buttonEnd.setDisabled()])
+        buttonBegin.disabled = true
+        buttonBack.disabled = true
+        buttonNext.disabled = true
+        buttonEnd.disabled = true
+        let deadRow = { type: 1, components: [buttonBegin, buttonBack, buttonNext, buttonEnd] }
         msg.edit({ components: [deadRow] })
     })
 }
@@ -245,19 +249,10 @@ client.on("ready", async () => {
                     })
                     logs.send({
                         embeds: [
-                            new Discord.MessageEmbed({
-                                description: `
-**Pot:** ${lot.pot}
-**Max Tickets:** ${lot.max}
-**Cost:** ${lot.cost}
-**Total Tickets:** ${lot.ticketsBought}
-**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>
-**Message ID:** ${lot.msg}
-
-**Participants:**
-${part.join(",\n")}`,
-                                color: "GREEN",
-                            }),
+                            {
+                                description: `**Pot:** ${lot.pot}\n` + `**Max Tickets:** ${lot.max}\n` + `**Cost:** ${lot.cost}\n` + `**Total Tickets:** ${lot.ticketsBought}\n` + `**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>\n` + `**Message ID:** ${lot.msg}\n\n` + `**Participants:**\n` + `${part.join(",\n")}`,
+                                color: 0x00ff00,
+                            },
                         ],
                     })
                     player.save()
