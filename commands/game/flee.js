@@ -22,7 +22,13 @@ module.exports = {
             }
         } else if (message.channel.name.includes("priv") || message.channel.name == "day-chat") {
             if (!message.member.roles.cache.has(ids.alive)) return
-            let row = { type: 1, components: [{ type: 2, style: 3, label: "Flee", custom_id: "flee" }, { type: 2, style: 4, label: "Cancel", custom_id: "cancel" }] }
+            let row = {
+                type: 1,
+                components: [
+                    { type: 2, style: 3, label: "Flee", custom_id: "flee" },
+                    { type: 2, style: 4, label: "Cancel", custom_id: "cancel" },
+                ],
+            }
             message.channel.send({ embeds: [{ color: 0xa84300, title: "Are you sure you want to flee from the game?", description: "You will get a game warn if you flee from the game." }], components: [row] }).then((msg) => {
                 const collector = msg.createMessageComponentCollector({ idle: 15000 })
                 collector.on("collect", async (interaction) => {
@@ -39,12 +45,7 @@ module.exports = {
                         let warn = await gamewarns.create({ user: message.author.id, reason: "Fled from a game", gamecode: db.get("gameCode") })
                         let embed = {
                             title: `You have received a gamewarn! Case: ${warn.index}`,
-                            description: `You have received a gamewarn in ${message.guild.name}!\n` +
-                                `**Reason:** ${warn.reason}\n` +
-                                `**Gamecode:** ${warn.gamecode}\n` +
-                                `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` +
-                                `If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).\n` +
-                                `**Warn ID:** ${warn.index}`,
+                            description: `You have received a gamewarn in ${message.guild.name}!\n` + `**Reason:** ${warn.reason}\n` + `**Gamecode:** ${warn.gamecode}\n` + `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` + `If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).\n` + `**Warn ID:** ${warn.index}`,
                             color: 0x992d22,
                         }
                         try {
@@ -60,7 +61,9 @@ module.exports = {
                     collector.stop()
                 })
                 collector.on("end", (collected) => {
-                    row.components.forEach(btn => { btn.disabled = true })
+                    row.components.forEach((btn) => {
+                        btn.disabled = true
+                    })
                     msg.edit({ components: [row] })
                 })
             })
