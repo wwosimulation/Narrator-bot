@@ -46,7 +46,7 @@ module.exports = {
                                 `If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).\n` +
                                 `**Warn ID:** ${warn.index}`,
                             color: 0x992d22,
-                        })
+                        }
                         try {
                             await message.author.send({ embeds: [embed] })
                         } catch (err) {
