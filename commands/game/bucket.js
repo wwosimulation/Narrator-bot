@@ -1,4 +1,3 @@
-const { MessageActionRow, MessageSelectMenu } = require("discord.js")
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
 const { fn, ids } = require("../../config")
@@ -16,8 +15,8 @@ module.exports = {
             if (args[0] == message.member.nickname) return message.channel.send("You can't pass the bucket to yourself!")
             let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
 
-            let droppy = new MessageSelectMenu().setCustomId("pumpkinking")
-            droppy.addOptions({ label: `Return`, value: `${message.channel.id}-return`, description: `Return the bucket`, emoji: "🎃" })
+            let droppy = { type: 3, custom_id: "pumpkinking", options: [] }
+            droppy.options.push({ label: `Return`, value: `${message.channel.id}-return`, description: `Return the bucket`, emoji: { name: "🎃" } })
             for (let i = 1; i <= 16; i++) {
                 let player = message.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(ids.alive))
                 let chan = message.guild.channels.cache.filter((c) => c.name.startsWith(`priv-`)).map((x) => x.id)
@@ -25,11 +24,11 @@ module.exports = {
                     let tempchan = message.guild.channels.cache.get(chan[j])
                     if (player && tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                         shuffle(emojis)
-                        droppy.addOptions({ label: `${i}`, value: `${message.channel.id}-pass:${tempchan.id}`, description: `Pass the bucket to ${player.user.tag}`, emoji: emojis[0] })
+                        droppy.options.push({ label: `${i}`, value: `${message.channel.id}-pass:${tempchan.id}`, description: `Pass the bucket to ${player.user.tag}`, emoji: { name: emojis[0] } })
                     }
                 }
             }
-            let row = new MessageActionRow().addComponents(droppy)
+            let row = { type: 1, components: [droppy] }
             let chan = message.guild.channels.cache
                 .filter((c) => c.name.startsWith(`priv-`))
                 .forEach((x) => {
