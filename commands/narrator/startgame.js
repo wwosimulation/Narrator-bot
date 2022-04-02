@@ -1,4 +1,3 @@
-const { MessageActionRow } = require("discord.js")
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
 const { getEmoji } = require("../../config")
@@ -22,7 +21,7 @@ module.exports = {
                     let specbutton = row.components[1]
                     let narrbutton = row.components[2]
                     jgbutton.disabled = true
-                    m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
+                    m.edit({ components: [{ type: 1, components: [jgbutton, specbutton, narrbutton] }] })
                 })
         }
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")

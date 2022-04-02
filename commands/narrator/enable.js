@@ -1,5 +1,4 @@
 const db = require("quick.db")
-const { MessageActionRow } = require("discord.js")
 
 module.exports = {
     name: "enable",
@@ -21,7 +20,7 @@ module.exports = {
                     let specbutton = row.components[1]
                     let narrbutton = row.components[2]
                     jgbutton.disabled = false
-                    m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
+                    m.edit({ components: [{ type: 1, components: [jgbutton, specbutton, narrbutton] }] })
                 })
         } else if (args[0] == "spec") {
             message.guild.channels.cache
@@ -34,7 +33,7 @@ module.exports = {
                     let specbutton = row.components[1]
                     let narrbutton = row.components[2]
                     specbutton.disabled = false
-                    m.edit({ components: [new MessageActionRow().addComponents(jgbutton, specbutton, narrbutton)] })
+                    m.edit({ components: [{ type: 1, components: [jgbutton, specbutton, narrbutton] }] })
                 })
         } else return message.channel.send(`I could not find the button.`)
     },

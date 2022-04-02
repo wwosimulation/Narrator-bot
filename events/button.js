@@ -1,4 +1,3 @@
-const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
 const ms = require("ms")
 const db = require("quick.db")
 const { shop, ids, getEmoji, fn } = require("../config")
@@ -85,13 +84,13 @@ module.exports = (client) => {
             let cmd = interaction.customId.split("-")[1]
             switch (cmd) {
                 case "request":
-                    let canHost = new MessageButton().setLabel("I can host").setStyle("SUCCESS").setCustomId(`hostrequest-yes;`)
-                    let canNotHost = new MessageButton().setLabel("No one can host").setStyle("DANGER").setCustomId(`hostrequest-no;`)
+                    let canHost = { type: 2, style: 3, label: "I can host", custom_id: `hostrequest-yes` }
+                    let canNotHost = { type: 2, style: 4, label: "No one can host", custom_id: `hostrequest-no` }
                     let nextTime = db.get("nextRequest")
                     if (nextTime && nextTime > Date.now()) return interaction.reply({ content: `A game can only be requested once per every 30 minutes! The next game can be requested <t:${Math.round(nextTime / 1000)}:R>`, ephemeral: true })
                     canHost.customId += interaction.member.id
                     canNotHost.customId += interaction.member.id
-                    const row = new MessageActionRow().addComponents(canHost, canNotHost)
+                    const row = { type: 1, components: [canHost, canNotHost] }
                     client.channels.cache.get("606123759514025985").send({ content: `${interaction.member} is requesting a game! ||@here||\n\nThe below buttons will send a DM to the requesting user about your choice.`, components: [row] })
                     interaction.reply({ content: "Your request has been sent to the narrators!", ephemeral: true })
                     db.set("nextRequest", Date.now() + ms("30m"))
@@ -130,21 +129,21 @@ module.exports = (client) => {
         if (interaction.customId.startsWith("trick")) {
             let channelID = interaction.customId.split("_")[1]
             interaction.reply(`You have decided to trick`)
-            button1 = interaction.message.components[0].components[0]
-            button2 = interaction.message.components[0].components[1]
+            let button1 = interaction.message.components[0].components[0]
+            let button2 = interaction.message.components[0].components[1]
             button1.disabled = true
             button2.disabled = true
-            interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
+            interaction.message.edit({ components: [{ type: 1, components: [button1, button2] }] })
             db.set(`choice_${channelID}`, "trick")
         }
         if (interaction.customId.startsWith("treat")) {
             let channelID = interaction.customId.split("_")[1]
             interaction.reply(`You have decided to treat`)
-            button1 = interaction.message.components[0].components[0]
-            button2 = interaction.message.components[0].components[1]
+            let button1 = interaction.message.components[0].components[0]
+            let button2 = interaction.message.components[0].components[1]
             button1.disabled = true
             button2.disabled = true
-            interaction.message.edit({ components: [new MessageActionRow().addComponents(button1, button2)] })
+            interaction.message.edit({ components: [{ type: 1, components: [button1, button2] }] })
             db.set(`choice_${channelID}`, "treat")
         }
         if (interaction.customId == "joinlottery") {
@@ -153,25 +152,27 @@ module.exports = (client) => {
             lot = lot[0]
             let lotsBought = lot.participants.find((u) => Object.keys(u) == interaction.user.id)
             lotsBought ? (lotsBought = Object.values(lotsBought)) : (lotsBought = 0)
-            let row1 = new MessageActionRow()
-            let row2 = new MessageActionRow()
-            let row3 = new MessageActionRow()
-            let row4 = new MessageActionRow()
+            let row1 = { type: 1, components: [] }
+            let row2 = { type: 1, components: [] }
+            let row3 = { type: 1, components: [] }
+            let row4 = { type: 1, components: [] }
             for (let i = 1; i <= 9; i++) {
-                let button = new MessageButton().setStyle("SECONDARY").setLabel(`${i}`).setCustomId(`${i}`)
+                let button = { type: 2, style: 2, label: `${i}`, custom_id: `${i}` }
                 if (i <= 3) {
-                    row1.addComponents(button)
+                    row1.components.push(button)
                 } else if (i <= 6) {
-                    row2.addComponents(button)
+                    row2.components.push(button)
                 } else {
-                    row3.addComponents(button)
+                    row3.components.push(button)
                 }
             }
-            let no = new MessageButton().setStyle("DANGER").setEmoji("606610883170271236").setCustomId(`no`)
-            let zero = new MessageButton().setStyle("SECONDARY").setLabel(`0`).setCustomId(`0`)
-            let yes = new MessageButton().setStyle("SUCCESS").setEmoji(`606770420687044618`).setCustomId(`yes`)
-            row4.addComponents(no, zero, yes)
-            let embed = new MessageEmbed().setTitle(`Lottery ticket shop`).setDescription(`Your coins: ${player.coins}\nYour lottery tickets bought: ${lotsBought}\nMax lottery tickets allowed: ${lot.max}`).addFields({ name: "How many lottery tickets do you want to buy?", value: "\u200b" })
+            let no = { type: 2, style: 4, custom_id: `no`, emoji: { id: "606610883170271236" } }
+            let zero = { type: 2, style: 2, custom_id: `0`, label: `0` }
+            let yes = { type: 2, style: 3, custom_id: `yes`, emoji: { id: "606770420687044618" } }
+
+            row4.components.push(no, zero, yes)
+
+            let embed = { title: `Lottery ticket shop`, description: `Your coins: ${player.coins}\nYour lottery tickets bought: ${lotsBought}\nMax lottery tickets allowed: ${lot.max}`, fields: [{ name: "How many lottery tickets do you want to buy?", value: "\u200b" }] }
             interaction.reply({ embeds: [embed], ephemeral: true, components: [row1, row2, row3, row4] })
         }
 
@@ -217,7 +218,7 @@ module.exports = (client) => {
             }
             lot.ticketsBought += parseInt(tickets)
             lot.pot += lot.cost * parseInt(tickets)
-            let embed = new MessageEmbed().setTitle("New Lottery!").setDescription(`Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(lot.endDate / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${lot.ticketsBought} \nPot size: ${lot.pot} ${getEmoji("coin", client)}`)
+            let embed = { title: "New Lottery!", description: `Ticket cost: ${lot.cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(lot.endDate / 1000)}:R>\n\nParticipants: ${lot.participants.length}\nTickets bought: ${lot.ticketsBought} \nPot size: ${lot.pot} ${getEmoji("coin", client)}` }
             let msg = await interaction.channel.messages.fetch(lot.msg)
             msg.edit({ embeds: [embed] })
             player.coins -= lot.cost * parseInt(tickets)

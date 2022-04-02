@@ -1,5 +1,4 @@
 const { ids } = require("../../config")
-const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "nuke",
@@ -75,7 +74,7 @@ module.exports = {
                 answer = answer + `Bulk delete of server: \`${server.name}\`\n`
             })
         answer = answer + `**The servers have the following count of slash commands:**\nSim: \`${client.guilds.resolve(ids.server.sim).commands.cache.size}\`\nGame: \`${client.guilds.resolve(ids.server.game).commands.cache.size}\``
-        return await message.channel.send({ embeds: [new MessageEmbed({ description: answer, color: 0x7419b4, thumbnail: { url: client.user.avatarURL() } })] })
+        return await message.channel.send({ embeds: [{ description: answer, color: 0x7419b4, thumbnail: { url: client.user.avatarURL() } }] })
         //}
     },
 }

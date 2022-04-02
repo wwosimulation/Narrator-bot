@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js")
 const ms = require("parse-ms")
 const config = require("../../config")
 const { players } = require("../../db.js")
@@ -65,7 +64,7 @@ module.exports = {
                 await data.updateOne({ $set: { "daily.day": -1 } })
                 await data.updateOne({ $inc: { coins: amount } })
             }
-            let dailymsg = new MessageEmbed({ title: "Daily Rewards! Woohooo!", description: `${message.l10n("daily", { emoji: emote, number: amount, prize: item })}${extra}` })
+            let dailymsg = { title: "Daily Rewards! Woohooo!", description: `${message.l10n("daily", { emoji: emote, number: amount, prize: item })}${extra}` }
             message.channel.send({ embeds: [dailymsg] })
 
             await data.updateOne({ $inc: { "daily.day": 1 } })
