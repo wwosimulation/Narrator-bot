@@ -21,7 +21,7 @@ module.exports = {
         let votes = Math.floor(parseInt(aliveRole.members.size) / 2)
         dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
         let droppy = { type: 3, custom_id: "votephase", options: [] }
-        droppy.addOptions({ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` })
+        droppy.options.push({ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` })
         for (let i = 1; i <= 16; i++) {
             console.log(i)
             let player = message.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(aliveRole.id))
