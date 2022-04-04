@@ -88,8 +88,8 @@ module.exports = (client) => {
                     let canNotHost = { type: 2, style: 4, label: "No one can host", custom_id: `hostrequest-no` }
                     let nextTime = db.get("nextRequest")
                     if (nextTime && nextTime > Date.now()) return interaction.reply({ content: `A game can only be requested once per every 30 minutes! The next game can be requested <t:${Math.round(nextTime / 1000)}:R>`, ephemeral: true })
-                    canHost.customId += interaction.member.id
-                    canNotHost.customId += interaction.member.id
+                    canHost.custom_id += interaction.member.id
+                    canNotHost.custom_id += interaction.member.id
                     const row = { type: 1, components: [canHost, canNotHost] }
                     client.channels.cache.get("606123759514025985").send({ content: `${interaction.member} is requesting a game! ||@here||\n\nThe below buttons will send a DM to the requesting user about your choice.`, components: [row] })
                     interaction.reply({ content: "Your request has been sent to the narrators!", ephemeral: true })
@@ -106,7 +106,7 @@ module.exports = (client) => {
         if (interaction.customId.startsWith("hostrequest")) {
             let cmd = interaction.customId.split("-")[1]
             let [action, user] = cmd.split(";")
-            foundUser = interaction.guild.members.cache.get(user)
+            foundUser = interaction.guild.members.resolve(user)
             switch (action) {
                 case "no":
                     foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` }).catch((e) => {
