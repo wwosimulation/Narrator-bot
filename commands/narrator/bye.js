@@ -1,6 +1,5 @@
 const { ids } = require("../../config")
 const db = require("quick.db")
-const { MessageActionRow } = require("discord.js")
 
 module.exports = {
     name: "bye",
@@ -104,7 +103,7 @@ const endGame = async (client) => {
                     let row = allc[0]
                     let button = row.components[0]
                     button.disabled = true
-                    m.edit({ components: [new MessageActionRow().addComponents(button)] })
+                    m.edit({ components: [{ type: 1, components: [button] }] })
                 }
             }
         })

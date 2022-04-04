@@ -79,9 +79,9 @@ module.exports = {
                 let time = ms(duration)
                 if (!time) return interaction.reply({ content: interaction.l10n("timeInvalidFormat"), ephemeral: true })
 
-                let embed = new discord.MessageEmbed().setTitle(`New Lottery!`).setDescription(`Ticket cost: ${cost} ${getEmoji("coin", client)}\nclick 🎟 to enter!\nEnds in: <t:${Math.floor(new Date(Date.now() + time) / 1000)}:R>\n\nParticipants: 0\nTickets bought: 0 \nPot size: 0 ${getEmoji("coin", client)}`)
-                let button = new discord.MessageButton().setStyle("SUCCESS").setEmoji("🎟").setCustomId("joinlottery")
-                let row = new discord.MessageActionRow().addComponents(button)
+                let embed = { title: `New Lottery!`, description: `Ticket cost: ${cost} ${getEmoji("coin", client)}\nClick 🎟  to enter!\nEnds in <t:${Math.floor(new Date(Date.now() + time) / 1000)}:R>\n\nParticipants: 0\nTickets bought: 0\nPot size: 0 ${getEmoji("coin", client)}` }
+                let button = { type: 2, style: 3, custom_id: "joinlottery", emoji: { name: "🎟" } }
+                let row = { type: 1, components: [button] }
 
                 let chan = client.channels.cache.get("947930500725616700")
                 let msg = await chan.send({ embeds: [embed], components: [row] })
@@ -106,19 +106,10 @@ module.exports = {
                 })
                 logs.send({
                     embeds: [
-                        new discord.MessageEmbed({
-                            description: `
-**Pot:** ${lot.pot}
-**Max Tickets:** ${lot.max}
-**Cost:** ${lot.cost}
-**Total Tickets:** ${lot.ticketsBought}
-**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>
-**Message ID:** ${lot.msg}
-
-**Participants:**
-${part.join(",\n")}`,
-                            color: "GREEN",
-                        }),
+                        {
+                            color: 0x00ff00,
+                            description: `**Pot:** ${lot.pot}\n` + `**Max Tickets:** ${lot.max}\n` + `**Cost:** ${lot.cost}\n` + `**Total Tickets:** ${lot.ticketsBought}\n` + `**End Date:** <t:${Math.floor(lot.endDate / 1000)}:f>\n` + `**Message ID:** ${lot.msg}\n\n` + `**Participants:**\n` + `${part.join(",\n")}`,
+                        },
                     ],
                 })
                 if (winner == "no") {

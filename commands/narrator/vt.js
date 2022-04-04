@@ -1,5 +1,4 @@
 const db = require("quick.db")
-const { MessageSelectMenu, MessageActionRow } = require("discord.js")
 const ms = require("ms")
 
 module.exports = {
@@ -21,16 +20,16 @@ module.exports = {
         db.set(`skippedpl`, 0)
         let votes = Math.floor(parseInt(aliveRole.members.size) / 2)
         dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
-        let droppy = new MessageSelectMenu().setCustomId("votephase")
-        droppy.addOptions({ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` })
+        let droppy = { type: 3, custom_id: "votephase", options: [] }
+        droppy.options.push({ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` })
         for (let i = 1; i <= 16; i++) {
             console.log(i)
             let player = message.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(aliveRole.id))
             if (player) {
-                droppy.addOptions({ label: `${i}`, value: `votefor-${i}`, description: `${player.user.tag}` })
+                droppy.options.push({ label: `${i}`, value: `votefor-${i}`, description: `${player.user.tag}` })
             }
         }
-        let row = new MessageActionRow().addComponents(droppy)
+        let row = { type: 1, components: [droppy] }
         let m = voteChat.send({ content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row] })
         db.set(`commandEnabled`, `yes`)
         db.add(`gamePhase`, 1)

@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js")
 const { cmi, emojis } = require("../../config")
 
 module.exports = {
@@ -6,7 +5,7 @@ module.exports = {
     description: `Get a list of game roles available to buy or buy them using the subcommand \`${process.env.PREFIX}cmi buy <role>\``,
     usage: `${process.env.PREFIX}cmi [buy <role>]`,
     run: async (message, args, client) => {
-        return
+        return // idk why is this here
         //if (message.channel.type != "dm") return message.channel.send("Please try this command in DMs!")
 
         let msg = ""
@@ -17,14 +16,15 @@ module.exports = {
 
         for (let roleitem in cmi) {
             let role = cmi[roleitem]
-            embeds.push(new MessageEmbed())
-            embeds[embeds.length - 1].addField(`${role.name}`, `${role.price} ${emojis[role.currency]}`)
+            embeds.push({ fields: [] })
+            embeds[embeds.length - 1].fields.push(`${role.name}`, `${role.price} ${emojis[role.currency]}`)
         }
         addFooter = true
 
         for (let [i, embed] of embeds.entries()) {
-            if (addFooter == true) embed.setFooter({ text: `Page ${i + 1}/${embeds.length}` })
-            embed.setTitle("CMI Store").setColor("#1FFF43")
+            if (addFooter == true) embed.footer = { text: `Page ${i + 1}/${embeds.length}` }
+            embed.title = "CMI Store"
+            embed.color = 0x1fff43
         }
 
         let m = await message.reply({ embeds: [embeds[0]] })

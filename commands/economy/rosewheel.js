@@ -1,7 +1,6 @@
 const { rosewheel } = require("../../config/src")
 const { sleep } = require("../../config/src/fn")
 const players = require("../../schemas/players")
-const { MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "rosewheel",
@@ -28,12 +27,12 @@ module.exports = {
         await guy.updateOne({ $inc: update })
         message
             .reply({
-                embeds: [new MessageEmbed({ title: "The wheel is spinning...", author: { name: message.author.tag + "'s rose wheel", iconURL: message.author.avatarURL() }, color: "#1FFF43", image: { url: "https://i.imgur.com/NZzTW8h.gif" } }).setTimestamp()],
+                embeds: [{ title: "The wheel is spinning...", author: { name: message.author.tag + "'s rose wheel", iconURL: message.author.avatarURL() }, color: 0x1fff43, image: { url: "https://i.imgur.com/NZzTW8h.gif" }, timestamp: Date.now() }],
             })
             .then((msg) => {
                 setTimeout(() => {
                     msg.edit({
-                        embeds: [new MessageEmbed({ color: "#1FFF43", title: `You won ${prize.name}!`, description: response, author: { name: message.author.tag + "'s rose wheel", iconURL: message.author.avatarURL() }, thumbnail: { url: prize.icon ? `https://www.wolvesville.com/static/media/${prize.icon}.png` : "https://static.thenounproject.com/png/340719-200.png" } }).setTimestamp()],
+                        embeds: [{ color: 0x1fff43, title: `You won ${prize.name}!`, description: response, author: { name: message.author.tag + "'s rose wheel", iconURL: message.author.avatarURL() }, thumbnail: { url: prize.icon ? `https://www.wolvesville.com/static/media/${prize.icon}.png` : "https://static.thenounproject.com/png/340719-200.png" }, timestamp: Date.now() }],
                     })
                 }, 4000)
             })
