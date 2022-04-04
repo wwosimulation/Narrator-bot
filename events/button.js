@@ -106,7 +106,7 @@ module.exports = (client) => {
         if (interaction.customId.startsWith("hostrequest")) {
             let cmd = interaction.customId.split("-")[1]
             let [action, user] = cmd.split(";")
-            foundUser = await interaction.guild.members.fetch(user)
+            foundUser = interaction.guild.members.cache.get(user)
             switch (action) {
                 case "no":
                     foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` }).catch((e) => {
