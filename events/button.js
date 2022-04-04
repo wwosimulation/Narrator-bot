@@ -84,8 +84,8 @@ module.exports = (client) => {
             let cmd = interaction.customId.split("-")[1]
             switch (cmd) {
                 case "request":
-                    let canHost = { type: 2, style: 3, label: "I can host", custom_id: `hostrequest-yes` }
-                    let canNotHost = { type: 2, style: 4, label: "No one can host", custom_id: `hostrequest-no` }
+                    let canHost = { type: 2, style: 3, label: "I can host", custom_id: "hostrequest-yes;" }
+                    let canNotHost = { type: 2, style: 4, label: "No one can host", custom_id: "hostrequest-no;" }
                     let nextTime = db.get("nextRequest")
                     if (nextTime && nextTime > Date.now()) return interaction.reply({ content: `A game can only be requested once per every 30 minutes! The next game can be requested <t:${Math.round(nextTime / 1000)}:R>`, ephemeral: true })
                     canHost.custom_id += interaction.member.id
