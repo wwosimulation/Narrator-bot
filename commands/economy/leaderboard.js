@@ -21,7 +21,7 @@ module.exports = {
         let guys
         if (lbInfo == "Win") {
             guys = await players.find({})
-            guys.forEach(e => {
+            guys.forEach((e) => {
                 let totalWin = 0
                 Object.entries(e.stats)
                     .filter((a) => typeof a[1] == "object")
@@ -30,7 +30,7 @@ module.exports = {
                     })
                 e.wins = totalWin
             })
-            guys = guys.filter(e => e.wins > 0).sort((a, b) => b.wins - a.wins)
+            guys = guys.filter((e) => e.wins > 0).sort((a, b) => b.wins - a.wins)
         } else {
             let sorting = {}
             sorting[dbVar] = -1
@@ -38,7 +38,7 @@ module.exports = {
             filter[dbVar] = { $gt: lbInfo == "Coin" ? 25 : 0 }
             guys = await players.find(filter).sort(sorting)
         }
-        guys = guys.filter(guy => client.users.cache.has(guy.user))
+        guys = guys.filter((guy) => client.users.cache.has(guy.user))
         let embeds = [{ title: `${lbInfo} Leaderboard`, timestamp: Date.now(), footer: { text: `Page 1/${Math.ceil(guys.length / 10)}` }, description: "", color: 0x1fff43 }]
         guys.forEach((element, i, guyz) => {
             if (i % 10 == 0 && i != 0) {
