@@ -4,8 +4,8 @@ const { players } = require("../../db")
 module.exports = {
     name: "leaderboard",
     aliases: ["lb"],
-    description: "Displays the current leaderboard for coins, roses, gems or XP!",
-    usage: `${process.env.PREFIX}leaderboard [page] [coins | roses | gems | xp]`,
+    description: "Displays the current leaderboard for coins, roses, gems, XP or wins!",
+    usage: `${process.env.PREFIX}leaderboard [page] [coins | roses | gems | xp | wins]`,
     run: async (message, args, client) => {
         args.forEach((arg, i) => {
             args[i] = arg.toLowerCase()
