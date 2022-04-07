@@ -23,8 +23,8 @@ module.exports = {
                 await t.edit(`${emojis[item.id] ? `${emojis[item.id]} ` : ""}You recieved ${item.name} from the lootbox!${item.id == "other" ? "\nPlease contact Staff for your prize!" : ""}`)
                 data.inventory.lootbox = data.inventory.lootbox - 1
                 if (item.id != "other") {
-                    if (item.id == "coin") {
-                        data.coins += item.amount
+                    if (["coin", "gem"].includes(item.id)) {
+                        data[item.id + "s"] += item.amount
                     } else {
                         data.inventory[item.id] += item.amount
                     }
