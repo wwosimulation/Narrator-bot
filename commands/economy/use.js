@@ -7,6 +7,7 @@ module.exports = {
     name: "use",
     description: "Use items from your inventory like lootboxes.",
     usage: `${process.env.PREFIX}use <item>`,
+    cooldown: 4,
     run: async (message, args, client) => {
         if (!args[0]) return message.channel.send("Which item you are opening? Specify it next time.")
         let data = await players.findOne({ user: message.author.id })
@@ -23,8 +24,8 @@ module.exports = {
                 await t.edit(`${emojis[item.id] ? `${emojis[item.id]} ` : ""}You recieved ${item.name} from the lootbox!${item.id == "other" ? "\nPlease contact Staff for your prize!" : ""}`)
                 data.inventory.lootbox = data.inventory.lootbox - 1
                 if (item.id != "other") {
-                    if (item.id == "coin") {
-                        data.coins += item.amount
+                    if (["coin", "gem"].includes(item.id)) {
+                        data[item.id + "s"] += item.amount
                     } else {
                         data.inventory[item.id] += item.amount
                     }
