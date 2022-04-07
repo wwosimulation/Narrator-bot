@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js")
 const { players } = require("../../db")
 
 module.exports = {

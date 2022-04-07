@@ -50,10 +50,10 @@ module.exports = (client) => {
             }
             if (action.startsWith("pass")) {
                 let passTo = action.split(":")[1]
-                let droppy = new MessageSelectMenu().setCustomId("pumpkinking")
+                let droppy = { type: 3, custom_id: "pumpkinking", options: [] }
                 if (passTo == interaction.channel.id) return interaction.reply("Don't be greedy and pass to yourself >:(")
                 db.push(`pk_${king}`, interaction.member.id)
-                droppy.addOptions({ label: `Return`, value: `${king}-return`, description: `Return the bucket`, emoji: "🎃" })
+                droppy.options.push({ label: `Return`, value: `${king}-return`, description: `Return the bucket`, emoji: "🎃" })
                 for (let i = 1; i <= 16; i++) {
                     let player = interaction.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(ids.alive))
                     let chan = interaction.guild.channels.cache.filter((c) => c.name.startsWith(`priv-`)).map((x) => x.id)
@@ -62,12 +62,12 @@ module.exports = (client) => {
                         if (player && tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                             if (!db.get(`pk_${king}`).includes(player.id)) {
                                 shuffle(emojis)
-                                droppy.addOptions({ label: `${i}`, value: `${king}-pass:${tempchan.id}`, description: `Pass the bucket to ${player.user.tag}`, emoji: emojis[0] })
+                                droppy.options.push({ label: `${i}`, value: `${king}-pass:${tempchan.id}`, description: `Pass the bucket to ${player.user.tag}`, emoji: { name: emojis[0] } })
                             }
                         }
                     }
                 }
-                let row = new MessageActionRow().addComponents(droppy)
+                let row = { type: 1, components: [droppy] }
                 interaction.guild.channels.cache.get(passTo).send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking", client)}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
                 interaction.message.edit({ components: [], content: interaction.message.content })
                 interaction.reply("You have passed on the candy bucket!")
@@ -80,14 +80,14 @@ module.exports = (client) => {
             if (interaction.member.roles.cache.has(ids.spectator)) return interaction.reply({ content: `You're spectating, you can't vote!`, ephemeral: true })
             if (terrorCheck(interaction)) return interaction.reply({ content: "The Prognosticator prevents you from voting.", ephemeral: true })
             let corrs = interaction.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((corr) => corr.id)
-            
+
             for (let corr = 0; corr < corrs.length; corr++) {
                 let corrupted = db.get(`corrupt_${corrs[corr]}`)
                 if (corrupted == interaction.member.displayName) {
                     return interaction.reply({ content: "You are corrupted! You can't vote today.", ephemeral: true })
                 }
             }
-            
+
             let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
             for (let x = 0; x < allpaci.length; x++) {
                 let dayactivated = db.get(`pacday_${allpaci[x]}`)
@@ -95,18 +95,18 @@ module.exports = (client) => {
                     return interaction.reply({ content: `A pacifist has revealed someone's role you can't vote today.`, ephemeral: true })
                 }
             }
-            
+
             // check if channel is not sendable
             let yourRole = db.get(`role_${interaction.user.id}`) || "None"
-            let allChannels = interaction.guild.channels.cache.filter(c => c.name === `priv-${yourRole}?.toLowerCase().replace(/\s/g, "-")`)
-            allChannels.forEach(yourChan => {
+            let allChannels = interaction.guild.channels.cache.filter((c) => c.name === `priv-${yourRole}?.toLowerCase().replace(/\s/g, "-")`)
+            allChannels.forEach((yourChan) => {
                 if (yourChan.permissionsFor(interaction.member.id).has("VIEW_CHANNEL")) {
                     if (!yourChan.permissionsFor(interaction.member.id).has("SEND_MESSAGES")) {
                         return interaction.reply({ content: "You are muted! You can't vote today.", ephemeral: true })
                     }
                 }
             })
-            
+
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
