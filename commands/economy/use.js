@@ -7,6 +7,7 @@ module.exports = {
     name: "use",
     description: "Use items from your inventory like lootboxes.",
     usage: `${process.env.PREFIX}use <item>`,
+    cooldown: 4,
     run: async (message, args, client) => {
         if (!args[0]) return message.channel.send("Which item you are opening? Specify it next time.")
         let data = await players.findOne({ user: message.author.id })
