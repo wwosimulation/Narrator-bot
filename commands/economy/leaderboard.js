@@ -7,79 +7,32 @@ module.exports = {
     description: "Displays the current leaderboard for coins, roses, gems or XP!",
     usage: `${process.env.PREFIX}leaderboard [page] [coins | roses | gems | xp]`,
     run: async (message, args, client) => {
-        // required sorting and embed variables
-        let page = 1 //default
-        let sortedBy = "coins" // default
-        let lbType = "Coin" //default
-        let errorReply = ""
         args.forEach((arg, i) => {
             args[i] = arg.toLowerCase()
         })
+        function getPage() {
+            if(!isNaN(parseInt(args?.[0]))) return parseInt(args[0])
+            if(!isNaN(parseInt(args?.[1]))) return parseInt(args[1])
+            return 1
+        }
+        let page = getPage()
+        let lbInfo = ["Coin", "Rose", "Gem", "XP"].find((v) => args?.[0]?.startsWith(v.toLowerCase()) || args?.[1]?.startsWith(v.toLowerCase())) ?? "Coin"
+        let dbVar = ["XP"].includes(lbInfo) ? lbInfo.toLowerCase() : lbInfo.toLowerCase() + "s"
 
-        // extended arrays to check arguments and modify embed title
-        let sortedByOptions = ["coins", "roses", "gems", "xp"]
-        let lbTypes = ["Coin", "Rose", "Gem", "XP"]
-
-        //checking args and changeing line 12-14
-        /* args[0] is the leader board type (coins etc) */
-        if (isNaN(args[0]) && sortedByOptions.includes(args[0])) (sortedBy = args[0]), (lbType = lbTypes[sortedByOptions.indexOf(sortedBy)])
-        /* args[0] is the page */
-        if (!isNaN(args[0])) page = parseInt(args[0])
-        /* args[1] is the leader board type */
-        if (isNaN(args[1]) && sortedByOptions.includes(args[1])) (sortedBy = args[1]), (lbType = lbTypes[sortedByOptions.indexOf(sortedBy)])
-        /* args[1] is the page */
-        if (!isNaN(args[1])) page = parseInt(args[1])
-
-        if (args[0] && isNaN(args[0]) && !sortedByOptions.includes(args[0])) errorReply = `\`${args[0]}\` is neither a valid page nor a valid leaderboard type!\n`
-        if (args[1] && isNaN(args[1]) && !sortedByOptions.includes(args[0])) errorReply += `\`${args[1]}\` is neither a valid page nor a valid leaderboard type!\n`
-
-        let obj = {}
-        obj[sortedBy] = -1
-        let obj2 = {}
-        obj2[sortedBy] = { $gt: 25 }
-
-        let embeds = []
-        let embedItemArray = []
-        let currentEmbedItems = []
-
-        await (
-            await players.find(obj2).sort(obj)
-        ).forEach((player) => {
-            if (currentEmbedItems.length < 10) currentEmbedItems.push({ userID: player.user, value: player[sortedBy] })
-            else {
-                embedItemArray.push(currentEmbedItems)
-                currentEmbedItems = [{ userID: player.user, value: player[sortedBy] }]
+        let sorting = {}
+        sorting[dbVar] = -1
+        let filter = {}
+        filter[dbVar] = {$gt:lbInfo == "Coin"?25:0}
+        let guys = await players.find(filter).sort(sorting)
+        guys = guys.filter(guy => client.users.cache.has(guy.user))
+        let embeds = [{title: `${lbInfo} Leaderboard`, timestamp: Date.now(), footer: {text: `Page 1/${Math.ceil(guys.length/10)}`}, description: ""}]
+        guys.forEach((element, i, guyz) => {
+            if(i%10 == 0 && i!=0) {
+                embeds.push({title: `${lbInfo} Leaderboard`, timestamp: Date.now(), footer: {text: `Page ${embeds.length + 1}/${Math.ceil(guyz.length/10)}`}, description: ""})
             }
+            embeds[embeds.length - 1].description += `${element[dbVar]} - ${client.users.resolve(element.user)?.tag ?? "*Error*"}\n`
         })
-        embedItemArray.push(currentEmbedItems)
-
-        function getTag(userID) {
-            let user = client.users.cache.find((user) => user.id === userID)
-            if (!user) return "N/A"
-            else return user.tag
-        }
-        /* 
-    Only visualization! 
-    embedItemArray = [[{}, {}, {}], [{}, {}, {}]]
-    */
-
-        embedItemArray.forEach(async (arr, i, embedItemArr) => {
-            let description = ""
-            arr.forEach((item) => {
-                if (getTag(item.userID).includes("#")) description = description + `${item.value} - ${getTag(item.userID)}\n`
-            })
-            let embed = new MessageEmbed({ title: `${lbType} Leaderboard`, description: description, color: "#1FFF43", footer: { text: `Page ${i + 1}/${embedItemArr.length}` } }).setTimestamp()
-
-            embeds.push(embed)
-        })
-
-        let msg
-
-        if (!embeds[page - 1]) (msg = await message.channel.send({ content: errorReply + `${message.author}, page ${page} does not exist on this leader board!`, embeds: [embeds[0]] })), (page = 1)
-        else {
-            if (errorReply !== "") msg = await message.channel.send({ content: errorReply, embeds: [embeds[page - 1]] })
-            else msg = await message.channel.send({ embeds: [embeds[page - 1]] })
-        }
+        let msg = await message.channel.send({embeds: [embeds[page-1] ?? embeds[0]]})
 
         client.buttonPaginator(message.author.id, msg, embeds, page)
     },
