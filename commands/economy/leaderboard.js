@@ -25,10 +25,10 @@ module.exports = {
         filter[dbVar] = {$gt:lbInfo == "Coin"?25:0}
         let guys = await players.find(filter).sort(sorting)
         guys = guys.filter(guy => client.users.cache.has(guy.user))
-        let embeds = [{title: `${lbInfo} Leaderboard`, timestamp: Date.now(), footer: {text: `Page 1/${Math.ceil(guys.length/10)}`}, description: ""}]
+        let embeds = [{title: `${lbInfo} Leaderboard`, timestamp: Date.now(), footer: {text: `Page 1/${Math.ceil(guys.length/10)}`}, description: "", color: 0x1fff43}]
         guys.forEach((element, i, guyz) => {
             if(i%10 == 0 && i!=0) {
-                embeds.push({title: `${lbInfo} Leaderboard`, timestamp: Date.now(), footer: {text: `Page ${embeds.length + 1}/${Math.ceil(guyz.length/10)}`}, description: ""})
+                embeds.push({title: `${lbInfo} Leaderboard`, timestamp: Date.now(), footer: {text: `Page ${embeds.length + 1}/${Math.ceil(guyz.length/10)}`}, description: "", color: 0x1fff43})
             }
             embeds[embeds.length - 1].description += `${element[dbVar]} - ${client.users.resolve(element.user)?.tag ?? "*Error*"}\n`
         })
