@@ -57,6 +57,7 @@ const schema = new mongoose.Schema({
             lose: { type: Number, default: 0 },
         },
         tie: { type: Number, default: 0 },
+        flee: {type: Number, default: 0},
     },
     daily: {
         last: { type: Number, default: 0 },
