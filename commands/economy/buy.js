@@ -3,7 +3,7 @@ const pluralize = require("pluralize")
 const { players } = require("../../db.js")
 const { colors, items } = require("../../config/src/shop")
 const { server } = require("../../config/src/ids")
-const ids = require("../../config/src/ids")
+const { isDev } = require("../../config/src/fn")
 
 module.exports = {
     name: "buy",
@@ -25,7 +25,7 @@ module.exports = {
             return message.dbUser[item.currency + "s"] < item.price * amount ? false : true
         }
 
-        if (client.user.username.includes("Beta")) return message.channel.send("You can't buy anything from Beta Bot!")
+        if (client.user.username.includes("Beta") && !client.botAdmin(message.author.id) && isDev(message.author)) return message.channel.send("You can't buy anything from Beta Bot!")
 
         let sim = client.guilds.resolve(server.sim)
         let guy = await players.findOne({ user: message.author.id })
@@ -72,14 +72,14 @@ module.exports = {
                 info["amount"] = parseInt(args[2] || args[1]) || 1
             }
             let dbName
-            let i = ["description", "icon", "special", "channel"].indexOf(item.id)
+            let i = ["description", "icon", "special", "channel", "auto"].indexOf(item.id)
             if (i == -1 && !obj[`inventory.${item.id}`] && !chart.id) dbName = item.id
-            else dbName = ["profileDesc", "profileIcon", "customRole", "privateChannel"][i]
+            else dbName = ["profileDesc", "profileIcon", "customRole", "privateChannel", "autoReact"][i]
             if (dbName && guy[dbName] !== false && guy[dbName] !== "") return l10nMesssage({ code: "alreadyPurchasedItem", toReplace: { item: item.name } })
 
             if (!enoughMoney(item, info.amount || 1)) return l10nMesssage({ code: "notEnoughCurrency", toReplace: { currency: item.currency + "s" } })
 
-            if (["profile", "cmi"].includes(dbName)) {
+            if (["profile", "cmi", "autoReact"].includes(dbName)) {
                 obj[dbName] = true
             }
 
