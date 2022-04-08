@@ -22,7 +22,7 @@ module.exports = {
                 if (cha.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
                     let ro = cha.name.replace("priv-", "")
                     let rol = ro.trim().toLowerCase()
-                    let role = rol.split("-").join("_")
+                    let role = rol.replace(/-/g, "_")
                     let autoRole
                     if (ro.includes("-")) {
                         autoRole = ro.replace(/(\w+)-(\w+)/g, (_, m1, m2) => `${m1[0].toUpperCase()}${m1.slice(1).toLowerCase()} ${m2[0].toUpperCase()}${m2.slice(1).toLowerCase()}`)
