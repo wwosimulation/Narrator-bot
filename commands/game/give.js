@@ -62,6 +62,7 @@ module.exports = {
                 db.add(`roses_${guy.id}`, 1)
             }
             db.set(`did_${message.channel.id}`, db.get("gamePhase"))
+            if(role == "Easter Bunny") db.subtract(`bunny_${message.channel.id}, 1`)
         } else if (message.channel.name == "priv-forger") {
             let alive = message.guild.roles.cache.find((m) => m.name === "Alive")
             let gamePhase = db.get(`gamePhase`)
