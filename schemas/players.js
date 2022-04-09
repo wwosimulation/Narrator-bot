@@ -12,6 +12,7 @@ const schema = new mongoose.Schema({
     profileIcon: { type: String, default: "" }, // icon on the profile
     privateChannel: { type: String, default: "" }, // private channel ID
     customRole: { type: String, default: "" }, // custom role id
+    autoReact: {type: Boolean, default: false}, // Auto Reaction (when mentioned)
     inventory: {
         description: { type: Number, default: 0 }, // description credits
         rose: { type: Number, default: 0 }, // inventory roses
@@ -56,6 +57,7 @@ const schema = new mongoose.Schema({
             lose: { type: Number, default: 0 },
         },
         tie: { type: Number, default: 0 },
+        flee: {type: Number, default: 0},
     },
     daily: {
         last: { type: Number, default: 0 },

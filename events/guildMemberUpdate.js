@@ -47,6 +47,11 @@ module.exports = (client) => {
             db.set(`kittenWolfConvert`, true)
         }
 
+        if (db.get(`role_${newMember.id}`) === "Kitten Wolf") {
+            newMember.guild.channels.cache.find((c) => c.name === "werewolves-chat").send(`${getEmoji("kitten_wolf", client)} The Kitten Wolf has died! If you try to kill a player the following night, they will be converted instead!`)
+            db.set(`kittenWolfConvert`, true)
+        }
+
         // mort dies
         if (db.get(`role_${newMember.id}`) == "Mortician") {
             let mort = newMember.guild.channels.cache.filter((c) => c.name === "priv-mortician").map((x) => x.id)

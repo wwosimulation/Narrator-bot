@@ -152,7 +152,7 @@ module.exports = {
         let docbg = ["doctor", "bodyguard"]
         let gunnermarks = ["gunner", "marksman"]
         let cupidgr = ["cupid"] //, "grave-robber"]
-        let banned = ["Bandit", "Accomplice", "Sect Leader", "Grave Robber", "Baker", "Astral Wolf", "Easter Bunny", "Vigilante", "Split Wolf", "Preacher", "Wolf Trickser", "Ghost Lady", "Evil Detective"]
+        let banned = ["Bandit", "Accomplice", "Sect Leader", "Grave Robber", "Astral Wolf", "Split Wolf", "Preacher", "Wolf Trickser", "Ghost Lady", "Evil Detective"]
 
         random = shuffle(random)
         rrv = shuffle(rrv)

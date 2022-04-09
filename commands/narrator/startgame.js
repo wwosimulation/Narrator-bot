@@ -10,7 +10,7 @@ module.exports = {
     narratorOnly: true,
     run: async (message, args, client) => {
         let mid = db.get("entermsg")
-        if (mid) {
+        if (mid && !client.user.username.includes("Beta")) {
             message.guild.channels.cache
                 .find((x) => x.name == "enter-game")
                 .messages.fetch(mid)
