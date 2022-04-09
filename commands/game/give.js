@@ -53,7 +53,6 @@ module.exports = {
                 if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has(dead.id)) return message.channel.send("You can't send a gift to an alive player!")
                 let status = guy
-                console.log(status)
                 if (guy.presence?.status === "offline") return message.channel.send("This player is offline!")
                 guy.send(`You have recieved a gift from ${role}! Find out what you have received!`).catch((e) => message.channel.send(`An error occured: ${e.message}`))
                 db.add(`roses_${guy.id}`, 1)
