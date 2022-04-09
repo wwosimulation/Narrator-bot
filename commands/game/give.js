@@ -47,7 +47,7 @@ module.exports = {
             } else {
                 if (role.name == "Easter Bunny") {
                     let left = db.get(`bunny_${message.channel.id}`) || db.set(`bunny_${message.channel.id}, 5`)
-                    if (db.get(`bunny_${message.channel.id}`) == 0) return message.channel.send("You don't have any gifts left.")
+                    if (left == 0) return message.channel.send("You don't have any gifts left.")
                 }
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
                 if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
