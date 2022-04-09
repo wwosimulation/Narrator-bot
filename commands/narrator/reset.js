@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const { ids } = require("../../config")
+const players = require("../../schemas/players")
 
 module.exports = {
     name: "reset",
@@ -39,8 +40,15 @@ module.exports = {
             db.set(`gamePhase`, -10)
             let save = ["rankedseason", "stafflist", "stafflist2", "stafflist3", "entermsg", "hoster", "gamePhase", "started", "usedChannels", "wwsVote", "winner", "vtshadow", "xpGiven", "nextRequest", "gamewarnIndex", "gamewarnCount", "logs", "gameCode", "game", "maintance", "xpExclude"]
             db.all().forEach((i) => {
+                if(i.ID.startsWith("roses_")) {
+                    await players.updateOne({user: i.ID.replace("roses_", "")}, {$inc:{"roses": 1}})
+                }
                 if (!save.includes(i.ID)) db.delete(i.ID)
             })
+
+            for (let i = 0; i < baker.length; i++) {
+                db.delete(`bread_${baker[i]}`)
+            }
 
             const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
             temproles.children.forEach((channel) => channel.delete())
