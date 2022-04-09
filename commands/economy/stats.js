@@ -25,7 +25,7 @@ module.exports = {
             })
         data.tie = data.tie ?? 0
         let total = totalLoss + totalWin + data.tie
-        let description = `Win Streak: ${data.winStreak}\nGames played: ${total}\n\nTotal Wins: ${totalWin}\nTotal Losses: ${totalLoss}\nTies: ${data.stats.tie}`
+        let description = `Win Streak: ${data.winStreak}\nGames played: ${total}\n\nTotal Wins: ${totalWin}\nTotal Losses: ${totalLoss}\nTies: ${data.stats.tie}\nFlees: ${data.flee}\n\nWinrate: ${parseFloat()}`
         let title = member.user.tag + "'s Stats"
 
         let embed = { description, fields, color, title, timestamp: Date.now(), footer, thumbnail: { url: member.user.avatarURL() } }
