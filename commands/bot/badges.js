@@ -1,5 +1,4 @@
 const players = require("../../schemas/players")
-const { MessageEmbed } = require("discord.js")
 const { fn } = require("../../config")
 
 module.exports = {
@@ -8,21 +7,13 @@ module.exports = {
     usage: `${process.env.PREFIX}badges [user]`,
     run: async (message, args, client) => {
         let guy = fn.getUser(args[0], message)
-
-        let embed = new MessageEmbed({ title: guy.user.tag + "'s Badges", thumbnail: { url: guy.user.avatarURL() }, color: guy.displayHexColor ? guy.displayHexColor : "#1FFF43" }).setTimestamp()
-
-        let desc = ""
-
+        let description = ""
         let playerData = await players.findOne({ user: guy.id })
-
         for (const badge in playerData.badges) {
-            if (badge === "invite" && playerData.badges.invite.unlocked) desc = desc + `\`${fn.capitalizeFirstLetter(badge)}\``
-            if (badge !== "invite") desc = desc + `\`${fn.capitalizeFirstLetter(badge).replace(/_/g, " ")}\` `
+            description = description + `[${fn.capitalizeFirstLetter(badge).replace(/_/g, " ")}] `
         }
-
-        if (desc === "") desc = `${guy.user.tag} does not have any badges.`
-        embed.setDescription(desc)
-
+        description = description === "" ? `${guy.user.tag} does not have any badges.` : "```ini\n" + description + "\n```"
+        let embed = { title: guy.user.tag + "'s Badges", description: "", thumbnail: { url: guy.user.avatarURL() }, timestamp: Date.now(), color: guy.displayColor ? guy.displayColor : 0x1fff43, description }
         message.channel.send({ embeds: [embed] })
     },
 }

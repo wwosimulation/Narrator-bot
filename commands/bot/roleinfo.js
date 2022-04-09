@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js")
 const { getRole } = require("../../config")
 
 module.exports = {
@@ -7,7 +6,7 @@ module.exports = {
     usage: `${process.env.PREFIX}roleinfo <role>`,
     run: async (message, args, client) => {
         let role = getRole(args.join(" "))
-        let embed = new MessageEmbed({ title: role.name, description: role.description, thumbnail: { url: role.icon } })
+        let embed = { title: role.name, description: role.description, thumbnail: { url: role.icon } }
         message.channel.send({ embeds: [embed] })
     },
 }

@@ -1,4 +1,3 @@
-const { MessageSelectMenu, MessageActionRow } = require("discord.js")
 const { getLangNameFromCode } = require("language-name-map")
 
 module.exports = {
@@ -7,12 +6,12 @@ module.exports = {
     usage: `${process.env.PREFIX}settings`,
     aliases: ["config", "lang", "language"],
     run: async (message, args) => {
-        let languageDropdown = new MessageSelectMenu().setCustomId(`configLanguage-${message.author.id}`).setMaxValues(1).setPlaceholder("Language")
+        let languageDropdown = { type: 3, custom_id: `configLanguage-${message.author.id}`, max_values: 1, placeholder: "Language", options: [] }
         let allLanguages = require("../../l10n/allLanguages.js")
         allLanguages.forEach((x) => {
             let langName = getLangNameFromCode(x)?.native || x
-            languageDropdown.addOptions({ label: langName, value: x })
+            languageDropdown.options.push({ label: langName, value: x })
         })
-        message.channel.send({ content: message.l10n("customizeSettings"), components: [new MessageActionRow().addComponents(languageDropdown)] })
+        message.channel.send({ content: message.l10n("customizeSettings"), components: [{ type: 1, components: [languageDropdown] }] })
     },
 }
