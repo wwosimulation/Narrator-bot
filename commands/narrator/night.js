@@ -826,8 +826,10 @@ module.exports = {
                 }
             }, 60000)
         }, 3000)
+        let bunny = message.guild.channels.cache.filter((c) => c.name === "priv-easter-bunny").map((x) => x.id)
 
         dayChat.send(`${alive} Night ${Math.floor(db.get(`gamePhase`) / 3) + 2} has started!`)
+        if(bunny.size > 0) dayChat.send({content: `${getEmoji("bunny_greet", client)} Happy Easter everyone!`})
         db.add(`gamePhase`, 1)
         db.set(`wwsVote`, "yes")
         db.set(`commandEnabled`, "no")
