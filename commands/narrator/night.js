@@ -29,6 +29,7 @@ module.exports = {
         let mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+        let baker = message.guild.channels.cache.filter((c) => c.name === "priv-baker").map((x) => x.id)
         let lynched = "yes"
         let gamephase = db.get("gamePhase")
 
@@ -739,6 +740,11 @@ module.exports = {
                 db.delete(`blackpotion_${chan.id}`)
                 db.delete(`redpotion_${chan.id}`)
             })
+
+            // baker bread
+            for(let i = 0; i < baker.length; i++) {
+                db.delete(`bread_${baker[i]}`)
+            }
 
             // zombies chat
             let zombies = message.guild.channels.cache.find((c) => c.name === "zombies")

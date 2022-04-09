@@ -42,6 +42,10 @@ module.exports = {
                 if (!save.includes(i.ID)) db.delete(i.ID)
             })
 
+            for(let i = 0; i < baker.length; i++) {
+                db.delete(`bread_${baker[i]}`)
+            }
+
             const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
             temproles.children.forEach((channel) => channel.delete())
 
