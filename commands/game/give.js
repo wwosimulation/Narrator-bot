@@ -46,19 +46,18 @@ module.exports = {
                 message.guild.channels.cache.find((c) => c.name === "day-chat").send("HO HO HO")
             } else {
                 if (role.name == "Easter Bunny") {
-                    db.get(`bunny_${message.channel.id}`) || db.set(`bunny_${message.channel.id}`)
-                    if (db.get(`bunny_${message.channel.id}`) == 0) return message.channel.send("You don't have any gifts left.")
+                    let left = db.get(`bunny_${message.channel.id}`) || db.set(`bunny_${message.channel.id}, 5`)
+                    if (left == 0) return message.channel.send("You don't have any gifts left.")
                 }
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
                 if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
                 if (!guy.roles.cache.has(dead.id)) return message.channel.send("You can't send a gift to an alive player!")
-                let status = guy
-                console.log(status)
                 if (guy.presence?.status === "offline") return message.channel.send("This player is offline!")
                 guy.send(`You have recieved a gift from ${role}! Find out what you have received!`).catch((e) => message.channel.send(`An error occured: ${e.message}`))
                 db.add(`roses_${guy.id}`, 1)
             }
             db.set(`did_${message.channel.id}`, db.get("gamePhase"))
+            if (role == "Easter Bunny") db.subtract(`bunny_${message.channel.id}, 1`)
         } else if (message.channel.name == "priv-forger") {
             let alive = message.guild.roles.cache.find((m) => m.name === "Alive")
             let gamePhase = db.get(`gamePhase`)
