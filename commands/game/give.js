@@ -46,7 +46,7 @@ module.exports = {
                 message.guild.channels.cache.find((c) => c.name === "day-chat").send("HO HO HO")
             } else {
                 if (role.name == "Easter Bunny") {
-                    db.get(`bunny_${message.channel.id}`) || db.set(`bunny_${message.channel.id}`)
+                    let left = db.get(`bunny_${message.channel.id}`) || db.set(`bunny_${message.channel.id}, 5`)
                     if (db.get(`bunny_${message.channel.id}`) == 0) return message.channel.send("You don't have any gifts left.")
                 }
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
