@@ -36,7 +36,7 @@ module.exports = {
             message.channel.send(`${getEmoji("moon", client)} You gave a card to **${guy.nickname} ${guy.user.username}**`)
             db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`, 1)
         } else if (message.channel.name == "priv-santa-claus" || message.channel.name == "priv-easter-bunny") {
-            if(db.get(`did_${message.channel.id}`) == db.get("gamePhase")) return message.channel.send("You already used your ability!")
+            if (db.get(`did_${message.channel.id}`) == db.get("gamePhase")) return message.channel.send("You already used your ability!")
             let role = getRole(message.channel.name.split("priv-")[1]).name
             let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
             let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
