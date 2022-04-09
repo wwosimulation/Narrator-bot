@@ -97,7 +97,7 @@ module.exports = {
             if (db.get(`role_${guy.id}`) == "President") return message.channel.send({ content: "You can't reveal the president!" })
             dayChat.send({ content: `${getEmoji("whistle", client)} The Vigilante revealed ${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})` })
             guy.roles.add(revealed.id)
-            db.set(`did_${message.channel.id}`)
+            db.set(`did_${message.channel.id}`, dayCount)
         }
     },
 }
