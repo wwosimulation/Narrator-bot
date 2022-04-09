@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js")
->>>>>>> 595205e (Vig (#290))
 const ms = require("ms")
 const db = require("quick.db")
 const { shop, ids, getEmoji, fn } = require("../config")
@@ -113,8 +109,6 @@ module.exports = (client) => {
             foundUser = interaction.guild.members.resolve(user)
             switch (action) {
                 case "no":
-<<<<<<< HEAD
-<<<<<<< HEAD
                     foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` }).catch((e) => {
                         interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." })
                     })
@@ -124,24 +118,6 @@ module.exports = (client) => {
                     foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.user.tag} is starting one soon!.` }).catch((e) => {
                         interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." })
                     })
-=======
-                    foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` }).catch(e => { interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." }) })
-                    interaction.reply({ content: `No one can host, so the user has been informed. Thank you ${interaction.member}` })
-                    break
-                case "yes":
-                    foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.user.tag} is starting one soon!.` }).catch(e => { interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." }) })
->>>>>>> 595205e (Vig (#290))
-=======
-                    foundUser.send({ content: `Hey there, we received your request for a game! Unfortunately, no one is able to host a game right now.` }).catch((e) => {
-                        interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." })
-                    })
-                    interaction.reply({ content: `No one can host, so the user has been informed. Thank you ${interaction.member}` })
-                    break
-                case "yes":
-                    foundUser.send({ content: `Hey there, we received your request for a game, so ${interaction.user.tag} is starting one soon!.` }).catch((e) => {
-                        interaction.channel.send({ content: "Uhh, I had a problem DMing them. Most probably they have their DM's turned off." })
-                    })
->>>>>>> 9604bbf (Prettified Code!)
                     interaction.reply({ content: `${interaction.user} is now hosting a game! The user has been informed.` })
                     break
                 default:

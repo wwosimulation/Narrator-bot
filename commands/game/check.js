@@ -43,15 +43,6 @@ module.exports = {
                     aura = "Evil"
                 }
             }
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> 595205e (Vig (#290))
-=======
-
->>>>>>> 9604bbf (Prettified Code!)
             if (role === "Sorcerer") {
                 aura = "Good"
             }
