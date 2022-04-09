@@ -80,20 +80,12 @@ module.exports = (client) => {
             if (interaction.member.roles.cache.has(ids.spectator)) return interaction.reply({ content: `You're spectating, you can't vote!`, ephemeral: true })
             if (terrorCheck(interaction)) return interaction.reply({ content: "The Prognosticator prevents you from voting.", ephemeral: true })
             let corrs = interaction.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((corr) => corr.id)
-<<<<<<< HEAD
-=======
-
->>>>>>> 9604bbf (Prettified Code!)
             for (let corr = 0; corr < corrs.length; corr++) {
                 let corrupted = db.get(`corrupt_${corrs[corr]}`)
                 if (corrupted == interaction.member.displayName) {
                     return interaction.reply({ content: "You are corrupted! You can't vote today.", ephemeral: true })
                 }
             }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9604bbf (Prettified Code!)
             let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
             for (let x = 0; x < allpaci.length; x++) {
                 let dayactivated = db.get(`pacday_${allpaci[x]}`)
@@ -112,10 +104,6 @@ module.exports = (client) => {
                     }
                 }
             })
-<<<<<<< HEAD
-=======
-
->>>>>>> 9604bbf (Prettified Code!)
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
