@@ -120,6 +120,7 @@ module.exports = {
                                 await tmestodel.delete()
                             }
                         }
+
                         let omg = await voteChat.send(`${message.member.nickname} voted ${args[0]}`)
                         votes.push(args[0])
                         db.set(`vote_${message.author.id}`, args[0])

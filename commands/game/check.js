@@ -43,7 +43,7 @@ module.exports = {
                     aura = "Evil"
                 }
             }
-            
+
             if (role === "Sorcerer") {
                 aura = "Good"
             }
@@ -79,17 +79,21 @@ module.exports = {
                     role = "Wolf Shaman"
                 }
             }
-            
+
             if (role === "Sorcerer") {
-               let allInformativeRoles = ["Sheriff", "Spirit Seer", "Aura Seer", "Detective", "Seer"]
-               let allRoles = db.all().filter(data => data.ID.startsWith("role_")).map(data => db.get(data.ID)).filter(r => allInformativeRoles.includes(r))
-               if (allRoles.length > 0) {
-                   let fakeRole = allRoles[0]
-                   allRoles.forEach(r => {
-                       if (allInformativeRoles.indexOf(fakeRole) !== -1 && allInformativeRoles.indexOf(fakeRole) > allInformativeRoles.indexOf(r)) fakeRole = r
-                   })
-                   role = fakeRole
-               }
+                let allInformativeRoles = ["Sheriff", "Spirit Seer", "Aura Seer", "Detective", "Seer"]
+                let allRoles = db
+                    .all()
+                    .filter((data) => data.ID.startsWith("role_"))
+                    .map((data) => db.get(data.ID))
+                    .filter((r) => allInformativeRoles.includes(r))
+                if (allRoles.length > 0) {
+                    let fakeRole = allRoles[0]
+                    allRoles.forEach((r) => {
+                        if (allInformativeRoles.indexOf(fakeRole) !== -1 && allInformativeRoles.indexOf(fakeRole) > allInformativeRoles.indexOf(r)) fakeRole = r
+                    })
+                    role = fakeRole
+                }
             }
 
             message.channel.send(`You checked **${args[0]} ${guy.user.username} (${role})**!`)
@@ -137,7 +141,7 @@ module.exports = {
                     }
                 }
             }
-            
+
             if (role1 === "Sorcerer") team1 = "Village"
             if (role2 === "Sorcerer") team2 = "Village"
 
