@@ -3611,7 +3611,7 @@ module.exports = {
         allZombiePlayers.forEach(async (zombPlayer) => {
             if (db.get(`bittenAt_${zombPlayer}`) + 3 <= day) {
                 let zombGuy = await message.guild.members.fetch(zombPlayer)
-                dayChat.send(`${getEmoji("zombie", client)} Player **${zombGuy.nickname} ${zombGuy.user?.username}** was the Zombie. They have lived for 3 days and will now rot to death.`)
+                dayChat.send(`${getEmoji("zombie", client)} The body of **${zombGuy.nickname} ${zombGuy.user?.username}** has decayed and they are now dead!`)
                 zombGuy.roles.add(dead.id)
                 zombGuy.roles.remove(alive.id)
             }
