@@ -245,6 +245,7 @@ module.exports = {
         finalRoleList = roleOptions[0].splice(0, alive.members.size)
         let cancel = false
         let showrole = []
+        let errorReply = ""
         finalRoleList.forEach((x, i) => {
             let adddc = false
             if (x == "rk") {
@@ -281,23 +282,22 @@ module.exports = {
                 adddc = true
             }
             console.log(x)
-
             let role = getRole(x)
             if (!role || role.name == "Unknown Role") {
                 cancel = true
-                return interaction.editReply(`Unable to find the ${x} role!`)
+                return errorReply += `\nUnable to find the ${x} role!`
             }
             if (!role.description) {
                 cancel = true
-                return interaction.editReply(`The information for the ${x} role is missing! Please report this using \`+bug\``)
+                return errorReply += `\nThe information for the ${x} role is missing! Please report this using \`/bug\``
             }
             if (banned.includes(role.name)) {
                 cancel = true
-                return interaction.editReply(`The ${role.name} role is currently not available`)
+                return errorReply +=`\nThe ${role.name} role is currently not available`
             }
             if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
-        if (cancel) return interaction.editReply("srole canceled")
+        if (cancel) return interaction.editReply(errorReply + "\nsrole canceled")
         shuffle(finalRoleList)
         let sorcChats = []
         for (let k = 0; k < alive.members.size; k++) {
