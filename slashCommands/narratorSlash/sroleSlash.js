@@ -285,15 +285,15 @@ module.exports = {
             let role = getRole(x)
             if (!role || role.name == "Unknown Role") {
                 cancel = true
-                return errorReply += `\nUnable to find the ${x} role!`
+                return (errorReply += `\nUnable to find the ${x} role!`)
             }
             if (!role.description) {
                 cancel = true
-                return errorReply += `\nThe information for the ${x} role is missing! Please report this using \`/bug\``
+                return (errorReply += `\nThe information for the ${x} role is missing! Please report this using \`/bug\``)
             }
             if (banned.includes(role.name)) {
                 cancel = true
-                return errorReply +=`\nThe ${role.name} role is currently not available`
+                return (errorReply += `\nThe ${role.name} role is currently not available`)
             }
             if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })

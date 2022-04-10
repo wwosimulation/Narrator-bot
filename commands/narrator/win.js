@@ -11,7 +11,7 @@ module.exports = {
     run: async (message, args, client) => {
         let winTeam = args[0]?.toLowerCase()
         let tie = false
-        if(args[0].toLowerCase() == "tie") tie = true
+        if (args[0].toLowerCase() == "tie") tie = true
         else if (args.length < 2 || !xp.teamMultipliers[winTeam]) return message.channel.send("Please specify the winning team and its players! Valid teams are the following:\n" + Object.keys(xp.teamMultipliers).join(", "))
 
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
@@ -49,7 +49,7 @@ module.exports = {
             if (winners.includes(x)) {
                 xpBase = winXP
                 let wt = winTeam
-                if(wt == "evil") {
+                if (wt == "evil") {
                     let role = getRole(db.get(`role_${x}`))
                     wt = role.name == "Unknown Role" || role.name == "Modded" ? "modded" : role.team != "Solo" ? role.team : role.soloKiller == true ? "solokiller" : "solovoting"
                 }
@@ -60,7 +60,7 @@ module.exports = {
                 let team = role.name == "Unknown Role" || role.name == "Modded" ? "modded" : role.team != "Solo" ? role.team : role.soloKiller == true ? "solokiller" : "solovoting"
                 xpBase = loseXP
                 data.winStreak = 0
-                data.stats[team] ? (data.stats[team].lose++) : (data.stats.modded.lose++)
+                data.stats[team] ? data.stats[team].lose++ : data.stats.modded.lose++
             } else {
                 data.stats.tie++
                 data.winStreak = 0
