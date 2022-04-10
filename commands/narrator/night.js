@@ -580,7 +580,7 @@ module.exports = {
                                     tolock.permissionOverwrites.edit(prisoner.id, {
                                         SEND_MESSAGES: false,
                                     })
-                                    tolock.send("You have been jailed! You can't do your actions for tonight! Head to <#606251143466713174> to talk with the jailer!")
+                                    tolock.send(`You have been jailed! You can't do your actions for tonight! Head to ${jailedchat} to talk with the jailer!`)
                                 }
                             }
 
