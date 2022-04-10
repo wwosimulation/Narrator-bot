@@ -133,8 +133,8 @@ module.exports = {
         let rolelist = []
         let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
         let random = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "cupid", "cursed", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "president", "detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer", "alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman", "sorcerer", "alchemist", "arsonist", "bomber", "cannibal", "corruptor", "illusionist", "serial-killer", "zombie", "fool", "headhunter"]
-        let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch"]
-        let rsv = ["detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer"]
+        let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "forger"]
+        let rsv = ["detective", "fortune-teller", "gunner", "jailer", "medium", "seer"]
         let rww = ["alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman"]
         let rk = ["alchemist", "arsonist", "bomber", "cannibal", "corruptor", "illusionist", "serial-killer"]
         let rv = ["fool", "headhunter"]
@@ -285,15 +285,15 @@ module.exports = {
             let role = getRole(x)
             if (!role || role.name == "Unknown Role") {
                 cancel = true
-                return errorReply += `\nUnable to find the ${x} role!`
+                return (errorReply += `\nUnable to find the ${x} role!`)
             }
             if (!role.description) {
                 cancel = true
-                return errorReply += `\nThe information for the ${x} role is missing! Please report this using \`/bug\``
+                return (errorReply += `\nThe information for the ${x} role is missing! Please report this using \`/bug\``)
             }
             if (banned.includes(role.name)) {
                 cancel = true
-                return errorReply +=`\nThe ${role.name} role is currently not available`
+                return (errorReply += `\nThe ${role.name} role is currently not available`)
             }
             if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
