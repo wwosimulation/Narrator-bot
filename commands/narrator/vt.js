@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const ms = require("ms")
+const { fn } = require("../../config")
 
 module.exports = {
     name: "vt",
@@ -30,11 +31,12 @@ module.exports = {
             }
         }
         let row = { type: 1, components: [droppy] }
-        let m = voteChat.send({ content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row] })
+        let m = await voteChat.send({ content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row] })
         db.set(`commandEnabled`, `yes`)
         db.add(`gamePhase`, 1)
         message.channel.send(`Setting the vote time for ${ms(timer)}`)
-        setTimeout(() => {
+        setTimeout(async () => {
+            await m.edit(fn.disableButtons(m))
             voteChat.send(`Time is up!`)
         }, timer)
     },
