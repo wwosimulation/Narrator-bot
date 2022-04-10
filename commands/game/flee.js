@@ -1,6 +1,7 @@
 const db = require("quick.db")
 const { ids } = require("../../config")
 const gamewarns = require("../../schemas/gamewarns")
+const players = require("../../schemas/players")
 
 module.exports = {
     name: "flee",
@@ -48,12 +49,19 @@ module.exports = {
                             description: `You have received a gamewarn in ${message.guild.name}!\n` + `**Reason:** ${warn.reason}\n` + `**Gamecode:** ${warn.gamecode}\n` + `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` + `If you think this gamewarn was given by accident please [open a ticket](https://discord.com/channels/465795320526274561/606230556832825481/905800163069665280) in [#${client.channels.resolve("606230556832825481").name}](https://discord.com/channels/465795320526274561/606230556832825481).\n` + `**Warn ID:** ${warn.index}`,
                             color: 0x992d22,
                         }
+                        let logEmbed = {
+                            title: `Case: ${warn.index}`,
+                            color: 0x8b0000,
+                            description: `**User:** ${message.author} - ${message.author.tag + " (" + message.author.id})\n` + `**Reason:** ${warn.reason}\n` + `**Gamecode:** ${warn.gamecode}\n` + `**Date:** <t:${(Date.now() / 1000).toFixed()}:f>\n\n` + db.get("hoster") ? `**Responsible Narrator** <@${db.get("hoster")}> (${client.users.resolve(db.get("hoster")).tag})` : "",
+                        }
+                        client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
                         try {
                             await message.author.send({ embeds: [embed] })
                         } catch (err) {
                             interaction.editReply({ embeds: [embed] })
-                            message.channel.send("Unable to send direct message.")
+                            interaction.followUp("Unable to send direct message.")
                         }
+                        await players.updateOne({user: message.author.id}, {$inc: {"stats.flee": 1}})
                         client.emit("gamebanned", message.author)
                     } else {
                         interaction.reply("Successfully canceled!")

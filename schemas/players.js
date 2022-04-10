@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
     profileIcon: { type: String, default: "" }, // icon on the profile
     privateChannel: { type: String, default: "" }, // private channel ID
     customRole: { type: String, default: "" }, // custom role id
-    autoReact: {type: Boolean, default: false}, // Auto Reaction (when mentioned)
+    autoReact: { type: Boolean, default: false }, // Auto Reaction (when mentioned)
     inventory: {
         description: { type: Number, default: 0 }, // description credits
         rose: { type: Number, default: 0 }, // inventory roses
