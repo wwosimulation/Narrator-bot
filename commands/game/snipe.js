@@ -18,7 +18,7 @@ module.exports = {
             if (!args[0]) return message.channel.send("Who are you snipping? Mention the player.")
             if (!guy || guy.id == message.author.id) return message.reply("The player is not in game! Mention the correct player number.")
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            message.react("892354123847045151").catch((e) => message.channel.send("Done"))
+            message.react(config.getEmoji("snipe", client))
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `snipe_${dc.chan.id}` : `snipe_${message.channel.id}`}`, guy.nickname)
         }
     },
