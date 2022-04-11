@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { fn } = require("../../config")
+const { fn, getEmoji } = require("../../config")
 
 module.exports = {
     name: "visit",
@@ -25,7 +25,7 @@ module.exports = {
 
             if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
 
-            message.react("744571914034479126")
+            message.react(getEmoji("visit", client))
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `visit_${dc.chan.id}` : `visit_${message.channel.id}`}`, guy.nickname)
         }
     },

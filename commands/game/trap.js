@@ -24,7 +24,7 @@ module.exports = {
 
             if (!message.member.roles.cache.has(alive.id) || !guy.roles.cache.has(alive.id)) return await message.reply("You or the player isn't alive!")
 
-            message.react("475775073475887134")
+            message.react(getEmoji("trap", client))
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `setTrap_${dc.chan.id}` : `setTrap_${message.channel.id}`}`, args[0])
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `trapActive_${dc.chan.id}` : `trapActive_${message.channel.id}`}`, false)
         }

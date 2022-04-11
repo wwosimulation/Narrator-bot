@@ -48,7 +48,7 @@ module.exports = {
             }
 
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `jwwtag_${dc.chan.id}` : `jwwtag_${message.channel.id}`}`, args[0])
-            message.react("475775484219752453")
+            message.react(getEmoji("jwwtag", client))
         }
         if (message.channel.name == "priv-avenger") {
             if (night == 1) {
@@ -86,7 +86,7 @@ module.exports = {
             }
 
             db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `atag_${dc.chan.id}` : `atag_${message.channel.id}`}`, args[0])
-            message.react("482179367485702162")
+            message.react(getEmoji("avenge", client))
         }
         if (message.channel.name == "priv-loudmouth") {
             if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
