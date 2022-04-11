@@ -21,7 +21,7 @@ module.exports = {
 
             db.set(`frenzy_${message.channel.id}`, true)
             db.set(`abil_${message.channel.id}`, "yes")
-            message.react("744573088204718412")
+            message.react(getEmoji("frenzy", client))
             wolfChat.send(`${getEmoji("frenzy", client)} The Werewolf Berserk has activated it's frenzy tonight!`)
         }
     },
