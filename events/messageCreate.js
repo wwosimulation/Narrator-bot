@@ -53,18 +53,8 @@ module.exports = (client) => {
   `)
             }
 
-            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has(config.ids.alive) && message.content.length > 140) {
-                message.delete()
-                return message.channel.send("Maximum length for messages are 140 characters!")
-            }
-            if (message.guild.id == "472261911526768642" && message.channel.name == "day-chat" && message.member.roles.cache.has(config.ids.alive) && message.content.includes("\n")) {
-                message.delete()
-                return message.channel.send("You can only send one line per message!")
-            }
-        }
-
         //If user mentions bot
-        if (message.content === `<@!${client.user.id}>`) return message.author.send(`Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`)
+        if (message.content === `<@${client.user.id}>`) return message.author.send(`Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`)
 
         if (!message.content.startsWith(prefix)) return
         if (maint && !client.botAdmin(message.author.id)) return message.channel.send("Sorry! The bot is currently in maintenance mode!")
