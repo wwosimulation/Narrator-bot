@@ -97,8 +97,8 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
         await msg.react("▶️")
         await msg.react("⏩")
     }
-    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => { })
-    if (!reaction) return msg.reactions.removeAll().catch(() => { })
+    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
+    if (!reaction) return msg.reactions.removeAll().catch(() => {})
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
     if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
@@ -162,7 +162,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
     let p = --page
 
     collector.on("collect", async (button) => {
-        if (button.user.id !== authorID) button.reply({ content: "This is not your message. Please request your own one.", ephemeral: true})
+        if (button.user.id !== authorID) button.reply({ content: "This is not your message. Please request your own one.", ephemeral: true })
         else {
             if (button.customId === "begin") p = 0
             else if (button.customId === "back") {
