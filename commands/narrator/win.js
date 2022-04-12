@@ -17,7 +17,7 @@ module.exports = {
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         if (alive.members.size != "0") {
             client.commands.get("killall").run(message, args, client)
-            return message.channel.send('All players killed. Please use the command again.')
+            return message.channel.send("All players killed. Please use the command again.")
         }
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
 
