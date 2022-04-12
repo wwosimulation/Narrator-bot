@@ -52,6 +52,7 @@ module.exports = (client) => {
   Gotta make you understand
   `)
             }
+        }
 
         //If user mentions bot
         if (message.content === `<@${client.user.id}>`) return message.author.send(`Hey! My prefix is ${prefix}, you can ask for \`${prefix}help\` if you ever need.`)
