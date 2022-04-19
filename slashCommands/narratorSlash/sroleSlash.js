@@ -322,7 +322,7 @@ module.exports = {
             lol.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
 
             allChannels.push(lol)
-            if (role.name.toLowerCase().includes("wolf")) {
+            if (role.name.toLowerCase().includes("wolf") && role.name.toLowerCase() !== "werewolf fan") {
                 wwsChat.permissionOverwrites.edit(guy.id, {
                     SEND_MESSAGES: true,
                     VIEW_CHANNEL: true,
