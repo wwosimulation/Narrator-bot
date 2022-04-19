@@ -89,7 +89,7 @@ module.exports = {
             READ_MESSAGE_HISTORY: true,
         })
 
-        if (real.includes("wolf") || real == "sorcerer") {
+        if ((real.includes("wolf") || real == "sorcerer") && !real.includes("fan")) {
             wwchat.permissionOverwrites.edit(guy.id, {
                 SEND_MESSAGES: true,
                 VIEW_CHANNEL: true,
