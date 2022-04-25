@@ -107,12 +107,12 @@ module.exports = {
         // check if mode is custom AND includes invalid roles
         if (gamemode === "custom") {
             let customRoles = roles.split(" ")
-            if (customRoles.length !== alive.members.cache.size) return interaction.reply(`${getEmoji("error")} The number of roles do not match the number of players in game!`)
+            if (customRoles.length !== alive.members.cache.size) return interaction.reply(`${getEmoji("error", client)} The number of roles do not match the number of players in game!`)
 
             customRoles.forEach(role => {
                 let roleData = getRole(role)
-                if (!roleData || roleData.name === "Unknown Role") return interaction.reply(`${getEmoji("error")} Role \`${role}\` could not be found!`)
-                if (!roleData.description) return interaction.reply(`${getEmoji("error")} The description for the \`${roleData.name}\` role is missing!`)
+                if (!roleData || roleData.name === "Unknown Role") return interaction.reply(`${getEmoji("error", client)} Role \`${role}\` could not be found!`)
+                if (!roleData.description) return interaction.reply(`${getEmoji("error", client)} The description for the \`${roleData.name}\` role is missing!`)
                 if (banned.includes(roleData.name)) return interaction.reply(`The ${roleData.name} role is currently not available`)        
             })
         }
@@ -134,6 +134,8 @@ module.exports = {
         rww = pull(rww, ...excludes, ...banned)
         rk = pull(rk, ...excludes, ...banned)
         rv = pull(rv, ...excludes, ...banned)
+
+        let roleoptions = []
 
         if (gamemode == "quick") {
             alphashaman = shuffle(alphashaman)
@@ -189,6 +191,78 @@ module.exports = {
             })
             roleOptions.push(args)
         }
+
+        shuffle(roleOptions)
+        rolelist = roleOptions[0].splice(0, db.get(`players`).length)
+
+        rolelist.forEach(role => {
+            if (role == "rk") {
+                shuffle(rk)
+                role = rk[0]
+                rolelelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Killer`, client)} Random Killer`)
+            } else if (role == "rrv") {
+                shuffle(rrv)
+                role = rrv[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Regular Villager`, client)} Random Regular Villager`)
+            } else if (role == "rsv") {
+                shuffle(rsv)
+                role = rsv[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Strong Villager`, client)} Random Strong Villager`)
+            } else if (role == "rv") {
+                shuffle(rv)
+                role = rv[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Voting`, client)} Random Voting`)
+            } else if (role == "rww") {
+                shuffle(rww)
+                role = rww[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Werewolf`, client)} Random Werewolf`)
+            } else if (role == "random") {
+                shuffle(random)
+                role = random[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random`, client)} Random`)
+            } else {
+                dcMessage.push(`${getEmoji(getRole(role).name, client)} ${getRole(role).name}`)
+            }
+        })
+
+        shuffle(rolelist)
+
+        rolelist.forEach(async (role, index) => {
+            let player = db.get(`player`)[index]
+            let roleData = getRole(role)
+            db.set(`player_${player}.role`, roleData.name)
+            db.set(`player_${player}.team`, roleData.team)
+            
+            let guy = await interaction.guild.members.fetch(player)
+            let channel = await interaction.guild.channels.create(
+                `priv-${roleData.name.toLowerCase().replace(/\s/g, "-")}`, {
+                    parent: "892046231516368906"
+                }
+            )
+
+            await channel.permissionOverwrites.create(interaction.guild.id, {
+                VIEW_CHANNEL: false,
+            })
+
+            await channel.permissionOverwrites.create(guy.id, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true,
+            })
+
+            await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
+
+            await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
+
+            await channel.send(`${roleData.description}`)
+            
+        })
 
     }
 }
