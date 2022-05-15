@@ -8,7 +8,7 @@ module.exports = {
     usage: `${process.env.PREFIX}badges [user]`,
     run: async (message, args, client) => {
         let badge = badgesFilter(args.join(" "))
-        if (badge.length == badges.length) {
+        if (badge.length == badges.length || badge.length == 0) {
             let guy = fn.getUser(args[0], message)
             let description = ""
             let playerData = await players.findOne({ user: guy.id })
