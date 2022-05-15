@@ -19,9 +19,8 @@ module.exports = {
             let embed = { title: guy.user.tag + "'s Badges", description: "", thumbnail: { url: guy.user.avatarURL() }, timestamp: Date.now(), color: guy.displayColor ? guy.displayColor : 0x1fff43, description }
             message.channel.send({ embeds: [embed] })
         } else {
-            let msg = await message.channel.send({embeds: [badgesEmbeds[getEmbedIndex(badge[0])]]})
-            client.buttonPaginator(message.author.id, msg, badgesEmbeds, getEmbedIndex(badge[0])+1)
+            let msg = await message.channel.send({ embeds: [badgesEmbeds[getEmbedIndex(badge[0])]] })
+            client.buttonPaginator(message.author.id, msg, badgesEmbeds, getEmbedIndex(badge[0]) + 1)
         }
-
     },
 }
