@@ -117,6 +117,8 @@ module.exports = {
             })
         }
 
+        await interaction.deferReply()
+
         // loop through each player and set their correct nickname
         alive.members.cache.sort((a, b) => Number(b.nickname) - Number(a.nickname)).map(a => a.id).forEach((player, i) => {
             if (player.nickname !== i+1) player.setNickname(`${i+1}`)
@@ -233,18 +235,22 @@ module.exports = {
 
         shuffle(rolelist)
 
-        rolelist.forEach(async (role, index) => {
+        for (let index = 0 ; index < rolelist.length ; index++) {
+            let role = rolelist[index]
             let player = db.get(`player`)[index]
             let roleData = getRole(role)
             db.set(`player_${player}.role`, roleData.name)
             db.set(`player_${player}.team`, roleData.team)
             
             let guy = await interaction.guild.members.fetch(player)
+
             let channel = await interaction.guild.channels.create(
                 `priv-${roleData.name.toLowerCase().replace(/\s/g, "-")}`, {
                     parent: "892046231516368906"
                 }
             )
+
+            db.set(`player_${player}.channel`, channel.id)
 
             await channel.permissionOverwrites.create(interaction.guild.id, {
                 VIEW_CHANNEL: false,
@@ -261,8 +267,28 @@ module.exports = {
             await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
 
             await channel.send(`${roleData.description}`)
+
+            await channel.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
             
-        })
+        }
+
+        client.commands.get("playerinfo").run(interaction, args, client)
+
+        interaction.editReply("If everything looks correct, use `+startgame` to start the game!")
+ 
+        db.set(`gamePhase`, -1)
+
+        db.set(`gamemode`, gamemode)
+
+        let roleMsg = `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes.size > 0 ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`
+
+        if (hideRoles) roleMsg = "Role list is hidden"
+
+        await dayChat.permissionOverwrites.edit(alive.id, { SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, VIEW_CHANNEL: true })
+
+        let dcSent = await dayChat.send(roleMsg)
+
+        await dcSent.pin()        
 
     }
 }
