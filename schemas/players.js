@@ -6,6 +6,7 @@ const schema = new mongoose.Schema({
     roses: { type: Number, default: 0 }, // roses CURRENCY
     gems: { type: Number, default: 0 }, // gems
     xp: { type: Number, default: 0 }, // xp
+    level: { type: Number, default: 0}, // level
     cmi: { type: Boolean, default: false }, // true or false has the cmi
     profile: { type: Boolean, default: false }, // true or false has the profile cmd
     profileDesc: { type: String, default: "" }, // description on the profile
