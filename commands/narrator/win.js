@@ -73,7 +73,7 @@ module.exports = {
             // send each x an embed with their xp
             let xpEmbed = { color: 0x008800, title: "Game ended!", thumbnail: { url: client.user.avatarURL() }, description: `Result: ${tie ? "Tie!" : winners.includes(x) ? "You won!" : "You lost."}\n\nXP gained: ${xpBase} XP${data.winStreak > 1 ? `\n${data.winStreak} Game Streak - ${xpStreak} Bonus XP` : ""}` }
             data.save()
-            xp.level(await client.users.fetch(x), xpBase + xpStreak, xpEmbed, message.guild.channels.cache.get("892046258737385473"))
+            xp.level(client.users.cache.get(x), xpBase + xpStreak, xpEmbed, message.guild.channels.cache.get("892046258737385473"))
         }
 
         message.channel.send("XP is being given! Thanks for playing :)")
