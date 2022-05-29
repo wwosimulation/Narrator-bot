@@ -241,6 +241,7 @@ module.exports = {
             let roleData = getRole(role)
             db.set(`player_${player}.role`, roleData.name)
             db.set(`player_${player}.team`, roleData.team)
+            db.set(`player_${player}.aura`, roleData.aura || "Unknown")
             
             let guy = await interaction.guild.members.fetch(player)
 

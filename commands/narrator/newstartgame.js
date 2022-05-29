@@ -168,6 +168,15 @@ module.exports = {
             db.set(`player_${sl}.sectChannel`, schat.id)
         })
 
+        // add uses
+        players.forEach(p => {
+            let guy = db.get(`player_${p}`)
+            if (guy.role === "Gunner" || guy.role === "Marksman") db.set(`player_${p}.uses`, 2)
+            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (guy.role === "Bodyguard") db.set(`player_${p}.lives`, 2)
+            if (guy.role !== "Bodyguard") db.set(`player_${p}.lives`, 1)
+        })
+
         await message.channel.send("The game has started! Ping @Alive in #day-chat when you are ready to start Night 1")
 
         await client.channels.cache.find((c) => c.id === "606123818305585167").send("Game is starting. You can no longer join. Feel free to spectate!")
