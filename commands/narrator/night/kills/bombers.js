@@ -30,7 +30,7 @@ module.exports = async client => {
             let guy = db.get(`player_${target}`) // get the guy player - Object
 
             // check if the guy is alive
-            if (guy.status === "Alive") {
+            if (guy.status === "Alive" && guy.id !== attacker.id) {
               let attackedPlayer = await guild.members.fetch(guy.id) // fetch the discord member - Object 
               let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989": r.id) // get the member roles - Array<Snowflake>
               await attackedPlayer.roles.set(attackedPlayerRoles) // set the roles

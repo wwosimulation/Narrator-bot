@@ -34,21 +34,11 @@ module.exports = async client => {
           })
           
           // send a message in that channel.
-          channel.send(`${guild.roles.cache.find(r => r.name === "Alive")} The dreamcatcher has hypnotized you, The only thing you can do is wait and die..`)
+          channel.send(`${guild.roles.cache.find(r => r.name === "Alive")} The Dreamcatcher has hypnotized you, The only thing you can do is wait and die..`)
           
-          // create the new channel for the dream catcher
-          let dcChannel = await guild.channels.create(`priv-${db.get(guy.role).replace(" ", "-").toLowerCase()}`, {
-            parent: "892046231516368906",
-          })
-          
-          // edit the permissions for the new dreamcatcher's channel
-          dcChannel.permissionOverwrites.edit(attacker.id, {
-            SEND_MESSAGES: true,
-            READ_MESSAGE_HISTORY: true,
-            VIEW_CHANNEL: true,
-          })
-          
-          db.set(`player_${attacker.id}.dreamChannel`, dcChannel.id) // set the channel id into the database
+          // set the dream role.
+          let dcChannel = guild.channels.cache.get(attacker.channel)
+          db.set(`player_${attacker.id}.dreamRole`, guy.role) // set the role
           
           dcChannel.send(`${guild.roles.cache.find(r => r.name === "Alive")}\n${getRole(guy.role)?.description}`) // send the description in the new channel
         }
