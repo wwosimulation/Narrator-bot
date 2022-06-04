@@ -111,7 +111,7 @@ module.exports = async (client, alivePlayersBefore) => {
           
           // send a message to the day chat and make the player dead
           db.set(`player_${result.id}.status`, "Dead")          
-          client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
+          client.emit("", db.get(`player_${result.id}`), attacker)
           let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
           let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id) // get all the roles and replace the Alive role with Dead.
           

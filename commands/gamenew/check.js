@@ -55,7 +55,7 @@ module.exports = {
         db.set(`player_${player.id}.uses`, 0)
 
         if (player.role === "Spirit Seer") {
-            db.set(`player_${player.id}`, target.map(a => a.id))
+            db.set(`player_${player.id}.target`, target.map(a => a.id))
             await message.channel.send(`${getEmoji(client, "sscheck")} You decided to check **${target.map(s => `${players.indexOf(s)+1} ${db.get(`player_${s}`).username}`).join("** and **")}**!`)
         }
 
