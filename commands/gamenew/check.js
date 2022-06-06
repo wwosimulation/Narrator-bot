@@ -13,6 +13,9 @@ module.exports = {
         const wwchat = message.guild.channels.cache.find("werewolves-chat")
         let player = db.get(`player_${message.author.id}`) || [{ status: "Dead" }]
 
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
+
+        if (player.status !== "Alive") return await send("Listen to me, you need to be ALIVE to check players.")
         if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer"].includes(player.dreamRole)) return;
         if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only check during the night right? Or are you delusional?")

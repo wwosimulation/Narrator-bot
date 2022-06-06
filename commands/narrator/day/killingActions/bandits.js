@@ -73,7 +73,7 @@ module.exports = async (client) => {
   const headhunterTargets = alivePlayers.filter(d => db.get(`player_${d}`).role === "Headhunter").map(d => db.get(`player_${d}`).target)
   const phase = db.get(`gamePhase`)
   
-  // loop through each accomplice
+  // loop through each bandit
   for (let bandit of bandits) {
     
     let attacker = db.get(`player_${bandit}`) // the attacker object - Object

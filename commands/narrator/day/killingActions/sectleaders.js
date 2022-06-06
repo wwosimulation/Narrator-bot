@@ -103,11 +103,11 @@ module.exports = async (client) => {
             // make the player part of the sect team
             let playerChannel = guild.channels.cache.get(guy.channel) // get the GUY'S channel. Sect leader bypasses bodyguard with 1 life / tough guy
             let sectChannel = guild.channels.cache.get(attacker.sectChannel) // get the sect channel
-            let sectMembers = db.get(`player_${attacker.id}`) || [] // get the sect members
+            let sectMembers = db.get(`player_${attacker.id}.sectMembers`) || [] // get the sect members
             await playerChannel.send(`${getEmoji("sect_member", client)} You have been converted by the Sect Leader! Player **${players.indexOf(attacker.id)+1} ${attacker.username}** is your leader!`)
             await sectChannel.send(`${guild.roles.cache.find(r => r.name === "Alive")} ${getEmoji("sect_member", client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** is now a sect member.`)
             sectMembers.push(guy.id)
-            db.set(`player_${attacker.id}`, sectMembers)
+            db.set(`player_${attacker.id}.sectMembers`, sectMembers)
             db.set(`player_${guy.id}.sected`, attacker.id)
 
           } else { // otherwise they were protected

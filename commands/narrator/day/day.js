@@ -34,6 +34,8 @@ module.exports = {
       let graverobbers = require("./others/graverobbers.js")
       let channels = require("./others/channels.js")
       let redladies = require("./others/redladies.js")
+      let sheriffs = require("./others/sheriffs.js")
+      let spiritseers = require("./others/spiritseers.js")
       let { getCoupleTargets, couple } = require("./others/couple.js")
       
       // forger doing their job
@@ -116,6 +118,12 @@ module.exports = {
       
       // configuring jailer and nightmare permissions
       await channels(client)
+
+      // give results to sheriff if any
+      await sheriffs(client)
+
+      // give results to spirit seer
+      await spiritseers(client)
       
     }
   }
