@@ -29,6 +29,8 @@ module.exports = {
 
         if (db.get(`player_${target}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to convert!")
 
+        if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot convert the President!")
+
         if (player.role === "Zombie") {
             if (db.get(`player_${target}`).bitten === true && !player.hypnotized) return await message.channel.send("Hallo sis, you cannot just bite your bitten zombies like dat.")
             message.guild.channels.cache.find(c => c.name === "zombies")?.send(`${getEmoji("zombvote", client)} **${players.indexOf(player.id)+1} ${player.username}** selected to bite **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**.`)

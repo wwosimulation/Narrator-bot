@@ -33,6 +33,7 @@ module.exports = {
 
         if (args.length > 1) target.push( players[Number(args[1])-1] || players.find(p => p === args[1]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[1]) )
         if (!player.hypnotized && (target.includes(player.id))) return await message.channel.send("You can't check yourself, unless you have trust issues of course.")
+        if (target.map(a => db.get(`player_${a}`).role).includes("President")) return await message.channel.send("You cannot check the president.")
 
         let result = { p1: {}, p2: {} }
         target.forEach((guy, index) => {

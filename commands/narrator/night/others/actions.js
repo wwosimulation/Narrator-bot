@@ -26,13 +26,13 @@ module.exports = async () => {
     }
     
     // reset their target for every role except for some
-    if (!["Junior Werewolf", "Avenger", "Dreamcatcher", "Headhunter", "Villager", "President", "Werewolf", "Bomber", "Split Wolf", "Marksman", "Beast Hunter", "Warden", "Ritualist", "Trapper", "Instigator", "Cupid", "Grave Robber", "Wolf Trickster"].includes(guy.role)) {
+    if (!["Junior Werewolf", "Avenger", "Dreamcatcher", "Headhunter", "Villager", "Marksman", "President", "Werewolf", "Bomber", "Split Wolf", "Marksman", "Beast Hunter", "Warden", "Ritualist", "Trapper", "Instigator", "Cupid", "Grave Robber", "Wolf Trickster"].includes(guy.role)) {
       
       // delete the target
       db.delete(`player_${player}.target`)
       
       if (guy.role === "Witch") {
-        db.delete(`player_${player}.protection`) // resets the potion (so that it does not heal the same player again)
+        db.delete(`player_${player}.target`) // resets the potion (so that it does not heal the same player again)
       } else if (guy.role === "Alchemist") {
         db.delete(`player_${player}.blackTarget`) // deletes the black potion
         db.delete(`player_${player}.redTarget`) // deletes the red potion

@@ -10,8 +10,12 @@ module.exports = async client => {
     
     let guy = db.get(`player_${player}`) // get the player object - Object
     
+    db.delete(`player_${guy.id}.jailed`)
+    db.delete(`player_${guy.id}.nightmared`)
+    db.delete(`player_${guy.id}.hypnotized`)
+    
     // if the player was nightmared or jailed
-    if (guy.nightmared || guy.jailed) {
+    if (guy.nightmared || guy.jailed || guy.hypnotized) {
       
       // unlock their channel
       let channel = guild.channels.cache.get(guy.channel) // gets the channel
