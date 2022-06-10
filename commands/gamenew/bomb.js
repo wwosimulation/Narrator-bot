@@ -4,7 +4,7 @@ const { getEmoji } = require("../../config")
 module.exports = {
     name: "bomb",
     description: "Place your bombs as bomber.",
-    usage: `${process.env.PREFIX}bomb <player> <player> <player>`,
+    usage: `${process.env.PREFIX}bomb`,
     aliases: ["explode"],
     gameOnly: true,
     run: async (message, args, client) => {
@@ -108,7 +108,7 @@ module.exports = {
             
             // set the targets
             let target = [...newComponents.filter(a => a.map(b => b.style.toString()).includes("3")).map(a => a.label.slice(1))]
-            target = target.map(v => players[v-1])
+            target = target.map(v => players[v-1]).filter(p => p !== message.author.id)
             db.set(`player_${i.user.id}.target`, target)
             let gamemessage = targets.filter(v => i.user.id !== v).map(c => `**${players.indexOf(c)+1} ${db.get(`player_${c}`).username}**`)
             i.followUp(`${getEmoji("explode", client)} You have placed bombs on ${gamemessage.join(", ")}!`)
