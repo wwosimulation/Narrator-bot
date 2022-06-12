@@ -37,9 +37,13 @@ module.exports = {
 
         if (db.get(`player_${target}`) == "President") return await message.channel.send("You cannot shoot the President!")
 
-        if (target === player.couple) return await message.channel.send("You cannot shoot your lover!")
+        if (!player.hypnotized) {
 
-        if (target === player.sected) return await message.channel.send("You cannot shoot your own Sect Leader!")
+            if (target === player.couple) return await message.channel.send("You cannot shoot your lover!")
+
+            if (target === player.sected) return await message.channel.send("You cannot shoot your own Sect Leader!")
+
+        }
 
         let result = true
         
@@ -56,6 +60,8 @@ module.exports = {
         let roles = member.roles.cache.map(r => r.name === "Alive" ? message.guild.roles.cache.find(r => r.name === "Dead").id : r.id)
         await member.roles.set(roles)
         await message.guild.channels.cache.find(c => c.name === "day-chat")?.send(messages[player.role])
+
+        db.subtract(`player_${player.id}.uses`)
 
         client.emit("playerKilled", db.get(`player_${member.id}`), player.id)
 
