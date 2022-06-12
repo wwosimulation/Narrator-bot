@@ -57,5 +57,7 @@ module.exports = {
         await member.roles.set(roles)
         await message.guild.channels.cache.find(c => c.name === "day-chat")?.send(messages[player.role])
 
+        client.emit("playerKilled", db.get(`player_${member.id}`), player.id)
+
     },
 }
