@@ -183,6 +183,7 @@ module.exports = async (client) => {
             db.set(`player_${result.id}.channel`, newChannel.id) // changes the player's channel in the database
             db.set(`player_${result.id}.bandit`, attacker.id) // set's the bandit who converted this player
             db.set(`player_${result.id}.convertedAt`, phase) // set when this player was converted
+            db.set(`player_${result.id}.banditChannel`, attacker.banditChannel) // set the bandit channel for the accomplice
               
             let allAccomplices = db.get(`player_${attacker.id}.accomplices`) || [] // gets all the accomplices
             allAccomplices.push(result.id) // push the player into the array

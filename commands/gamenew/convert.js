@@ -38,5 +38,7 @@ module.exports = {
             message.channel.send(`${getEmoji(player.role === "Bandit" ? "kidnap" : "sect_member", client)} You have decided to convert **${players.indexOf(target)+1} ${db.get(`players_${target}`).username}** into your ${player.role === "Bandit" ? "accomplice" : "sect"}.`)
         }
 
+        player.role === "Bandit" ? db.set(`player_${player.id}.accomplice`, target) : db.set(`player_${player.id}.target`, target)
+
     }
 }
