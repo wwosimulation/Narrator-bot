@@ -12,7 +12,7 @@ module.exports = {
 
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`) || []
-        let player = db.get(`player_${message.author.id}`) || [{ status: "Dead" }]
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
         if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
 
