@@ -10,12 +10,12 @@ module.exports = {
         
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`)
-        const wwchat = message.guild.channels.cache.find("werewolves-chat")
+        const wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
         if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
 
-        if (player.status !== "Alive") return await send("Listen to me, you need to be ALIVE to check players.")
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to check players.")
         if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff"].includes(player.dreamRole)) return;
         if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only check during the night right? Or are you delusional?")

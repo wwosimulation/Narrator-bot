@@ -15,7 +15,7 @@ module.exports = {
 
         if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
 
-        if (player.status !== "Alive") return await send("Listen to me, you need to be ALIVE to shoot players.")
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to shoot players.")
         if (!["Bandit", "Accomplice", "Serial Killer"].includes(player.role) && !["Bandit", "Accomplice", "Serial Killer"].includes(player.dreamRole)) return;
         if (["Bandit", "Accomplice", "Serial Killer"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 !== 0 ) return await message.channel.send("You do know that you can only stab during the night right? Or are you delusional?")
