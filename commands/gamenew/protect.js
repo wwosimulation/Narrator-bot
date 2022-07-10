@@ -39,7 +39,7 @@ module.exports = {
 
         if (!target) return await message.channel.send("Player not found!")
 
-        if (db.get(`player_${target}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to convert!")
+        if (db.get(`player_${target}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to protect!")
 
         if (!player.hypnotized && target === player.id) return await message.channel.send("You can't protect yourself. Why are you being selfish?")
 
