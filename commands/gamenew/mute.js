@@ -3,7 +3,7 @@ const config = require("../../config")
 
 module.exports = {
     name: "mute",
-    description: "Mute a player and prevent them voting the next day.",
+    description: "Mute a player and prevent them from voting the next day.",
     usage: `${process.env.PREFIX}mute <player>`,
     aliases: ["quiet", "shush"],
     gameOnly: true,

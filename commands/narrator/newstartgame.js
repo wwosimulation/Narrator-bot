@@ -171,8 +171,10 @@ module.exports = {
         // add uses
         players.forEach(p => {
             let guy = db.get(`player_${p}`)
-            if (guy.role === "Gunner" || guy.role === "Marksman") db.set(`player_${p}.uses`, 2)
-            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (player.role === "Easter Bunny") db.set(`player_${p}.uses`, 4)
+            if (["Gunner", "Marksman", "Fortune Teller"].includes(player.role)) db.set(`player_${p}.uses`, 2)
+            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (player.role === "Witch") db.set(`player_${p}.usesK`, 1)
             if (guy.role === "Bodyguard") db.set(`player_${p}.lives`, 2)
             if (guy.role !== "Bodyguard") db.set(`player_${p}.lives`, 1)
         })

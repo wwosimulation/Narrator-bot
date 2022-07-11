@@ -3,10 +3,9 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "tag",
-    aliases: ["target", "bind"],
     description: "Select a target to be revealed or killed when you die.",
     usage: `${process.env.PREFIX}tag <player>`,
-    aliases: ["revenge", "avenge", "target"],
+    aliases: ["revenge", "avenge", "target", "bind"],
     gameOnly: true,
     run: async (message, args, client) => {
 

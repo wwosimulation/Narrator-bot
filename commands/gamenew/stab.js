@@ -3,7 +3,7 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "stab",
-    description: "Stab your knife into a living body.",
+    description: "Stab your knife into a living player's body.",
     usage: `${process.env.PREFIX}stab <player>`,
     aliases: ["murder"],
     gameOnly: true,

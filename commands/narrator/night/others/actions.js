@@ -18,7 +18,7 @@ module.exports = async () => {
     }
     
     // check if they have a role that can only be used once a night.
-    if (["Aura Seer", "Seer", "Detective", "Analyst", "Sorcerer", "Wolf Seer", "Hacker"].includes(guy.role)) {
+    if (["Aura Seer", "Seer", "Detective", "Analyst", "Sorcerer", "Wolf Seer", "Hacker", "Santa Claus"].includes(guy.role)) {
     
       // if they have uses, reset it.
       if (typeof player.uses === "number") db.set(`player_${player}.uses`, 1)

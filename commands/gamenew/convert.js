@@ -3,7 +3,7 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "convert",
-    description: "Convert a player to your team. This command applies for bandit, sect leader and zombies.",
+    description: "Convert a player to your team.",
     usage: `${process.env.PREFIX}convert <player>`,
     gameOnly: true,
     run: async (message, args, client) => {

@@ -3,7 +3,7 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "protect",
-    description: "Protect a player from being attacked. This command applies for doctor, bodyguard, witch, tough guy and ghost lady",
+    description: "Protect a player from being attacked.",
     usage: `${process.env.PREFIX}protect <player>`,
     aliases: ["heal", "save"],
     gameOnly: true,

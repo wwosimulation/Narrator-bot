@@ -3,7 +3,7 @@ const { soloKillers, roles, getRole, getEmoji, fn, ids } = require("../../config
 
 module.exports = {
     name: "check",
-    description: "Check players during the night. This command works for every seer in game.",
+    description: "Select a player to forsee the result.",
     usage: `${process.env.PREFIX}check <player> [<player>]`,
     gameOnly: true,
     run: async (message, args, client) => {
