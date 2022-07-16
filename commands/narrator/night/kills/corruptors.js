@@ -29,7 +29,7 @@ module.exports = async client => {
           
             db.set(`player_${guy.id}.status`, "Dead") // change the sttaus  
             let attackedPlayer = await guild.members.fetch(guy.id) // fetch the discord member - Object 
-            let  attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? ["892046207428476989", "892046207214551110"] : r.id).join("-").split("-") // get all the roles and replace the Alive role with Dead. 
+            let attackedPlayerRoles = attackedPlayer.roles.cache.map(r => r.name === "Alive" ? ["892046207428476989", "892046207214551110"] : r.id).join("-").split("-") // get all the roles and replace the Alive role with Dead. 
             await dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${players.indexOf(guy.id)+1} ${guy.username}**!`) // send the message
             await attackedPlayer.roles.set(attackedPlayerRoles) // set the status to Dead
           

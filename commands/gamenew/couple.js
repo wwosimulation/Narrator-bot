@@ -4,8 +4,8 @@ const { getEmoji, fn } = require("../../config")
 module.exports = {
     name: "couple",
     description: "Couple two players to be in love.",
-    usage: `${process.env.PREFIX}corrupt <player>`,
-    aliases: ["love", "instigate"],
+    usage: `${process.env.PREFIX}couple <player1> [<player2>]`,
+    aliases: ["love"],
     gameOnly: true,
     run: async (message, args, client) => {
 
@@ -42,7 +42,6 @@ module.exports = {
 
         if ([target1, target2].includes(player.id)) return await message.channel.send("You cannot couple yourself!")
 
-        await message.channel.send(`${getEmoji("corrupt", client)} You have decided to corrupt **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**!`)
 
         if (!target2) {
             db.set(`player_${player.id}.target`, [target1])
