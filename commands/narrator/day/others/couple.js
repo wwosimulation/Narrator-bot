@@ -20,7 +20,7 @@ module.exports.getCoupleTargets = async client => {
     if (!lovemaker.target || lovemaker.target?.filter(p => alivePlayers.includes(p))?.length < 2) {
       
       // assign the targets
-      let target = lovemaker.target?.filter(t => db.get(`player_${t}`)) || []
+      let target = lovemaker.target?.filter(t => db.get(`player_${t}`)).filter(t => db.get(`player_${t}`).status === "Alive") || []
       
       // check how many players are there
       if (target.length === 1) {

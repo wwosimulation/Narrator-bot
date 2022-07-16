@@ -10,6 +10,7 @@ module.exports = async (client) => {
   const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
   const graverobbers = players.filter(p => db.get(`player_${p}`).role === "Grave Robber")
+  const doppelgangers = players.filter(p => db.get(`player_${p}`).role === "Doppelganger")
   
   // loop through each grave robber
   for (const gr of graverobbers) {
@@ -93,6 +94,33 @@ module.exports = async (client) => {
     
     }
   
+  }
+
+  // check all doppelgangers
+  for (const dg of doppelgangers) {
+    
+    let doppel = db.get(`player_${dg}`) // get the doppelganger player object
+    const day = Math.floor(db.get(`gamePhase`) / 3) + 1 // get the current day
+
+    // check if it's day 1
+    if (day === 1) {
+
+      // check if the doppelganger has not set their target
+      if (!doppel.target) {
+
+        // select a random player for them
+        let alivePlayers = players.filter(p => db.set(`player_${p}`).status === "Alive" && p !== doppel.id)
+        let randomPlayer = alivePlayers[Math.random() * alivePlayers.length]
+        let channel = message.guild.channels.cache.get(doppel.channel)
+
+        db.set(`player_${doppel.id}.target`, randomPlayer)
+
+        // send a message to the doppelganger
+        await channel.send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+        await channel.send(`${getEmoji("copy", client)} Since you did not pick anyone, your target has automatically been chosen! Your target is **${players.indexOf(randomPlayer)+1} ${db.get(`player_${randomPlayer}`).username}**!`)
+      }
+    }
+
   }
 
 }

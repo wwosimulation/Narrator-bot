@@ -22,6 +22,11 @@ module.exports = {
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.role === "Bandit" && player.accomplices?.map(a => db.get(`player_${a}`).status).includes("Alive")) return await message.channel.send("As a Bandit, you cannot convert players to become your accomplice if you already have one.")
         if (player.role === "Sect Leader" && player.sectMembers?.map(c => db.get(`player_${c}`).status).filter(c => c === "Alive").length === 4) return await message.channel.send("As a Sect Leader, you may not have more than 4 sect members at a time!")
+
+        if (args[0] === "cancel") {
+            player.role === "Bandit" ? db.delete(`player_${player.id}.accomplice`) : db.delete(`player_${player.id}.target`)
+            return await message.channel.send(`${getEmoji(player.role === "Bandit" ? "kidnap" : "sect_member", client)} Your actions have been canceled!`)
+        }
         
         let target = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
 

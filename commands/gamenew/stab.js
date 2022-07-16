@@ -24,6 +24,17 @@ module.exports = {
         
         if (player.role === "Bandit" && player.accomplices.filter(p => db.get(`player_${p}`).status === "Alive").length === 0) return await message.channel.send("You do know that you need an accomplice to stab?")
 
+        let emotes = {
+            "Serial Killer": `${getEmoji("serial_killer_knife", client)} You have decided to stab`,
+            "Bandit": `${getEmoji("thieve", client)} **${players.indexOf(player.id)+1} ${player.username}** voted to stab`,
+            "Accomplice": `${getEmoji("votebandit", client)} **${players.indexOf(player.id)+1} ${player.username}** voted to stab`
+        }
+
+        if (args[0] === "cancel") {
+            db.delete(`player_${player.id}.target`)    
+            return await message.channel.send(`${emotes[player.role].split(" ")[0]} Your actions have been canceled!`)
+        }
+
         let target = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
 
         if (!target) return await message.channel.send("Player not found!")
@@ -33,12 +44,6 @@ module.exports = {
         db.set(`player_${player.id}.target`, target)
 
         let channel = message.guild.channels.cache.get(player.banditChannel) || message.channel
-
-        let emotes = {
-            "Serial Killer": `${getEmoji("serial_killer_knife", client)} You have decided to stab`,
-            "Bandit": `${getEmoji("thieve", client)} **${players.indexOf(player.id)+1} ${player.username}** voted to stab`,
-            "Accomplice": `${getEmoji("votebandit", client)} **${players.indexOf(player.id)+1} ${player.username}** voted to stab`
-        }
 
         await channel.send(`${emotes[player.role]} **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**`)
         
