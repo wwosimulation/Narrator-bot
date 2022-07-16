@@ -22,6 +22,9 @@ module.exports = async client => {
         let player = await guild.members.fetch(guy.id)
         let channel = guild.channels.cache.get(guy.channel)
         
+
+        db.delete(`player_${night}.target`)
+
         if (guy.status === "Alive") {
           
           channel.permissionOverwrites.edit(guy.id, { 

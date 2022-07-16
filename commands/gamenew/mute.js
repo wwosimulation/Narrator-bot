@@ -22,7 +22,7 @@ module.exports = {
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only mute during the night right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
-        if ((player.role === "Voodoo Werewolf" ? player.usesM : player.uses) === 0) return await message.channel.send("You already used up your ability!")
+        if (player.role !== "Grumpy Grandma" && (player.role === "Voodoo Werewolf" ? player.usesM : player.uses) === 0) return await message.channel.send("You already used up your ability!")
 
         if (args[0].toLowerCase() === "cancel") {
             db.delete(`player_${player.id}.target`)
