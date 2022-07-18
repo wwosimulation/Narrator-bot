@@ -65,5 +65,7 @@ module.exports = {
             await message.channel.send(`${getEmoji("hack", client)} Player **${players.indexOf(target2)+1} ${username2} (${getEmoji(role2.toLowerCase().replace(/\s/g, "_"), client)} ${role2})** has been hacked before, and will die today!`)
         }
 
+        db.subtract(`player_${player.id}.uses`, 1)
+
     },
 }
