@@ -23,9 +23,10 @@ module.exports = {
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.target) return await message.channel.send("You already doused players tonight! If you want to ignite, do `+douse cancel` and then run this command again!")
-        if (player.doused?.length === 0 || !player.doused) return await message.channel.send("You can't ignite if you don't have any players doused!")
+        if (player.doused?.filter(p => db.get(`player_${p}`)?.status === "Alive").length === 0 || !player.doused) return await message.channel.send("You can't ignite if you don't have any alive players doused!")
 
         player.doused.forEach(async target => {
+            if (db.get(`player_${target}`).status === "Dead") continue;
             let guy = await message.guild.members.fetch(target)
             let roles = guy.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id)
             db.set(`player_${target}.status`, "Dead")
@@ -33,6 +34,8 @@ module.exports = {
             await daychat.send(`${getEmoji("ignite", client)} The Arsonist ignited **${players.indexOf(target)+1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})**!`)
             client.emit("playerKilled", db.get(`player_${target}`), player)
         })
+
+        await message.channel.send(`${getEmoji("ignite", client)} All doused players have been burnt to crisps!`)
 
     },
 }
