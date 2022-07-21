@@ -53,6 +53,7 @@ module.exports = {
         if (player.status !== "Alive") return await send("Listen to me, you need to be ALIVE to bomb players.")
         if (gamePhase % 3 !== 0) return await send("Placing bombs in broad day light is good. You should do it often!")
         if (player.dreamRole === "Bomber") player = db.get(`player_${player.target}`)
+        if (db.get(`game.peace`) === Math.floor(gamePhase/3)+1) return await send("This is a peaceful night! You cannot bomb anyone!")
         if (player.jailed) return await send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.lastPlaced === night-1) return await send("I know you are eager but you just placed your bombs last night. Wait for them to explode!")

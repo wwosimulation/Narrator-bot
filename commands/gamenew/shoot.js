@@ -19,6 +19,7 @@ module.exports = {
         if (["Gunner", "Jailer", "Marksman", "Vigilante"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 === 0 && ["Gunner", "Vigilante"].includes(player.role)) return await message.channel.send("You do know that you can only shoot during the day right? Or are you delusional?")
         if (gamePhase % 3 !== 0 && player.role === "Jailer") return await message.channel.send("I know you're eager to shoot but come on man, you haven't even jailed anyone!")
+        if (gamePhase % 3 === 0 && db.get(`game.peace`) === Math.floor(gamePhase/3)+1) return await message.channel.send("This is a peaceful night! You cannot shoot anyone!")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.uses === 0) return await message.channel.send("You already used up all your abilities!")

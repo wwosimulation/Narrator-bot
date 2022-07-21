@@ -20,6 +20,7 @@ module.exports = {
         if (["Hacker"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only hack during the night right? Or are you delusional?")
         if (player.uses === 0) return await message.channel.send("You have already used your ability for tonight!")
+        if (db.get(`game.peace`) === Math.floor(gamePhase/3)+1) return await message.channel.send("This is a peaceful night! You cannot hack anyone!")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (args.length !== 2) return await message.channel.send("You need to select 2 players to hack!")

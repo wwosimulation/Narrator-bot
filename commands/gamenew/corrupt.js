@@ -19,6 +19,7 @@ module.exports = {
         if (!["Corruptor"].includes(player.role) && !["Corruptor"].includes(player.dreamRole)) return;
         if (["Corruptor"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only corrupt during the night right? Or are you delusional?")
+        if (db.get(`game.peace`) === Math.floor(gamePhase/3)+1) return await message.channel.send("This is a peaceful night! You cannot corrupt anyone!")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
 

@@ -172,9 +172,10 @@ module.exports = {
         players.forEach(p => {
             let guy = db.get(`player_${p}`)
             if (["Gunner", "Marksman", "Fortune Teller", "Nightmare Werewolf"].includes(player.role)) db.set(`player_${p}.uses`, 2)
-            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
             if (player.role === "Forger") db.seyt(`player_${p}.uses`, 3)
             if (player.role === "Witch") db.set(`player_${p}.usesK`, 1)
+            if (player.role === "Prognosticator") db.set(`player_${p}.usesT`, 1)
             if (player.role === "Easter Bunny") db.set(`player_${p}.uses`, 4)
             if (player.role === "Voodoo Werewolf") db.set(`player_${p}.usesM`, 2)
             if (player.role === "Voodoo Werewolf") db.set(`player_${p}.usesN`, 1)
