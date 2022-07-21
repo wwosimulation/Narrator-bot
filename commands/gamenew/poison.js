@@ -48,6 +48,6 @@ module.exports = {
         await message.channel.send(`${getEmoji("poison", client)} You have succesfully used your ability!`)
         await daychat.send(`${getEmoji("poison", client)} The Witch poisoned **${players.indexOf(target)+1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})**!`)
         await guy.roles.set(roles)
-
+        client.emit("playerKilled", db.get(`player_${target}`), player)
     },
 }
