@@ -30,7 +30,7 @@ module.exports = {
         await daychat.send(`${getEmoji("shadow", client)} The Shadow Wolf manipulated today's voting!`)
 
 
-        // delete all current votes
+        // delete all current vote messages
         let allMessages = await votechat.messages.fetch()
         let voteMessages = voteMessages.filter(msg => !msg.pinned)
         await votechat.bulkDelete(voteMessages)
