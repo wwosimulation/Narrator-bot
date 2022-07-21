@@ -6,7 +6,7 @@ module.exports = async client => {
   const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
   const dayChat = guild.channels.cache.find(c => c.name === "day-chat") // get the day chat channel - Object
   const protection = require("../others/lynchprotection.js") // get the lynch protection code - Function
-  const isShadow = db.get(`isShadow`) // check if the shadow wolf has used their ability - Boolean
+  const isShadow = db.get(`game.isShadow`) // check if the shadow wolf has used their ability - Boolean
   const players = db.get(`players`) // get all the players in an array - Array<Snowflake>
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players in an array - Array<Snowflake>
   let votes = {} // make a key value pair for the votes 

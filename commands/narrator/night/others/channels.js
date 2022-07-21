@@ -9,7 +9,9 @@ module.exports = async client => {
   const banditChat = guild.channels.cache.find(c => c.name === "bandit") // get the bandit chat channel - Object
   const dayChat = guild.channels.cache.find(c => c.name === "day-chat") // get the day chat channel - Object
   const wwChat = guild.channels.cache.find(c => c.name === "werewolves-chat") // get the werewolves chat channel - Object
-  
+
+  if (db.get(`game.isShadow`)) db.delete(`game.isShadow`)
+
   // loop through each player
   players.forEach(async player => {
     

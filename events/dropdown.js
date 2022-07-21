@@ -111,6 +111,7 @@ module.exports = (client) => {
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
+                if (db.get(`game.isShadow`)) return;
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
                     let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
@@ -122,6 +123,7 @@ module.exports = (client) => {
                 db.delete(`votemsgid_${interaction.member.id}`)
             } else {
                 await interaction.deferUpdate()
+                if (db.get(`game.isShadow`)) return;
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
                     let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
