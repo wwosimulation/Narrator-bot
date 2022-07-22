@@ -31,7 +31,7 @@ module.exports = {
                 return await message.channel.send(`${something} Done! I have taken back your ${itemType} potion!`)
             } else {
                 db.delete(`player_${player.id}.target`)
-                return await message.channel.send(`${something} Done! I have taken back your item!`)
+                return await message.channel.send(`${getEmoji(player.itemType, client)} Done! I have taken back your item!`)
             }
         }
 
@@ -47,7 +47,8 @@ module.exports = {
         }
 
         if (player.role === "Forger") {
-            if (player.lastForged <= gamePhase) return await message.channel.send("You have not finished forging your item yet!")
+            if (player.lastForged >= Math.floor(gamePhase/3)+1) return await message.channel.send("You have not finished forging your item yet!")
+            if (player.uses === (3 - (player.givenItems || 0) )) return await message.channel.send("You need to forge an item before you can give it someone!")
             if (player.givenItems === 3) return await message.channel.send("You've already given all your forged items!")
         }
 
@@ -94,6 +95,7 @@ module.exports = {
         }
 
         if (player.role === "Alchemist") {
+            if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot give potions to the President!")
             let itemType = args[1]?.toLowerCase()
             if (!itemType) return await message.channel.send("You need to state if you want to use the black or red potion!")
             if (!["black", "red"].includes(itemType)) return await message.channel.send("Potion not found! Please choose the black or red potion.")
