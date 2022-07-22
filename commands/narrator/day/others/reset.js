@@ -13,6 +13,8 @@ module.exports = async client => {
       db.delete(`player_${player}.target`)
     
     }
+
+    db.delete(`player_${player}.shamanned`)
     
   })
   
