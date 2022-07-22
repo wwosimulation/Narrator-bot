@@ -21,6 +21,7 @@ module.exports = (client) => {
         db.set(`player_${guy.id}.killedOn`, phase.on)
 
         // other code
+        if (attacker === "NARRATOR" || attacker === "SUICIDE") return;
 
     })
 
