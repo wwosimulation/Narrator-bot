@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji, fn } = require("../../config")
+const config = require("../../config")
 
 module.exports = {
     name: "poison",
@@ -7,44 +7,47 @@ module.exports = {
     usage: `${process.env.PREFIX}poison <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name == "priv-witch") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
-            let ability = await db.fetch(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`)
-            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let gamePhase = await db.fetch(`gamePhase`)
-            let night = Math.floor(gamePhase / 3) + 1
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0]) || message.guild.members.cache.find((m) => m.id === args[0])
-            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yeah... let's don't shall we, you will kill them anyway.`)
-            let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-            if (gamePhase % 3 == 0 && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't poison anyone." })
-            if (!args[0]) return message.channel.send("Who are you poisoning? Mention the player.")
-            if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            if (gamePhase % 3 == 0) {
-                if (night == 1) return message.channel.send("You cannot poison someone on night 1. Figure out the roles and then play.")
-            }
-            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
-            if (ability == 1) return message.channel.send("You have already used your ability.")
-            if (db.get(`role_${guy.id}`) == "President") return message.channel.send("You cannot poison the President.")
-            if (sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                if (db.get(`role_${guy.id}`) == "Sect Leader") return message.channel.send("You cannot poison a sect leader being part of the sect.")
-            }
-            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
-            for (let x = 0; x < cupid.length; x++) {
-                let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
-                if (message.author.nickname === couple[0]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not poison your lover!")
-                }
-                if (message.author.nickname === couple[1]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not poison your lover!")
-                }
-            }
-            message.guild.channels.cache.find((c) => c.name === "day-chat").send(`${getEmoji("poison", client)} The Witch poisoned **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
-            guy.roles.add(dead.id)
-            guy.roles.remove(alive.id)
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ability_${dc.chan.id}` : `ability_${message.channel.id}`}`, 1)
+
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`)
+        const daychat = message.guild.channels.cache.find(c => c.name === "day-chat")
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to poison players.")
+        if (!["Sect Hunter"].includes(player.role) && !["Sect Hunter"].includes(player.dreamRole)) return;
+        if (["Sect Hunter"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only poison during the night right? Or are you delusional?")
+        if (db.get(`game.peace`) === Math.floor(gamePhase/3)+1) return await message.channel.send("This is a peaceful night! You cannot poison anyone!")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        if (player.usesK === 0) return await message.channel.send("You already used up your ability!")
+        if (args.length !== 1) return await message.channel.send("You need to select a player to poison!")
+
+        let target = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
+
+        if (!target) return await message.channel.send(`I could not find the player with the query: \`${args[0]}\`!`)
+
+        if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
+
+        if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot poison the President!")
+
+        if (!player.hypnotized) {
+
+            if (db.get(`player_${player.id}`).couple === target)  return await message.channel.send("You cannot poison your own couple!")
+
+            if (player.id === target) return await message.channel.send("You do know that you cannot poison yourself right?")
+
         }
+
+        db.subtract(`player_${player.id}.usesK`, 1)
+
+        let guy = await message.guild.members.fetch(target)
+        let roles = guy.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id)
+        await message.channel.send(`${getEmoji("poison", client)} You have succesfully used your ability!`)
+        await daychat.send(`${getEmoji("poison", client)} The Witch poisoned **${players.indexOf(target)+1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})**!`)
+        await guy.roles.set(roles)
+        client.emit("playerKilled", db.get(`player_${target}`), player)
     },
 }

@@ -3,32 +3,46 @@ const config = require("../../config")
 
 module.exports = {
     name: "revive",
-    description: "Revive a dead player if you are medium.",
+    description: "Revive a player from the dead",
     usage: `${process.env.PREFIX}revive <player>`,
-    aliases: ["rev", "resurrect"],
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name == "priv-medium") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let dc
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
-            let jailed = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
-            if (jailed.permissionsFor(message.author.id).has(["SEND_MESSAGES", "VIEW_CHANNEL"])) return message.channel.send("That player is jailed, you cannot revive them.")
-            let abil = await db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `med_${dc.chan.id}` : `med_${message.channel.id}`}`)
-            if (abil == "yes") return message.channel.send("You have already used your ability.")
-            if (!args[0]) return await message.reply("Who are you reviving? Mention the player.")
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
-            if (!guy) return await message.channel.send("The player is not in game! Mention the correct player number.")
-            if (guy == ownself) return await message.channel.send("You cannot revive yourself.")
-            if (!guy.roles.cache.has(config.ids.dead)) return await message.channel.send("You cannot revive an alive player.")
-            let gamePhase = await db.fetch(`gamePhase`)
-            if (gamePhase % 3 != 0) return await message.channel.send("You can use your ability only at night!")
-            let role = db.get(`role_${guy.id}`)
-            if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Sorcerer" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber") return message.channel.send("You can only revive villagers.")
-            if (guy.roles.cache.has(config.ids.corrupted)) return message.channel.send("You can't revive corruted players!")
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `revive_${dc.chan.id}` : `revive_${message.channel.id}`}`, args[0])
-            message.channel.send("Done")
+
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`)
+        const wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to revive players.")
+        if (!["Medium"].includes(player.role) && !["Medium"].includes(player.dreamRole)) return;
+        if (["Medium"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only revive during the night right? Or are you delusional?")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        if (player.uses === 0) return await message.channel.send("You already used your ability!")
+        if (args.length !== 1) return await message.channel.send("You need to select a player to revive!")
+
+        if (args[0].toLowerCase() === "cancel") {
+            db.delete(`player_${player.id}.target`)
+            await message.channel.send(`${getEmoji("revive", client)} Your action has been canceled!`)
+            return;
         }
+
+        let target = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
+
+        if (!target) return await message.channel.send(`I could not find the player with the query: \`${args[0]}\`!`)
+
+        if (db.get(`player_${target}`).status === "Alive") return await message.channel.send("You need to select a DEAD player!")
+
+        if (db.get(`player_${target}`).team !== "Village") return await message.channel.send("You can only revive players that belong to the Village team!")
+
+        if (db.get(`player_${target}`).corrupted) return await message.channel.send("You cannot revive corrupted players!")
+
+        db.set(`player_${player.id}.target`, target)
+        await message.channel.send(`${getEmoji("sect_hunter", client)} You have decided to hunt **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**!`)
+        
+
     },
 }

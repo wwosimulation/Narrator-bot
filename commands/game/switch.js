@@ -1,28 +1,56 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const config = require("../../config")
 
 module.exports = {
     name: "switch",
-    description: "Mix up a few roles.",
-    usage: `${process.env.PREFIX}switch <player1> <player2>`,
+    description: "Switch two players so that their roles are changed!",
+    usage: `${process.env.PREFIX}switch <player> <player2>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name == "priv-naughty-boy") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let abil = db.get(`toy_${message.channel.id}`)
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (abil == "yes") return message.channel.send("You can use the ability only once!")
-            if (args.length != 2) return message.channel.send("You can switch only 2 players.")
-            let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
 
-            let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.id === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1])
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`)
+        const wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-            if (!guy1 || !guy2 || guy1.nickname == message.member.nickname || guy2.nickname == message.member.nickname) message.reply("The player is not in game! Mention the correct player number.")
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
 
-            if (!guy1.roles.cache.has(alive.id) || !guy2.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to switch players.")
+        if (!["Naughty Boy"].includes(player.role) && !["Naughty Boy"].includes(player.dreamRole)) return;
+        if (["Naughty Boy"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only switch during the night right? Or are you delusional?")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        if (player.uses === 0) return await message.channel.send("You already used your ability!")
+        if (args.length !== 2) return await message.channel.send("You need to select two player to switch!")
 
-            message.channel.send(`${getEmoji("switch", client)} You decided to switch **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}**!`)
-            db.set(`switch_${message.channel.id}`, [guy1.nickname, guy2.nickname])
+        if (args[0].toLowerCase() === "cancel") {
+            db.delete(`player_${player.id}.target`)
+            await message.channel.send(`${getEmoji("switch", client)} Your action has been canceled!`)
+            return;
         }
+
+        let target1 = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
+        let target2 = players[Number(args[1])-1] || players.find(p => p === args[1]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[1])
+
+        if (!target1) return await message.channel.send(`I could not find the player with the query: \`${args[0]}\`!`)
+        if (!target2) return await message.channel.send(`I could not find the player with the query: \`${args[1]}\`!`)
+
+        if (db.get(`player_${target1}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
+        if (db.get(`player_${target2}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
+
+        if (db.get(`player_${target1}`).role === "President") return await message.channel.send("You cannot switch the President!")
+        if (db.get(`player_${target2}`).role === "President") return await message.channel.send("You cannot switch the President!")
+
+        if (!player.hypnotized) {
+
+            if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot switch yourself right?")
+
+        }
+
+        db.set(`player_${player.id}.target`, [target1, target2])
+        await message.channel.send(`${getEmoji("switch", client)} You have decided to switch **${players.indexOf(target1)+1} ${db.get(`player_${target1}`).username}** with **${players.indexOf(target2)+1} ${db.get(`player_${target2}`).username}**!`)
+        
+
     },
 }

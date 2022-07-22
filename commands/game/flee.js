@@ -13,12 +13,14 @@ module.exports = {
             if (args[0]) {
                 let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
                 if (guy) {
-                    let role = db.get(`role_${guy.id}`)
-                    db.set(`fled_${guy.id}`, true)
+                    let role = db.get(`player_${guy.id}.role`)
+                    db.set(`player_${guy.id}.fled`, true)
                     let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
                     day.send("**" + guy.nickname + " " + guy.user.username + " (" + role + ")** has fled from the village!")
                     guy.roles.add(ids.dead)
                     guy.roles.remove(ids.alive)
+                    db.set(`player_${guy}.status`, "Dead")
+                    client.emit("playerKilled", db.get(`player_${guy.id}`), "NARRATOR")
                 }
             }
         } else if (message.channel.name.includes("priv") || message.channel.name == "day-chat") {
@@ -36,13 +38,13 @@ module.exports = {
                     if (interaction.user.id !== message.author.id) return interaction.reply({ content: "This is not your flee message. Don't try to trick me!", ephemeral: true })
                     if (interaction.customId === "flee") {
                         interaction.reply("Fleeing...")
-                        db.set(`fled_${message.author.id}`, true)
+                        db.set(`player_${message.author.id}.fled`, true)
                         let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
-                        let role = await db.fetch(`role_${message.author.id}`)
+                        let role = await db.fetch(`player_${message.author.id}.role`)
                         day.send("**" + message.member.nickname + " " + message.author.username + " (" + role + ")** has fled from village!")
                         message.member.roles.add(ids.dead)
                         message.member.roles.remove(ids.alive)
-
+                        db.set(`player_${message.author.id}.status`, "Dead")
                         let warn = await gamewarns.create({ user: message.author.id, reason: "Fled from a game", gamecode: db.get("gameCode") })
                         let embed = {
                             title: `You have received a gamewarn! Case: ${warn.index}`,
@@ -63,6 +65,7 @@ module.exports = {
                         }
                         await players.updateOne({user: message.author.id}, {$inc: {"stats.flee": 1}})
                         client.emit("gamebanned", message.author)
+                        client.emit("playerKilled", db.get(`player_${message.author.id}`), "SUICIDE")
                     } else {
                         interaction.reply("Successfully canceled!")
                     }

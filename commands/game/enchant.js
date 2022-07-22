@@ -3,53 +3,57 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "enchant",
-    description: "Enchant/Disguise a player so that it appears like this player has your role when a seer checks them.",
+    description: "Enchant or disguise a player.",
     usage: `${process.env.PREFIX}enchant <player>`,
-    aliases: ["shaman", "disguise", "delude"],
+    aliases: ["disguise"],
     gameOnly: true,
     run: async (message, args, client) => {
-        let dc
-        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        let gamePhase = db.get(`gamePhase`)
-        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
-        if (message.channel.name == "priv-wolf-shaman") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, that's funny. disguising a wolf shaman as a wolf shaman!`)
-            let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
-            if (!args[0]) return message.channel.send("Who are you enchanting? Mention the player.")
-            let role = await db.fetch(`role_${guy.id}`)
-            let toShaman = role.toLowerCase()
-            if (gamePhase % 3 != 1) return message.channel.send("You can enchant only during the day.")
-            if (!guy || guy == ownself) {
-                return await message.reply("The player is not in game! Mention the correct player number.")
-            } else {
-                if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
-                    return await message.reply(`You can play with alive people only!`)
-                } else {
-                    if (toShaman.includes("wolf")) {
-                        return await message.reply("You can't use your abilities on other werewolves!")
-                    } else {
-                        db.set(`shaman_${message.channel.id}`, args[0])
-                        message.react(getEmoji("shaman", client))
-                    }
-                }
-            }
-        } else if (message.channel.name == "priv-illusionist") {
-            let disguised = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `disguised_${dc.chan.id}` : `disguised_${message.channel.id}`}`) || []
-            if (gamePhase % 3 != 0) return message.channel.send("You can enchant only during the night.")
-            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't disguise anyone." })
-            if (!args[0]) return message.channel.send("Who are you enchanting? Mention the player.")
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Although this would be a great strategy I will have to stop you.`)
-            if (!guy || guy == message.member) return message.reply("Invalid Target!")
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            if (disguised.length > 0) {
-                if (disguised.includes(guy.nickname)) return message.channel.send("You have already disguised this player.")
-            }
-            message.channel.send(`${getEmoji("delude", client)} You decided to disguise **${guy.nickname} ${guy.user.username}**!`)
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDisguise_${dc.chan.id}` : `toDisguise_${message.channel.id}`}`, guy.nickname)
+
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`) || []
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to enchant players.")
+        if (!["Wolf Shaman", "Illusionist"].includes(player.role) && !["Wolf Shaman", "Illusionist"].includes(player.dreamRole)) return;
+        if (["Wolf Shaman", "Illusionist"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (player.role === "Wolf Shaman" && gamePhase % 3 == 0) return await message.channel.send("You do know that you can only enchant during the day right? Or are you delusional?")
+        if (player.role === "Illusionist" && gamePhase % 3 != 0) return await message.channel.send("You do know that you can only disguise during the night right? Or are you delusional?")
+        if (player.role === "Illusionist" && db.get(`game.peace`) === Math.floor(gamePhase/3)+1) return await message.channel.send("This is a peaceful night! You cannot disguise anyone!")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        
+        if (args[0].toLowerCase() === "cancel") {
+            db.delete(`player_${player.id}.target`)
+            return await message.channel.send(`${getEmoji(`${player.role === "Illusionist" ? "delude" : "shaman"}`, client)} Done! That player is no longer under your ${player.role === "Wolf Shaman" ? "enchantment" : "disguise"}!`)
         }
-    },
+
+        if (player.role === "Wolf Shaman" && players.map(p => db.get(`player_${p}`)).filter(p => p.team === "Werewolf" && p.status === "Alive").length === 1) {
+            return await message.channel.send(`You cannot enchant if you are the last wolf alive!`)
+        }
+        
+        let target = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
+
+        if (!target) return await message.channel.send("Player not found!")
+
+        if (db.get(`player_${target}`)?.status !== "Alive") return await message.channel.send(`You need to select an alive player to ${player.role === "Wolf Shaman" ? "enchant" : "disguise"}!`)
+
+        if (player.role === "Wolf Shaman" && db.get(`player_${target}`).team === "Werewolf" && db.get(`player_${target}`).role !== "Werewolf Fan") {
+            return await message.channel.send("You cannot enchant your fellow teammate!")
+        }
+
+        if (!player.hypnotized) {
+
+            if (db.get(`player_${player.id}`).couple === target && player.role === "Illusionist") return await message.channel.send("You cannot disguise your own couple!")
+
+            if (player.id === target) return await message.channel.send(`You do know that you cannot ${player.role === "Wolf Shaman" ? "enchant" : "disguise"} yourself right?`)
+
+        }
+
+        db.set(`player_${player.id}.target`, target)
+
+        message.channel.send(`${getEmoji(`${player.role === "Illusionist" ? "delude" : "shaman"}`, client)} You have decided to ${player.role === "Illusionist" ? "delude" : "enchant"} **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**`)
+
+    }
 }

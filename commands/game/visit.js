@@ -1,32 +1,52 @@
 const db = require("quick.db")
-const { fn, getEmoji } = require("../../config")
+const config = require("../../config")
 
 module.exports = {
     name: "visit",
-    description: "Sleep at someone else's house.",
+    description: "Visit a player.",
     usage: `${process.env.PREFIX}visit <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name === "priv-red-lady") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let dc
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
-            let gamePhase = await db.fetch(`gamePhase`)
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (fn.peaceCheck(message, db) === true && isNight == "yes") return message.channel.send({ content: "We have a peaceful night. You decided to stay at home today." })
-            if (!args[0]) return message.channel.send("Who are you visiting? Mention the player.")
 
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args.join(" ")) || message.guild.members.cache.find((m) => m.user.tag === args.join(" "))
-            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`This just makes the red lady look weird.`)
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`)
+        const wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
 
-            if (!guy || guy.id == message.author.id) return message.reply("The player is not in game! Mention the correct player number.")
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to visit players.")
+        if (!["Red Lady"].includes(player.role) && !["Red Lady"].includes(player.dreamRole)) return;
+        if (["Red Lady"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only visit during the night right? Or are you delusional?")
+        if (db.get(`game.peace`) === Math.floor(gamePhase/3)+1) return await message.channel.send("This is a peaceful night! You cannot visit anyone!")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        if (args.length !== 1) return await message.channel.send("You need to select a player to visit!")
 
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-
-            message.react(getEmoji("visit", client))
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `visit_${dc.chan.id}` : `visit_${message.channel.id}`}`, guy.nickname)
+        if (args[0].toLowerCase() === "cancel") {
+            db.delete(`player_${player.id}.target`)
+            await message.channel.send(`${getEmoji("visit", client)} Your action has been canceled!`)
+            return;
         }
+
+        let target = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
+
+        if (!target) return await message.channel.send(`I could not find the player with the query: \`${args[0]}\`!`)
+
+        if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
+
+        if (!player.hypnotized) {
+
+            if (db.get(`player_${player.id}`).couple === target && ( db.get(`player_${target}`).team !== "Village" && !["Fool", "Headhunter", "Sect Leader", "Zombie"].includes(player.role)))  return await message.channel.send("You cannot visit your own couple if they are known to be evil!")
+
+            if (player.id === target) return await message.channel.send("You do know that you cannot visit yourself right?")
+
+        }
+
+        db.set(`player_${player.id}.target`, target)
+        await message.channel.send(`${getEmoji("visit", client)} You have decided to visit **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**!`)
+        
+
     },
 }

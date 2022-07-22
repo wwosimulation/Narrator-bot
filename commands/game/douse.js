@@ -1,73 +1,63 @@
 const db = require("quick.db")
-const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "douse",
-    description: "Douse players to ignite them later in the game.",
-    usage: `${process.env.PREFIX}douse <player> [player]`,
-    aliases: ["oil"],
+    description: "Douse up to 2 players that can be ignited later on.",
+    usage: `${process.env.PREFIX}douse <player1> [<player2>]`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name != "priv-arsonist") return
-        let doused = await db.fetch(`doused_${message.channel.id}`)
-        let dc
-        let gamePhase = await db.fetch(`gamePhase`)
-        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
-        let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-        let ignited = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `ignitedAt_${dc.chan.id}` : `ignitedAt_${message.channel.id}`}`) || "-1"
-        if (doused == null) {
-            doused = []
-        }
-        if (gamePhase % 3 != 0) {
-            return await message.channel.send("You can douse only in night!")
-        }
-        if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't douse anyone." })
-        if (ignited == Math.floor(gamePhase / 3) + 1) return message.channel.send("You just ignited the players!")
-        if (args.length == 0) {
-            return await message.channel.send("Mention the players to douse with!")
-        } else {
-            let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0])
-            let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
-            if (args.length == 2) {
-                let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1])
-                if (typeof dc !== "undefined" && (guy1.nickname == db.get(`hypnotized_${dc.tempchan}`) || guy2.nickname == db.get(`hypnotized_${dc.tempcham}`))) return message.channel.send(`Yea, this is probably not a good idea...`)
-                if (!guy1 || !guy2 || guy1 == guy2 || guy1 == ownself || guy2 == ownself) {
-                    return await message.channel.send("The player is not in game! Mention the correct player number.")
-                }
-                if (!guy1.roles.cache.has(alive.id) || !guy2.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
-                    return await message.channel.send("You can play with alive people only!")
-                }
-                for (let hhh = 1; hhh < doused.length; hhh++) {
-                    if (doused[hhh] == args[0] || doused[hhh] == args[1]) {
-                        return await message.channel.send("You have already doused that player!")
-                    }
-                }
-                db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`)
+              
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`) || []
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0], args[1]])
-                console.log(db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`))
-                message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username} & ${args[1]} ${guy2.user.username}**!`)
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, Math.floor(gamePhase / 3) + 1)
-            } else if (args.length == 1) {
-                if (!guy1 || guy1 == ownself) {
-                    return await message.channel.send("The player is not in game! Mention the correct player number.")
-                }
-                if (!guy1.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
-                    return await message.channel.send("You can play with alive people only!")
-                }
-                for (let hhh = 1; hhh < doused.length; hhh++) {
-                    if (doused[hhh] == args[0]) {
-                        return await message.channel.send("You have already doused that player!")
-                    }
-                }
-                db.delete(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`)
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toDouse_${dc.chan.id}` : `toDouse_${message.channel.id}`}`, [args[0]])
-                message.channel.send(`${getEmoji("douse", client)} Doused **${args[0]} ${guy1.user.username}**!`)
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `dousedAt_${dc.chan.id}` : `dousedAt_${message.channel.id}`}`, db.get(`nightCount_${message.author.id}`))
-            } else {
-                return await message.channel.send("You cannot douse more than 2 players at a time!")
-            }
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to douse players.")
+        if (!["Arsonist"].includes(player.role) && !["Arsonist"].includes(player.dreamRole)) return;
+        if (["Arsonist"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only douse during the night right? Or are you delusional?")
+        if (db.get(`game.peace`) === Math.floor(gamePhase/3)+1) return await message.channel.send("This is a peaceful night! You cannot douse anyone!")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+
+        if (args[0] === "cancel") {
+            db.delete(`player_${player.id}.target`)
+            return await message.channel.send(`${getEmoji("douse", client)} Your actions have been canceled!`)
         }
+        
+        let target1 = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
+        let target2 = players[Number(args[1])-1] || players.find(p => p === args[1]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[1])
+
+        if (!target1) return await message.channel.send(`I could not find a player with the query: \`${args[0]}\``)
+        if (args.length === 2 && !target2) return await message.channel.send(`I could not find a player with the query: \`${args[1]}\``)
+
+
+        if (db.get(`player_${target1}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to douse!")
+
+        if (db.get(`player_${target1}`)?.role === "President") return await message.channel.send("You cannot douse the President!")
+
+        if (db.get(`player_${target2}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to dous!")
+
+        if (db.get(`player_${target2}`)?.role === "President") return await message.channel.send("You cannot douse the President!")
+
+        if (!player.hypnotized) {
+
+            if ([target1, target2].includes(player.id)) return await message.channel.send("You cannot douse yourself!")
+
+            if ([target1, target2].includes(player.couple)) return await message.channel.send("You cannot douse your own couple!")
+        }
+
+        if (!target2) {
+            db.set(`player_${player.id}.target`, [target1])
+            await message.channel.send(`${getEmoji("douse", client)} You have decided to douse **${players.indexOf(target1)+1} ${db.get(`player_${target1}`).username}**!`)
+        } else {
+            db.set(`player_${player.id}.target`, [target1, target2])
+            await message.channel.send(`${getEmoji("douse", client)} You have decided to douse **${players.indexOf(target1)+1} ${db.get(`player_${target1}`).username}** and **${players.indexOf(target2)+1} ${db.get(`player_${target2}`).username}**!`)
+        }
+
+
+        
+
     },
 }

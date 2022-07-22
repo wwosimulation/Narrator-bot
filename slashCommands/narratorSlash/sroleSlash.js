@@ -1,7 +1,7 @@
 const shuffle = require("shuffle-array")
 const db = require("quick.db")
 const pull = require("array-pull")
-const { getRole, fn, ids } = require("../../config")
+const { getRole, getEmoji, fn, ids } = require("../../config")
 
 module.exports = {
     command: {
@@ -28,16 +28,6 @@ module.exports = {
                 description: "List the roles for the game, separated by spaces.",
                 required: false,
             },
-            // {
-            //     type: "STRING",
-            //     name: "hideondeath",
-            //     description: "Should players roles be hidden on death? (Default: false)",
-            //     required: false,
-            //     choices: [
-            //         { name: "True", value: "true" },
-            //         { name: "False", value: "false" },
-            //     ],
-            // },
             {
                 type: "STRING",
                 name: "hideroles",
@@ -60,53 +50,17 @@ module.exports = {
     },
     server: ["game"],
     run: async (interaction, client) => {
+
+        // ---------- OPTIONS ----------
         let gamemode = interaction.options.getString("gamemode")
         let roles = interaction.options.getString("roles")
-        let hideOnDeath = false
-        //let hideOnDeath = interaction.options.getString("hideondeath") || false
-        let hideRoles = interaction.options.getString("hideroles") || false
-
-        if (hideOnDeath === "true") hideOnDeath = true
-        if (hideRoles === "true") hideOnDeath = true
-        if (hideOnDeath === "false") hideOnDeath = false
-        if (hideRoles === "false") hideOnDeath = false
-
-        console.log(hideOnDeath, hideRoles)
-
+        let hideroles = interaction.options.getString("hideroles")
+        let gamemode = interaction.options.getString("gamemode")
+        
+        // ---------- DISCORD CHANNELS AND ROLES ----------
         let alive = interaction.guild.roles.cache.find((r) => r.name === "Alive")
-        let mininarr = interaction.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let narrator = interaction.guild.roles.cache.find((r) => r.name === "Narrator")
-        let allPlayers = [],
-            roleOptions = [],
-            allChannels = []
-        for (let i = 0; i < alive.members.size; i++) {
-            let guy = interaction.guild.members.cache.find((m) => m.nickname === (i + 1).toString())
-            if (!guy) return interaction.reply(`Player ${i} was not found!`)
-            allPlayers.push(guy.id)
-        }
-        let exists = false
-        let allchan = interaction.guild.channels.cache.filter((c) => c.name.startsWith("priv")).map((x) => x.id)
-        for (let a = 0; a < allchan.length; a++) {
-            let chan = interaction.guild.channels.cache.get(allchan[a])
-            if (chan) {
-                for (let b = 1; b <= alive.members.size; b++) {
-                    let tt = interaction.guild.members.cache.find((m) => m.nickname === b.toString())
-                    if (tt) {
-                        if (chan.permissionsFor(tt).has(["VIEW_CHANNEL"])) {
-                            exists = true
-                        }
-                    }
-                }
-            }
-        }
-        if (exists == true) {
-            interaction.reply("A player has a channel occupied already! Use `+nmanual [player number] [role]` to remove them from their channel!")
-            client.commands.get("playerinfo").run(interaction, [], client)
-            return
-        }
-
-        await interaction.deferReply()
-
+        let mininarr = interaction.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         let revealed = interaction.guild.roles.cache.find((r) => r.name === "Revealed")
         let bot = interaction.guild.roles.cache.find((r) => r.name === "Bots")
         let wwsChat = interaction.guild.channels.cache.find((c) => c.name === "werewolves-chat")
@@ -117,20 +71,12 @@ module.exports = {
         let bandits = interaction.guild.channels.cache.find((c) => c.name === "bandits")
         let sl = interaction.guild.channels.cache.find((c) => c.name === `sect-members`)
         let zomb = interaction.guild.channels.cache.find((c) => c.name === "zombies")
-        let excludes = db.get("excludes") || []
 
-        let usedChannels = []
-        db.set(`usedChannels`, usedChannels)
-
-        let args = roles ? roles.split(" ") : []
-        args.forEach((arg) => {
-            args[args.indexOf(arg)] = arg.toLowerCase()
-        })
-        if (args.length != alive.members.size && gamemode == "custom") {
-            return interaction.editReply("The number of roles do not match the number of players!")
-        }
-
+        // ---------- GAME RELATED ----------
         let rolelist = []
+        let players = []
+        let excludes = db.get("excludes") || []
+        let banned = ["Bandit", "Accomplice", "Sect Leader", "Grave Robber", "Astral Wolf", "Split Wolf", "Preacher", "Wolf Trickser", "Ghost Lady", "Evil Detective"]
         let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
         let random = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "cupid", "cursed", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "president", "detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer", "alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman", "sorcerer", "alchemist", "arsonist", "bomber", "cannibal", "corruptor", "illusionist", "serial-killer", "zombie", "fool", "headhunter"]
         let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "forger"]
@@ -152,36 +98,47 @@ module.exports = {
         let docbg = ["doctor", "bodyguard"]
         let gunnermarks = ["gunner", "marksman"]
         let cupidgr = ["cupid"] //, "grave-robber"]
-        let banned = ["Bandit", "Accomplice", "Sect Leader", "Grave Robber", "Astral Wolf", "Split Wolf", "Preacher", "Wolf Trickser", "Ghost Lady", "Evil Detective"]
+        
 
-        random = shuffle(random)
-        rrv = shuffle(rrv)
-        rsv = shuffle(rsv)
-        rww = shuffle(rww)
-        rk = shuffle(rk)
-        rv = shuffle(rv)
+        // get all the channels
+        let channels = interaction.guild.channels.cache.filter(c => c.name.startsWith("priv-") && c.parentId === "892046231516368906")
+        if (channels) return interaction.reply(`${getEmoji("error", client)} Please delete the following channels, and use this command again\n\nChannels to delete: ${channels.map(c => `<@${c.id}>`).join("\n")}`)
 
-        banned.forEach((role) => {
-            role = role.toLowerCase().replace(/ /g, "-")
-            random = pull(random, role)
-            rrv = pull(rrv, role)
-            rsv = pull(rsv, role)
-            rww = pull(rww, role)
-            rk = pull(rk, role)
-            rv = pull(rv, role)
+        // check if mode is custom AND includes invalid roles
+        if (gamemode === "custom") {
+            let customRoles = roles.split(" ")
+            if (customRoles.length !== alive.members.cache.size) return interaction.reply(`${getEmoji("error", client)} The number of roles do not match the number of players in game!`)
+
+            customRoles.forEach(role => {
+                let roleData = getRole(role)
+                if (!roleData || roleData.name === "Unknown Role") return interaction.reply(`${getEmoji("error", client)} Role \`${role}\` could not be found!`)
+                if (!roleData.description) return interaction.reply(`${getEmoji("error", client)} The description for the \`${roleData.name}\` role is missing!`)
+                if (banned.includes(roleData.name)) return interaction.reply(`The ${roleData.name} role is currently not available`)        
+            })
+        }
+
+        await interaction.deferReply()
+
+        // loop through each player and set their correct nickname
+        alive.members.cache.sort((a, b) => Number(b.nickname) - Number(a.nickname)).map(a => a.id).forEach((player, i) => {
+            if (player.nickname !== i+1) player.setNickname(`${i+1}`)
+            players.push(player.id)
+            db.set(`player_${player}`, { id: player.id, username: player.user.username })
         })
+
+        db.set(`players`, players)
 
         if (gamemode == "ranked") excludes = ["grave-robber", "villager", "mayor", "pacifist", "seer-apprentice", "werewolf", "kitten-wolf", "wolf-pacifist"]
-        excludes.forEach((role) => {
-            random = pull(random, role)
-            rrv = pull(rrv, role)
-            rsv = pull(rsv, role)
-            rww = pull(rww, role)
-            rk = pull(rk, role)
-            rv = pull(rv, role)
-        })
+        
+        random = pull(random, ...excludes, ...banned)
+        rrv = pull(rrv, ...excludes, ...banned)
+        rsv = pull(rsv, ...excludes, ...banned)
+        rww = pull(rww, ...excludes, ...banned)
+        rk = pull(rk, ...excludes, ...banned)
+        rv = pull(rv, ...excludes, ...banned)
 
-        // Set roleOptions to an array containing arrays of possible rolelists
+        let roleoptions = []
+
         if (gamemode == "quick") {
             alphashaman = shuffle(alphashaman)
             foolhh = shuffle(foolhh)
@@ -237,269 +194,102 @@ module.exports = {
             roleOptions.push(args)
         }
 
-        shuffle(roleOptions) // shuffle and use the first roleList
-        console.log(roleOptions[0])
-        let dcMessage = [],
-            allWolves = []
+        shuffle(roleOptions)
+        rolelist = roleOptions[0].splice(0, db.get(`players`).length)
 
-        finalRoleList = roleOptions[0].splice(0, alive.members.size)
-        let cancel = false
-        let showrole = []
-        let errorReply = ""
-        finalRoleList.forEach((x, i) => {
-            let adddc = false
-            if (x == "rk") {
+        rolelist.forEach(role => {
+            if (role == "rk") {
                 shuffle(rk)
-                x = rk[0]
-                finalRoleList[i] = x
-                dcMessage.push(`${fn.emote(`Random Killer`, client)} Random Killer`)
-            } else if (x == "rrv") {
+                role = rk[0]
+                rolelelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Killer`, client)} Random Killer`)
+            } else if (role == "rrv") {
                 shuffle(rrv)
-                x = rrv[0]
-                finalRoleList[i] = x
-                dcMessage.push(`${fn.emote(`Random Regular Villager`, client)} Random Regular Villager`)
-            } else if (x == "rsv") {
+                role = rrv[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Regular Villager`, client)} Random Regular Villager`)
+            } else if (role == "rsv") {
                 shuffle(rsv)
-                x = rsv[0]
-                finalRoleList[i] = x
-                dcMessage.push(`${fn.emote(`Random Strong Villager`, client)} Random Strong Villager`)
-            } else if (x == "rv") {
+                role = rsv[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Strong Villager`, client)} Random Strong Villager`)
+            } else if (role == "rv") {
                 shuffle(rv)
-                x = rv[0]
-                finalRoleList[i] = x
-                dcMessage.push(`${fn.emote(`Random Voting`, client)} Random Voting`)
-            } else if (x == "rww") {
+                role = rv[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Voting`, client)} Random Voting`)
+            } else if (role == "rww") {
                 shuffle(rww)
-                x = rww[0]
-                finalRoleList[i] = x
-                dcMessage.push(`${fn.emote(`Random Werewolf`, client)} Random Werewolf`)
-            } else if (x == "random") {
+                role = rww[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random Werewolf`, client)} Random Werewolf`)
+            } else if (role == "random") {
                 shuffle(random)
-                x = random[0]
-                finalRoleList[i] = x
-                dcMessage.push(`${fn.emote(`Random`, client)} Random`)
+                role = random[0]
+                rolelist[i] = role
+                dcMessage.push(`${getEmoji(`Random`, client)} Random`)
             } else {
-                adddc = true
+                dcMessage.push(`${getEmoji(getRole(role).name, client)} ${getRole(role).name}`)
             }
-            console.log(x)
-            let role = getRole(x)
-            if (!role || role.name == "Unknown Role") {
-                cancel = true
-                return (errorReply += `\nUnable to find the ${x} role!`)
-            }
-            if (!role.description) {
-                cancel = true
-                return (errorReply += `\nThe information for the ${x} role is missing! Please report this using \`/bug\``)
-            }
-            if (banned.includes(role.name)) {
-                cancel = true
-                return (errorReply += `\nThe ${role.name} role is currently not available`)
-            }
-            if (adddc) dcMessage.push(`${fn.emote(`${role.name}`, client)} ${role.name}`)
         })
-        if (cancel) return interaction.editReply(errorReply + "\nsrole canceled")
-        shuffle(finalRoleList)
-        let sorcChats = []
-        for (let k = 0; k < alive.members.size; k++) {
-            let theirRole = finalRoleList[k]
-            let role = getRole(theirRole)
-            rolelist.push(theirRole)
-            let guy = interaction.guild.members.cache.find((x) => x.nickname == `${k + 1}`)
-            db.delete(`fled_${guy.id}`)
-            let lol = await interaction.guild.channels.create(`priv-${role.name.replace(" ", "-")}`, {
-                parent: "892046231516368906",
-            })
-            lol.permissionOverwrites.create(interaction.guild.id, {
+
+        shuffle(rolelist)
+
+        for (let index = 0 ; index < rolelist.length ; index++) {
+            let role = rolelist[index]
+            let player = db.get(`player`)[index]
+            let roleData = getRole(role)
+            db.set(`player_${player}.role`, roleData.name)
+            db.set(`player_${player}.team`, roleData.team)
+            db.set(`player_${player}.aura`, roleData.aura || "Unknown")
+            
+            let guy = await interaction.guild.members.fetch(player)
+
+            let channel = await interaction.guild.channels.create(
+                `priv-${roleData.name.toLowerCase().replace(/\s/g, "-")}`, {
+                    parent: "892046231516368906"
+                }
+            )
+
+            db.set(`player_${player}.channel`, channel.id)
+
+            await channel.permissionOverwrites.create(interaction.guild.id, {
                 VIEW_CHANNEL: false,
             })
-            lol.permissionOverwrites.create(guy.id, {
+
+            await channel.permissionOverwrites.create(guy.id, {
                 SEND_MESSAGES: true,
                 VIEW_CHANNEL: true,
                 READ_MESSAGE_HISTORY: true,
             })
-            lol.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
 
-            lol.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
+            await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
 
-            allChannels.push(lol)
-            if (role.name.toLowerCase().includes("wolf") && role.name.toLowerCase() !== "werewolf fan") {
-                wwsChat.permissionOverwrites.edit(guy.id, {
-                    SEND_MESSAGES: true,
-                    VIEW_CHANNEL: true,
-                    READ_MESSAGE_HISTORY: true,
-                })
-                wwsVote.permissionOverwrites.edit(guy.id, {
-                    SEND_MESSAGES: false,
-                    VIEW_CHANNEL: true,
-                    READ_MESSAGE_HISTORY: true,
-                })
-                allWolves.push(`**${guy.nickname} ${guy.user.username}** is the ${role.name}!`)
-            }
-            if (role.name == "Sorcerer") {
-                sorcChats.push(lol)
-                allWolves.push(`**${guy.nickname} ${guy.user.username}** is the ${role.name}!`)
-            }
-            if (role.name === "Zombie") {
-                db.set(`bittenAt_${guy.id}`, 0)
-            }
-            if (role.name == "President") {
-                guy.roles.add(revealed)
-                setTimeout(() => {
-                    dayChat.send(`${fn.getEmoji("president", client)} Player **${guy.nickname} ${guy.user.username}** is the **President**!`)
-                }, 15000)
-            }
+            await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
 
-            if (role.name.toLowerCase().includes("zombie")) {
-                zomb.permissionOverwrites.edit(guy.id, {
-                    SEND_MESSAGES: true,
-                    VIEW_CHANNEL: true,
-                    READ_MESSAGE_HISTORY: true,
-                })
-            }
+            await channel.send(`${roleData.description}`)
 
-            if (role.name == "Bandit") {
-                let bandits = interaction.guild.channels.cache.filter((c) => c.name.startsWith("bandits"))
-                let qah = 1
-                bandits.forEach(async (e) => {
-                    let occupied = false
-                    for (let jj = 1; jj < 17; jj++) {
-                        let gyu = interaction.guild.members.cache.find((m) => m.nickname === jj.toString())
-                        if (gyu) {
-                            if (e.permissionsFor(gyu).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                                occupied = true
-                            }
-                        }
-                    }
-                    if (occupied != true) {
-                        e.permissionOverwrites.edit(guy.id, {
-                            SEND_MESSAGES: true,
-                            VIEW_CHANNEL: true,
-                            READ_MESSAGE_HISTORY: true,
-                        })
-                    }
-                    if (occupied == true) {
-                        if (qah == bandits.map((x) => x.id).length) {
-                            let t = await interaction.guild.channels.create("bandits", {
-                                parent: "892046231516368906",
-                            })
-                            t.permissionOverwrites.create(guy.id, {
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                READ_MESSAGE_HISTORY: true,
-                            })
-                            t.permissionOverwrites.create(interaction.guild.id, {
-                                VIEW_CHANNEL: false,
-                            })
-                            t.permissionOverwrites.create(narrator.id, {
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                READ_MESSAGE_HISTORY: true,
-                                MANAGE_CHANNELS: true,
-                                MENTION_EVERYONE: true,
-                                ATTACH_FILES: true,
-                            })
-                            t.permissionOverwrites.create(narrator.id, {
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                READ_MESSAGE_HISTORY: true,
-                                MANAGE_CHANNELS: true,
-                                MENTION_EVERYONE: true,
-                                ATTACH_FILES: true,
-                            })
-                            let a = await t.send(`${alive}`)
-                            setTimeout(() => {
-                                a.delete()
-                            }, 3000)
-                        }
-                    }
-                })
-            }
-
-            if (role.name == "Sect Leader") {
-                let sect = interaction.guild.channels.cache.filter((c) => c.name.startsWith("sect-members"))
-                let qah = 1
-                sect.forEach(async (e) => {
-                    let occupied = false
-                    for (let jj = 1; jj < 17; jj++) {
-                        let gyu = interaction.guild.members.cache.find((m) => m.nickname === jj.toString())
-                        if (gyu) {
-                            if (e.permissionsFor(gyu).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) {
-                                occupied = true
-                            }
-                        }
-                    }
-                    if (occupied != true) {
-                        e.permissionOverwrites.edit(guy.id, {
-                            SEND_MESSAGES: true,
-                            VIEW_CHANNEL: true,
-                            READ_MESSAGE_HISTORY: true,
-                        })
-                    }
-                    if (occupied == true) {
-                        if (qah == sect.map((x) => x.id).length) {
-                            let t = await interaction.guild.channels.create("sect-members", {
-                                parent: "892046231516368906",
-                            })
-                            t.permissionOverwrites.create(guy.id, {
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                READ_MESSAGE_HISTORY: true,
-                            })
-                            t.permissionOverwrites.create(interaction.guild.id, {
-                                VIEW_CHANNEL: false,
-                            })
-                            t.permissionOverwrites.create(narrator.id, {
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                READ_MESSAGE_HISTORY: true,
-                                MANAGE_CHANNELS: true,
-                                MENTION_EVERYONE: true,
-                                ATTACH_FILES: true,
-                            })
-                            t.permissionOverwrites.create(narrator.id, {
-                                SEND_MESSAGES: true,
-                                VIEW_CHANNEL: true,
-                                READ_MESSAGE_HISTORY: true,
-                                MANAGE_CHANNELS: true,
-                                MENTION_EVERYONE: true,
-                                ATTACH_FILES: true,
-                            })
-                            let a = await t.send(`${alive}`)
-                            setTimeout(() => {
-                                a.delete()
-                            }, 3000)
-                        }
-                    }
-                })
-            }
-
-            await lol.send(role.description)
-            await lol.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
-            db.set(`role_${guy.id}`, theirRole)
-
-            db.delete(`atag_${guy.id}`)
-            db.delete(`jwwtag_${guy.id}`)
-            db.delete(`mouth_${guy.id}`)
+            await channel.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
+            
         }
 
-        if (allWolves.length > 0) {
-            wwsChat.send(allWolves.join("\n"))
-            sorcChats.forEach((x) => x.send(allWolves.join("\n")))
-        }
+        client.commands.get("playerinfo").run(interaction, args, client)
+
+        interaction.editReply("If everything looks correct, use `+startgame` to start the game!")
+ 
+        db.set(`gamePhase`, -1)
+
+        db.set(`gamemode`, gamemode)
 
         let roleMsg = `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes.size > 0 ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`
+
         if (hideRoles) roleMsg = "Role list is hidden"
+
+        await dayChat.permissionOverwrites.edit(alive.id, { SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, VIEW_CHANNEL: true })
+
         let dcSent = await dayChat.send(roleMsg)
-        dcSent.pin()
-        console.log(roleMsg)
-        dayChat.permissionOverwrites.edit(alive, {
-            SEND_MESSAGES: false,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-        })
-        client.commands.get("playerinfo").run(interaction, args, client)
-        interaction.editReply("If everything looks correct, use `+startgame` to start the game!")
-        db.set(`gamePhase`, -1)
-        db.set(`gamemode`, gamemode)
-    },
+
+        await dcSent.pin()        
+
+    }
 }

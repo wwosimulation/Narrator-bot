@@ -2,7 +2,7 @@ const { MessageSelectMenu, MessageActionRow } = require("discord.js")
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
 const leaderboard = require("../commands/economy/leaderboard")
-const { shop, ids, fn } = require("../config")
+const { shop, ids, fn, getEmoji } = require("../config")
 
 const emojis = ["🍬", "🍭", "🍫"]
 const { players } = require("../db")
@@ -28,48 +28,52 @@ module.exports = (client) => {
         }
 
         if (interaction.customId.startsWith("pumpkinking")) {
-            //if (!interaction.member.roles.cache.has(ids.alive) && !interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: "Only players can give candy!", ephemeral: true })
+            const allPlayers = db.get(`players`)
             let args = interaction.values[0].split("-")
-            console.log(args, interaction.member.id)
-            let king = args[0] // channel ID of king
+            let king = args[0] // player ID of king
             let action = args[1] // pass:channelID or return
+            let player = db.get(`player_${king}`) // the pumpkin king player object
+            let bucket = player.pk || [] // the bucket
+
             if (action.startsWith("return")) {
-                db.push(`pk_${king}`, interaction.member.id)
-                let users = db.get(`pk_${king}`)
-                let userMap = ""
-                for (let i = 1; i <= 16; i++) {
-                    let x = interaction.guild.members.cache.find((x) => x.nickname == `${i}`)
-                    if (x) {
-                        let didGive = users.includes(x.id)
-                        userMap += `${didGive ? "+" : "-"} ${x.nickname} (${x.user.tag})\n`
-                    }
-                }
-                interaction.guild.channels.cache.get(king).send({ content: `Your candy basket has returned! ${users.length}/${interaction.guild.members.cache.filter((x) => x.roles.cache.has(ids.alive)).size} players gave candy:\n\`\`\`diff\n${userMap}\`\`\`\nBe sure to ask the narrator of the game to give each player marked with a \`+\` 5 coins.` })
-                interaction.message.edit({ components: [], content: interaction.message.content })
                 interaction.reply("You have returned the candy bucket!")
+
+                bucket.push(interaction.member.id)
+                db.set(`player_${king}.pk`, bucket)                
+
+                interaction.guild.channels.cache.get(player.channel).send({ content: `Your candy basket has returned! ${bucket.length}/${allPlayers.length} players gave candy:\n\`\`\`diff\n${bucket.map(p => `+ ${allPlayers.indexOf(p)+1} ${db.get(`player_${p}`).username}`).join("\n")}\`\`\`\nBe sure to ask the narrator of the game to give each player above 5 coins.` })
+
+                interaction.message.edit({ components: [], content: interaction.message.content })
             }
+
             if (action.startsWith("pass")) {
+
                 let passTo = action.split(":")[1]
                 let droppy = { type: 3, custom_id: "pumpkinking", options: [] }
-                if (passTo == interaction.channel.id) return interaction.reply("Don't be greedy and pass to yourself >:(")
-                db.push(`pk_${king}`, interaction.member.id)
+
+                if (passTo == interaction.channel.id) return interaction.reply("You cannot pass the bucket to yourself! Imagine being greedy lmao.")
+
+                bucket.push(interaction.member.id)
+                db.set(`player_${king}.pk`, bucket)
+
                 droppy.options.push({ label: `Return`, value: `${king}-return`, description: `Return the bucket`, emoji: "🎃" })
-                for (let i = 1; i <= 16; i++) {
-                    let player = interaction.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(ids.alive))
-                    let chan = interaction.guild.channels.cache.filter((c) => c.name.startsWith(`priv-`)).map((x) => x.id)
-                    for (let j = 0; j < chan.length; j++) {
-                        let tempchan = interaction.guild.channels.cache.get(chan[j])
-                        if (player && tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            if (!db.get(`pk_${king}`).includes(player.id)) {
-                                shuffle(emojis)
-                                droppy.options.push({ label: `${i}`, value: `${king}-pass:${tempchan.id}`, description: `Pass the bucket to ${player.user.tag}`, emoji: { name: emojis[0] } })
-                            }
-                        }
+
+                let deadPlayers = allPlayers.filter(p => db.get(`player_${p}`).status === "Dead").map(p => db.get(`player_${p}`))
+                deadPlayers.forEach(p => {
+                    if (!bucket.includes(p.id)) {
+                        shuffle(emojis)
+                        droppy.options.push({ label: `${allPlayers.indexOf(p)+1}`, value: `${king}-pass:${p.channel}`, description: `Pass the bucket to ${p.username}`, emoji: { name: emojis[0] } })
                     }
-                }
+                    
+                })
+
                 let row = { type: 1, components: [droppy] }
-                interaction.guild.channels.cache.get(passTo).send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking", client)}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
+
+                interaction.guild.channels.cache.get(passTo).send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+                interaction.guild.channels.cache.get(passTo).send({ content: `${getEmoji("pumpkinking", client)} You have been passed the candy bucket from the Pumpkin King! ${getEmoji("pumpkinking", client)}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
+
                 interaction.message.edit({ components: [], content: interaction.message.content })
+
                 interaction.reply("You have passed on the candy bucket!")
             }
         }
@@ -107,6 +111,7 @@ module.exports = (client) => {
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
+                if (db.get(`game.isShadow`)) return;
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
                     let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
@@ -118,6 +123,7 @@ module.exports = (client) => {
                 db.delete(`votemsgid_${interaction.member.id}`)
             } else {
                 await interaction.deferUpdate()
+                if (db.get(`game.isShadow`)) return;
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
                     let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))

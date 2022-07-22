@@ -1,23 +1,31 @@
-const db = require("quick.db")
+
 const config = require("../../config")
 
 module.exports = {
     name: "resign",
-    description: "Put down your seer skills and be a normal wolf.",
+    description: "Resign from using your ability!",
     usage: `${process.env.PREFIX}resign`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name == "priv-wolf-seer") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let dc
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = config.fn.dcActions(message, db, alive)
-            let resigned = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `resigned_${dc.chan.id}` : `resigned_${message.channel.id}`}`)
-            let gamePhase = db.get(`gamePhase`)
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
-            if (resigned == true) return message.channel.send("You have already used your ability!")
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `resigned_${dc.chan.id}` : `resigned_${message.channel.id}`}`, true)
-            message.guild.channels.cache.find((c) => c.name === "werewolves-chat").send("The Wolf Seer resigned from their ability! They can now vote with the werewolves!")
-        }
+
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`)
+        const wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to resign.")
+        if (!["Wolf Seer"].includes(player.role) && !["Wolf Seer"].includes(player.dreamRole)) return;
+        if (["Wolf Seer"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        if (player.resign === true) return await message.channel.send("You already resigned from checking, so what actually are you trying to resign from?")
+        
+        db.set(`player_${player.id}.resign`, true)
+        await message.channel.send(`${getEmoji("wolf_seer", client)} You have decided to resign from checking!`)
+        await wwchat.send(`${getEmoji("wolf_seer", client)} **${players.indexOf(player.id)+1} ${player.username} (${getEmoji("wolf_seer", client)} ${player.role})** has resigned from checking! They are now able to vote with you.`)
+        
+
     },
 }

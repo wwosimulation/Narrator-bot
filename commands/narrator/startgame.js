@@ -9,44 +9,45 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
+
+        // disable the buttons to avoid others from joining (not for beta tho)
         let mid = db.get("entermsg")
         if (mid && !client.user.username.includes("Beta")) {
             message.guild.channels.cache
                 .find((x) => x.name == "enter-game")
                 .messages.fetch(mid)
                 .then((m) => {
-                    let allc = m.components
-                    let row = allc[0]
-                    let jgbutton = row.components[0]
-                    let specbutton = row.components[1]
-                    let narrbutton = row.components[2]
-                    jgbutton.disabled = true
-                    m.edit({ components: [{ type: 1, components: [jgbutton, specbutton, narrbutton] }] })
+                    let allc = m.components[0]
+                    allc[0].disabled = true
+                    m.edit({ components: [{ type: 1, components: allc }] })
                 })
         }
-        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
 
+        let alive = message.guild.roles.cache.find(r => r.name === "Alive")
+        let dead = message.guild.roles.cache.find(r => r.name === "Dead")
+        let players = db.get(`players`)
+
+        // set the default stuff
         db.set(`gamePhase`, 0)
         db.set(`wwsVote`, "yes")
         db.set(`commandEnabled`, "no")
         db.delete(`kittenWolfConvert`)
 
-        // changing perms for alive in game-lobby
-        message.guild.channels.cache.find((c) => c.name === "game-lobby").send("Game starting in 5 ...")
+        // a function to send a message after a certain time.
+        const startMessage = (time, msg) => {
+            setTimeout(async () => {
+                message.guild.channels.cache.find((c) => c.name === "game-lobby").send(msg)    
+            }, time)
+        }
 
-        setTimeout(async () => {
-            message.guild.channels.cache.find((c) => c.name === "game-lobby").send("4")
-        }, 1000)
-        setTimeout(async () => {
-            message.guild.channels.cache.find((c) => c.name === "game-lobby").send("3")
-        }, 2000)
-        setTimeout(async () => {
-            message.guild.channels.cache.find((c) => c.name === "game-lobby").send("2")
-        }, 3000)
-        setTimeout(async () => {
-            message.guild.channels.cache.find((c) => c.name === "game-lobby").send("1")
-        }, 4000)
+        // send the starting message
+        startMessage(0, "Game starting in 5 ...")
+        startMessage(1000, "4")
+        startMessage(2000, "3")
+        startMessage(3000, "2")
+        startMessage(4000, "1")
+
+        // change the permissions for game-lobby after 5 seconds
         setTimeout(async () => {
             message.guild.channels.cache
                 .find((c) => c.name === "game-lobby")
@@ -57,114 +58,141 @@ module.exports = {
                 })
         }, 5000)
 
-        // changing perms for alive in day-chat
-        message.guild.channels.cache
-            .find((c) => c.name === "day-chat")
-            .permissionOverwrites.edit(alive.id, {
-                SEND_MESSAGES: false,
-                READ_MESSAGE_HISTORY: true,
-                VIEW_CHANNEL: true,
-            })
+        // give all targets for grs
+        let graveRobbers = players.filter(p => db.get(`player_${p}`).role === "Grave Robber")
 
-        let allGr = []
-        let gr = message.guild.channels.cache.filter((c) => c.name === "priv-grave-robber").map((x) => x.id)
-        let grig = 0
-        for (let i = 0; i < gr.length; i++) {
-            for (let a = 1; a <= alive.members.size; a++) {
-                let player = message.guild.members.cache.find((m) => m.nickname === a.toString())
-                let chan = message.guild.channels.cache.get(gr[i])
-                if (chan.permissionsFor(player).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
-                    grig = grig + 1
-                    allGr.push(player.nickname)
+        // loop through each grave robber
+        for (let gr of graveRobbers) {
+             
+            // filter through each player to see if they meet the requirement to be a grave robber's target
+            let eligiblePlayers = players.filter(p => !["Mayor", "Flower Child", "Pacifist", "Cursed", "Jailor", "Marksman", "Cupid", "Medium", "Seer", "Seer Apprentice", "Detective", "President", "Kitten Wolf", "Wolf Pacifist", "Wolf Seer", "Sect Leader", "Zombie", "Bandit", "Headhunter"].includes(db.get(`player_${p}`).role) && p !== gr)
+
+            // if there are no eligible players, tell the narrator and the player that there were no valid targets
+            if (eligiblePlayers.length === 0) {
+                let chan = db.get(`player_${gr}.channel`)
+                await message.channel.send(`Player ${players.indexOf(gr)+1} does not have a valid target!`)
+                await message.guild.channels.cache.get(chan)?.send("You don't have any valid targets to rob! You belong to the Village team.")
+            } else {    
+
+                // there were eligible targets, so set the target.
+                shuffle(eligiblePlayers)
+                db.set(`player_${gr}.target`, eligiblePlayers[0])
+
+                // send the message to the player and the narrator
+                await message.channel.send(`${getEmoji(client, "grave_robber")} Player ${players.indexOf(gr)+1}'s target is ${players.indexOf(eligiblePlayers[0])+1}`)
+                await message.guild.channels.cache.get(chan)?.send(`${getEmoji(client, "grave_robber")} Your target is **${players.indexOf(eligiblePlayers[0])+1} ${message.guild.members.cache.get(eligiblePlayers[0])?.user.username}**`)
+            }
+        }
+
+
+        // give all targets for hh
+        let headhunters = players.filter(p => db.get(`player_${p}`).role === "Headhunter")
+        
+        for (let hh of headhunters) {
+        
+            // filter through each player to see if they meet the requirement to be a headhunter's target
+            let stage1 = players.filter(p => p !== hh && !["Gunner", "Priest", "Mayor", "Vigilante", "Grave Robber", "Cupid", "President", "Cursed"].includes(db.get(`player_${p}`).role))
+            let stage2 = players.filter(p => p !== hh && ["Gunner", "Priest", "Mayor", "Vigilante"].includes(db.get(`player_${p}`).role))
+            let stage3 = players.filter(p => p !== hh && db.get(`player_${p}`).team === "Werewolf")
+            let stage4 = players.filter(p => p !== hh && !["Village", "Werewolf"].includes(db.get(`player_${p}`).team))
+            let stage5 = players.filter(p => p !== hh && db.get(`player_${p}`).role === "Headhunter")
+            let stage6 = players.filter(p => p !== hh && db.get(`player_${p}`).role === "Fool")
+            let obj = { stage1, stage2, stage3, stage4, stage5, stage6 }
+
+            // go through each stage
+            let counter = 1 // set the counter 1
+
+            while (counter <= 6) { // while the counter is below 6, keep looping
+
+                // check if the stage has at least 1 valid player.
+                if (obj[`stage${counter}`].length > 0) { 
+                    let stage = obj[`stage${counter}`] // make a copy of the stage 
+                    counter = 10 // make the counter to 10 so it stops looping
+                    shuffle(stage) // shuffle the players
+                    db.set(`player_${hh}.target`, stage[0]) // set the target
+                    let chan = db.get(`player_${hh}.channel`)
+                    await message.channel.send(`${getEmoji(client, "headhunter")} Player ${players.indexOf(hh)+1}'s target is ${players.indexOf(stage[0])+1}`)
+                    await message.guild.channels.cache.get(chan)?.send(`${getEmoji(client, "headhunter")} Your target is **${players.indexOf(stage[0])+1} ${message.guild.members.cache.get(stage[0])?.user.username}**`)
                 }
+                counter++
+            }
+
+            // if there are no eligible players, tell the narrator and the player that there were no valid targets
+            if (counter < 10) {
+                let chan = db.get(`player_${hh}.channel`)
+                await message.channel.send(`Player ${players.indexOf(hh)+1} does not have a valid target! They are now a villager.`)
+                await message.guild.channels.cache.get(chan)?.send("You don't have any valid targets to lynch! You now belong to the Village team.")
             }
         }
 
-        let ap = []
-        for (let i = 1; i <= alive.members.size; i++) {
-            ap.push(i.toString())
-        }
-
-        shuffle(ap)
-        let newppl = ap
-        for (let x = 0; x < allGr.length; x++) {
-            let thegr = message.guild.members.cache.find((m) => m.nickname === allGr[x])
-            let abc = ap.splice(ap.indexOf(thegr.nickname), 1)
-            console.log(newppl)
-            let guy = message.guild.members.cache.find((m) => m.nickname === ap[Math.floor(Math.random() * ap.length)])
-            let role = db.get(`role_${guy.id}`)
-            do {
-                abc = abc.splice(ap.indexOf(guy.nickname), 1)
-                guy = message.guild.members.cache.find((m) => m.nickname === ap[Math.floor(Math.random() * ap.length)])
-            } while (role === "Mayor" || role === "Flower Child" || role === "Pacifist" || role === "Cursed" || role === "Jailer" || role === "Marksman" || role === "Cupid" || role === "Medium" || role === "Seer" || role === "Seer Apprentice" || role === "Detective" || role === "Kitten Wolf" || role === "Wolf Pacifist" || role === "Wolf Seer" || role === "Sect Leader" || role === "Zombie" || role === "Bandit" || role === "Headhunter")
-            if (guy) {
-                for (let z = 0; z < gr.length; z++) {
-                    let chan = message.guild.channels.cache.get(gr[z])
-                    if (chan.permissionsFor(thegr).has(["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                        z = 99
-                        chan.send(`Your target is **${guy.nickname} ${guy.user.username}**!`)
-                        db.set(`target_${chan.id}`, guy.nickname)
-                    }
-                }
+        // reveal any presidents if there is one
+        let presidents = players.filter(p => db.get(`player_${p}`).role === "President")
+        presidents.forEach(async pres => {
+            if (presidents.length > 1) { // future game mode
+                // code for a future gamemode i have an idea for
+            } else {
+                await message.guild.channels.cache.find(c => c.name === "day-chat")?.send(`${getEmoji(client, "president")} Player **${players.indexOf(pres)+1} ${message.guild.members.cache.get(pres)?.user.username}** is your President`)
             }
-            ap = newppl
-            ap.push(abc)
-        }
+            
+        })
 
-        let allHh = []
+        // give teams their channels
 
-        let hh = message.guild.channels.cache.filter((c) => c.name === "priv-headhunter").map((x) => x.id)
+        // teams
+        let wolves = players.filter(p => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Sorcerer")
+        let zombies = players.filter(p => db.get(`player_${p}`).team === "Zombie")
+        let sects = players.filter(p => db.get(`player_${p}`).team === "Sect")
+        let bandits = players.filter(p => db.get(`player_${p}`).team === "Bandit")
+        let siblings = players.filter(p => db.get(`player_${p}`).role === "Sibling")
+        
+        // get the chats 
+        let wwchat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
+        let zombchat = message.guild.channels.cache.find(c => c.name === "zombies-chat")
+        let sibchat = message.guild.channels.cache.find(c => c.name === "siblings-chat")
 
-        let hhig = 0
-        for (let i = 0; i < hh.length; i++) {
-            for (let a = 1; a <= alive.members.size; a++) {
-                let player = message.guild.members.cache.find((m) => m.nickname === a.toString())
-                let chan = message.guild.channels.cache.get(hh[i])
-                if (chan.permissionsFor(player.id).has(["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "VIEW_CHANNEL"])) {
-                    hhig = hhig + 1
-                    allHh.push(hh[i])
-                }
-            }
-        }
+        // perms
+        wolves.forEach(async wolf => { await wwchat.permissionOverwrites.edit(wolf, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true }) })
+        zombchat.forEach(async zomb => { await wwchat.permissionOverwrites.edit(zomb, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true }) })
+        sibchat.forEach(async sib => { await wwchat.permissionOverwrites.edit(sib, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true }) })
 
-        let allPlayers = []
-        for (let i = 1; i <= alive.members.size; i++) {
-            allPlayers.push(i.toString())
-        }
+        // create channels + perms
+        bandits.forEach(async bandit => {
+            let bchat = await message.guild.channels.create("bandits")
+            await bchat.permissionOverwrites.edit(bandit, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
+            db.set(`player_${bandit}.banditChannel`, bchat.id)
+        })
 
-        shuffle(allPlayers)
+        sects.forEach(async sl => {
+            let schat = await message.guild.channels.create("sect")
+            await schat.permissionOverwrites.edit(sl, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
+            db.set(`player_${sl}.sectChannel`, schat.id)
+        })
 
-        let gotTarget = null
+        // add uses
+        players.forEach(p => {
+            let guy = db.get(`player_${p}`)
+            if (["Gunner", "Marksman", "Fortune Teller", "Nightmare Werewolf"].includes(player.role)) db.set(`player_${p}.uses`, 2)
+            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (player.role === "Forger") db.seyt(`player_${p}.uses`, 3)
+            if (player.role === "Witch") db.set(`player_${p}.usesK`, 1)
+            if (player.role === "Prognosticator") db.set(`player_${p}.usesT`, 1)
+            if (player.role === "Easter Bunny") db.set(`player_${p}.uses`, 4)
+            if (player.role === "Voodoo Werewolf") db.set(`player_${p}.usesM`, 2)
+            if (player.role === "Voodoo Werewolf") db.set(`player_${p}.usesN`, 1)
+            if (guy.role === "Bodyguard") db.set(`player_${p}.lives`, 2)
+            if (guy.role !== "Bodyguard") db.set(`player_${p}.lives`, 1)
+        })
 
-        for (let o = 0; o < hhig; o++) {
-            for (let p = 1; p <= alive.members.size; p++) {
-                let guy = message.guild.members.cache.find((m) => m.nickname === allPlayers[p - 1])
-                let role = db.get(`role_${guy.id}`)
-                if (role == "Villager" || role == "Doctor" || role == "Bodyguard" || role == "Tough Guy" || role == "Jailer" || role == "Red Lady" || role == "Marksman" || role == "Seer" || role == "Aura Seer" || role == "Spirit Seer" || role == "Seer Apprentice" || role == "Detective" || role == "Sheriff" || role == "Medium" || role == "Witch" || role == "Forger" || role == "Avenger" || role == "Beast Hunter" || role == "Loudmouth" || role == "Fortune Teller" || role == "Grumpy Grandma" || role == "Cupid") {
-                    p = 99
-                    shuffle(allPlayers)
-                    gotTarget = true
-                    db.set(`hhtarget_${hh[o]}`, guy.nickname)
-                    message.guild.channels.cache.get(allHh[o]).send(`${getEmoji("headhunter", client)} Your target is **${guy.nickname} ${guy.user.username}**!`)
-                }
-            }
-            if (gotTarget != true) {
-                message.channel.send("I could not find a valid target for the headhunter channel! To assign a new target, do `+sethhtarget [User to be the target] [Headhunter channel id]`\n\nHere is the channel id: " + hh[o])
-            }
-        }
-        for (let x = 1; x <= alive.members.size; x++) {
-            let guy = message.guild.members.cache.find((m) => m.nickname === x.toString())
-            if (guy) {
-                db.delete(`jwwtag_${guy.id}`)
-                db.delete(`mouth_${guy.id}`)
-                db.delete(`atag_${guy.id}`)
-            }
-        }
-        message.channel.send("The game has started! Ping @Alive in #day-chat when you are ready to start Night 1")
+        await message.channel.send("The game has started! Ping @Alive in #day-chat when you are ready to start Night 1")
+
         await client.channels.cache.find((c) => c.id === "606123818305585167").send("Game is starting. You can no longer join. Feel free to spectate!")
+
         let gamemode = db.get(`gamemode`)
-        message.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
+
+        await message.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
+
         db.set("started", "yes")
         db.delete(`gamemode`)
-    },
+
+    }
 }

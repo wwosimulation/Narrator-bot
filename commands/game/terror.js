@@ -1,26 +1,51 @@
 const db = require("quick.db")
+const config = require("../../config")
 
 module.exports = {
     name: "terror",
-    description: "Prevent somebody from voting. This will affect the player from tomorrow on",
+    description: "Terrorize a player so they can no longer vote",
     usage: `${process.env.PREFIX}terror <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name === "priv-prognosticator") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let ability = db.get(`terror_${message.channel.id}`) || "no"
-            let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            let gamePhase = db.get(`gamePhase`)
-            let dayCount = Math.floor(gamePhase / 3) + 1
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send({ content: "You are dead..." })
-            if (ability !== "no") return message.channel.send({ content: "You already used that ability!" })
-            if (!guy || !guy.roles.cache.has(alive.id)) return message.channel.send({ content: "Invalid target!" })
-            if (gamePhase % 3 == 1 || gamePhase % 3 == 2) {
-                dayChat.send({ content: `**${guy.nickname + " " + guy.user.username || guy}** won't be able to vote anymore from tomorrow on.` })
-                db.set(`terror_${message.channel.id}`, { day: dayCount + 1, guy: guy.nickname })
-                message.channel.send({ content: "The villagers are informed!" })
-            } else return message.channel.send("You can use this command only at days.")
+
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`)
+        const daychat = message.guild.channels.cache.find(c => c.name === "day-chat")
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+
+        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to hunt players.")
+        if (!["Prognosticator"].includes(player.role) && !["Prognosticator"].includes(player.dreamRole)) return;
+        if (["Prognosticator"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 == 0) return await message.channel.send("You do know that you can only terrorize players during the day right? Or are you delusional?")
+        if (player.usesT) return await message.channel.send("You already used up your ability!")
+        if (args.length !== 1) return await message.channel.send("You need to select a player to terrorize!")
+
+        let target = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
+
+        if (!target) return await message.channel.send(`I could not find the player with the query: \`${args[0]}\`!`)
+
+        if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
+
+        if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot terrorize the President!")
+
+        if (db.get(`player_${target}`).terror === true) return await message.channel.send("That player is already terrorized! Select another player.")
+
+        if (!player.hypnotized) {
+
+            if (db.get(`player_${player.id}`).couple === target)  return await message.channel.send("You cannot terrorize your own couple!")
+
+            if (player.id === target) return await message.channel.send("You do know that you cannot terrorize yourself right?")
+
         }
+
+        db.subtract(`player_${player.id}.usesT`, 1)
+        db.set(`player_${target}.terror`, true)
+        db.set(`player_${target}.terrorAt`, Math.floor(gamePhase/3)+2)
+        await message.channel.send(`${getEmoji("terror", client)} You have succesfully activated your ability!`)
+        await daychat.send(`${getEmoji("terror", client)} Player **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}** is now terrorized! They can no longer vote starting tomorrow`)
+        
+
     },
 }
