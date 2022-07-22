@@ -63,7 +63,7 @@ module.exports = {
                             interaction.editReply({ embeds: [embed] })
                             interaction.followUp("Unable to send direct message.")
                         }
-                        await players.updateOne({user: message.author.id}, {$inc: {"stats.flee": 1}})
+                        await players.updateOne({ user: message.author.id }, { $inc: { "stats.flee": 1 } })
                         client.emit("gamebanned", message.author)
                         client.emit("playerKilled", db.get(`player_${message.author.id}`), "SUICIDE")
                     } else {

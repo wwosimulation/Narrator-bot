@@ -9,13 +9,10 @@ function getPhase() {
 }
 
 module.exports = (client) => {
-    
     client.on("playerKilled", async (guy, attacker) => {
-
-        
         const phase = getPhase()
 
-        if (typeof attacker !== "object") return;
+        if (typeof attacker !== "object") return
         db.set(`player_${guy.id}.killedBy`, attacker.id)
         db.set(`player_${guy.id}.killedDuring`, phase.during)
         db.set(`player_${guy.id}.killedOn`, phase.on)
@@ -24,9 +21,6 @@ module.exports = (client) => {
         console.log(`player: ${attacker}`)
 
         // other code
-        if (attacker === "NARRATOR" || attacker === "SUICIDE") return;
-
-
+        if (attacker === "NARRATOR" || attacker === "SUICIDE") return
     })
-
 }

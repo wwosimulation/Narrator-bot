@@ -39,15 +39,14 @@ module.exports = (client) => {
                 interaction.reply("You have returned the candy bucket!")
 
                 bucket.push(interaction.member.id)
-                db.set(`player_${king}.pk`, bucket)                
+                db.set(`player_${king}.pk`, bucket)
 
-                interaction.guild.channels.cache.get(player.channel).send({ content: `Your candy basket has returned! ${bucket.length}/${allPlayers.length} players gave candy:\n\`\`\`diff\n${bucket.map(p => `+ ${allPlayers.indexOf(p)+1} ${db.get(`player_${p}`).username}`).join("\n")}\`\`\`\nBe sure to ask the narrator of the game to give each player above 5 coins.` })
+                interaction.guild.channels.cache.get(player.channel).send({ content: `Your candy basket has returned! ${bucket.length}/${allPlayers.length} players gave candy:\n\`\`\`diff\n${bucket.map((p) => `+ ${allPlayers.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("\n")}\`\`\`\nBe sure to ask the narrator of the game to give each player above 5 coins.` })
 
                 interaction.message.edit({ components: [], content: interaction.message.content })
             }
 
             if (action.startsWith("pass")) {
-
                 let passTo = action.split(":")[1]
                 let droppy = { type: 3, custom_id: "pumpkinking", options: [] }
 
@@ -58,18 +57,17 @@ module.exports = (client) => {
 
                 droppy.options.push({ label: `Return`, value: `${king}-return`, description: `Return the bucket`, emoji: "🎃" })
 
-                let deadPlayers = allPlayers.filter(p => db.get(`player_${p}`).status === "Dead").map(p => db.get(`player_${p}`))
-                deadPlayers.forEach(p => {
+                let deadPlayers = allPlayers.filter((p) => db.get(`player_${p}`).status === "Dead").map((p) => db.get(`player_${p}`))
+                deadPlayers.forEach((p) => {
                     if (!bucket.includes(p.id)) {
                         shuffle(emojis)
-                        droppy.options.push({ label: `${allPlayers.indexOf(p)+1}`, value: `${king}-pass:${p.channel}`, description: `Pass the bucket to ${p.username}`, emoji: { name: emojis[0] } })
+                        droppy.options.push({ label: `${allPlayers.indexOf(p) + 1}`, value: `${king}-pass:${p.channel}`, description: `Pass the bucket to ${p.username}`, emoji: { name: emojis[0] } })
                     }
-                    
                 })
 
                 let row = { type: 1, components: [droppy] }
 
-                interaction.guild.channels.cache.get(passTo).send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+                interaction.guild.channels.cache.get(passTo).send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
                 interaction.guild.channels.cache.get(passTo).send({ content: `${getEmoji("pumpkinking", client)} You have been passed the candy bucket from the Pumpkin King! ${getEmoji("pumpkinking", client)}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
 
                 interaction.message.edit({ components: [], content: interaction.message.content })
@@ -111,7 +109,7 @@ module.exports = (client) => {
             if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
-                if (db.get(`game.isShadow`)) return;
+                if (db.get(`game.isShadow`)) return
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
                     let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
@@ -123,7 +121,7 @@ module.exports = (client) => {
                 db.delete(`votemsgid_${interaction.member.id}`)
             } else {
                 await interaction.deferUpdate()
-                if (db.get(`game.isShadow`)) return;
+                if (db.get(`game.isShadow`)) return
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
                     let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))

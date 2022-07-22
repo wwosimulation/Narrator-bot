@@ -5,7 +5,7 @@ const { players } = require("../../db.js")
 
 module.exports = {
     name: "custom",
-    description:  "Suggest a custom role list. Send the roles one by one!",
+    description: "Suggest a custom role list. Send the roles one by one!",
     usage: `${process.env.PREFIX}custom <role>`,
     gameOnly: true,
     run: async (message, args, client) => {
