@@ -20,8 +20,12 @@ module.exports = (client) => {
         db.set(`player_${guy.id}.killedDuring`, phase.during)
         db.set(`player_${guy.id}.killedOn`, phase.on)
 
+        console.log(`player: ${db.get(`player_${guy.id}`)}`)
+        console.log(`player: ${attacker}`)
+
         // other code
         if (attacker === "NARRATOR" || attacker === "SUICIDE") return;
+
 
     })
 
