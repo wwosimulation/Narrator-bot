@@ -40,7 +40,7 @@ module.exports = {
             let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
             let wwVote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
 
-            db.get(`players`).forEach(async (p) => {
+            db.get(`players`)?.forEach(async (p) => {
                 await wwChat.permissionOverwrites.delete(p)
                 await wwVote.permissionOverwrites.delete(p)
             })
@@ -79,12 +79,12 @@ module.exports = {
                 if (!save.includes(i.ID)) db.delete(i.ID)
             })
             const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
-            await temproles.children.forEach(async (channel) => {
+            await temproles?.children?.forEach(async (channel) => {
                 await channel.delete()
             })
 
             const extras = message.guild.channels.cache.filter((c) => c.name === "sect" || c.name === "bandits")
-            await extras.forEach(async (chan) => {
+            await extras?.forEach(async (chan) => {
                 await chan.delete()
             })
 
