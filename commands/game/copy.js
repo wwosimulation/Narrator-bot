@@ -7,24 +7,23 @@ module.exports = {
     usage: `${process.env.PREFIX}copy <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
-
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`) || []
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-        if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
+        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to copy players.")
-        if (!["Doppelganger"].includes(player.role) && !["Doppelganger"].includes(player.dreamRole)) return;
+        if (!["Doppelganger"].includes(player.role) && !["Doppelganger"].includes(player.dreamRole)) return
         if (["Doppelganger"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
-        if (gamePhase % 3 != 0 || Math.floor(gamePhase / 3)+1 !== 1) return await message.channel.send("You do know that you can only copy during the first night right? Or are you delusional?")
+        if (gamePhase % 3 != 0 || Math.floor(gamePhase / 3) + 1 !== 1) return await message.channel.send("You do know that you can only copy during the first night right? Or are you delusional?")
 
-        if (args[0] === "cancel") {    
+        if (args[0] === "cancel") {
             db.delete(`player_${player.id}.target`)
             return await message.channel.send(`${getEmoji("copy", client)} Your actions have been canceled!`)
         }
-        
-        let target = players[Number(args[0])-1] || players.find(p => p === args[0]) || players.map(p => db.get(`player_${p}`)).find(p => p.username === args[0])
+
+        let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
 
         if (!target) return await message.channel.send("Player not found!")
 
@@ -35,6 +34,5 @@ module.exports = {
         if (player.id === target) return await message.channel.send("You cannot copy yourself!")
 
         db.set(`player_${player.id}.target`, target)
-
-    }
+    },
 }
