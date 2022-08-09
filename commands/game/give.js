@@ -1,123 +1,114 @@
 const db = require("quick.db")
-const { getEmoji, fn, getRole } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "give",
-    description: "Give something to another player. No matter what. A shield, a gift, cards or poisonous drinks!",
-    aliases: ["bread"],
-    usage: `${process.env.PREFIX}give <player | <red | black> player>`,
+    description: "Give something to a player.",
+    usage: `${process.env.PREFIX}give <player> [<option>]`,
+    gameOnly: true,
     run: async (message, args, client) => {
-        let dc
-        if (message.channel.name == "priv-fortune-teller") {
-            let alive = message.guild.roles.cache.find((c) => c.name === "Alive")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (!args[0] || args.length > 1) return message.channel.send("Who you want to give? Mention a player.")
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (typeof dc !== "undefined") if (guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Haha, giving the fortune teller a fortune card! this can't get better.`)
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`) || []
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-            if (!guy || guy == message.member) return message.channel.send("The player is not in game! Mention the correct player number.")
-            if (!guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Player is not alive or you are trying to give a card to yourself!")
-            let cards = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`) || 2
-            if (cards == 2) {
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`, 2)
-            }
-            if (cards < 1) return message.channel.send("You have given your cards already.")
-            let role = db.get(`role_${guy.id}`)
-            console.log()
-            let channel = message.guild.channels.cache.filter((c) => c.name === "priv-" + role.toLowerCase().replace(" ", "-")).map((x) => x.id)
-            for (let i = 0; i < channel.length; i++) {
-                let iChan = message.guild.channels.cache.get(channel[i])
-                if (iChan.permissionsFor(guy).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                    iChan.send(`${getEmoji("moon", client)} You have recieved a card from the Fortune Teller! Do +reveal to use it.`)
-                    db.set(`card_${iChan.id}`, true)
-                }
-            }
-            message.channel.send(`${getEmoji("moon", client)} You gave a card to **${guy.nickname} ${guy.user.username}**`)
-            db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `cards_${dc.chan.id}` : `cards_${message.channel.id}`}`, 1)
-        } else if (message.channel.name == "priv-santa-claus" || message.channel.name == "priv-easter-bunny") {
-            if (db.get(`did_${message.channel.id}`) == db.get("gamePhase")) return message.channel.send("You already used your ability!")
-            let role = getRole(message.channel.name.split("priv-")[1]).name
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")
-            if (!args[0]) return message.channel.send("Please use the command correctly: `+give <player>`" + (role == "Santa Claus" ? " or `+give ho`" : ""))
-            if (args[0] == "ho" && role == "Sante Claus") {
-                message.guild.channels.cache.find((c) => c.name === "day-chat").send("HO HO HO")
+        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to give out items.")
+        if (!["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker"].includes(player.role) && !["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker"].includes(player.dreamRole)) return
+        if (["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only give during the night right? Or are you delusional?")
+        if (player.role === "Alchemist" && db.get(`game.peace`) === Math.floor(gamePhase / 3) + 1) return await message.channel.send("This is a peaceful night! You cannot poison anyone!")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+
+        if (args[0].toLowerCase() === "cancel" && !["Fortune Teller", "Santa Claus", "Easter Bunny"].includes(player.role)) {
+            if (player.role === "Alchemist") {
+                let itemType = args[1]?.toLowerCase()
+                if (!itemType) return await message.channel.send("You need to state if you want to cancel the black or the red potion!")
+                if (!["black", "red"].includes(itemType)) return await message.channel.send("Potion not found! Please choose the black or red potion to cancel.")
+                db.delete(`player_${player.id}.${itemType}Target`)
+                return await message.channel.send(`${something} Done! I have taken back your ${itemType} potion!`)
             } else {
-                if (role.name == "Easter Bunny") {
-                    let left = db.get(`bunny_${message.channel.id}`) || db.set(`bunny_${message.channel.id}, 4`)
-                    if (left == 0) return message.channel.send("You don't have any gifts left.")
-                }
-                let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-                if (!guy || guy.nickname == message.member.nickname) return message.reply("The player is not in game! Mention the correct player number.")
-                if (!guy.roles.cache.has(dead.id)) return message.channel.send("You can't send a gift to an alive player!")
-                if (guy.presence?.status === "offline") return message.channel.send("This player is offline!")
-                guy.send(`You have recieved a gift from ${role}! Find out what you have received!`).catch((e) => message.channel.send(`An error occured: ${e.message}`))
-                db.add(`roses_${guy.id}`, 1)
+                db.delete(`player_${player.id}.target`)
+                return await message.channel.send(`${getEmoji(player.itemType, client)} Done! I have taken back your item!`)
             }
-            db.set(`did_${message.channel.id}`, db.get("gamePhase"))
-            if (role == "Easter Bunny") db.subtract(`bunny_${message.channel.id}, 1`)
-        } else if (message.channel.name == "priv-forger") {
-            let alive = message.guild.roles.cache.find((m) => m.name === "Alive")
-            let gamePhase = db.get(`gamePhase`)
-            let night = Math.floor(gamePhase / 3) + 1
-            let forged = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forged_${dc.chan.id}` : `forged_${message.channel.id}`}`)
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.user.username === args.join(" ")) || message.guild.members.cache.find((m) => m.user.tag === args.join(" "))
+        }
 
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (gamePhase % 3 != 0) return message.channel.send("You can use your ability only at night!")
-            if (!args[0]) return message.channel.send("Who are you giving? Mention the player.")
-            if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
-            if (typeof dc === "undefined" && guy.id == message.author.id) return message.channel.send("I dont get why I am not allowed to give the forger a shield/sword. What's the problem?")
-            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`I dont get why I am not allowed to give the forger a shield/sword. What's the problem?`)
+        if (player.role === "Santa Claus" && args[0].toLowerCase().startsWith("ho")) {
+            let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
+            await dayChat.send(`${getEmoji("santahoho", client)} HO HO HO`)
+            db.subtract(`player_${player.id}.uses`, 1)
+            return
+        }
 
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
+        if (player.role === "Fortune Teller") {
+            if (player.uses === 0) return await message.channel.send("You have already used up all your abilites!")
+        }
 
-            if (forged < 0) return message.channel.send("You have already used your ability.")
-            if (db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forging_${dc.chan.id}` : `forging_${message.channel.id}`}`) == Math.floor(gamePhase / 3) + 1) return message.channel.send("You cannot give the item now!")
+        if (player.role === "Forger") {
+            if (player.forgedAt >= Math.floor(gamePhase / 3) + 1) return await message.channel.send("You have not finished forging your item yet!")
+            if (player.uses !== 3 - (player.givenItems || 0)) return await message.channel.send("You need to forge an item before you can give it someone!")
+            if (player.givenItems === 3) return await message.channel.send("You've already given all your forged items!")
+        }
 
-            if (forged == 2 || forged == 1) {
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toGiveS_${dc.chan.id}` : `toGiveS_${message.channel.id}`}`, guy.nickname)
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `given_${dc.chan.id}` : `given_${message.channel.id}`}`, true)
-                message.channel.send(`${fn.getEmoji("getshield", client)} You have decided to give the shield to **${guy.nickname} ${guy.user.username}**!`)
-            } else {
-                db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `forged_${dc.chan.id}` : `forged_${message.channel.id}`}}`, 1)
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `toGiveK_${dc.tempguy.id}` : `toGiveK_${message.author.id}`}}`, guy.nickname)
-                message.channel.send(`${fn.getEmoji("getsword", client)} You have decided to give the sword to  **${guy.nickname} ${guy.user.username}**!`)
+        let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
+
+        if (!target) return await message.channel.send("Player not found!")
+
+        if (["Santa Claus", "Easter Bunny"].includes(player.role)) {
+            if (db.get(`player_${target}`)?.status === "Alive") return await message.channel.send(`You need to select a dead but connected player to give your gift!`)
+        } else {
+            if (db.get(`player_${target}`)?.status !== "Alive") return await message.channel.send(`You need to select an alive player to give!`)
+        }
+
+        if (!player.hypnotized) {
+            if (player.role === "Alchemist" && db.get(`player_${player.id}`).couple === target) return await message.channel.send("You cannot give your potion to your couple!")
+
+            if (player.id === target) return await message.channel.send(`You do know that you cannot your own items to yourself?`)
+        }
+
+        if (player.role === "Fotune Teller") {
+            let channel = message.guild.channels.cache.get(db.get(`player_${target}`))
+            let embed = {
+                title: "You have received a fortune teller's card.",
+                description: `${getEmoji("moon", client)} You have received a card from the Fortune Teller. When you're ready, use the button below to reveal yourself!`,
+                color: 0xff5f1f, // neon orange
+                thumbnail: { url: getEmoji("moon", client).url },
             }
-        } else if (message.channel.name == "priv-alchemist") {
-            let gamePhase = db.get(`gamePhase`)
-            if (gamePhase % 3 != 0) return message.channel.send("You can only do this at night!")
-            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't give potions to anyone." })
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1]) || message.guild.members.cache.find((m) => m.id === args[1])
-            if (typeof dc !== "undefined") if (guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Nope, you will not force the alchemist to give themselves a potion.`)
-            if (args.length != 2) return message.channel.send("Who are you giving? Mention the player.")
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            if (!guy || guy == message.member) return message.reply("The player is not in game! Mention the correct player number.")
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-            if (!["red", "black"].includes(args[0].toLowerCase())) return message.channel.send("Which potion you are giving? Those are either `red` or `black`.")
-            if (args[0].toLowerCase() == "red") {
-                if (db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `blackpotion_${dc.chan.id}` : `blackpotion_${message.channel.id}`}`) == guy.nickname) return message.channel.send({ content: "You can't give two potions to one player!" })
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `redpotion_${dc.chan.id}` : `redpotion_${message.channel.id}`}`, guy.nickname)
-                message.react(fn.getEmoji("redp", client))
-            } else if (args[0].toLowerCase() == "black") {
-                if (db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `redpotion_${dc.chan.id}` : `redpotion_${message.channel.id}`}`) == guy.nickname) return message.channel.send({ content: "You can't give two potions to one player!" })
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `blackpotion_${dc.chan.id}` : `blackpotion_${message.channel.id}`}`, guy.nickname)
-                message.react(fn.getEmoji("blackp", client))
-            }
-        } else if (message.channel.name == "priv-baker") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let guy = message.guild.members.cache.find((m) => m.nickname == args[0])
+            let row = { type: 1, components: [{ type: 2, style: 3, label: "Reveal", custom_id: "ft_reveal" }] }
+            db.subtract(`player_${player.id}.uses`, 1)
+            await channel.send({ embeds: [embed], components: [row] })
+            await message.channel.send(`${getEmoji("moon", client)} You have given your card to **${players.indexOf(target)} ${db.get(`player_${target}`).user.username}**.`)
+        }
 
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You tried to share your bread. Sadly nobody saw you and the bread. You are dead.")
-            if (!args[0]) return message.channel.send("Please mention a player. Usage: `+give <player>`")
-            if (!guy || !guy.roles.cache.has(alive.id) || guy == message.member) return message.channel.send("Hmm. I couldn't find this person. Please make sure they are alive, exist and are not you.")
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
+        if (["Santa Claus", "Easter Bunny"].includes(player.role)) {
+            const players = require("../../schemas/players")
+            let channel = message.guild.channels.cache.get(db.get(`player_${target}`))
+            db.subtract(`player_${player.id}.uses`, 1)
+            players.findOneAndUpdate({ user: target }, { $inc: { roses: 1 } }).exec()
+            await channel.send(`You have recieved a gift from ${player.role === "Easter Bunny" ? "the " : ""}${player.role}! Check your profile to see what you got.`)
+            await message.channel.send(`${getEmoji(player.role === "Santa Claus" ? "santagift" : "bunny_greet", client)} You have given **${players.indexOf(target)} ${db.get(`player_${target}`).user.username}** your gift!`)
+        }
 
-            db.set(`bread_${message.channel.id}`, guy.nickname)
-            message.channel.send({ content: `${getEmoji("baker_bread", client)} You gave your bread to **${guy.nickname} ${guy.user.tag}**` })
+        if (player.role === "Alchemist") {
+            if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot give potions to the President!")
+            let itemType = args[1]?.toLowerCase()
+            if (!itemType) return await message.channel.send("You need to state if you want to use the black or red potion!")
+            if (!["black", "red"].includes(itemType)) return await message.channel.send("Potion not found! Please choose the black or red potion.")
+            db.set(`player_${player.id}.${itemType}Target`, target)
+            let additionalMsg = ""
+            if (player.redPotions?.includes(target)) additionalMsg = "Since you are giving this player a second potion, they will die at the end of the following day."
+            await message.channel.send(`${getEmoji(`${itemType}p`, client)} You have given your ${itemType} potion to **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**. ${additionalMsg}`)
+        }
+
+        if (player.role === "Forger") {
+            db.set(`player_${player.id}.target`, target)
+            await message.channel.send(`${getEmoji(`get${player.itemType}`, client)} You have decided to give your forged ${player.itemType} to **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**.`)
+        }
+
+        if (player.role === "Baker") {
+            db.set(`player_${player.id}.target`, target)
+            await message.channel.send(`${getEmoji(`baker_bread`, client)} You have decided to give your bread to **${players.indexOf(target)} ${db.get(`player_${target}`).user.username}**.`)
         }
     },
 }

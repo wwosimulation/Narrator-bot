@@ -3,64 +3,52 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "water",
-    description: "Throw the holy water on the wolfs! They need to DIE!",
+    description: "Spray someone with your water. If they're a wolf, they die, otherwise you die.",
     usage: `${process.env.PREFIX}water <player>`,
-    aliases: ["splash", "spray"],
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name == "priv-priest") {
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let ownself = message.guild.members.cache.find((m) => m.nickname === message.member.nickname)
-            let priest = await db.fetch(`priest_${message.channel.id}`)
-            let gamePhase = await db.fetch(`gamePhase`)
-            let dayCount = Math.floor(gamePhase / 3) + 1
-            let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            if (!guy || guy == ownself) {
-                return await message.reply("The player is not in game! Mention the correct player number.")
-            } else {
-                if (!guy.roles.cache.has(alive.id) || !ownself.roles.cache.has(alive.id)) {
-                    return await message.reply("You can play with alive people only!")
-                } else {
-                    if (priest != null) {
-                        return await message.reply("You have already used your ability!")
-                    } else {
-                        let role = await db.fetch(`role_${guy.id}`)
-                        let toKill = role.toLowerCase()
-                        if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
-                        if (dayCount == 1) {
-                            let cmd = await db.fetch(`commandEnabled`)
-                            if (cmd != "yes") return await message.reply("You can not water before the first voting phase of the game.")
-                        } else {
-                            let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
-                            if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not water the Sect Leader being part of the sect!")
-                            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
-                            for (let x = 0; x < cupid.length; x++) {
-                                let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
-                                if (message.author.nickname === couple[0]) {
-                                    if (!sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not splash your lover!")
-                                }
-                                if (message.author.nickname === couple[1]) {
-                                    if (!sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
-                                }
-                            }
-                        }
-                        db.set(`priest_${message.channel.id}`, 1)
-                        if (toKill.includes("wolf")) {
-                            guy.roles.remove(alive.id)
-                            guy.roles.add(dead.id)
-                            dayChat.send(`${getEmoji("water", client)} **${message.member.nickname} ${message.author.username} (Priest)** has thrown holy water at and killed **${args[0]} ${guy.user.username} (${role})**`)
-                            ownself.roles.add(revealed.id)
-                        } else {
-                            ownself.roles.remove(alive.id)
-                            ownself.roles.add(dead.id)
-                            dayChat.send(`${getEmoji("water", client)} **${message.member.nickname} ${message.author.username} (Priest)** tried to throw holy water on **${args[0]} ${guy.user.username}** and killed themselves! **${args[0]} ${guy.user.username}** is not a werewolf!`)
-                        }
-                    }
-                }
-            }
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`)
+        const daychat = message.guild.channels.cache.find((c) => c.name === "day-chat")
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+
+        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to water players.")
+        if (!["Priest"].includes(player.role) && !["Priest"].includes(player.dreamRole)) return
+        if (["Priest"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 === 0) return await message.channel.send("You do know that you can only water during the day right? Or are you delusional?")
+        if (gamePhase === 1) return await message.channel.send("Unfortunately, you can only water after the discussion phase on day 1!")
+        if (player.uses === 0) return await message.channel.send("You already used up your ability!")
+        if (args.length !== 1) return await message.channel.send("You need to select a player to water!")
+
+        let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
+
+        if (!target) return await message.channel.send(`I could not find the player with the query: \`${args[0]}\`!`)
+
+        if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
+
+        if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot water the President!")
+
+        if (db.get(`player_${player.id}`).couple === target) return await message.channel.send("You cannot water your own couple!")
+
+        if (player.id === target) return await message.channel.send("You do know that you cannot water yourself right?")
+
+        db.subtract(`player_${player.id}.uses`, 1)
+
+        let gameMsg = {
+            wolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("priest", client)} Priest)** has thrown holy water at and killed **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})**`,
+            notWolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("priest", client)} Priest)** tried to throw holy water on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** and killed themselves! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is not a werewolf!`,
         }
+
+        let member = db.get(`player_${target}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${target}`).role) ? target : player.id
+        let guy = await message.guild.members.fetch(member)
+        let roles = guy.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
+
+        await guy.roles.set(roles)
+        await message.channel.send(`${getEmoji("water", client)} You have succesfully used your ability!`)
+        await daychat.send(`${guy.id === target ? gameMsg.wolf : gameMsg.notWolf}`)
+
+        if (guy.id === target) await message.member.roles.add("892046205780131891")
     },
 }

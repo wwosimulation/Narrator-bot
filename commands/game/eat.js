@@ -3,59 +3,70 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "eat",
-    description: "Eat some players. You can only eat as much players as you have hunger (max 5)!",
-    usage: `${process.env.PREFIX}eat <player...>`,
+    description: "Eat players as the Cannibal.",
+    usage: `${process.env.PREFIX}eat <player>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name == "priv-cannibal") {
-            // getting all the variables
-            let gamePhase = db.get(`gamePhase`)
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let dc
-            if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
-            if (args[0] == "cancel") {
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `eat_${dc.chan.id}` : `eat_${message.channel.id}`}`, null)
-                return message.channel.send("Okay, your action has been canceled")
-            }
-            let hunger = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `hunger_${dc.chan.id}` : `hunger_${message.channel.id}`}`) || 1
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send(`You are dead. You cannot use the command now!`)
-            if (gamePhase % 3 != 0 && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't eat anyone." })
-            if (!args[0]) return message.channel.send("Who you are going to eat? Mention the player.")
-            if (hunger < args.length) return message.channel.send("You cannot eat more than your hunger!")
-            if (gamePhase % 3 != 0) return message.channel.send("You cannot eat players during the day!")
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`) || []
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-            for (let i = 0; i < args.length; i++) {
-                let guy = message.guild.members.cache.find((m) => m.nickname === args[i]) || message.guild.members.cache.find((m) => m.id === args[i]) || message.guild.members.cache.find((m) => m.user.username === args[i])
-                if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`So you want to let the cannibal eat themself? What kind of psycho are you?`)
-                message.guild.members.cache.find((m) => m.user.tag === args[i])
-                if (!guy) return message.channel.send(`Player **${args[0]}** could not be found!`)
-                if (!guy.roles.cache.has(alive.id)) return message.channel.send(`Player **${guy.nickname} ${guy.user.username}** is dead!`)
-                if (guy == message.member) return message.channel.send(`Eating yourself isn't just gonna work!`)
-                let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-                let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
-                for (let x = 0; x < cupid.length; x++) {
-                    let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
-                    if (message.author.nickname === couple[0]) {
-                        if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not eat your lover!")
-                    }
-                    if (message.author.nickname === couple[1]) {
-                        if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not eat your lover!")
-                    }
+        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to eat players.")
+        if (!["Cannibal"].includes(player.role) && !["Cannibal"].includes(player.dreamRole)) return
+        if (["Cannibal"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only eat during the night right? Or are you delusional?")
+        if (db.get(`game.peace`) === Math.floor(gamePhase / 3) + 1) return await message.channel.send("This is a peaceful night! You cannot eat anyone!")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+
+        if (args[0] === "cancel") {
+            db.delete(`player_${player.id}.target`)
+            return await message.channel.send(`${getEmoji("corrupt", client)} Your actions have been canceled!`)
+        }
+
+        if (args.length > player.uses) return await message.channel.send(`Hey there! You cannot eat more than you can handle! Currently, you can only eat **${player.uses}** players.`)
+
+        let target = []
+
+        for (const arg of args) {
+            let guy = players[Number(arg) - 1] || players.find((p) => p === arg) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === arg)
+
+            if (!guy) {
+                await message.channel.send(`I could not find the player with the following query: \`${arg}\``)
+                break
+            }
+
+            if (db.get(`player_${guy}`).status !== "Alive") {
+                await message.channel.send("You do know you can only eat ALIVE players right? Remember cannibalism?")
+                break
+            }
+
+            if (db.get(`player_${guy}`).role === "President") {
+                await message.channel.send("You cannot eat the President!")
+                break
+            }
+
+            if (!player.hypnotized) {
+                if (guy === player.id) {
+                    await message.channel.send("You cannot eat yourself!")
+                    break
+                }
+
+                if (guy === player.couple) {
+                    await message.channel.send("You cannot eat your own couple!")
+                    break
                 }
             }
 
-            let lol = []
-            for (let j = 0; j < args.length; j++) {
-                let guy = message.guild.members.cache.find((m) => m.nickname === args[j]) || message.guild.members.cache.find((m) => m.id === args[j]) || message.guild.members.cache.find((m) => m.user.username === args[j])
-                message.guild.members.cache.find((m) => m.user.tag === args[j])
-                lol.push(guy.nickname)
-            }
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `eat_${dc.chan.id}` : `eat_${message.channel.id}`}`, lol)
-            for (let j = 0; j < args.length; j++) {
-                let guy = message.guild.members.cache.find((m) => m.nickname === args[j]) || message.guild.members.cache.find((m) => m.id === args[j]) || message.guild.members.cache.find((m) => m.user.username === args[j])
-                message.guild.members.cache.find((m) => m.user.tag === args[j])
-                message.channel.send(`${getEmoji("eat", client)} You decided to eat **${guy.nickname} ${guy.user.username}**!`)
-            }
+            target.push(guy)
         }
+
+        if (target.length !== args.length) return
+
+        await message.channel.send(`${getEmoji("eat", client)} You have decided to eat **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("**, **")}**!`)
+
+        db.set(`player_${player.id}.target`, target)
     },
 }

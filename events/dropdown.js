@@ -2,7 +2,7 @@ const { MessageSelectMenu, MessageActionRow } = require("discord.js")
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
 const leaderboard = require("../commands/economy/leaderboard")
-const { shop, ids, fn } = require("../config")
+const { shop, ids, fn, getEmoji } = require("../config")
 
 const emojis = ["🍬", "🍭", "🍫"]
 const { players } = require("../db")
@@ -27,84 +27,66 @@ module.exports = (client) => {
             interaction.reply({ content: `Your language has been set to ${interaction.values[0]}!`, ephemeral: true })
         }
 
+        const allPlayers = db.get(`players`)
+
         if (interaction.customId.startsWith("pumpkinking")) {
-            //if (!interaction.member.roles.cache.has(ids.alive) && !interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: "Only players can give candy!", ephemeral: true })
             let args = interaction.values[0].split("-")
-            console.log(args, interaction.member.id)
-            let king = args[0] // channel ID of king
+            let king = args[0] // player ID of king
             let action = args[1] // pass:channelID or return
+            let player = db.get(`player_${king}`) // the pumpkin king player object
+            let bucket = player.pk || [] // the bucket
+
             if (action.startsWith("return")) {
-                db.push(`pk_${king}`, interaction.member.id)
-                let users = db.get(`pk_${king}`)
-                let userMap = ""
-                for (let i = 1; i <= 16; i++) {
-                    let x = interaction.guild.members.cache.find((x) => x.nickname == `${i}`)
-                    if (x) {
-                        let didGive = users.includes(x.id)
-                        userMap += `${didGive ? "+" : "-"} ${x.nickname} (${x.user.tag})\n`
-                    }
-                }
-                interaction.guild.channels.cache.get(king).send({ content: `Your candy basket has returned! ${users.length}/${interaction.guild.members.cache.filter((x) => x.roles.cache.has(ids.alive)).size} players gave candy:\n\`\`\`diff\n${userMap}\`\`\`\nBe sure to ask the narrator of the game to give each player marked with a \`+\` 5 coins.` })
-                interaction.message.edit({ components: [], content: interaction.message.content })
                 interaction.reply("You have returned the candy bucket!")
+
+                bucket.push(interaction.member.id)
+                db.set(`player_${king}.pk`, bucket)
+
+                interaction.guild.channels.cache.get(player.channel).send({ content: `Your candy basket has returned! ${bucket.length}/${allPlayers.length} players gave candy:\n\`\`\`diff\n${bucket.map((p) => `+ ${allPlayers.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("\n")}\`\`\`\nBe sure to ask the narrator of the game to give each player above 5 coins.` })
+
+                interaction.message.edit({ components: [], content: interaction.message.content })
             }
+
             if (action.startsWith("pass")) {
                 let passTo = action.split(":")[1]
                 let droppy = { type: 3, custom_id: "pumpkinking", options: [] }
-                if (passTo == interaction.channel.id) return interaction.reply("Don't be greedy and pass to yourself >:(")
-                db.push(`pk_${king}`, interaction.member.id)
+
+                if (passTo == interaction.channel.id) return interaction.reply("You cannot pass the bucket to yourself! Imagine being greedy lmao.")
+
+                bucket.push(interaction.member.id)
+                db.set(`player_${king}.pk`, bucket)
+
                 droppy.options.push({ label: `Return`, value: `${king}-return`, description: `Return the bucket`, emoji: "🎃" })
-                for (let i = 1; i <= 16; i++) {
-                    let player = interaction.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(ids.alive))
-                    let chan = interaction.guild.channels.cache.filter((c) => c.name.startsWith(`priv-`)).map((x) => x.id)
-                    for (let j = 0; j < chan.length; j++) {
-                        let tempchan = interaction.guild.channels.cache.get(chan[j])
-                        if (player && tempchan.permissionsFor(player).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"])) {
-                            if (!db.get(`pk_${king}`).includes(player.id)) {
-                                shuffle(emojis)
-                                droppy.options.push({ label: `${i}`, value: `${king}-pass:${tempchan.id}`, description: `Pass the bucket to ${player.user.tag}`, emoji: { name: emojis[0] } })
-                            }
-                        }
+
+                let deadPlayers = allPlayers.filter((p) => db.get(`player_${p}`).status === "Dead").map((p) => db.get(`player_${p}`))
+                deadPlayers.forEach((p) => {
+                    if (!bucket.includes(p.id)) {
+                        shuffle(emojis)
+                        droppy.options.push({ label: `${allPlayers.indexOf(p) + 1}`, value: `${king}-pass:${p.channel}`, description: `Pass the bucket to ${p.username}`, emoji: { name: emojis[0] } })
                     }
-                }
+                })
+
                 let row = { type: 1, components: [droppy] }
-                interaction.guild.channels.cache.get(passTo).send({ content: `<@&${ids.alive}>, you have been passed the candy bucket from the Pumpkin King! ${fn.getEmoji("pumpkinking", client)}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
+
+                interaction.guild.channels.cache.get(passTo).send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
+                interaction.guild.channels.cache.get(passTo).send({ content: `${getEmoji("pumpkinking", client)} You have been passed the candy bucket from the Pumpkin King! ${getEmoji("pumpkinking", client)}\nYou may either choose to pass the bucket to another player or return it to the Pumpkin King!`, components: [row] })
+
                 interaction.message.edit({ components: [], content: interaction.message.content })
+
                 interaction.reply("You have passed on the candy bucket!")
             }
         }
 
         if (interaction.customId.startsWith("votephase")) {
             let day = Math.floor(db.get(`gamePhase`) / 3) + 1
-            if (interaction.member.roles.cache.has(ids.dead)) return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
-            if (interaction.member.roles.cache.has(ids.spectator)) return interaction.reply({ content: `You're spectating, you can't vote!`, ephemeral: true })
-            if (terrorCheck(interaction)) return interaction.reply({ content: "The Prognosticator prevents you from voting.", ephemeral: true })
-            let corrs = interaction.guild.channels.cache.filter((c) => c.name === "priv-corruptor").map((corr) => corr.id)
-            for (let corr = 0; corr < corrs.length; corr++) {
-                let corrupted = db.get(`corrupt_${corrs[corr]}`)
-                if (corrupted == interaction.member.displayName) {
-                    return interaction.reply({ content: "You are corrupted! You can't vote today.", ephemeral: true })
-                }
-            }
-            let allpaci = interaction.guild.channels.cache.filter((c) => c.name === "priv-pacifist").map((x) => x.id)
-            for (let x = 0; x < allpaci.length; x++) {
-                let dayactivated = db.get(`pacday_${allpaci[x]}`)
-                if (dayactivated != null && day == dayactivated) {
-                    return interaction.reply({ content: `A pacifist has revealed someone's role you can't vote today.`, ephemeral: true })
-                }
-            }
-
-            // check if channel is not sendable
-            let yourRole = db.get(`role_${interaction.user.id}`) || "None"
-            let allChannels = interaction.guild.channels.cache.filter((c) => c.name === `priv-${yourRole}?.toLowerCase().replace(/\s/g, "-")`)
-            allChannels.forEach((yourChan) => {
-                if (yourChan.permissionsFor(interaction.member.id).has("VIEW_CHANNEL")) {
-                    if (!yourChan.permissionsFor(interaction.member.id).has("SEND_MESSAGES")) {
-                        return interaction.reply({ content: "You are muted! You can't vote today.", ephemeral: true })
-                    }
-                }
-            })
-            if (interaction.values[0].split("-")[1] == interaction.member.nickname) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
+            if (db.get(`player_${interaction.user.id}`)?.role == undefined) return interaction.reply({ content: `You're not playing the game, you can't vote!`, ephemeral: true })
+            if (db.get(`player_${interaction.user.id}`).status !== "Alive") return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
+            if (db.get(`player_${interaction.user.id}`).terror === true && db.get(`player_${interaction.user.id}`).terrorAt === Math.floor(db.get(`gamePhase`) / 3) + 1) return interaction.reply({ content: "The Prognosticator prevents you from voting.", ephemeral: true })
+            if (db.get(`player_${interaction.user.id}`).corrupted === true) return interaction.reply({ content: "You can't vote as a corrupted player!", ephemeral: true })
+            if (db.get(`player_${interaction.user.id}`).muted === true) return interaction.reply({ content: "You cannot vote when muted!", ephemeral: true })
+            if (db.get(`player_${interaction.user.id}`).role === "Idiot" && db.get(`player_${interaction.user.id}`).lynched === true) return interaction.reply({ content: "You lost your ability to vote when you were lynched by the village!", ephemeral: true })
+            if (db.get(`game.noVoting`) === true) return interaction.reply({ content: `A pacifist has revealed someone's role you can't vote today.`, ephemeral: true })
+            if (interaction.values[0].split("-")[1] == allPlayers.indexOf(interaction.user.id) + 1) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
@@ -114,8 +96,10 @@ module.exports = (client) => {
                         await tmestodel.delete()
                     }
                 }
-                db.delete(`vote_${interaction.member.id}`)
+                db.delete(`player_${interaction.member.id}.vote`)
                 db.delete(`votemsgid_${interaction.member.id}`)
+                if (db.get(`game.isShadow`)) return
+                s
             } else {
                 await interaction.deferUpdate()
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
@@ -126,8 +110,10 @@ module.exports = (client) => {
                     }
                 }
 
-                let omg = await interaction.message.channel.send(`${interaction.member.displayName} voted ${interaction.values[0].split("-")[1]}`)
-                db.set(`vote_${interaction.member.id}`, interaction.values[0].split("-")[1])
+                let target = allPlayers[Number(interaction.values[0].split("-")[1]) - 1]
+                db.set(`player_${interaction.member.id}.vote`, target)
+                if (db.get(`game.isShadow`)) return
+                let omg = await interaction.message.channel.send(`${allPlayers.indexOf(interaction.user.id) + 1} ${interaction.user.username} voted ${interaction.values[0].split("-")[1]} ${db.get(`player_${target}`).username}`)
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
         }
@@ -168,6 +154,48 @@ module.exports = (client) => {
             let args = [new_page, arg[1], interaction.channelId, m]
 
             leaderboard.run(message, args, client)
+        }
+        if (interaction.customId.startsWith("wolves-vote")) {
+            let night = Math.floor(db.get(`gamePhase`) / 3) + 1
+            let player = db.get(`player_${interaction.user.id}`) || { status: "Dead" }
+            if (db.get(`gamePhase`) % 3 !== 0) return interaction.reply({ content: `You cannot vote as a wolf during the day!`, ephemeral: true })
+            if (player.status !== "Alive") return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
+            if (db.get(`game.peace`) === Math.floor(db.get(`gamePhase`) / 3) + 1) return interaction.reply({ content: "It's a peaceful night, so you cannot vote to kill anyone tonight!", ephemeral: true })
+            if (player.hypnotized) return interaction.reply({ content: "You are under control by the Dreamcatcher! You cannot do anything.", ephemeral: true })
+
+            if (interaction.values[0].split("-")[1] == "cancel") {
+                await interaction.deferUpdate()
+                let voted = db.get(`wwvotemsgid_${interaction.member.id}`)
+                if (voted) {
+                    let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
+                    if (tmestodel) {
+                        await tmestodel.delete()
+                    }
+                }
+                db.delete(`player_${interaction.member.id}.vote`)
+                db.delete(`wwvotemsgid_${interaction.member.id}`)
+            } else {
+                let targetPlayer = interaction.values[0].split("-")[1]
+                let target = allPlayers[Number(targetPlayer) - 1]
+
+                console.log(`${interaction.user.username} voted ${targetPlayer} ${target}`)
+
+                if (target == player.id) return interaction.reply({ content: `I am 100% sure that you cannot kill yourself.`, ephemeral: true })
+                if (db.get(`player_${target}`).team === "Werewolf" && db.get(`player_${target}`).role !== "Werewolf Fan") return interaction.reply({ content: "I know you want to kill your teammate, but sadly, that's gamethrowing.", ephemeral: true })
+                if (player.role === "Wolf Seer" && !player.resign) return interaction.reply({ content: `As a wolf seer who hasn't resigned yet, you cannot vote. Now shush`, ephemeral: true })
+                await interaction.deferUpdate()
+                let voted = db.get(`wwvotemsgid_${interaction.member.id}`)
+                if (voted) {
+                    let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
+                    if (tmestodel) {
+                        await tmestodel.delete()
+                    }
+                }
+
+                let omg = await interaction.message.channel.send(`${getEmoji("wwvote", client)} **${allPlayers.indexOf(player.id) + 1} ${player.username}** voted **${allPlayers.indexOf(target) + 1} ${db.get(`player_${target}`).username}**`)
+                db.set(`player_${interaction.member.id}.vote`, target)
+                db.set(`wwvotemsgid_${interaction.member.id}`, omg.id)
+            }
         }
     })
 }

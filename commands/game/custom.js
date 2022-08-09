@@ -1,18 +1,20 @@
 const db = require("quick.db")
 const Discord = require("discord.js")
 const config = require("../../config")
+const { players } = require("../../db.js")
 
 module.exports = {
     name: "custom",
-    description: "This command is disabled until further notice. Please be patient till this command works!" /*Suggest a custom role list. Send the roles one by one!*/,
-    usage: `${process.env.PREFIX}custom`,
+    description: "Suggest a custom role list. Send the roles one by one!",
+    usage: `${process.env.PREFIX}custom <role>`,
     gameOnly: true,
     run: async (message, args, client) => {
-        return
+        let guy = await players.findOne({ user: message.author.id })
 
-        if (!db.get(`cmi_${message.author.id}`)) return message.reply("You do not have the Custom Maker Item")
+        if (!guy.cmi) return message.reply("You do not have the Custom Maker Item")
 
         message.channel.send("Please insert 16 roles, one by one!")
+
         let allroles = config.allRoles
 
         let rolesPlayerHas = ["Villager", "Gunner", "Doctor", "Bodyguard", "Seer", "Jailer", "Priest", "Aura Seer", "Medium", "Werewolf", "Alpha Werewolf", "Wolf Shaman", "Wolf Seer", "Fool", "Headhunter", "Serial Killer"]
@@ -27,7 +29,7 @@ module.exports = {
 
         console.log(rolesPlayerHas)
         let filter = (m) => m.author.id == message.author.id && rolesPlayerHas.includes(`${m.content[0].toUpperCase()}${m.content.slice(1).toLowerCase()}`)
-        const collector = message.channel.createMessageCollector(filter, { time: 120000, limit: 16 })
+        const collector = message.channel.createMessageCollector(filter, { time: 120000, limit: db.get(`players`)?.length || 1 })
         db.set(`rolecmitime_${message.author.id}`, true)
 
         collector.on("collect", async (m) => {

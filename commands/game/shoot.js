@@ -1,155 +1,67 @@
 const db = require("quick.db")
 const { getEmoji, fn, ids } = require("../../config")
 
-function canKill(message, guy) {
-    let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-    if (sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") {
-        message.channel.send("You can not shoot the sect leader while you are a sect member!")
-        return false
-    }
-    let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
-    for (let x = 0; x < cupid.length; x++) {
-        let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
-        if (couple.includes(message.member?.nickname)) {
-            if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && couple.includes(guy?.nickname)) {
-                message.channel.send("You can not shoot your lover!")
-                return false
-            }
-        }
-    }
-    if (db.get(`role_${guy.id}`) == "President") {
-        message.channel.send("You cannot shoot the President.")
-        return false
-    }
-    return true
-}
-
 module.exports = {
     name: "shoot",
     description: "Kill a player with your weapons!",
     usage: `${process.env.PREFIX}shoot [player]`,
     gameOnly: true,
     run: async (message, args, client) => {
-        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        let dc
-        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
-        if (message.channel.name == "priv-gunner") {
-            if (!db.get(`bullets_${message.channel.id}`)) {
-                db.set(`bullets_${message.channel.id}`, 1)
-            }
-            let bullets = db.get(`bullets_${message.channel.id}`) || "None"
-            if (bullets == "None") {
-                db.set(`bullets_${message.channel.id}`, 2)
-                bullets = db.get(`bullets_${message.channel.id}`)
-            }
-            let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
-            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            let gamePhase = db.get(`gamePhase`)
-            let dayCount = Math.floor(gamePhase / 3) + 1
-            let voting = db.get(`commandEnabled`)
-            if (message.member.roles.cache.has(dead.id)) return message.channel.send("You cannot use the ability now!")
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
-            if (!guy || guy == message.member || !guy.roles.cache.has(alive.id)) return message.reply("The player is not in game! Mention the correct player number.")
-            if (bullets > 0) {
-                if (dayCount == 1) {
-                    if (voting != "yes") return message.channel.send("You can shoot day 1 voting phase onwards.")
-                }
-                if (!canKill(message, guy)) return
-                if (db.get(`did_${message.channel.id}`) == dayCount) return message.channel.send("You can shoot once a day.")
-                dayChat.send(`${getEmoji("bullet", client)} **${message.member.nickname} ${message.author.username} (Gunner)** shot **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
-                message.member.roles.add(revealed.id)
-                guy.roles.add(dead.id)
-                guy.roles.remove(alive.id)
-                db.subtract(`bullets_${message.channel.id}`, 1)
-                db.set(`did_${message.channel.id}`, dayCount)
-            }
-        } else if (message.channel.name == "priv-jailer") {
-            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            let jailedchat = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
-            let gamePhase = db.get(`gamePhase`)
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-            let jailed = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `jail_${dc.chan.id}` : `jail_${message.channel.id}`}`)
-            let guy = message.guild.members.cache.find((m) => m.nickname === jailed)
-            if (!guy.roles.cache.has(ids.alive)) return message.channel.send("The player is already dead.")
-            let bullet = db.get(`bullet_jail`) ? db.get(`bullet_jail`) : 1
-            if (gamePhase % 3 == 1) return message.channel.send("You cannot shoot during the day without jailing someone!")
-            if (bullet == 0) return message.channel.send("You have already used your bullet.")
-            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "The Prognosticator activated their power last night. You can't kill anyone." })
-            canKill(message, guy)
-            db.set(`bullet_jail`, 0)
-            dayChat.send(`${getEmoji("bullet", client)} The Jailer executed their prisoner last night! **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})** is dead!`)
-            guy.roles.add(dead.id)
-            guy.roles.remove(alive.id)
-            jailedchat.permissionOverwrites.edit(guy.id, {
-                SEND_MESSAGES: false,
-            })
-        } else if (message.channel.name == "priv-marksman") {
-            let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let markActive = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `markActive_${dc.chan.id}` : `markActive_${message.channel.id}`}`) || false
-            let mark = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `mark_${dc.chan.id}` : `mark_${message.channel.id}`}`)
-            let arrows = db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`) || 2
-            let gamePhase = db.get(`gamePhase`)
-            if (!db.get(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`)) {
-                db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 2)
-            }
-            if (mark != null) {
-                let guy = message.guild.members.cache.find((m) => m.nickname === mark)
-                if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot use the ability now!")
-                if (!guy.roles.cache.has(alive.id)) return message.channel.send("You can play with alive people only!")
-                if (markActive == false) return message.channel.send("You have just marked a player.")
-                if (arrows < 1) return message.channel.send("You don't have any arrows left to shoot players!")
-                if (gamePhase % 3 == 0 && fn.peaceCheck(message, db) === true) return message.channel.send({ content: "The Prognosticator activated their power last night. You can't kill anyone." })
-                let sectMembers = message.guild.channels.cache.find((c) => c.name === "sect-members")
-                if (sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && db.get(`role_${guy.id}`) === "Sect Leader") return message.channel.send("You can not shoot the leader of the sect if you are sected!")
-                let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
-                for (let x = 0; x < cupid.length; x++) {
-                    let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
-                    if (message.author.nickname === couple[0]) {
-                        if (!sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not shoot your lover!")
-                    }
-                    if (message.author.nickname === couple[1]) {
-                        if (!sectMembers.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not shoot your lover!")
-                    }
-                }
-                let role = db.get(`role_${guy.id}`)
-                db.subtract(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `arrows_${dc.chan.id}` : `arrows_${message.channel.id}`}`, 1)
-                if (role.toLowerCase().includes("wolf") || role == "Fool" || role == "Headhunter" || role == "Serial Killer" || role == "Arsonist" || role == "Bomber" || role == "Bandit" || role == "Illusionist" || role == "Corruptor" || role == "Accomplice" || role == "Sorcerer" || role == "Zombie" || role == "Sect Leader" || role == "Cannibal" || role == "Alchemist" || role == "Hacker") {
-                    guy.roles.add(dead.id)
-                    guy.roles.remove(alive.id)
-                    day.send(`${getEmoji("arrow", client)} The Marksman shot **${guy.nickname} ${guy.user.username} (${role})**!`)
-                } else {
-                    message.member.roles.add(dead.id)
-                    message.member.roles.remove(alive.id)
-                    day.send(`${getEmoji("arrow", client)} **${message.member.nickname} ${message.author.username} (Marksman)** tried shotting **${guy.nickname} ${guy.user.username}** but their shot backfired! **${guy.nickname} ${guy.user.username}** is a villager!`)
-                }
-            }
-        } else if (message.channel.name == "priv-vigilante") {
-            let hasBullet = db.get(`bullet_${message.channel.id}`) ?? true
-            if (!hasBullet) {
-                message.channel.send({ content: "You don't have any bullets left!" })
-                return console.log("No bullets left (%d)", message.member?.nickname || "-")
-            }
-            let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
-            let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
-            let gamePhase = db.get(`gamePhase`)
-            let dayCount = Math.floor(gamePhase / 3) + 1
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
-            let revealed = message.guild.roles.cache.find((r) => r.name === "Revealed")
-            if (message.member.roles.cache.has(dead.id)) return message.channel.send("You can't your ability right now!")
-            if (gamePhase % 3 == 0) return message.channel.send("You can use your ability only during the day!")
-            if (!guy || guy.member == message.member || !guy.roles.cache.has(alive.id)) return message.channel.send({ content: "The player is not in game! Mention the correct player number." })
-            if (db.get(`did_${message.channel.id}`) == dayCount) return message.channel.send("You already used one of your abilities today.")
-            dayChat.send(`${getEmoji("bullet", client)} **${message.member.nickname} ${message.author.username} (Vigilante)** shot **${guy.nickname} ${guy.user.username} (${db.get(`role_${guy.id}`)})**!`)
-            message.member.roles.add(revealed.id)
-            guy.roles.add(dead.id)
-            guy.roles.remove(alive.id)
-            db.set(`bullet_${message.channel.id}`, false)
-            db.set(`did_${message.channel.id}`, dayCount)
-            console.log("%d was shot", guy?.nickname)
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`) || []
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+
+        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to shoot players.")
+        if (!["Gunner", "Jailer", "Marksman", "Vigilante"].includes(player.role) && !["Gunner", "Jailer", "Marksman", "Vigilante"].includes(player.dreamRole)) return
+        if (["Gunner", "Jailer", "Marksman", "Vigilante"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 === 0 && ["Gunner", "Vigilante"].includes(player.role)) return await message.channel.send("You do know that you can only shoot during the day right? Or are you delusional?")
+        if (gamePhase % 3 !== 0 && player.role === "Jailer") return await message.channel.send("I know you're eager to shoot but come on man, you haven't even jailed anyone!")
+        if (gamePhase % 3 === 0 && db.get(`game.peace`) === Math.floor(gamePhase / 3) + 1) return await message.channel.send("This is a peaceful night! You cannot shoot anyone!")
+        if (gamePhase === 1) return await message.channel.send("Unfortunately, you can only shoot after the discussion phase on day 1!")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        if (player.uses === 0) return await message.channel.send("You already used up all your abilities!")
+
+        let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
+
+        if (["Marksman", "Jailer"].includes(player.role)) target = player.target
+
+        if (!target) return await message.channel.send("You need to select a player to shoot!")
+
+        if (db.get(`player_${target}`)?.status !== "Alive") return await message.channel.send("That player is no longer alive!")
+
+        if (player.role === "Marksman" && !player.placed) return await message.channel.send("Chill dude, your mark hasn't been properly placed yet!")
+
+        if (!player.hypnotized && target === player.id) return await message.channel.send("You can't shoot yourself. Why are you being selfish?")
+
+        if (db.get(`player_${target}`) == "President") return await message.channel.send("You cannot shoot the President!")
+
+        if (!player.hypnotized) {
+            if (target === player.couple) return await message.channel.send("You cannot shoot your lover!")
+
+            if (target === player.sected) return await message.channel.send("You cannot shoot your own Sect Leader!")
         }
+
+        let result = true
+
+        if (db.get(`player_${target}`).team === "Village") result = false
+
+        let messages = {
+            Gunner: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("gunner", client)} Gunner)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_")}`, client)} ${db.get(`player_${target}`).role})**!`,
+            Jailer: `${getEmoji("bullet", client)} The Jailer executed their prisoner last night! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})** is dead!`,
+            Vigilante: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("vigilante", client)} Vigilante)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_")}`, client)} ${db.get(`player_${target}`).role})**!`,
+            Marksman: `${getEmoji("arrow", client)} ${result === true ? `The Marksman shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).username})**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("marksman", client)} Marksman)** tried shotting **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** but their shot backfired! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is a villager!`}`,
+        }
+
+        let member = await message.guild.members.fetch(result === true ? target : player.id)
+        let roles = member.roles.cache.map((r) => (r.name === "Alive" ? message.guild.roles.cache.find((r) => r.name === "Dead").id : r.id))
+        await member.roles.set(roles)
+        await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(messages[player.role])
+
+        db.subtract(`player_${player.id}.uses`, 1)
+        if (member.id === player.id) db.set(`player_${player.id}`, "Dead")
+        client.emit("playerKilled", db.get(`player_${member.id}`), player.id)
     },
 }

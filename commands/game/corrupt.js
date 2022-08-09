@@ -3,43 +3,46 @@ const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "corrupt",
-    description: "Glitch a plyaer so they can't talk and vote the next day. At the beginning of the next night your pray will die!",
+    description: "Corrupt players as the Corruptor.",
     usage: `${process.env.PREFIX}corrupt <player>`,
-    gameOnly: true,
     aliases: ["glitch"],
+    gameOnly: true,
     run: async (message, args, client) => {
-        let dc
-        if (db.get(`role_${message.author.id}`) == "Dreamcatcher") dc = fn.dcActions(message, db, alive)
-        if (args[0] == "cancel") {
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `corrupt_${dc.chan.id}` : `corrupt_${message.channel.id}`}`, null)
-            return message.channel.send("Okay, your action has been canceled")
-        }
-        if (message.channel.name == "priv-corruptor") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            if (!message.member.roles.cache.has(alive.id)) return message.channel.send("You cannot corrupt someone being dead!")
-            if (fn.peaceCheck(message, db) === true) return message.channel.send({ content: "We have a peaceful night. You can't corrupt anyone." })
-            if (!args[0]) return message.channel.send("Who are you glitching? Mention the player.")
-            let guy = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
-            if (typeof dc !== "undefined" && guy.nickname == db.get(`hypnotized_${dc.tempchan}`)) return message.channel.send(`Yea, this is probably not a good idea...`)
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`) || []
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-            if (!guy) return message.reply("The player is not in game! Mention the correct player number.")
-            else if (guy == message.member) {
-                return message.channel.send("You cannot glitch yourself.")
-            }
-            if (!guy.roles.cache.has(alive.id)) return message.channel.send("That player is dead!")
-            let sected = message.guild.channels.cache.find((c) => c.name === "sect-members")
-            let cupid = message.guild.channels.cache.filter((c) => c.name === "priv-cupid").map((x) => x.id)
-            for (let x = 0; x < cupid.length; x++) {
-                let couple = db.get(`couple_${cupid[x]}`) || [0, 0]
-                if (message.author.nickname === couple[0]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[1]) return message.channel.send("You can not corrupt your lover!")
-                }
-                if (message.author.nickname === couple[1]) {
-                    if (!sected.permissionsFor(message.member).has(["VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]) && guy.nickname === couple[0]) return message.channel.send("You can not corrupt your lover!")
-                }
-            }
-            message.channel.send(`${getEmoji("corrupt", client)} You have decided to corrupt **${guy.nickname} ${guy.user.username}**!`)
-            db.set(`${db.get(`role_${message.author.id}`) == "Dreamcatcher" ? `corrupt_${dc.chan.id}` : `corrupt_${message.channel.id}`}`, guy.nickname)
+        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to corrupt players.")
+        if (!["Corruptor"].includes(player.role) && !["Corruptor"].includes(player.dreamRole)) return
+        if (["Corruptor"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only corrupt during the night right? Or are you delusional?")
+        if (db.get(`game.peace`) === Math.floor(gamePhase / 3) + 1) return await message.channel.send("This is a peaceful night! You cannot corrupt anyone!")
+        if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
+        if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+
+        if (args[0] === "cancel") {
+            db.delete(`player_${player.id}.target`)
+            return await message.channel.send(`${getEmoji("corrupt", client)} Your actions have been canceled!`)
         }
+
+        let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
+
+        if (!target) return await message.channel.send("Player not found!")
+
+        if (db.get(`player_${target}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to corrupt!")
+
+        if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot corrupt the President!")
+
+        if (!player.hypnotized) {
+            if (player.id === target) return await message.channel.send("You cannot corrupt yourself!")
+
+            if (db.get(`player_${player.id}`).couple === target) return await message.channel.send("You cannot corrupt your own couple!")
+        }
+
+        await message.channel.send(`${getEmoji("corrupt", client)} You have decided to corrupt **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**!`)
+
+        db.set(`player_${player.id}.target`, target)
     },
 }

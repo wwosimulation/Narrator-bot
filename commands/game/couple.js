@@ -1,38 +1,53 @@
 const db = require("quick.db")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = {
     name: "couple",
-    description: "Shoot your two love arrows to couple two players.",
-    usage: `${process.env.PREFIX}couple <player1> <player2>`,
+    description: "Couple two players to be in love.",
+    usage: `${process.env.PREFIX}couple <player1> [<player2>]`,
+    aliases: ["love"],
     gameOnly: true,
     run: async (message, args, client) => {
-        if (message.channel.name == "priv-cupid") {
-            let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-            let gamePhase = db.get(`gamePhase`)
-            let nightCount = Math.floor(gamePhase / 3) + 1 || 1
-            let lovers = message.guild.channels.cache.find((c) => c.name === "lovers")
-            if (nightCount != 1 || gamePhase % 3 != 0 || !message.member.roles.cache.has(alive.id)) return message.channel.send("You already used your ability!")
+        const gamePhase = db.get(`gamePhase`)
+        const players = db.get(`players`) || []
+        let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-            for (let a = 1; a <= 16; a++) {
-                let guy = message.guild.members.cache.find((c) => c.name === a.toString())
-                if (guy) {
-                    if (lovers.permissionsFor(guy).has(["VIEW_CHANNEL", "SEND_MESSAGES"])) return message.channel.send("You already used your ability!")
-                }
-            }
+        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
-            if (args.length != 2) return message.channel.send("You can only couple 2 players.")
-            let guy1 = message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.id === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
+        if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to couple players.")
+        if (!["Cupid"].includes(player.role) && !["Cupid"].includes(player.dreamRole)) return
+        if (["Cupid"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (gamePhase % 3 != 0 || Math.floor(gamePhase / 3) + 1 !== 1) return await message.channel.send("You do know that you can only couple during the first night right? Or are you delusional?")
 
-            let guy2 = message.guild.members.cache.find((m) => m.nickname === args[1]) || message.guild.members.cache.find((m) => m.id === args[1]) || message.guild.members.cache.find((m) => m.user.username === args[1]) || message.guild.members.cache.find((m) => m.user.tag === args[1])
+        if (args[0] === "cancel") {
+            db.delete(`player_${player.id}.target`)
+            return await message.channel.send(`${getEmoji("couple", client)} Your actions have been canceled!`)
+        }
 
-            if (!guy1 || !guy2 || guy1.nickname == message.member.nickname || guy2.nickname == message.member.nickname) return message.reply("Invalid Target!")
+        let target1 = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
+        let target2 = players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1])
 
-            if (!guy1.roles.cache.has(alive.id) || !guy2.roles.cache.has(alive.id)) return message.channel.send("You cannot couple dead players.")
+        if (!target1) return await message.channel.send(`I could not find a player with the query: \`${args[0]}\``)
+        if (args.length === 2 && !target2) return await message.channel.send(`I could not find a player with the query: \`${args[1]}\``)
 
-            if (db.get(`role_${guy1.id}`) == "President" || db.get(`role_${guy2.id}`) == "President") return message.channel.send("A President cannot be coupled.")
+        if (db.get(`player_${target1}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to couple!")
 
-            db.set(`couple_${message.channel.id}`, [guy1.nickname, guy2.nickname])
-            message.channel.send(`You decided to make player **${guy1.nickname} ${guy1.user.username}** and **${guy2.nickname} ${guy2.user.username}** fall in love!`)
+        if (db.get(`player_${target1}`)?.role === "President") return await message.channel.send("You cannot couple the President!")
+
+        if (db.get(`player_${target2}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to couple!")
+
+        if (db.get(`player_${target2}`)?.role === "President") return await message.channel.send("You cannot couple the President!")
+
+        if ([target1, target2].includes(player.id)) return await message.channel.send("You cannot couple yourself!")
+
+        if (!target2) {
+            db.set(`player_${player.id}.target`, [target1])
+            await message.channel.send(`${getEmoji("couple", client)} You have decided to couple **${players.indexOf(target1) + 1} ${db.get(`player_${target1}`).username}**!`)
+        } else {
+            if (target1 === target2) return await message.channel.send("Seems a little weird that you want to couple the same player don't you think?")
+
+            db.set(`player_${player.id}.target`, [target1, target2])
+            await message.channel.send(`${getEmoji("couple", client)} You have decided to couple **${players.indexOf(target1) + 1} ${db.get(`player_${target1}`).username}** with **${players.indexOf(target2) + 1} ${db.get(`player_${target2}`).username}**!`)
         }
     },
 }

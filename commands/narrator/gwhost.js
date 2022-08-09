@@ -8,7 +8,7 @@ module.exports = {
     narratorOnly: true,
     run: async (message, args, client) => {
         let mininarr = message.guild.roles.cache.get(ids.minisim)
-        if (db.get(`game`) != null) return message.channel.send("Another game is being hosted!")
+        if (db.get(`game.id`) != null) return message.channel.send("Another game is being hosted!")
         let sup = ""
         if (message.member.roles.cache.has(mininarr.id)) {
             let guy = message.guild.members.cache.get(args[0]) || message.guild.members.cache.find((m) => m.nickname === args[0]) || message.guild.members.cache.find((m) => m.user.username === args[0]) || message.guild.members.cache.find((m) => m.user.tag === args[0])
@@ -24,7 +24,7 @@ module.exports = {
         const embed = { title: "Player and Spectator List:", description: "** **", color: 0x327210 }
         let m = await message.guild.channels.cache.get("606123818305585167").send({ content: `<@&606123686633799680>, we are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#862712560511221791> and react with 🎮${sup ? `\n\n${sup}` : ""}`, embeds: [embed], components: [row] })
         m.crosspost()
-        db.set(`game`, m.id)
+        db.set(`game.id`, m.id)
         db.set(`hoster`, message.author.id)
         db.set(`gamePhase`, -5)
         db.set("gameCode", args.join(" "))
