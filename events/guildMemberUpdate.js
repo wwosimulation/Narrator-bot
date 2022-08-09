@@ -10,5 +10,6 @@ module.exports = (client) => {
         if (newMember.roles.cache.has(ids.dead) && oldMember.roles.cache.has(ids.dead)) return
         if (!newMember.roles.cache.has(ids.dead)) return
         newMember.roles.remove(ids.revealed)
+        
     })
 }
