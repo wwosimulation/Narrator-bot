@@ -2,6 +2,7 @@ const db = require("quick.db")
 const { ids } = require("../../config")
 const gamewarns = require("../../schemas/gamewarns")
 const players = require("../../schemas/players")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "flee",
@@ -11,12 +12,14 @@ module.exports = {
     run: async (message, args, client) => {
         if (message.member.permissions.has("MANAGE_CHANNELS")) {
             if (args[0]) {
-                let guy = message.guild.members.cache.find((m) => m.nickname === args[0])
+                let guy = message.guild.members.cache.find((m) => [m.nickname, m.id, m.user.username, m.user.tag].includes(args[0]))
                 if (guy) {
-                    let role = db.get(`player_${guy.id}.role`)
+		    let players = db.get(`players`) || []
+		    let target = db.get(`player_${guy.id}`)
+                    let role = target.role
                     db.set(`player_${guy.id}.fled`, true)
                     let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
-                    day.send("**" + guy.nickname + " " + guy.user.username + " (" + role + ")** has fled from the village!")
+		    day.send(`${getEmoji("died", client)} **${players.indexOf(guy.id)+1} ${target.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** has fled the village!`)
                     guy.roles.add(ids.dead)
                     guy.roles.remove(ids.alive)
                     db.set(`player_${guy}.status`, "Dead")
@@ -40,8 +43,10 @@ module.exports = {
                         interaction.reply("Fleeing...")
                         db.set(`player_${message.author.id}.fled`, true)
                         let day = message.guild.channels.cache.find((c) => c.name === "day-chat")
-                        let role = await db.fetch(`player_${message.author.id}.role`)
-                        day.send("**" + message.member.nickname + " " + message.author.username + " (" + role + ")** has fled from village!")
+                        let target = db.get(`player_${message.author.id}`)
+			let role = target.role
+			let players = db.get(`players`) || []
+		        day.send(`${getEmoji("died", client)} **${players.indexOf(guy.id)+1} ${target.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** has fled the village!`)
                         message.member.roles.add(ids.dead)
                         message.member.roles.remove(ids.alive)
                         db.set(`player_${message.author.id}.status`, "Dead")
@@ -63,7 +68,7 @@ module.exports = {
                             interaction.editReply({ embeds: [embed] })
                             interaction.followUp("Unable to send direct message.")
                         }
-                        await players.updateOne({ user: message.author.id }, { $inc: { "stats.flee": 1 } })
+                        await players.updateOne({user: message.author.id}, {$inc: {"stats.flee": 1}})
                         client.emit("gamebanned", message.author)
                         client.emit("playerKilled", db.get(`player_${message.author.id}`), "SUICIDE")
                     } else {

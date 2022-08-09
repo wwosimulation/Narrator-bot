@@ -1,10 +1,10 @@
 const db = require("quick.db")
-const config = require("../../config")
+const { getEmoji } = require("../../config")
 
 module.exports = {
-    name: "hunt",
-    description: "Hunt a player if they belong to the sect.",
-    usage: `${process.env.PREFIX}hunt <player>`,
+    name: "snap",
+    description: "Kill all disguised players",
+    usage: `${process.env.PREFIX}snap`,
     gameOnly: true,
     run: async (message, args, client) => {
 
@@ -22,7 +22,7 @@ module.exports = {
         if (player.disguisedPlayers?.filter(p => db.get(`player_${p}`)?.status === "Alive").length === 0 || !player.disguisedPlayers) return await message.channel.send("You have to have at least 1 alive disguised player to start snapping them!")
 
         player.disguisedPlayers.forEach(async target => {
-            if (db.get(`player_${target}`).status === "Dead") continue;
+            if (db.get(`player_${target}`).status === "Dead") return;
             let guy = await message.guild.members.fetch(target)
             let roles = guy.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id)
             db.set(`player_${target}.status`, "Dead")

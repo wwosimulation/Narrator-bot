@@ -27,20 +27,23 @@ module.exports = {
         function createPlayerRow(row, players) {
             let arr = []
             let onlyPlayers = players.slice(4*(row-1), 4*row)
+	    let currentTargets = db.get(`player_${player.id}.target`) || []
             onlyPlayers.forEach((p, index) => {
                 let status = db.get(`player_${p}`).status
-                arr.push({ custom_id: `bomb${setup[row-1][index]}`, type: 2, style: status === "Alive" ? 3 : 4, label: `Player ${setup[row-1][index]}` })
+		let inTarget = currentTargets.includes(p)
+                arr.push({ custom_id: `bomb${setup[row-1][index]}`, type: 2, style: inTarget === true ? 3 : (status === "Alive" ? 1 : 4), label: `Player ${setup[row-1][index]}` })
             })
             return arr
         }
 
         function createPlayerComponents(players) {
-            let ps = Math.ceil(players/4)
+            let ps = Math.ceil(players.length/4)
             let arr = []
-            ps.forEach((p, index) => {
-                arr.push({ type: 1, components: createPlayerRow(index+1, players) })
-            })
+            for (let i = 0 ; i < ps ; i++) {
+                arr.push({ type: 1, components: createPlayerRow(i+1, players) })
+            }
             arr.push({ type: 1, components: [{ type: 2, label: "Cancel", style: 4, custom_id: "cancelbomb" }] })
+	    return arr
         }
 
         if (!message.channel.name.startsWith("priv")) return; // if they are not in the private channel
@@ -62,60 +65,66 @@ module.exports = {
         // get the arguments and map them to player ids
         let msg = await message.channel.send({ content: "Place your bombs!", components: createPlayerComponents(players) })
 
-        msg.awaitMessageComponent({ filter: (i) => i.user.id === message.author.id })
-        .then(async i => {
-            let gPhase = db.get(`gamePhase`)
+        async function collectButton(msg) {
+	  msg.awaitMessageComponent({ filter: (i) => i.user.id === message.author.id, time: 30000 })
+          .then(async i => {
             night = Math.floor(gamePhase / 3) + 1
-            if (gPhase % 3 !== 0) return i.update({ content: "Place your bombs!", components: [] })
-            let row = Math.ceil(i.customId.slice(1)/4)
-            let column = setup[row-1].indexOf(i.customId.slice(1)) + 1
-            let newComponents = createPlayerComponents(players)
-            
+            if (gamePhase % 3 !== 0) return i.update({ content: "Place your bombs!", components: [] })
             if (i.customId === "cancelbomb") {
                 i.update({ content: "Place your bombs!", components: createPlayerComponents(players) })
                 db.delete(`player_${i.user.id}.target`)
                 return;
             }
-
+            let row = Math.ceil(Number(i.customId.slice(4))/4)
+            let column = setup[row-1].indexOf(i.customId.slice(4)) + 1
+	    console.log(`Row: ${row}\nColumn: ${column}`)
+            console
+            let newComponents = createPlayerComponents(players)
+            
             // if the bombs are horizontal
-            if ([msg.components[row-1]?.[column-2]?.style, msg.components[row-1]?.[column]?.style].includes("SUCCESS")) {
-                newComponents[row-1]?.[column-1]?.style = 3
-                newComponents[row]?.[column]?.style = 3
-                newComponents[row-2]?.[column-2]?.style = 3
+            if ([msg.components[row-1]?.components[column-2]?.style, msg.components[row-1]?.components[column]?.style].includes("SUCCESS")) {
+                if (newComponents[row-1] && newComponents[row-1].components[column-1]) newComponents[row-1].components[column-1].style = 3
+		if (newComponents[row] && newComponents[row].components[column]) newComponents[row].components[column].style = 3
+		if (newComponents[row-2] && newComponents[row-2].components[column-2]) newComponents[row-2].components[column-2].style = 3
             } 
 
             // if the bombs are diagonal from left to right, up to down
-            else if ([msg.components[row]?.[column]?.style, msg.components[row-2]?.[column-2]?.style].includes("SUCCESS")) {
-                newComponents[row-1]?.[column-1]?.style = 3
-                newComponents[row]?.[column-1]?.style = 3
-                newComponents[row-2]?.[column-1]?.style = 3
+            else if ([msg.components[row]?.components[column]?.style, msg.components[row-2]?.components[column-2]?.style].includes("SUCCESS")) {
+                if (newComponents[row-1] && newComponents[row-1].components[column-1]) newComponents[row-1].components[column-1].style = 3
+		if (newComponents[row] && newComponents[row].components[column-1]) newComponents[row].components[column-1].style = 3
+		if (newComponents[row-2] && newComponents[row-2].components[column-1]) newComponents[row-2].components[column-1].style = 3
             } 
             
             // if the bombs are vertical
-            else if ([msg.components[row-2]?.[column-1]?.style, msg.components[row]?.[column-1]?.style].includes("SUCCESS")) {
-                newComponents[row-1]?.[column-1]?.style = 3
-                newComponents[row]?.[column-2]?.style = 3
-                newComponents[row-2]?.[column]?.style = 3
+            else if ([msg.components[row-2]?.components[column-1]?.style, msg.components[row]?.components[column-1]?.style].includes("SUCCESS")) {
+		if (newComponents[row-1] && newComponents[row-1].components[column-1]) newComponents[row-1].components[column-1].style = 3
+		if (newComponents[row] && newComponents[row].components[column-2]) newComponents[row].components[column-2].style = 3
+		if (newComponents[row-2] && newComponents[row-2].components[column]) newComponents[row-2].components[column].style = 3
             } 
             
             // if the bombs are not placed or are diagonal from left to right, down to up
             else {
-                newComponents[row-1]?.[column-1]?.style = 3
-                newComponents[row-1]?.[column]?.style = 3
-                newComponents[row-1]?.[column-2]?.style = 3
+		if (newComponents[row-1] && newComponents[row-1].components[column-1]) newComponents[row-1].components[column-1].style = 3
+		if (newComponents[row-1] && newComponents[row-1].components[column]) newComponents[row-1].components[column].style = 3
+		if (newComponents[row-1] && newComponents[row-1].components[column-2]) newComponents[row-1].components[column-2].style = 3
             }
 
             await i.update({ content: "Place your bombs!", components: newComponents })
             
             // set the targets
-            let target = [...newComponents.filter(a => a.map(b => b.style.toString()).includes("3")).map(a => a.label.slice(1))]
-            target = target.map(v => players[v-1]).filter(p => p !== message.author.id)
+            let target = [...(newComponents.filter(a => a.components.map(b => b.style.toString()).includes("3")).map(a => a.components.filter(b => b.style.toString() === "3").map(b => b.custom_id.slice(4))))]
+	    console.log(target)
+            target = target.join(",").split(",").map(v => players[Number(v)-1]).filter(p => p !== message.author.id)
+	    console.log(target)
             db.set(`player_${i.user.id}.target`, target)
-            let gamemessage = targets.filter(v => i.user.id !== v).map(c => `**${players.indexOf(c)+1} ${db.get(`player_${c}`).username}**`)
+	    db.set(`player_${i.user.id}.lastPlaced`, Math.floor(gamePhase/3)+1)
+            let gamemessage = target.filter(v => i.user.id !== v).map(c => `**${players.indexOf(c)+1} ${db.get(`player_${c}`).username}**`)
             i.followUp(`${getEmoji("explode", client)} You have placed bombs on ${gamemessage.join(", ")}!`)
-            
-        })
-        
+            collectButton(msg)
+          }).catch(e => { msg.edit({ content: msg.content, components: [] }) })
+        }
+
+	collectButton(msg)
         
     }
         

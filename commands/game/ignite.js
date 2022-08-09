@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const config = require("../../config")
+const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "ignite",
@@ -26,7 +26,7 @@ module.exports = {
         if (player.doused?.filter(p => db.get(`player_${p}`)?.status === "Alive").length === 0 || !player.doused) return await message.channel.send("You can't ignite if you don't have any alive players doused!")
 
         player.doused.forEach(async target => {
-            if (db.get(`player_${target}`).status === "Dead") continue;
+            if (db.get(`player_${target}`).status === "Dead") return;
             let guy = await message.guild.members.fetch(target)
             let roles = guy.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id)
             db.set(`player_${target}.status`, "Dead")
