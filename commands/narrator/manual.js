@@ -9,7 +9,6 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-
         for (const key in aliases) {
             if (args[1].toLowerCase() == key) {
                 if (Object.hasOwnProperty.call(aliases, key)) {
@@ -17,31 +16,31 @@ module.exports = {
                     args[1] = element
                 }
             }
-        }	
+        }
 
-	if (args.length !== 2) return await message.channel.send("You need to state the player and the role!")
+        if (args.length !== 2) return await message.channel.send("You need to state the player and the role!")
 
-	const gamePhase = db.get(`gamePhase`)
-	const night = Mathf.floor(gamePhase/3)+1
+        const gamePhase = db.get(`gamePhase`)
+        const night = Mathf.floor(gamePhase / 3) + 1
         const alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         const mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         const narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
 
-	let players = db.get(`players`) || []
+        let players = db.get(`players`) || []
 
         let player = message.guild.members.cache.find((m) => [m.nickname, m.id, m.user.username, m.user.tag].includes(args[0]))
-	let role = getRole(args[1])
+        let role = getRole(args[1])
 
-	if (!player) return await message.channel.send("Player not found!")
+        if (!player) return await message.channel.send("Player not found!")
 
-	if (!player.roles.cache.has(alive.id)) return await message.channel.send("This player does not have the alive role!")
+        if (!player.roles.cache.has(alive.id)) return await message.channel.send("This player does not have the alive role!")
 
-	if (!role) return await message.channel.send("Role not found!")
+        if (!role) return await message.channel.send("Role not found!")
 
-	if (db.get(`started`) === "yes") return await message.channel.send("The game has already started! If you still want to add this player, use the `+reset` command, and then use the `/srole` command instead!")
+        if (db.get(`started`) === "yes") return await message.channel.send("The game has already started! If you still want to add this player, use the `+reset` command, and then use the `/srole` command instead!")
 
         message.react("💋")
-        
+
         let channel = await message.guild.channels.create(`priv-${role.name.toLowerCase().replace(/\s/g, "-")}`, {
             parent: "892046231516368906",
         })
@@ -72,21 +71,20 @@ module.exports = {
             READ_MESSAGE_HISTORY: true,
         })
 
-        await channel.send(getRole(role).description || "Description not found").then((msg) => msg.pin().then(msg => msg.channel.bulkDelete(1)))
+        await channel.send(getRole(role).description || "Description not found").then((msg) => msg.pin().then((msg) => msg.channel.bulkDelete(1)))
 
-	let object = {
-	    id: player.id,
-	    username: player.user.username,		
-	    name: getRole(role).name,
-	    aura: getRole(role).aura,
-	    team: getRole(role).team,
-	    channel: channel.id
-	}
+        let object = {
+            id: player.id,
+            username: player.user.username,
+            name: getRole(role).name,
+            aura: getRole(role).aura,
+            team: getRole(role).team,
+            channel: channel.id,
+        }
 
         db.set(`player_${player.id}`, object)
 
-	players.push(player.id)
-	db.set(`players`, players)
-	
+        players.push(player.id)
+        db.set(`players`, players)
     },
 }

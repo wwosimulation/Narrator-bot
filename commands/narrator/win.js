@@ -14,10 +14,10 @@ module.exports = {
         if (args[0] && args?.[0].toLowerCase() == "tie") tie = true
         else if (args.length < 2 || !xp.teamMultipliers[winTeam]) return message.channel.send("Please specify the winning team and its players! Valid teams are the following:\n" + Object.keys(xp.teamMultipliers).join(", "))
 
-	let allPlayers = db.get(`players`)
+        let allPlayers = db.get(`players`)
 
-  	let winners = allPlayers.filter(p => args.includes((players.indexOf(p)+1).toString()))
-	let losers = allPlayers.filter(p => !winners.includes(p))
+        let winners = allPlayers.filter((p) => args.includes((players.indexOf(p) + 1).toString()))
+        let losers = allPlayers.filter((p) => !winners.includes(p))
 
         let winXP = xp.win(allPlayers.length, winTeam)
         let loseXP = xp.lose(allPlayers.length)

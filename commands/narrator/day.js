@@ -10,7 +10,7 @@ module.exports = {
     narratorOnly: true,
     run: async (message, args, client) => {
         let gamephase = db.get(`gamePhase`)
-        if (gamephase % 3 != 0) return message.channel.send("Please first use `+night`")   
+        if (gamephase % 3 != 0) return message.channel.send("Please first use `+night`")
         require("./day/day.js").run(message, args, client)
-    }
+    },
 }
