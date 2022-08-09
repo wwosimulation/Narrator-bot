@@ -1,5 +1,5 @@
 const db = require("quick.db") // database
-const { getRole, getEmoji } = require("../../../config") // functions
+const { getRole, getEmoji } = require("../../../../config") // functions
 const doctor = require("./protection/doctor.js") // doctor protection
 const beastHunter = require("./protection/beastHunter.js") // beast hunter protection
 const witch = require("./protection/witch.js") // witch protection
@@ -130,7 +130,7 @@ module.exports = async (client) => {
              
             const newChannel = await guild.channels.create("priv-accomplice", { 
                 parent: "892046231516368906", // the category id
-                position: channel.position - 1 // the same position where the channel is
+                position: channel.rawPosition // the same position where the channel is
             })
 
             // give permissions to the converted player
@@ -174,7 +174,7 @@ module.exports = async (client) => {
             await channel.delete() // delete the original channel
 
             await newChannel.send(getRole("accomplice").description)
-            .then(c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
+            .then(async c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
             await newChannel.send(`<@${result.id}>`)
             .then(c => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
 

@@ -14,28 +14,10 @@ module.exports = {
         if (args[0] && args?.[0].toLowerCase() == "tie") tie = true
         else if (args.length < 2 || !xp.teamMultipliers[winTeam]) return message.channel.send("Please specify the winning team and its players! Valid teams are the following:\n" + Object.keys(xp.teamMultipliers).join(", "))
 
-        let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
-        if (alive.members.size != "0") {
-            client.commands.get("killall").run(message, args, client)
-            return message.channel.send("All players killed. Please use the command again.")
-        }
-        let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
+	let allPlayers = db.get(`players`)
 
-        let allPlayers = [],
-            winners = [],
-            losers = []
-        for (let i = 1; i <= dead.members.size; i++) {
-            let guy = message.guild.members.cache.find((m) => m.nickname === i.toString() && m.roles.cache.has(dead.id) && !db.get("xpExclude").includes(m.nickname))
-
-            if (guy) {
-                allPlayers.push(guy.id)
-                if (args.includes(guy.nickname)) {
-                    winners.push(guy.id)
-                } else {
-                    losers.push(guy.id)
-                }
-            }
-        }
+  	let winners = allPlayers.filter(p => args.includes((players.indexOf(p)+1).toString()))
+	let losers = allPlayers.filter(p => !winners.includes(p))
 
         let winXP = xp.win(allPlayers.length, winTeam)
         let loseXP = xp.lose(allPlayers.length)
@@ -50,13 +32,13 @@ module.exports = {
                 xpBase = winXP
                 let wt = winTeam
                 if (wt == "evil") {
-                    let role = getRole(db.get(`role_${x}`))
+                    let role = getRole(db.get(`player_${x}`).role)
                     wt = role.name == "Unknown Role" || role.name == "Modded" ? "modded" : role.team != "Solo" ? role.team : role.soloKiller == true ? "solokiller" : "solovoting"
                 }
                 data.winStreak += 1
                 data.stats[wt] ? (data.stats[wt].win += 1) : (data.stats.modded.win += 1)
             } else if (losers.includes(x)) {
-                let role = getRole(db.get(`role_${x}`))
+                let role = getRole(db.get(`player_${x}`).role)
                 let team = role.name == "Unknown Role" || role.name == "Modded" ? "modded" : role.team != "Solo" ? role.team : role.soloKiller == true ? "solokiller" : "solovoting"
                 xpBase = loseXP
                 data.winStreak = 0

@@ -1,4 +1,4 @@
-const { getEmoji } = require("../../../config")
+const { getRole, getEmoji } = require("../../../../config") // functions
 const db = require("quick.db")
 
 module.exports = async (client) => {
@@ -29,7 +29,7 @@ module.exports = async (client) => {
     Object.entries(guy).forEach(entry => {
       
       // copy relevant info from the dead player
-      if (!["username", "id", "status", "channel", "allRoles"].includes(entry[0])) {
+      if (!["username", "id", "status", "channel", "allRoles", "target", "corrupted", "sected", "bitten", "couple", "poisoned", "hypnotized", "disguised", "shamanned", "binded"].includes(entry[0])) {
         db.set(`player_${gr}.${entry[0]}`, entry[1])
       }
       
@@ -43,7 +43,7 @@ module.exports = async (client) => {
     // create the channel
     const newChannel = await guild.channels.create(`priv-${guy.role.toLowerCase().replace(/\s/g, "-")}`, { 
         parent: "892046231516368906", // the category id
-        position: channel.position - 1 // the same position where the channel is
+        position: channel.rawPosition // the same position where the channel is
     })
 
     // give permissions to the grave robber
@@ -81,7 +81,7 @@ module.exports = async (client) => {
     await channel.delete() // delete the old channel
     
     await newChannel.send(getRole(guy.role.toLowerCase().replace(/\s/g, "-")).description)
-    .then(c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
+    .then(async c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
     await newChannel.send(`<@${graver.id}>`)
     .then(c => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
     
@@ -89,9 +89,37 @@ module.exports = async (client) => {
       
       // give perms to the werewolves' chat 
       const wolvesChat = guild.channels.cache.find(c => c.name === "werewolves-chat")
-      await wolvesChat.send(`${getEmoji("werewolf", client)} Player **${players.indexOf(graver.id)} ${graver.username} (${getEmoji("grave_robber", client)} Grave Robber)** was a grave robber that now took over the role of **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji(guy.role?.toLowerCase().replace(/\s/g, "_"))} ${guy.role})**! Welcome them to your team.`) // send a message
+      await wolvesChat.send(`${getEmoji("werewolf", client)} Player **${players.indexOf(graver.id)+1} ${graver.username} (${getEmoji("grave_robber", client)} Grave Robber)** was a grave robber that now took over the role of **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji(guy.role?.toLowerCase().replace(/\s/g, "_"))} ${guy.role})**! Welcome them to your team.`) // send a message
       await wolvesChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
     
+    } else if (guy.role === "Zombie") {
+
+	// give perms to zombies chat
+	const zombChat = guild.channels.cache.find(c => c.name === "zombies-chat")
+	await zombChat.send(`${getEmoji("zombie", client)} Player **${players.indexOf(graver.id)+1} ${graver.username} (${getEmoji("grave_robber", client)} Grave Robber)** was a grave robber that now took over the role of **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji("zombie", client)} Zombie)**! Welcome them to your team.`) // send a message
+	await zombChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+
+    } else if (guy.role === "Sect Leader") {
+		
+	// give perms to sect chat
+	const sectChat = guild.channels.cache.get(guy.sectChannel)
+	await sectChat.send(`${getEmoji("sect_leader", client)} Player **${players.indexOf(graver.id)+1} ${graver.username} (${getEmoji("grave_robber", client)} Grave Robber)** was a grave robber that now took over the role of **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji("sect_leader", client)} Sect Leader)**! Welcome them to your team.`) // send a message
+	await sectChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+			
+    } else if (guy.role === "Sibling") {
+
+	// give perms to sibling chat
+	const sibChat = guild.channels.cache.find(c => c.name === "siblings-chat")
+	await sibChat.send(`${getEmoji("sibling", client)} Player **${players.indexOf(graver.id)+1} ${graver.username} (${getEmoji("grave_robber", client)} Grave Robber)** was a grave robber that now took over the role of **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji("sibling", client)} Sibling)**! Welcome them to your team.`) // send a message
+	await sibChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+
+    } else if (["Bandit", "Accomplice"].includes(guy.role)) {
+			
+	// give perms to zombies chat
+	const banditChat = guild.channels.cache.get(guy.banditChannel)
+	await banditChat.send(`${getEmoji("zombie", client)} Player **${players.indexOf(graver.id)+1} ${graver.username} (${getEmoji("grave_robber", client)} Grave Robber)** was a grave robber that now took over the role of **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji(guy.role.toLowerCase(), client)} guy.role)**! Welcome them to your team.`) // send a message
+	await banditChat.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+
     }
   
   }

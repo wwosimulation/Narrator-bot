@@ -1,5 +1,5 @@
 const db = require("quick.db") // database
-const { getEmoji, getRole } = require("../../../config") // function
+const { getRole, getEmoji } = require("../../../../config") // funcions
 
 module.exports = async client => {
   
@@ -53,7 +53,7 @@ module.exports = async client => {
     
     const newChannel1 = await guild.channels.create(`priv-${player2.role.toLowerCase().replace(/\s/g, "-")}`, { 
         parent: "892046231516368906", // the category id
-        position: channel1.position - 1 // the same position where the channel is
+        position: channel1.rawPosition // the same position where the channel is
     })
 
     // give permissions to the grave robber
@@ -90,7 +90,7 @@ module.exports = async client => {
     
     const newChannel2 = await guild.channels.create(`priv-${player1.role.toLowerCase().replace(/\s/g, "-")}`, { 
         parent: "892046231516368906", // the category id
-        position: channel2.position - 1 // the same position where the channel is
+        position: channel2.rawPosition // the same position where the channel is
     })
 
     // give permissions to the grave robber
@@ -129,13 +129,13 @@ module.exports = async client => {
     await channel2.delete() // delete the old channel
     
     await newChannel1.send(`Your role has been swapped by the Naughty Boy!\n\n${getRole(player2.role.toLowerCase().replace(/\s/g, "-")).description}`)
-    .then(c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
+    .then(async c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
     await newChannel1.send(`<@${player1.id}>`)
     .then(c => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
     
-    await newChannel1.send(`Your role has been swapped by the Naughty BoY!\n\n${getRole(player1.role.toLowerCase().replace(/\s/g, "-")).description}`)
-    .then(c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
-    await newChannel1.send(`<@${player2.id}>`)
+    await newChannel2.send(`Your role has been swapped by the Naughty Boy!\n\n${getRole(player1.role.toLowerCase().replace(/\s/g, "-")).description}`)
+    .then(async c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
+    await newChannel2.send(`<@${player2.id}>`)
     .then(c => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
     
     db.set(`player_${nb.target[0]}.channel`, newChannel1.id) // set the new channel id in the database

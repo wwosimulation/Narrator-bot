@@ -7,14 +7,14 @@ module.exports = {
     usage: `${process.env.PREFIX}cancel`,
     narratorOnly: true,
     run: async (message, client, args) => {
-        if (db.get(`game`) == null) return message.channel.send("No game is being hosted")
+        if (db.get(`game.id`) == null) return message.channel.send("No game is being hosted")
 
         message.guild.channels.cache.find((c) => c.name === "game-announcements").send(`Game was canceled. Sorry for the inconvenience!`)
         let t = message.guild.roles.cache.get(ids.server.sim).members
         t.forEach((e) => {
             e.roles.remove("606123676668133428") //joining role
         })
-        let mid = db.get("game")
+        let mid = db.get("game.id")
         message.guild.channels.cache
             .get("606123818305585167") //game warning
             .messages.fetch(mid)

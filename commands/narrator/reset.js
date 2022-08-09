@@ -8,12 +8,13 @@ module.exports = {
     usage: `${process.env.PREFIX}reset`,
     gameOnly: true,
     run: async (message, args, client) => {
-        console.log("hi")
-        if (message.member.roles.cache.has(ids.narrator) || message.member.roles.cache.has(ids.mini)) {
-            let times = [10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000]
-            times = times[Math.floor(Math.random() * times.length)]
 
-            message.guild.channels.cache
+        if (message.member.roles.cache.has(ids.narrator) || message.member.roles.cache.has(ids.mini)) {
+
+            let msg = await message.channel.send("Reset in progress")
+
+
+            await message.guild.channels.cache
                 .find((x) => x.name == "day-chat")
                 .permissionOverwrites.edit(ids.alive, {
                     SEND_MESSAGES: false,
@@ -21,7 +22,7 @@ module.exports = {
                     VIEW_CHANNEL: false,
                 })
 
-            message.guild.channels.cache
+            await message.guild.channels.cache
                 .find((c) => c.name === "vote-chat")
                 .permissionOverwrites.edit(ids.alive, {
                     SEND_MESSAGES: false,
@@ -29,7 +30,7 @@ module.exports = {
                     VIEW_CHANNEL: true,
                 })
 
-            message.guild.channels.cache
+            await message.guild.channels.cache
                 .find((x) => x.name == "game-lobby")
                 .permissionOverwrites.edit(ids.alive, {
                     SEND_MESSAGES: true,
@@ -38,7 +39,40 @@ module.exports = {
                 })
 
             db.set(`gamePhase`, -10)
+
+	    let wwChat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
+	    let wwVote = message.guild.channels.cache.find(c => c.name === "ww-vote")
+
+	    db.get(`players`).forEach(async p => {
+		await wwChat.permissionOverwrites.delete(p)
+		await wwVote.permissionOverwrites.delete(p)
+	    })
+	
+	    db.delete(`players`)
+
+	    let mid = db.get("game.id")
+	    let s = client.guilds.cache.get(ids.server.sim)
+	    s?.channels.cache
+	        .get("606123818305585167")
+	        .messages.fetch(mid)
+	        .then((m) => {
+        	    if (m?.author?.id == client.user.id) {
+    	            let allc = m.components
+        	        if (allc) {
+                	    let row = allc[0]
+			    let [button1] = row.components
+    	    	            button1.disabled = true
+                	    m.edit({ components: [{ type: 1, components: [button1] }] })
+	                }
+            	    }
+	        })
+
+	    db.delete(`game`)
+
+	    db.all().filter(data => data.ID.startsWith("player_")).forEach(data => db.delete(data.ID))
+
             let save = ["rankedseason", "stafflist", "stafflist2", "stafflist3", "entermsg", "hoster", "gamePhase", "started", "usedChannels", "wwsVote", "winner", "vtshadow", "xpGiven", "nextRequest", "gamewarnIndex", "gamewarnCount", "logs", "gameCode", "game", "maintance", "xpExclude"]
+
             db.all().forEach(async (i) => {
                 if(i.ID.startsWith("roses_")) {
                     await players.updateOne({user: i.ID.replace("roses_", "")}, {$inc:{"roses": 1}})
@@ -46,16 +80,13 @@ module.exports = {
                 if (!save.includes(i.ID)) db.delete(i.ID)
             })
             const temproles = message.guild.channels.cache.find((x) => x.name == "private channels")
-            temproles.children.forEach((channel) => channel.delete())
+            await temproles.children.forEach(async (channel) => { await channel.delete() })
 
-            message.channel
-                .send("Reset in progress")
-                .then((msg) => {
-                    setTimeout(function () {
-                        msg.edit("Reset complete").catch((e) => message.channel.send(`Error: ${e.message}`))
-                    }, times)
-                })
-                .catch((e) => message.channel.send(`Error: ${e.message}`))
+	    const extras = message.guild.channels.cache.filter(c => c.name === "sect" || c.name === "bandits")
+	    await extras.forEach(async chan => { await chan.delete() })
+
+       	    await msg.edit("Reset complete").catch((e) => message.channel.send(`Error: ${e.message}`))
+
         }
     },
 }

@@ -10,5 +10,5 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         require("./night/night.js").run(message, args, client)
-    },
+    }
 }

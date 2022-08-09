@@ -1,5 +1,5 @@
 const db = require("quick.db") // database
-const { getRole, getEmoji } = require("../../../config") // functions
+const { getRole, getEmoji } = require("../../../../config") // functions
 const doctor = require("./protection/doctor.js") // doctor protection
 const beastHunter = require("./protection/beastHunter.js") // beast hunter protection
 const witch = require("./protection/witch.js") // witch protection
@@ -61,7 +61,7 @@ module.exports = async (client, alivePlayersBefore) => {
   const dayChat = guild.channels.cache.find(c => c.name === "day-chat") // get the day channel - Object
   const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
   const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
-  const zombiesChat = guild.channels.cache.find(c => c.name === "zombies") // get the zombies channel - Object
+  const zombiesChat = guild.channels.cache.find(c => c.name === "zombies-chat") // get the zombies channel - Object
   const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
   const alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
   const deadPlayers = players.filter(p => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
@@ -129,7 +129,7 @@ module.exports = async (client, alivePlayersBefore) => {
       await channel.delete() // delete the original channel
 
       await newChannel.send(getRole("zombie").description)
-      .then(c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
+      .then(async c => { await c.pin() ; await c.channel.bulkDelete(1) }) // sends the description, pins the message and deletes the last message
       await newChannel.send(`<@${result.id}>`)
       .then(c => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
 
