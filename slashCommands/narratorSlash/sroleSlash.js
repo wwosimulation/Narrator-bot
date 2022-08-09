@@ -50,12 +50,11 @@ module.exports = {
     },
     server: ["game"],
     run: async (interaction, client) => {
-
         // ---------- OPTIONS ----------
         let gamemode = interaction.options.getString("gamemode")
         let roles = interaction.options.getString("roles")
         let hideroles = interaction.options.getString("hideroles")
-        
+
         // ---------- DISCORD CHANNELS AND ROLES ----------
         let alive = interaction.guild.roles.cache.find((r) => r.name === "Alive")
         let narrator = interaction.guild.roles.cache.find((r) => r.name === "Narrator")
@@ -97,40 +96,42 @@ module.exports = {
         let docbg = ["doctor", "bodyguard"]
         let gunnermarks = ["gunner", "marksman"]
         let cupidgr = ["cupid"] //, "grave-robber"]
-        
 
         // get all the channels
-        let channels = interaction.guild.channels.cache.filter(c => c.name.startsWith("priv-") && c.parentId === "892046231516368906")
-        if (channels.size > 0) return interaction.reply(`${getEmoji("error", client)} Please delete the following channels, and use this command again\n\nChannels to delete: ${channels.map(c => `<#${c.id}>`).join("\n")}`)
+        let channels = interaction.guild.channels.cache.filter((c) => c.name.startsWith("priv-") && c.parentId === "892046231516368906")
+        if (channels.size > 0) return interaction.reply(`${getEmoji("error", client)} Please delete the following channels, and use this command again\n\nChannels to delete: ${channels.map((c) => `<#${c.id}>`).join("\n")}`)
 
         // check if mode is custom AND includes invalid roles
         if (gamemode === "custom") {
             let customRoles = roles.split(" ")
             if (customRoles.length !== alive.members.size) return interaction.reply(`${getEmoji("error", client)} The number of roles do not match the number of players in game!`)
 
-            customRoles.forEach(role => {
+            customRoles.forEach((role) => {
                 let roleData = getRole(role)
                 if (!roleData || roleData.name === "Unknown Role") return interaction.reply(`${getEmoji("error", client)} Role \`${role}\` could not be found!`)
                 if (!roleData.description) return interaction.reply(`${getEmoji("error", client)} The description for the \`${roleData.name}\` role is missing!`)
-                //if (banned.includes(roleData.name)) return interaction.reply(`The ${roleData.name} role is currently not available`)        
+                //if (banned.includes(roleData.name)) return interaction.reply(`The ${roleData.name} role is currently not available`)
             })
         }
 
-	if (alive.members.size === 0) return await interaction.reply("Lol there are no players lmao")
+        if (alive.members.size === 0) return await interaction.reply("Lol there are no players lmao")
 
         let oriMsg = await interaction.reply({ content: "Loading roles...", fetchReply: true })
 
         // loop through each player and set their correct nickname
-        alive.members.sort((a, b) => Number(b.nickname) - Number(a.nickname)).map(a => a).forEach((player, i) => {
-            if (player.nickname !== i+1) player.setNickname(`${i+1}`)
-            players.push(player.id)
-            db.set(`player_${player.id}`, { id: player.id, username: player.user.username })
-        })
+        alive.members
+            .sort((a, b) => Number(b.nickname) - Number(a.nickname))
+            .map((a) => a)
+            .forEach((player, i) => {
+                if (player.nickname !== i + 1) player.setNickname(`${i + 1}`)
+                players.push(player.id)
+                db.set(`player_${player.id}`, { id: player.id, username: player.user.username })
+            })
 
         db.set(`players`, players)
 
         if (gamemode == "ranked") excludes = ["grave-robber", "villager", "mayor", "pacifist", "seer-apprentice", "werewolf", "kitten-wolf", "wolf-pacifist"]
-        
+
         random = pull(random, ...excludes, ...banned)
         rrv = pull(rrv, ...excludes, ...banned)
         rsv = pull(rsv, ...excludes, ...banned)
@@ -191,16 +192,14 @@ module.exports = {
                 rww = pull(rww, role)
                 rk = pull(rk, role)
                 rv = pull(rv, role)
-            })            
-	    roleOptions.push(roles.split(" "))
-		
-
+            })
+            roleOptions.push(roles.split(" "))
         }
 
         shuffle(roleOptions)
         rolelist = roleOptions[0].splice(0, db.get(`players`).length)
 
-	let dcMessage = []
+        let dcMessage = []
 
         rolelist.forEach((role, i) => {
             if (role == "rk") {
@@ -240,21 +239,19 @@ module.exports = {
 
         shuffle(rolelist)
 
-        for (let index = 0 ; index < rolelist.length ; index++) {
+        for (let index = 0; index < rolelist.length; index++) {
             let role = rolelist[index]
             let player = db.get(`players`)[index]
             let roleData = getRole(role)
             db.set(`player_${player}.role`, roleData.name)
             db.set(`player_${player}.team`, roleData.team)
             db.set(`player_${player}.aura`, roleData.aura || "Unknown")
-            
+
             let guy = await interaction.guild.members.fetch(player)
 
-            let channel = await interaction.guild.channels.create(
-                `priv-${roleData.name.toLowerCase().replace(/\s/g, "-")}`, {
-                    parent: "892046231516368906"
-                }
-            )
+            let channel = await interaction.guild.channels.create(`priv-${roleData.name.toLowerCase().replace(/\s/g, "-")}`, {
+                parent: "892046231516368906",
+            })
 
             db.set(`player_${player}.channel`, channel.id)
 
@@ -275,13 +272,12 @@ module.exports = {
             await channel.send(`${roleData.description}`)
 
             await channel.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
-            
         }
 
         await oriMsg.edit("If everything looks correct, use `+startgame` to start the game!")
 
         client.commands.get("playerinfo").run(oriMsg, [], client)
- 
+
         db.set(`gamePhase`, -1)
 
         db.set(`gamemode`, gamemode)
@@ -294,7 +290,6 @@ module.exports = {
 
         let dcSent = await dayChat.send(roleMsg)
 
-        await dcSent.pin()        
-
-    }
+        await dcSent.pin()
+    },
 }
