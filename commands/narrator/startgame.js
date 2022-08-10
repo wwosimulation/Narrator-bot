@@ -9,7 +9,6 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        
         // disable the buttons to avoid others from joining (not for beta tho)
         client.commands.get("disable").run(message, ["join"], client)
 
