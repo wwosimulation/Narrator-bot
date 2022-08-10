@@ -12,8 +12,8 @@ module.exports = async (client) => {
     // loop through each spirit seer
     for (const ss of spiritseers) {
         let spirit = db.get(`player_${ss}`) // get the spirit seer player - Object
-        if (!spirit.target) continue; // if the spirit seer doesn't has a target, don't do anything and check for the next spirit seer
-        if (spirit.status === "Dead") continue; // if the spirit seer is dead, don't do anything and check for the next spirit seer
+        if (!spirit.target) continue // if the spirit seer doesn't has a target, don't do anything and check for the next spirit seer
+        if (spirit.status === "Dead") continue // if the spirit seer is dead, don't do anything and check for the next spirit seer
 
         let gamePhase = db.get(`gamePhase`)
         let night = Math.floor(gamePhase / 3) + 1
