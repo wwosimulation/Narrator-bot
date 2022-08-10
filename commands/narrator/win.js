@@ -16,7 +16,7 @@ module.exports = {
 
         let allPlayers = db.get(`players`)
 
-        let winners = allPlayers.filter((p) => args.includes((players.indexOf(p) + 1).toString()))
+        let winners = allPlayers.filter((p) => args.includes((allPlayers.indexOf(p) + 1).toString()))
         let losers = allPlayers.filter((p) => !winners.includes(p))
 
         let winXP = xp.win(allPlayers.length, winTeam)
