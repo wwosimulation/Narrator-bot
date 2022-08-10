@@ -9,18 +9,9 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
+        
         // disable the buttons to avoid others from joining (not for beta tho)
-        let mid = db.get("entermsg")
-        if (mid && !client.user.username.includes("Beta")) {
-            message.guild.channels.cache
-                .find((x) => x.name == "enter-game")
-                .messages.fetch(mid)
-                .then((m) => {
-                    let allc = m.components[0]
-                    allc[0].disabled = true
-                    m.edit({ components: [{ type: 1, components: allc }] })
-                })
-        }
+        client.commands.get("disable").run(message, ["join"], client)
 
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let dead = message.guild.roles.cache.find((r) => r.name === "Dead")
