@@ -9,9 +9,8 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        
         if (args.length !== 2) return await message.channel.send("You need to state the player and the role!")
-        
+
         for (const key in aliases) {
             if (args[1].toLowerCase() === key) args[1] = aliases[key]
         }
