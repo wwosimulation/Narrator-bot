@@ -5,7 +5,6 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-
         if (args.length !== 1) return await message.channel.send("You need to state the player")
 
         const gamePhase = db.get(`gamePhase`)
