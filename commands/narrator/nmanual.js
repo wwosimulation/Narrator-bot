@@ -8,7 +8,7 @@ module.exports = {
         if (args.length !== 1) return await message.channel.send("You need to state the player")
 
         const gamePhase = db.get(`gamePhase`)
-        const night = Mathf.floor(gamePhase / 3) + 1
+        const night = Math.floor(gamePhase / 3) + 1
         const alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         const mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         const narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
