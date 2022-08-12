@@ -17,7 +17,7 @@ module.exports = async (client) => {
         let guy = db.get(`player_${sheriff.target}`) // get the player who the sheriff had selected to check
         if (guy.status === "Alive") continue // if the player is alive, don't do anything and check for the next sheriff
 
-        let channel = message.guild.channels.cache.get(sheriff.channel) // get the channel object - Object
+        let channel = guild.channels.cache.get(sheriff.channel) // get the channel object - Object
 
         // get the player who killed them
         let attacker = db.get(`player_${guy.killedBy}`)

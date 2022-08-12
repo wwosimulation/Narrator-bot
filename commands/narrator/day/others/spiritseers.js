@@ -9,7 +9,7 @@ module.exports = async (client) => {
     const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
     const spiritseers = players.filter((p) => db.get(`player_${p}`).role === "Spirit Seer" && db.get(`player_${p}`).status === "Alive") // get the alive Spirit Seers array - Array<Snowflake>
 
-    // loop through each sheriff
+    // loop through each spirit seer
     for (const ss of spiritseers) {
         let spirit = db.get(`player_${ss}`) // get the spirit seer player - Object
         if (!spirit.target) continue // if the spirit seer doesn't has a target, don't do anything and check for the next spirit seer
@@ -25,7 +25,7 @@ module.exports = async (client) => {
             if (deadPlayers.map((p) => db.get(`player_${p}`).killedBy).includes(target)) status = "red"
         })
 
-        let channel = message.guild.channels.cache.get(sheriff.channel) // get the channel object - Object
+        let channel = guild.channels.cache.get(spirit.channel) // get the channel object - Object
 
         await channel.send(`${getEmoji(status === "blue" ? "nokill" : "yeskill", client)} **${spirit.target.map((c) => `${players.indexOf(c) + 1} ${db.get(`player_${c}`).username}`).join(`** ${status === "blue" ? "and" : "or"} **`)}**`)
     }

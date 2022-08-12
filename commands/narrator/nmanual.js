@@ -1,5 +1,3 @@
-const aliases = require("../../config/src/aliases")
-
 module.exports = {
     name: "nmanual",
     description: "Manual permissions.",
@@ -7,19 +5,10 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        for (const key in aliases) {
-            if (args[1].includes(key)) {
-                if (Object.hasOwnProperty.call(aliases, key)) {
-                    const element = aliases[key]
-                    args[1] = element
-                }
-            }
-        }
-
         if (args.length !== 1) return await message.channel.send("You need to state the player")
 
         const gamePhase = db.get(`gamePhase`)
-        const night = Mathf.floor(gamePhase / 3) + 1
+        const night = Math.floor(gamePhase / 3) + 1
         const alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         const mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         const narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")

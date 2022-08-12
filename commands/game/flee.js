@@ -22,7 +22,7 @@ module.exports = {
                     day.send(`${getEmoji("died", client)} **${players.indexOf(guy.id) + 1} ${target.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** has fled the village!`)
                     guy.roles.add(ids.dead)
                     guy.roles.remove(ids.alive)
-                    db.set(`player_${guy}.status`, "Dead")
+                    db.set(`player_${guy.id}.status`, "Dead")
                     client.emit("playerKilled", db.get(`player_${guy.id}`), "NARRATOR")
                 }
             }

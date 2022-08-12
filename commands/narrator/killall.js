@@ -19,7 +19,7 @@ module.exports = {
 
         alivePlayers.forEach(async (m) => {
             let player = await message.guild.members.fetch(m)
-            let roles = player.roles.cache.map((r) => (r.name === "Dead" ? "892046207428476989" : r.id)).filter((r) => r !== "892046207214551110")
+            let roles = player.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)).filter((r) => r !== "892046207214551110")
             db.set(`player_${m}.status`, "Dead")
             await player.roles.set(roles)
             await daychat.send(`${getEmoji("died", client)}**${players.indexOf(m) + 1} ${db.get(`player_${m}`).username} (${getEmoji(db.get(`player_${m}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${m}`).role})** was killed by the narrator!`)

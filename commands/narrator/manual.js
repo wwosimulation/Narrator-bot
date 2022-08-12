@@ -9,19 +9,14 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        for (const key in aliases) {
-            if (args[1].toLowerCase() == key) {
-                if (Object.hasOwnProperty.call(aliases, key)) {
-                    const element = aliases[key]
-                    args[1] = element
-                }
-            }
-        }
-
         if (args.length !== 2) return await message.channel.send("You need to state the player and the role!")
 
+        for (const key in aliases) {
+            if (args[1].toLowerCase() === key) args[1] = aliases[key]
+        }
+
         const gamePhase = db.get(`gamePhase`)
-        const night = Mathf.floor(gamePhase / 3) + 1
+        const night = Math.floor(gamePhase / 3) + 1
         const alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         const mininarr = message.guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         const narrator = message.guild.roles.cache.find((r) => r.name === "Narrator")
