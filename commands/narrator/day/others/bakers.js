@@ -16,7 +16,11 @@ module.exports = async (client, alivePlayersBefore) => {
 
         // check if the baker has a target
         if (baker.target) {
+           
             let guy = db.get(`player_${baker.target}`) // get the player who the baker had selected to give
+            
+            // if the player isn't alive, skip
+            if (guy?.status !== "Alive") continue; // skip to the next baker
 
             // give the player the sword or shield
             db.set(`player_${baker.target}.bread`, true) // give the player the bread
@@ -25,7 +29,7 @@ module.exports = async (client, alivePlayersBefore) => {
             let channel2 = guild.channels.cache.get(guy.channel) // get the channel of the player
 
             // send the messages to the forger and player
-            await channel1.send(`${getEmoji(`baker_bread`, client)} Player **${players.indexOf(guy.id)} ${guy.username}** has succesfully recieved your bread!`)
+            await channel1.send(`${getEmoji(`baker_bread`, client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** has succesfully recieved your bread!`)
             await channel2.send(`${getEmoji(`baker_bread`, client)} You have recieved a bread from the Baker! This item grants you an additional vote today!`)
             await channel2.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
         }
