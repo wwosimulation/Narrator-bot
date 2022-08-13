@@ -81,10 +81,10 @@ module.exports = {
             db.set(`player_${player.id}.target`, target[0])
             await message.channel.send(`${getEmoji("snipe", client)} You decided to look out for **${players.indexOf(target[0].id) + 1} ${target[0].username}**!`)
         }
-        
+
         if (player.role === "Evil Detective") {
             db.set(`player_${player.id}.target`, target)
-            await message.channel.send(`${getEmoji("evildetcheck", client)} You have decided to investigate **${target.map(p => `${players.indexOf(p)+1} ${db.get(`player_${p}`).username}`).join("** and **")}**. These players will be killed if they belong to different teams!`)
+            await message.channel.send(`${getEmoji("evildetcheck", client)} You have decided to investigate **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("** and **")}**. These players will be killed if they belong to different teams!`)
         }
     },
 }
