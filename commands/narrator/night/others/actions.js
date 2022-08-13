@@ -7,6 +7,7 @@ module.exports = async () => {
 
         // reset the actions
         db.delete(`player_${player}.vote`) // deletes the vote
+        db.delete(`player_${player}.bread`) // deletes the bread, if any
 
         if (["Beast Hunter", "Marksman"].includes(guy.role)) {
             // make their trap or mark active
