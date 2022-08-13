@@ -2,7 +2,6 @@ const { getRole, getEmoji } = require("../../../../config") // functions
 const db = require("quick.db")
 
 module.exports = async (client, alivePlayersBefore) => {
-  
     // define all the variables
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
@@ -28,7 +27,7 @@ module.exports = async (client, alivePlayersBefore) => {
             // send the messages to the forger and player
             await channel1.send(`${getEmoji(`baker_bread`, client)} Player **${players.indexOf(guy.id)} ${guy.username}** has succesfully recieved your bread!`)
             await channel2.send(`${getEmoji(`baker_bread`, client)} You have recieved a bread from the Baker! This item grants you an additional vote today!`)
-            await channel2.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+            await channel2.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
         }
     }
 }
