@@ -19,7 +19,7 @@ module.exports = async (client) => {
 
         if (nb.target?.length !== 2) continue // skip if the naughty boy doesn't have a target
 
-        if (nb.target?.filter((p) => alivePlayers.includes(p)).length !== 2) continue; // skip if one of them are not alive.
+        if (nb.target?.filter((p) => alivePlayers.includes(p)).length !== 2) continue // skip if one of them are not alive.
 
         let player1 = db.get(`player_${nb.target[0]}`) // get the player1 object - Object
         let player2 = db.get(`player_${nb.target[1]}`) // get the player2 object - Object
