@@ -217,9 +217,9 @@ module.exports = {
         // configuring jailer and nightmare permissions
         console.log("jailer running...")
         await channels(client)
-            
+
         sleep(100)
-            
+
         // bakers
         console.log("baker running...")
         await bakers(client, alivePlayers)
