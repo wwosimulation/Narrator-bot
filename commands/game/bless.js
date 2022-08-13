@@ -30,22 +30,28 @@ module.exports = {
         if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
 
         if (!player.hypnotized) {
-
             if (player.id === target) return await message.channel.send("You do know that you cannot bless yourself right?")
 
             if (players.filter((p) => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan").includes(target)) return await message.channel.send("You cannot bless your own werewolf teammate!")
         }
 
         db.subtract(`player_${player.id}.usesB`, 1)
-        db.set(`player_${player.id}.usedBAt`, Math.floor(db.get(`gamePhase`)/3)+1)
+        db.set(`player_${player.id}.usedBAt`, Math.floor(db.get(`gamePhase`) / 3) + 1)
 
         let channel = guild.channels.cache.get(db.get(`player_${target}`)?.channel)
 
-        let dropdown = { type: 3, custom_id: "astral-bless", options: players.filter(p => db.get(`player_${p}`).status === "Alive" && p !== target).map((p, i) => { return { label: `Player ${i+1}`, value: p, description: `${i+1} ${db.get(`player_${p}`).username}` } }) }
+        let dropdown = {
+            type: 3,
+            custom_id: "astral-bless",
+            options: players
+                .filter((p) => db.get(`player_${p}`).status === "Alive" && p !== target)
+                .map((p, i) => {
+                    return { label: `Player ${i + 1}`, value: p, description: `${i + 1} ${db.get(`player_${p}`).username}` }
+                }),
+        }
 
-        await channel?.send({ content: `${getEmoji("astral_wolf", client)} You have been blessed by the Astral Wolf and have been given a chance to view a player's role.`, components: [{ type: 1, components: [dropdown] }]})
-        await channel?.send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+        await channel?.send({ content: `${getEmoji("astral_wolf", client)} You have been blessed by the Astral Wolf and have been given a chance to view a player's role.`, components: [{ type: 1, components: [dropdown] }] })
+        await channel?.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
         await message.channel.send(`${getEmoji("astral_wolf", client)} You have given **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** your blessing! They can now select a player to view their role.`)
-
     },
 }

@@ -196,14 +196,14 @@ module.exports = (client) => {
                 db.set(`player_${interaction.member.id}.vote`, target)
                 db.set(`wwvotemsgid_${interaction.member.id}`, omg.id)
             }
-        } 
+        }
 
         if (interaction.customId === "astral-bless") {
-            interaction.deferUpdate();
-            let target = db.get(`player_${interaction.values[0]}`);
+            interaction.deferUpdate()
+            let target = db.get(`player_${interaction.values[0]}`)
             if (target?.status !== "Alive") return interaction.followUp({ content: "You can only check alive players!", ephemeral: true })
             await interaction.message.edit({ components: [] })
-            await interaction.channel.send(`${getEmoji("seer", client)} You checked **${allPlayers.indexOf(target.id)+1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**!`)
+            await interaction.channel.send(`${getEmoji("seer", client)} You checked **${allPlayers.indexOf(target.id) + 1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**!`)
         }
     })
 }
