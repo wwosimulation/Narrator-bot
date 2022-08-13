@@ -144,7 +144,6 @@ module.exports = async (client) => {
             let target = db.get(`player_${player.target}`)
 
             if (player.target === guy.id) {
-
                 // set the previous roles
                 let previousRoles = player.allRoles || [player.role]
                 previousRoles.push(target.role)
@@ -161,7 +160,7 @@ module.exports = async (client) => {
 
                 await channel.edit({ name: `priv-${target.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
 
-                await channel.bulkDelete(100);
+                await channel.bulkDelete(100)
 
                 await channel.send(getRole(target.role.toLowerCase().replace(/\s/g, "-")).description).then(async (c) => {
                     await c.pin()

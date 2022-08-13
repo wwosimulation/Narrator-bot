@@ -62,8 +62,8 @@ module.exports = async (client) => {
         await channel1.edit({ name: `priv-${player2.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
         await channel2.edit({ name: `priv-${player1.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
 
-        await channel1.bulkDelete(100);
-        await channel2.bulkDelete(100);
+        await channel1.bulkDelete(100)
+        await channel2.bulkDelete(100)
 
         await channel1.send(`Your role has been swapped by the Naughty Boy!\n\n${getRole(player2.role.toLowerCase().replace(/\s/g, "-")).description}`).then(async (c) => {
             await c.pin()

@@ -16,7 +16,7 @@ module.exports = async (client) => {
         let graver = db.get(`player_${gr}`) // get the grave robber player - Object
         let guy = db.get(`player_${graver.target}`) // get the grave robber's target - Object
 
-        if (guy.status !== "Dead") continue; // if the player is not dead, don't do anything and check for the next grave robber
+        if (guy.status !== "Dead") continue // if the player is not dead, don't do anything and check for the next grave robber
 
         let channel = guild.channels.cache.get(graver.channel)
 
@@ -38,7 +38,7 @@ module.exports = async (client) => {
 
         await channel.edit({ name: `priv-${guy.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
 
-        await channel.bulkDelete(100);
+        await channel.bulkDelete(100)
 
         await channel.send(getRole(guy.role.toLowerCase().replace(/\s/g, "-")).description).then(async (c) => {
             await c.pin()

@@ -29,7 +29,7 @@ module.exports = async (client, guy) => {
 
     await channel.edit({ name: "priv-werewolf" }) // edit the channel name
 
-    await channel.bulkDelete(100);
+    await channel.bulkDelete(100)
 
     await channel.send(getRole("werewolf").description).then(async (c) => {
         await c.pin()
