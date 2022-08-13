@@ -49,96 +49,32 @@ module.exports = async (client) => {
 
         // create the channels
 
-        const newChannel1 = await guild.channels.create(`priv-${player2.role.toLowerCase().replace(/\s/g, "-")}`, {
-            parent: "892046231516368906", // the category id
-            position: channel1.rawPosition, // the same position where the channel is
-        })
+        // set the previous roles
+        let previousRoles1 = player1.allRoles || [player1.role]
+        previousRoles1.push(player2.role)
+        db.set(`player_${player1.id}.allRoles`, previousRoles1)
 
-        // give permissions to the grave robber
-        await newChannel1.permissionOverwrites.create(player1.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-        })
+        // set the previous roles
+        let previousRoles2 = player2.allRoles || [player2.role]
+        previousRoles2.push(player1.role)
+        db.set(`player_${player2.id}.allRoles`, previousRoles2)
 
-        // disable permissions for the everyone role
-        await newChannel1.permissionOverwrites.create(guild.id, {
-            VIEW_CHANNEL: false,
-        })
+        await channel1.edit({ name: `priv-${player2.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
+        await channel2.edit({ name: `priv-${player1.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
 
-        // give permissions to narrator
-        await newChannel1.permissionOverwrites.create(narrator.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-            MANAGE_CHANNELS: true,
-            MENTION_EVERYONE: true,
-            ATTACH_FILES: true,
-        })
+        await channel1.bulkDelete(100);
+        await channel2.bulkDelete(100);
 
-        // give permissions to narrator trainee
-        await newChannel1.permissionOverwrites.create(mininarr.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-            MANAGE_CHANNELS: true,
-            MENTION_EVERYONE: true,
-            ATTACH_FILES: true,
-        })
-
-        const newChannel2 = await guild.channels.create(`priv-${player1.role.toLowerCase().replace(/\s/g, "-")}`, {
-            parent: "892046231516368906", // the category id
-            position: channel2.rawPosition, // the same position where the channel is
-        })
-
-        // give permissions to the grave robber
-        await newChannel2.permissionOverwrites.create(player2.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-        })
-
-        // disable permissions for the everyone role
-        await newChannel2.permissionOverwrites.create(guild.id, {
-            VIEW_CHANNEL: false,
-        })
-
-        // give permissions to narrator
-        await newChannel2.permissionOverwrites.create(narrator.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-            MANAGE_CHANNELS: true,
-            MENTION_EVERYONE: true,
-            ATTACH_FILES: true,
-        })
-
-        // give permissions to narrator trainee
-        await newChannel2.permissionOverwrites.create(mininarr.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-            MANAGE_CHANNELS: true,
-            MENTION_EVERYONE: true,
-            ATTACH_FILES: true,
-        })
-
-        await channel1.delete() // delete the old channel
-        await channel2.delete() // delete the old channel
-
-        await newChannel1.send(`Your role has been swapped by the Naughty Boy!\n\n${getRole(player2.role.toLowerCase().replace(/\s/g, "-")).description}`).then(async (c) => {
+        await channel1.send(`Your role has been swapped by the Naughty Boy!\n\n${getRole(player2.role.toLowerCase().replace(/\s/g, "-")).description}`).then(async (c) => {
             await c.pin()
             await c.channel.bulkDelete(1)
         }) // sends the description, pins the message and deletes the last message
-        await newChannel1.send(`<@${player1.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
+        await channel1.send(`<@${player1.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
 
-        await newChannel2.send(`Your role has been swapped by the Naughty Boy!\n\n${getRole(player1.role.toLowerCase().replace(/\s/g, "-")).description}`).then(async (c) => {
+        await channel2.send(`Your role has been swapped by the Naughty Boy!\n\n${getRole(player1.role.toLowerCase().replace(/\s/g, "-")).description}`).then(async (c) => {
             await c.pin()
             await c.channel.bulkDelete(1)
         }) // sends the description, pins the message and deletes the last message
-        await newChannel2.send(`<@${player2.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
-
-        db.set(`player_${nb.target[0]}.channel`, newChannel1.id) // set the new channel id in the database
-        db.set(`player_${nb.target[1]}.channel`, newChannel2.id) // set the new channel id in the database
+        await channel2.send(`<@${player2.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
     }
 }

@@ -74,45 +74,15 @@ module.exports = async (client, alivePlayersBefore) => {
 
         // check if the zombie(s) who bit them are alive
         if (guy.bittenBy.filter((p) => alivePlayersBefore.includes(p)).length > 0) {
+
             // convert the player, yay
+
+            // set the previous roles
+            let previousRoles = guy.allRoles || [guy.role]
+            previousRoles.push("Zombie")
+            db.set(`player_${guy.id}.allRoles`, previousRoles)
+
             let channel = guild.channels.cache.get(guy.channel)
-
-            const newChannel = await guild.channels.create("priv-zombie", {
-                parent: "892046231516368906", // the category id
-                position: channel.position - 1, // the same position where the channel is
-            })
-
-            // give permissions to the converted player
-            await newChannel.permissionOverwrites.create(guy.id, {
-                SEND_MESSAGES: true,
-                VIEW_CHANNEL: true,
-                READ_MESSAGE_HISTORY: true,
-            })
-
-            // disable permissions for the everyone role
-            await newChannel.permissionOverwrites.create(guild.id, {
-                VIEW_CHANNEL: false,
-            })
-
-            // give permissions to narrator
-            await newChannel.permissionOverwrites.create(narrator.id, {
-                SEND_MESSAGES: true,
-                VIEW_CHANNEL: true,
-                READ_MESSAGE_HISTORY: true,
-                MANAGE_CHANNELS: true,
-                MENTION_EVERYONE: true,
-                ATTACH_FILES: true,
-            })
-
-            // give permissions to narrator trainee
-            await newChannel.permissionOverwrites.create(mininarr.id, {
-                SEND_MESSAGES: true,
-                VIEW_CHANNEL: true,
-                READ_MESSAGE_HISTORY: true,
-                MANAGE_CHANNELS: true,
-                MENTION_EVERYONE: true,
-                ATTACH_FILES: true,
-            })
 
             await zombiesChat.permissionOverwrites.create(guy.id, {
                 SEND_MESSAGES: true,
@@ -120,17 +90,18 @@ module.exports = async (client, alivePlayersBefore) => {
                 READ_MESSAGE_HISTORY: true,
             })
 
-            await channel.delete() // delete the original channel
+            await channel.edit({ name: "priv-zombie" }) // edit the channel name
 
-            await newChannel.send(getRole("zombie").description).then(async (c) => {
+            await channel.bulkDelete(100);
+
+            await channel.send(getRole("zombie").description).then(async (c) => {
                 await c.pin()
                 await c.channel.bulkDelete(1)
             }) // sends the description, pins the message and deletes the last message
-            await newChannel.send(`<@${result.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
+            await channel.send(`<@${result.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
 
             db.set(`player_${guy.id}.role`, "Zombie") // changes the player's role in the database
             db.set(`player_${guy.id}.team`, "Zombie") // changes the player's team in the database
-            db.set(`player_${guy.id}.channel`, newChannel.id) // changes the player's channel in the database
             db.set(`player_${guy.id}.bittenAt`, db.get(`gamePhase`)) // set when they were turned
             db.delete(`player_${guy.id}.bitten`) // delete the bitten database since player is converted
             db.delete(`player_${guy.id}.bittenBy`) // delete this since player is converted
