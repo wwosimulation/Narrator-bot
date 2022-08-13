@@ -74,7 +74,6 @@ module.exports = async (client, alivePlayersBefore) => {
 
         // check if the zombie(s) who bit them are alive
         if (guy.bittenBy.filter((p) => alivePlayersBefore.includes(p)).length > 0) {
-
             // convert the player, yay
 
             // set the previous roles
@@ -92,7 +91,7 @@ module.exports = async (client, alivePlayersBefore) => {
 
             await channel.edit({ name: "priv-zombie" }) // edit the channel name
 
-            await channel.bulkDelete(100);
+            await channel.bulkDelete(100)
 
             await channel.send(getRole("zombie").description).then(async (c) => {
                 await c.pin()

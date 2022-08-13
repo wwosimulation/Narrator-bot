@@ -113,7 +113,6 @@ module.exports = async (client) => {
 
                     // check if the result type is an object - indicating that there were no protections
                     if (typeof result === "object" && guy.role !== "Accomplice") {
-
                         // convert the player then
                         let previousRoles = result.allRoles || [result.role]
                         previousRoles.push("Accomplice")
@@ -130,7 +129,7 @@ module.exports = async (client) => {
 
                         await channel.edit({ name: "priv-accomplice" }) // edit the channel name
 
-                        await channel.bulkDelete(100);
+                        await channel.bulkDelete(100)
 
                         await channel.send(getRole("accomplice").description).then(async (c) => {
                             await c.pin()
