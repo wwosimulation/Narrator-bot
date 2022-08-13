@@ -23,13 +23,13 @@ module.exports = {
         if (args.length === 0) return await message.channel.send("You do know you need to tell me the player right?")
         if (player.role === "Marksman" && player.uses === 0) return await message.channel.send("You already used up your abilities!")
         if (player.role === "Astral Wolf" && player.usesB !== 0) return await message.channel.send("You need to bless someone before you can mark players!")
-        if (player.role === "Astral Wolf" && player.usedBAt === Math.floor(gamePhase/3)+1) return await message.channel.send("You need to wait a night before you can mark players! You just blessed someone.")
+        if (player.role === "Astral Wolf" && player.usedBAt === Math.floor(gamePhase / 3) + 1) return await message.channel.send("You need to wait a night before you can mark players! You just blessed someone.")
         if (player.role === "Astral Wolf" && args.length > 3) return await message.channel.send("You can only mark up to 3 players!")
 
         let obj = {
             Marksman: getEmoji("mark", client),
             "Beast Hunter": getEmoji("trap", client),
-            "Astral Wolf": getEmoji("mark", client)
+            "Astral Wolf": getEmoji("mark", client),
         }
 
         if (args[0].toLowerCase() === "cancel") {
@@ -67,8 +67,6 @@ module.exports = {
             return
         }
 
-        
-
         let target = [players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])]
         if (player.role === "Astral Wolf" && args.length === 2) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]))
         if (player.role === "Astral Wolf" && args.length === 3) target.push(players[Number(args[2]) - 1] || players.find((p) => p === args[2]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[2]))
@@ -82,7 +80,7 @@ module.exports = {
         if (player.role === "Astral Wolf" && args.length === 3 && db.get(`player_${target[2]}`).status !== "Alive") return await message.channel.send(`You need to select an ALIVE player!`)
 
         if (db.get(`player_${target[0]}`).role === "President" && player.role === "Marksman") return await message.channel.send("You cannot mark the President!")
-        if (player.role === "Astral Wolf" && target.map(p => db.get(`player_${p}`).role).includes("President")) return await message.channel.send("You cannot mark the President!")
+        if (player.role === "Astral Wolf" && target.map((p) => db.get(`player_${p}`).role).includes("President")) return await message.channel.send("You cannot mark the President!")
 
         if (!player.hypnotized) {
             if (db.get(`player_${player.id}`).sected === target[0] && player.role === "Marksman") return await message.channel.send("You cannot mark your own Sect Leader")
@@ -95,7 +93,7 @@ module.exports = {
 
             if (player.role === "Astral Wolf" && target.includes(player.id)) return await message.channel.send("You cannot mark yourself!")
 
-            if (player.role === "Astral Wolf" && target.filter(p => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan").length > 0) return await message.channel.send("You cannot mark your own werewolf teammate!")
+            if (player.role === "Astral Wolf" && target.filter((p) => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan").length > 0) return await message.channel.send("You cannot mark your own werewolf teammate!")
         }
 
         db.set(`player_${player.id}.target`, target[0])
@@ -105,6 +103,6 @@ module.exports = {
         db.delete(`player_${player.id}.placed`)
 
         await message.channel.send(`${obj[player.role]} You have set your ${player.role === "Beast Hunter" ? "trap" : "mark"} on **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**!`)
-        if (player.role === "Astral Wolf") await message.channel.send(`${obj[player.role]} You have set your mark on **${target.map(p => `${players.indexOf(p)+1} ${db.get(`player_${p}`).username}`).join("**, **")}**!`)
+        if (player.role === "Astral Wolf") await message.channel.send(`${obj[player.role]} You have set your mark on **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("**, **")}**!`)
     },
 }
