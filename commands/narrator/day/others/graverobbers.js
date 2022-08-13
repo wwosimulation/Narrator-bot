@@ -14,9 +14,9 @@ module.exports = async (client) => {
     // loop through each grave robber
     for (const gr of graverobbers) {
         let graver = db.get(`player_${gr}`) // get the grave robber player - Object
-        let guy = db.get(`player_${graver.target}`) // get the player who the medium had selected to revive
+        let guy = db.get(`player_${graver.target}`) // get the grave robber's target - Object
 
-        if (guy.status === "Alive" || guy.corrupted === true) continue // if the player is alive or is corrupted, don't do anything and check for the next grave robber
+        if (guy.status !== "Dead") continue; // if the player is not dead, don't do anything and check for the next grave robber
 
         let channel = guild.channels.cache.get(graver.channel)
 
@@ -36,51 +36,15 @@ module.exports = async (client) => {
         previousRoles.push(db.get(`player_${gr}.role`)) // push them to the array
         db.set(`player_${gr}.allRoles`, previousRoles) // set them into the database
 
-        // create the channel
-        const newChannel = await guild.channels.create(`priv-${guy.role.toLowerCase().replace(/\s/g, "-")}`, {
-            parent: "892046231516368906", // the category id
-            position: channel.rawPosition, // the same position where the channel is
-        })
+        await channel.edit({ name: `priv-${guy.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
 
-        // give permissions to the grave robber
-        await newChannel.permissionOverwrites.create(graver.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-        })
+        await channel.bulkDelete(100);
 
-        // disable permissions for the everyone role
-        await newChannel.permissionOverwrites.create(guild.id, {
-            VIEW_CHANNEL: false,
-        })
-
-        // give permissions to narrator
-        await newChannel.permissionOverwrites.create(narrator.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-            MANAGE_CHANNELS: true,
-            MENTION_EVERYONE: true,
-            ATTACH_FILES: true,
-        })
-
-        // give permissions to narrator trainee
-        await newChannel.permissionOverwrites.create(mininarr.id, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true,
-            MANAGE_CHANNELS: true,
-            MENTION_EVERYONE: true,
-            ATTACH_FILES: true,
-        })
-
-        await channel.delete() // delete the old channel
-
-        await newChannel.send(getRole(guy.role.toLowerCase().replace(/\s/g, "-")).description).then(async (c) => {
+        await channel.send(getRole(guy.role.toLowerCase().replace(/\s/g, "-")).description).then(async (c) => {
             await c.pin()
             await c.channel.bulkDelete(1)
         }) // sends the description, pins the message and deletes the last message
-        await newChannel.send(`<@${graver.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
+        await channel.send(`<@${graver.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
 
         if (guy.team === "Werewolf") {
             // give perms to the werewolves' chat

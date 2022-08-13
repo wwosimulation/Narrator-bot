@@ -15,44 +15,6 @@ module.exports = async (client, guy) => {
     previousRoles.push("Werewolf")
     db.set(`player_${guy}.allRoles`, previousRoles)
 
-    // create a new werewolf channel for the converted player
-    const newChannel = await guild.channels.create("priv-werewolf", {
-        parent: "892046231516368906", // the category id
-        position: channel.rawPosition, // the same position where the channel is
-    })
-
-    // give permissions to the converted player
-    await newChannel.permissionOverwrites.create(guy, {
-        SEND_MESSAGES: true,
-        VIEW_CHANNEL: true,
-        READ_MESSAGE_HISTORY: true,
-    })
-
-    // disable permissions for the everyone role
-    await newChannel.permissionOverwrites.create(guild.id, {
-        VIEW_CHANNEL: false,
-    })
-
-    // give permissions to narrator
-    await newChannel.permissionOverwrites.create(narrator.id, {
-        SEND_MESSAGES: true,
-        VIEW_CHANNEL: true,
-        READ_MESSAGE_HISTORY: true,
-        MANAGE_CHANNELS: true,
-        MENTION_EVERYONE: true,
-        ATTACH_FILES: true,
-    })
-
-    // give permissions to narrator trainee
-    await newChannel.permissionOverwrites.create(mininarr.id, {
-        SEND_MESSAGES: true,
-        VIEW_CHANNEL: true,
-        READ_MESSAGE_HISTORY: true,
-        MANAGE_CHANNELS: true,
-        MENTION_EVERYONE: true,
-        ATTACH_FILES: true,
-    })
-
     await werewolvesChat.permissionOverwrites.create(guy, {
         SEND_MESSAGES: true,
         VIEW_CHANNEL: true,
@@ -65,17 +27,18 @@ module.exports = async (client, guy) => {
         READ_MESSAGE_HISTORY: true,
     })
 
-    await channel.delete() // delete the original channel
+    await channel.edit({ name: "priv-werewolf" }) // edit the channel name
 
-    await newChannel.send(getRole("werewolf").description).then(async (c) => {
+    await channel.bulkDelete(100);
+
+    await channel.send(getRole("werewolf").description).then(async (c) => {
         await c.pin()
         await c.channel.bulkDelete(1)
     }) // sends the description, pins the message and deletes the last message
-    await newChannel.send(`<@${guy}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
+    await channel.send(`<@${guy}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
 
     db.set(`player_${guy}.role`, "Werewolf") // changes the player's role in the database
     db.set(`player_${guy}.team`, "Werewolf") // changes the player's team in the database
-    db.set(`player_${guy}.channel`, newChannel.id) // changes the player's channel in the database
 
     // send a message to the Werewolves chat
     werewolvesChat.send(`${getEmoji("werewolf", client)} Player **${players.indexOf(guy) + 1} ${player.username}** has been converted into a Werewolf!`) // sends a message
