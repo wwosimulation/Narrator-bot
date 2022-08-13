@@ -17,9 +17,9 @@ module.exports = async (client) => {
         // check if the forger has a target
         if (forger.target) {
             let guy = db.get(`player_${forger.target}`) // get the player who the forger had selected to give
-            
+
             // check to see if the forger's target is alive
-            if (guy?.status !== "Alive") continue; // skip to the next forger if they are not alive
+            if (guy?.status !== "Alive") continue // skip to the next forger if they are not alive
 
             // give the player the sword or shield
             db.set(`player_${forger.target}.${forger.itemType}`, true) // give the player the shield or the sword
@@ -30,7 +30,7 @@ module.exports = async (client) => {
             let channel2 = guild.channels.cache.get(guy.channel) // get the channel of the player
 
             // send the messages to the forger and player
-            await channel1.send(`${getEmoji(`get${forger.itemType}`, client)} Player **${players.indexOf(guy.id)+1} ${guy.username}** has succesfully recieved your **${forger.itemType}**.`)
+            await channel1.send(`${getEmoji(`get${forger.itemType}`, client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** has succesfully recieved your **${forger.itemType}**.`)
             await channel2.send(`${getEmoji(`get${forger.itemType}`, client)} You have recieved a **${forger.itemType}** from the Forger! ${forger.itemType === "shield" ? "" : `To use it, do \`+sword [player number]\``}`)
         }
     }
