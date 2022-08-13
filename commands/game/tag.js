@@ -8,8 +8,10 @@ module.exports = {
     aliases: ["revenge", "avenge", "target", "bind"],
     gameOnly: true,
     run: async (message, args, client) => {
+        
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`) || []
+        const wwChat = message.guild.channels.cache.find(c => c.name === "werewolves-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
@@ -33,7 +35,7 @@ module.exports = {
         }
 
         if (args[0].toLowerCase() === "cancel") {
-            if (player.role === "Split Wolf" && player.uses === 0) return await message.channel.send("Your target has already been binded with you! You can no longer cancel this ability!")
+            if (player.role === "Split Wolf") return await message.channel.send("You cannot cancel your ability as Split Wolf")
             db.delete(`player_${player.id}.target`)
             return await message.channel.send(`${emotes[player.role]} Done! That player is no longer tagged!`)
         }
@@ -51,9 +53,13 @@ module.exports = {
         if (!player.hypnotized && db.get(`player_${player.id}`).sected === target) return await message.channel.send("You cannot select your own Sect Leader!")
 
         if (!player.hypnotized && target === player.id) return await message.channel.send("Why do you want to select yourself?")
+        
+        if (player.role === "Split Wolf" && player.target) return await message.channel.send("You have already selected your target! This is permanent and you cannot cancel or change your target.")
 
         db.set(`player_${player.id}.target`, target)
 
         await message.channel.send(`${emotes[player.role]} You have decided to ${player.role === "Split Wolf" ? "bind with" : "tag"} **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**!`)
+        
+        if (player.role === "Split Wolf") await wwChat.send(`${emotes[player.role]} **${players.indexOf(player.id)+1} ${player.username} (${getEmoji("split_wolf"), client} Split Wolf)** has chosen to bind with player **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**!`)
     },
 }
