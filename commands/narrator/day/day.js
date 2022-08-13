@@ -50,6 +50,7 @@ module.exports = {
         let channels = require("./others/channels.js")
         let redladies = require("./others/redladies.js")
         let secthunters = require("./others/secthunters.js")
+        let bakers = require("./others/bakers.js")
         let sheriffs = require("./others/sheriffs.js")
         let spiritseers = require("./others/spiritseers.js")
         let resets = require("./others/reset.js")
@@ -216,6 +217,12 @@ module.exports = {
         // configuring jailer and nightmare permissions
         console.log("jailer running...")
         await channels(client)
+            
+        sleep(100)
+            
+        // bakers
+        console.log("baker running...")
+        await bakers(client, alivePlayers)
 
         sleep(200)
 
