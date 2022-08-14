@@ -104,7 +104,12 @@ module.exports = {
 
         await message.channel.send(`${obj[player.role]} You have set your ${player.role === "Beast Hunter" ? "trap" : "mark"} on **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**!`)
         if (player.role === "Astral Wolf") {
-            target.forEach(p => db.set(`player_${p}.chained`, target.filter(c => c !== p)))
+            target.forEach((p) =>
+                db.set(
+                    `player_${p}.chained`,
+                    target.filter((c) => c !== p)
+                )
+            )
             await message.channel.send(`${obj[player.role]} You have set your mark on **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("**, **")}**!`)
         }
     },
