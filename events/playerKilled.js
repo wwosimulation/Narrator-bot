@@ -117,21 +117,21 @@ module.exports = async (client) => {
                 db.set(`player_${guy.couple}.status`, "Dead")
                 await dayChat.send(`${getEmoji("couple", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** lost the love of their life and fled the village!`)
                 await member.roles.set(memberRoles)
-                client.emit("playerKilled", player, guy)
+                client.emit("playerKilled", db.get(`player_${guy.couple}`), guy)
             }
         }
 
-        if (guy.binded) {
-            let player = db.get(`player_${guy.binded}`) || { status: "Dead" }
-
-            if (player.status === "Alive") {
-                let member = await guild.members.fetch(player.id)
+        if (guy.chained) {
+            guy.chained?.forEach(async chain => {
+                let target = db.get(`player_${chain}`)
+                if (chain?.status !== "Alive") return;
+                let member = await guild.members.fetch(target.id)
                 let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
-                db.set(`player_${guy.binded}.status`, "Dead")
-                await dayChat.send(`${getEmoji("binded", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** died as well as they were binded with another player!`)
+                db.set(`player_${target.id}.status`, "Dead")
+                await dayChat.send(`${getEmoji("astral_chain", client)} Player **${players.indexOf(target.id) + 1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})** was chained to another player by the Astral Wolf and has died!`)
                 await member.roles.set(memberRoles)
-                client.emit("playerKilled", player, guy)
-            }
+                client.emit("playerKilled", db.get(`player_${chain}`), guy)
+            })
         }
 
         if (guy.role === "Kitten Wolf") {

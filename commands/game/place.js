@@ -29,7 +29,7 @@ module.exports = {
         let obj = {
             Marksman: getEmoji("mark", client),
             "Beast Hunter": getEmoji("trap", client),
-            "Astral Wolf": getEmoji("mark", client),
+            "Astral Wolf": getEmoji("astral_chain", client),
         }
 
         if (args[0].toLowerCase() === "cancel") {
@@ -103,6 +103,9 @@ module.exports = {
         db.delete(`player_${player.id}.placed`)
 
         await message.channel.send(`${obj[player.role]} You have set your ${player.role === "Beast Hunter" ? "trap" : "mark"} on **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**!`)
-        if (player.role === "Astral Wolf") await message.channel.send(`${obj[player.role]} You have set your mark on **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("**, **")}**!`)
+        if (player.role === "Astral Wolf") {
+            target.forEach(p => db.set(`player_${p}.chained`, target.filter(c => c !== p)))
+            await message.channel.send(`${obj[player.role]} You have set your mark on **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("**, **")}**!`)
+        }
     },
 }
