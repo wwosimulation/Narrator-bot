@@ -8,6 +8,10 @@ module.exports = async (client) => {
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day chat channel - Object
     const wwChat = guild.channels.cache.find((c) => c.name === "werewolves-chat") // get the werewolves chat channel - Object
     const wwVote = guild.channels.cache.find((c) => c.name === "ww-vote") // get the werewolves vote channel - Object
+    const vote_channel = message.guild.channels.cache.find((c) => c.name === "vote-chat") // get the vote chat channel - Object
+
+    // clear the votes from the vote-chat
+    vote_channel.bulkDelete(vote_channel.messages.cache.filter((msg) => !msg.pinned))
 
     let droppy = { type: 3, custom_id: "wolves-vote", options: [] }
     alivePlayers.forEach((p) => {
