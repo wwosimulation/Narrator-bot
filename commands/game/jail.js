@@ -23,7 +23,7 @@ module.exports = {
 
         const emotes = {
             Jailer: getEmoji("jailerselect", client),
-            Warden: getEmoji("warden_jail", client)
+            Warden: getEmoji("warden_jail", client),
         }
 
         if (args[0].toLowerCase() === "cancel") {
@@ -39,9 +39,9 @@ module.exports = {
         if (!target[0]) return await message.channel.send(`I could not find the player with the query: \`${args[0]}\`!`)
         if (player.role === "Warden" && !target[1]) return await message.channel.send(`I could not find the player with the query: \`${args[1]}\`!`)
 
-        if (target.map(p => db.get(`player_${p}`).status).includes("Dead")) return await message.channel.send("You need to select an ALIVE player!")
+        if (target.map((p) => db.get(`player_${p}`).status).includes("Dead")) return await message.channel.send("You need to select an ALIVE player!")
 
-        if (target.map(p => db.get(`player_${p}`).role).includes("President")) return await message.channel.send("You cannot jail the President!")
+        if (target.map((p) => db.get(`player_${p}`).role).includes("President")) return await message.channel.send("You cannot jail the President!")
 
         if (target.includes(player.id)) return await message.channel.send("You do know that you cannot jail yourself right?")
 
@@ -52,6 +52,5 @@ module.exports = {
             db.set(`player_${player.id}.target`, target)
             await message.channel.send(`${getEmoji("warden_jail", client)} You have decided to jail **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}** and **${players.indexOf(target[1]) + 1} ${db.get(`player_${target[1]}`).username}**!`)
         }
-        
     },
 }

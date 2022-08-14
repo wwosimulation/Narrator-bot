@@ -249,13 +249,13 @@ module.exports = (client) => {
             if (!player) return interaction.reply({ content: "This button is not for you!", ephemeral: true })
             if (player.team !== "Werewolf" || player.role === "Werewolf Fan") return interaction.reply({ content: "This button is not for you!", ephemeral: true })
             if (player.status !== "Alive") return interaction.reply({ content: "This button is not for you!", ephemeral: true })
-            await interaction.deferUpdate();
-            let dayChat = interaction.guild.channels.cache.find(c => c.name === "day-chat")
-            let warden = db.get(`players`).find(p => db.get(`player_${p}`).role === "Warden")
+            await interaction.deferUpdate()
+            let dayChat = interaction.guild.channels.cache.find((c) => c.name === "day-chat")
+            let warden = db.get(`players`).find((p) => db.get(`player_${p}`).role === "Warden")
             let member = await interaction.guild.members.fetch(warden)
             db.set(`player_${warden}.status`, "Dead")
-            await member.roles.set(member.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id))
-            await dayChat.send(`${getEmoji("warden_ww_jail")} **${db.get(`players`).indexOf(warden)+1} ${player.username} (${getEmoji("warden", client)} Warden)** jailed two werewolves. The werewolves broke out of their prison and killed the warden!`)
+            await member.roles.set(member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)))
+            await dayChat.send(`${getEmoji("warden_ww_jail")} **${db.get(`players`).indexOf(warden) + 1} ${player.username} (${getEmoji("warden", client)} Warden)** jailed two werewolves. The werewolves broke out of their prison and killed the warden!`)
             client.emit("playerKilled", db.get(`player_${player.id}`), db.get(`player_${interaction.customId.split("-")[2]}`))
             await interaction.edit({ content: "You have killed the warden!", components: [] })
         }
