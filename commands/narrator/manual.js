@@ -68,6 +68,8 @@ module.exports = {
 
         await channel.send(getRole(role).description || "Description not found").then((msg) => msg.pin().then((msg) => msg.channel.bulkDelete(1)))
 
+        await channel.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
+
         let object = {
             id: player.id,
             username: player.user.username,
