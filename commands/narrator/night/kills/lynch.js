@@ -28,6 +28,8 @@ module.exports = async (client) => {
 
         if (player.role === "Mayor" && player.revealed === true) countedVotes[vote[1]] += 1 // add another vote if they are a revealed Mayor
 
+        if (player.role === "Preacher" && player.preachVotes) countedVotes[vote[1]] += player.preachVotes // add another vote if the preacher has additional votes
+
         if (player.bread === true) countedVotes[vote[1]] += 1 // add another vote if they have a bread (given by Baker)
 
         if (isShadow === true && player.team === "Werewolf") countedVotes[vote[1]] += 1 // add another vote if shadow is on, and they are a Werewolf
@@ -70,11 +72,11 @@ module.exports = async (client) => {
             } else {
                 // kill the player normally
                 db.set(`player_${guy.id}.status`, "Dead") // change the status of the player
-                client.emit("playerKilled", db.get(`player_${guy.id}`), "village")
                 let member = await guild.members.fetch(guy.id) // get the discord member - Object
                 let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the roles of the discord member
                 await dayChat.send(`${getEmoji("votingme", client)} The Villagers lynched **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase().replace(/\s/g, "_"), client)} ${guy.role})**!`) // send a message to day chat
                 await member.roles.set(memberRoles) // set the roles
+                client.emit("playerKilled", db.get(`player_${guy.id}`), "village")
             }
         }
     }

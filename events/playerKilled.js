@@ -18,6 +18,7 @@ module.exports = async (client) => {
         const doppelgangers = players.filter((p) => db.get(`player_${p}`).role === "Doppelganger" && db.get(`player_${p}`).status === "Alive")
         const splitwolfs = players.filter((p) => db.get(`player_${p}`).role === "Split Wolf" && db.get(`player_${p}`).status === "Alive")
         const redladies = players.filter((p) => db.get(`player_${p}`).role === "Red Lady" && db.get(`player_${p}`).status === "Alive")
+        const preachers = players.filter((p) => db.get(`player_${p}`).role === "Preacher" && db.get(`player_${p}`).status === "Alive")
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
 
@@ -31,6 +32,17 @@ module.exports = async (client) => {
 
         db.delete(`player_${guy.id}.corrupted`)
         db.delete(`player_${guy.id}.poisoned`)
+
+        if (guy.team === "Village") {
+            for (const preacher of preachers) {
+                let player = db.get(`player_${preacher}`)
+                if (player.preachVotes === 3) continue // maximum additional votes is 3
+                let channel = guild.channels.cache.get(player.channel) // get the channel
+                db.add(`player_${preacher}.preachVotes`, 1) // add into the database an additional vote
+                await channel?.send(`The villagers have mistakenly lynched one of their own!\nYou get an additional permanent vote.`)
+                await channel?.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+            }
+        }
 
         if (guy.role === "Sect Leader") {
             let members = guy.sectMembers?.filter((p) => db.get(`player_${p}`).status === "Alive") || []
