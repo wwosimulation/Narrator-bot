@@ -122,9 +122,9 @@ module.exports = async (client) => {
         }
 
         if (guy.chained) {
-            guy.chained?.forEach(async chain => {
+            guy.chained?.forEach(async (chain) => {
                 let target = db.get(`player_${chain}`)
-                if (chain?.status !== "Alive") return;
+                if (chain?.status !== "Alive") return
                 let member = await guild.members.fetch(target.id)
                 let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                 db.set(`player_${target.id}.status`, "Dead")
