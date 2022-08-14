@@ -40,7 +40,7 @@ module.exports = async (client) => {
                 let channel = guild.channels.cache.get(player.channel) // get the channel
                 db.add(`player_${preacher}.preachVotes`, 1) // add into the database an additional vote
                 await channel?.send(`The villagers have mistakenly lynched one of their own!\nYou get an additional permanent vote.`)
-                await channel?.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+                await channel?.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
             }
         }
 
