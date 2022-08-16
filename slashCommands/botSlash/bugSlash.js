@@ -36,7 +36,6 @@ module.exports = {
         // wait for the user to click the button
         let coll = repl.createMessageComponentCollector({ idle: 15_000 })
         coll.on("collect", async (button) => {
-            if (button.user.id != interaction.user.id) return interaction.reply({ content: "This is not your button. Please request your own one.", ephemeral: true })
             // bug modal
             let modal = {
                 title: "Bug Report",
