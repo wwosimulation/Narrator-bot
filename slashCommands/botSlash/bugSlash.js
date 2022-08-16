@@ -1,42 +1,10 @@
-const { github, ids } = require("../../config")
+const { fn } = require("../../config")
 
 module.exports = {
     command: {
         name: "bug",
         description: "Report a bug",
         defaultPermission: true,
-        options: [
-            {
-                type: "STRING",
-                name: "title",
-                description: "Select a short fitting title for this bug",
-                required: true,
-            },
-            {
-                type: "STRING",
-                name: "description",
-                description: "Describe the bug more detailed and how you can reproduce it",
-                required: true,
-            },
-            {
-                type: "STRING",
-                name: "part",
-                description: "What part of the bot are you seeing the problem on?",
-                required: true,
-                choices: [
-                    { name: "Game - Narrator", value: "Game - Narrator" },
-                    { name: "Game - Player", value: "Game - Player" },
-                    { name: "Economy", value: "Economy" },
-                    { name: "Other", value: "Other" },
-                ],
-            },
-            {
-                type: "STRING",
-                name: "gamecode",
-                description: "If this is a bug in a game, what was the game code?",
-                required: false,
-            },
-        ],
     },
     permissions: {
         sim: [{ id: "606138123260264488", type: "ROLE", permission: true }],
@@ -44,29 +12,87 @@ module.exports = {
     },
     server: ["sim", "game"],
     run: async (interaction, client) => {
-        let body = `### What happened?
-
-${interaction.options.getString("description")}
-
-### What part of the bot are you seeing the problem on?
-
-${interaction.options.getString("part") || "Other"}`
-
-        if (interaction.options.getString("part").startsWith("Game") && interaction.options.getString("gamecode")) body += `\n### Game Code\n\n${interaction.options.getString("gamecode")}`
-        body += `\n<hr>\n\nThe above bug was reported by ${interaction.user.tag}\nUser ID: ${interaction.user.id}\nLocation: ${(interaction.guildId == ids.server.game ? "" : `[#${interaction.channel.name}](https://discord.com/channels/${interaction.guildId + "/" + interaction.channelId}) (${interaction.channel.id}) in `) + `[${interaction.guild.name}](https://discord.com/channels/${interaction.guildId})`}`
-
-        let labels = ["Bug", "Unverified"]
-        if (interaction.options.getString("part") == "Economy") labels.push("Economy")
-
-        let issue = {
-            title: `BUG: ${interaction.options.getString("title") || "N/A"}`,
-            body,
-            labels,
-            owner: github.org,
-            repo: github.repo,
+        // create an embed
+        let embed = {
+            title: "Bug Reports",
+            description: "To start a bug report, please click the button below. You will be asked to provide some information about the bug.\nDo not abuse this feature as it can get you banned from using the bot.",
+            color: 0x2f3136,
         }
 
-        let done = await client.github.request(`POST /repos/${github.org}/${github.repo}/issues`, issue)
-        interaction.reply({ content: interaction.l10n("bugSuccess", { url: done.data.html_url }), ephemeral: true })
+        // create a button to start the bug report
+        let button = {
+            type: 1,
+            components: [{
+                type: 2,
+                label: "Start Bug Report",
+                custom_id: "bug-start",
+                style: 3,
+            }]
+        }
+
+        // send the embed and button
+        let repl = await interaction.reply({ embeds: [embed], components: [button], fetchReply: true })
+
+        // wait for the user to click the button
+        let coll = repl.createMessageComponentCollector({ idle: 15_000 })
+        coll.on("collect", async (button) => {
+            if (button.user.id != interaction.user.id) return interaction.reply({ content: "This is not your button. Please request your own one.", ephemeral: true })
+            // bug modal
+            let modal = {
+                title: "Bug Report",
+                custom_id: "bug-modal",
+                components: [{
+                    type: 1,
+                    components: [{
+                        type: 4,
+                        custom_id: "bug-title",
+                        label: "Title",
+                        style: 1,
+                        placeholder: "Enter a short title for this bug",
+                        required: true,
+                        min_length: 1,
+                    }]
+                }, {
+                    type: 1,
+                    components: [{
+                        type: 4,
+                        custom_id: "bug-description",
+                        label: "Description",
+                        style: 2,
+                        placeholder: "Describe the bug more detailed and how you can reproduce it",
+                        required: true,
+                        min_length: 20,
+                    }]
+                }, {
+                    type: 1,
+                    components: [{
+                        type: 4,
+                        custom_id: "bug-part",
+                        label: "Part",
+                        style: 1,
+                        placeholder: "What part of the bot are you seeing the problem on?",
+                        required: true,
+                        min_length: 4,
+                    }]
+                }, {
+                    type: 1,
+                    components: [{
+                        type: 4,
+                        custom_id: "bug-gamecode",
+                        label: "Game Code",
+                        style: 1,
+                        placeholder: "If this is a bug in a game, what was the game code?",
+                        required: false,
+                    }]
+                }]
+            }
+
+            // send the modal
+            await button.showModal(modal)
+        })
+
+        coll.on("end", async () => {
+            interaction.editReply(fn.disableButtons(repl));
+        })
     },
 }

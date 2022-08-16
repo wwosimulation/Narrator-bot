@@ -208,7 +208,7 @@ client.on("ready", async () => {
     console.log("Connected!")
     client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
-    if (!client.user.username.includes("Beta")) {
+    if (client.user.username.includes("Beta")) {
         Sentry.init({
             dsn: process.env.SENTRY,
             tracesSampleRate: 1.0,

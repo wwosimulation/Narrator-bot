@@ -1,49 +1,10 @@
-const { github, ids } = require("../../config")
+const { github, ids, fn } = require("../../config")
 
 module.exports = {
     command: {
-        name: "suggest",
+        name: "suggestion",
         description: "Suggest a new feature for the bot.",
         defaultPermission: true,
-        options: [
-            {
-                type: "STRING",
-                name: "title",
-                description: "Select a short fitting title for this suggestion",
-                required: true,
-            },
-            {
-                type: "STRING",
-                name: "description",
-                description: "Describe the suggestion more detailed. Include everything you want us to know",
-                required: true,
-            },
-            {
-                type: "STRING",
-                name: "part",
-                description: "For which part of the bot is this suggestion intended",
-                required: true,
-                choices: [
-                    { name: "Game - Narrator", value: "Game - Narrator" },
-                    { name: "Game - Player", value: "Game - Player" },
-                    { name: "Economy", value: "Economy" },
-                    { name: "Other", value: "Other" },
-                ],
-            },
-            {
-                type: "STRING",
-                name: "origin",
-                description: "Where is this suggestion from?",
-                required: true,
-                choices: [
-                    { name: "Staff Vote", value: "Staff Vote" },
-                    { name: "Community Vote", value: "Community Vote" },
-                    { name: "Dev Assistant", value: "Dev Assistant" },
-                    { name: "Member", value: "Member" },
-                    { name: "Other", value: "Other" },
-                ],
-            },
-        ],
     },
     permissions: {
         sim: [{ id: "606138123260264488", type: "ROLE", permission: true }],
@@ -51,32 +12,87 @@ module.exports = {
     },
     server: ["sim", "game"],
     run: async (interaction, client) => {
-        let body = `### What is your suggestion?
-
-${interaction.options.getString("description")}
-
-### For which part of the bot is this suggestion intended?
-
-${interaction.options.getString("part") ?? "Other"}
-
-### Where is this suggestion from?
-
-${interaction.options.getString("origin") ?? "Other"}`
-
-        body += `\n<hr>\n\nThe above suggestion was sent by ${interaction.user.tag}\nUser ID: ${interaction.user.id}\nLocation: ${(interaction.guildId == ids.server.game ? "" : `[#${interaction.channel.name}](https://discord.com/channels/${interaction.guildId + "/" + interaction.channelId}) (${interaction.channel.id}) in `) + `[${interaction.guild.name}](https://discord.com/channels/${interaction.guildId})`}`
-
-        let labels = ["Suggestion"]
-        if (interaction.options.getString("part") == "Economy") labels.push("Economy")
-
-        let issue = {
-            title: `SUGGESTION: ${interaction.options.getString("title") ?? "N/A"}`,
-            body,
-            labels,
-            owner: github.org,
-            repo: github.repo,
+        // create an embed
+        let embed = {
+            title: "Suggestions",
+            description: "To start a suggestion, please click the button below. You will be asked to provide some information about the suggestion.\nDo not abuse this feature as it can get you banned from using the bot.",
+            color: 0x2f3136,
         }
 
-        let done = await client.github.request(`POST /repos/${github.org}/${github.repo}/issues`, issue)
-        interaction.reply({ content: interaction.l10n("suggestSuccess", { url: done.data.html_url }), ephemeral: true })
+        // create a button to start the suggestion
+        let button = {
+            type: 1,
+            components: [{
+                type: 2,
+                label: "Start Suggestion",
+                custom_id: "suggestion-start",
+                style: 3,
+            }]
+        }
+
+        // send the embed and button
+        let repl = await interaction.reply({ embeds: [embed], components: [button], fetchReply: true })
+
+        // wait for the user to click the button
+        let coll = repl.createMessageComponentCollector({ idle: 15_000 })
+        coll.on("collect", async (button) => {
+            if (button.user.id != interaction.user.id) return interaction.reply({ content: "This is not your button. Please request your own one.", ephemeral: true })
+            // suggestion modal
+            let modal = {
+                title: "Suggestion",
+                custom_id: "suggestion-modal",
+                components: [{
+                    type: 1,
+                    components: [{
+                        type: 4,
+                        custom_id: "suggestion-title",
+                        label: "Title",
+                        style: 1,
+                        placeholder: "Enter a short title for this suggestion",
+                        required: true,
+                        min_length: 1,
+                    }]
+                }, {
+                    type: 1,
+                    components: [{
+                        type: 4,
+                        custom_id: "suggestion-description",
+                        label: "Description",
+                        style: 2,
+                        placeholder: "Describe the suggestion more in detail",
+                        required: true,
+                        min_length: 20,
+                    }]
+                }, {
+                    type: 1,
+                    components: [{
+                        type: 4,
+                        custom_id: "suggestion-part",
+                        label: "Part",
+                        style: 1,
+                        placeholder: "For which part of the bot is this suggestion intended?",
+                        required: true,
+                        min_length: 4,
+                    }]
+                }, {
+                    type: 1,
+                    components: [{
+                        type: 4,
+                        custom_id: "suggestion-origin",
+                        label: "Origin",
+                        style: 1,
+                        placeholder: "Where is this suggestion from?",
+                        required: false,
+                    }]
+                }]
+            }
+
+            // send the modal
+            await button.showModal(modal)
+        })
+
+        coll.on("end", async () => {
+            interaction.editReply(fn.disableButtons(repl));
+        })
     },
 }
