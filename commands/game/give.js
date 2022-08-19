@@ -14,14 +14,14 @@ module.exports = {
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to give out items.")
-        if (!["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker"].includes(player.role) && !["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker"].includes(player.dreamRole)) return
-        if (["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (!["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker", "Warden"].includes(player.role) && !["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker", "Warden"].includes(player.dreamRole)) return
+        if (["Fortune Teller", "Santa Claus", "Easter Bunny", "Forger", "Alchemist", "Baker", "Warden"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only give during the night right? Or are you delusional?")
         if (player.role === "Alchemist" && db.get(`game.peace`) === Math.floor(gamePhase / 3) + 1) return await message.channel.send("This is a peaceful night! You cannot poison anyone!")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
 
-        if (args[0].toLowerCase() === "cancel" && !["Fortune Teller", "Santa Claus", "Easter Bunny"].includes(player.role)) {
+        if (args[0].toLowerCase() === "cancel" && !["Fortune Teller", "Santa Claus", "Easter Bunny", "Warden"].includes(player.role)) {
             if (player.role === "Alchemist") {
                 let itemType = args[1]?.toLowerCase()
                 if (!itemType) return await message.channel.send("You need to state if you want to cancel the black or the red potion!")
@@ -41,14 +41,34 @@ module.exports = {
             return
         }
 
-        if (player.role === "Fortune Teller") {
-            if (player.uses === 0) return await message.channel.send("You have already used up all your abilites!")
+        if (["Warden", "Fotune Teller"].includes(player.role)) {
+            if (player.uses === 0) return await message.channel.send("You have already used your ability!")
         }
 
         if (player.role === "Forger") {
             if (player.forgedAt >= Math.floor(gamePhase / 3) + 1) return await message.channel.send("You have not finished forging your item yet!")
             if (player.uses !== 3 - (player.givenItems || 0)) return await message.channel.send("You need to forge an item before you can give it someone!")
             if (player.givenItems === 3) return await message.channel.send("You've already given all your forged items!")
+        }
+
+        if (player.role === "Warden") {
+            if (player.jailedPlayers?.length !== 2) return await message.channel.send("You can't give your weapon if you haven't jailed anyone yet!")
+            db.subtract(`player_${player.id}.uses`, 1)
+            let wardChannel = message.guild.channels.cache.get(player?.channel)
+            wardChannel?.send(`${getEmoji("warden_weapon", client)} You gave a weapon to **${player.jailedPlayers.map(q => `${players.indexOf(q)+1} ${db.get(`player_${q}`)}`).join("** and **")}**.`)
+            player.jailedPlayers?.forEach((p, i) => {
+                if (db.get(`player_${p}`)?.team === "Village" || db.get(`player_${p}`)?.role === "Werewolf Fan") {
+                    let otherPlayer = player.jailedPlayers?.filter(o => o !== p)?.[0]
+                    if (otherPlayer) {
+                        let buttons = { type: 1, components: [{ type: 2, style: 4, label: "Kill", custom_id: `inmatekill-${otherPlayer}-${gamePhase}` }] }
+                        let channel = message.guild.channels.cache.get(db.get(`player_${p}`)?.channel)
+                        channel?.send({ content: `${getEmoji("warden_kill")} The Warden has given you a weapon that can be used to kill your inmate!`, components: [buttons] })
+                        channel?.send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+                    }
+                }
+            })
+
+            return;
         }
 
         let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
