@@ -55,20 +55,20 @@ module.exports = {
             if (player.jailedPlayers?.length !== 2) return await message.channel.send("You can't give your weapon if you haven't jailed anyone yet!")
             db.subtract(`player_${player.id}.uses`, 1)
             let wardChannel = message.guild.channels.cache.get(player?.channel)
-            wardChannel?.send(`${getEmoji("warden_weapon", client)} You gave a weapon to **${player.jailedPlayers.map(q => `${players.indexOf(q)+1} ${db.get(`player_${q}`)}`).join("** and **")}**.`)
+            wardChannel?.send(`${getEmoji("warden_weapon", client)} You gave a weapon to **${player.jailedPlayers.map((q) => `${players.indexOf(q) + 1} ${db.get(`player_${q}`)}`).join("** and **")}**.`)
             player.jailedPlayers?.forEach((p, i) => {
                 if (db.get(`player_${p}`)?.team === "Village" || db.get(`player_${p}`)?.role === "Werewolf Fan") {
-                    let otherPlayer = player.jailedPlayers?.filter(o => o !== p)?.[0]
+                    let otherPlayer = player.jailedPlayers?.filter((o) => o !== p)?.[0]
                     if (otherPlayer) {
                         let buttons = { type: 1, components: [{ type: 2, style: 4, label: "Kill", custom_id: `inmatekill-${otherPlayer}-${gamePhase}` }] }
                         let channel = message.guild.channels.cache.get(db.get(`player_${p}`)?.channel)
                         channel?.send({ content: `${getEmoji("warden_kill")} The Warden has given you a weapon that can be used to kill your inmate!`, components: [buttons] })
-                        channel?.send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+                        channel?.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
                     }
                 }
             })
 
-            return;
+            return
         }
 
         let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])

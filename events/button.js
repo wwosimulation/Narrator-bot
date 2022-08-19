@@ -271,7 +271,7 @@ module.exports = (client) => {
             let inmate = db.get(`player_${interaction.customId.split("-")[1]}`)
             let result = true
             if (inmate.team === "Village") result = false
-            let gameMessage = result === true ? `The warden gave a weapon to an inmate who used it to kill **${players.indexOf(inmate.id)} ${inmate.username}**` : `**${players.indexOf(player.id)+1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** tried to kill **${players.indexOf(inmate.id)+1} ${inmate.username}** with a weapon from the Warden but the weapon backfired! **${players.indexOf(inmate.id)+1} ${inmate.username}** is a villager!`
+            let gameMessage = result === true ? `The warden gave a weapon to an inmate who used it to kill **${players.indexOf(inmate.id)} ${inmate.username}**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** tried to kill **${players.indexOf(inmate.id) + 1} ${inmate.username}** with a weapon from the Warden but the weapon backfired! **${players.indexOf(inmate.id) + 1} ${inmate.username}** is a villager!`
             let member = await interaction.guild.members.fetch(result === true ? inmate.id : player.id)
             db.set(`player_${member.id}.status`, "Dead")
             await member.roles.set(member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)))
