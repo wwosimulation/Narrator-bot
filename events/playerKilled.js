@@ -20,7 +20,7 @@ module.exports = async (client) => {
         const redladies = players.filter((p) => db.get(`player_${p}`).role === "Red Lady" && db.get(`player_${p}`).status === "Alive")
         const preachers = players.filter((p) => db.get(`player_${p}`).role === "Preacher" && db.get(`player_${p}`).status === "Alive")
         const tricksters = players.filter((p) => db.get(`player_${p}`).role === "Wolf Trickster" && db.get(`player_${p}`).status === "Alive")
-        const ritualists = players.filter(p => db.get(`player_${p}`).role === "Ritualist" && db.get(`player_${p}`).status === "Alive")
+        const ritualists = players.filter((p) => db.get(`player_${p}`).role === "Ritualist" && db.get(`player_${p}`).status === "Alive")
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
 
@@ -38,12 +38,12 @@ module.exports = async (client) => {
         // ritualist set to revive
         for (const ritualist of ritualists) {
             let player = db.get(`player_${ritualist}`)
-            if (player.target !== guy.id) continue;
+            if (player.target !== guy.id) continue
             let channel = guild.channels.cache.get(db.get(`player_${player.target}`)?.channel)
             channel?.send(`${getEmoji("ritualist_revive", client)} Hey there, don't go offline just yet! The Ritualist has selected to revive you. You will be revived after a full phase.`)
-            channel?.send(`${guild.roles.cache.find(r => r.name === "Dead")}`)
+            channel?.send(`${guild.roles.cache.find((r) => r.name === "Dead")}`)
             db.subtract(`player_${ritualist}.uses`, 0)
-            db.set(`player_${player.target}.ritualRevive`, phase.raw+2)
+            db.set(`player_${player.target}.ritualRevive`, phase.raw + 2)
             db.delete(`player_${ritualist}.target`)
         }
 
