@@ -3,7 +3,7 @@ const { getEmoji } = require("../../config")
 
 module.exports = {
     name: "place",
-    aliases: ["trap", "mark"],
+    aliases: ["trap", "mark", "spell"],
     description: "Place your trap or mark on a player.",
     usage: `${process.env.PREFIX}place <player>`,
     gameOnly: true,
@@ -15,19 +15,20 @@ module.exports = {
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to tag players.")
-        if (!["Marksman", "Beast Hunter", "Astral Wolf"].includes(player.role) && !["Marksman", "Beast Hunter", "Astral Wolf"].includes(player.dreamRole)) return
-        if (["Marksman", "Beast Hunter", "Astral Wolf"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
-        if (gamePhase % 3 !== 0) return await message.channel.send("You do know you can only place during the night? Or are you delusional?")
+        if (!["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist"].includes(player.role) && !["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist"].includes(player.dreamRole)) return
+        if (["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (player.role !== "Ritualist" && gamePhase % 3 !== 0) return await message.channel.send("You do know you can only place during the night? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (args.length === 0) return await message.channel.send("You do know you need to tell me the player right?")
-        if (player.role === "Marksman" && player.uses === 0) return await message.channel.send("You already used up your abilities!")
+        if (["Marksman", "Ritualist"].includes(player.role) && player.uses === 0) return await message.channel.send("You already used up your ability!")
         if (player.role === "Astral Wolf" && player.usesB !== 0) return await message.channel.send("You need to bless someone before you can mark players!")
         if (player.role === "Astral Wolf" && player.usedBAt === Math.floor(gamePhase / 3) + 1) return await message.channel.send("You need to wait a night before you can mark players! You just blessed someone.")
         if (player.role === "Astral Wolf" && args.length > 3) return await message.channel.send("You can only mark up to 3 players!")
 
         let obj = {
             Marksman: getEmoji("mark", client),
+            Ritualist: getEmoji("ritualist_select", client),
             "Beast Hunter": getEmoji("trap", client),
             "Astral Wolf": getEmoji("astral_chain", client),
         }
@@ -38,6 +39,7 @@ module.exports = {
                 db.delete(`player_${player.id}.placed`)
                 await message.channel.send(`${object[player.role]} Done! I have canceled your placement on that player!`)
             } else {
+                if (player.role === "Ritualist") return await message.channel.send("You cannot change your target anymore!")
                 let b = await message.channel.send({
                     content: `Are you sure you want to do this? Your ${player.role === "Marksman" ? "mark" : "trap"} is already active!`,
                     components: [
@@ -89,7 +91,7 @@ module.exports = {
 
             if (player.role === "Astral Wolf" && target.includes(player.couple)) return await message.channel.send("You cannot mark one of your own couples!")
 
-            if (player.id === target[0] && player.role === "Marksman") return await message.channel.send("You do know that you cannot mark yourself right?")
+            if (player.id === target[0] && ["Ritualist", "Marksman"].includes(player.role)) return await message.channel.send("You do know that you cannot select yourself right?")
 
             if (player.role === "Astral Wolf" && target.includes(player.id)) return await message.channel.send("You cannot mark yourself!")
 

@@ -1,5 +1,6 @@
 const { getRole, getEmoji } = require("../../../config") // functions
 const db = require("quick.db")
+const ritualists = require("./others/ritualists")
 
 module.exports = {
     name: "day",
@@ -44,6 +45,7 @@ module.exports = {
         let hackers = require("./killingActions/hackers.js")
         let prognosticators = require("./others/prognosticators.js")
         let grumpygrandmas = require("./others/grumpygrandmas.js")
+        let ritualists = require("./others/ritualists.js")
         let mediums = require("./others/mediums.js")
         let forgers = require("./others/forgers.js")
         let graverobbers = require("./others/graverobbers.js")
@@ -145,6 +147,12 @@ module.exports = {
         // get couple targets
         console.log("couple running...")
         await getCoupleTargets(client)
+
+        sleep(100)
+
+        // ritualist reviving
+        console.log("ritualist running...")
+        await ritualists(client)
 
         sleep(100)
 
