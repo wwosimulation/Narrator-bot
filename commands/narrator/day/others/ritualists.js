@@ -11,10 +11,10 @@ module.exports = async (client) => {
     // loop through each dead player
     for (const player of deadPlayers) {
         let guy = db.get(`player_${player}`) // get the player - Object
-        if (guy.status === "Alive") continue; // if the player is alive, don't do anything and check for the next player
+        if (guy.status === "Alive") continue // if the player is alive, don't do anything and check for the next player
 
         // revive the player
-        if (guy.ritualRevive !== db.get(`gamePhase`)+1) return; // if the phase isn't over yet, don't do anything and check for the next player
+        if (guy.ritualRevive !== db.get(`gamePhase`) + 1) return // if the phase isn't over yet, don't do anything and check for the next player
 
         db.set(`player_${guy.id}.status`, "Alive") // set the status of the player to Alive
         let member = await guild.members.fetch(guy.id) // get the discord member
