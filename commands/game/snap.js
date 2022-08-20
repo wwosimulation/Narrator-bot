@@ -9,7 +9,7 @@ module.exports = {
     run: async (message, args, client) => {
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`)
-        const wwchat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+        const daychat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
@@ -17,7 +17,7 @@ module.exports = {
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to snap players.")
         if (!["Illusionist"].includes(player.role) && !["Illusionist"].includes(player.dreamRole)) return
         if (["Illusionist"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
-        if (gamePhase % 3 === 0) return await message.channel.send("You do know that you can only snap during the day right? Or are you delusional?")
+        if (gamePhase % 3 !== 1) return await message.channel.send("You do know that you can only snap during the day right? Or are you delusional?")
         if (player.disguisedPlayers?.filter((p) => db.get(`player_${p}`)?.status === "Alive").length === 0 || !player.disguisedPlayers) return await message.channel.send("You have to have at least 1 alive disguised player to start snapping them!")
 
         player.disguisedPlayers.forEach(async (target) => {

@@ -21,10 +21,10 @@ module.exports = {
             if (!args) return await message.channel.send("You do know that you need to have some content right?")
 
             let content = args
-                .join("  ")
+                .join(" ")
                 .replace(/@everyone/g, "everyone")
                 .replace(/@here/g, "here")
-                .replace(/\<[@\&]?#?[\d]{10,20}>/g, "[ping]")
+                .replace(/<([@#])+[&]?[\d]{10,20}>/g, "[ping]")
             if (content.length > 1850) return await message.channel.send("The maximum amount of characters you can send is 1850! Please shorten your message.")
 
             let jailedchat = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
@@ -38,10 +38,10 @@ module.exports = {
             if (!args) return await message.channel.send("You do know that you need to have some content right?")
 
             let content = args
-                .join("  ")
+                .join(" ")
                 .replace(/@everyone/g, "everyone")
                 .replace(/@here/g, "here")
-                .replace(/\<[@\&]?#?[\d]{10,20}>/g, "[ping]")
+                .replace(/<([@#])+[&]?[\d]{10,20}>/g, "[ping]")
             if (content.length > 1850) return await message.channel.send("The maximum amount of characters you can send is 1850! Please shorten your message.")
 
             let jailor = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
