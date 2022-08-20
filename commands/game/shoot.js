@@ -46,13 +46,17 @@ module.exports = {
 
         let result = true
 
-        if (db.get(`player_${target}`).team === "Village") result = false
+        if (player.role === "Marksman" && db.get(`player_${target}`).team === "Village") result = false
+
+        let guy = db.get(`player_${target}`)
+        let role = guy.role
+        if (guy.tricked || player.tricked) role = "Wolf Trickster"
 
         let messages = {
-            Gunner: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("gunner", client)} Gunner)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_")}`, client)} ${db.get(`player_${target}`).role})**!`,
-            Jailer: `${getEmoji("bullet", client)} The Jailer executed their prisoner last night! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})** is dead!`,
-            Vigilante: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("vigilante", client)} Vigilante)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_")}`, client)} ${db.get(`player_${target}`).role})**!`,
-            Marksman: `${getEmoji("arrow", client)} ${result === true ? `The Marksman shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).username})**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("marksman", client)} Marksman)** tried shooting **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** but their shot backfired! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is a villager!`}`,
+            Gunner: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("gunner", client)} Gunner)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${role.toLowerCase().replace(/\s/g, "_")}`, client)} ${role})**!`,
+            Jailer: `${getEmoji("bullet", client)} The Jailer executed their prisoner last night! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** is dead!`,
+            Vigilante: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("vigilante", client)} Vigilante)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${role.toLowerCase().replace(/\s/g, "_")}`, client)} ${role})**!`,
+            Marksman: `${getEmoji("arrow", client)} ${result === true ? `The Marksman shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role, client)} ${role})** tried shooting **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** but their shot backfired! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is a villager!`}`,
         }
 
         let member = await message.guild.members.fetch(result === true ? target : player.id)
@@ -61,7 +65,7 @@ module.exports = {
         await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(messages[player.role])
 
         db.subtract(`player_${player.id}.uses`, 1)
-        if (member.id === player.id) db.set(`player_${player.id}.status`, "Dead")
+        db.set(`player_${member.id}.status`, "Dead")
         client.emit("playerKilled", db.get(`player_${member.id}`), player.id)
     },
 }

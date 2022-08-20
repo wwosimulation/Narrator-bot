@@ -78,7 +78,7 @@ module.exports = async (client, alivePlayersBefore) => {
             let [guy1, guy2] = attacker.target.map((t) => db.get(`player_${t}`)) // get both of the victims
             if (guy1.team !== guy2.team || [guy1.team, guy2.team].includes("Solo")) {
                 // loop through each victim
-                ;[guy1, guy2].forEach(async (guy) => {
+                [guy1, guy2].forEach(async (guy) => {
                     // check if the player is not the evil detective themself
                     if (guy.id !== det) {
                         // check if the victim is alive
@@ -90,7 +90,9 @@ module.exports = async (client, alivePlayersBefore) => {
                                 // kill the player
                                 db.set(`player_${guy.id}.status`, "Dead") // changes the status of the victim
                                 client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
-                                await dayChat.send(`${getEmoji("evildetcheck", client)} The evil detective has killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role.toLowerCase().replace(/\s/g, "_"), client)} ${result.role})**!`)
+                                let role = result.role
+                                if (result.tricked) role = "Wolf Trickster"
+                                await dayChat.send(`${getEmoji("evildetcheck", client)} The evil detective has killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
 
                                 // get the member and set their role
                                 let member = await guild.members.fetch(result.id) // fetches the discord member

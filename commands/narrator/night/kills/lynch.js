@@ -74,7 +74,9 @@ module.exports = async (client) => {
                 db.set(`player_${guy.id}.status`, "Dead") // change the status of the player
                 let member = await guild.members.fetch(guy.id) // get the discord member - Object
                 let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the roles of the discord member
-                await dayChat.send(`${getEmoji("votingme", client)} The Villagers lynched **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase().replace(/\s/g, "_"), client)} ${guy.role})**!`) // send a message to day chat
+                let role = guy.role
+                if (guy.tricked) role = "Wolf Trickster"
+                await dayChat.send(`${getEmoji("votingme", client)} The Villagers lynched **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`) // send a message to day chat
                 await member.roles.set(memberRoles) // set the roles
                 client.emit("playerKilled", db.get(`player_${guy.id}`), "village")
             }

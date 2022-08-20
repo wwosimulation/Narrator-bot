@@ -114,6 +114,25 @@ module.exports = {
             }
         }
 
+        // give a fake role to the sorcerer
+        let sorcerers = players.filter((p) => db.get(`player_${p}`).role === "Sorcerer")
+        sorcerers.forEach(async sorc => {
+            let investigativeRoles = ["Analyst", "Aura Seer", "Detective", "Mortician", "Red Lady", "Seer", "Seer Apprentice", "Sheriff", "Spirit Seer", "Violinist"]
+            let allRoles = players.map(p => db.get(`player_${p}`).role).filter(r => investigativeRoles.includes(r))
+            let channel = message.guild.channels.cache.get(db.get(`player_${sorc}`)?.channel)
+            if (allRoles.length > 0) {
+                shuffle(allRoles)
+                db.set(`player_${sorc}.fakeRole`, allRoles[0])
+                channel?.send(`${getEmoji("sorcerer", client)} Your fake investigative role is **${getEmoji(allRoles[0]?.toLowerCase().replace(/\s/g, "_"), client)} ${allRoles[0]}**!`)
+            } else {
+                shuffle(investigativeRoles)
+                db.set(`player_${sorc}.fakeRole`, investigativeRoles[0])
+                channel?.send(`${getEmoji("sorcerer", client)} Your fake investigative role is **${getEmoji(investigativeRoles[0]?.toLowerCase().replace(/\s/g, "_"), client)} ${investigativeRoles[0]}**!`)
+            }
+        })
+        
+        
+
         // reveal any presidents if there is one
         let presidents = players.filter((p) => db.get(`player_${p}`).role === "President")
         presidents.forEach(async (pres) => {
@@ -122,6 +141,7 @@ module.exports = {
                 // code for a future gamemode i have an idea for
             } else {
                 await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${getEmoji("president", client)} Player **${players.indexOf(pres) + 1} ${message.guild.members.cache.get(pres)?.user.username}** is your President`)
+                await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
             }
         })
 
@@ -180,7 +200,7 @@ module.exports = {
         players.forEach((p) => {
             let guy = db.get(`player_${p}`)
             if (["Gunner", "Marksman", "Fortune Teller", "Nightmare Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 2)
-            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator", "Wolf Trickster", "Warden"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
             if (guy.role === "Forger") db.set(`player_${p}.uses`, 3)
             if (guy.role === "Witch") db.set(`player_${p}.usesK`, 1)
             if (guy.role === "Prognosticator") db.set(`player_${p}.usesT`, 1)

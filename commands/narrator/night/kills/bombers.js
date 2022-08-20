@@ -30,8 +30,10 @@ module.exports = async (client) => {
                             let attackedPlayer = await guild.members.fetch(guy.id) // fetch the discord member - Object
                             let attackedPlayerRoles = attackedPlayer.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the member roles - Array<Snowflake>
                             await attackedPlayer.roles.set(attackedPlayerRoles) // set the roles
+                            let role = guy.role
+                            if (guy.tricked) role = "Wolf Trickster"
                             db.set(`player_${guy.id}.status`, "Dead") // set the status of the player
-                            dayChat.send(`${getEmoji("explode", client)}  **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})** was killed by an explosion!`) // send the message
+                            dayChat.send(`${getEmoji("explode", client)} **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase()?.replace(/\s/g, "_"), client)} ${role})** was killed by an explosion!`) // send the message
                         }
                     })
                 }, 60000)

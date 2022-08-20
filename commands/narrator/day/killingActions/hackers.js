@@ -90,14 +90,16 @@ module.exports = async (client, alivePlayersBefore) => {
                             // send a message to the day chat and make the player dead
                             db.set(`player_${result.id}.status`, "Dead") // changes the status of the player
                             client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
+                            let role = result.role
+                            if (result.tricked) role = "Wolf Trickster"
                             let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
                             let attackedPlayerRoles = attackedPlayer.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles and replace the Alive role with Dead.
 
                             // check if they were hypnotized
                             if (typeof attacker.hypnotize === "string") {
-                                await dayChat.send(`${getEmoji("hack", client)} The Dreamcatcher compelled the Hacker to hack **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
+                                await dayChat.send(`${getEmoji("hack", client)} The Dreamcatcher compelled the Hacker to hack **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(role.toLowerCase()?.replace(/\s/g, "_"), client)} ${role})**!`)
                             } else {
-                                await dayChat.send(`${getEmoji("hack", client)} The Hacker hacked **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
+                                await dayChat.send(`${getEmoji("hack", client)} The Hacker hacked **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(role.toLowerCase()?.replace(/\s/g, "_"), client)} ${role})**!`)
                             }
                             await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
                         } else {
