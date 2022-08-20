@@ -13,12 +13,12 @@ module.exports = async (client, guy, attacker) => {
     let allProtected = db.get(`berserkProtected`) || [] // get the array of players who protected the berserk's target
 
     let isProtected = false
-    // loop through each player to see if they are a jailer
+    // loop through each player to see if they are a jailer or a warden
     for (let player of alivePlayers) {
-        // check and see if the player is a Jailer
-        if (db.get(`player_${player}`).role === "Jailer") {
-            // check and see if the Jailer jailed the player and the player is jailed.
-            if (db.get(`player_${player}`).target === guy.id && guy.jailed === true) {
+        // check and see if the player is a Jailer or a Warden
+        if (["Jailer", "Warden"].includes(db.get(`player_${player}`).role)) {
+            // check and see if the Jailer or the Warden jailed the player and the player is jailed.
+            if (db.get(`player_${player}`).target?.includes(guy.id) && guy.jailed === true) {
                 // check if berserk is active and the attacker is from the werewolves' team
                 if (isBerserkActive === true && attacker.team === "Werewolf") {
                     allProtected.push(player)

@@ -6,8 +6,9 @@ module.exports = async (client) => {
     const players = db.get(`players`)
 
     players.forEach(async (player) => {
-        if (["Jailer", "Dreamcatcher", "Wolf Shaman"].includes(db.get(`player_${player}`).role)) {
+        if (["Jailer", "Dreamcatcher", "Wolf Shaman", "Warden"].includes(db.get(`player_${player}`).role)) {
             db.delete(`player_${player}.target`)
+            db.delete(`player_${player}.jailedPlayers`)
         }
 
         db.delete(`player_${player}.shamanned`)

@@ -10,12 +10,17 @@ module.exports = (client) => {
 
         const players = db.get(`players`) || []
 
-        if (!players.includes(member.id)) return
+        if (!players.includes(member.id)) return;
+
+        if (db.get(`player_${member.id}`).status === "Alive") {
+
+            let dayChat = member.guild.channels.cache.find((c) => c.name === "day-chat")
+            dayChat.send(`${getEmoji("died", client)} **${players.indexOf(member.id) + 1} ${db.get(`player_${member.id}`).username}** has fled the village! Their role will not be revealed.`)
+            
+        }
 
         db.set(`player_${member.id}.status`, "Zombie") // set to Zombie status which is neither dead, nor alive
         db.set(`player_${member.id}.fled`, true)
 
-        let dayChat = member.guild.channels.cache.find((c) => c.name === "day-chat")
-        dayChat.send(`${getEmoji("died", client)} **${players.indexOf(member.id) + 1} ${db.get(`player_${member.id}`).username}** has fled the village! Their role will not be revealed.`)
     })
 }

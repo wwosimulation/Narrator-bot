@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const jailer = require("../killingActions/protection/jailer")
 
 module.exports = async (client) => {
     // get all the variables
@@ -39,13 +40,17 @@ module.exports = async (client) => {
             // check if the player was jailed
             if (guy.jailed) {
                 let jailedChat = guild.channels.cache.find((c) => c.name === "jailed-chat") // gets the channel
+                let wardenChat = guild.channels.cache.find((c) => c.name === "warden-jail") // gets the channel
 
                 // delete the permissions of that channel for that guy
-                await channel.permissionOverwrites.delete(guy.id)
+                await wardenChat.permissionOverwrites.delete(guy.id)
+                await jailedChat.permissionOverwrites.delete(guy.id)
 
                 // delete the messages
-                let allMessages = await channel.messages.fetch({ limit: 100, cache: false }) // fetches up to 100 messages from the channel
-                await channel.bulkDelete(allMessages.filter((m) => !m.pinned)) // deletes every message but pinned
+                let allMessages1 = await jailerChat.messages.fetch({ limit: 100, cache: false }) // fetches up to 100 messages from the channel
+                let allMessages2 = await wardenChat.messages.fetch({ limit: 100, cache: false }) // fetches up to 100 messages from the channel
+                await jailedChat.bulkDelete(allMessages1.filter((m) => !m.pinned)) // deletes every message but pinned
+                await wardenChat.bulkDelete(allMessages2.filter((m) => !m.pinned)) // deletes every message but pinned
             }
         }
     })
