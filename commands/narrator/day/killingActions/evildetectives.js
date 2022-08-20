@@ -78,7 +78,7 @@ module.exports = async (client, alivePlayersBefore) => {
             let [guy1, guy2] = attacker.target.map((t) => db.get(`player_${t}`)) // get both of the victims
             if (guy1.team !== guy2.team || [guy1.team, guy2.team].includes("Solo")) {
                 // loop through each victim
-                [guy1, guy2].forEach(async (guy) => {
+                ;[guy1, guy2].forEach(async (guy) => {
                     // check if the player is not the evil detective themself
                     if (guy.id !== det) {
                         // check if the victim is alive

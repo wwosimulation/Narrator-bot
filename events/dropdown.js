@@ -225,15 +225,15 @@ module.exports = (client) => {
             if (target.role === "President") return interaction.followUp({ content: "You can only kill the President!", ephemeral: true })
             if (player.jailed) return interaction.followUp({ content: "You can't use your abilites while in jail!", ephemeral: true })
             if (player.nightmared) return interaction.followUp({ content: "You can't use your abilities while being nightmare!", ephemeral: true })
-            if (db.get(`gamePhase`) % 3 === 0 && db.get(`game.peace`) === Math.floor(db.get(`gamePhase`)/3)+1) return interaction.followUp({ content: "You can't kill on a peaceful night!", ephemeral: true })
+            if (db.get(`gamePhase`) % 3 === 0 && db.get(`game.peace`) === Math.floor(db.get(`gamePhase`) / 3) + 1) return interaction.followUp({ content: "You can't kill on a peaceful night!", ephemeral: true })
             await interaction.editReply({ components: [] })
-            await interaction.channel.send(`${getEmoji("getsword", client)} You have used your sword to kill **${allPlayers.indexOf(target.id)+1} ${target.username}**!`)
+            await interaction.channel.send(`${getEmoji("getsword", client)} You have used your sword to kill **${allPlayers.indexOf(target.id) + 1} ${target.username}**!`)
             db.delete(`player_${player.id}.sword`)
             let role = target.role
             if (target.tricked) role = "Wolf Trickster"
             let guy = await message.guild.members.fetch(target.id)
             let roles = guy.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
-            let daychat = interaction.guild.channels.cache.find(c => c.name === "day-chat")
+            let daychat = interaction.guild.channels.cache.find((c) => c.name === "day-chat")
             await daychat.send(`${getEmoji("getsword", client)} The Forger's sword was used to kill **${players.indexOf(target.id) + 1} ${target.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
             await guy.roles.set(roles)
             client.emit("playerKilled", db.get(`player_${target.id}`), db.get(`player_${player.id}`))

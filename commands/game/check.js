@@ -56,7 +56,7 @@ module.exports = {
                 team = "Village"
             }
             if (guy.role === "Wolf Trickster" && guy.trickedRole) {
-                ({ aura, role, team } = guy.trickedRole)
+                ;({ aura, role, team } = guy.trickedRole)
             }
 
             result[`p${index + 1}`] = { aura, team, role }
