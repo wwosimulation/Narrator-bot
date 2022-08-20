@@ -91,7 +91,7 @@ module.exports = {
 
             if (db.get(`player_${cupid}`)?.target.includes(target[0]) && player.role === "Marksman") return await message.channel.send("You cannot mark your own couple!")
 
-            if (player.role === "Astral Wolf" && target.includes(db.get(`player_${cupid}`)?.target.find(a => a !== player.id))) return await message.channel.send("You cannot mark one of your own couples!")
+            if (player.role === "Astral Wolf" && target.includes(db.get(`player_${cupid}`)?.target.find((a) => a !== player.id))) return await message.channel.send("You cannot mark one of your own couples!")
 
             if (player.id === target[0] && ["Ritualist", "Marksman"].includes(player.role)) return await message.channel.send("You do know that you cannot select yourself right?")
 

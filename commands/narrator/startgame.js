@@ -146,8 +146,8 @@ module.exports = {
         // if there are instigators, make the recruits
         let instigators = players.filter((p) => db.get(`player_${p}`).role === "Instigator")
         instigators.forEach(async (insti) => {
-            let recruit1 = players.filter(p => (["Fool", "Headhunter"].includes(db.get(`player_${p}`).role) || db.get(`player_${p}`).team === "Village") && db.get(`player_${p}`).role !== "President")
-            let recruit2 = players.filter(p => db.get(`player_${p}`).team !== "Village" && !["Fool", "Headhunter", "Instigator"].includes(db.get(`player_${p}`).role))
+            let recruit1 = players.filter((p) => (["Fool", "Headhunter"].includes(db.get(`player_${p}`).role) || db.get(`player_${p}`).team === "Village") && db.get(`player_${p}`).role !== "President")
+            let recruit2 = players.filter((p) => db.get(`player_${p}`).team !== "Village" && !["Fool", "Headhunter", "Instigator"].includes(db.get(`player_${p}`).role))
             shuffle(recruit1)
             shuffle(recruit2)
             player1 = recruit1.length > 0 ? recruit1[0] : recruit2[1]
@@ -164,13 +164,11 @@ module.exports = {
             let channel = mesage.guild.channels.cache.get(db.get(`player_${insti}`)?.channel)
             let player = db.get(`player_${insti}`)
             let rec1 = db.get(`player_${player1}`)
-            let rec2 = db.get(`player_${recruit2}`) 
-            channel1?.send(`${getEmoji("insigator", client)} You have been recruited by **${players.indexOf(player.id)+1} ${player.username} (${getEmoji("instigator", client)} Instigator)** and you have been instigated with **${players.indexOf(rec2.id)+1} ${rec2.username} (${getEmoji(rec2.role.toLowerCase().replace(/\s/g, "_"), client)} ${rec2.role})**! You now have to win with the Instigator and the recruits and you can no longer win with your original team.`)
-            channel2?.send(`${getEmoji("insigator", client)} You have been recruited by **${players.indexOf(player.id)+1} ${player.username} (${getEmoji("instigator", client)} Instigator)** and you have been instigated with **${players.indexOf(rec1.id)+1} ${rec1.username} (${getEmoji(rec1.role.toLowerCase().replace(/\s/g, "_"), client)} ${rec1.role})**! You now have to win with the Instigator and the recruits and you can no longer win with your original team.`)
-            channel?.send(`${getEmoji("insigator", client)} You have instigated **${players.indexOf(rec1.id)+1} ${rec1.username}** and **${players.indexOf(rec2.id)+1} ${rec2.username}**! During the day, you can send a private message to your team using the \`+chat\`. Good luck!`)
-            
+            let rec2 = db.get(`player_${recruit2}`)
+            channel1?.send(`${getEmoji("insigator", client)} You have been recruited by **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("instigator", client)} Instigator)** and you have been instigated with **${players.indexOf(rec2.id) + 1} ${rec2.username} (${getEmoji(rec2.role.toLowerCase().replace(/\s/g, "_"), client)} ${rec2.role})**! You now have to win with the Instigator and the recruits and you can no longer win with your original team.`)
+            channel2?.send(`${getEmoji("insigator", client)} You have been recruited by **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("instigator", client)} Instigator)** and you have been instigated with **${players.indexOf(rec1.id) + 1} ${rec1.username} (${getEmoji(rec1.role.toLowerCase().replace(/\s/g, "_"), client)} ${rec1.role})**! You now have to win with the Instigator and the recruits and you can no longer win with your original team.`)
+            channel?.send(`${getEmoji("insigator", client)} You have instigated **${players.indexOf(rec1.id) + 1} ${rec1.username}** and **${players.indexOf(rec2.id) + 1} ${rec2.username}**! During the day, you can send a private message to your team using the \`+chat\`. Good luck!`)
         })
-
 
         // make everyone alive
         players.forEach((p) => {

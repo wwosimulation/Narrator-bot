@@ -148,8 +148,8 @@ module.exports = async (client) => {
         }
 
         if (guy.cupid) {
-            db.get(`player_${guy.cupid}`).forEach(async p => {
-                let target = db.get(`player_${p}`).target.filter(a => a !== guy.id)
+            db.get(`player_${guy.cupid}`).forEach(async (p) => {
+                let target = db.get(`player_${p}`).target.filter((a) => a !== guy.id)
                 let player = db.get(`player_${target}`)
                 if (player.status === "Alive") {
                     let member = await guild.members.fetch(player.id)
@@ -165,8 +165,8 @@ module.exports = async (client) => {
         }
 
         if (guy.instigator) {
-            db.get(`player_${guy.instigator}`).forEach(async p => {
-                let target = db.get(`player_${p}`).target.filter(a => a !== guy.id)
+            db.get(`player_${guy.instigator}`).forEach(async (p) => {
+                let target = db.get(`player_${p}`).target.filter((a) => a !== guy.id)
                 let player = db.get(`player_${target}`)
                 if (player.status === "Alive") {
                     let member = await guild.members.fetch(player.id)
