@@ -39,10 +39,9 @@ module.exports = {
         if (target1 === target2) return await message.channel.send("Why are you hacking the same player?")
 
         if (!player.hypnotized) {
-
             let cupid = db.get(`player_${player.id}`).cupid
 
-            if ([target1, target2].includes(db.get(`player_${cupid}`)?.target.find(a => a !== player.id))) return await message.channel.send("You cannot hack your own couple!")
+            if ([target1, target2].includes(db.get(`player_${cupid}`)?.target.find((a) => a !== player.id))) return await message.channel.send("You cannot hack your own couple!")
 
             if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot hack yourself right?")
         }

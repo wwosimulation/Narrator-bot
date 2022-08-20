@@ -33,7 +33,6 @@ module.exports = {
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot poison the President!")
 
         if (!player.hypnotized) {
-
             let cupid = db.get(`player_${player.id}`).cupid
 
             if (db.get(`player_${cupid}`)?.target.includes(target)) return await message.channel.send("You cannot poison your own couple!")

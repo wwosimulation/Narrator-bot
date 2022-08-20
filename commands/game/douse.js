@@ -45,7 +45,7 @@ module.exports = {
 
             let cupid = db.get(`player_${player.id}`).cupid
 
-            if ([target1, target2].includes(db.get(`player_${cupid}`)?.target.find(a => a !== player.id))) return await message.channel.send("You cannot douse your own couple!")
+            if ([target1, target2].includes(db.get(`player_${cupid}`)?.target.find((a) => a !== player.id))) return await message.channel.send("You cannot douse your own couple!")
         }
 
         if (!target2) {
