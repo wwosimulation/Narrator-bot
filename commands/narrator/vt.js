@@ -9,6 +9,8 @@ module.exports = {
     narratorOnly: true,
     gameOnly: true,
     run: async (message, args, client) => {
+        const players = db.get(`players`)
+        const deadPlayers = players.filter(p => db.get(`player_${p}`).status === "Dead")
         let gamephase = db.get(`gamePhase`)
         if (gamephase % 3 != 1) return message.channel.send("Please first use `+day`")
         if (args[0] == "nm") return message.channel.send("Invalid format! The way you use this command has changed, check the pins in <#606123759514025985>")
@@ -32,6 +34,28 @@ module.exports = {
         }
         let row = { type: 1, components: [droppy] }
         let m = await voteChat.send({ content: `Timer set to ${ms(timer)} <@&${aliveRole.id}>`, components: [row] })
+
+
+        // loop through each dead player
+        for (const player of deadPlayers) {
+            let guy = db.get(`player_${player}`) // get the player - Object
+            if (guy.status === "Alive") continue; // if the player is alive, don't do anything and check for the next player
+
+            // revive the player
+            if (guy.ritualRevive !== gamephase+1) return; // if the phase isn't over yet, don't do anything and check for the next player
+
+            db.set(`player_${guy.id}.status`, "Alive") // set the status of the player to Alive
+            let member = await message.guild.members.fetch(guy.id) // get the discord member
+            let memberRoles = member.roles.cache
+                .map((r) => (r.name === "Dead" ? ["892046206698680390", "892046205780131891"] : r.id))
+                .join(",")
+                .split(",") // get the roles, and replace the dead role with alive
+            await dayChat.send(`${getEmoji("ritualist_revive", client)} The Ritualist revived **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})**`) // sends a message in day chat
+            await member.roles.set(memberRoles)
+        }
+
+
+
         db.set(`commandEnabled`, `yes`)
         db.add(`gamePhase`, 1)
         message.channel.send(`Setting the vote time for ${ms(timer)}`)
