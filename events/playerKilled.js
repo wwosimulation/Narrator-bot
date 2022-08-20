@@ -19,7 +19,7 @@ module.exports = async (client) => {
         const splitwolfs = players.filter((p) => db.get(`player_${p}`).role === "Split Wolf" && db.get(`player_${p}`).status === "Alive")
         const redladies = players.filter((p) => db.get(`player_${p}`).role === "Red Lady" && db.get(`player_${p}`).status === "Alive")
         const preachers = players.filter((p) => db.get(`player_${p}`).role === "Preacher" && db.get(`player_${p}`).status === "Alive")
-        const tricksters = players.filter(p => db.get(`player_${p}`).role === "Wolf Trickster" && db.get(`player_${p}`).status === "Alive")
+        const tricksters = players.filter((p) => db.get(`player_${p}`).role === "Wolf Trickster" && db.get(`player_${p}`).status === "Alive")
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
 
@@ -142,7 +142,7 @@ module.exports = async (client) => {
                 let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                 db.set(`player_${guy.couple}.status`, "Dead")
                 let role = player.role
-                if (player.tricked) role = "Wolf Trickster"                
+                if (player.tricked) role = "Wolf Trickster"
                 await dayChat.send(`${getEmoji("couple", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** lost the love of their life and fled the village!`)
                 await member.roles.set(memberRoles)
                 client.emit("playerKilled", db.get(`player_${guy.couple}`), guy)
@@ -166,15 +166,14 @@ module.exports = async (client) => {
 
         if (guy.tricked) {
             if (options?.trickster !== false) {
-                let wwtrick = tricksters.find(p => db.get(`player_${p}`).target === guy.id)
+                let wwtrick = tricksters.find((p) => db.get(`player_${p}`).target === guy.id)
                 if (wwtrick) {
                     let channel = guild.channels.cache.get(db.get(`player_${wwtrick}`).channel)
-                    channel.send(`${getEmoji("wolf_trickster_swap", client)} Your target **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji(guy.role.toLowerCase().replace(/\s/g, "_"), client)} ${guy.role})** has died. You will be now seen as **${getEmoji(guy.role.toLowerCase().replace(/\s/g, "_"), client)} ${guy.role}** during the night.`)
-                    channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+                    channel.send(`${getEmoji("wolf_trickster_swap", client)} Your target **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role.toLowerCase().replace(/\s/g, "_"), client)} ${guy.role})** has died. You will be now seen as **${getEmoji(guy.role.toLowerCase().replace(/\s/g, "_"), client)} ${guy.role}** during the night.`)
+                    channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
                     db.subtract(`player_${wwtrick}.uses`, 1)
                     db.set(`player_${wwtrick}.trickedRole`, { role: guy.role, aura: guy.aura, team: guy.team })
                 }
-                
             }
         }
 

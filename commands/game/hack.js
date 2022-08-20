@@ -44,9 +44,7 @@ module.exports = {
             if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot mute yourself right?")
         }
 
-        let results = { p1: undefined, p2: undefined }
-
-        [target1, target2].forEach((guy, index) => {
+        let results = { p1: undefined, p2: undefined }[(target1, target2)].forEach((guy, index) => {
             let { aura, role, team } = db.get(`player_${guy}`)
 
             if (guy.disguised === true) {
@@ -65,7 +63,7 @@ module.exports = {
                 team = "Village"
             }
             if (guy.role === "Wolf Trickster" && guy.trickedRole) {
-                ({ aura, role, team } = guy.trickedRole)
+                ;({ aura, role, team } = guy.trickedRole)
             }
 
             result[`p${index + 1}`] = { aura, team, role }

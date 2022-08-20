@@ -116,9 +116,9 @@ module.exports = {
 
         // give a fake role to the sorcerer
         let sorcerers = players.filter((p) => db.get(`player_${p}`).role === "Sorcerer")
-        sorcerers.forEach(async sorc => {
+        sorcerers.forEach(async (sorc) => {
             let investigativeRoles = ["Analyst", "Aura Seer", "Detective", "Mortician", "Red Lady", "Seer", "Seer Apprentice", "Sheriff", "Spirit Seer", "Violinist"]
-            let allRoles = players.map(p => db.get(`player_${p}`).role).filter(r => investigativeRoles.includes(r))
+            let allRoles = players.map((p) => db.get(`player_${p}`).role).filter((r) => investigativeRoles.includes(r))
             let channel = message.guild.channels.cache.get(db.get(`player_${sorc}`)?.channel)
             if (allRoles.length > 0) {
                 shuffle(allRoles)
@@ -130,8 +130,6 @@ module.exports = {
                 channel?.send(`${getEmoji("sorcerer", client)} Your fake investigative role is **${getEmoji(investigativeRoles[0]?.toLowerCase().replace(/\s/g, "_"), client)} ${investigativeRoles[0]}**!`)
             }
         })
-        
-        
 
         // reveal any presidents if there is one
         let presidents = players.filter((p) => db.get(`player_${p}`).role === "President")
@@ -141,7 +139,7 @@ module.exports = {
                 // code for a future gamemode i have an idea for
             } else {
                 await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${getEmoji("president", client)} Player **${players.indexOf(pres) + 1} ${message.guild.members.cache.get(pres)?.user.username}** is your President`)
-                await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+                await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
             }
         })
 
