@@ -5,7 +5,7 @@ module.exports = {
     narratorOnly: true,
     run: async (message, args, client) => {
         if (args[0] == "rrv") {
-            let rv = ["Villager", "Doctor", "Bodyguard", "Tough Guy", "Red Lady", "Priest", "Marksman", "Aura Seer", "Spirit Seer", "Seer Apprentice \n\nOnly add this role if a Seer is in game", "Sheriff", "Mayor", "Witch", "Avenger", "Beast Hunter", "Pacifist", "Flower Child", "Grumpy Grandma", "Loudmouth"]
+            let rv = ["Villager", "Doctor", "Bodyguard", "Tough Guy", "Red Lady", "Priest", "Marksman", "Aura Seer", "Spirit Seer", "Seer Apprentice \n\nOnly add this role if a Seer is in game", "Sheriff", "Mayor", "Witch", "Avenger", "Beast Hunter", "Pacifist", "Flower Child", "Grumpy Grandma", "Loudmouth", "Trapper"]
         } else if (args[0] == "rsv") {
             let rsv = ["Medium", "Gunner", "Jailer\n\nIf this role already existed, please retry the command again!", "Seer", "Detective", "Fortune Teller", "Forger"]
         } else if (args[0] == "rww") {

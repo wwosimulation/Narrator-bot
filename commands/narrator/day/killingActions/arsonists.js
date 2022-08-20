@@ -2,6 +2,7 @@ const db = require("quick.db") // database
 const { getRole, getEmoji } = require("../../../../config") // functions
 const beastHunter = require("./protection/beastHunter.js") // beast hunter protection
 const jailer = require("./protection/jailer.js") // jailer protection
+const trapper = require("./protection/trapper.js") // trapper protection
 
 async function getProtections(client, guy, attacker) {
     let getResult
@@ -9,6 +10,10 @@ async function getProtections(client, guy, attacker) {
     // check if the player they are attacking is healed by the beast hunter
     getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
     if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
+
+    // check if the player they are attacking is saved by the trapper
+    getResult = await trapper(client, guy, attacker)
+    if(getResult === true) return false // exits early if a trapper DOES have a trap on them
 
     // check if the player they are attacking is jailed
     getResult = await jailer(client, guy, attacker) // checks if they are jailed
