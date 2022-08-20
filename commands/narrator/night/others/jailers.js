@@ -18,10 +18,8 @@ module.exports = async (client) => {
 
         // check if the jailer is alive
         if (jail.status === "Alive") {
-
             // check if the jailer has selected a target
             if (jail.target) {
-
                 if (jail.role === "Jailer") {
                     let guy = db.get(`player_${jail.target}`) // get the player to be jailed - Object
                     let channel = guild.channels.cache.get(guy.channel) // get their channel - Object
@@ -90,7 +88,7 @@ module.exports = async (client) => {
                             // send the message
                             werewolvesChat.send(`Your werewolf teammate **${players.indexOf(guy1.id) + 1} ${guy1.username} (${getEmoji(guy1.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy1.role})** has been jailed by the Warden!`)
                         }
-                        
+
                         if (guy2.team === "Werewolf" && guy2.role !== "Werewolf Fan") {
                             // send the message
                             werewolvesChat.send(`Your werewolf teammate **${players.indexOf(guy2.id) + 1} ${guy2.username} (${getEmoji(guy2.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy2.role})** has been jailed by the Warden!`)
@@ -98,13 +96,13 @@ module.exports = async (client) => {
 
                         channel1.send(`${getEmoji("warden_jail", client)} You have been jailed by the Warden! You can't do your actions for tonight! Head to <#${wardenChat.id}> to talk with your inmate!`) // send the messages
                         channel2.send(`${getEmoji("warden_jail", client)} You have been jailed by the Warden! You can't do your actions for tonight! Head to <#${wardenChat.id}> to talk with your inmate!`) // send the messages
-                        channel.send(`${getEmoji("warden_jail", client)} **${jail.target.map(o => `${players.indexOf(o)+1} ${db.get(`player_${o}`)}`).join("** and **")}** have been jailed! You can hear them talk now.`) // send the message
+                        channel.send(`${getEmoji("warden_jail", client)} **${jail.target.map((o) => `${players.indexOf(o) + 1} ${db.get(`player_${o}`)}`).join("** and **")}** have been jailed! You can hear them talk now.`) // send the message
 
                         db.set(`player_${guy1.id}.jailed`, true) // set the jailed status to true
                         db.set(`player_${guy2.id}.jailed`, true) // set the jailed status to true
                     } else {
                         channel.send(`${getEmoji("warden_jail", client)} One of your targets weren't alive anymore so you failed to jail anyone.`)
-                        channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+                        channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
                     }
                 }
             }

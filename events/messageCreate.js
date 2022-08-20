@@ -8,7 +8,6 @@ const cooldowns = new Discord.Collection()
 const prefix = process.env.PREFIX
 
 module.exports = (client) => {
-
     //When receiving a message
     client.on("messageCreate", async (message) => {
         let maint = db.get("maintenance")
