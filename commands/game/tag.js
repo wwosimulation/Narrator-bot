@@ -45,7 +45,9 @@ module.exports = {
 
         if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send(`You must select an ALIVE player to ${player.role === "Split Wolf" ? "bind with" : "tag"}!`)
 
-        if (!player.hypnotized && player.couple === target) return await message.channel.send("You cannot select your couple!")
+        let cupid = db.get(`player_${player.id}`).cupid
+
+        if (!player.hypnotized && db.get(`player_${cupid}`)?.target.includes(target)) return await message.channel.send("You cannot select your couple!")
 
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot select the President!")
 

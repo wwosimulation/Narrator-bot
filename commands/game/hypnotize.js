@@ -35,7 +35,9 @@ module.exports = {
 
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot hypnotize the President!")
 
-        if (db.get(`player_${player.id}`).couple === target) return await message.channel.send("You cannot hypnotize your own couple!")
+        let cupid = db.get(`player_${player.id}`).cupid
+
+        if (db.get(`player_${cupid}`)?.target.includes(target)) return await message.channel.send("You cannot hypnotize your own couple!")
 
         if (player.id === target) return await message.channel.send("Why are you trying to hypnotize yourself?")
 

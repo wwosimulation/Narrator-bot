@@ -54,7 +54,9 @@ module.exports = {
                     break
                 }
 
-                if (guy === player.couple) {
+                let cupid = db.get(`player_${player.id}`).cupid
+
+                if (db.get(`player_${cupid}`)?.target.includes(guy)) {
                     await message.channel.send("You cannot eat your own couple!")
                     break
                 }

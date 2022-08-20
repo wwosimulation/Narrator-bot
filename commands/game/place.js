@@ -87,9 +87,11 @@ module.exports = {
         if (!player.hypnotized) {
             if (db.get(`player_${player.id}`).sected === target[0] && player.role === "Marksman") return await message.channel.send("You cannot mark your own Sect Leader")
 
-            if (db.get(`player_${player.id}`).couple === target[0] && player.role === "Marksman") return await message.channel.send("You cannot mark your own couple!")
+            let cupid = db.get(`player_${player.id}`).cupid
 
-            if (player.role === "Astral Wolf" && target.includes(player.couple)) return await message.channel.send("You cannot mark one of your own couples!")
+            if (db.get(`player_${cupid}`)?.target.includes(target[0]) && player.role === "Marksman") return await message.channel.send("You cannot mark your own couple!")
+
+            if (player.role === "Astral Wolf" && target.includes(db.get(`player_${cupid}`)?.target.find(a => a !== player.id))) return await message.channel.send("You cannot mark one of your own couples!")
 
             if (player.id === target[0] && ["Ritualist", "Marksman"].includes(player.role)) return await message.channel.send("You do know that you cannot select yourself right?")
 

@@ -45,7 +45,8 @@ module.exports = {
         if (target1 === target2) return await message.channel.send("Why are you selecting the same player? Please select different players!")
 
         if (!player.hypnotized) {
-            if ([target1, target2].includes(db.get(`player_${player.id}`).couple)) return await message.channel.send("You cannot trick or treat your own couple!")
+            let cupid = db.get(`player_${player.id}`).cupid
+            if ([target1, target2].includes(db.get(`player_${cupid}`)?.target.find(a => a !== player.id))) return await message.channel.send("You cannot trick or treat your own couple!")
 
             if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot trick or treat yourself right?")
         }

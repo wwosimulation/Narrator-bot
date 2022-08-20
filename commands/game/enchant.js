@@ -43,7 +43,8 @@ module.exports = {
         }
 
         if (!player.hypnotized) {
-            if (db.get(`player_${player.id}`).couple === target && player.role === "Illusionist") return await message.channel.send("You cannot disguise your own couple!")
+            let cupid = db.get(`player_${player.id}`).cupid
+            if (db.get(`player_${cupid}`)?.target.includes(target) && player.role === "Illusionist") return await message.channel.send("You cannot disguise your own couple!")
 
             if (player.id === target) return await message.channel.send(`You do know that you cannot ${player.role === "Wolf Shaman" ? "enchant" : "disguise"} yourself right?`)
         }
