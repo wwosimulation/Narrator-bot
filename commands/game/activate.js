@@ -23,5 +23,5 @@ module.exports = {
 
         db.set(`player_${player.id}.active`, true)
         await message.channel.send(`${getEmoji("active", client)} You have activated your ability! All traps are now active.`)
-    }
+    },
 }

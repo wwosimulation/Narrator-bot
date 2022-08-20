@@ -18,7 +18,7 @@ module.exports = async () => {
         if (guy.role === "Trapper") {
             db.push(`player_${player}.traps`, guy.target)
             db.set(`player_${player}.active`, false)
-            if(db.get(`player_${player}.triggered`)) {
+            if (db.get(`player_${player}.triggered`)) {
                 db.set(`player_${player}.triggered`, false)
                 db.set(`player_${player}.traps`, [])
             }

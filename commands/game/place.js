@@ -32,7 +32,7 @@ module.exports = {
             Ritualist: getEmoji("ritualist_select", client),
             "Beast Hunter": getEmoji("trap", client),
             "Astral Wolf": getEmoji("astral_chain", client),
-            Trapper: getEmoji("trap", client)
+            Trapper: getEmoji("trap", client),
         }
 
         if (args[0].toLowerCase() === "cancel") {
@@ -41,8 +41,7 @@ module.exports = {
                 db.delete(`player_${player.id}.target`)
                 // send message
                 await message.channel.send(`${object[player.role]} Done! I have canceled your placement on that player!`)
-            }
-            else if (!player.placed) {
+            } else if (!player.placed) {
                 db.delete(`player_${player.id}.target`)
                 db.delete(`player_${player.id}.placed`)
                 await message.channel.send(`${object[player.role]} Done! I have canceled your placement on that player!`)
