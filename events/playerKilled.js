@@ -315,7 +315,10 @@ module.exports = async (client) => {
                 db.delete(`player_${trapper}.target`)
             }
             if (player.traps.includes(guy.id)) {
-                db.set(`player_${trapper}.traps`, player.traps.filter((t) => t !== guy.id))
+                db.set(
+                    `player_${trapper}.traps`,
+                    player.traps.filter((t) => t !== guy.id)
+                )
                 db.set(`player_${trapper}.target`, undefined)
             }
         }

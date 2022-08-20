@@ -4,7 +4,7 @@ const { getRole, getEmoji } = require("../../../../config") // functions
 module.exports = async (client, guy, attacker) => {
     if (typeof guy !== "object" || typeof attacker !== "object") return false
 
-    // define all variables 
+    // define all variables
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const players = db.get("players") // get the players - Array<Snowflake>
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players - Array<Snowflake>
