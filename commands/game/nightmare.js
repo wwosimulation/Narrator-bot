@@ -35,7 +35,9 @@ module.exports = {
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot nightmare the President!")
 
         if (!player.hypnotized) {
-            if (db.get(`player_${player.id}`).couple === target) return await message.channel.send("You cannot nightmare your own couple!")
+            let cupid = db.get(`player_${player.id}`).cupid
+
+            if (db.get(`player_${cupid}`)?.target.includes(target)) return await message.channel.send("You cannot nightmare your own couple!")
 
             if (player.id === target) return await message.channel.send("You do know that you cannot nightmare yourself right?")
 

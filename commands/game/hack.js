@@ -33,15 +33,18 @@ module.exports = {
         if (db.get(`player_${target1}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
         if (db.get(`player_${target2}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
 
-        if (db.get(`player_${target1}`).role === "President") return await message.channel.send("You cannot mute the President!")
-        if (db.get(`player_${target2}`).role === "President") return await message.channel.send("You cannot mute the President!")
+        if (db.get(`player_${target1}`).role === "President") return await message.channel.send("You cannot hack the President!")
+        if (db.get(`player_${target2}`).role === "President") return await message.channel.send("You cannot hack the President!")
 
         if (target1 === target2) return await message.channel.send("Why are you hacking the same player?")
 
         if (!player.hypnotized) {
-            if ([target1, target2].includes(db.get(`player_${player.id}`).couple)) return await message.channel.send("You cannot mute your own couple!")
 
-            if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot mute yourself right?")
+            let cupid = db.get(`player_${player.id}`).cupid
+
+            if ([target1, target2].includes(db.get(`player_${cupid}`)?.target.find(a => a !== player.id))) return await message.channel.send("You cannot hack your own couple!")
+
+            if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot hack yourself right?")
         }
 
         let results = { p1: undefined, p2: undefined }[(target1, target2)].forEach((guy, index) => {

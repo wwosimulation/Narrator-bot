@@ -36,7 +36,8 @@ module.exports = {
         if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
 
         if (!player.hypnotized) {
-            if (db.get(`player_${player.id}`).couple === target && db.get(`player_${target}`).team !== "Village" && !["Fool", "Headhunter", "Sect Leader", "Zombie"].includes(player.role)) return await message.channel.send("You cannot visit your own couple if they are known to be evil!")
+            let cupid = db.get(`player_${player.id}`).cupid
+            if (db.get(`player_${cupid}`)?.target.includes(target) && db.get(`player_${target}`).team !== "Village" && !["Fool", "Headhunter", "Sect Leader", "Zombie"].includes(player.role)) return await message.channel.send("You cannot visit your own couple if they are known to be evil!")
 
             if (player.id === target) return await message.channel.send("You do know that you cannot visit yourself right?")
         }
