@@ -23,7 +23,7 @@ module.exports = {
             db.set(`player_${m}.status`, "Alive")
             db.delete(`player_${m}.corrupted`)
             await player.roles.set(roles)
-            await daychat.send(`${getEmoji("revive", client)}**${players.indexOf(m) + 1} ${db.get(`player_${m}`).username} (${getEmoji(db.get(`player_${m}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${m}`).role})** was revived by the narrator!`)
+            await daychat.send(`${getEmoji("revive", client)} **${players.indexOf(m) + 1} ${db.get(`player_${m}`).username} (${getEmoji(db.get(`player_${m}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${m}`).role})** was revived by the narrator!`)
         })
     },
 }

@@ -14,6 +14,7 @@ module.exports = {
         if (args[0] === "all") {
             return killAll.run(message, args, client)
         } else {
+            const players = db.get(`players`)
             args.forEach((player) => {
                 let guy = message.guild.members.cache.find((m) => [m.nickname, m.id, m.user.username, m.user.tag].includes(player))
                 if (guy) {
