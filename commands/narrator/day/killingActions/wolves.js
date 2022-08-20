@@ -224,7 +224,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
                         // kill the player
 
                         db.set(`player_${result.id}.status`, "Dead") // set the player status to Dead
-                        client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
+                        client.emit("playerKilled", db.get(`player_${result.id}`), attacker, { trickster: false })
                         let member = await guild.members.fetch(result.id) // get the discord member
                         let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the discord roles
                         await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**`)
@@ -239,7 +239,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
 
                                 if (protectionPlayer.status === "Alive") {
                                     db.set(`player_${protectionPlayer.id}.status`, "Dead") // set the player status to Dead
-                                    client.emit("playerKilled", db.get(`player_${protectionPlayer.id}`), attacker)
+                                    client.emit("playerKilled", db.get(`player_${protectionPlayer.id}`), attacker, { trickster: false })
                                     let memberP = await guild.members.fetch(protectionPlayer.id) // get the discord member
                                     let memberRolesP = memberP.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the discord roles
                                     await dayChat.send(`${getEmoji("frenzy", client)} The werewolf frenzy killed **${players.indexOf(protectionPlayer.id) + 1} ${protectionPlayer.username} (${getEmoji(protectionPlayer.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${protectionPlayer.role})**`)

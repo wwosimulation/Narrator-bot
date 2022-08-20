@@ -95,8 +95,10 @@ module.exports = async (client) => {
                         let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
                         let attackedPlayerRoles = attackedPlayer.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles and replace the Alive role with Dead.
                         let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
+                        let role = result.role
+                        if (result.tricked) role = "Wolf Trickster"
                         await channel.send(`${getEmoji("kidnap", client)} Player **${players.indexOf(result.id) + 1} ${result.username}** didn't want to be your accomplice, so you killed them instead.`)
-                        await dayChat.send(`${getEmoji("thieve", client)} Bandits killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
+                        await dayChat.send(`${getEmoji("thieve", client)} The Bandits attacked **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(role.toLowerCase()?.replace(/\s/g, "_"), client)} ${role})**!`)
                         await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
                     } else {
                         // otherwise they were protected
@@ -114,11 +116,11 @@ module.exports = async (client) => {
                     // check if the result type is an object - indicating that there were no protections
                     if (typeof result === "object" && guy.role !== "Accomplice") {
                         // convert the player then
-                        let previousRoles = result.allRoles || [result.role]
+                        let previousRoles = guy.allRoles || [guy.role]
                         previousRoles.push("Accomplice")
-                        db.set(`player_${result.id}.allRoles`, previousRoles)
+                        db.set(`player_${guy.id}.allRoles`, previousRoles)
 
-                        let channel = guild.channels.cache.get(result.channel)
+                        let channel = guild.channels.cache.get(guy.channel)
                         let banditChannel = guild.channels.cache.get(attacker.banditChannel)
 
                         await banditChannel.permissionOverwrites.create(guy.id, {
@@ -135,25 +137,25 @@ module.exports = async (client) => {
                             await c.pin()
                             await c.channel.bulkDelete(1)
                         }) // sends the description, pins the message and deletes the last message
-                        await channel.send(`<@${result.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
+                        await channel.send(`<@${guy.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
 
-                        db.set(`player_${result.id}.role`, "Accomplice") // changes the player's role in the database
-                        db.set(`player_${result.id}.team`, "Bandits") // changes the player's team in the database
-                        db.set(`player_${result.id}.bandit`, attacker.id) // set's the bandit who converted this player
-                        db.set(`player_${result.id}.convertedAt`, phase) // set when this player was converted
-                        db.set(`player_${result.id}.banditChannel`, attacker.banditChannel) // set the bandit channel for the accomplice
+                        db.set(`player_${guy.id}.role`, "Accomplice") // changes the player's role in the database
+                        db.set(`player_${guy.id}.team`, "Bandits") // changes the player's team in the database
+                        db.set(`player_${guy.id}.bandit`, attacker.id) // set's the bandit who converted this player
+                        db.set(`player_${guy.id}.convertedAt`, phase) // set when this player was converted
+                        db.set(`player_${guy.id}.banditChannel`, attacker.banditChannel) // set the bandit channel for the accomplice
 
                         let allAccomplices = db.get(`player_${attacker.id}.accomplices`) || [] // gets all the accomplices
-                        allAccomplices.push(result.id) // push the player into the array
+                        allAccomplices.push(guy.id) // push the player into the array
                         db.set(`player_${attacker.id}.accomplices`, allAccomplices) // set the database
 
                         // send a message to the bandits chat
-                        await banditChannel.send(`${getEmoji("kidnap", client)} Player **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})** has been converted into an Accomplice! Together, you can kill players.`) // sends a message
+                        await banditChannel.send(`${getEmoji("kidnap", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})** has been converted into an Accomplice! Together, you can kill players.`) // sends a message
                     } else {
                         // otherwise they were protected
 
                         let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
-                        await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(result.id) + 1} ${result.username}** could not be converted!`) // sends an error message
+                        await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** could not be converted!`) // sends an error message
                         await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the player in the channel
                     }
                 }

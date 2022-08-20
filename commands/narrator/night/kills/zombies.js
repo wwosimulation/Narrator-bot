@@ -24,7 +24,9 @@ module.exports = async (client) => {
                     db.set(`player_${zomb.id}.status`, "Dead") // change the status of the player
                     let player = await guild.members.fetch(zomb.id) // fetch the discord member - Object
                     let playerRoles = player.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles and replace the Alive role with Dead.
-                    await dayChat.send(`${getEmoji("zombie", client)} The body of **${players.indexOf(zombie.id) + 1} ${zombie.username} (${getEmoji(zomb.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${zomb.role})** has decayed and they are now dead!`) // send the message
+                    let role = zomb.role
+                    if (zomb.tricked) role = "Wolf Trickster"
+                    await dayChat.send(`${getEmoji("zombie", client)} The body of **${players.indexOf(zombie.id) + 1} ${zombie.username} (${getEmoji(role.toLowerCase()?.replace(/\s/g, "_"), client)} ${role})** has decayed and they are now dead!`) // send the message
                     await player.roles.set(playerRoles) // change the roles
                 }
             }

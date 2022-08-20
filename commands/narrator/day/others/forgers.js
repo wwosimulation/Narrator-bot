@@ -31,7 +31,14 @@ module.exports = async (client) => {
 
             // send the messages to the forger and player
             await channel1.send(`${getEmoji(`get${forger.itemType}`, client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** has succesfully recieved your **${forger.itemType}**.`)
-            await channel2.send(`${getEmoji(`get${forger.itemType}`, client)} You have recieved a **${forger.itemType}** from the Forger! ${forger.itemType === "shield" ? "" : `To use it, do \`+sword [player number]\``}`)
+            await channel2.send(`${getEmoji(`get${forger.itemType}`, client)} You have recieved a **${forger.itemType}** from the Forger!`)
+            await channel2.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+
+            if (forger.itemType === "sword") {
+                let alivePlayers = players.filter(p => db.get(`player_${p}`).status === "Alive" && p !== guy.id)
+                let dropdown = { type: 3, custom_id: "forger-sword", options: alivePlayers.map(p => { return { label: `Player ${players.indexOf(p)+1}`, value: p, description: `${players.indexOf(p)+1} ${db.get(`player_${p}`).username}` } }) }
+                if (dropdown.options.length > 0) await channel2.send({ content: "Click the button below to kill someone using your sword.", components: [buttons] })
+            }
         }
     }
 }

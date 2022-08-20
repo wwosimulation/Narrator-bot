@@ -12,15 +12,10 @@ module.exports = {
         const wwchat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-        console.log("Command running")
-
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
-
-        console.log("PLayer is in priv channel")
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to hunt players.")
         if (!["Sect Hunter"].includes(player.role) && !["Sect Hunter"].includes(player.dreamRole)) return
-        console.log("Found a sect hunter")
         if (["Sect Hunter"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only hunt during the night right? Or are you delusional?")
         if (db.get(`game.peace`) === Math.floor(gamePhase / 3) + 1) return await message.channel.send("This is a peaceful night! You cannot hunt anyone!")

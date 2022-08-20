@@ -200,10 +200,43 @@ module.exports = (client) => {
 
         if (interaction.customId === "astral-bless") {
             interaction.deferUpdate()
+            let player = db.get(`player_${interaction.member.id}`)
             let target = db.get(`player_${interaction.values[0]}`)
+            if (player?.status !== "Alive") return interaction.followUp({ content: "You can only check when alive!", ephemeral: true })
             if (target?.status !== "Alive") return interaction.followUp({ content: "You can only check alive players!", ephemeral: true })
-            await interaction.message.edit({ components: [] })
-            await interaction.channel.send(`${getEmoji("seer", client)} You checked **${allPlayers.indexOf(target.id) + 1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**!`)
+            if (player.jailed) return interaction.followUp({ content: "You can't use your abilites while in jail!", ephemeral: true })
+            if (player.nightmared) return interaction.followUp({ content: "You can't use your abilities while being nightmare!", ephemeral: true })
+            await interaction.editReply({ components: [] })
+            let role = target.role
+            if (target.role === "Wolf Trickster" && target.trickedRole) role = target.trickedRole.role
+            if (target.role === "Sorcerer" && (player.team !== "Werewolf" || player.role === "Werewolf Fan")) role = target.fakeRole
+            await interaction.channel.send(`${getEmoji("seer", client)} You checked **${allPlayers.indexOf(target.id) + 1} ${target.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
+        }
+
+        if (interaction.customId === "forger-sword") {
+            interaction.deferUpdate()
+            let player = db.get(`player_${interaction.member.id}`)
+            let target = db.get(`player_${interaction.values[0]}`)
+            if (player?.status !== "Alive") return interaction.followUp({ content: "You can only kill when alive!", ephemeral: true })
+            if (target?.status !== "Alive") return interaction.followUp({ content: "You can only kill alive players!", ephemeral: true })
+            if (player.couple === target.id) return interaction.followUp({ content: "You can't kill your couple!", ephemeral: true })
+            if (player.sected === target.id) return interaction.followUp({ content: "You can't kill your Sect Leader!", ephemeral: true })
+            if (player.team !== "Village" && player.team !== "Solo" && player.role !== "Werewolf Fan" && player.team === target.team) return interaction.followUp({ content: "You can't kill someone from your own team!", ephemeral: true })
+            if (target.role === "President") return interaction.followUp({ content: "You can only kill the President!", ephemeral: true })
+            if (player.jailed) return interaction.followUp({ content: "You can't use your abilites while in jail!", ephemeral: true })
+            if (player.nightmared) return interaction.followUp({ content: "You can't use your abilities while being nightmare!", ephemeral: true })
+            if (db.get(`gamePhase`) % 3 === 0 && db.get(`game.peace`) === Math.floor(db.get(`gamePhase`)/3)+1) return interaction.followUp({ content: "You can't kill on a peaceful night!", ephemeral: true })
+            await interaction.editReply({ components: [] })
+            await interaction.channel.send(`${getEmoji("getsword", client)} You have used your sword to kill **${allPlayers.indexOf(target.id)+1} ${target.username}**!`)
+            db.delete(`player_${player.id}.sword`)
+            let role = target.role
+            if (target.tricked) role = "Wolf Trickster"
+            let guy = await message.guild.members.fetch(target.id)
+            let roles = guy.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
+            let daychat = interaction.guild.channels.cache.find(c => c.name === "day-chat")
+            await daychat.send(`${getEmoji("getsword", client)} The Forger's sword was used to kill **${players.indexOf(target.id) + 1} ${target.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
+            await guy.roles.set(roles)
+            client.emit("playerKilled", db.get(`player_${target.id}`), db.get(`player_${player.id}`))
         }
     })
 }

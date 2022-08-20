@@ -98,7 +98,9 @@ module.exports = async (client, alivePlayersBefore) => {
                     client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
                     let attackedPlayer = await guild.members.fetch(result.id) // fetch the discord member - Object
                     let attackedPlayerRoles = attackedPlayer.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles and replace the Alive role with Dead.
-                    await dayChat.send(`${getEmoji("dreamcatcher", client)} The Dreamcatcher killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**!`)
+                    let role = result.role
+                    if (result.tricked) role = "Wolf Trickster"
+                    await dayChat.send(`${getEmoji("dreamcatcher", client)} The Dreamcatcher killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(role.toLowerCase()?.replace(/\s/g, "_"), client)} ${role})**!`)
                     await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
                 } else {
                     // otherwise they were protected
