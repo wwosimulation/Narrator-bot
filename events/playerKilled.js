@@ -21,6 +21,7 @@ module.exports = async (client) => {
         const preachers = players.filter((p) => db.get(`player_${p}`).role === "Preacher" && db.get(`player_${p}`).status === "Alive")
         const tricksters = players.filter((p) => db.get(`player_${p}`).role === "Wolf Trickster" && db.get(`player_${p}`).status === "Alive")
         const ritualists = players.filter((p) => db.get(`player_${p}`).role === "Ritualist" && db.get(`player_${p}`).status === "Alive")
+        const trappers = players.filter((p) => db.get(`player_${p}`).role === "Trapper" && db.get(`player_${p}`).status === "Alive")
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
 
@@ -293,6 +294,7 @@ module.exports = async (client) => {
             client.emit("playerKilled", db.get(`player_${member.id}`), db.get(`player_${member.id}`))
         }
 
+        // split wolves
         for (const splitwolf of splitwolfs) {
             let player = db.get(`player_${splitwolf}`)
             let target = db.get(`player_${player?.target}`)
@@ -304,6 +306,18 @@ module.exports = async (client) => {
             await member.roles.set(member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)))
             await dayChat.send(`${getEmoji("bind", client)} **${players.indexOf(splitwolf) + 1} ${player.username} (${getEmoji("split_wolf", client)} Split Wolf)** was killed because they bounded their soul to another player that died.`)
             client.emit("playerKilled", db.get(`player_${splitwolf}`), db.get(`player_${guy.id}`))
+        }
+
+        // trapper
+        for (const trapper of trappers) {
+            let player = db.get(`player_${trapper}`)
+            if (player.target === guy.id) {
+                db.delete(`player_${trapper}.target`)
+            }
+            if (player.traps.includes(guy.id)) {
+                db.set(`player_${trapper}.traps`, player.traps.filter((t) => t !== guy.id))
+                db.set(`player_${trapper}.target`, undefined)
+            }
         }
     })
 }

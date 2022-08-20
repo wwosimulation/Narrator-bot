@@ -9,8 +9,10 @@ const bodyguard = require("./protection/bodyguard.js") // bodyguard protection
 const toughGuy = require("./protection/toughGuy.js") // tough guy protection
 const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
+const trapper = require("./protection/trapper.js") // trapper protection
 
 let attackedByBeastHunter = false
+let attackedByTrapper = false
 let confirmedWeakestWolf = false
 let newkwwdied = false
 
@@ -19,7 +21,16 @@ async function getProtections(client, guy, attacker) {
 
     // check if the player they are attacking is healed by the beast hunter
     getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
-    if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
+    if (getResult === true) {
+        attackedByBeastHunter = true
+        return false
+    } // exits early if a beast hunter DOES have a trap on them
+
+    getResult = await trapper(client, guy, attacker) // checks if a trapper has a trap on them
+    if (getResult === true) {
+        attackedByTrapper = true
+        return false
+    } // exits early if a trapper DOES have a trap on them
 
     // check if the player they are attacking is jailed
     getResult = await jailer(client, guy, attacker) // checks if they are jailed
@@ -279,6 +290,26 @@ module.exports.beastHunterKilling = async (client) => {
             // kill the wolf
             db.set(`player_${confirmedWeakestWolf.id}.status`, "Dead") // makes the attacker dead
             await dayChat.send(`${getEmoji("trap", client)} The Beast Hunter's trap killed **${players.indexOf(confirmedWeakestWolf.id) + 1} ${confirmedWeakestWolf.username} (${getEmoji(confirmedWeakestWolf.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${confirmedWeakestWolf.role})**!`)
+            await attackerMember.roles.set(allAttackerRoles) // set the role
+        }
+    }
+}
+
+module.exports.trapperKilling = async (client) => {
+    // check if the wolves were attacked by trapper
+    if (attackedByTrapper === true && confirmedWeakestWolf !== false) {
+        // kill the weakest wolf
+        const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
+        const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // gets the day chat channel
+        const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
+        const attackerMember = await guild.members.fetch(confirmedWeakestWolf.id) // get the discord member
+        const allAttackerRoles = attackerMember.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles from the member
+
+        // check if the attacker is alive
+        if (confirmedWeakestWolf.status === "Alive") {
+            // kill the wolf
+            db.set(`player_${confirmedWeakestWolf.id}.status`, "Dead") // makes the attacker dead
+            await dayChat.send(`${getEmoji("trap", client)} The Trapper's trap killed **${players.indexOf(confirmedWeakestWolf.id) + 1} ${confirmedWeakestWolf.username} (${getEmoji(confirmedWeakestWolf.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${confirmedWeakestWolf.role})**!`)
             await attackerMember.roles.set(allAttackerRoles) // set the role
         }
     }

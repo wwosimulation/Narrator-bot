@@ -27,7 +27,7 @@ module.exports = {
         console.log("Loaded all actions...")
 
         // get all the actions
-        let { wolves, beastHunterKilling } = require("./killingActions/wolves.js")
+        let { wolves, beastHunterKilling, trapperKilling } = require("./killingActions/wolves.js")
         let kittenwolf = require("./killingActions/kittenWolf.js")
         let serialkillers = require("./killingActions/serialkillers.js")
         let accomplices = require("./killingActions/accomplices.js")
@@ -143,6 +143,10 @@ module.exports = {
         await beastHunterKilling(client)
 
         sleep(100)
+
+        // trapper killing a wolf
+        console.log("trapper running...")
+        await trapperKilling(client)
 
         // get couple targets
         console.log("couple running...")

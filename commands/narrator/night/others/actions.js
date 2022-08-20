@@ -14,6 +14,16 @@ module.exports = async () => {
             db.set(`player_${player}.placed`, true)
         }
 
+        // trapper
+        if (guy.role === "Trapper") {
+            db.push(`player_${player}.traps`, guy.target)
+            db.set(`player_${player}.active`, false)
+            if(db.get(`player_${player}.triggered`)) {
+                db.set(`player_${player}.triggered`, false)
+                db.set(`player_${player}.traps`, [])
+            }
+        }
+
         // check if they have a role that can only be used once a night.
         if (["Aura Seer", "Seer", "Detective", "Analyst", "Sorcerer", "Wolf Seer", "Hacker", "Santa Claus"].includes(guy.role)) {
             // if they have uses, reset it.
