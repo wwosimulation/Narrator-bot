@@ -16,11 +16,13 @@ module.exports = async () => {
 
         // trapper
         if (guy.role === "Trapper") {
-            db.push(`player_${player}.traps`, guy.target)
-            db.set(`player_${player}.active`, false)
+            let currentTraps = db.get(`player_${player}.traps`) || []
+            currentTraps.push(guy.target)
+            db.set(`player_${player}.traps`, currentTraps)
             if (db.get(`player_${player}.triggered`)) {
-                db.set(`player_${player}.triggered`, false)
+                db.delete(`player_${player}.triggered`)
                 db.set(`player_${player}.traps`, [])
+                db.delete(`player_${player}.active`)
             }
         }
 
