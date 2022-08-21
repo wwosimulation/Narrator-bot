@@ -17,14 +17,13 @@ module.exports = async (client, guy, attacker) => {
     for (let player of alivePlayers) {
         // check the role
         if (db.get(`player_${player}`).role === "Trapper") {
-
             // check if the traps are active and a trap is on the attacked player
-            if (!db.get(`player_${player}`).active || !db.get(`player_${player}`).traps.includes(guy.id)) continue;
+            if (!db.get(`player_${player}`).active || !db.get(`player_${player}`).traps.includes(guy.id)) continue
 
             // trap can save multiple times in the same night - don't remove it
             // save that a trap got triggered
             db.set(`player_${player}.triggered`, true)
-            
+
             // check if berserk is active and the attacker is from the werewolves' team
             if (isBerserkActive === true && attacker.team === "Werewolf") {
                 allProtected.push(player)

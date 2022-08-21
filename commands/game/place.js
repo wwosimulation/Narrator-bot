@@ -40,9 +40,9 @@ module.exports = {
             let target = [players[Number(args[1]) - 1] || players.find((p) => [db.get(`player_${p}`).username, p].includes(args[1]))]
             if (!target) return message.channel.send("Player not found!")
             if (!player.traps?.includes(target[0])) return message.channel.send("You cannot remove a trap from a player you haven't trapped!")
-            let traps = player.traps.filter(p => p !== target)
+            let traps = player.traps.filter((p) => p !== target)
             db.set(`player_${player.id}.traps`, traps)
-            return message.channel.send(`I have removed the placed trap on **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**. Please note that you do not get an additional trap to place tonight.`)
+            return message.channel.send(`I have removed the placed trap on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**. Please note that you do not get an additional trap to place tonight.`)
         }
 
         if (args[0].toLowerCase() === "cancel") {
