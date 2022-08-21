@@ -17,7 +17,7 @@ module.exports = {
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to tag players.")
         if (!["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper"].includes(player.role) && !["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper"].includes(player.dreamRole)) return
         if (["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
-        if (player.role !== "Ritualist" && gamePhase % 3 !== 0) return await message.channel.send("You do know you can only place during the night? Or are you delusional?")
+        if (player.role !== "Ritualist" && gamePhase % 3 !== 0 && !(player.role === "Trapper" && args[0] === "remove")) return await message.channel.send("You do know you can only place during the night? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (args.length === 0) return await message.channel.send("You do know you need to tell me the player right?")
@@ -25,7 +25,7 @@ module.exports = {
         if (player.role === "Astral Wolf" && player.usesB !== 0) return await message.channel.send("You need to bless someone before you can mark players!")
         if (player.role === "Astral Wolf" && player.usedBAt === Math.floor(gamePhase / 3) + 1) return await message.channel.send("You need to wait a night before you can mark players! You just blessed someone.")
         if (player.role === "Astral Wolf" && args.length > 3) return await message.channel.send("You can only mark up to 3 players!")
-        if (player.role === "Trapper" && player.traps.length >= 3) return await message.channel.send("You can only have 3 traps at the same time! Wait till a player dies.")
+        if (player.role === "Trapper" && player.traps?.length >= 3) return await message.channel.send("You can only have 3 traps at the same time! Wait till a player dies.")
 
         let obj = {
             Marksman: getEmoji("mark", client),
@@ -33,6 +33,16 @@ module.exports = {
             "Beast Hunter": getEmoji("trap", client),
             "Astral Wolf": getEmoji("astral_chain", client),
             Trapper: getEmoji("trap", client),
+        }
+
+        if (player.role === "Trapper" && args[0].toLowerCase() === "remove") {
+            if (args.length !== 2) return message.channel.send("Select a player to remove their trap")
+            let target = [players[Number(args[1]) - 1] || players.find((p) => [db.get(`player_${p}`).username, p].includes(args[1]))]
+            if (!target) return message.channel.send("Player not found!")
+            if (!player.traps?.includes(target[0])) return message.channel.send("You cannot remove a trap from a player you haven't trapped!")
+            let traps = player.traps.filter(p => p !== target)
+            db.set(`player_${player.id}.traps`, traps)
+            return message.channel.send(`I have removed the placed trap on **${players.indexOf(target)+1} ${db.get(`player_${target}`).username}**. Please note that you do not get an additional trap to place tonight.`)
         }
 
         if (args[0].toLowerCase() === "cancel") {
