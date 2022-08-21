@@ -30,7 +30,7 @@ module.exports = async (client) => {
                         READ_MESSAGE_HISTORY: true,
                     })
 
-                    werewolvesChat.send(`${getEmoji("nightmare", client)} Player **${players.indexOf(night) + 1} ${nmww.username} (${getEmoji(nmww.role.toLowerCase().replace(/\s/g, "_"))} ${nmww.role})** put **${players.indexOf(player.id) + 1} ${player.username}** to sleep!`)
+                    werewolvesChat.send(`${getEmoji("nightmare", client)} Player **${players.indexOf(night) + 1} ${nmww.username} (${getEmoji(nmww.role.toLowerCase().replace(/\s/g, "_"), client)} ${nmww.role})** put **${players.indexOf(player.id) + 1} ${player.username}** to sleep!`)
                     channel.send(`${getEmoji("nightmared", client)} You are in a deep sleep! You cannot use your abilities this night!`)
 
                     if (guy.jailed == true) {
