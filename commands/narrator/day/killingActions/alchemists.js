@@ -70,7 +70,7 @@ module.exports = async (client) => {
         let attacker = db.get(`player_${alch}`) // the attacker object - Object
 
         // send a message to the player who got a red potion
-        let rVictim = db.get(`player_${attacker.redPotions[0]}`) // the victim object - Object
+        let rVictim = db.get(`player_${attacker.redTarget}`) // the victim object - Object
         let rChannel = guild.channels.cache.get(rVictim?.channel) // get the channel object - Object
         await rChannel.send(`${getEmoji("redp", client)} The Alchemist has sent you a potion. Sadly, you cannot make out the colour... you might die at the end of the day.`)
         await rChannel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
