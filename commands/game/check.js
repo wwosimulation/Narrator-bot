@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { soloKillers, roles, getRole, getEmoji, fn, ids } = require("../../config")
+const { soloKillers, roles, getRole, getEmoji, fn, ids, wolfList } = require("../../config")
 
 module.exports = {
     name: "check",
@@ -15,12 +15,12 @@ module.exports = {
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to check players.")
-        if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective"].includes(player.dreamRole)) return
-        if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician"].includes(player.dreamRole)) return
+        if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only check during the night right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
-        if (player.uses === 0) return await message.channel.send("You already used up your ability!")
+        if (!["Spirit Seer", "Sheriff", "Evil Detective"].includes(player.role) && player.uses === 0) return await message.channel.send("You already used up your ability!")
         if (args.length < 1) return await message.channel.send("Please select a player first.")
         if (!["Spirit Seer", "Detective"].includes(player.role) && args.length !== 1) return await message.channel.send("You need to select 1 player to check!")
         if (player.role === "Wolf Seer" && player.resign) return await message.channel.send("You already resigned from checking!")
@@ -32,6 +32,37 @@ module.exports = {
         target.push(players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0]))
 
         if (args.length > 1) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]))
+        if (!target[0]) return message.channel.send(`I could not find the player with the query: \`${args[0]}\``)
+        if (args.length > 1 && !target[1]) return message.channel.send(`I could not find the player with the query: \`${args[1]}\``)
+        if (player.role !== "Mortician" && target.map(p => db.get(`player_${p}`).status).filter(s => s !== "Alive").length > 0) return message.channel.send("You need to select ALIVE players!")
+        if (player.role === "Mortician") {
+            let guy = db.get(`player_${target[0]}`)
+            if (guy.status !== "Dead") return message.channel.send(`${getEmoji("fail_autopsy", client)} You need to select DEAD players to perform an autopsy!`)
+            if (typeof guy.killedBy === "string") return message.channel.send(`${getEmoji("fail_autopsy", client)} This player was not killed by an evil player!`)
+            let attacker = db.get(`player_${guy.killedBy}`)
+            if (attacker.team === "Village") return message.channel.send(`${getEmoji("fail_autopsy", client)} A villager killed this player! Please select another player.`)
+            if (attacker.status !== "Alive" && guy.killedByWolf === false) return message.channel.send(`${getEmoji("fail_autopsy", client)} The killer of this player is dead!`)
+            if (attacker.status !== "Alive" && guy.killedByWolf === true) {
+                let allWolves = players.map(p => db.get(`player_${p}`)).filter(p => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
+
+                if (allWolves.length === 0) return await channel.send(`${getEmoji("fail_autopsy", client)} The killer of this player is dead!`)
+            
+                let sortedWolves = allWolves.sort((a, b) => wolfList[a] - wolfList[b])
+                shuffle(sortedWolves)
+                attacker = sortedWolves[0]
+            }
+            let alivePlayers = db.get(`players`).filter((p) => db.get(`player_${p}`).status === "Alive" && p !== attacker.id && p !== player.id && db.get(`player_${p}`).role !== "President")
+            if (alivePlayers.length === 0) return await channel.send(`${getEmoji("fail_autopsy", client)} There are not enough suspects!`)
+            shuffle(alivePlayers)
+            let suspects = []
+            suspects.push(attacker.id)
+            suspects.push(alivePlayers[Math.random() * alivePlayers.length])
+            if (attacker.team !== "Werewolf" && alivePlayers.length > 1) suspects.push(alivePlayers.filter(a => a !== suspects[1])[Math.random() * (alivePlayers.length-1)])
+            suspects = suspects.sort((a, b) => players.indexOf(a) - players.indexOf(b))
+            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `${players.indexOf(a)+1} ${db.get(`player_${a}`).username}${i === suspects.length-2 ? " or" : i === suspects.length-1 ? "" : ","}`).join(" ")}`)
+            db.subtract(`player_${player.id}.uses`, 1)
+            return;
+        }
         if (!player.hypnotized && target.includes(player.id) && player.role !== "Evil Detective") return await message.channel.send("You can't check yourself, unless you have trust issues of course.")
         if (!player.hypnotized && player.role === "Wolf Seer" && db.get(`player_${target[0]}`).team === "Werewolf" && db.get(`player_${target[0]}`).role !== "Werewolf Fan") return await message.channel.send("I know have trust issues, but you cannot check your own teammates!")
         if (target.map((a) => db.get(`player_${a}`).role).includes("President")) return await message.channel.send("You cannot check the president.")
