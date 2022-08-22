@@ -32,6 +32,7 @@ module.exports = async (client) => {
         db.set(`player_${guy.id}.killedBy`, typeof attacker === "string" ? attacker : attacker.id)
         db.set(`player_${guy.id}.killedDuring`, phase.during)
         db.set(`player_${guy.id}.killedOn`, phase.on)
+        db.set(`player_${guy.id}.killedByWolf`, options?.werewolfKill ? true : false)
 
         db.delete(`player_${guy.id}.corrupted`)
         db.delete(`player_${guy.id}.poisoned`)

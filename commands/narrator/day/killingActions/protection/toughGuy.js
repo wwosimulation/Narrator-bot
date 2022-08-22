@@ -1,5 +1,5 @@
 const db = require("quick.db") // database
-const { getRole, getEmoji } = require("../../../../../config") // functions
+const { getRole, getEmoji, wolfList } = require("../../../../../config") // functions
 
 module.exports = async (client, guy, attacker) => {
     if (typeof guy !== "object" || typeof attacker !== "object") return false // makes sure if "guy" and "attacker" is an object, otherwise exit early
@@ -24,10 +24,13 @@ module.exports = async (client, guy, attacker) => {
                     // add the protector in the database
                     let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the tough guy's channel object - Object
                     let attackerChannel = guild.channels.cache.get(attacker.channel) // get the attacker's channel object - Object
-                    await channel.send(`${getEmoji("guard", client)} Your fought off an attack ${guy.id === player.id ? "" : `while protecting **${players.indexOf(guy.id) + 1} ${guy.username}**`} and saw that **${players.indexOf(attacker.id) + 1} ${attacker.username} (${getEmoji(attacker.role?.toLowerCase().replace(/\s/g, "_"))} ${attacker.role})** was the attacker!\n\nYou will die at the end of the day.`) // sends the message that they got alerted
+                    await channel.send(`${getEmoji("guard", client)} Your fought off an attack ${guy.id === player.id ? "" : `while protecting **${players.indexOf(guy.id) + 1} ${guy.username}**`} and saw that **${players.indexOf(attacker.id) + 1} ${attacker.username} (${getEmoji(attacker.role?.toLowerCase().replace(/\s/g, "_"))} ${attacker.role})** was the attacker!\n\nUnfortunately you have been killed by the Werewolf Berserk.`) // sends the message that they got alerted
                     await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings alive in the channel
                     await attackerChannel.send(`${getEmoji("guard", client)} Player **${players.indexOf(player) + 1} ${db.get(`player_${player}`).username}** is a **Tough Guy**! They now know your role!`) // sends a message to the attacker saying that the tough guy knows them
                     await attackerChannel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings alive in the attacker's channel
+                    allProtected.push(player)
+                    db.set(`berserkProtected`, allProtected)
+                    isProtected = false
                 } else {
                     // alert and exit early
                     isProtected = true // set the protection to true

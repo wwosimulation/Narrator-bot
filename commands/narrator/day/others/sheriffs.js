@@ -1,4 +1,4 @@
-const { getRole, getEmoji } = require("../../../../config") // functions
+const { getRole, getEmoji, wolfList } = require("../../../../config") // functions
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
 
@@ -23,13 +23,25 @@ module.exports = async (client) => {
         let attacker = db.get(`player_${guy.killedBy}`)
 
         // if the attacker is not alive, send a message to the sheriff
-        if (attacker.status === "Dead") {
+        if (attacker.status === "Dead" && attacker.killedByWolf === false) {
             await channel.send(`${getEmoji("suspect", client)} Your target **${players.indexOf(guy.id) + 1} ${guy.username}** was killed by **${players.indexOf(attacker.id) + 1} ${attacker.username}**. They are now dead.`)
-            continue
+            continue;
+        }
+
+        if (attacker.status === "Dead" && attacker.killedByWolf === true) {
+            let allWolves = players.map(p => db.get(`player_${p}`)).filter(p => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
+            if (allWolves.length === 0) {
+                await channel.send(`${getEmoji("suspect", client)} Your target **${players.indexOf(guy.id) + 1} ${guy.username}** was killed by **${players.indexOf(attacker.id) + 1} ${attacker.username}**. They are now dead.`)
+                continue;
+            } else {
+                let sortedWolves = allWolves.sort((a, b) => wolfList[a] - wolfList[b])
+                shuffle(sortedWolves)
+                attacker = sortedWolves[0]
+            }
         }
 
         // get all alive players excluding the sheriff and the attacker
-        let alivePlayers = db.get(`players`).filter((p) => db.get(`player_${p}`).status === "Alive" && p !== guy.killedBy && p !== sher)
+        let alivePlayers = db.get(`players`).filter((p) => db.get(`player_${p}`).status === "Alive" && p !== attacker.id && p !== sher && db.get(`player_${p}`).role !== "President")
 
         // get a random player
         let randomPlayer = alivePlayers[Math.floor(Math.random() * alivePlayers.length)]
@@ -41,11 +53,8 @@ module.exports = async (client) => {
         }
 
         // put them into an array and
-        let suspects = [attacker, db.get(`player_${randomPlayer}`)]
-
-        // shuffle the players
-        shuffle(suspects)
-
+        let suspects = [attacker, db.get(`player_${randomPlayer}`)].sort((a, b) => players.indexOf(a.id) - players.indexOf(b.id))
+        
         await channel.send(`${getEmoji("suspect", client)} Your target **${players.indexOf(guy.id) + 1} ${guy.username}** was either killed by **${players.indexOf(suspects[0]?.id) + 1} ${suspects[0]?.username}** or **${players.indexOf(suspects[1]?.id) + 1} ${suspects[1]?.username}**!`)
     }
 }
