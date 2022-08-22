@@ -34,7 +34,7 @@ module.exports = {
         if (args.length > 1) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]))
         if (!target[0]) return message.channel.send(`I could not find the player with the query: \`${args[0]}\``)
         if (args.length > 1 && !target[1]) return message.channel.send(`I could not find the player with the query: \`${args[1]}\``)
-        if (player.role !== "Mortician" && target.map(p => db.get(`player_${p}`).status).filter(s => s !== "Alive").length > 0) return message.channel.send("You need to select ALIVE players!")
+        if (player.role !== "Mortician" && target.map((p) => db.get(`player_${p}`).status).filter((s) => s !== "Alive").length > 0) return message.channel.send("You need to select ALIVE players!")
         if (player.role === "Mortician") {
             let guy = db.get(`player_${target[0]}`)
             if (guy.status !== "Dead") return message.channel.send(`${getEmoji("fail_autopsy", client)} You need to select DEAD players to perform an autopsy!`)
@@ -43,10 +43,10 @@ module.exports = {
             if (attacker.team === "Village") return message.channel.send(`${getEmoji("fail_autopsy", client)} A villager killed this player! Please select another player.`)
             if (attacker.status !== "Alive" && guy.killedByWolf === false) return message.channel.send(`${getEmoji("fail_autopsy", client)} The killer of this player is dead!`)
             if (attacker.status !== "Alive" && guy.killedByWolf === true) {
-                let allWolves = players.map(p => db.get(`player_${p}`)).filter(p => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
+                let allWolves = players.map((p) => db.get(`player_${p}`)).filter((p) => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
 
                 if (allWolves.length === 0) return await channel.send(`${getEmoji("fail_autopsy", client)} The killer of this player is dead!`)
-            
+
                 let sortedWolves = allWolves.sort((a, b) => wolfList[a] - wolfList[b])
                 shuffle(sortedWolves)
                 attacker = sortedWolves[0]
@@ -57,11 +57,11 @@ module.exports = {
             let suspects = []
             suspects.push(attacker.id)
             suspects.push(alivePlayers[Math.random() * alivePlayers.length])
-            if (attacker.team !== "Werewolf" && alivePlayers.length > 1) suspects.push(alivePlayers.filter(a => a !== suspects[1])[Math.random() * (alivePlayers.length-1)])
+            if (attacker.team !== "Werewolf" && alivePlayers.length > 1) suspects.push(alivePlayers.filter((a) => a !== suspects[1])[Math.random() * (alivePlayers.length - 1)])
             suspects = suspects.sort((a, b) => players.indexOf(a) - players.indexOf(b))
-            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `${players.indexOf(a)+1} ${db.get(`player_${a}`).username}${i === suspects.length-2 ? " or" : i === suspects.length-1 ? "" : ","}`).join(" ")}`)
+            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}${i === suspects.length - 2 ? " or" : i === suspects.length - 1 ? "" : ","}`).join(" ")}`)
             db.subtract(`player_${player.id}.uses`, 1)
-            return;
+            return
         }
         if (!player.hypnotized && target.includes(player.id) && player.role !== "Evil Detective") return await message.channel.send("You can't check yourself, unless you have trust issues of course.")
         if (!player.hypnotized && player.role === "Wolf Seer" && db.get(`player_${target[0]}`).team === "Werewolf" && db.get(`player_${target[0]}`).role !== "Werewolf Fan") return await message.channel.send("I know have trust issues, but you cannot check your own teammates!")

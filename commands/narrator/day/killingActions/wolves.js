@@ -80,7 +80,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
     const kwwDied = db.get(`kittenWolfConvert`)
-    
+
     let votes = {} // make an object to store the votes - Object<UserId, Vote>
     let toKill = "0" // store a player to kill, in string - String
 
@@ -264,10 +264,10 @@ module.exports.beastHunterKilling = async (client) => {
         const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
         const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // gets the day chat channel
         const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
-        const allWolves = players.map(p => db.get(`player_${p}`)).filter(p => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
+        const allWolves = players.map((p) => db.get(`player_${p}`)).filter((p) => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
         let weakestWolves = allWolves.sort((a, b) => wolfList[a.role] - wolfList[b.role])
         shuffle(weakestWolves)
-        if (weakestWolves.length === 0) return;
+        if (weakestWolves.length === 0) return
         const weakestWolf = weakestWolves[0]
         const attackerMember = await guild.members.fetch(weakestWolf.id) // get the discord member
         const allAttackerRoles = attackerMember.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles from the member
@@ -289,10 +289,10 @@ module.exports.trapperKilling = async (client) => {
         const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
         const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // gets the day chat channel
         const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
-        const allWolves = players.map(p => db.get(`player_${p}`)).filter(p => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
+        const allWolves = players.map((p) => db.get(`player_${p}`)).filter((p) => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
         let weakestWolves = allWolves.sort((a, b) => wolfList[a.role] - wolfList[b.role])
         shuffle(weakestWolves)
-        if (weakestWolves.length === 0) return;
+        if (weakestWolves.length === 0) return
         const weakestWolf = weakestWolves[0]
         const attackerMember = await guild.members.fetch(weakestWolf.id) // get the discord member
         const allAttackerRoles = attackerMember.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles from the member
