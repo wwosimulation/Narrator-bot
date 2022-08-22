@@ -38,11 +38,14 @@ module.exports = {
         if (player.role === "Trapper" && args[0].toLowerCase() === "remove") {
             if (args.length !== 2) return message.channel.send("Select a player to remove their trap")
             let target = [players[Number(args[1]) - 1] || players.find((p) => [db.get(`player_${p}`).username, p].includes(args[1]))]
-            if (!target) return message.channel.send("Player not found!")
-            if (!player.traps?.includes(target[0])) return message.channel.send("You cannot remove a trap from a player you haven't trapped!")
-            let traps = player.traps.filter((p) => p !== target)
+            if (args[0].toLowerCase() === "all") target = db.get(`player_${player.id}.traps`) || []
+            if (args[0].toLowerCase() !== "all" && !target[0]) return message.channel.send("Player not found!")
+            if (args[0].toLowerCase() === "all" && target.length === 0) return message.channel.send("You can't remove traps from players if you haven't placed any!")
+            if (args[0].toLowerCase() !== "all" && !player.traps?.includes(target[0])) return message.channel.send("You cannot remove a trap from a player you haven't trapped!")
+            let traps = args[0].toLowerCase() === "all" ? [] : player.traps.filter((p) => p !== target[0])
             db.set(`player_${player.id}.traps`, traps)
-            return message.channel.send(`I have removed the placed trap on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**. Please note that you do not get an additional trap to place tonight.`)
+            if (args[0].toLowerCase() !== "all") return message.channel.send(`I have removed the placed trap on **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**. Please note that you do not get an additional trap to place tonight.`)
+            return message.channel.send(`I have removed all placed traps from players. Please note that you do not get an additional trap to place tonight.`)
         }
 
         if (args[0].toLowerCase() === "cancel") {
@@ -85,6 +88,8 @@ module.exports = {
             }
             return
         }
+
+        if (player.role === "Trapper" && player.active === true) return message.channel.send("You have active traps set! If you want to discard the active traps, use the `+trap remove all` command and use this command again.")
 
         let target = [players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])]
         if (player.role === "Astral Wolf" && args.length === 2) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]))
