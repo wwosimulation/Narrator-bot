@@ -1,9 +1,9 @@
-const { fn } = require("../../config")
+const { github, ids, fn } = require("../../config")
 
 module.exports = {
     command: {
-        name: "bug",
-        description: "Report a bug",
+        name: "suggestion",
+        description: "Suggest a new feature for the bot.",
         defaultPermission: true,
     },
     permissions: {
@@ -14,18 +14,18 @@ module.exports = {
     run: async (interaction, client) => {
         // create an embed
         let embed = {
-            title: "Bug Reports",
-            description: "To start a bug report, please click the button below. You will be asked to provide some information about the bug.\nDo not abuse this feature as it can get you banned from using the bot.",
+            title: "Suggestions",
+            description: "To start a suggestion, please click the button below. You will be asked to provide some information about the suggestion.\nDo not abuse this feature as it can get you banned from using the bot.",
             color: 0x2f3136,
         }
 
-        // create a button to start the bug report
+        // create a button to start the suggestion
         let button = {
             type: 1,
             components: [{
                 type: 2,
-                label: "Start Bug Report",
-                custom_id: "bug-start",
+                label: "Start Suggestion",
+                custom_id: "suggestion-start",
                 style: 3,
             }]
         }
@@ -36,18 +36,18 @@ module.exports = {
         // wait for the user to click the button
         let coll = repl.createMessageComponentCollector({ idle: 15_000 })
         coll.on("collect", async (button) => {
-            // bug modal
+            // suggestion modal
             let modal = {
-                title: "Bug Report",
-                custom_id: "bug-modal",
+                title: "Suggestion",
+                custom_id: "suggestion-modal",
                 components: [{
                     type: 1,
                     components: [{
                         type: 4,
-                        custom_id: "bug-title",
+                        custom_id: "suggestion-title",
                         label: "Title",
                         style: 1,
-                        placeholder: "Enter a short title for this bug",
+                        placeholder: "Enter a short title for this suggestion",
                         required: true,
                         min_length: 1,
                     }]
@@ -55,10 +55,10 @@ module.exports = {
                     type: 1,
                     components: [{
                         type: 4,
-                        custom_id: "bug-description",
+                        custom_id: "suggestion-description",
                         label: "Description",
                         style: 2,
-                        placeholder: "Describe the bug more detailed and how you can reproduce it",
+                        placeholder: "Describe the suggestion more in detail",
                         required: true,
                         min_length: 20,
                     }]
@@ -66,10 +66,10 @@ module.exports = {
                     type: 1,
                     components: [{
                         type: 4,
-                        custom_id: "bug-part",
+                        custom_id: "suggestion-part",
                         label: "Part",
                         style: 1,
-                        placeholder: "What part of the bot are you seeing the problem on?",
+                        placeholder: "For which part of the bot is this suggestion intended?",
                         required: true,
                         min_length: 4,
                     }]
@@ -77,10 +77,10 @@ module.exports = {
                     type: 1,
                     components: [{
                         type: 4,
-                        custom_id: "bug-gamecode",
-                        label: "Game Code",
+                        custom_id: "suggestion-origin",
+                        label: "Origin",
                         style: 1,
-                        placeholder: "If this is a bug in a game, what was the game code?",
+                        placeholder: "Where is this suggestion from?",
                         required: false,
                     }]
                 }]

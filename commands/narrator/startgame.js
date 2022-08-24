@@ -212,7 +212,7 @@ module.exports = {
             }
         }
 
-        message.guild.channels.cache.find((x) => x.name == "enter-game")?.send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
+        client.channels.cache.find((x) => x.id == "606123818305585167")?.send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
 
         await message.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
 
