@@ -46,13 +46,16 @@ module.exports = {
             notWolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to throw holy water on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** and killed themselves! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is not a werewolf!`,
         }
 
-        let member = db.get(`player_${target}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${target}`).role) ? target : player.id
+        let member = (db.get(`player_${target}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${target}`).role)) ? target : player.id
         let guy = await message.guild.members.fetch(member)
         let roles = guy.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
 
         await guy.roles.set(roles)
         await message.channel.send(`${getEmoji("water", client)} You have succesfully used your ability!`)
         await daychat.send(`${guy.id === target ? gameMsg.wolf : gameMsg.notWolf}`)
+
+        db.set(`player_${member}.status`, "Dead")
+        client.emit("playerKilled", db.get(`player_${member}`), db.get(`player_${player.id}`))
 
         if (guy.id === target) await message.member.roles.add("892046205780131891")
     },

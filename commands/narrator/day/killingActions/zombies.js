@@ -136,13 +136,13 @@ module.exports = async (client, alivePlayersBefore) => {
                     await zombiesChat.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the player in the channel
 
                     // check if the player they bit is a wolf, and check if they aren't the original zombie
-                    if (guy.team === "Werewolf" && guy.role !== "Sorcerer" && attacker.isOriginal !== true) {
+                    if (guy.team === "Werewolf" && ["Werewolf Fan", "Sorcerer"].includes(guy.role) && attacker.isOriginal !== true) {
                         // kill the damn player
                         db.set(`player_${attacker.id}.status`, "Dead")
-                        client.emit("playerKilled", db.get(`player_${guy.id}`), attacker)
-                        let member = await guild.members.fetch(guy.id) // get the discord member
+                        client.emit("playerKilled", db.get(`player_${attacker.id}`), attacker)
+                        let member = await guild.members.fetch(attacker.id) // get the discord member
                         let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the roles of the member
-                        await dayChat.send(`${getEmoji("bitten", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji("zombie", client)} Zombie)** tried biting a werewolf and died.`) // sends the message
+                        await dayChat.send(`${getEmoji("bitten", client)} Player **${players.indexOf(attacker.id) + 1} ${attacker.username} (${getEmoji("zombie", client)} Zombie)** tried biting a werewolf and died.`) // sends the message
                         await member.roles.set(memberRoles) // set the roles
                     }
                 } else {
