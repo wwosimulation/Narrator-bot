@@ -22,7 +22,7 @@ module.exports = async (client) => {
         const tricksters = players.filter((p) => db.get(`player_${p}`).role === "Wolf Trickster" && db.get(`player_${p}`).status === "Alive")
         const ritualists = players.filter((p) => db.get(`player_${p}`).role === "Ritualist" && db.get(`player_${p}`).status === "Alive")
         const trappers = players.filter((p) => db.get(`player_${p}`).role === "Trapper" && db.get(`player_${p}`).status === "Alive")
-        const seerappprentices = players.filter(p => db.get(`player_${p}`).role === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
+        const seerappprentices = players.filter((p) => db.get(`player_${p}`).role === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
 
@@ -326,11 +326,11 @@ module.exports = async (client) => {
         }
 
         for (const seerapp of seerappprentices) {
-            if (!["Analyst", "Aura Seer", "Detective", "Mortician", "Seer", "Sheriff", "Spirit Seer", "Violinist"].includes(guy.role)) continue;
+            if (!["Analyst", "Aura Seer", "Detective", "Mortician", "Seer", "Sheriff", "Spirit Seer", "Violinist"].includes(guy.role)) continue
             db.set(`player_${seerapp}.originalRole`, "Seer Apprentice")
             db.set(`player_${seerapp}.originalPlayer`, guy.id)
             db.set(`player_${seerapp}.role`, guy.role)
-            
+
             let allRoles = db.get(`player_${seerapp}.allRoles`) || ["Seer Apprentice"]
             allRoles.push(guy.role)
             db.set(`player_${member}.allRoles`, allRoles)
@@ -338,7 +338,7 @@ module.exports = async (client) => {
             if (["Analyst", "Aura Seer", "Detective", "Mortician", "Seer", "Violinist"].includes(guy.role)) db.set(`player_${seerapp}.uses`, 1)
             let channel = guild.channels.cache.get(db.get(`player_${seerapp}`)?.channel)
             channel?.send(`${guy.role.startsWith("A") ? "An" : "A"} **${guy.role}** has died so you have taken over their role!`)
-            channel?.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+            channel?.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
             channel?.edit({ name: `priv-${guy.role.toLowerCase().replace(/\s/g, "-")}` })
         }
     })

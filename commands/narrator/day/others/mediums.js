@@ -7,7 +7,7 @@ module.exports = async (client) => {
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
     const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
     const mediums = players.filter((p) => db.get(`player_${p}`).role === "Medium" && db.get(`player_${p}`).uses > 0) // get the alive Mediums array - Array<Snowflake>
-    const seerappprentices = players.filter(p => db.get(`player_${p}`).originalRole === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
+    const seerappprentices = players.filter((p) => db.get(`player_${p}`).originalRole === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
 
     // loop through each medium
     for (const med of mediums) {
@@ -32,7 +32,7 @@ module.exports = async (client) => {
         await member.roles.set(memberRoles)
 
         for (const seerapp of seerappprentices) {
-            if (db.get(`player_${seerapp}`).originalPlayer !== guy.id) continue;
+            if (db.get(`player_${seerapp}`).originalPlayer !== guy.id) continue
 
             let allRoles = db.get(`player_${seerapp}.allRoles`)
             allRoles.pop()
@@ -42,7 +42,7 @@ module.exports = async (client) => {
 
             let channel = guild.channels.cache.get(db.get(`player_${seerapp}`)?.channel)
             channel?.send(`The **${guy.role}** has been revived so you have become a **Seer Apprentice** again.`)
-            channel?.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+            channel?.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
             channel?.edit({ name: `priv-seer-apprentice` })
         }
     }
