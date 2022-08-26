@@ -15,8 +15,8 @@ module.exports = {
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to tag players.")
-        if (!["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper"].includes(player.role) && !["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper"].includes(player.dreamRole)) return
-        if (["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (!["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper", "Sorcerer"].includes(player.role) && !["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper", "Sorcerer"].includes(player.dreamRole)) return
+        if (["Marksman", "Beast Hunter", "Astral Wolf", "Ritualist", "Trapper", "Sorcerer"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (player.role !== "Ritualist" && gamePhase % 3 !== 0 && !(player.role === "Trapper" && args[0] === "remove")) return await message.channel.send("You do know you can only place during the night? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
@@ -26,6 +26,8 @@ module.exports = {
         if (player.role === "Astral Wolf" && player.usedBAt === Math.floor(gamePhase / 3) + 1) return await message.channel.send("You need to wait a night before you can mark players! You just blessed someone.")
         if (player.role === "Astral Wolf" && args.length > 3) return await message.channel.send("You can only mark up to 3 players!")
         if (player.role === "Trapper" && player.traps?.length >= 3) return await message.channel.send("You can only have 3 traps at the same time! Wait till a player dies.")
+        if (player.role === "Sorcerer" && gamePhase % 3 === 0) return await message.channel.send("You can only use your ability during the day!")
+        if (player.role === "Sorcerer" && player.usesM === 0) return await message.channel.send("You already used up your ability!")
 
         let obj = {
             Marksman: getEmoji("mark", client),
@@ -48,7 +50,7 @@ module.exports = {
             return message.channel.send(`I have removed all placed traps from players. Please note that you do not get an additional trap to place tonight.`)
         }
 
-        if (args[0].toLowerCase() === "cancel") {
+        if (args[0].toLowerCase() === "cancel" && player.role !== "Sorcerer") {
             if (["Trapper"].includes(player.role)) {
                 // cancel trap
                 db.delete(`player_${player.id}.target`)
@@ -113,13 +115,16 @@ module.exports = {
 
             if (db.get(`player_${cupid}`)?.target.includes(target[0]) && player.role === "Marksman") return await message.channel.send("You cannot mark your own couple!")
 
-            if (player.role === "Astral Wolf" && target.includes(db.get(`player_${cupid}`)?.target.find((a) => a !== player.id))) return await message.channel.send("You cannot mark one of your own couples!")
+            if (["Sorcerer", "Astral Wolf"].includes(player.role) && target.includes(db.get(`player_${cupid}`)?.target.find((a) => a !== player.id))) return await message.channel.send("You cannot mark one of your own couples!")
 
             if (player.id === target[0] && ["Ritualist", "Marksman"].includes(player.role)) return await message.channel.send("You do know that you cannot select yourself right?")
 
-            if (player.role === "Astral Wolf" && target.includes(player.id)) return await message.channel.send("You cannot mark yourself!")
+            if (["Sorcerer", "Astral Wolf"].includes(player.role) && target.includes(player.id)) return await message.channel.send("You cannot mark yourself!")
 
-            if (player.role === "Astral Wolf" && target.filter((p) => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan").length > 0) return await message.channel.send("You cannot mark your own werewolf teammate!")
+            if (["Sorcerer", "Astral Wolf"].includes(player.role) && target.filter((p) => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan").length > 0) return await message.channel.send("You cannot mark your own werewolf teammate!")
+
+            if (player.role === "Sorcerer" && !player.checkedPlayers?.includes(target[0])) return await message.channel.send("You can only mark someone you haven't checked!")
+        
         }
 
         db.set(`player_${player.id}.target`, target[0])
@@ -137,6 +142,11 @@ module.exports = {
                 )
             )
             await message.channel.send(`${obj[player.role]} You have set your mark on **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("**, **")}**!`)
+        }
+        if (player.role === "Sorcerer") {
+            db.subtract(`player_${player.id}.uses`, 1)
+            message.guild.channels.cache.find(c => c.name === "werewolves-chat").send(`${getEmoji("sorcerer_mark", client)} The Sorcerer has marked this player, they might be important!`)
+            message.guild.channels.cache.find(c => c.name === "werewolves-chat").send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
         }
     },
 }
