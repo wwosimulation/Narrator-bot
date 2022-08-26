@@ -11,6 +11,7 @@ module.exports = {
     run: async (message, args, client) => {
         const players = db.get(`players`)
         const deadPlayers = players.filter((p) => db.get(`player_${p}`).status === "Dead")
+        const seerappprentices = players.filter(p => db.get(`player_${p}`).originalRole === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
         let gamephase = db.get(`gamePhase`)
         if (gamephase % 3 != 1) return message.channel.send("Please first use `+day`")
         if(!args[0]) args[0] = db.get("defaultVT") ?? "1m"
@@ -52,6 +53,22 @@ module.exports = {
                 .split(",") // get the roles, and replace the dead role with alive
             await dayChat.send(`${getEmoji("ritualist_revive", client)} The Ritualist revived **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})**`) // sends a message in day chat
             await member.roles.set(memberRoles)
+
+            
+            for (const seerapp of seerappprentices) {
+                if (db.get(`player_${seerapp}`).originalPlayer !== guy.id) continue;
+
+                let allRoles = db.get(`player_${seerapp}.allRoles`)
+                allRoles.pop()
+                db.set(`player_${seerapp}.allRoles`, allRoles)
+                db.delete(`player_${seerapp}.originalRole`)
+                db.set(`player_${seerapp}.role`, "Seer Apprentice")
+
+                let channel = guild.channels.cache.get(db.get(`player_${seerapp}`)?.channel)
+                channel?.send(`The **${guy.role}** has been revived so you have become a **Seer Apprentice** again.`)
+                channel?.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+                channel?.edit({ name: `priv-seer-apprentice` })
+            }
         }
 
         db.set(`commandEnabled`, `yes`)
