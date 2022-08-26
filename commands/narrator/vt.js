@@ -69,6 +69,11 @@ module.exports = {
             }
         }
 
+        // alchemist
+
+        const alchemists = require("./night/kills/alchemists.js")
+        await alchemists(client)
+
         db.set(`commandEnabled`, `yes`)
         db.add(`gamePhase`, 1)
         message.channel.send(`Setting the vote time for ${ms(timer)}`)
