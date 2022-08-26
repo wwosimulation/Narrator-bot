@@ -5,7 +5,7 @@ module.exports = {
     name: "message",
     description: "This command is for the communication between different roles including medium, jailer and alpha wolf.",
     usage: `${process.env.PREFIX}message <message...>`,
-    aliases: ["m", "d", "j"],
+    aliases: ["m", "d", "j", "chat"],
     gameOnly: true,
     run: async (message, args, client) => {
         const gamePhase = db.get(`gamePhase`)
