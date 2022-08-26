@@ -98,6 +98,11 @@ module.exports = {
         if (player.role === "Wolf Seer") await message.channel.send(`${getEmoji("wolf_seer", client)} You checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].role.toLowerCase().replace(/\s/g, "_"), client)} ${result["p1"].role})**!`)
         if (player.role === "Wolf Seer") await wwchat.send(`${getEmoji("wolf_seer", client)} The Wolf Seer checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].role.toLowerCase().replace(/\s/g, "_"), client)} ${result["p1"].role})**!`)
         if (player.role === "Sorcerer") await message.channel.send(`${getEmoji("sorcerer", client)} You checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].role.toLowerCase().replace(/\s/g, "_"), client)} ${result["p1"].role})**!`)
+        if (player.role === "Sorcerer") {
+            let checkedPlayers = db.get(`player_${player.id}`)?.checkedPlayers || []
+            checkedPlayers.push(target[0])
+            db.set(`player_${player.id}.checkedPlayers`, checkedPlayers)
+        }
         if (player.role === "Detective") {
             let results = result.p1.team === result.p2.team ? "belong to the same team" : "do not belong to the same team!"
             if ([result.p1.team, result.p2.team].includes("Solo")) result = "do not belong to the same team."
