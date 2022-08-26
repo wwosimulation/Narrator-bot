@@ -16,7 +16,6 @@ module.exports = {
 
         // get all the actions
         const lynch = require("./kills/lynch.js")
-        const alchemists = require("./kills/alchemists.js")
         const bombers = require("./kills/bombers.js")
         const corruptors = require("./kills/corruptors.js")
         const zombies = require("./kills/zombies.js")
@@ -32,8 +31,6 @@ module.exports = {
         await lynch(client)
 
         await corruptors(client)
-
-        await alchemists(client)
 
         await zombies(client)
 
