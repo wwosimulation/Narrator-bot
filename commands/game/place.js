@@ -124,7 +124,6 @@ module.exports = {
             if (["Sorcerer", "Astral Wolf"].includes(player.role) && target.filter((p) => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan").length > 0) return await message.channel.send("You cannot mark your own werewolf teammate!")
 
             if (player.role === "Sorcerer" && !player.checkedPlayers?.includes(target[0])) return await message.channel.send("You can only mark someone you haven't checked!")
-        
         }
 
         db.set(`player_${player.id}.target`, target[0])
@@ -145,8 +144,8 @@ module.exports = {
         }
         if (player.role === "Sorcerer") {
             db.subtract(`player_${player.id}.uses`, 1)
-            message.guild.channels.cache.find(c => c.name === "werewolves-chat").send(`${getEmoji("sorcerer_mark", client)} The Sorcerer has marked this player, they might be important!`)
-            message.guild.channels.cache.find(c => c.name === "werewolves-chat").send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+            message.guild.channels.cache.find((c) => c.name === "werewolves-chat").send(`${getEmoji("sorcerer_mark", client)} The Sorcerer has marked this player, they might be important!`)
+            message.guild.channels.cache.find((c) => c.name === "werewolves-chat").send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
         }
     },
 }
