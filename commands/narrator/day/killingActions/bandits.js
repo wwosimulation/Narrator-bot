@@ -88,7 +88,7 @@ module.exports = async (client) => {
             // check if the bandit's target is alive
             if (guy.status === "Alive") {
                 // check if they are not village aligned
-                if ((guy.team !== "Village" && !["Fool", "Headhunter"].includes(guy.role) && guy.role === "Accomplice" && guy.convertedAt !== phase) || typeof guy.sected === "string" || guy.bitten === true || headhunterTargets.includes(guy.id)) {
+                if ((guy.team !== "Village" && !["Fool", "Headhunter"].includes(guy.role) && !(guy.role === "Accomplice" && guy.convertedAt !== phase)) || typeof guy.sected === "string" || guy.bitten === true || headhunterTargets.includes(guy.id)) {
                     // check for any protections
                     let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
 
