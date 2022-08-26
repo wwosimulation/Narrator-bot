@@ -22,12 +22,14 @@ module.exports = {
         // create a button to start the bug report
         let button = {
             type: 1,
-            components: [{
-                type: 2,
-                label: "Start Bug Report",
-                custom_id: "bug-start",
-                style: 3,
-            }]
+            components: [
+                {
+                    type: 2,
+                    label: "Start Bug Report",
+                    custom_id: "bug-start",
+                    style: 3,
+                },
+            ],
         }
 
         // send the embed and button
@@ -40,50 +42,63 @@ module.exports = {
             let modal = {
                 title: "Bug Report",
                 custom_id: "bug-modal",
-                components: [{
-                    type: 1,
-                    components: [{
-                        type: 4,
-                        custom_id: "bug-title",
-                        label: "Title",
-                        style: 1,
-                        placeholder: "Enter a short title for this bug",
-                        required: true,
-                        min_length: 1,
-                    }]
-                }, {
-                    type: 1,
-                    components: [{
-                        type: 4,
-                        custom_id: "bug-description",
-                        label: "Description",
-                        style: 2,
-                        placeholder: "Describe the bug more detailed and how you can reproduce it",
-                        required: true,
-                        min_length: 20,
-                    }]
-                }, {
-                    type: 1,
-                    components: [{
-                        type: 4,
-                        custom_id: "bug-part",
-                        label: "Part",
-                        style: 1,
-                        placeholder: "What part of the bot are you seeing the problem on?",
-                        required: true,
-                        min_length: 4,
-                    }]
-                }, {
-                    type: 1,
-                    components: [{
-                        type: 4,
-                        custom_id: "bug-gamecode",
-                        label: "Game Code",
-                        style: 1,
-                        placeholder: "If this is a bug in a game, what was the game code?",
-                        required: false,
-                    }]
-                }]
+                components: [
+                    {
+                        type: 1,
+                        components: [
+                            {
+                                type: 4,
+                                custom_id: "bug-title",
+                                label: "Title",
+                                style: 1,
+                                placeholder: "Enter a short title for this bug",
+                                required: true,
+                                min_length: 1,
+                            },
+                        ],
+                    },
+                    {
+                        type: 1,
+                        components: [
+                            {
+                                type: 4,
+                                custom_id: "bug-description",
+                                label: "Description",
+                                style: 2,
+                                placeholder: "Describe the bug more detailed and how you can reproduce it",
+                                required: true,
+                                min_length: 20,
+                            },
+                        ],
+                    },
+                    {
+                        type: 1,
+                        components: [
+                            {
+                                type: 4,
+                                custom_id: "bug-part",
+                                label: "Part",
+                                style: 1,
+                                placeholder: "What part of the bot are you seeing the problem on?",
+                                required: true,
+                                min_length: 4,
+                            },
+                        ],
+                    },
+                    {
+                        type: 1,
+                        components: [
+                            {
+                                type: 4,
+                                custom_id: "bug-gamecode",
+                                label: "Game Code",
+                                style: 1,
+                                placeholder: "If this is a bug in a game, what was the game code?",
+                                required: false,
+                            },
+                        ],
+                    },
+                ],
             }
 
             // send the modal
@@ -91,7 +106,7 @@ module.exports = {
         })
 
         coll.on("end", async () => {
-            interaction.editReply(fn.disableButtons(repl));
+            interaction.editReply(fn.disableButtons(repl))
         })
     },
 }
