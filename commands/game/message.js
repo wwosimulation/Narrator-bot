@@ -21,7 +21,7 @@ module.exports = {
             .replace(/<([@#])+[&]?[\d]{10,20}>/g, "[ping]")
 
         if (message.channel.name.startsWith("priv")) {
-            if (!["Jailer", "Medium", "Ritualist", "Alpha Werewolf"].includes(player.role) && !["Jailer", "Medium", "Ritualist", "Alpha Werewolf"].includes(player.dreamRole)) return
+            if (!["Jailer", "Medium", "Ritualist", "Alpha Werewolf", "Sect Leader"].includes(player.role) && !["Jailer", "Medium", "Ritualist", "Alpha Werewolf", "Sect Leader"].includes(player.dreamRole)) return
             if (player.status !== "Alive") return message.channel.send("Listen to me, you need to be ALIVE to send messsages.")
             if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
             if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
@@ -32,9 +32,19 @@ module.exports = {
                 if (player.uses == 0) return await message.channel.send("You already used up your ability!")
 
                 let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
-                wwChat.send(`${getEmoji("alpha_werewolf")} The Alpha Werewolf has sent a message: ${content}\n${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
+                wwChat.send(`${getEmoji("alpha_werewolf", client)} The Alpha Werewolf has sent a message: ${content}\n${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
                 db.subtract(`player_${message.author.id}.uses`, 1)
                 return await message.channel.send("You have sent a message to the werewolves.")
+            }
+
+            if (player.role === "Sect Leader" || player?.dreamRole == "Sect Leader") {
+                if (gamePhase % 3 == 0) return await message.channel.send("You can only send that kind of message during the day.")
+                if (player.uses == 0) return await message.channel.send("You already used up your ability!")
+
+                let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+                wwChat.send(`${getEmoji("sect_message", client)} The Sect Leader has sent a message: ${content}\n\n${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
+                db.subtract(`player_${message.author.id}.uses`, 1)
+                return await message.channel.send(`${getEmoji("sect_message", client)} You have sent a message to your sect!`)
             }
         } else {
             switch (message.channel.name) {
