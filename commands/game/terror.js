@@ -18,7 +18,7 @@ module.exports = {
         if (!["Prognosticator"].includes(player.role) && !["Prognosticator"].includes(player.dreamRole)) return
         if (["Prognosticator"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 == 0) return await message.channel.send("You do know that you can only terrorize players during the day right? Or are you delusional?")
-        if (player.usesT) return await message.channel.send("You already used up your ability!")
+        if (!player.usesT) return await message.channel.send("You already used up your ability!")
         if (args.length !== 1) return await message.channel.send("You need to select a player to terrorize!")
 
         let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])

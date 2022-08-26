@@ -9,6 +9,8 @@ module.exports = {
     usage: `${process.env.PREFIX}night <player | 0>`,
     gameOnly: true,
     run: async (message, args, client) => {
+        let gamephase = db.get(`gamePhase`)
+        if (gamephase % 3 != 2) return message.channel.send("Please first use `+vt`")
         require("./night/night.js").run(message, args, client)
     },
 }

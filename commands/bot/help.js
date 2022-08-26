@@ -15,8 +15,9 @@ module.exports = {
         // If args[0] is a command, send a specific command card.
         if (cmd_target) {
             embed.title = fn.capitalizeFirstLetter(cmd_target.name)
-            embed.description = `Prefix: \`${process.env.PREFIX}\`\nUse ${process.env.PREFIX}help to see all commands.\n` + embed.fields.push({ name: "Description", value: cmd_target.description || "No description given." }, { name: "Usage:", value: `\`${cmd_target.usage || `No usage given or "${process.env.PREFIX + cmd_target.name}"`}\`` })
-            embed.footer = { text: "[] = optional argument\n<> = required argument", icon_url: message.author.avatarURL() }
+            embed.description = `Prefix: \`${process.env.PREFIX}\`\nUse ${process.env.PREFIX}help to see all commands.\n`
+            embed.fields.push({ name: "Description", value: cmd_target.description || "No description given." }, { name: "Usage:", value: `\`${cmd_target.usage || `No usage given or "${process.env.PREFIX + cmd_target.name}"`}\`` })
+            embed.footer = { text: "[] = optional argument\n<> = required argument", icon_url: message.author.displayAvatarURL() }
 
             // if the command has aliases add those
             if (cmd_target.aliases) {
