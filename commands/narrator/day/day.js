@@ -1,6 +1,5 @@
 const { getRole, getEmoji } = require("../../../config") // functions
 const db = require("quick.db")
-const ritualists = require("./others/ritualists")
 
 module.exports = {
     name: "day",
