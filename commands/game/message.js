@@ -41,8 +41,8 @@ module.exports = {
                 if (gamePhase % 3 == 0) return await message.channel.send("You can only send that kind of message during the day.")
                 if (player.uses == 0) return await message.channel.send("You already used up your ability!")
 
-                let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
-                wwChat.send(`${getEmoji("sect_message", client)} The Sect Leader has sent a message: ${content}\n\n${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
+                let sectChat = message.guild.channels.cache.get(player.sectChannel)
+                sectChat.send(`${getEmoji("sect_message", client)} The Sect Leader has sent a message: ${content}\n\n${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
                 db.subtract(`player_${message.author.id}.uses`, 1)
                 return await message.channel.send(`${getEmoji("sect_message", client)} You have sent a message to your sect!`)
             }
