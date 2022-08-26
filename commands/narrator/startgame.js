@@ -198,6 +198,7 @@ module.exports = {
         })
         zombies.forEach(async (zomb) => {
             await zombchat.permissionOverwrites.edit(zomb, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
+            db.set(`player_${zomb}.isOriginal`, true)
         })
         siblings.forEach(async (sib) => {
             await sibchat.permissionOverwrites.edit(sib, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
