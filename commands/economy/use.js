@@ -2,6 +2,7 @@ const db = require("quick.db")
 const { lootbox, emojis } = require("../../config")
 const shuffle = require("shuffle-array")
 const { players } = require("../../db.js")
+const pluralize = require("pluralize")
 
 module.exports = {
     name: "use",
@@ -14,23 +15,40 @@ module.exports = {
 
         if (args[0].toLowerCase() == "lootbox") {
             let quantity = data.inventory.lootbox || 0
+            let amount = (args[1] == "all" ? quantity : parseInt(args[1])) || 1
             if (quantity == 0) return message.channel.send("You don't have this item!")
-            //return message.channel.send("Lootboxes are currently disabled right now, as the RNG was found to be flawed. Enjoy saving them up for the release in a couple days, and keep an eye on <#606123881824256000> for when they will be available to use!")
+            if (quantity < amount) return message.channel.send("You don't have that many lootboxes!")
 
             let t = await message.reply("Opening Lootbox...")
 
-            let item = shuffle(lootbox)[0]
-            setTimeout(async () => {
-                await t.edit(`${emojis[item.id] ? `${emojis[item.id]} ` : ""}You recieved ${item.name} from the lootbox!${item.id == "other" ? "\nPlease contact Staff for your prize!" : ""}`)
+            let prizes = [
+                { name: "Coin", id: "coin", amount: 0 },
+                { name: "Rose", id: "rose", amount: 0 },
+                { name: "Gem", id: "gem", amount: 0 },
+                { name: "Bouquet", id: "bouquet", amount: 0 },
+            ]
+            for (let i = 0; i < amount; i++) {
+                let item = shuffle(lootbox)[0]
                 data.inventory.lootbox = data.inventory.lootbox - 1
                 if (item.id != "other") {
-                    if (["coin", "gem"].includes(item.id)) {
-                        data[item.id + "s"] += item.amount
-                    } else {
-                        data.inventory[item.id] += item.amount
-                    }
+                    if (["coin", "gem"].includes(item.id)) data[item.id + "s"] += item.amount
+                    else data.inventory[item.id] += item.amount
+                    prizes.find(x => x.id == item.id).amount += item.amount
                 }
-                data.save()
+            }
+            data.save()
+
+            let str = "You recieved\n"
+            for (let i = 0; i < prizes.length; i++) {
+                if (prizes[i].amount > 0) {
+                    let name = pluralize(prizes[i].name, prizes[i].amount)
+                    str += `${emojis[prizes[i].id]} **${prizes[i].amount}** ${name}\n`
+                }
+            }
+            str += `from the ${pluralize("lootbox", amount)} you opened!`
+
+            setTimeout(() => {
+                t.edit(str)
             }, 3000)
         } else if (args[0].toLowerCase() == "icon") {
             let quantity = db.get(`iconinv_${message.author.id}`) || 0
