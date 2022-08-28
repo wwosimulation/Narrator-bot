@@ -24,6 +24,8 @@ module.exports = {
 
         await client.commands.get("gwhost").run(message, [args.length > 0 ? args.join(" ") : db.get("gameCode") + " - rematch"], client, true)
         await client.commands.get("enable").run(message, ["all"], client)
+        await client.channels.get("892046244715835463") // carl log
+            .send("== rematch ==")
 
         message.channel.send("Rematch game created! Please make sure to clear all channels and we are ready to go!")
 
