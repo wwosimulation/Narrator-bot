@@ -63,10 +63,10 @@ module.exports = {
         }
 
         db.subtract(`player_${player.id}.uses`, 1)
-        
+
         // check if the player is stubborn wolf that has 2 lives
         let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
-        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
 
         let member = await message.guild.members.fetch(result === true ? target : player.id)
         let roles = member.roles.cache.map((r) => (r.name === "Alive" ? message.guild.roles.cache.find((r) => r.name === "Dead").id : r.id))

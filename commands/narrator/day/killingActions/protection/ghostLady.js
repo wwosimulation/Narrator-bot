@@ -29,7 +29,7 @@ module.exports = async (client, guy, attacker) => {
                     isProtected = true // set the protection to true
                     let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the ghost lady's channel object - Object
                     let targetChannel = guild.channels.cache.get(guy.channel) // get the ghost lady's channel object - Object
-                    await targetChannel.send(`${getEmoji("gl_protection", client)} You were attacked but were protected by **${players.indexOf(player)+1} ${db.get(`player_${player}`).username} (${getEmoji("ghost_lady", client)} Ghost Lady)**.`)
+                    await targetChannel.send(`${getEmoji("gl_protection", client)} You were attacked but were protected by **${players.indexOf(player) + 1} ${db.get(`player_${player}`).username} (${getEmoji("ghost_lady", client)} Ghost Lady)**.`)
                     await targetChannel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
                     await channel.send(`${getEmoji("gl_protection", client)} Your protection saved **${players.indexOf(guy.id) + 1} ${guy.username}**. Your role has been revealed to them at the cost of no longer being able to protect.`) // sends the message that they got alerted
                     await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings alive in the channel

@@ -7,7 +7,7 @@ module.exports = async (client, guy) => {
     // define all the variables
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
-    const dayChat = guild.channels.cache.find(c => c.name === "day-chat")
+    const dayChat = guild.channels.cache.find((c) => c.name === "day-chat")
     let isProtected = false
 
     if (guy.role === "Stubborn Werewolf") {
@@ -15,7 +15,7 @@ module.exports = async (client, guy) => {
             let channel = guild.channels.cache.get(guy.channel)
             await dayChat.send(`${getEmoji("stubborn_werewolf", client)} The Stubborn Werewolf has been attacked! The next attack will be fatal.`)
             await channel.send(`${getEmoji("stubborn_werewolf", client)} You have been attacked! Your next attack will be fatal.`)
-            await channel.send(`${guild.roles.cache.find(r => r.name === "Alive")}`)
+            await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
             isProtected = true
         }
     }

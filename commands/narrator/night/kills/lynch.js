@@ -74,10 +74,9 @@ module.exports = async (client) => {
                 // send the unsuccessful message
                 await dayChat.send(`${getEmoji("votingme", client)} The villagers tried to lynch **${players.indexOf(guy.id) + 1} ${guy.username}**, but they were protected!`)
             } else {
-                
                 // check if the player is stubborn wolf that has 2 lives
                 let getResult = await stubbornWerewolves(client, guy) // checks if the player is stubborn wolf and has 2 lives
-                if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
+                if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
                 // kill the player normally
                 db.set(`player_${guy.id}.status`, "Dead") // change the status of the player
                 let member = await guild.members.fetch(guy.id) // get the discord member - Object
