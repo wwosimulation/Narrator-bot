@@ -49,6 +49,7 @@ module.exports = {
         ],
     },
     server: ["game"],
+    narratorOnly: true,
     run: async (interaction, client) => {
         // ---------- OPTIONS ----------
         let gamemode = interaction.options.getString("gamemode")

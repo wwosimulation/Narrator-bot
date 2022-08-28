@@ -61,6 +61,7 @@ module.exports = {
         ],
     },
     server: ["sim"],
+    staffOnly: true,
     run: async (interaction, client) => {
         let sub = interaction.options.getSubcommand()
         switch (sub) {

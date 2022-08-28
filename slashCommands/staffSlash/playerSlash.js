@@ -74,6 +74,7 @@ module.exports = {
         ],
     },
     server: ["sim", "game"],
+    staffOnly: true,
     run: async (interaction, client) => {
         let target = interaction.options.getUser("player")
         let column = interaction.options.getString("column")

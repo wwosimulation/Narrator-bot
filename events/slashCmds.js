@@ -63,7 +63,9 @@ module.exports = (client) => {
         await commandFile.run(interaction, client).catch((error) => {
             console.log(error)
             if (interaction.replied) interaction.followUp({ content: interaction.l10n("error") })
-            else interaction.reply({ content: interaction.l10n("error"), ephemeral: true })
+            else interaction.reply({ content: interaction.l10n("error"), ephemeral: true }).catch(() => {
+                interaction.followUp({ content: interaction.l10n("error") })
+            })
         })
     })
 }
