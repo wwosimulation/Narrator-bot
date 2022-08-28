@@ -7,6 +7,8 @@ module.exports = async (client) => {
     const protection = require("../others/lynchprotection.js") // get the lynch protection code - Function
     const isShadow = db.get(`game.isShadow`) // check if the shadow wolf has used their ability - Boolean
     const players = db.get(`players`) // get all the players in an array - Array<Snowflake>
+    const stubbornWerewolves = require("../../day/killingActions/protection/stubbornWolves.js") // stubborn ww
+
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players in an array - Array<Snowflake>
     let votes = {} // make a key value pair for the votes
     let countedVotes = {} // another key value pair to count the votes
@@ -72,6 +74,10 @@ module.exports = async (client) => {
                 // send the unsuccessful message
                 await dayChat.send(`${getEmoji("votingme", client)} The villagers tried to lynch **${players.indexOf(guy.id) + 1} ${guy.username}**, but they were protected!`)
             } else {
+                
+                // check if the player is stubborn wolf that has 2 lives
+                let getResult = await stubbornWerewolves(client, guy) // checks if the player is stubborn wolf and has 2 lives
+                if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
                 // kill the player normally
                 db.set(`player_${guy.id}.status`, "Dead") // change the status of the player
                 let member = await guild.members.fetch(guy.id) // get the discord member - Object

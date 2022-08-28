@@ -32,7 +32,7 @@ module.exports = async (client, guy, attacker) => {
         if (guy.lives === 2) {
             const channel = guild.channels.cache.get(guy.channel) // get the channel of the attacked player
             await channel.send(`${getEmoji("guard", client)} You fought off an attack last night and survived. Next time you are attacked you will die.`) // send a message to the attacked player
-            db.set(`player_${guy.id}.lives`, 1) // reduce their lives
+            db.subtract(`player_${guy.id}.lives`, 1) // reduce their lives
             isProtected = true // set the protection to true.
             return isProtected // exit early with the isProtected value
         } else {

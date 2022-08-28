@@ -20,6 +20,7 @@ module.exports = async (client) => {
             if (tg.wounded == true) {
                 // kill the Tough Guy
                 db.set(`player_${tg.id}.status`, "Dead") // change the status of the player
+                db.delete(`player_${tg.id}.wounded`)
                 let player = await guild.members.fetch(tg.id) // fetch the discord member - Object
                 let playerRoles = player.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles and replace the Alive role with Dead.
                 let role = tg.role

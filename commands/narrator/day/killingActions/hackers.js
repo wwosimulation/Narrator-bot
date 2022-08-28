@@ -10,6 +10,7 @@ const toughGuy = require("./protection/toughGuy.js") // tough guy protection
 const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
 const trapper = require("./protection/trapper.js") // trapper protection
+const stubbornWerewolves = require("./protection/stubbornWolves.js") // stubborn ww
 
 async function getProtections(client, guy, attacker) {
     let getResult
@@ -55,6 +56,10 @@ async function getProtections(client, guy, attacker) {
         // check if the player they are protecting has the forger's sheild
         getResult = await forger(client, guy) // checks if the player has the forger's sheild
         if (getResult === true) return false // exits early if the player DOES have the forger's sheild
+        
+        // check if the player is stubborn wolf that has 2 lives
+        getResult = await stubbornWerewolves(client, guy) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
     }
 
     return typeof getResult === "object" ? getResult : guy // looks like there were no protections

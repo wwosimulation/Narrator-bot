@@ -20,6 +20,7 @@ module.exports = {
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only protect during the night right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        if (player.role === "Ghost Lady" && player.uses === 0) return await message.channel.send("You have already used up your abilities!")
 
         let object = {
             Doctor: getEmoji("heal", client),

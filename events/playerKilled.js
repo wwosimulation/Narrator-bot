@@ -25,6 +25,7 @@ module.exports = async (client) => {
         const seerappprentices = players.filter((p) => db.get(`player_${p}`).role === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
+        const stubbornWerewolves = require("../commands/narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
 
         guild.members.fetch(guy.id).then((a) => {
             if (a.roles.cache.has("892046205780131891")) a.roles.remove("892046205780131891")
@@ -82,6 +83,11 @@ module.exports = async (client) => {
             let player2 = alivePlayers[alivePlayers.indexOf(guy.id) + 1] || alivePlayers[0]
 
             if (player1 === player2) {
+                
+                // check if the player is stubborn wolf that has 2 lives
+                let getResult = await stubbornWerewolves(client, db.get(`player_${player1}`)) // checks if the player is stubborn wolf and has 2 lives
+                if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
+
                 let member = await guild.members.fetch(player1)
                 let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                 let guy1 = db.get(`player_${player1}`)
@@ -92,6 +98,12 @@ module.exports = async (client) => {
                 await member.roles.set(memberRoles)
                 client.emit("playerKilled", db.get(`player_${player1}`), guy)
             } else {
+                // check if the player is stubborn wolf that has 2 lives
+                let getResult = await stubbornWerewolves(client, db.get(`player_${player1}`)) // checks if the player is stubborn wolf and has 2 lives
+                if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                // check if the player is stubborn wolf that has 2 lives
+                getResult = await stubbornWerewolves(client, db.get(`player_${player2}`)) // checks if the player is stubborn wolf and has 2 lives
+                if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
                 let member1 = await guild.members.fetch(player1)
                 let memberRoles1 = member1.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                 let guy1 = db.get(`player_${player1}`)
@@ -138,6 +150,9 @@ module.exports = async (client) => {
             if (guy.target) {
                 let player = db.get(`player_${guy.target}`) || { status: "Dead" }
                 if (player.status === "Alive") {
+                    // check if the player is stubborn wolf that has 2 lives
+                    let getResult = await stubbornWerewolves(client, player) // checks if the player is stubborn wolf and has 2 lives
+                    if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
                     let member = await guild.members.fetch(player.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${guy.target}.status`, "Dead")
@@ -155,6 +170,9 @@ module.exports = async (client) => {
                 let target = db.get(`player_${p}`).target.filter((a) => a !== guy.id)
                 let player = db.get(`player_${target}`)
                 if (player.status === "Alive") {
+                    // check if the player is stubborn wolf that has 2 lives
+                    let getResult = await stubbornWerewolves(client, player) // checks if the player is stubborn wolf and has 2 lives
+                    if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
                     let member = await guild.members.fetch(player.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${target}.status`, "Dead")
@@ -172,6 +190,9 @@ module.exports = async (client) => {
                 let target = db.get(`player_${p}`).target.filter((a) => a !== guy.id)
                 let player = db.get(`player_${target}`)
                 if (player.status === "Alive") {
+                    // check if the player is stubborn wolf that has 2 lives
+                    let getResult = await stubbornWerewolves(client, player) // checks if the player is stubborn wolf and has 2 lives
+                    if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
                     let member = await guild.members.fetch(player.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${target}.status`, "Dead")
@@ -188,6 +209,9 @@ module.exports = async (client) => {
             guy.chained?.forEach(async (chain) => {
                 let target = db.get(`player_${chain}`)
                 if (chain?.status !== "Alive") return
+                // check if the player is stubborn wolf that has 2 lives
+                let getResult = await stubbornWerewolves(client, target) // checks if the player is stubborn wolf and has 2 lives
+                if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
                 let member = await guild.members.fetch(target.id)
                 let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                 db.set(`player_${target.id}.status`, "Dead")
