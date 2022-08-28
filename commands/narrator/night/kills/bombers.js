@@ -29,10 +29,9 @@ module.exports = async (client) => {
 
                         // check if the guy is alive
                         if (guy.status === "Alive" && guy.id !== attacker.id) {
-                                                
                             // check if the player is stubborn wolf that has 2 lives
                             let getResult = await stubbornWerewolves(client, guy) // checks if the player is stubborn wolf and has 2 lives
-                            if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
+                            if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
                             let attackedPlayer = await guild.members.fetch(guy.id) // fetch the discord member - Object
                             let attackedPlayerRoles = attackedPlayer.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the member roles - Array<Snowflake>
                             await attackedPlayer.roles.set(attackedPlayerRoles) // set the roles

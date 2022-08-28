@@ -13,7 +13,6 @@ module.exports = {
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
         const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
 
-
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to water players.")
@@ -48,10 +47,9 @@ module.exports = {
             notWolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to throw holy water on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** and killed themselves! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is not a werewolf!`,
         }
 
-        
         // check if the player is stubborn wolf that has 2 lives
         let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
-        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
 
         let member = db.get(`player_${target}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${target}`).role) ? target : player.id
         let guy = await message.guild.members.fetch(member)

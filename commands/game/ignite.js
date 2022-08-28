@@ -13,7 +13,6 @@ module.exports = {
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
         const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
 
-
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to ignite players.")
@@ -32,7 +31,7 @@ module.exports = {
 
             // check if the player is stubborn wolf that has 2 lives
             let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
-            if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
+            if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
 
             let member = await message.guild.members.fetch(target)
             let roles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
