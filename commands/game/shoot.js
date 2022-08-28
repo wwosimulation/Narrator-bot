@@ -10,6 +10,7 @@ module.exports = {
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`) || []
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+        const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
 
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
@@ -61,12 +62,17 @@ module.exports = {
             Marksman: `${getEmoji("arrow", client)} ${result === true ? `The Marksman shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role, client)} ${role})** tried shooting **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** but their shot backfired! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is a villager!`}`,
         }
 
+        db.subtract(`player_${player.id}.uses`, 1)
+        
+        // check if the player is stubborn wolf that has 2 lives
+        let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives 
+
         let member = await message.guild.members.fetch(result === true ? target : player.id)
         let roles = member.roles.cache.map((r) => (r.name === "Alive" ? message.guild.roles.cache.find((r) => r.name === "Dead").id : r.id))
         await member.roles.set(roles)
         await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(messages[player.role])
 
-        db.subtract(`player_${player.id}.uses`, 1)
         db.set(`player_${member.id}.status`, "Dead")
         client.emit("playerKilled", db.get(`player_${member.id}`), player.id)
     },

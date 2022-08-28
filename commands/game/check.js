@@ -15,17 +15,18 @@ module.exports = {
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to check players.")
-        if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician"].includes(player.dreamRole)) return
-        if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst"].includes(player.dreamRole)) return
+        if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only check during the night right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
+        if (player.role === "Analyst" && player?.lastChecked.same === true && player?.lastChecked.night === Math.floor(gamePhase/3)) return await message.channel.send(`${getEmoji("analyst_blocked", client)} You checked two players that had the same aura yesterday. You are now blocked from checking tonight.`)
         if (!["Spirit Seer", "Sheriff", "Evil Detective"].includes(player.role) && player.uses === 0) return await message.channel.send("You already used up your ability!")
         if (args.length < 1) return await message.channel.send("Please select a player first.")
-        if (!["Spirit Seer", "Detective"].includes(player.role) && args.length !== 1) return await message.channel.send("You need to select 1 player to check!")
+        if (!["Spirit Seer", "Detective", "Evil Detective", "Analyst"].includes(player.role) && args.length !== 1) return await message.channel.send("You need to select 1 player to check!")
         if (player.role === "Wolf Seer" && player.resign) return await message.channel.send("You already resigned from checking!")
         if (player.role === "Spirit Seer" && args.length > 2) return await message.channel.send("You can only select a maximum of 2 players to check!")
-        if (["Detective", "Evil Detective"].includes(player.role) && args.length !== 2) return await message.channel.send("You need to select 2 players to investigate!")
+        if (["Detective", "Evil Detective", "Analyst"].includes(player.role) && args.length !== 2) return await message.channel.send("You need to select 2 players to investigate!")
 
         let target = []
 
@@ -94,7 +95,12 @@ module.exports = {
         })
 
         if (player.role === "Seer") await message.channel.send(`${getEmoji("seer", client)} You checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].role.toLowerCase().replace(/\s/g, "_"), client)} ${result["p1"].role})**!`)
-        if (player.role === "Aura Seer") await message.channel.send(`${getEmoji("aura_seer", client)} You checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${result["p1"].aura})**!`)
+        if (player.role === "Aura Seer") await message.channel.send(`${getEmoji("aura_seer", client)} You checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].aura.toLowerCase(), client)} ${result["p1"].aura})**!`)
+        if (player.role === "Analyst") await message.channel.send(`${getEmoji("analyst_check", client)} You checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].aura.toLowerCase(), client)} ${result["p1"].aura})** and **${players.indexOf(target[1]) + 1} ${db.get(`player_${target[1]}`).username} (${getEmoji(result["p2"].aura.toLowerCase(), client)} ${result["p2"].aura})**. ${result["p1"].aura === result["p2"].aura ? "Because you checked two players that had the same aura, you won't be able to check tomorrow." : ""}`)
+        if (player.role === "Analyst") {
+            db.set(`player_${player.id}.lastChecked.same`, result["p1"].aura === result["p2"].aura)
+            db.set(`player_${player.id}.lastChecked.night`, Math.floor(gamePhase/3)+1)
+        }
         if (player.role === "Wolf Seer") await message.channel.send(`${getEmoji("wolf_seer", client)} You checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].role.toLowerCase().replace(/\s/g, "_"), client)} ${result["p1"].role})**!`)
         if (player.role === "Wolf Seer") await wwchat.send(`${getEmoji("wolf_seer", client)} The Wolf Seer checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].role.toLowerCase().replace(/\s/g, "_"), client)} ${result["p1"].role})**!`)
         if (player.role === "Sorcerer") await message.channel.send(`${getEmoji("sorcerer", client)} You checked **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username} (${getEmoji(result["p1"].role.toLowerCase().replace(/\s/g, "_"), client)} ${result["p1"].role})**!`)
