@@ -18,6 +18,7 @@ module.exports = async (client) => {
         if (db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan") return
         droppy.options.push({ label: `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`, value: `votefor-${players.indexOf(p) + 1}`, description: `${db.get(`player_${p}`).username}` })
     })
+    droppy.options.push({ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` })
 
     if (db.get(`game.isShadow`)) db.delete(`game.isShadow`)
 
