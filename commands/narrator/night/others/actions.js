@@ -18,6 +18,7 @@ module.exports = async () => {
         if (guy.role === "Trapper") {
             let currentTraps = db.get(`player_${player}.traps`) || []
             currentTraps.push(guy.target)
+            db.delete(`player_${guy.id}.target`)
             db.set(`player_${player}.traps`, currentTraps)
             if (db.get(`player_${player}.triggered`)) {
                 db.delete(`player_${player}.triggered`)

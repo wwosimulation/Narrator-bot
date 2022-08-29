@@ -1,6 +1,7 @@
 const db = require("quick.db") // database
 const { getRole, getEmoji } = require("../../../../config") // functions
 const doctor = require("./protection/doctor.js") // doctor protection
+const nightwatchman = require("./protection/nightWatchmen.js") // night watchman protection
 const beastHunter = require("./protection/beastHunter.js") // beast hunter protection
 const witch = require("./protection/witch.js") // witch protection
 const jailer = require("./protection/jailer.js") // jailer protection
@@ -34,6 +35,10 @@ async function getProtections(client, guy, attacker) {
     // check if the player they are attacking is healed by the doctor
     getResult = await doctor(client, guy, attacker) // checks if a doctor is protecting them
     if (getResult === true) return false // exits early if a doctor IS protecting them
+
+    // check if the player they are attacking is healed by the night watchman
+    getResult = await nightwatchman(client, guy, attacker) // checks if a night watchman is protecting them
+    if (getResult === true) return false // exits early if a night watchman IS protecting them
 
     // check if the player they are attacking is healed by the witch
     getResult = await witch(client, guy, attacker) // checks if a witch is protecting them
