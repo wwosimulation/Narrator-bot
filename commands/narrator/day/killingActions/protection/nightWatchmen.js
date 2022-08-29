@@ -15,15 +15,14 @@ module.exports = async (client, guy, attacker) => {
     let isProtected = false
     // loop through each player to see if they are a Night Watchman
     for (let player of alivePlayers) {
-
         // check and see if the player is a Night Watchman
-        if (db.get(`player_${player}`).role !== "Night Watchman") continue; // skip to next player if this is not Night Watchman
+        if (db.get(`player_${player}`).role !== "Night Watchman") continue // skip to next player if this is not Night Watchman
 
         // check if the Night Watchman has a target
-        if (!db.get(`player_${player}`).target) continue; // skip to next player if this Night Watchman does not have a target
+        if (!db.get(`player_${player}`).target) continue // skip to next player if this Night Watchman does not have a target
 
         // check if the Night Watchman protected the player
-        if (db.get(`player_${player}`).target !== guy.id) continue; // skip to next player if this Night Watchman did not save the player
+        if (db.get(`player_${player}`).target !== guy.id) continue // skip to next player if this Night Watchman did not save the player
 
         if (isBerserkActive === true && attacker.team === "Werewolf") {
             allProtected.push(player)
@@ -36,7 +35,6 @@ module.exports = async (client, guy, attacker) => {
             await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings alive in the channel
             break // break out of the loop
         }
-        
     }
 
     // return the isProtected value

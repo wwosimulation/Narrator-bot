@@ -13,28 +13,27 @@ module.exports = async (client, alivePlayersBefore) => {
         let nightwatchman = db.get(`player_${watchman}`) // get the baker player - Object
 
         // check if the night watchman has a target
-        if (nightWatchmen.uses === 0) continue; // skip if night watchman does not any uses
+        if (nightWatchmen.uses === 0) continue // skip if night watchman does not any uses
 
         let roles = ["Beast Hunter", "Trapper", "Doctor", "Night Watchman", "Witch", "Bodyguard", "Tough Guy", "Jailer", "Ghost Lady"]
         let content = []
         let channel = guild.channels.cache.get(nightwatchman.channel)
 
-        players.forEach(async p => {
-            if (!alivePlayersBefore.includes(p)) return;
-            if (p === watchman) return;
+        players.forEach(async (p) => {
+            if (!alivePlayersBefore.includes(p)) return
+            if (p === watchman) return
 
             let player = db.get(`player_${p}`)
 
-            if (!player) return;
-            if (roles.includes(player.role)) return;
-            if (player.role === "Beast Hunter" && player?.placed === true) return;
-            if (content.includes(player.target)) return;
+            if (!player) return
+            if (roles.includes(player.role)) return
+            if (player.role === "Beast Hunter" && player?.placed === true) return
+            if (content.includes(player.target)) return
             content.push(player.target)
         })
 
         if (content.length === 0) await channel.send(`${getEmoji("nwm_protect", client)} No one protected anyone tonight!`)
 
-        if (content.length > 0) await channel.send(`${getEmoji("nwm_protect", client)} These are the protection results:\n\n - ${content.map(a => `${getEmoji("nwm_protect", client)} Someone was protecting **${players.indexOf(a)+1} ${db.get(`player_${a}`).username}**`).join("\n - ")}`)
-        
+        if (content.length > 0) await channel.send(`${getEmoji("nwm_protect", client)} These are the protection results:\n\n - ${content.map((a) => `${getEmoji("nwm_protect", client)} Someone was protecting **${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}**`).join("\n - ")}`)
     }
 }
