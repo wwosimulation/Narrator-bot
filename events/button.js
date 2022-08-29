@@ -10,7 +10,7 @@ module.exports = (client) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
         console.log(interaction.customId)
         if (interaction.customId == "igjoin") {
-            //if (db.get("started") == "yes") return interaction.reply(`The game has already started!`, { ephemeral: true })
+            interaction.deferUpdate()
             let guy = interaction.member
             if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) //spec
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
@@ -19,10 +19,8 @@ module.exports = (client) => {
             let role = interaction.guild.roles.cache.get(ids.alive)
             await guy.roles
                 .add(ids.alive)
-                .then((g) => g.setNickname(role.members.size.toString()).catch((e) => interaction.reply(`Error: ${e.message}`)))
                 .catch((e) => interaction.reply(`Error: ${e.message}`))
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
-            interaction.deferUpdate()
         }
         if (interaction.customId == "igspec") {
             let guy = interaction.member
