@@ -256,7 +256,7 @@ module.exports = (client) => {
             db.set(`player_${warden}.status`, "Dead")
             await member.roles.set(member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)))
             await dayChat.send(`${getEmoji("warden_ww_jail", client)} **${db.get(`players`).indexOf(warden) + 1} ${db.get(`player_${warden}`).username} (${getEmoji("warden", client)} Warden)** jailed two werewolves. The werewolves broke out of their prison and killed the warden!`)
-            client.emit("playerKilled", db.get(`player_${warden}`), db.get(`player_${player.id}`))
+            client.emit("playerKilled", db.get(`player_${warden}`), db.get(`player_${player.id}`), { trickster: false })
             await interaction.editReply({ content: "You have killed the warden!", components: [] })
         }
 
@@ -271,13 +271,40 @@ module.exports = (client) => {
             let inmate = db.get(`player_${interaction.customId.split("-")[1]}`)
             let result = true
             if (inmate.team === "Village") result = false
-            let gameMessage = result === true ? `The warden gave a weapon to an inmate who used it to kill **${players.indexOf(inmate.id)} ${inmate.username}**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** tried to kill **${players.indexOf(inmate.id) + 1} ${inmate.username}** with a weapon from the Warden but the weapon backfired! **${players.indexOf(inmate.id) + 1} ${inmate.username}** is a villager!`
+            let role = player.role 
+            if (result === false && player.tricked) role = "Wolf Trickster"
+            let gameMessage = result === true ? `The warden gave a weapon to an inmate who used it to kill **${db.get(`players`).indexOf(inmate.id)} ${inmate.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**` : `**${db.get(`players`).indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to kill **${players.indexOf(inmate.id) + 1} ${inmate.username}** with a weapon from the Warden but the weapon backfired! **${players.indexOf(inmate.id) + 1} ${inmate.username}** is a villager!`
             let member = await interaction.guild.members.fetch(result === true ? inmate.id : player.id)
             db.set(`player_${member.id}.status`, "Dead")
             await member.roles.set(member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)))
             await dayChat.send(`${getEmoji("warden_kill", client)} ${gameMessage}`)
             client.emit("playerKilled", db.get(`player_${member.id}`), db.get(`player_${player.id}`))
             await interaction.editReply({ components: [] })
+        }
+
+        if (interaction.customId.startsWith("treat-") || interaction.customId.startsWith("trick-")) {
+            let [option, player, attacker] = interaction.customId.split("-")
+            if (player !== interaction.member.id) return interaction.reply({ content: "This button is not for you!", ephemeral: true })
+            if (!db.get(`player_${player}`)) return interaction.reply({ content: "This button is not for you!", ephemeral: true })
+            if (db.get(`player_${player}`).status !== "Alive") return interaction.reply({ content: "You can only use this button when Alive!", ephemeral: true })
+            if (db.get(`player_${player}`).trickortreat === true) return interaction.reply({ content: "You already cliecked this button!", ephemeral: true })
+
+            let killOption = db.get(`player_${attacker}`)?.killOption
+            if (!killOption) return interaction.reply({ content: "Looks, like the Jack did not set a kill option. Please ping a narrator for assistance!" })
+            if (option === killOption) {
+                interaction.reply(`${getEmoji("jack_kill", client)} You have chosen the wrong option so you have been killed!`)
+                let dayChat = interaction.guild.channels.cache.find((c) => c.name === "day-chat")
+                let memberRoles = interaction.member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
+                let role = db.get(`player_${player}`).role
+                if (db.get(`player_${player}`).tricked) role = "Wolf Trickster"
+                db.set(`player_${player}.status`, "Dead")
+                await interaction.member.roles.set(memberRoles)
+                await dayChat.send(`${getEmoji("jack_kill", client)} **${db.get(`players`).indexOf(player)+1} ${db.get(`player_${player}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** had encoutered a Jack and chose the wrong option that lead them to their death!`)
+                client.emit("playerKilled", db.get(`player_${player}`), db.get(`player_${attacker}`))
+            } else {
+                interaction.reply(`${getEmoji(option, client)} You have chosen the safe option so you evaded the Jack's encounter!`)
+            }
+            interaction.message?.edit({ components: [] })
         }
     })
 }

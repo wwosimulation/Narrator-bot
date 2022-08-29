@@ -55,6 +55,6 @@ module.exports = {
 
         db.set(`player_${player.id}.target`, [target1, target2])
         db.set(`player_${player.id}.killOption`, args[2].toLowerCase())
-        await message.channel.send(`${getEmoji("jack", client)} You have decided to trick or treat **${players.indexOf(target1) + 1} ${db.get(`player_${target1}`).username}** and **${players.indexOf(target2) + 1} ${db.get(`player_${target2}`).username}**! They will be punished if they choose \`${args[2]}\`!`)
+        await message.channel.send(`${getEmoji(`${args[2].toLowerCase()}_kill`, client)} You have decided to trick or treat **${players.indexOf(target1) + 1} ${db.get(`player_${target1}`).username}** and **${players.indexOf(target2) + 1} ${db.get(`player_${target2}`).username}**! They will be punished if they choose \`${args[2]}\`!`)
     },
 }
