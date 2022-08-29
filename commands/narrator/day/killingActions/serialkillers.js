@@ -35,7 +35,7 @@ async function getProtections(client, guy, attacker) {
     // check if the player they are attacking is healed by the doctor
     getResult = await doctor(client, guy, attacker) // checks if a doctor is protecting them
     if (getResult === true) return false // exits early if a doctor IS protecting them
-    
+
     // check if the player they are attacking is healed by the night watchman
     getResult = await nightwatchman(client, guy, attacker) // checks if a night watchman is protecting them
     if (getResult === true) return false // exits early if a night watchman IS protecting them

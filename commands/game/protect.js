@@ -28,7 +28,7 @@ module.exports = {
             Bodyguard: getEmoji("guard", client),
             Witch: getEmoji("potion", client),
             "Ghost Lady": getEmoji("gl_protection", client),
-            "Night Watchman": getEmoji("nwm_select", client)
+            "Night Watchman": getEmoji("nwm_select", client),
         }
 
         if (args[0].toLowerCase() === "cancel") {
