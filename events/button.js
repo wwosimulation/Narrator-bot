@@ -17,9 +17,7 @@ module.exports = (client) => {
             if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
             if (guy.roles.cache.has(ids.jowov)) guy.roles.remove(ids.jowov) //jowov
             let role = interaction.guild.roles.cache.get(ids.alive)
-            await guy.roles
-                .add(ids.alive)
-                .catch((e) => interaction.reply(`Error: ${e.message}`))
+            await guy.roles.add(ids.alive).catch((e) => interaction.reply(`Error: ${e.message}`))
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
         }
         if (interaction.customId == "igspec") {
