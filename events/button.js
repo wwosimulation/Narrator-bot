@@ -271,7 +271,7 @@ module.exports = (client) => {
             let inmate = db.get(`player_${interaction.customId.split("-")[1]}`)
             let result = true
             if (inmate.team === "Village") result = false
-            let role = player.role 
+            let role = player.role
             if (result === false && player.tricked) role = "Wolf Trickster"
             let gameMessage = result === true ? `The warden gave a weapon to an inmate who used it to kill **${db.get(`players`).indexOf(inmate.id)} ${inmate.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**` : `**${db.get(`players`).indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to kill **${players.indexOf(inmate.id) + 1} ${inmate.username}** with a weapon from the Warden but the weapon backfired! **${players.indexOf(inmate.id) + 1} ${inmate.username}** is a villager!`
             let member = await interaction.guild.members.fetch(result === true ? inmate.id : player.id)
@@ -299,7 +299,7 @@ module.exports = (client) => {
                 if (db.get(`player_${player}`).tricked) role = "Wolf Trickster"
                 db.set(`player_${player}.status`, "Dead")
                 await interaction.member.roles.set(memberRoles)
-                await dayChat.send(`${getEmoji("jack_kill", client)} **${db.get(`players`).indexOf(player)+1} ${db.get(`player_${player}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** had encoutered a Jack and chose the wrong option that lead them to their death!`)
+                await dayChat.send(`${getEmoji("jack_kill", client)} **${db.get(`players`).indexOf(player) + 1} ${db.get(`player_${player}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** had encoutered a Jack and chose the wrong option that lead them to their death!`)
                 client.emit("playerKilled", db.get(`player_${player}`), db.get(`player_${attacker}`))
             } else {
                 interaction.reply(`${getEmoji(option, client)} You have chosen the safe option so you evaded the Jack's encounter!`)
