@@ -12,24 +12,26 @@ module.exports = async (client) => {
     const jailers = alivePlayers.filter((p) => db.get(`player_${p}`).role === "Jailer") // get the alive jailers array - Array<Snowflake>
 
     for (let jack of jacks) {
-
         let player = db.get(`player_${jack}`)
 
-        if (!player) continue;
-        if (player.status !== "Alive") continue;
-        if (!player.target) continue;
-        if (!player.target?.map(a => db.get(`player_${a}`).status).includes("Alive")) continue;
+        if (!player) continue
+        if (player.status !== "Alive") continue
+        if (!player.target) continue
+        if (!player.target?.map((a) => db.get(`player_${a}`).status).includes("Alive")) continue
 
-        player.target.forEach(async target => {
+        player.target.forEach(async (target) => {
             let guy = db.get(`player_${target}`)
-            if (!guy) return;
-            if (guy.status !== "Alive") return;
+            if (!guy) return
+            if (guy.status !== "Alive") return
 
             let channel = guild.channels.cache.get(guy.status)
-            let components = { type: 1, components: [
-                { type: 2, style: 1, custom_id: `trick-${target}-${jack}`, label: "Trick", emoji: { id: getEmoji("trick", client) } },
-                { type: 2, style: 1, custom_id: `treat-${target}-${jack}`, label: "Treat", emoji: { id: getEmoji("treat", client) } },
-            ]}
+            let components = {
+                type: 1,
+                components: [
+                    { type: 2, style: 1, custom_id: `trick-${target}-${jack}`, label: "Trick", emoji: { id: getEmoji("trick", client) } },
+                    { type: 2, style: 1, custom_id: `treat-${target}-${jack}`, label: "Treat", emoji: { id: getEmoji("treat", client) } },
+                ],
+            }
 
             db.set(`player_${target}.trickortreat`, true)
 

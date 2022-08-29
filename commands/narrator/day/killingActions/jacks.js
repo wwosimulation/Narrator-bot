@@ -10,17 +10,16 @@ module.exports = async (client) => {
     const jacks = alivePlayers.filter((p) => ["Jack"].includes(db.get(`player_${p}`)?.role)) // get the alive Jacks array - Array<Snowflake>
 
     for (let jack of jacks) {
-
         let player = db.get(`player_${jack}`)
 
-        if (!player.target) continue;
-        if (!player.target?.map(a => db.get(`player_${a}`).status).includes("Alive")) continue;
+        if (!player.target) continue
+        if (!player.target?.map((a) => db.get(`player_${a}`).status).includes("Alive")) continue
 
-        player.target.forEach(async target => {
+        player.target.forEach(async (target) => {
             let guy = db.get(`player_${target}`)
-            if (!guy) return;
-            if (guy.status !== "Alive") return;
-            if (guy?.trickortreat !== true) return;
+            if (!guy) return
+            if (guy.status !== "Alive") return
+            if (guy?.trickortreat !== true) return
 
             let role = guy.role
             if (guy.tricked) role = "Wolf Trickster"
@@ -30,7 +29,7 @@ module.exports = async (client) => {
             let member = await guild.members.fetch(target)
             let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // gets all the roles of this member
             await member.roles.set(memberRoles) // sets the role for the member
-            await dayChat.send(`${getEmoji("jack_kill", client)} **${players.indexOf(target)+1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** had encoutered a Jack and chose the wrong option that lead them to their death!`)
+            await dayChat.send(`${getEmoji("jack_kill", client)} **${players.indexOf(target) + 1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** had encoutered a Jack and chose the wrong option that lead them to their death!`)
             client.emit("playerKilled", db.get(`player_${target}`), db.get(`player_${jack}`))
         })
 
