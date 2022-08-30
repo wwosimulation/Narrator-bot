@@ -207,7 +207,7 @@ module.exports = async (client) => {
         if (guy.chained) {
             guy.chained?.forEach(async (chain) => {
                 let target = db.get(`player_${chain}`)
-                if (chain?.status !== "Alive") return
+                if (target?.status !== "Alive") return
                 // check if the player is stubborn wolf that has 2 lives
                 let getResult = await stubbornWerewolves(client, target) // checks if the player is stubborn wolf and has 2 lives
                 if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives

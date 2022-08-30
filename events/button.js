@@ -269,7 +269,7 @@ module.exports = (client) => {
             if (inmate.team === "Village") result = false
             let role = player.role
             if (result === false && player.tricked) role = "Wolf Trickster"
-            let gameMessage = result === true ? `The warden gave a weapon to an inmate who used it to kill **${db.get(`players`).indexOf(inmate.id)} ${inmate.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**` : `**${db.get(`players`).indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to kill **${players.indexOf(inmate.id) + 1} ${inmate.username}** with a weapon from the Warden but the weapon backfired! **${players.indexOf(inmate.id) + 1} ${inmate.username}** is a villager!`
+            let gameMessage = result === true ? `The warden gave a weapon to an inmate who used it to kill **${db.get(`players`).indexOf(inmate.id)} ${inmate.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**` : `**${db.get(`players`).indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to kill **${db.get(`players`).indexOf(inmate.id) + 1} ${inmate.username}** with a weapon from the Warden but the weapon backfired! **${db.get(`players`).indexOf(inmate.id) + 1} ${inmate.username}** is a villager!`
             let member = await interaction.guild.members.fetch(result === true ? inmate.id : player.id)
             db.set(`player_${member.id}.status`, "Dead")
             await member.roles.set(member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)))
