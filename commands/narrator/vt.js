@@ -28,7 +28,6 @@ module.exports = {
         let droppy = { type: 3, custom_id: "votephase", options: [] }
         droppy.options.push({ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` })
         for (let i = 1; i <= 16; i++) {
-            console.log(i)
             let player = message.guild.members.cache.find((x) => x.nickname == `${i}` && x.roles.cache.has(aliveRole.id))
             if (player) {
                 droppy.options.push({ label: `${i}`, value: `votefor-${i}`, description: `${player.user.tag}` })
@@ -43,7 +42,7 @@ module.exports = {
             if (guy.status === "Alive") continue // if the player is alive, don't do anything and check for the next player
 
             // revive the player
-            if (guy.ritualRevive !== gamephase + 1) return // if the phase isn't over yet, don't do anything and check for the next player
+            if (guy.ritualRevive !== gamephase + 1) continue // if the phase isn't over yet, don't do anything and check for the next player
 
             db.set(`player_${guy.id}.status`, "Alive") // set the status of the player to Alive
             let member = await message.guild.members.fetch(guy.id) // get the discord member
