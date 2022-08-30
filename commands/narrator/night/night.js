@@ -27,6 +27,7 @@ module.exports = {
         const naughtyboys = require("./others/naughtyboys.js")
         const nightmarewolves = require("./others/nightmarewolf.js")
         const ritualists = require("./others/ritualists.js")
+        const jacks = require("./others/jacks.js")
 
         await lynch(client)
 
@@ -45,6 +46,8 @@ module.exports = {
         await nightmarewolves(client)
 
         await ritualists(client)
+
+        await jacks(client)
 
         await channels(client)
 

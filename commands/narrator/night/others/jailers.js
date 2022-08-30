@@ -50,7 +50,7 @@ module.exports = async (client) => {
                         db.set(`player_${guy.id}.jailed`, true) // set the jailed status to true
                     }
                 } else {
-                    let [guy1, guy2] = db.get(`player_${jail.target}`) // get the players to be jailed - Object
+                    let [guy1, guy2] = [db.get(`player_${jail.target[0]}`), db.get(`player_${jail.target[1]}`)] // get the players to be jailed - Object
                     let channel1 = guild.channels.cache.get(guy1.channel) // get their channel - Object
                     let channel2 = guild.channels.cache.get(guy2.channel) // get their channel - Object
                     let channel = guild.channels.cache.get(jail.channel) // get the warden's channel - Object
