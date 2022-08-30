@@ -99,7 +99,10 @@ module.exports = (client) => {
                 db.delete(`player_${interaction.member.id}.vote`)
                 db.delete(`votemsgid_${interaction.member.id}`)
                 if (db.get(`game.isShadow`)) return
+                
             } else {
+                let target = allPlayers[Number(interaction.values[0].split("-")[1]) - 1]
+                if (db.get(`player_${target}`).status !== "Alive") return interaction.reply({ content: "You good? Voting dead players is NOT cool.", ephemeral: true })
                 await interaction.deferUpdate()
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
@@ -109,7 +112,6 @@ module.exports = (client) => {
                     }
                 }
 
-                let target = allPlayers[Number(interaction.values[0].split("-")[1]) - 1]
                 db.set(`player_${interaction.member.id}.vote`, target)
                 if (db.get(`game.isShadow`)) return
                 let omg = await interaction.message.channel.send(`${allPlayers.indexOf(interaction.user.id) + 1} ${interaction.user.username} voted ${interaction.values[0].split("-")[1]} ${db.get(`player_${target}`).username}`)
