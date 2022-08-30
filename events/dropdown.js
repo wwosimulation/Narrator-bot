@@ -99,7 +99,6 @@ module.exports = (client) => {
                 db.delete(`player_${interaction.member.id}.vote`)
                 db.delete(`votemsgid_${interaction.member.id}`)
                 if (db.get(`game.isShadow`)) return
-                
             } else {
                 await interaction.deferUpdate()
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
