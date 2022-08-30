@@ -95,8 +95,8 @@ module.exports = {
 
         let target = []
         target.push(players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0]))
-        if (player.role === "Astral Wolf" && args.length >= 2) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]));
-        if (player.role === "Astral Wolf" && args.length === 3) target.push(players[Number(args[2]) - 1] || players.find((p) => p === args[2]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[2]));
+        if (player.role === "Astral Wolf" && args.length >= 2) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]))
+        if (player.role === "Astral Wolf" && args.length === 3) target.push(players[Number(args[2]) - 1] || players.find((p) => p === args[2]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[2]))
         if (!target[0]) return await message.channel.send(`The player with the query: \`${args[0]}\` could not be found!`)
         if (player.role === "Astral Wolf" && args.length === 2 && !target[1]) return await message.channel.send(`The player with the query: \`${args[1]}\` could not be found!`)
         if (player.role === "Astral Wolf" && args.length === 3 && !target[2]) return await message.channel.send(`The player with the query: \`${args[2]}\` could not be found!`)
