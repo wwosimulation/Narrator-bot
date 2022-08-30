@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const db = require("quick.db")
 
 module.exports = async (client) => {
@@ -68,6 +69,8 @@ module.exports = async (client) => {
     wwVote.send({ content: `${guild.roles.cache.find((r) => r.name === "Alive")} Time to vote!`, components: [{ type: 1, components: [droppy] }] })
 }
 =======
+=======
+>>>>>>> be9fa80 (Prettified Code!)
 const db = require("quick.db")
 
 module.exports = async (client) => {
@@ -135,4 +138,7 @@ module.exports = async (client) => {
     if (players.filter((p) => db.get(`player_${p}`).status === "Alive" && db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan").length === 0) return
     wwVote.send({ content: `${guild.roles.cache.find((r) => r.name === "Alive")} Time to vote!`, components: [{ type: 1, components: [droppy] }] })
 }
+<<<<<<< HEAD
 >>>>>>> 458fee7 (Bug fixes)
+=======
+>>>>>>> be9fa80 (Prettified Code!)

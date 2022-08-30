@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
 const { getEmoji } = require("../../config")
@@ -269,6 +270,8 @@ module.exports = {
     },
 }
 =======
+=======
+>>>>>>> be9fa80 (Prettified Code!)
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
 const { getEmoji } = require("../../config")
@@ -538,4 +541,7 @@ module.exports = {
         db.delete(`gamemode`)
     },
 }
+<<<<<<< HEAD
 >>>>>>> 458fee7 (Bug fixes)
+=======
+>>>>>>> be9fa80 (Prettified Code!)

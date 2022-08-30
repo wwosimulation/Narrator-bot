@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const db = require("quick.db")
 const { ids } = require("../../config")
 
@@ -32,6 +33,8 @@ module.exports = {
     },
 }
 =======
+=======
+>>>>>>> be9fa80 (Prettified Code!)
 const db = require("quick.db")
 const { ids } = require("../../config")
 
@@ -62,4 +65,7 @@ module.exports = {
         db.delete(`game`)
     },
 }
+<<<<<<< HEAD
 >>>>>>> 458fee7 (Bug fixes)
+=======
+>>>>>>> be9fa80 (Prettified Code!)

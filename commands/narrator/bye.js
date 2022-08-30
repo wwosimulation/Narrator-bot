@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { ids, fn } = require("../../config")
 const db = require("quick.db")
 
@@ -34,6 +35,8 @@ const clearJoin = async (client) => {
     })
 }
 =======
+=======
+>>>>>>> be9fa80 (Prettified Code!)
 const { ids } = require("../../config")
 const db = require("quick.db")
 
@@ -91,4 +94,7 @@ const clearJoin = async (client) => {
         e.roles.remove("606123676668133428") // joining role
     })
 }
+<<<<<<< HEAD
 >>>>>>> 458fee7 (Bug fixes)
+=======
+>>>>>>> be9fa80 (Prettified Code!)
