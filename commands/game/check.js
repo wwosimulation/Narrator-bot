@@ -1,4 +1,4 @@
-const db = require("quick.db")
+ const db = require("quick.db")
 const { soloKillers, roles, getRole, getEmoji, fn, ids, wolfList } = require("../../config")
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only check during the night right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
-        if (player.role === "Analyst" && player?.lastChecked.same === true && player?.lastChecked.night === Math.floor(gamePhase / 3)) return await message.channel.send(`${getEmoji("analyst_blocked", client)} You checked two players that had the same aura yesterday. You are now blocked from checking tonight.`)
+        if (player.role === "Analyst" && player?.lastChecked?.same === true && player?.lastChecked?.night === Math.floor(gamePhase / 3)) return await message.channel.send(`${getEmoji("analyst_blocked", client)} You checked two players that had the same aura yesterday. You are now blocked from checking tonight.`)
         if (!["Spirit Seer", "Sheriff", "Evil Detective"].includes(player.role) && player.uses === 0) return await message.channel.send("You already used up your ability!")
         if (args.length < 1) return await message.channel.send("Please select a player first.")
         if (!["Spirit Seer", "Detective", "Evil Detective", "Analyst"].includes(player.role) && args.length !== 1) return await message.channel.send("You need to select 1 player to check!")
