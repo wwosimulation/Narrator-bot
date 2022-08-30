@@ -99,7 +99,7 @@ module.exports = (client) => {
                 db.delete(`player_${interaction.member.id}.vote`)
                 db.delete(`votemsgid_${interaction.member.id}`)
                 if (db.get(`game.isShadow`)) return
-                s
+                
             } else {
                 await interaction.deferUpdate()
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
@@ -199,7 +199,7 @@ module.exports = (client) => {
         }
 
         if (interaction.customId === "astral-bless") {
-            interaction.deferUpdate()
+            await interaction.deferUpdate()
             let player = db.get(`player_${interaction.member.id}`)
             let target = db.get(`player_${interaction.values[0]}`)
             if (player?.status !== "Alive") return interaction.followUp({ content: "You can only check when alive!", ephemeral: true })
