@@ -38,10 +38,10 @@ module.exports = {
         // loop through each dead player
         for (const player of deadPlayers) {
             let guy = db.get(`player_${player}`) // get the player - Object
-            if (guy.status === "Alive") continue; // if the player is alive, don't do anything and check for the next player
+            if (guy.status === "Alive") continue // if the player is alive, don't do anything and check for the next player
 
             // revive the player
-            if (guy.ritualRevive !== gamephase + 1) continue; // if the phase isn't over yet, don't do anything and check for the next player
+            if (guy.ritualRevive !== gamephase + 1) continue // if the phase isn't over yet, don't do anything and check for the next player
 
             db.set(`player_${guy.id}.status`, "Alive") // set the status of the player to Alive
             let member = await message.guild.members.fetch(guy.id) // get the discord member
@@ -53,7 +53,7 @@ module.exports = {
             await member.roles.set(memberRoles)
 
             for (const seerapp of seerappprentices) {
-                if (db.get(`player_${seerapp}`).originalPlayer !== guy.id) continue;
+                if (db.get(`player_${seerapp}`).originalPlayer !== guy.id) continue
 
                 let allRoles = db.get(`player_${seerapp}.allRoles`)
                 allRoles.pop()
@@ -80,8 +80,5 @@ module.exports = {
             if (m.editable) await m.edit(fn.disableButtons(m))
             voteChat.send(`Time is up!`)
         }, timer)
-
-        
-
     },
 }
