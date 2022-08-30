@@ -77,7 +77,7 @@ module.exports = {
 
         db.set(`commandEnabled`, `yes`)
         db.add(`gamePhase`, 1)
-        if(message?.author) message.channel.send(`Setting the vote time for ${ms(timer)}`)
+        message.channel.send(`Setting the vote time for ${ms(timer)}`)
         setTimeout(async () => {
             if (m.editable) await m.edit(fn.disableButtons(m))
             voteChat.send(`Time is up!`)

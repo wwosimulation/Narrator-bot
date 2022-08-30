@@ -1,5 +1,5 @@
 const db = require("quick.db") // database
-const { getRole, getEmoji } = require("../../../../config") // functions
+const { getRole, getEmoji } = require("../../../../../config") // functions
 
 module.exports = async (client, guy, attacker) => {
     if (typeof guy !== "object" || typeof attacker !== "object") return false

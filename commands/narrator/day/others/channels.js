@@ -47,7 +47,7 @@ module.exports = async (client) => {
                 await jailedChat.permissionOverwrites.delete(guy.id)
 
                 // delete the messages
-                let allMessages1 = await jailerChat.messages.fetch({ limit: 100, cache: false }) // fetches up to 100 messages from the channel
+                let allMessages1 = await jailedChat.messages.fetch({ limit: 100, cache: false }) // fetches up to 100 messages from the channel
                 let allMessages2 = await wardenChat.messages.fetch({ limit: 100, cache: false }) // fetches up to 100 messages from the channel
                 await jailedChat.bulkDelete(allMessages1.filter((m) => !m.pinned)) // deletes every message but pinned
                 await wardenChat.bulkDelete(allMessages2.filter((m) => !m.pinned)) // deletes every message but pinned
