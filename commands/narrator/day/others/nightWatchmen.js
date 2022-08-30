@@ -24,13 +24,15 @@ module.exports = async (client, alivePlayersBefore) => {
             if (p === watchman) return
 
             let player = db.get(`player_${p}`)
-
+            console.log(player)
             if (!player) return
-            if (roles.includes(player.role)) return
+            if (!roles.includes(player.role)) return
             if (player.role === "Beast Hunter" && player?.placed === true) return
             if (content.includes(player.target)) return
             content.push(player.target)
         })
+
+        console.log(content)
 
         if (content.length === 0) await channel.send(`${getEmoji("nwm_protect", client)} No one protected anyone tonight!`)
 
