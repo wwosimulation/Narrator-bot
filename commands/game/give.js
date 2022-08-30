@@ -21,7 +21,7 @@ module.exports = {
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
 
-        if (args[0].toLowerCase() === "cancel" && !["Fortune Teller", "Santa Claus", "Easter Bunny", "Warden"].includes(player.role)) {
+        if (args[0]?.toLowerCase() === "cancel" && !["Fortune Teller", "Santa Claus", "Easter Bunny", "Warden"].includes(player.role)) {
             if (player.role === "Alchemist") {
                 let itemType = args[1]?.toLowerCase()
                 if (!itemType) return await message.channel.send("You need to state if you want to cancel the black or the red potion!")
@@ -52,13 +52,13 @@ module.exports = {
         }
 
         if (player.role === "Warden") {
-            if (player.jailedPlayers?.length !== 2) return await message.channel.send("You can't give your weapon if you haven't jailed anyone yet!")
+            if (player.target?.length !== 2) return await message.channel.send("You can't give your weapon if you haven't jailed anyone yet!")
             db.subtract(`player_${player.id}.uses`, 1)
             let wardChannel = message.guild.channels.cache.get(player?.channel)
-            wardChannel?.send(`${getEmoji("warden_weapon", client)} You gave a weapon to **${player.jailedPlayers.map((q) => `${players.indexOf(q) + 1} ${db.get(`player_${q}`)}`).join("** and **")}**.`)
-            player.jailedPlayers?.forEach((p, i) => {
+            wardChannel?.send(`${getEmoji("warden_weapon", client)} You gave a weapon to **${player.target.map((q) => `${players.indexOf(q) + 1} ${db.get(`player_${q}`)}`).join("** and **")}**.`)
+            player.target?.forEach((p, i) => {
                 if (db.get(`player_${p}`)?.team === "Village" || db.get(`player_${p}`)?.role === "Werewolf Fan") {
-                    let otherPlayer = player.jailedPlayers?.filter((o) => o !== p)?.[0]
+                    let otherPlayer = player.target?.filter((o) => o !== p)?.[0]
                     if (otherPlayer) {
                         let buttons = { type: 1, components: [{ type: 2, style: 4, label: "Kill", custom_id: `inmatekill-${otherPlayer}-${gamePhase}` }] }
                         let channel = message.guild.channels.cache.get(db.get(`player_${p}`)?.channel)

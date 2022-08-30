@@ -18,7 +18,7 @@ module.exports = {
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to bless players.")
         if (!["Astral Wolf"].includes(player.role) && !["Astral Wolf"].includes(player.dreamRole)) return
         if (["Astral Wolf"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
-        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only bless during the night right? Or are you delusional?")
+        if (gamePhase % 3 === 0) return await message.channel.send("You do know that you can only bless during the day right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.usesB === 0) return await message.channel.send("You have already blessed a player!")
@@ -38,7 +38,7 @@ module.exports = {
         db.subtract(`player_${player.id}.usesB`, 1)
         db.set(`player_${player.id}.usedBAt`, Math.floor(db.get(`gamePhase`) / 3) + 1)
 
-        let channel = guild.channels.cache.get(db.get(`player_${target}`)?.channel)
+        let channel = message.guild.channels.cache.get(db.get(`player_${target}`)?.channel)
 
         let dropdown = {
             type: 3,
