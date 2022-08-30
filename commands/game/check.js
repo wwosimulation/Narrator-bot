@@ -1,4 +1,4 @@
- const db = require("quick.db")
+const db = require("quick.db")
 const { soloKillers, roles, getRole, getEmoji, fn, ids, wolfList } = require("../../config")
 
 module.exports = {
