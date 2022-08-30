@@ -99,7 +99,6 @@ module.exports = (client) => {
                 db.delete(`player_${interaction.member.id}.vote`)
                 db.delete(`votemsgid_${interaction.member.id}`)
                 if (db.get(`game.isShadow`)) return
-                
             } else {
                 let target = allPlayers[Number(interaction.values[0].split("-")[1]) - 1]
                 if (db.get(`player_${target}`).status !== "Alive") return interaction.reply({ content: "You good? Voting dead players is NOT cool.", ephemeral: true })
