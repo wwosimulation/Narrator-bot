@@ -303,6 +303,8 @@ module.exports = async (client) => {
                     await banditChat.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
                     if (phase.during === "night") sectChat.permissionOverwrites.edit(player.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
                 }
+
+                client.emit("playerUpdate", db.get(`player_${doppel}`))
             }
         }
 
@@ -370,10 +372,10 @@ module.exports = async (client) => {
 
         for (const astral of astralwolves) {
             let player = db.get(`player_${astral}`)
-            if (!player.target || player.target?.length === 0) continue
-            if (!player.target.includes(guy.id)) continue
+            if (!player.target || player.target?.length === 0) continue;
+            if (!player.target.includes(guy.id)) continue;
 
-            player.target.forEach(async (p) => {
+            player.target.forEach(async p => {
                 let target = db.get(`player_${p}`)
 
                 if (target.status === "Alive") {
@@ -392,4 +394,6 @@ module.exports = async (client) => {
             })
         }
     })
+
+    
 }
