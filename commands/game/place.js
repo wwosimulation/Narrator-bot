@@ -23,6 +23,7 @@ module.exports = {
         if (args.length === 0) return await message.channel.send("You do know you need to tell me the player right?")
         if (["Marksman", "Ritualist"].includes(player.role) && player.uses === 0) return await message.channel.send("You already used up your ability!")
         if (player.role === "Astral Wolf" && player.usesB !== 0) return await message.channel.send("You need to bless someone before you can mark players!")
+        if (player.role === "Astral Wolf" && player.usedC === 0) return await message.channel.send("You already used your ability!")
         if (player.role === "Astral Wolf" && player.usedBAt === Math.floor(gamePhase / 3) + 1) return await message.channel.send("You need to wait a night before you can mark players! You just blessed someone.")
         if (player.role === "Astral Wolf" && args.length > 3) return await message.channel.send("You can only mark up to 3 players!")
         if (player.role === "Trapper" && player.traps?.length >= 3) return await message.channel.send("You can only have 3 traps at the same time! Wait till a player dies.")
@@ -95,8 +96,8 @@ module.exports = {
 
         let target = []
         target.push(players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0]))
-        if (player.role === "Astral Wolf" && args.length >= 2) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]))
-        if (player.role === "Astral Wolf" && args.length === 3) target.push(players[Number(args[2]) - 1] || players.find((p) => p === args[2]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[2]))
+        if (player.role === "Astral Wolf" && args.length >= 2) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]));
+        if (player.role === "Astral Wolf" && args.length === 3) target.push(players[Number(args[2]) - 1] || players.find((p) => p === args[2]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[2]));
         if (!target[0]) return await message.channel.send(`The player with the query: \`${args[0]}\` could not be found!`)
         if (player.role === "Astral Wolf" && args.length === 2 && !target[1]) return await message.channel.send(`The player with the query: \`${args[1]}\` could not be found!`)
         if (player.role === "Astral Wolf" && args.length === 3 && !target[2]) return await message.channel.send(`The player with the query: \`${args[2]}\` could not be found!`)
@@ -132,14 +133,10 @@ module.exports = {
 
         db.delete(`player_${player.id}.placed`)
 
-        await message.channel.send(`${obj[player.role]} You have set your ${player.role === "Beast Hunter" || player.role === "Trapper" ? "trap" : "mark"} on **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**!`)
+        if (player.role !== "Astral Wolf") await message.channel.send(`${obj[player.role]} You have set your ${player.role === "Beast Hunter" || player.role === "Trapper" ? "trap" : "mark"} on **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**!`)
         if (player.role === "Astral Wolf") {
-            target.forEach((p) =>
-                db.set(
-                    `player_${p}.chained`,
-                    target.filter((c) => c !== p)
-                )
-            )
+            db.set(`player_${player.id}.target`, target)
+            db.subtract(`player_${player.id}.uses`, 1)
             await message.channel.send(`${obj[player.role]} You have set your mark on **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("**, **")}**!`)
         }
         if (player.role === "Sorcerer") {
