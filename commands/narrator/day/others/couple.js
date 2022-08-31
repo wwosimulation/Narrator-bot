@@ -41,7 +41,7 @@ module.exports.getCoupleTargets = async (client) => {
                 // so both couple died
 
                 // filter the current players and see if there are any eligible targets
-                let newTarget = players.filter((t) => db.get(`player_${t}`).status === "Alive" && !["Cupid", "President"].includes(db.get(`player_${t}`).role) && t !== target[0])
+                let newTarget = players.filter((t) => db.get(`player_${t}`).status === "Alive" && !["Cupid", "President"].includes(db.get(`player_${t}`).role))
 
                 // check if there aren't enough valid targets
                 if (newTarget.length < 2) {
@@ -55,7 +55,7 @@ module.exports.getCoupleTargets = async (client) => {
 
                     // get a new couple
                     let theFirstCouple = newTarget[Math.floor(Math.random() * target.length)] // get a random player
-                    let theSecondCouple = newTarget.filter((d) => d !== theFirstCouple)[Math.floor(Math.random() * target.length)] // get a random player
+                    let theSecondCouple = newTarget.filter((d) => d !== theFirstCouple)[Math.floor(Math.random() * newTarget.length-1)] // get a random player
 
                     // push the couple into the array
                     target.push(theFirstCouple) // push the first couple
