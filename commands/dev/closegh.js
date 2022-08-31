@@ -49,8 +49,7 @@ module.exports = {
                 })
                 .catch((e) => e)
 
-            if (comment.status !== 201) return message.channel.send(`An error occured while I was trying to comment. Status code: \`${comment.status}\``)
-
+            if (comment.status !== 200 && comment.status !== 201) return message.channel.send(`An error occured while I was trying to comment. Status code: \`${comment.status}\``)
             message.channel.send("The comment has been sent!")
         }
 
