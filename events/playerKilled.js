@@ -176,6 +176,7 @@ module.exports = async (client) => {
                     let member = await guild.members.fetch(player.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${target}.status`, "Dead")
+                    db.delete(`player_${p}.target`)
                     let role = player.role
                     if (player.tricked) role = "Wolf Trickster"
                     await dayChat.send(`${getEmoji("couple", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** lost the love of their life and fled the village!`)
@@ -186,7 +187,7 @@ module.exports = async (client) => {
         }
 
         if (guy.instigator) {
-            db.get(`player_${guy.instigator}`).forEach(async (p) => {
+            db.get(`player_${guy.id}`).instigator.forEach(async (p) => {
                 let target = db.get(`player_${p}`).target.filter((a) => a !== guy.id)
                 let player = db.get(`player_${target}`)
                 if (player.status === "Alive") {
@@ -196,6 +197,7 @@ module.exports = async (client) => {
                     let member = await guild.members.fetch(player.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${target}.status`, "Dead")
+                    db.delete(`player_${p}.target`)
                     let role = player.role
                     if (player.tricked) role = "Wolf Trickster"
                     await dayChat.send(`${getEmoji("instigator", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** was instigated with another player who died so they fled the village!`)
