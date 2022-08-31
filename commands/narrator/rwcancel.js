@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const { ids } = require("../../config")
 
 module.exports = {
     name: "rwcancel",
@@ -7,14 +8,15 @@ module.exports = {
     narratorOnly: true,
     run: async (message, client, args) => {
         if (db.get(`game.id`) == null) return message.channel.send("No game is being hosted")
+        let guild = client.guilds.cache.get(ids.server.sim)
 
-        message.guild.channels.cache.find((c) => c.name === "ranked-games").send(`Game was canceled. Sorry for the inconvenience!`)
-        let t = message.guild.roles.cache.get("606123676668133428").members
+        guild.channels.cache.find((c) => c.name === "ranked-games").send(`Game was canceled. Sorry for the inconvenience!`)
+        let t = guild.roles.cache.get("606123676668133428").members
         t.forEach((e) => {
             e.roles.remove("606123676668133428")
         })
         let mid = db.get("game.id")
-        message.guild.channels.cache
+        guild.channels.cache
             .get("860552178095882240")
             .messages.fetch(mid)
             .then((m) => {
@@ -25,5 +27,7 @@ module.exports = {
                 m.edit({ components: [{ type: 1, components: [button] }] })
             })
         db.delete(`game`)
+        let gameGuild = client.guilds.cache.get(ids.server.game)
+        gameGuild.channels.cache.find(c => c.name === "carl-welcome-left-log")?.send("==== CANCEL ====")
     },
 }

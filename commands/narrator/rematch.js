@@ -3,13 +3,14 @@ const { ids } = require("../../config")
 const players = require("../../schemas/players")
 
 module.exports = {
-    name: "reset",
-    description: "Reset the database.",
-    usage: `${process.env.PREFIX}reset`,
+    name: "Rematch",
+    description: "Resets some part and turns all players alive.",
+    usage: `${process.env.PREFIX}rematch`,
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.member.roles.cache.has(ids.narrator) || message.member.roles.cache.has(ids.mini)) {
-            let msg = await message.channel.send("Reset in progress")
+
+            let msg = await message.channel.send("Rematch actions in progress")
 
             await message.guild.channels.cache
                 .find((x) => x.name == "day-chat")
@@ -54,25 +55,6 @@ module.exports = {
 
             db.delete(`players`)
 
-            let mid = db.get("game.id")
-            let s = client.guilds.cache.get(ids.server.sim)
-            s?.channels.cache
-                .get("606123818305585167")
-                .messages.fetch(mid)
-                .then((m) => {
-                    if (m?.author?.id == client.user.id) {
-                        let allc = m.components
-                        if (allc) {
-                            let row = allc[0]
-                            let [button1] = row.components
-                            button1.disabled = true
-                            m.edit({ components: [{ type: 1, components: [button1] }] })
-                        }
-                    }
-                })
-
-            db.delete(`game`)
-
             db.all()
                 .filter((data) => data.ID.startsWith("player_"))
                 .forEach((data) => db.delete(data.ID))
@@ -95,7 +77,9 @@ module.exports = {
                 await chan.delete()
             })
 
-            await msg.edit("Reset complete").catch((e) => message.channel.send(`Error: ${e.message}`))
+            await message.guid.channels.cache.find(c => c.name === "carl-welcome-left-log")?.send("==== REMATCH ====")
+
+            await msg.edit("Rematch action is now complete. You are now able to use the `/srole` command.").catch((e) => message.channel.send(`Error: ${e.message}`))
         }
     },
 }
