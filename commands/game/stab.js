@@ -41,6 +41,20 @@ module.exports = {
 
         if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player to stab.")
 
+        if (!player.hypnotized) {
+
+            let { cupid, instigator } = db.get(`player_${player.id}`)
+
+            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot stab your own couple!")
+            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot stab your fellow recruit!")
+            if (instigator?.includes(target)) return await message.channel.send("You cannot stab the Instigator who recruited you!")
+
+            if (player.id === target) return message.channel.send("Why do you want to stab yourself?")
+
+            if (["Bandit", "Accomplice"].includes(player.role) && [player.bandit, player.accomplices].join(",").split(",").includes(target)) return message.channel.send("You cannot stab your own teammate!")
+
+        }
+
         db.set(`player_${player.id}.target`, target)
 
         let channel = message.guild.channels.cache.get(player.banditChannel) || message.channel

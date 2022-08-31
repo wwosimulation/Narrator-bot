@@ -96,8 +96,8 @@ module.exports = {
 
         let target = []
         target.push(players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0]))
-        if (player.role === "Astral Wolf" && args.length >= 2) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]))
-        if (player.role === "Astral Wolf" && args.length === 3) target.push(players[Number(args[2]) - 1] || players.find((p) => p === args[2]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[2]))
+        if (player.role === "Astral Wolf" && args.length >= 2) target.push(players[Number(args[1]) - 1] || players.find((p) => p === args[1]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[1]));
+        if (player.role === "Astral Wolf" && args.length === 3) target.push(players[Number(args[2]) - 1] || players.find((p) => p === args[2]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[2]));
         if (!target[0]) return await message.channel.send(`The player with the query: \`${args[0]}\` could not be found!`)
         if (player.role === "Astral Wolf" && args.length === 2 && !target[1]) return await message.channel.send(`The player with the query: \`${args[1]}\` could not be found!`)
         if (player.role === "Astral Wolf" && args.length === 3 && !target[2]) return await message.channel.send(`The player with the query: \`${args[2]}\` could not be found!`)
@@ -112,9 +112,19 @@ module.exports = {
         if (!player.hypnotized) {
             if (db.get(`player_${player.id}`).sected === target[0] && player.role === "Marksman") return await message.channel.send("You cannot mark your own Sect Leader")
 
-            let cupid = db.get(`player_${player.id}`).cupid
+            if (["Marksman", "Ritualist"].includes(player.role)) {
+                let { cupid, instigator } = db.get(`player_${player.id}`)
 
-            if (db.get(`player_${cupid}`)?.target.includes(target[0]) && player.role === "Marksman") return await message.channel.send("You cannot mark your own couple!")
+                if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[0])) return await message.channel.send("You cannot mark your own couple!")
+                if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[0])) return await message.channel.send("You cannot mark your fellow recruit!")
+                if (instigator?.includes(target[0])) return await message.channel.send("You cannot mark the Instigator who recruited you!")
+                if (args.length >= 2 && cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[1])) return await message.channel.send("You cannot mark your own couple!")
+                if (args.length >= 2 && instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[1])) return await message.channel.send("You cannot mark your fellow recruit!")
+                if (args.length >= 2 && instigator?.includes(target[1])) return await message.channel.send("You cannot mark the Instigator who recruited you!")
+                if (args.length === 3 && cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[2])) return await message.channel.send("You cannot mark your own couple!")
+                if (args.length === 3 && instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[2])) return await message.channel.send("You cannot mark your fellow recruit!")
+                if (args.length === 3 && instigator?.includes(target[2])) return await message.channel.send("You cannot mark the Instigator who recruited you!")
+            }
 
             if (["Sorcerer", "Astral Wolf"].includes(player.role) && target.includes(db.get(`player_${cupid}`)?.target.find((a) => a !== player.id))) return await message.channel.send("You cannot mark one of your own couples!")
 

@@ -43,9 +43,16 @@ module.exports = {
         }
 
         if (!player.hypnotized) {
-            let cupid = db.get(`player_${player.id}`).cupid
-            if (db.get(`player_${cupid}`)?.target.includes(target) && player.role === "Illusionist") return await message.channel.send("You cannot disguise your own couple!")
+            if (player.role === "Illusionist") {
 
+                let { cupid, instigator } = db.get(`player_${player.id}`)
+
+                if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot disguise your own couple!")
+                if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot disguise your fellow recruit!")
+                if (instigator?.includes(target)) return await message.channel.send("You cannot disguise the Instigator who recruited you!")
+
+            }
+            
             if (player.id === target) return await message.channel.send(`You do know that you cannot ${player.role === "Wolf Shaman" ? "enchant" : "disguise"} yourself right?`)
         }
 

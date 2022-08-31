@@ -39,11 +39,16 @@ module.exports = {
         if (target1 === target2) return await message.channel.send("Why are you hacking the same player?")
 
         if (!player.hypnotized) {
-            let cupid = db.get(`player_${player.id}`).cupid
 
-            if ([target1, target2].includes(db.get(`player_${cupid}`)?.target.find((a) => a !== player.id))) return await message.channel.send("You cannot hack your own couple!")
+            let { cupid, instigator } = db.get(`player_${player.id}`)
 
-            if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot hack yourself right?")
+            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target1)) return await message.channel.send("You cannot hack your own couple!")
+            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target1)) return await message.channel.send("You cannot hack your fellow recruit!")
+            if (instigator?.includes(target1)) return await message.channel.send("You cannot hack the Instigator who recruited you!")
+            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target2)) return await message.channel.send("You cannot hack your own couple!")
+            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target2)) return await message.channel.send("You cannot hack your fellow recruit!")
+            if (instigator?.includes(targe2t)) return await message.channel.send("You cannot hack the Instigator who recruited you!")
+            
         }
 
         let results = { p1: undefined, p2: undefined }[(target1, target2)].forEach((guy, index) => {

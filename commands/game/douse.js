@@ -43,6 +43,15 @@ module.exports = {
         if (!player.hypnotized) {
             if ([target1, target2].includes(player.id)) return await message.channel.send("You cannot douse yourself!")
 
+            let { cupid, instigator } = db.get(`player_${player.id}`)
+
+            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[0])) return await message.channel.send("You cannot douse your own couple!")
+            if (args.length === 2 && cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[1])) return await message.channel.send("You cannot douse your own couple!")
+            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[0])) return await message.channel.send("You cannot douse your fellow recruit!")
+            if (args.length === 2 && instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target[1])) return await message.channel.send("You cannot douse your fellow recruit!")
+            if (instigator?.includes(target[0])) return await message.channel.send("You cannot douse the Instigator who recruited you!")
+            if (args.length === 2 && instigator?.includes(target[1])) return await message.channel.send("You cannot douse the Instigator who recruited you!")
+
             let cupid = db.get(`player_${player.id}`).cupid
 
             if ([target1, target2].includes(db.get(`player_${cupid}`)?.target.find((a) => a !== player.id))) return await message.channel.send("You cannot douse your own couple!")

@@ -45,11 +45,22 @@ module.exports = {
 
         if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send(`You must select an ALIVE player to ${player.role === "Split Wolf" ? "bind with" : "tag"}!`)
 
-        let cupid = db.get(`player_${player.id}`).cupid
-
-        if (!player.hypnotized && db.get(`player_${cupid}`)?.target.includes(target)) return await message.channel.send("You cannot select your couple!")
-
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot select the President!")
+
+        if (!player.hypnotized) {
+
+            if (player.role !== "Loudmouth") {
+                let { cupid, instigator } = db.get(`player_${player.id}`)
+
+                if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot select your own couple!")
+                if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot select your fellow recruit!")
+                if (instigator?.includes(target)) return await message.channel.send("You cannot select the Instigator who recruited you!")
+
+                if (player.sected === target) return await message.channel.send("You cannot select your own Sect Leader!")
+
+                if (target === player.id) return await message.channel.send("Why do you want to select yourself?")
+            }
+        }
 
         if (!player.hypnotized && db.get(`player_${player.id}`).sected === target) return await message.channel.send("You cannot select your own Sect Leader!")
 
