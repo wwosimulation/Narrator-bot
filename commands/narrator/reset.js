@@ -43,6 +43,11 @@ module.exports = {
             db.get(`players`)?.forEach(async (p) => {
                 await wwChat.permissionOverwrites.delete(p)
                 await wwVote.permissionOverwrites.delete(p)
+                await zombiesChat.permissionOverwrites.delete(p)
+                await siblingsChat.permissionOverwrites.delete(p)
+
+                let member = await message.guild.members.fetch(p)
+                await member.roles.set(member.roles.cache.filter(r => !["Corrupted", "Revealed"].includes(r.name)).map(r => r.name === "Dead" ? ids.alive : r.id))
             })
 
             db.delete(`players`)
