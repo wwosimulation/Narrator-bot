@@ -8,7 +8,7 @@ module.exports = {
         let command = args[0]
         if (!command) return await message.channel.send(`***Bruh***`)
 
-        if (command.startsWith("/")) {
+        if (command.startsWith(".")) {
             command = args.join(" ")
 
             try {
@@ -28,7 +28,6 @@ module.exports = {
             delete require.cache[require.resolve(process.cwd() + `/commands/${commandfile.category}/${commandfile.name}`)]
 
             let props = require(process.cwd() + `/commands/${commandfile.category}/${commandfile.name}`)
-            // console.log(`Reload: Command "${command}" loaded`);
             client.commands.set(props.name, props)
 
             message.channel.send(`Command \`${commandfile.name}\` successfully reloaded.`)

@@ -8,8 +8,7 @@ module.exports = {
         if (!client.botAdmin(message.author.id)) return
         db.set("maintenance", "config-" + message.channel.id)
         message.channel.send("Updating config... please stand by...")
-        let one = cmd.get(`cd ${process.cwd()} && git pull && git submodule update --remote`)
-        console.log(one)
-        let two = cmd.get(`pm2 restart ${process.env.pm_id}`) // variable "two" is not being used
+        let one = cmd.runSync(`cd ${process.cwd()} && git pull && git submodule update --remote`)
+        let two = cmd.runSync(`pm2 restart ${process.env.pm_id}`) // variable "two" is not being used
     },
 }

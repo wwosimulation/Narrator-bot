@@ -97,8 +97,8 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
         await msg.react("▶️")
         await msg.react("⏩")
     }
-    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
-    if (!reaction) return msg.reactions.removeAll().catch(() => {})
+    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => { })
+    if (!reaction) return msg.reactions.removeAll().catch(() => { })
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
     if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
@@ -208,6 +208,18 @@ client.on("ready", async () => {
     console.log("Connected!")
     client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
+    let restarted = db.get("botRestart")
+    if(restarted) {
+        client.channels.fetch(restarted.split("/")[0]).then((c) => {
+            c.messages.fetch(restarted.split("/")[1]).then((m) => {
+                m.edit("Bot has restarted!")
+            }).catch(() => {
+                console.log("Could not find message to edit")
+            })
+        }).finally(() => {
+            db.delete("botRestart")
+        })
+    }
     if (!client.user.username.includes("Beta")) {
         Sentry.init({
             dsn: process.env.SENTRY,
@@ -223,6 +235,13 @@ client.on("ready", async () => {
                 installationId: 17541999,
             },
         })
+        if (restarted) {
+            client.channels.fetch("606123881824256000").then((c) => {
+                c.send(`The Bot restarted. All timers were deleted.`)
+            }).catch(() => {
+                console.log("Could not find channel to send message to")
+            })
+        }
     }
 
     setInterval(async () => {
@@ -274,10 +293,9 @@ if (typeof maint == "string" && maint.startsWith("config-")) {
     client.channels.cache.get(maint.split("-")[1])?.send("Config has successfully been reloaded!")
     db.set("maintenance", false)
 }
-//require("./slash.js")(client)
+
+client.on("error", (e) => console.error(e))
 
 client.login(process.env.TOKEN)
-
-client.on("error", (e) => console.error)
 
 module.exports = { client }
