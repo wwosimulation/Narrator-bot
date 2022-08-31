@@ -99,6 +99,7 @@ module.exports = (client) => {
                 db.delete(`player_${interaction.member.id}.vote`)
                 db.delete(`votemsgid_${interaction.member.id}`)
                 if (db.get(`game.isShadow`)) return
+                
             } else {
                 let target = allPlayers[Number(interaction.values[0].split("-")[1]) - 1]
                 if (db.get(`player_${target}`).status !== "Alive") return interaction.reply({ content: "You good? Voting dead players is NOT cool.", ephemeral: true })
@@ -160,7 +161,7 @@ module.exports = (client) => {
             let player = db.get(`player_${interaction.user.id}`) || { status: "Dead" }
             if (db.get(`gamePhase`) % 3 !== 0) return interaction.reply({ content: `You cannot vote as a wolf during the day!`, ephemeral: true })
             if (player.status !== "Alive") return interaction.reply({ content: `You're dead, you can't vote!`, ephemeral: true })
-            if (db.get(`game.peace`) === Math.floor(db.get(`gamePhase`) / 3) + 1) return interaction.reply({ content: "It's a peaceful night, so you cannot vote to kill anyone tonight!", ephemeral: true })
+            if (db.get(`game.peace`) === night) return interaction.reply({ content: "It's a peaceful night, so you cannot vote to kill anyone tonight!", ephemeral: true })
             if (player.hypnotized) return interaction.reply({ content: "You are under control by the Dreamcatcher! You cannot do anything.", ephemeral: true })
 
             if (interaction.values[0].split("-")[1] == "cancel") {
