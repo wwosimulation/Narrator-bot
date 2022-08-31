@@ -38,8 +38,8 @@ module.exports = {
             db.set(`gamePhase`, -10)
 
             let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
-            let zombiesChat = message.guild.channels.cache.find(c => c.name === "zombies-chat")
-            let siblingsChat = message.guild.channels.cache.find(c => c.name === "siblings-chat")
+            let zombiesChat = message.guild.channels.cache.find((c) => c.name === "zombies-chat")
+            let siblingsChat = message.guild.channels.cache.find((c) => c.name === "siblings-chat")
             let wwVote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
 
             db.get(`players`)?.forEach(async (p) => {
@@ -49,7 +49,7 @@ module.exports = {
                 await siblingsChat.permissionOverwrites.delete(p)
 
                 let member = await message.guild.members.fetch(p)
-                await member.roles.set(member.roles.cache.filter(r => !["Corrupted", "Revealed"].includes(r.name)).map(r => r.name === "Dead" ? ids.alive : r.id))
+                await member.roles.set(member.roles.cache.filter((r) => !["Corrupted", "Revealed"].includes(r.name)).map((r) => (r.name === "Dead" ? ids.alive : r.id)))
             })
 
             db.delete(`players`)
