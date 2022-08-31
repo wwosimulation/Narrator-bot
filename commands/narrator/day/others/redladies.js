@@ -17,7 +17,7 @@ module.exports = async (client) => {
         if (guy.status === "Dead") continue // if the player is dead, don't do anything and check for the next red lady
 
         // check if the player is evil
-        if (guy.team !== "Village" && !["Fool", "Headhunter"].includes(guy.role)) {
+        if (guy.team !== "Village" && !["Fool", "Headhunter", "Sect Leader", "Zombie", "Instigator"].includes(guy.role)) {
             // kill this stoopid red lady
             db.set(`player_${rl}.status`, "Dead")
             let member = await guild.members.fetch(rl) // get the discord member - Object
