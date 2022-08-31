@@ -13,7 +13,7 @@ module.exports = async (client) => {
     // clear the votes from the vote-chat
     vote_channel.bulkDelete(vote_channel.messages.cache.filter((msg) => !msg.pinned))
 
-    let droppy = { type: 3, custom_id: "wolves-vote", options: [] }
+    let droppy = { type: 3, custom_id: "wolves-vote", options: [{ label: "Cancel", description: "Cancel your vote.", value: "votefor-cancel" }] }
     alivePlayers.forEach((p) => {
         if (db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan") return
         droppy.options.push({ label: `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`, value: `votefor-${players.indexOf(p) + 1}`, description: `${db.get(`player_${p}`).username}` })
