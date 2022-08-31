@@ -59,8 +59,8 @@ module.exports = {
             let eligiblePlayers = players.filter((p) => !["Mayor", "Flower Child", "Pacifist", "Cursed", "Jailor", "Marksman", "Cupid", "Medium", "Seer", "Seer Apprentice", "Detective", "President", "Kitten Wolf", "Wolf Pacifist", "Wolf Seer", "Sect Leader", "Zombie", "Bandit", "Headhunter"].includes(db.get(`player_${p}`).role) && p !== gr)
 
             // if there are no eligible players, tell the narrator and the player that there were no valid targets
-            let chan = db.get(`player_${gr}.channel`)
             if (eligiblePlayers.length === 0) {
+                let chan = db.get(`player_${gr}.channel`)
                 await message.channel.send(`Player ${players.indexOf(gr) + 1} does not have a valid target!`)
                 await message.guild.channels.cache.get(chan)?.send("You don't have any valid targets to rob! You belong to the Village team.")
             } else {
@@ -232,6 +232,8 @@ module.exports = {
             if (guy.role === "Sorcerer") db.set(`player_${p}.usesM`, 1)
             if (guy.role === "Prognosticator") db.set(`player_${p}.usesT`, 1)
             if (guy.role === "Easter Bunny") db.set(`player_${p}.uses`, 4)
+            if (guy.role === "Astral Wolf") db.set(`player_${p}.usesB`, 1)
+            if (guy.role === "Astral Wolf") db.set(`player_${p}.usesC`, 1)
             if (guy.role === "Voodoo Werewolf") db.set(`player_${p}.usesM`, 2)
             if (guy.role === "Voodoo Werewolf") db.set(`player_${p}.usesN`, 1)
             if (["Bodyguard", "Stubborn Werewolf"].includes(guy.role)) db.set(`player_${p}.lives`, 2)
