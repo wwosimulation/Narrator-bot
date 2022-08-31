@@ -28,6 +28,6 @@ module.exports = {
             })
         db.delete(`game`)
         let gameGuild = client.guilds.cache.get(ids.server.game)
-        gameGuild.channels.cache.find(c => c.name === "carl-welcome-left-log")?.send("==== CANCEL ====")
+        gameGuild.channels.cache.find((c) => c.name === "carl-welcome-left-log")?.send("==== CANCEL ====")
     },
 }

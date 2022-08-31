@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const db = require("quick.db")
 const { ids } = require("../../config")
 
@@ -33,6 +34,8 @@ module.exports = {
     }
 }
 =======
+=======
+>>>>>>> 0110e3a (Prettified Code!)
 const db = require("quick.db")
 const { ids } = require("../../config")
 const players = require("../../schemas/players")
@@ -44,7 +47,10 @@ module.exports = {
     gameOnly: true,
     run: async (message, args, client) => {
         if (message.member.roles.cache.has(ids.narrator) || message.member.roles.cache.has(ids.mini)) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0110e3a (Prettified Code!)
             let msg = await message.channel.send("Rematch actions in progress")
 
             await message.guild.channels.cache
@@ -74,8 +80,13 @@ module.exports = {
             db.set(`gamePhase`, -10)
 
             let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
+<<<<<<< HEAD
             let zombiesChat = message.guild.channels.cache.find(c => c.name === "zombies-chat")
             let siblingsChat = message.guild.channels.cache.find(c => c.name === "siblings-chat")
+=======
+            let zombiesChat = message.guild.channels.cache.find((c) => c.name === "zombies-chat")
+            let siblingsChat = message.guild.channels.cache.find((c) => c.name === "siblings-chat")
+>>>>>>> 0110e3a (Prettified Code!)
             let wwVote = message.guild.channels.cache.find((c) => c.name === "ww-vote")
 
             db.get(`players`)?.forEach(async (p) => {
@@ -85,7 +96,11 @@ module.exports = {
                 await siblingsChat.permissionOverwrites.delete(p)
 
                 let member = await message.guild.members.fetch(p)
+<<<<<<< HEAD
                 await member.roles.set(member.roles.cache.filter(r => !["Corrupted", "Revealed"].includes(r.name)).map(r => r.name === "Dead" ? ids.alive : r.id))
+=======
+                await member.roles.set(member.roles.cache.filter((r) => !["Corrupted", "Revealed"].includes(r.name)).map((r) => (r.name === "Dead" ? ids.alive : r.id)))
+>>>>>>> 0110e3a (Prettified Code!)
             })
 
             db.delete(`players`)
@@ -112,10 +127,17 @@ module.exports = {
                 await chan.delete()
             })
 
+<<<<<<< HEAD
             await message.guid.channels.cache.find(c => c.name === "carl-welcome-left-log")?.send("==== REMATCH ====")
+=======
+            await message.guid.channels.cache.find((c) => c.name === "carl-welcome-left-log")?.send("==== REMATCH ====")
+>>>>>>> 0110e3a (Prettified Code!)
 
             await msg.edit("Rematch action is now complete. You are now able to use the `/srole` command.").catch((e) => message.channel.send(`Error: ${e.message}`))
         }
     },
 }
+<<<<<<< HEAD
 >>>>>>> cc59759 (New features)
+=======
+>>>>>>> 0110e3a (Prettified Code!)
