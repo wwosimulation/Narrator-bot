@@ -32,7 +32,7 @@ module.exports = {
 
         if (!role) return await message.channel.send("Role not found!")
 
-        if (db.get(`started`) === "yes") return await message.channel.send("The game has already started! If you still want to add this player, use the `+reset` command, and then use the `/srole` command instead!")
+        if (db.get(`game.started`) === "yes") return await message.channel.send("The game has already started! If you still want to add this player, use the `+reset` command, and then use the `/srole` command instead!")
 
         message.react("💋")
 

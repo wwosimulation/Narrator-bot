@@ -263,7 +263,7 @@ module.exports = {
 
         await message.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
 
-        db.set("started", "yes")
+        db.set("game.started", "yes")
         db.delete(`gamemode`)
     },
 }
