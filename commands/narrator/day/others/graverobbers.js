@@ -72,6 +72,7 @@ module.exports = async (client) => {
             await banditChat.send(`${getEmoji("zombie", client)} Player **${players.indexOf(graver.id) + 1} ${graver.username} (${getEmoji("grave_robber", client)} Grave Robber)** was a grave robber that now took over the role of **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role.toLowerCase(), client)} guy.role)**! Welcome them to your team.`) // send a message
             await banditChat.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
         }
+        client.emit("playerUpdate", db.get(`player_${guy.id}`))
     }
 
     // check all doppelgangers
