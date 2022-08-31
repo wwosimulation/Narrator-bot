@@ -40,9 +40,12 @@ module.exports = {
         if (db.get(`player_${target}`) == "President") return await message.channel.send("You cannot shoot the President!")
 
         if (!player.hypnotized) {
-            let cupid = db.get(`player_${player.id}`).cupid
 
-            if (db.get(`player_${cupid}`)?.target.includes(target)) return await message.channel.send("You cannot shoot your lover!")
+            let { cupid, instigator } = db.get(`player_${player.id}`)
+
+            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot corrupt your own couple!")
+            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot corrupt your fellow recruit!")
+            if (instigator?.includes(target)) return await message.channel.send("You cannot corrupt the Instigator who recruited you!")
 
             if (target === player.sected) return await message.channel.send("You cannot shoot your own Sect Leader!")
         }

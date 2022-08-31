@@ -38,9 +38,11 @@ module.exports = {
         if (!player.hypnotized) {
             if (player.id === target) return await message.channel.send("You cannot corrupt yourself!")
 
-            let cupid = db.get(`player_${player.id}`).cupid
+            let { cupid, instigator } = db.get(`player_${player.id}`)
 
-            if (db.get(`player_${cupid}`)?.target.includes(target)) return await message.channel.send("You cannot corrupt your own couple!")
+            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot corrupt your own couple!")
+            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot corrupt your fellow recruit!")
+            if (instigator?.includes(target)) return await message.channel.send("You cannot corrupt the Instigator who recruited you!")
         }
 
         await message.channel.send(`${getEmoji("corrupt", client)} You have decided to corrupt **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**!`)
