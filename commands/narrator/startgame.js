@@ -232,6 +232,8 @@ module.exports = {
             if (guy.role === "Sorcerer") db.set(`player_${p}.usesM`, 1)
             if (guy.role === "Prognosticator") db.set(`player_${p}.usesT`, 1)
             if (guy.role === "Easter Bunny") db.set(`player_${p}.uses`, 4)
+            if (guy.role === "Astral Wolf") db.set(`player_${p}.usesB`, 1)
+            if (guy.role === "Astral Wolf") db.set(`player_${p}.usesC`, 1)
             if (guy.role === "Voodoo Werewolf") db.set(`player_${p}.usesM`, 2)
             if (guy.role === "Voodoo Werewolf") db.set(`player_${p}.usesN`, 1)
             if (["Bodyguard", "Stubborn Werewolf"].includes(guy.role)) db.set(`player_${p}.lives`, 2)
