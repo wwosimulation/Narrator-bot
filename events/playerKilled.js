@@ -22,6 +22,7 @@ module.exports = async (client) => {
         const tricksters = players.filter((p) => db.get(`player_${p}`).role === "Wolf Trickster" && db.get(`player_${p}`).status === "Alive")
         const ritualists = players.filter((p) => db.get(`player_${p}`).role === "Ritualist" && db.get(`player_${p}`).status === "Alive")
         const trappers = players.filter((p) => db.get(`player_${p}`).role === "Trapper" && db.get(`player_${p}`).status === "Alive")
+        const astralwolves = players.filter((p) => db.get(`player_${p}`).role === "Astral Wolf")
         const seerappprentices = players.filter((p) => db.get(`player_${p}`).role === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
@@ -364,5 +365,31 @@ module.exports = async (client) => {
             channel?.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
             channel?.edit({ name: `priv-${guy.role.toLowerCase().replace(/\s/g, "-")}` })
         }
+
+        for (const astral of astralwolves) {
+            let player = db.get(`player_${astral}`)
+            if (!player.target || player.target?.length === 0) continue;
+            if (!player.target.includes(guy.id)) continue;
+
+            player.target.forEach(p => {
+                let target = db.get(`player_${p}`)
+
+                if (target.status === "Alive") {
+                    let getResult = await stubbornWerewolves(client, target) // checks if the player is stubborn wolf and has 2 lives
+                    if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                    let member = await guild.members.fetch(target.id)
+                    let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
+                    db.set(`player_${target.id}.status`, "Dead")
+                    let role = target.role
+                    if (target.tricked) role = "Wolf Trickster"
+                    await dayChat.send(`${getEmoji("astral_chain", client)} Player **${players.indexOf(target.id) + 1} ${target.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** was chained to another player by the Astral Wolf and has died!`)
+                    await member.roles.set(memberRoles)
+                    client.emit("playerKilled", db.get(`player_${p}`), guy)
+                }
+                db.delete(`player_${astral}.target`)
+            })
+        }
     })
+
+    
 }
