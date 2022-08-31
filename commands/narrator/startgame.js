@@ -234,8 +234,8 @@ module.exports = {
             if (guy.role === "Easter Bunny") db.set(`player_${p}.uses`, 4)
             if (guy.role === "Voodoo Werewolf") db.set(`player_${p}.usesM`, 2)
             if (guy.role === "Voodoo Werewolf") db.set(`player_${p}.usesN`, 1)
-            if (guy.role === "Bodyguard") db.set(`player_${p}.lives`, 2)
-            if (guy.role !== "Bodyguard") db.set(`player_${p}.lives`, 1)
+            if (["Bodyguard", "Stubborn Werewolf"].includes(guy.role)) db.set(`player_${p}.lives`, 2)
+            if (!["Bodyguard", "Stubborn Werewolf"].includes(guy.role)) db.set(`player_${p}.lives`, 1)
 
             if (guy.role === "Wolf Seer" && players.filter((c) => db.get(`player_${c}`).team === "Werewolf" && db.get(`player_${c}`).role !== "Werewolf Fan").length === 1) {
                 db.set(`player_${guy.id}.resign`, true)
