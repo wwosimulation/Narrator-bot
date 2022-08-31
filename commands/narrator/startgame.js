@@ -69,8 +69,8 @@ module.exports = {
                 db.set(`player_${gr}.target`, eligiblePlayers[0])
 
                 // send the message to the player and the narrator
-                await message.channel.send(`${getEmoji(client, "grave_robber")} Player ${players.indexOf(gr) + 1}'s target is ${players.indexOf(eligiblePlayers[0]) + 1}`)
-                await message.guild.channels.cache.get(chan)?.send(`${getEmoji(client, "grave_robber")} Your target is **${players.indexOf(eligiblePlayers[0]) + 1} ${message.guild.members.cache.get(eligiblePlayers[0])?.user.username}**`)
+                await message.channel.send(`${getEmoji("grave_robber", client)} Player ${players.indexOf(gr) + 1}'s target is ${players.indexOf(eligiblePlayers[0]) + 1}`)
+                await message.guild.channels.cache.get(chan)?.send(`${getEmoji("grave_robber", client)} Your target is **${players.indexOf(eligiblePlayers[0]) + 1} ${message.guild.members.cache.get(eligiblePlayers[0])?.user.username}**`)
             }
         }
 
@@ -121,7 +121,7 @@ module.exports = {
                 // future game mode
                 // code for a future gamemode i have an idea for
             } else {
-                await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${getEmoji(client, "president")} Player **${players.indexOf(pres) + 1} ${message.guild.members.cache.get(pres)?.user.username}** is your President`)
+                await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${getEmoji("president", client)} Player **${players.indexOf(pres) + 1} ${message.guild.members.cache.get(pres)?.user.username}** is your President`)
             }
         })
 
