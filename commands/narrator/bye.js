@@ -19,7 +19,7 @@ module.exports = {
 
 const kick = (message) => {
     message.guild.members.cache.forEach((e) => {
-        if (!e.permissions.any(["MANAGE_CHANNELS", "ADMIN", "MANAGE_ROLES"])) {
+        if (!e.permissions.any(["MANAGE_CHANNELS", "ADMINISTRATOR", "MANAGE_ROLES"])) {
             e.kick("Game end")
             console.log(`Kicked ${e.user.tag}`)
         }
