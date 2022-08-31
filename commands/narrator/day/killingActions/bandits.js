@@ -166,6 +166,7 @@ module.exports = async (client) => {
 
                         // send a message to the bandits chat
                         await banditChannel.send(`${getEmoji("kidnap", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})** has been converted into an Accomplice! Together, you can kill players.`) // sends a message
+                        client.emit("playerUpdate", db.get(`player_${guy.id}`))
                     } else {
                         // otherwise they were protected
 
