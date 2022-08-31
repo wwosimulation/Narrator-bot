@@ -29,5 +29,7 @@ module.exports = {
         db.set(`hoster`, message.author.id)
         db.set(`gamePhase`, -5)
         db.set("gameCode", args.join(" "))
+
+        client.channels.cache.get("892046244715835463").send(rematch ? "== Rematch ==" : "== Start Game ==")
     },
 }

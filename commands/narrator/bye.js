@@ -12,7 +12,8 @@ module.exports = {
         let m = await message.channel.send("Players have been kicked, I am now ending the game and deleting the role .")
         await fn.sleep(3000)
         await clearJoin(client)
-        m.edit("Game end complete!").catch(() => {})
+        await client.channels.cache.get("892046244715835463").send("== Game End ==")
+        await m.edit("Game end complete!").catch(() => {})
     },
 }
 
