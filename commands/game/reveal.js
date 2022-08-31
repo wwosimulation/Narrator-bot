@@ -61,7 +61,7 @@ module.exports = {
             await member.roles.add(message.guild.roles.cache.find((r) => r.name === "Revealed"))
 
             if (player.role !== "Vigilante") {
-                db.set(`noVoting`, true)
+                db.set(`game.noVoting`, true)
                 db.subtract(`player_${player.id}.uses`, 1)
             } else {
                 db.subtract(`player_${player.id}.usesR`, 0)
