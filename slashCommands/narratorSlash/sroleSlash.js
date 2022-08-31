@@ -49,6 +49,7 @@ module.exports = {
         ],
     },
     server: ["game"],
+    narratorOnly: true,
     run: async (interaction, client) => {
         // ---------- OPTIONS ----------
         let gamemode = interaction.options.getString("gamemode")
@@ -74,7 +75,7 @@ module.exports = {
         let rolelist = []
         let players = []
         let excludes = db.get("excludes") || []
-        let banned = ["Bandit", "Accomplice", "Sect Leader", "Grave Robber", "Astral Wolf", "Split Wolf", "Preacher", "Wolf Trickser", "Ghost Lady", "Evil Detective"]
+        let banned = ["Astral Wolf", "Preacher", "Wolf Trickster", "Ritualist", "Warden", "Instigator", "Trapper", "Mortician", "Seer Apprentice", "Analyst", "Stubborn Werewolf", "Night Watchman", "Violinist", "Wolf Summoner", "Locksmith", "Flagger", "Gambler", "Astronomer", "Sorcerer", "Grave Robber"]
         let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
         let random = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "cupid", "cursed", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "president", "detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer", "alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman", "sorcerer", "alchemist", "arsonist", "bomber", "cannibal", "corruptor", "illusionist", "serial-killer", "zombie", "fool", "headhunter"]
         let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "forger"]

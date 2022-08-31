@@ -4,7 +4,7 @@ const { getEmoji } = require("../../config")
 module.exports = {
     name: "playerinfo",
     description: "Get the playerinfo.",
-    usage: `${process.env.PREFIX}playerinfo`,
+    usage: `${process.env.PREFIX}playerinfo (raw|block)`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
@@ -21,7 +21,12 @@ module.exports = {
         }
 
         embed.description = content
-
-        message.channel.send({ embeds: [embed] })
+        if (args[0].toLowerCase() == "raw") {
+            return message.channel.send(`**Playerinfo**\n${content}`)
+        } else if (args[0].toLowerCase() == "block") {
+            return message.channel.send(`\`\`\`**Player Info**\n${content}\`\`\``)
+        } else {
+            return message.channel.send({ embeds: [embed] })
+        }
     },
 }

@@ -56,7 +56,7 @@ module.exports = (client) => {
             interaction.deferUpdate()
         }
         if (interaction.customId.startsWith("gwjoin")) {
-            let gameName = interaction.customId.split("-")[1]
+            let gameName = interaction.customId.split("-").slice(1).join("-")
             let guy = interaction.member
             if (guy.roles.cache.has("606123628693684245")) return interaction.reply({ content: "You are game banned! You cannot join any games", ephemeral: true })
             if (guy.roles.cache.has("606123676668133428")) return interaction.reply({ content: "You have already joined the game! Check <#606123823074377740> for the link!", ephemeral: true })

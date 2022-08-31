@@ -70,7 +70,9 @@ module.exports = {
                 .filter((data) => data.ID.startsWith("player_"))
                 .forEach((data) => db.delete(data.ID))
 
-            let save = ["rankedseason", "stafflist", "stafflist2", "stafflist3", "entermsg", "hoster", "gamePhase", "started", "usedChannels", "wwsVote", "winner", "vtshadow", "xpGiven", "nextRequest", "gamewarnIndex", "gamewarnCount", "logs", "gameCode", "game", "maintance", "xpExclude"]
+            let save = ["defaultVT", "rankedseason", "stafflist", "stafflist2", "stafflist3", "entermsg", "hoster", "gamePhase", "started", "usedChannels", "wwsVote", "winner", "vtshadow", "xpGiven", "nextRequest", "gamewarnIndex", "gamewarnCount", "logs", "gameCode", "game", "maintance", "xpExclude"]
+
+            db.set("defaultVT", "1m")
 
             db.all().forEach(async (i) => {
                 if (i.ID.startsWith("roses_")) {
