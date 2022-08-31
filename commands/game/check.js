@@ -64,7 +64,7 @@ module.exports = {
             if (attacker.team !== "Werewolf" && alivePlayers.length > 1) suspects.push(alivePlayers.filter((a) => a !== suspects[1])[Math.random() * (alivePlayers.length - 1)])
             suspects = suspects.sort((a, b) => players.indexOf(a) - players.indexOf(b))
             console.log(suspects)
-            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `**${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}**${i === suspects.length - 2 ? " or" : i === suspects.length - 1 ? "" : ","}`).join(" ")} tried to kill **${players.indexOf(guy.id)+1} ${guy.username}**!`)
+            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `**${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}**${i === suspects.length - 2 ? " or" : i === suspects.length - 1 ? "" : ","}`).join(" ")} tried to kill **${players.indexOf(guy.id) + 1} ${guy.username}**!`)
             db.subtract(`player_${player.id}.uses`, 1)
             previousChecks.push(guy.id)
             db.set(`player_${player.id}.previousChecks`, previousChecks)
