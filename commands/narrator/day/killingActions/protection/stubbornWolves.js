@@ -17,6 +17,7 @@ module.exports = async (client, guy) => {
             await channel.send(`${getEmoji("stubborn_werewolf", client)} You have been attacked! Your next attack will be fatal.`)
             await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
             isProtected = true
+            db.subtract(`player_${guy.id}.lives`, 1)
         }
     }
 
