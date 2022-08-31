@@ -76,5 +76,9 @@ module.exports = async (client) => {
             await c.channel.bulkDelete(1)
         }) // sends the description, pins the message and deletes the last message
         await channel2.send(`<@${player2.id}>`).then((c) => setTimeout(() => c.delete(), 3000)) // pings the player and deletes the ping after 3 seconds
+
+        client.emit("playerUpdate", db.get(`player_${player1.id}`))
+        client.emit("playerUpdate", db.get(`player_${player2.id}`))
+
     }
 }
