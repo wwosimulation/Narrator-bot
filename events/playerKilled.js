@@ -370,10 +370,10 @@ module.exports = async (client) => {
 
         for (const astral of astralwolves) {
             let player = db.get(`player_${astral}`)
-            if (!player.target || player.target?.length === 0) continue;
-            if (!player.target.includes(guy.id)) continue;
+            if (!player.target || player.target?.length === 0) continue
+            if (!player.target.includes(guy.id)) continue
 
-            player.target.forEach(async p => {
+            player.target.forEach(async (p) => {
                 let target = db.get(`player_${p}`)
 
                 if (target.status === "Alive") {
@@ -392,6 +392,4 @@ module.exports = async (client) => {
             })
         }
     })
-
-    
 }
