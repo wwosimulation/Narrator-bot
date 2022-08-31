@@ -40,8 +40,24 @@ module.exports = {
 
             let { cupid, instigator } = db.get(`player_${player.id}`)
 
-            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot corrupt your own couple!")
-            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot corrupt your fellow recruit!")
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot corrupt your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot corrupt your fellow recruit!")
             if (instigator?.includes(target)) return await message.channel.send("You cannot corrupt the Instigator who recruited you!")
         }
 

@@ -33,11 +33,26 @@ module.exports = {
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot poison the President!")
 
         if (!player.hypnotized) {
-
             let { cupid, instigator } = db.get(`player_${player.id}`)
 
-            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot poison your own couple!")
-            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot poison your fellow recruit!")
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot poison your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot poison your fellow recruit!")
             if (instigator?.includes(target)) return await message.channel.send("You cannot poison the Instigator who recruited you!")
 
             if (player.id === target) return await message.channel.send("You do know that you cannot poison yourself right?")
