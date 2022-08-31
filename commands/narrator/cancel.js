@@ -27,5 +27,6 @@ module.exports = {
                 m.edit({ components: [{ type: 1, components: [button] }] })
             })
         db.delete(`game`)
+        await client.channels.cache.get("892046244715835463").send("== Cancel ==")
     },
 }
