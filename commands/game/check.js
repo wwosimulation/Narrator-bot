@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const shuffle = require("shuffle-array")
 const { soloKillers, roles, getRole, getEmoji, fn, ids, wolfList } = require("../../config")
 
 module.exports = {
@@ -39,10 +40,12 @@ module.exports = {
         if (player.role === "Mortician") {
             let guy = db.get(`player_${target[0]}`)
             if (guy.status !== "Dead") return message.channel.send(`${getEmoji("fail_autopsy", client)} You need to select DEAD players to perform an autopsy!`)
-            if (typeof guy.killedBy === "string") return message.channel.send(`${getEmoji("fail_autopsy", client)} This player was not killed by an evil player!`)
+            if (!players.includes(guy.killedBy?.toLowerCase())) return message.channel.send(`${getEmoji("fail_autopsy", client)} This player was not killed by an evil player!`)
             let attacker = db.get(`player_${guy.killedBy}`)
+            let previousChecks = guy?.previousChecks || []
             if (attacker.team === "Village") return message.channel.send(`${getEmoji("fail_autopsy", client)} A villager killed this player! Please select another player.`)
             if (attacker.status !== "Alive" && guy.killedByWolf === false) return message.channel.send(`${getEmoji("fail_autopsy", client)} The killer of this player is dead!`)
+            if (previousChecks.includes(guy.id)) return message.channel.send(`${getEmoji("fail_autopsy")} You already checked this player before!`)
             if (attacker.status !== "Alive" && guy.killedByWolf === true) {
                 let allWolves = players.map((p) => db.get(`player_${p}`)).filter((p) => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
 
@@ -57,11 +60,14 @@ module.exports = {
             shuffle(alivePlayers)
             let suspects = []
             suspects.push(attacker.id)
-            suspects.push(alivePlayers[Math.random() * alivePlayers.length])
+            suspects.push(alivePlayers[Math.floor(Math.random() * alivePlayers.length)])
             if (attacker.team !== "Werewolf" && alivePlayers.length > 1) suspects.push(alivePlayers.filter((a) => a !== suspects[1])[Math.random() * (alivePlayers.length - 1)])
             suspects = suspects.sort((a, b) => players.indexOf(a) - players.indexOf(b))
-            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}${i === suspects.length - 2 ? " or" : i === suspects.length - 1 ? "" : ","}`).join(" ")}`)
+            console.log(suspects)
+            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `**${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}**${i === suspects.length - 2 ? " or" : i === suspects.length - 1 ? "" : ","}`).join(" ")} tried to kill **${players.indexOf(guy.id)+1} ${guy.username}**!`)
             db.subtract(`player_${player.id}.uses`, 1)
+            previousChecks.push(guy.id)
+            db.set(`player_${player.id}.previousChecks` previousChecks)
             return
         }
         if (!player.hypnotized && target.includes(player.id) && player.role !== "Evil Detective") return await message.channel.send("You can't check yourself, unless you have trust issues of course.")
