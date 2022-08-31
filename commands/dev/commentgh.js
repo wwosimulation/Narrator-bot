@@ -17,8 +17,8 @@ module.exports = {
 
         let user = issue.data.body
             .split("\n")
-            .find((r) => r.startsWith("User ID:"))
-            ?.split(":")[1]
+            .find((r) => r.startsWith("**User ID:**"))
+            ?.split(":**")[1]
             .trim()
 
         let comment = await client.github
@@ -41,7 +41,7 @@ module.exports = {
         if (!member) return message.channel.send("I could not find the user to DM!")
 
         member
-            .send(`Hello there ${member.username}!\nYou have received a new comment from one of our devs on your issue regarding: ${issue.data.title}.\n\nComment: \`${comment.data.body}\``)
+            .send(`Hello there ${member.username}!\nYou have received a new comment from one of our devs on your issue regarding: \`${issue.data.title}\`.\n\nComment: ${comment.data.body}`)
             .then((msg) => message.channel.send("The author of the issue has been notified!"))
             .catch((e) => message.channel.send("There was a problem when I tried sending a message to the user."))
     },

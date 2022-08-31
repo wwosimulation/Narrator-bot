@@ -18,8 +18,8 @@ module.exports = {
 
         let user = issue.data.body
             .split("\n")
-            .find((r) => r.startsWith("User ID:"))
-            ?.split(":")[1]
+            .find((r) => r.startsWith("**User ID:**"))
+            ?.split(":**")[1]
             .trim()
 
         let closedIssue = await client.github
@@ -61,7 +61,7 @@ module.exports = {
         if (!member) return message.channel.send("I could not find the user to DM!")
 
         member
-            .send(`Hello there ${member.username}!\nYour issue regarding \`${issue.data.title}\` has been closed by one of our developers.${hasComment ? `\n\nHere's a comment: \`${comment.data.body}\`` : ""}`)
+            .send(`Hello there ${member.username}!\nYour issue regarding \`${issue.data.title}\` has been closed by one of our developers.${hasComment ? `\n\nHere's a comment: ${comment.data.body}` : ""}`)
             .then((msg) => message.channel.send("The author of the issue has been notified!"))
             .catch((e) => message.channel.send("There was a problem when I tried sending a message to the user."))
     },
