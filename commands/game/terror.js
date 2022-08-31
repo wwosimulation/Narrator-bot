@@ -32,11 +32,26 @@ module.exports = {
         if (db.get(`player_${target}`).terror === true) return await message.channel.send("That player is already terrorized! Select another player.")
 
         if (!player.hypnotized) {
-
             let { cupid, instigator } = db.get(`player_${player.id}`)
 
-            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot terrorize your own couple!")
-            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot terrorize your fellow recruit!")
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot terrorize your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot terrorize your fellow recruit!")
             if (instigator?.includes(target)) return await message.channel.send("You cannot terrorize the Instigator who recruited you!")
 
             if (player.id === target) return await message.channel.send("You do know that you cannot terrorize yourself right?")

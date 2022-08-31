@@ -82,12 +82,27 @@ module.exports = {
         }
 
         if (!player.hypnotized) {
-
             if (player.role === "Alchemist") {
                 let { cupid, instigator } = db.get(`player_${player.id}`)
 
-                if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot give your potion to your couple!")
-                if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot give your potion to your fellow recruit!")
+                if (
+                    cupid
+                        ?.map((a) => db.get(`player_${a}`))
+                        ?.map((a) => a.target)
+                        ?.join(",")
+                        .split(",")
+                        .includes(target)
+                )
+                    return await message.channel.send("You cannot give your potion to your couple!")
+                if (
+                    instigator
+                        ?.map((a) => db.get(`player_${a}`))
+                        ?.map((a) => a.target)
+                        ?.join(",")
+                        .split(",")
+                        .includes(target)
+                )
+                    return await message.channel.send("You cannot give your potion to your fellow recruit!")
                 if (instigator?.includes(target)) return await message.channel.send("You cannot give your potion to the Instigator who recruited you!")
             }
 

@@ -36,12 +36,31 @@ module.exports = {
         if (db.get(`player_${target}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
 
         if (!player.hypnotized) {
-
             let { cupid, instigator } = db.get(`player_${player.id}`)
 
-            if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target) && db.get(`player_${target}`).team !== "Village" && !["Fool", "Headhunter", "Sect Leader", "Zombie", "Instigator"].includes(db.get(`player_${target}`).role)) return await message.channel.send("You cannot visit your own couple if they are known to be evil!")
-            if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target) && db.get(`player_${target}`).team !== "Village" && !["Fool", "Headhunter", "Sect Leader", "Zombie", "Instigator"].includes(db.get(`player_${target}`).role)) return await message.channel.send("You cannot visit your fellow recruit if they are known to be evil!")
-            
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target) &&
+                db.get(`player_${target}`).team !== "Village" &&
+                !["Fool", "Headhunter", "Sect Leader", "Zombie", "Instigator"].includes(db.get(`player_${target}`).role)
+            )
+                return await message.channel.send("You cannot visit your own couple if they are known to be evil!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target) &&
+                db.get(`player_${target}`).team !== "Village" &&
+                !["Fool", "Headhunter", "Sect Leader", "Zombie", "Instigator"].includes(db.get(`player_${target}`).role)
+            )
+                return await message.channel.send("You cannot visit your fellow recruit if they are known to be evil!")
+
             if (player.id === target) return await message.channel.send("You do know that you cannot visit yourself right?")
         }
 

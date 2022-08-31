@@ -48,12 +48,27 @@ module.exports = {
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot select the President!")
 
         if (!player.hypnotized) {
-
             if (player.role !== "Loudmouth") {
                 let { cupid, instigator } = db.get(`player_${player.id}`)
 
-                if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot select your own couple!")
-                if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot select your fellow recruit!")
+                if (
+                    cupid
+                        ?.map((a) => db.get(`player_${a}`))
+                        ?.map((a) => a.target)
+                        ?.join(",")
+                        .split(",")
+                        .includes(target)
+                )
+                    return await message.channel.send("You cannot select your own couple!")
+                if (
+                    instigator
+                        ?.map((a) => db.get(`player_${a}`))
+                        ?.map((a) => a.target)
+                        ?.join(",")
+                        .split(",")
+                        .includes(target)
+                )
+                    return await message.channel.send("You cannot select your fellow recruit!")
                 if (instigator?.includes(target)) return await message.channel.send("You cannot select the Instigator who recruited you!")
 
                 if (player.sected === target) return await message.channel.send("You cannot select your own Sect Leader!")
