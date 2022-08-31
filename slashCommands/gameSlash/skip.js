@@ -24,7 +24,6 @@ module.exports = {
         if (alivePlayers.length > 8) return interaction.editReply("This command will be available when there are 8 or less players alive.")
         if (skips.includes(interaction.user.id)) return interaction.editReply("You have already voted to skip.")
 
-        if(!get("skipVotes")) set("skipVotes", new Array([interaction.user.id]))
         push("skipVotes", interaction.user.id)
         await interaction.editReply("You have voted to skip the discussion phase.")
         if(alivePlayers.length - 1 - get("skipVotes").length <= 0) client.commands.get("vt").run(interaction, [], client)
