@@ -20,10 +20,20 @@ module.exports = {
         let button = { type: 2, style: 3, label: "Join Game", custom_id: `gwjoin-${args.join(" ")}` }
         const row = { type: 1, components: [button] }
 
-        let description = !rematch ? "** **" : "** **\n" + client.guilds.cache.get(ids.server.game).members.cache.filter(m => m.roles.cache.some(r => ["Alive", "Dead", "Spectator"].includes(r.name))).map((m) => m.user.tag).join("\n")
+        let description = !rematch
+            ? "** **"
+            : "** **\n" +
+              client.guilds.cache
+                  .get(ids.server.game)
+                  .members.cache.filter((m) => m.roles.cache.some((r) => ["Alive", "Dead", "Spectator"].includes(r.name)))
+                  .map((m) => m.user.tag)
+                  .join("\n")
 
         const embed = { title: "Player and Spectator List:", description, color: 0x327210 }
-        let m = await client.guilds.cache.get(ids.server.sim).channels.cache.get("606123818305585167").send({ content: `<@&606123686633799680>, we are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#862712560511221791> and react with 🎮${sup ? `\n\n${sup}` : ""}`, embeds: [embed], components: [row] })
+        let m = await client.guilds.cache
+            .get(ids.server.sim)
+            .channels.cache.get("606123818305585167")
+            .send({ content: `<@&606123686633799680>, we are now starting game ${args.join(" ")}. Our host will be <@${message.author.id}>!\nIf you do not wish to get future pings about the game, go to <#862712560511221791> and react with 🎮${sup ? `\n\n${sup}` : ""}`, embeds: [embed], components: [row] })
         m.crosspost()
         db.set(`game.id`, m.id)
         db.set(`hoster`, message.author.id)
