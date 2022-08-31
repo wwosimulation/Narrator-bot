@@ -91,7 +91,7 @@ module.exports = async (client, alivePlayersBefore) => {
 
             for (let target of attacker.target) {
                 let guy = db.get(`player_${target}`)
-
+                db.subtract(`player_${canni}.uses`, 1)
                 // check if the canni's target is alive
                 if (guy.status === "Alive") {
                     // check for any protections
