@@ -46,6 +46,27 @@ module.exports = {
                 db.subtract(`player_${message.author.id}.uses`, 1)
                 return await message.channel.send(`${getEmoji("sect_message", client)} You have sent a message to your sect!`)
             }
+            if (player.role === "Jailer" || player?.dreamRole === "Jailer") {
+                if (gamePhase % 3 !== 0) return await message.channel.send("You can only send that kind of message during the night.")
+                let target = db.get(`player_${player.target}`)
+                if (!target) return await message.channel.send("Your target has to be alive for you to send messages!")
+                let jailerChat = message.guild.channels.cache.find(c => c.name === "jailed-chat")
+                await message.channel.send(`${getEmoji("jailer", client)} **Jailer**: ${content}`)
+                await jailerChat.send(`${getEmoji("jailer", client)} **Jailer**: ${content}`)
+                if (player.hypnotized) {
+                    let channel = mesage.guild.channels.cache.get(player.channel)
+                    await channel.send(`${getEmoji("jailer", client)} **Jailer**: ${content}`)
+                }
+            }
+            if (["Medium", "Ritualist"].includes(player.role) || ["Medium", "Ritualist"].includes(player?.dreamRole)) {
+                let allDeads = players.map(a => db.get(`player_${a}`)).filter(a => ["Medium", "Ritualist"].includes(a.role) || ["Medium", "Ritualist"].includes(a.dreamRole))
+                message.channel.send(`${getEmoji(player.corrupted ? "corrupt" : player.role.toLowerCase().replace(/\s/g, "_"), client)} ${players.includes(message.author.id) ? players.indexOf(message.author.id) + 1 : ""} ${player.username || message.author.username}: ${content}`)
+                allDeads.forEach((p) => {
+                    if (!p.jailed && !p.nightmared) {
+                        message.guild.channels.cache.get(p.channel).send(`${getEmoji(player.corrupted ? "corrupt" : player.role.toLowerCase().replace(/\s/g, "_"), client)} ${players.includes(message.author.id) ? players.indexOf(message.author.id) + 1 : ""} ${player.username || message.author.username}: ${content}`)
+                    }
+                })
+            }
         } else {
             switch (message.channel.name) {
                 case "dead-chat":

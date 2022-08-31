@@ -67,7 +67,7 @@ module.exports = {
             message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `**${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}**${i === suspects.length - 2 ? " or" : i === suspects.length - 1 ? "" : ","}`).join(" ")} tried to kill **${players.indexOf(guy.id)+1} ${guy.username}**!`)
             db.subtract(`player_${player.id}.uses`, 1)
             previousChecks.push(guy.id)
-            db.set(`player_${player.id}.previousChecks` previousChecks)
+            db.set(`player_${player.id}.previousChecks`, previousChecks)
             return
         }
         if (!player.hypnotized && target.includes(player.id) && player.role !== "Evil Detective") return await message.channel.send("You can't check yourself, unless you have trust issues of course.")
