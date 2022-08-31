@@ -9,7 +9,6 @@ module.exports = {
     run: async (message, args, client) => {
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`)
-        const wwchat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
@@ -47,7 +46,7 @@ module.exports = {
 
         if (player.role === "Jailer") {
             db.set(`player_${player.id}.target`, target[0])
-            await message.channel.send(`${getEmoji("jailerselect", client)} You have decided to jail **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**!`)
+            await message.channel.send(`${getEmoji("jailerselect", client)} You have decided to jail **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**!`)
         } else {
             db.set(`player_${player.id}.target`, target)
             await message.channel.send(`${getEmoji("warden_jail", client)} You have decided to jail **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}** and **${players.indexOf(target[1]) + 1} ${db.get(`player_${target[1]}`).username}**!`)
