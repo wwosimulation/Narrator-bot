@@ -42,4 +42,6 @@ module.exports = async (client, guy) => {
 
     // send a message to the Werewolves chat
     werewolvesChat.send(`${getEmoji("werewolf", client)} Player **${players.indexOf(guy) + 1} ${player.username}** has been converted into a Werewolf!`) // sends a message
+
+    client.emit("playerUpdate", db.get(`player_${guy}`))
 }
