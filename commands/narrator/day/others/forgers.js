@@ -23,8 +23,9 @@ module.exports = async (client) => {
 
             // give the player the sword or shield
             db.set(`player_${forger.target}.${forger.itemType}`, true) // give the player the shield or the sword
-            db.subtract(`player_${forger.id}.uses`, 1) // subtract the uses from the forger
+            db.subtract(`player_${forger.id}.${forger.itemType}Uses`, 1) // subtract the uses from the forger
             db.add(`player_${forger.id}.givenItems`, 1) // add the counter of given items
+            db.set(`player_${forger.id}.given`, true) // set that they have given the item
 
             let channel1 = guild.channels.cache.get(forger.channel) // get the channel of the forger
             let channel2 = guild.channels.cache.get(guy.channel) // get the channel of the player

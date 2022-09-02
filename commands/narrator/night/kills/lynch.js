@@ -48,10 +48,12 @@ module.exports = async (client) => {
     console.log(`Results:`)
     console.log(sortedVotes)
 
-    guild.channels.cache.find((c) => c.name === "commands")?.send(`So here are the results:\n\nAlive players: ${alivePlayers.length}\n\nPlayers required to lynch: ${Math.floor(alivePlayers.length / 2)}\n\n${sortedVotes.map((a) => ` - <@${a[0]}> had ${a[1]} votes on them.`).join("\n")}\n\nPlayer who gets killed: <@${sortedVotes[0][0]}>`)
+    const condition = db.get(`game.noVoting`) || sortedVotes.length === 0 || sortedVotes[0][1] < Math.floor(alivePlayers.length / 2) || (sortedVotes.length > 1 && sortedVotes[0][1] === sortedVotes[1][1])
+
+    guild.channels.cache.find((c) => c.name === "commands")?.send(`So here are the results:\n\nAlive players: ${alivePlayers.length}\n\nPlayers required to lynch: ${Math.floor(alivePlayers.length / 2)}\n\n${sortedVotes.map((a) => ` - <@${a[0]}> had ${a[1]} votes on them.`).join("\n")}\n\nPlayer who gets killed: ${condition ? "No one" : `<@${sortedVotes[0][0]}>`}`)
 
     // check if the first 2 votes are same or if there are not enough votes
-    if (db.get(`game.noVoting`) || sortedVotes.length === 0 || sortedVotes[0][1] < Math.floor(alivePlayers.length / 2) || (sortedVotes.length > 1 && sortedVotes[0][1] === sortedVotes[1][1])) {
+    if (condition) {
         await dayChat.send(`${getEmoji("votingme", client)} The Villagers couldn't decide on who to lynch!`)
     } else {
         let guy = db.get(`player_${sortedVotes[0][0]}`) // get the player to lynch

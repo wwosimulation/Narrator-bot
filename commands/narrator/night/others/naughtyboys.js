@@ -79,5 +79,6 @@ module.exports = async (client) => {
 
         client.emit("playerUpdate", db.get(`player_${player1.id}`))
         client.emit("playerUpdate", db.get(`player_${player2.id}`))
+
     }
 }

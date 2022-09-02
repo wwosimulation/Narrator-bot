@@ -231,7 +231,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
                         let member = await guild.members.fetch(result.id) // get the discord member
                         let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the discord roles
                         await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**`)
-                        await member.roles.set(memberRoles)
+                        await member.roles.set(memberRoles).catch(e => e)
 
                         // check if berserk is active
                         if (db.get(`isBerserkActive`)) {

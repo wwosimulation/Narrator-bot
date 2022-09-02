@@ -33,4 +33,6 @@ module.exports = async (client) => {
             }
         }
     })
+
+    return true;
 }

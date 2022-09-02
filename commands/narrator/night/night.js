@@ -18,7 +18,6 @@ module.exports = {
         const lynch = require("./kills/lynch.js")
         const bombers = require("./kills/bombers.js")
         const corruptors = require("./kills/corruptors.js")
-        const zombies = require("./kills/zombies.js")
         const toughGuy = require("./kills/toughGuy.js")
         const actions = require("./others/actions.js")
         const channels = require("./others/channels.js")
@@ -32,8 +31,6 @@ module.exports = {
         await lynch(client)
 
         await corruptors(client)
-
-        await zombies(client)
 
         await toughGuy(client)
 

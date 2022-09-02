@@ -43,7 +43,7 @@ module.exports = async (client) => {
                         // check if they belong to the Werewolf team
                         if (guy.team === "Werewolf" && guy.role !== "Werewolf Fan") {
                             // send the message
-                            werewolvesChat.send(`Your werewolf teammate **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})** has been jailed by the Jailer!`)
+                            werewolvesChat.send(`Your werewolf teammate **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})** has been jailed by the Jailer!`)
                         }
 
                         channel.send(`You have been jailed by the Jailer! You can't do your actions for tonight! Head to <#${jailedChat.id}> to talk with the jailer!`) // send the message
