@@ -61,10 +61,7 @@ module.exports = {
         ],
     },
     server: ["sim"],
-<<<<<<< HEAD
     staffOnly: true,
-=======
->>>>>>> e1bfd81 (Prettified Code!)
     run: async (interaction, client) => {
         let sub = interaction.options.getSubcommand()
         switch (sub) {
