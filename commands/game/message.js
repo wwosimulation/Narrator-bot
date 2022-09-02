@@ -38,14 +38,14 @@ module.exports = {
             }
             if (player.role === "Instigator" || player?.dreamRole === "Instigator") {
                 if (gamePhase % 3 == 0) return await message.channel.send("You can only send that kind of message during the day.")
-                
-                if (!player.target || player.target?.length < 2 || player.target?.map(a => db.get(`player_${a}`)).filter(a => a.status === "Alive").length < 2) return await message.channel.send("You can't send messages to your recruits if they have died!")
-                player.target.forEach(async p => {  
+
+                if (!player.target || player.target?.length < 2 || player.target?.map((a) => db.get(`player_${a}`)).filter((a) => a.status === "Alive").length < 2) return await message.channel.send("You can't send messages to your recruits if they have died!")
+                player.target.forEach(async (p) => {
                     let guy = db.get(`player_${p}`)
                     if (guy.status === "Alive") {
                         let channel = message.guild.channels.cache.get(guy.channel)
                         await channel.send(`${getEmoji("instigator", client)} ${players.indexOf(player.id) + 1} ${player.username}: ${content}`)
-                        await channel.send(`${message.guild.roles.cache.find(r => r.name === "Alive")}`)
+                        await channel.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
                     }
                 })
             }
@@ -63,7 +63,7 @@ module.exports = {
                 if (gamePhase % 3 !== 0) return await message.channel.send("You can only send that kind of message during the night.")
                 let target = db.get(`player_${player.target}`)
                 if (!target) return await message.channel.send("Your target has to be alive for you to send messages!")
-                let jailerChat = message.guild.channels.cache.find(c => c.name === "jailed-chat")
+                let jailerChat = message.guild.channels.cache.find((c) => c.name === "jailed-chat")
                 await message.channel.send(`${getEmoji("jailer", client)} **Jailer**: ${content}`)
                 await jailerChat.send(`${getEmoji("jailer", client)} **Jailer**: ${content}`)
                 if (player.hypnotized) {
@@ -72,7 +72,7 @@ module.exports = {
                 }
             }
             if (["Medium", "Ritualist"].includes(player.role) || ["Medium", "Ritualist"].includes(player?.dreamRole)) {
-                let allDeads = players.map(a => db.get(`player_${a}`)).filter(a => ["Medium", "Ritualist"].includes(a.role) || ["Medium", "Ritualist"].includes(a.dreamRole))
+                let allDeads = players.map((a) => db.get(`player_${a}`)).filter((a) => ["Medium", "Ritualist"].includes(a.role) || ["Medium", "Ritualist"].includes(a.dreamRole))
                 message.channel.send(`${getEmoji(player.corrupted ? "corrupt" : player.role.toLowerCase().replace(/\s/g, "_"), client)} ${players.includes(message.author.id) ? players.indexOf(message.author.id) + 1 : ""} ${player.username || message.author.username}: ${content}`)
                 allDeads.forEach((p) => {
                     if (!p.jailed && !p.nightmared) {
