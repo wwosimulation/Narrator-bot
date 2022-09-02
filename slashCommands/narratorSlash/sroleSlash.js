@@ -77,11 +77,11 @@ module.exports = {
         let excludes = db.get("excludes") || []
         let banned = ["Violinist", "Wolf Summoner", "Analyst", "Mortician", "Flagger", "Locksmith"]
         let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
-        let random = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "cupid", "cursed", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "president", "detective", "forger", "fortune-teller", "gunner", "jailer", "medium", "seer", "alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman", "sorcerer", "alchemist", "arsonist", "bomber", "cannibal", "corruptor", "illusionist", "serial-killer", "zombie", "fool", "headhunter"]
-        let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "forger", "trapper"]
-        let rsv = ["detective", "fortune-teller", "gunner", "jailer", "medium", "seer"]
-        let rww = ["alpha-werewolf", "guardian-wolf", "junior-werewolf", "kitten-wolf", "nightmare-werewolf", "shadow-wolf", "werewolf", "werewolf-berserk", "wolf-pacifist", "wolf-seer", "wolf-shaman"]
-        let rk = ["alchemist", "arsonist", "bomber", "cannibal", "corruptor", "illusionist", "serial-killer"]
+        let random = Object.keys(require("../../config/src/descriptions.js"))?.map(a => a.replace(/\s/g, "-")).filter(a => !a.includes("random"))
+        let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "mad-scientist", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "forger", "trapper"]
+        let rsv = ["detective", "fortune-teller", "ritualist", "gunner", "jailer", "medium", "seer", "analyst", "warden", "vigilante"]
+        let rww = random.filter(a => a.toLowerCase().includes("wolf") && a !== "werewolf-fan")
+        let rk = ["alchemist", "arsonist", "bomber", "bandit", "cannibal", "corruptor", "dreamcatcher", "evil-detective", "illusionist", "serial-killer", "sect-leader", "zombie", "jack"]
         let rv = ["fool", "headhunter"]
         let seerdet = ["seer", "detective"]
         let auraspirit = ["aura-seer", "spirit-seer"]
@@ -157,7 +157,62 @@ module.exports = {
         } else if (gamemode == "chainreaction") {
             roleOptions = [["avenger", "witch", "avenger", "detective", "avenger", "witch", "avenger", "corruptor", "fool", "avenger", "avenger", "aura", "illusionist", "avenger", "fool", "avenger", "medium"]]
         } else if (gamemode == "random") {
-            roleOptions = [["random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random", "random"]]
+            let gameOptions = {
+                killers: {
+                    roles: [alive.members.size < 7 ? rww.filter(r => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r)) : rww, alive.members.size >= 8 ? rk : rk.filter(a => !["bomber", "arsonist", "cannibal"].includes(a))].join(",").split(","),
+                    min: Math.floor(alive.members.size / 4),
+                    max: Math.floor(alive.members.size / 2) - Math.round(alive.members.size * 0.16),
+                    maxSoloKillers: alive.members.size > 12 ? 2 : 1,
+                },
+                voters: {
+                    roles: rv,
+                    min: alive.members.size >= 8 ? 1 : 0,
+                    max: alive.members.size > 12 ? 2 : alive.members.size >= 8 ? 1 : 0
+                },
+                strongVillagers: {
+                    roles: rsv.filter(a => alive.members.size >= 8 ? a : !["medium", "ritualist", "gunner", "vigilante", "fortune-teller"].includes(a)),
+                    min: Math.ceil(alive.members.size / 6),
+                    max: Math.ceil(alive.members.size / 2.5) - Math.round(alive.members.size * 0.16)
+                },
+                others: {
+                    roles: random.filter(p => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p)).filter(r => alive.members.size <= 8 ? r !== "Cupid" : r).filter(r => alive.members.size <= 12 ? r !== "President" : r)
+                }
+            }
+            
+            let kkllers = Math.floor(Math.random() * (gameOptions.killers.max + 1 - gameOptions.killers.min)) + gameOptions.killers.min
+            let kvoters = Math.floor(Math.random() * (gameOptions.voters.max + 1 - gameOptions.voters.min)) + gameOptions.voters.min
+            let kSVills = Math.floor(Math.random() * (gameOptions.strongVillagers.max + 1 - gameOptions.strongVillagers.min)) + gameOptions.strongVillagers.min
+            let kothers = alive.members.size - kkllers - kvoters - kSVills
+            console.log(kkllers, kvoters, kSVills, kothers)
+            if (alive.members.size >= 6 && kkllers === 1) kvoters += 1
+            
+            let mappedOptions = {
+                0: gameOptions.killers,
+                1: gameOptions.voters,
+                2: gameOptions.strongVillagers,
+                3: gameOptions.others,
+            }
+            roleOptions = [[]];
+            let b = [];
+            for (let i = 0; i < 4; i++) {
+                let type = [kkllers, kvoters, kSVills, kothers][i]
+                let roles = mappedOptions[i].roles
+                let a = 0
+                while (a < type) {
+                    let c = roles[Math.floor(Math.random() * roles.length)]
+                    if (c === "seer-apprentice" && !roleOptions[0].includes("seer") && !roleOptions[0].includes("aura-seer") && !roleOptions[0].includes("spirit-seer") && !roleOptions[0].includes("detective") && !!roleOptions[0].includes("sheriff")) continue;
+                    if (c === "jailer" && roleOptions[0].includes("warden")) continue;
+                    if (c === "warden" && roleOptions[0].includes("jailer")) continue;
+                    if (c === "warden" && roleOptions[0].includes("warden")) continue;
+                    if (c === "jailer" && roleOptions[0].includes("jailer")) continue;
+                    if (c === "president" && roleOptions[0].includes("president")) continue;
+                    if (c === "priest" && !roleOptions[0].join(" ").toLowerCase().includes("wolf")) c = "marksman"
+                    roleOptions[0].push(c)
+                    b.push(c)
+                    a++
+                }
+            }
+            
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
                 rww.splice(rww.indexOf("Shadow Wolf"), 1)
@@ -203,6 +258,7 @@ module.exports = {
         let dcMessage = []
 
         rolelist.forEach((role, i) => {
+            if (gamemode === "random") role = "random"
             if (role == "rk") {
                 shuffle(rk)
                 role = rk[0]
