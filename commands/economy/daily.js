@@ -13,8 +13,10 @@ module.exports = {
         let emote = ""
         let data = await players.findOne({ user: message.author.id })
         let date = data.daily.day // say that 5 times fast xD
-
+        let now = new Date(Date.now())
         let lastDaily = data.daily.last
+        let dateL = new Date(lastDaily)
+        let tomorrow = Date.parse(`${dateL.getMonth()+1}-${dateL.getDate()+1}-${dateL.getFullYear()}`)
         let extra = ""
         let bonus = 1
         if (client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).premiumSince) {
@@ -22,9 +24,8 @@ module.exports = {
             extra = `\n${message.l10n("boosterDaily")}`
         }
         if (!lastDaily) lastDaily = 0
-        let timeLeft = cooldown - (Date.now() - lastDaily)
-        if (timeLeft > 0) {
-            message.reply(message.l10n("dailyNotReady", { time: `<t:${Math.floor(new Date(Date.now() + timeLeft) / 1000)}:R>` }))
+        if (dateL.getDay() === now.getDay()) {
+            message.reply(message.l10n("dailyNotReady", { time: `<t:${Math.floor((tomorrow) / 1000)}:R>` }))
         } else {
             if (date == 0) {
                 amount = 10 * bonus
