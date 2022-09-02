@@ -23,7 +23,6 @@ module.exports = {
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.role === "Split Wolf" && gamePhase % 3 !== 0) return await message.channel.send("You cannot bind players during the day!")
         if (player.role === "Split Wolf" && player.uses === 0) return await message.channel.send("You already selected a player to be binded with!")
-        if (player.role === "Split Wolf" && Math.floor(gamePhase / 3) + 1 > 3) return await message.channel.send("You can no longer use this ability as it has been more than 3 nights!")
         if (player.team === "Village" && gamePhase === 1) return await message.channel.send("You can only start selecting players after the discussion phase on day 1!")
 
         let emotes = {
@@ -48,27 +47,12 @@ module.exports = {
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot select the President!")
 
         if (!player.hypnotized) {
+
             if (player.role !== "Loudmouth") {
                 let { cupid, instigator } = db.get(`player_${player.id}`)
 
-                if (
-                    cupid
-                        ?.map((a) => db.get(`player_${a}`))
-                        ?.map((a) => a.target)
-                        ?.join(",")
-                        .split(",")
-                        .includes(target)
-                )
-                    return await message.channel.send("You cannot select your own couple!")
-                if (
-                    instigator
-                        ?.map((a) => db.get(`player_${a}`))
-                        ?.map((a) => a.target)
-                        ?.join(",")
-                        .split(",")
-                        .includes(target)
-                )
-                    return await message.channel.send("You cannot select your fellow recruit!")
+                if (cupid?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot select your own couple!")
+                if (instigator?.map(a => db.get(`player_${a}`))?.map(a => a.target)?.join(",").split(",").includes(target)) return await message.channel.send("You cannot select your fellow recruit!")
                 if (instigator?.includes(target)) return await message.channel.send("You cannot select the Instigator who recruited you!")
 
                 if (player.sected === target) return await message.channel.send("You cannot select your own Sect Leader!")

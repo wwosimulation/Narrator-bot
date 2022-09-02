@@ -40,7 +40,7 @@ module.exports = {
                 if (gamePhase % 3 == 0) return await message.channel.send("You can only send that kind of message during the day.")
                 
                 if (!player.target || player.target?.length < 2 || player.target?.map(a => db.get(`player_${a}`)).filter(a => a.status === "Alive").length < 2) return await message.channel.send("You can't send messages to your recruits if they have died!")
-                player.target.forEach(p => {
+                player.target.forEach(async p => {  
                     let guy = db.get(`player_${p}`)
                     if (guy.status === "Alive") {
                         let channel = message.guild.channels.cache.get(guy.channel)
