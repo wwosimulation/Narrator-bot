@@ -20,6 +20,6 @@ module.exports = {
         db.set(`hoster`, message.author.id)
         db.set(`gamePhase`, -5)
         let gameGuild = client.guilds.cache.get(ids.server.game)
-        gameGuild.channels.cache.find(c => c.name === "carl-welcome-left-log")?.send("==== START ====")
+        gameGuild.channels.cache.find((c) => c.name === "carl-welcome-left-log")?.send("==== START ====")
     },
 }

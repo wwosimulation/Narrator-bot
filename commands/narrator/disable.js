@@ -8,7 +8,7 @@ module.exports = {
     narratorOnly: true,
     run: async (message, args, client) => {
         let mid = db.get("entermsg")
-        if (!mid) return;
+        if (!mid) return
         if (!args[0]) return message.channel.send(`Please specify the button to disable (join/spec)`)
         args[0] = args[0].toLowerCase()
         if (args[0] == "join") {

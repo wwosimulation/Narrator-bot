@@ -1,10 +1,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { ids, fn } = require("../../config")
 =======
 const { ids } = require("../../config")
 const db = require("quick.db")
 >>>>>>> 0110e3a (Prettified Code!)
+=======
+const { ids } = require("../../config")
+const db = require("quick.db")
+>>>>>>> 3d2dc09 (Prettified Code!)
 
 module.exports = {
     name: "bye",
@@ -13,6 +18,7 @@ module.exports = {
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
         kick(message)
         let m = await message.channel.send("Players have been kicked, I am now ending the game and deleting the role .")
@@ -30,6 +36,8 @@ const kick = (message) => {
             console.log(`Kicked ${e.user.tag}`)
         }
 =======
+=======
+>>>>>>> 3d2dc09 (Prettified Code!)
         await kickPlayers(message)
         await kickSpectators(message)
         let m = await message.channel.send("Players have been kicked, I am now ending the game and deleting the role .")
@@ -69,7 +77,10 @@ const kickSpectators = async (message) => {
     await spec.members.forEach(async (e) => {
         await e.kick()
         console.log(`Kicked ${e.user.tag}`)
+<<<<<<< HEAD
 >>>>>>> 0110e3a (Prettified Code!)
+=======
+>>>>>>> 3d2dc09 (Prettified Code!)
     })
 }
 
@@ -79,6 +90,7 @@ const clearJoin = async (client) => {
         e.roles.remove("606123676668133428") // joining role
     })
 }
+<<<<<<< HEAD
 =======
 const { ids } = require("../../config")
 const db = require("quick.db")
@@ -139,3 +151,5 @@ const clearJoin = async (client) => {
     })
 }
 >>>>>>> 8acc4c1 (New narrator commands)
+=======
+>>>>>>> 3d2dc09 (Prettified Code!)

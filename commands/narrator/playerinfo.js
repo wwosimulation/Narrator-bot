@@ -21,12 +21,14 @@ module.exports = {
         }
 
         embed.description = content
+
         if (args?.[0]?.toLowerCase() == "raw") {
-            return message.channel.send(`**Playerinfo**\n${content}`)
+            message.channel.send(`**Playerinfo**\n${content}`)
         } else if (args?.[0]?.toLowerCase() == "block") {
-            return message.channel.send(`\`\`\`**Player Info**\n${content}\`\`\``)
+            message.channel.send(`\`\`\`**Player Info**\n${content}\`\`\``)
         } else {
-            return message.channel.send({ embeds: [embed] })
+            message.channel.send({ embeds: [embed] })
         }
+        return
     },
 }
