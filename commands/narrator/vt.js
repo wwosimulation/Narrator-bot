@@ -14,7 +14,7 @@ module.exports = {
         const seerappprentices = players.filter((p) => db.get(`player_${p}`).originalRole === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
         let gamephase = db.get(`gamePhase`)
         if (gamephase % 3 != 1) return message.channel.send("Please first use `+day`")
-        if(!args[0]) args[0] = db.get("defaultVT") ?? "1m"
+        if (!args[0]) args[0] = db.get("defaultVT") ?? "1m"
         else db.set("defaultVT", args[0])
         let timer = ms(args.join(" "))
         if (!timer) return message.channel.send("Invalid time!")

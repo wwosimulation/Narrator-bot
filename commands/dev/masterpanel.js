@@ -11,8 +11,8 @@ module.exports = {
         let button3 = { type: 2, style: 1, label: "Status", custom_id: "dev-status", disabled: false }
         let row = { type: 1, components: [button1, button2, button3] }
         message.channel.send({
-            components: [row]
+            components: [row],
         })
         console.log(`${message.author.tag} used the devpanel command.`)
-    }
+    },
 }
