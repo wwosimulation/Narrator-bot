@@ -27,7 +27,6 @@ module.exports = {
         set("skipVotes", [...skips, interaction.user.id])
         await interaction.editReply("You have voted to skip the discussion phase.")
         if (alivePlayers.length - 1 - get("skipVotes").length <= 0) client.commands.get("vt").run(interaction, [], client)
-        else interaction.guild.channels.cache.find(c => c.name === "day-chat").send(`Someone has voted to skip the discussion phase. ${alivePlayers.length - 1 - get("skipVotes").length} votes left.`)
-
+        else interaction.guild.channels.cache.find((c) => c.name === "day-chat").send(`Someone has voted to skip the discussion phase. ${alivePlayers.length - 1 - get("skipVotes").length} votes left.`)
     },
 }

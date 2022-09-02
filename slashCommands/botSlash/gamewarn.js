@@ -123,7 +123,7 @@ module.exports = {
                     await interaction.followUp("Unable to send direct message! Please show the warning with `/gamewarn show index:" + warn.index + "` in a channel the user can see.")
                 }
                 client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
-                await players.updateOne({user: guy.id}, {$inc: {"stats.flee": 1}})
+                await players.updateOne({ user: guy.id }, { $inc: { "stats.flee": 1 } })
                 client.emit("gamebanned", guy)
                 break
             }
@@ -140,7 +140,7 @@ module.exports = {
                 }
                 interaction.reply({ content: "Successfully deleted the document.", ephemeral: true })
                 client.channels.resolve(ids.channels.warnLog).send({ embeds: [logEmbed] })
-                await players.updateOne({user: warn.user}, {$inc: {"stats.flee": -1}})
+                await players.updateOne({ user: warn.user }, { $inc: { "stats.flee": -1 } })
                 client.emit("gamebanned", client.users.cache.get(warn.user))
                 break
             }
