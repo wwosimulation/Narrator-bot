@@ -16,7 +16,7 @@ module.exports = {
         let now = new Date(Date.now())
         let lastDaily = data.daily.last
         let dateL = new Date(lastDaily)
-        let tomorrow = Date.parse(`${dateL.getMonth()+1}-${dateL.getDate()+1}-${dateL.getFullYear()}`)
+        let tomorrow = Date.parse(`${dateL.getMonth() + 1}-${dateL.getDate() + 1}-${dateL.getFullYear()}`)
         let extra = ""
         let bonus = 1
         if (client.guilds.cache.get(config.ids.server.sim).members.cache.get(message.author.id).premiumSince) {
@@ -25,7 +25,7 @@ module.exports = {
         }
         if (!lastDaily) lastDaily = 0
         if (dateL.getDay() === now.getDay()) {
-            message.reply(message.l10n("dailyNotReady", { time: `<t:${Math.floor((tomorrow) / 1000)}:R>` }))
+            message.reply(message.l10n("dailyNotReady", { time: `<t:${Math.floor(tomorrow / 1000)}:R>` }))
         } else {
             if (date == 0) {
                 amount = 10 * bonus
