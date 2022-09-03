@@ -99,12 +99,11 @@ module.exports = (client) => {
                 }
                 db.delete(`player_${interaction.member.id}.vote`)
                 db.delete(`votemsgid_${interaction.member.id}`)
-                
             } else {
                 let target = allPlayers[Number(interaction.values[0].split("-")[1]) - 1]
                 if (db.get(`player_${target}`)?.status !== "Alive") return interaction.reply({ content: "You good? Voting dead players is NOT cool.", ephemeral: true })
                 await interaction.deferUpdate()
-                if (db.get(`game.isShadow`)) return interaction.followUp({ content: `${getEmoji("vote", client)}  You have voted to lynch **${allPlayers.indexOf(interaction.user.id)+1} ${db.get(`player_${interaction.user.id}`).username}**!`, ephemeral: true })
+                if (db.get(`game.isShadow`)) return interaction.followUp({ content: `${getEmoji("vote", client)}  You have voted to lynch **${allPlayers.indexOf(interaction.user.id) + 1} ${db.get(`player_${interaction.user.id}`).username}**!`, ephemeral: true })
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
                     let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
@@ -181,7 +180,7 @@ module.exports = (client) => {
                 if (target == player.id) return interaction.reply({ content: `I am 100% sure that you cannot kill yourself.`, ephemeral: true })
                 if (db.get(`player_${target}`).team === "Werewolf" && db.get(`player_${target}`).role !== "Werewolf Fan") return interaction.reply({ content: "I know you want to kill your teammate, but sadly, that's gamethrowing.", ephemeral: true })
                 if (player.role === "Wolf Seer" && !player.resign) return interaction.reply({ content: `As a wolf seer who hasn't resigned yet, you cannot vote. Now shush`, ephemeral: true })
-                if (db.get(`player_${target}`)?.status !== "Alive") return interaction.reply({ content: "I don't really know what you're trying to do, but you can't kill dead players.", ephemeral: true })                
+                if (db.get(`player_${target}`)?.status !== "Alive") return interaction.reply({ content: "I don't really know what you're trying to do, but you can't kill dead players.", ephemeral: true })
                 await interaction.deferUpdate()
                 let voted = db.get(`wwvotemsgid_${interaction.member.id}`)
                 if (voted) {
