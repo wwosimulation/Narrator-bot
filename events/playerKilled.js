@@ -244,11 +244,11 @@ module.exports = async (client) => {
         }
 
         for (const sorc of sorcerers) {
-            if (players.filter(a => db.get(`player_${a}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${a}`).role) && db.get(`player_${a}`).status === "Alive").length === 0) {
+            if (players.filter((a) => db.get(`player_${a}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${a}`).role) && db.get(`player_${a}`).status === "Alive").length === 0) {
                 let player = db.get(`player_${sorc}`)
                 let channel = guild.channels.cache.get(player?.channel)
-                let wwchat = guild.channels.cache.find(c => c.name === "werewolves-chat")
-                let wwvote = guild.channels.cache.find(c => c.name === "ww-vote")
+                let wwchat = guild.channels.cache.find((c) => c.name === "werewolves-chat")
+                let wwvote = guild.channels.cache.find((c) => c.name === "ww-vote")
                 await wwchat.permissionOverwrites.edit({ VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, SEND_MESSAGES: db.get(`gamePhase`) % 3 === 0 ? true : false })
                 await wwvote.permissionOverwrites.edit({ VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, SEND_MESSAGES: false })
                 await channel.edit({ name: "priv-werewolf" })
@@ -259,7 +259,6 @@ module.exports = async (client) => {
                 client.emit("playerUpdate", db.get(`player_${sorc}`))
             }
         }
-        
 
         // doppelgangers
         for (const doppel of doppelgangers) {

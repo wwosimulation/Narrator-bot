@@ -252,28 +252,30 @@ module.exports = {
         let gamemode = db.get(`game.gamemode`)
         let hideRole = db.get(`game.hideRoles`)
 
-        let allTeammates = players.filter(p => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan")
-        let teamRoles = allTeammates.map(a => db.get(`player_${a}`)).map(a => {
-            if (a.role === "Lone Wolf") {
-                if (hideRole === true || gamemode === "random" || !roles.includes("Lone Wolf")) {
-                    let lists = Object.keys(require("../../config").wolfList)
-                    return lists[Math.floor(Math.random() * (lists.length-1))]
-                } else {
-                    if (allTeammates.length > 1) {
-                        let randomTeammate = allTeammates.filter(p => p !== a.id)[Math.floor(Math.random() * (allTeammates.length-1))]
-                        return db.get(`player_${randomTeammate}`).role
+        let allTeammates = players.filter((p) => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan")
+        let teamRoles = allTeammates
+            .map((a) => db.get(`player_${a}`))
+            .map((a) => {
+                if (a.role === "Lone Wolf") {
+                    if (hideRole === true || gamemode === "random" || !roles.includes("Lone Wolf")) {
+                        let lists = Object.keys(require("../../config").wolfList)
+                        return lists[Math.floor(Math.random() * (lists.length - 1))]
+                    } else {
+                        if (allTeammates.length > 1) {
+                            let randomTeammate = allTeammates.filter((p) => p !== a.id)[Math.floor(Math.random() * (allTeammates.length - 1))]
+                            return db.get(`player_${randomTeammate}`).role
+                        }
                     }
                 }
-            }
-            return a.role
-        })
+                return a.role
+            })
 
-        sorcerers.forEach(async a => {
+        sorcerers.forEach(async (a) => {
             let channel = message.guild.channels.cache.get(db.get(`player_${a}`)?.channel)
-            await channel.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i]+1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
+            await channel.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i] + 1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
         })
 
-        await wwchat.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i]+1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
+        await wwchat.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i] + 1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
 
         let droppy = { type: 3, custom_id: "wolves-vote", options: [] }
         for (const p of players) {

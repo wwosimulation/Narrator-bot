@@ -16,11 +16,14 @@ module.exports = async (client) => {
         let player = db.get(`player_${guy.id}`)
 
         if (player.team === "Werewolf" && player.role !== "Werewolf Fan") {
-            if (player.map(a => db.get(`player_${a}`)).filter(a => a.status === "Alive" && a.role === "Sorcerer").length > 0) {
-                player.map(a => db.get(`player_${a}`)).filter(a => a.status === "Alive" && a.role === "Sorcerer").forEach(async n => {
-                    let channel = guild.channels.cache.get(n.channel)
-                    await channel.send(`${getEmoji("werewolf", client)} Player **${players.indexOf(player.id)+1} ${player.username}** has been turned into a ${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role}!`)
-                })
+            if (player.map((a) => db.get(`player_${a}`)).filter((a) => a.status === "Alive" && a.role === "Sorcerer").length > 0) {
+                player
+                    .map((a) => db.get(`player_${a}`))
+                    .filter((a) => a.status === "Alive" && a.role === "Sorcerer")
+                    .forEach(async (n) => {
+                        let channel = guild.channels.cache.get(n.channel)
+                        await channel.send(`${getEmoji("werewolf", client)} Player **${players.indexOf(player.id) + 1} ${player.username}** has been turned into a ${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role}!`)
+                    })
             }
         }
 
