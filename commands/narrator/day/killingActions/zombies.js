@@ -122,6 +122,7 @@ module.exports = async (client, alivePlayersBefore) => {
 
             // send a message to the bandits chat
             await zombiesChat.send(`${getEmoji("zombie", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** is now a zombie.`) // sends a message
+            client.emit("playerUpdate", db.get(`player_${guy.id}`))
         }
     }
 

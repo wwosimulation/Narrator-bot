@@ -22,6 +22,7 @@ module.exports = async (client) => {
         const tricksters = players.filter((p) => db.get(`player_${p}`).role === "Wolf Trickster" && db.get(`player_${p}`).status === "Alive")
         const ritualists = players.filter((p) => db.get(`player_${p}`).role === "Ritualist" && db.get(`player_${p}`).status === "Alive")
         const trappers = players.filter((p) => db.get(`player_${p}`).role === "Trapper" && db.get(`player_${p}`).status === "Alive")
+        const sorcerers = players.filter((p) => db.get(`player_${p}`).role === "Sorcerer" && db.get(`player_${p}`).status === "Alive")
         const astralwolves = players.filter((p) => db.get(`player_${p}`).role === "Astral Wolf")
         const seerappprentices = players.filter((p) => db.get(`player_${p}`).role === "Seer Apprentice" && db.get(`player_${p}`).status === "Alive")
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
@@ -241,6 +242,24 @@ module.exports = async (client) => {
         if (guy.role === "Kitten Wolf") {
             require("../commands/narrator/day/killingActions/wolves.js").triggerKittenWolf(client)
         }
+
+        for (const sorc of sorcerers) {
+            if (players.filter(a => db.get(`player_${a}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${a}`).role) && db.get(`player_${a}`).status === "Alive").length === 0) {
+                let player = db.get(`player_${sorc}`)
+                let channel = guild.channels.cache.get(player?.channel)
+                let wwchat = guild.channels.cache.find(c => c.name === "werewolves-chat")
+                let wwvote = guild.channels.cache.find(c => c.name === "ww-vote")
+                await wwchat.permissionOverwrites.edit({ VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, SEND_MESSAGES: db.get(`gamePhase`) % 3 === 0 ? true : false })
+                await wwvote.permissionOverwrites.edit({ VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, SEND_MESSAGES: false })
+                await channel.edit({ name: "priv-werewolf" })
+                await channel.send(`${getRole("werewolf").description}`)
+                db.set(`player_${sorc}.role`, "Werewolf")
+                db.set(`player_${sorc}.aura`, "Evil")
+                db.delete(`player_${sorc}.fakeRole`)
+                client.emit("playerUpdate", db.get(`player_${sorc}`))
+            }
+        }
+        
 
         // doppelgangers
         for (const doppel of doppelgangers) {

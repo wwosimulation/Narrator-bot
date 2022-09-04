@@ -226,7 +226,7 @@ module.exports = {
         players.forEach((p) => {
             let guy = db.get(`player_${p}`)
             if (["Gunner", "Marksman", "Fortune Teller", "Nightmare Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 2)
-            if (["Seer", "Aura Seer", "Analyst", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator", "Wolf Trickster", "Warden", "Mortician", "Sect Leader", "Alpha Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (["Seer", "Aura Seer", "Sorcerer", "Analyst", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator", "Wolf Trickster", "Warden", "Mortician", "Sect Leader", "Alpha Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
             if (guy.role === "Forger") db.set(`player_${p}.swordUses`, 1)
             if (guy.role === "Forger") db.set(`player_${p}.shieldUses`, 2)
             if (guy.role === "Witch") db.set(`player_${p}.usesK`, 1)
@@ -248,7 +248,32 @@ module.exports = {
 
         await message.channel.send("The game has started! Ping @Alive in #day-chat when you are ready to start Night 1")
 
-        let gamemode = db.get(`gamemode`)
+        let roles = db.get(`game.roles`)
+        let gamemode = db.get(`game.gamemode`)
+        let hideRole = db.get(`game.hideRoles`)
+
+        let allTeammates = players.filter(p => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan")
+        let teamRoles = allTeammates.map(a => db.get(`player_${a}`)).map(a => {
+            if (a.role === "Lone Wolf") {
+                if (hideRole === true || gamemode === "random" || !roles.includes("Lone Wolf")) {
+                    let lists = Object.keys(require("../../config").wolfList)
+                    return lists[Math.floor(Math.random() * (lists.length-1))]
+                } else {
+                    if (allTeammates.length > 1) {
+                        let randomTeammate = allTeammates.filter(p => p !== a.id)[Math.floor(Math.random() * (allTeammates.length-1))]
+                        return db.get(`player_${randomTeammate}`).role
+                    }
+                }
+            }
+            return a.role
+        })
+
+        sorcerers.forEach(async a => {
+            let channel = message.guild.channels.cache.get(db.get(`player_${a}`)?.channel)
+            await channel.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i]+1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
+        })
+
+        await wwchat.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i]+1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
 
         let droppy = { type: 3, custom_id: "wolves-vote", options: [] }
         for (const p of players) {

@@ -300,10 +300,13 @@ module.exports = {
 
         shuffle(rolelist)
 
+        let exactList = []
+
         for (let index = 0; index < rolelist.length; index++) {
             let role = rolelist[index]
             let player = db.get(`players`)[index]
             let roleData = getRole(role)
+            exactList.push(roleData.name)
             db.set(`player_${player}.role`, roleData.name)
             db.set(`player_${player}.team`, roleData.team)
             db.set(`player_${player}.aura`, roleData.aura || "Unknown")
@@ -341,7 +344,9 @@ module.exports = {
 
         db.set(`gamePhase`, -1)
 
-        db.set(`gamemode`, gamemode)
+        db.set(`game.gamemode`, gamemode)
+        db.set(`game.roles`, exactList)
+        db.set(`game.hideRoles`, hideroles ? true : false)
 
         let roleMsg = `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes.size > 0 ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`
 

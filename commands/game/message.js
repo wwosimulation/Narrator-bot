@@ -30,9 +30,13 @@ module.exports = {
             if (player.role === "Alpha Werewolf" || player?.dreamRole == "Alpha Werewolf") {
                 if (gamePhase % 3 == 0) return await message.channel.send("You can only send that kind of message during the day.")
                 if (player.uses == 0) return await message.channel.send("You already used up your ability!")
-
+                let allWWFan = players.filter(a => db.get(`player_${a}`).role === "Werewolf Fan" && db.get(`player_${a}`).status === "Alive")
                 let wwChat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
                 wwChat.send(`${getEmoji("alpha_werewolf", client)} The Alpha Werewolf has sent a message: ${content}\n${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
+                allWWFan.forEach(async wwFan => {
+                    let chan = message.guild.channels.cache.get(db.get(`player_${wwFan}`)?.channel)
+                    await chan?.send(`${getEmoji("alpha_werewolf", client)} The Alpha Werewolf has sent a message: ${content}\n${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
+                })
                 db.subtract(`player_${message.author.id}.uses`, 1)
                 return await message.channel.send("You have sent a message to the werewolves.")
             }
