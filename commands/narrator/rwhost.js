@@ -7,7 +7,7 @@ module.exports = {
     usage: `${process.env.PREFIX}rwhost <game...>`,
     run: async (message, args, client) => {
         let guild = client.guilds.cache.get(ids.server.sim)
-        let member = guild.members.fetch(message.author.id)
+        let member = await guild.members.fetch(message.author.id)
         if (!member.roles.cache.has(ids.narratorsim)) return
         if (db.get(`game.id`) != null) return message.channel.send("Another game is being hosted!")
         let rs = db.get("rankedseason")
