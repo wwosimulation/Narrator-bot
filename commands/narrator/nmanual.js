@@ -32,12 +32,14 @@ module.exports = {
         message.react("💋")
 
         let channel = message.guild.channels.cache.get(db.get(`player_${player.id}`).channel)
-
-        await channel?.delete()
-
+        
         db.delete(`player_${player.id}`)
 
         let newPlayers = players.filter((p) => p !== player.id)
         db.set(`players`, newPlayers)
+
+        await channel?.delete()
+
+       
     },
 }
