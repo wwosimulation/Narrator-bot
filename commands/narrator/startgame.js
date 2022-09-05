@@ -275,7 +275,7 @@ module.exports = {
             await channel.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i] + 1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
         })
 
-        await wwchat.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i] + 1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
+        await wwchat.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => ` - **${players.indexOf(allTeammates[i])+1} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
 
         let droppy = { type: 3, custom_id: "wolves-vote", options: [] }
         for (const p of players) {
