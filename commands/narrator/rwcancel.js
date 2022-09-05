@@ -6,7 +6,7 @@ module.exports = {
     description: "Cancel a ranked game.",
     usage: `${process.env.PREFIX}rwcancel`,
     narratorOnly: true,
-    run: async (message, client, args) => {
+    run: async (message, args, client) => {
         if (db.get(`game.id`) == null) return message.channel.send("No game is being hosted")
         let guild = client.guilds.cache.get(ids.server.sim)
 
