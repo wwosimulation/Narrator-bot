@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { ids } = require("../../config")
+const { ids, fn } = require("../../config")
 
 module.exports = {
     name: "cancel",
@@ -20,14 +20,10 @@ module.exports = {
             .get("606123818305585167") //game warning
             .messages.fetch(mid)
             .then((m) => {
-                let allc = m.components
-                let row = allc[0]
-                let button = row.components[0]
-                button.disabled = true
-                m.edit({ components: [{ type: 1, components: [button] }] })
+                m.edit(fn.disableButtons(m))
             })
         db.delete(`game`)
-        client.guilds.cache.get(ids.server.game)
-            .channels.cache.find(c => c.name === "carl-welcome-left-log")?.send("==== CANCEL ====")
+        client.guilds.cache.get(ids.server.game).channels.cache.find(c => c.name === "carl-welcome-left-log")
+            ?.send("== Cancel ==")
     },
 }
