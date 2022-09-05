@@ -6,7 +6,7 @@ module.exports = {
     description: "Cancel a game.",
     usage: `${process.env.PREFIX}cancel`,
     narratorOnly: true,
-    run: async (message, client, args) => {
+    run: async (message, args, client) => {
         if (db.get(`game.id`) == null) return message.channel.send("No game is being hosted")
         let server = client.guilds.cache.get(ids.server.sim)
 
