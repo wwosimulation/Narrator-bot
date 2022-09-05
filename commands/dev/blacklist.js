@@ -4,6 +4,7 @@ module.exports = {
     name: "blacklist",
     description: "Blacklist a member.",
     usage: `${process.env.PREFIX}blacklist <user>`,
+    devOnly: true,
     run: async (message, args, client) => {
         if (message.author.id != "517335997172809728") return
         db.push(`blacklistss`, `/${args[0]}/`)

@@ -2,6 +2,7 @@ module.exports = {
     name: "closegh",
     description: "A developer-only command to reply to issues regarding bugs or comment.",
     usage: `${process.env.PREFIX}closegh <issue number> [your comment]`,
+    devOnly: true,
     run: async (message, args, client) => {
         if (args.length < 1) return message.channel.send("Please add an issue number!")
 

@@ -41,13 +41,6 @@ module.exports = {
         ],
         defaultPermission: false,
     },
-    permissions: {
-        game: [
-            { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
-            { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
-            { id: "892046210536468500", type: "ROLE", permission: false }, // @Player
-        ],
-    },
     server: ["game"],
     narratorOnly: true,
     run: async (interaction, client) => {

@@ -4,6 +4,7 @@ module.exports = {
     name: "reloadslash",
     description: "Loads slash commands, add them if they don't exist yet and overrides the permissions.",
     usage: `${process.env.PREFIX}reloadslash`,
+    devOnly: true,
     run: async (message, args, client) => {
         let summary = { created: 0, updated: 0, deleted: 0, failed: 0 }
         async function deploy(com, command, guildId = null) {
@@ -32,7 +33,6 @@ module.exports = {
         }
 
         try {
-            if (!message.member.roles.cache.has("859099415515627540") && !message.member.roles.cache.has("606123616228343812")) return message.reply({ content: "You are missing permissions to do that!" })
             let commands = await client.application.commands.fetch()
             // Deploy commands
             new Promise(async (resolve, reject) => {
@@ -56,7 +56,7 @@ module.exports = {
                 await Promise.all(promises)
                 resolve()
             }).finally(() => {
-                message.channel.send(`Deployed ${summary.created} commands, updated ${summary.updated} commands, failed ${summary.failed} commands.`)
+                message.channel.send(`Deployed ${summary.created} commands, updated ${summary.updated} commands, failed ${summary.failed} commands.\nKeep in mind that you have to manually set the perms for slash commands that are not meant for everyone.`)
             })
         } catch (err) {
             console.error
