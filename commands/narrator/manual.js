@@ -32,7 +32,7 @@ module.exports = {
 
         if (!role) return await message.channel.send("Role not found!")
 
-        if (db.get(`started`) === "yes") return await message.channel.send("The game has already started! If you still want to add this player, use the `+reset` command, and then use the `/srole` command instead!")
+        if (db.get(`game.started`) === "yes") return await message.channel.send("The game has already started! If you still want to add this player, use the `+reset` command, and then use the `/srole` command instead!")
 
         message.react("💋")
 
@@ -60,22 +60,22 @@ module.exports = {
             MANAGE_CHANNELS: true,
         })
 
-        channel.permissionOverwrites.create(guy.id, {
+        channel.permissionOverwrites.create(player.id, {
             SEND_MESSAGES: true,
             VIEW_CHANNEL: true,
             READ_MESSAGE_HISTORY: true,
         })
 
-        await channel.send(getRole(role).description || "Description not found").then((msg) => msg.pin().then((msg) => msg.channel.bulkDelete(1)))
+        await channel.send(role.description || "Description not found").then((msg) => msg.pin().then((msg) => msg.channel.bulkDelete(1)))
 
         await channel.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
 
         let object = {
             id: player.id,
             username: player.user.username,
-            name: getRole(role).name,
-            aura: getRole(role).aura,
-            team: getRole(role).team,
+            name: role.name,
+            aura: role.aura,
+            team: role.team,
             channel: channel.id,
         }
 

@@ -23,11 +23,11 @@ module.exports = {
         let description = !rematch
             ? "** **"
             : "** **\n" +
-              client.guilds.cache
-                  .get(ids.server.game)
-                  .members.cache.filter((m) => m.roles.cache.some((r) => ["Alive", "Dead", "Spectator"].includes(r.name)))
-                  .map((m) => m.user.tag)
-                  .join("\n")
+            client.guilds.cache
+                .get(ids.server.game)
+                .members.cache.filter((m) => m.roles.cache.some((r) => ["Alive", "Dead", "Spectator"].includes(r.name)))
+                .map((m) => m.user.tag)
+                .join("\n")
 
         const embed = { title: "Player and Spectator List:", description, color: 0x327210 }
         let m = await client.guilds.cache
@@ -39,7 +39,7 @@ module.exports = {
         db.set(`hoster`, message.author.id)
         db.set(`gamePhase`, -5)
         db.set("gameCode", args.join(" "))
-
-        client.channels.cache.get("892046244715835463").send(rematch ? "== Rematch ==" : "== Start Game ==")
+        client.guilds.cache.get(ids.server.game)
+            .channels.cache.find(c => c.name === "carl-welcome-left-log")?.send("==== START ====")
     },
 }

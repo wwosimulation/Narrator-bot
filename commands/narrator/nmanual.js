@@ -1,3 +1,5 @@
+const db = require("quick.db")
+
 module.exports = {
     name: "nmanual",
     description: "Manual permissions.",
@@ -25,7 +27,7 @@ module.exports = {
 
         if (!role) return await message.channel.send("That player does not have a role!")
 
-        if (db.get(`started`) === "yes") return await message.channel.send("The game has already started! If you want to reset the roles, do `+reset` and use `/srole` command again!")
+        if (db.get(`game.started`) === "yes") return await message.channel.send("The game has already started! If you want to reset the roles, do `+reset` and use `/srole` command again!")
 
         message.react("💋")
 

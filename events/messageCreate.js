@@ -14,6 +14,11 @@ module.exports = (client) => {
 
         //let guy = message.member.nickname;
         if (message.author.bot) return //Ignore bots and dms
+
+        if (message.guild.id === config.ids.server.game && message.channel.name === "warden-jail") {
+            client.emit("wardenChat", { guildId: message.guild.id, content: message.content, guy: message.author.id })
+        }
+
         message.dbUser = await players.findOne({ user: message.author.id }).exec()
         if (!message.dbUser) message.dbUser = await players.create({ user: message.author.id })
 

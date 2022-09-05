@@ -40,7 +40,27 @@ module.exports = {
         if (!player.hypnotized) {
             if (db.get(`player_${player.id}`).sected === target) return await message.channel.send("You cannot mute your own Sect Leader")
 
-            if (db.get(`player_${player.id}`).couple === target) return await message.channel.send("You cannot mute your own couple!")
+            let { cupid, instigator } = db.get(`player_${player.id}`)
+
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot mute your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot mute your fellow recruit!")
+            if (instigator?.includes(target)) return await message.channel.send("You cannot mute the Instigator who recruited you!")
 
             if (player.id === target) return await message.channel.send("You do know that you cannot mute yourself right?")
 

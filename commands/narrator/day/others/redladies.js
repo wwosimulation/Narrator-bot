@@ -17,12 +17,14 @@ module.exports = async (client) => {
         if (guy.status === "Dead") continue // if the player is dead, don't do anything and check for the next red lady
 
         // check if the player is evil
-        if (guy.team !== "Village" && !["Fool", "Headhunter"].includes(guy.role)) {
+        if (guy.team !== "Village" && !["Fool", "Headhunter", "Sect Leader", "Zombie", "Instigator"].includes(guy.role)) {
             // kill this stoopid red lady
             db.set(`player_${rl}.status`, "Dead")
             let member = await guild.members.fetch(rl) // get the discord member - Object
             let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the member roles
-            await dayChat.send(`${getEmoji("visit", client)} **${players.indexOf(rl) + 1} ${redlady.username} (${getEmoji("red_lady", client)} Red Lady)** visited an evil role and died.`)
+            let role = "Red Lady"
+            if (redlady.tricked) role = "Wolf Trickster"
+            await dayChat.send(`${getEmoji("visit", client)} **${players.indexOf(rl) + 1} ${redlady.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** visited an evil role and died.`)
             await member.roles.set(memberRoles)
         }
     }

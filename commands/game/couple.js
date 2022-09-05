@@ -34,9 +34,9 @@ module.exports = {
 
         if (db.get(`player_${target1}`)?.role === "President") return await message.channel.send("You cannot couple the President!")
 
-        if (db.get(`player_${target2}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to couple!")
+        if (args.length === 2 && db.get(`player_${target2}`)?.status !== "Alive") return await message.channel.send("You need to select an alive player to couple!")
 
-        if (db.get(`player_${target2}`)?.role === "President") return await message.channel.send("You cannot couple the President!")
+        if (args.length === 2 && db.get(`player_${target2}`)?.role === "President") return await message.channel.send("You cannot couple the President!")
 
         if ([target1, target2].includes(player.id)) return await message.channel.send("You cannot couple yourself!")
 

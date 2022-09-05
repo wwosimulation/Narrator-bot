@@ -1,5 +1,6 @@
 const { getRole, getEmoji } = require("../../../config") // functions
 const db = require("quick.db")
+const nightWatchmen = require("./others/nightWatchmen.js")
 
 module.exports = {
     name: "day",
@@ -26,7 +27,7 @@ module.exports = {
         console.log("Loaded all actions...")
 
         // get all the actions
-        let { wolves, beastHunterKilling } = require("./killingActions/wolves.js")
+        let { wolves, beastHunterKilling, trapperKilling } = require("./killingActions/wolves.js")
         let kittenwolf = require("./killingActions/kittenWolf.js")
         let serialkillers = require("./killingActions/serialkillers.js")
         let accomplices = require("./killingActions/accomplices.js")
@@ -35,21 +36,24 @@ module.exports = {
         let zombies = require("./killingActions/zombies.js")
         let corruptors = require("./killingActions/corruptors.js")
         let arsonists = require("./killingActions/arsonists.js")
-        let bombers = require("./killingActions/wolves.js")
         let illusionists = require("./killingActions/illusionists.js")
         let dreamcatchers = require("./killingActions/dreamcatchers.js")
         let alchemists = require("./killingActions/alchemists.js")
         let sectleaders = require("./killingActions/sectleaders.js")
         let evildetectives = require("./killingActions/evildetectives.js")
         let hackers = require("./killingActions/hackers.js")
+        let jacks = require("./killingActions/jacks.js")
         let prognosticators = require("./others/prognosticators.js")
         let grumpygrandmas = require("./others/grumpygrandmas.js")
+        let ritualists = require("./others/ritualists.js")
         let mediums = require("./others/mediums.js")
         let forgers = require("./others/forgers.js")
         let graverobbers = require("./others/graverobbers.js")
+        let nightwatchmen = require("./others/nightWatchmen.js")
         let channels = require("./others/channels.js")
         let redladies = require("./others/redladies.js")
         let secthunters = require("./others/secthunters.js")
+        let bakers = require("./others/bakers.js")
         let sheriffs = require("./others/sheriffs.js")
         let spiritseers = require("./others/spiritseers.js")
         let resets = require("./others/reset.js")
@@ -62,6 +66,10 @@ module.exports = {
         await forgers(client)
 
         sleep(100)
+
+        console.log("Night watchmen running...")
+        // night watchman doing their job
+        await nightwatchmen(client, alivePlayers)
 
         console.log("Prog running...")
         // prognosticator peace doing their job
@@ -76,6 +84,8 @@ module.exports = {
         sleep(100)
 
         // jack doing their job
+        console.log("Jack running...")
+        await jacks(client)
 
         console.log("berserk running...")
         // if berserk is activated, wolves come first
@@ -141,9 +151,19 @@ module.exports = {
 
         sleep(100)
 
+        // trapper killing a wolf
+        console.log("trapper running...")
+        await trapperKilling(client)
+
         // get couple targets
         console.log("couple running...")
         await getCoupleTargets(client)
+
+        sleep(100)
+
+        // ritualist reviving
+        console.log("ritualist running...")
+        await ritualists(client)
 
         sleep(100)
 
@@ -216,6 +236,12 @@ module.exports = {
         // configuring jailer and nightmare permissions
         console.log("jailer running...")
         await channels(client)
+
+        sleep(100)
+
+        // bakers
+        console.log("baker running...")
+        await bakers(client, alivePlayers)
 
         sleep(200)
 

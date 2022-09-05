@@ -33,7 +33,7 @@ module.exports = {
                 if (item.id != "other") {
                     if (["coin", "gem"].includes(item.id)) data[item.id + "s"] += item.amount
                     else data.inventory[item.id] += item.amount
-                    prizes.find(x => x.id == item.id).amount += item.amount
+                    prizes.find((x) => x.id == item.id).amount += item.amount
                 }
             }
             data.save()

@@ -45,7 +45,46 @@ module.exports = {
         if (target1 === target2) return await message.channel.send("Why are you selecting the same player? Please select different players!")
 
         if (!player.hypnotized) {
-            if ([target1, target2].includes(db.get(`player_${player.id}`).couple)) return await message.channel.send("You cannot trick or treat your own couple!")
+            let { cupid, instigator } = db.get(`player_${player.id}`)
+
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target1)
+            )
+                return await message.channel.send("You cannot trick or treat your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target1)
+            )
+                return await message.channel.send("You cannot trick or treat your fellow recruit!")
+            if (instigator?.includes(target1)) return await message.channel.send("You cannot trick or treat the Instigator who recruited you!")
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target2)
+            )
+                return await message.channel.send("You cannot trick or treat your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target2)
+            )
+                return await message.channel.send("You cannot trick or treat your fellow recruit!")
+            if (instigator?.includes(target2)) return await message.channel.send("You cannot trick or treat the Instigator who recruited you!")
 
             if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot trick or treat yourself right?")
         }
@@ -54,6 +93,6 @@ module.exports = {
 
         db.set(`player_${player.id}.target`, [target1, target2])
         db.set(`player_${player.id}.killOption`, args[2].toLowerCase())
-        await message.channel.send(`${getEmoji("jack", client)} You have decided to trick or treat **${players.indexOf(target1) + 1} ${db.get(`player_${target1}`).username}** and **${players.indexOf(target2) + 1} ${db.get(`player_${target2}`).username}**! They will be punished if they choose \`${args[2]}\`!`)
+        await message.channel.send(`${getEmoji(`${args[2].toLowerCase()}_kill`, client)} You have decided to trick or treat **${players.indexOf(target1) + 1} ${db.get(`player_${target1}`).username}** and **${players.indexOf(target2) + 1} ${db.get(`player_${target2}`).username}**! They will be punished if they choose \`${args[2]}\`!`)
     },
 }

@@ -114,6 +114,23 @@ module.exports = {
             }
         }
 
+        // give a fake role to the sorcerer
+        let sorcerers = players.filter((p) => db.get(`player_${p}`).role === "Sorcerer")
+        sorcerers.forEach(async (sorc) => {
+            let investigativeRoles = ["Analyst", "Aura Seer", "Detective", "Mortician", "Red Lady", "Seer", "Seer Apprentice", "Sheriff", "Spirit Seer", "Violinist"]
+            let allRoles = players.map((p) => db.get(`player_${p}`).role).filter((r) => investigativeRoles.includes(r))
+            let channel = message.guild.channels.cache.get(db.get(`player_${sorc}`)?.channel)
+            if (allRoles.length > 0) {
+                shuffle(allRoles)
+                db.set(`player_${sorc}.fakeRole`, allRoles[0])
+                channel?.send(`${getEmoji("sorcerer", client)} Your fake investigative role is **${getEmoji(allRoles[0]?.toLowerCase().replace(/\s/g, "_"), client)} ${allRoles[0]}**!`)
+            } else {
+                shuffle(investigativeRoles)
+                db.set(`player_${sorc}.fakeRole`, investigativeRoles[0])
+                channel?.send(`${getEmoji("sorcerer", client)} Your fake investigative role is **${getEmoji(investigativeRoles[0]?.toLowerCase().replace(/\s/g, "_"), client)} ${investigativeRoles[0]}**!`)
+            }
+        })
+
         // reveal any presidents if there is one
         let presidents = players.filter((p) => db.get(`player_${p}`).role === "President")
         presidents.forEach(async (pres) => {
@@ -122,7 +139,35 @@ module.exports = {
                 // code for a future gamemode i have an idea for
             } else {
                 await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${getEmoji("president", client)} Player **${players.indexOf(pres) + 1} ${message.guild.members.cache.get(pres)?.user.username}** is your President`)
+                await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
             }
+        })
+
+        // if there are instigators, make the recruits
+        let instigators = players.filter((p) => db.get(`player_${p}`).role === "Instigator")
+        instigators.forEach(async (insti) => {
+            let recruit1 = players.filter((p) => (["Fool", "Headhunter"].includes(db.get(`player_${p}`).role) || db.get(`player_${p}`).team === "Village") && db.get(`player_${p}`).role !== "President")
+            let recruit2 = players.filter((p) => db.get(`player_${p}`).team !== "Village" && !["Fool", "Headhunter", "Instigator"].includes(db.get(`player_${p}`).role))
+            shuffle(recruit1)
+            shuffle(recruit2)
+            player1 = recruit1.length > 0 ? recruit1[0] : recruit2[1]
+            player2 = recruit2.length > 0 ? recruit2[0] : recruit1[1]
+            let existingInstis1 = db.get(`player_${player1}`).instigator || []
+            let existingInstis2 = db.get(`player_${player2}`).instigator || []
+            existingInstis1.push(insti)
+            existingInstis2.push(insti)
+            db.set(`player_${player1}.instigator`, existingInstis1)
+            db.set(`player_${player2}.instigator`, existingInstis2)
+            db.set(`player_${insti}.target`, [player1, player2])
+            let channel1 = message.guild.channels.cache.get(db.get(`player_${player1}`)?.channel)
+            let channel2 = message.guild.channels.cache.get(db.get(`player_${player2}`)?.channel)
+            let channel = mesage.guild.channels.cache.get(db.get(`player_${insti}`)?.channel)
+            let player = db.get(`player_${insti}`)
+            let rec1 = db.get(`player_${player1}`)
+            let rec2 = db.get(`player_${recruit2}`)
+            channel1?.send(`${getEmoji("insigator", client)} You have been recruited by **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("instigator", client)} Instigator)** and you have been instigated with **${players.indexOf(rec2.id) + 1} ${rec2.username} (${getEmoji(rec2.role.toLowerCase().replace(/\s/g, "_"), client)} ${rec2.role})**! You now have to win with the Instigator and the recruits and you can no longer win with your original team.`)
+            channel2?.send(`${getEmoji("insigator", client)} You have been recruited by **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("instigator", client)} Instigator)** and you have been instigated with **${players.indexOf(rec1.id) + 1} ${rec1.username} (${getEmoji(rec1.role.toLowerCase().replace(/\s/g, "_"), client)} ${rec1.role})**! You now have to win with the Instigator and the recruits and you can no longer win with your original team.`)
+            channel?.send(`${getEmoji("insigator", client)} You have instigated **${players.indexOf(rec1.id) + 1} ${rec1.username}** and **${players.indexOf(rec2.id) + 1} ${rec2.username}**! During the day, you can send a private message to your team using the \`+chat\`. Good luck!`)
         })
 
         // make everyone alive
@@ -153,6 +198,7 @@ module.exports = {
         })
         zombies.forEach(async (zomb) => {
             await zombchat.permissionOverwrites.edit(zomb, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
+            db.set(`player_${zomb}.isOriginal`, true)
         })
         siblings.forEach(async (sib) => {
             await sibchat.permissionOverwrites.edit(sib, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
@@ -180,15 +226,19 @@ module.exports = {
         players.forEach((p) => {
             let guy = db.get(`player_${p}`)
             if (["Gunner", "Marksman", "Fortune Teller", "Nightmare Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 2)
-            if (["Seer", "Aura Seer", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
-            if (guy.role === "Forger") db.set(`player_${p}.uses`, 3)
+            if (["Seer", "Aura Seer", "Sorcerer", "Analyst", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator", "Wolf Trickster", "Warden", "Mortician", "Sect Leader", "Alpha Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (guy.role === "Forger") db.set(`player_${p}.swordUses`, 1)
+            if (guy.role === "Forger") db.set(`player_${p}.shieldUses`, 2)
             if (guy.role === "Witch") db.set(`player_${p}.usesK`, 1)
+            if (guy.role === "Sorcerer") db.set(`player_${p}.usesM`, 1)
             if (guy.role === "Prognosticator") db.set(`player_${p}.usesT`, 1)
             if (guy.role === "Easter Bunny") db.set(`player_${p}.uses`, 4)
+            if (guy.role === "Astral Wolf") db.set(`player_${p}.usesB`, 1)
+            if (guy.role === "Astral Wolf") db.set(`player_${p}.usesC`, 1)
             if (guy.role === "Voodoo Werewolf") db.set(`player_${p}.usesM`, 2)
             if (guy.role === "Voodoo Werewolf") db.set(`player_${p}.usesN`, 1)
-            if (guy.role === "Bodyguard") db.set(`player_${p}.lives`, 2)
-            if (guy.role !== "Bodyguard") db.set(`player_${p}.lives`, 1)
+            if (["Bodyguard", "Stubborn Werewolf"].includes(guy.role)) db.set(`player_${p}.lives`, 2)
+            if (!["Bodyguard", "Stubborn Werewolf"].includes(guy.role)) db.set(`player_${p}.lives`, 1)
 
             if (guy.role === "Wolf Seer" && players.filter((c) => db.get(`player_${c}`).team === "Werewolf" && db.get(`player_${c}`).role !== "Werewolf Fan").length === 1) {
                 db.set(`player_${guy.id}.resign`, true)
@@ -198,7 +248,34 @@ module.exports = {
 
         await message.channel.send("The game has started! Ping @Alive in #day-chat when you are ready to start Night 1")
 
-        let gamemode = db.get(`gamemode`)
+        let roles = db.get(`game.roles`)
+        let gamemode = db.get(`game.gamemode`)
+        let hideRole = db.get(`game.hideRoles`)
+
+        let allTeammates = players.filter((p) => db.get(`player_${p}`).team === "Werewolf" && db.get(`player_${p}`).role !== "Werewolf Fan")
+        let teamRoles = allTeammates
+            .map((a) => db.get(`player_${a}`))
+            .map((a) => {
+                if (a.role === "Lone Wolf") {
+                    if (hideRole === true || gamemode === "random" || !roles.includes("Lone Wolf")) {
+                        let lists = Object.keys(require("../../config").wolfList)
+                        return lists[Math.floor(Math.random() * (lists.length - 1))]
+                    } else {
+                        if (allTeammates.length > 1) {
+                            let randomTeammate = allTeammates.filter((p) => p !== a.id)[Math.floor(Math.random() * (allTeammates.length - 1))]
+                            return db.get(`player_${randomTeammate}`).role
+                        }
+                    }
+                }
+                return a.role
+            })
+
+        sorcerers.forEach(async (a) => {
+            let channel = message.guild.channels.cache.get(db.get(`player_${a}`)?.channel)
+            await channel.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i] + 1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
+        })
+
+        await wwchat.send(`Here are your teammates:\n\n${teamRoles.map((b, i) => `**${players.indexOf(allTeammates[i] + 1)} ${db.get(`player_${allTeammates[i]}`).username}** is **${getEmoji(b.toLowerCase().replace(/\s/g, "_"), client)} ${b}**`).join("\n")}`)
 
         let droppy = { type: 3, custom_id: "wolves-vote", options: [] }
         for (const p of players) {
@@ -216,7 +293,7 @@ module.exports = {
 
         await message.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
 
-        db.set("started", "yes")
+        db.set("game.started", "yes")
         db.delete(`gamemode`)
     },
 }

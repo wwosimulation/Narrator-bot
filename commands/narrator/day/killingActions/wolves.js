@@ -1,6 +1,7 @@
 const db = require("quick.db") // database
-const { getRole, getEmoji } = require("../../../../config") // functions
+const { getRole, getEmoji, wolfList } = require("../../../../config") // functions
 const doctor = require("./protection/doctor.js") // doctor protection
+const nightwatchman = require("./protection/nightWatchmen.js") // night watchman protection
 const beastHunter = require("./protection/beastHunter.js") // beast hunter protection
 const witch = require("./protection/witch.js") // witch protection
 const jailer = require("./protection/jailer.js") // jailer protection
@@ -9,8 +10,11 @@ const bodyguard = require("./protection/bodyguard.js") // bodyguard protection
 const toughGuy = require("./protection/toughGuy.js") // tough guy protection
 const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
+const trapper = require("./protection/trapper.js") // trapper protection
+const stubbornWerewolves = require("./protection/stubbornWolves.js") // stubborn ww
 
 let attackedByBeastHunter = false
+let attackedByTrapper = false
 let confirmedWeakestWolf = false
 let newkwwdied = false
 
@@ -19,7 +23,16 @@ async function getProtections(client, guy, attacker) {
 
     // check if the player they are attacking is healed by the beast hunter
     getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
-    if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
+    if (getResult === true) {
+        attackedByBeastHunter = true
+        return false
+    } // exits early if a beast hunter DOES have a trap on them
+
+    getResult = await trapper(client, guy, attacker) // checks if a trapper has a trap on them
+    if (getResult === true) {
+        attackedByTrapper = true
+        return false
+    } // exits early if a trapper DOES have a trap on them
 
     // check if the player they are attacking is jailed
     getResult = await jailer(client, guy, attacker) // checks if they are jailed
@@ -33,6 +46,10 @@ async function getProtections(client, guy, attacker) {
     getResult = await doctor(client, guy, attacker) // checks if a doctor is protecting them
     console.log(`Protection results: ${getResult}`)
     if (getResult === true) return false // exits early if a doctor IS protecting them
+
+    // check if the player they are attacking is healed by the night watchman
+    getResult = await nightwatchman(client, guy, attacker) // checks if a night watchman is protecting them
+    if (getResult === true) return false // exits early if a night watchman IS protecting them
 
     // check if the player they are attacking is healed by the witch
     getResult = await witch(client, guy, attacker) // checks if a witch is protecting them
@@ -55,6 +72,10 @@ async function getProtections(client, guy, attacker) {
         // check if the player they are protecting has the forger's sheild
         getResult = await forger(client, guy) // checks if the player has the forger's sheild
         if (getResult === true) return false // exits early if the player DOES have the forger's sheild
+
+        // check if the player is stubborn wolf that has 2 lives
+        getResult = await stubbornWerewolves(client, guy) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
     }
 
     return typeof getResult === "object" ? getResult : guy // looks like there were no protections
@@ -69,24 +90,6 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
     const kwwDied = db.get(`kittenWolfConvert`)
-    const strongWolves = {
-        Werewolf: 1,
-        "Junior Werewolf": 2,
-        "Split Wolf": 2,
-        "Kitten Wolf": 2,
-        "Wolf Shaman": 3,
-        "Nightmare Werewolf": 3,
-        "Voodoo Werewolf": 3,
-        "Wolf Trickster": 3,
-        "Wolf Pacifist": 4,
-        "Guardian Wolf": 4,
-        "Shadow Wolf": 5,
-        "Werewolf Berserk": 5,
-        "Alpha Werewolf": 6,
-        "Stubborn Werewolf": 6,
-        "Wolf Seer": 7,
-        "Lone Wolf": 8,
-    } // list the wolves from weakest to strongest
 
     let votes = {} // make an object to store the votes - Object<UserId, Vote>
     let toKill = "0" // store a player to kill, in string - String
@@ -96,11 +99,11 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
 
     if (mappedWolf.length === 0) return toKill // exit early if no wolf was found
 
-    let sortedWolves = mappedWolf.length === 1 ? mappedWolf : mappedWolf.sort((a, b) => strongWolves[a[1]] - strongWolves[b[1]]) // sort the wolves from weakest to strongest
+    let sortedWolves = mappedWolf.length === 1 ? mappedWolf : mappedWolf.sort((a, b) => wolfList[a[1]] - wolfList[b[1]]) // sort the wolves from weakest to strongest
 
     console.log(sortedWolves)
 
-    let weakestWolf = mappedWolf.filter((w) => strongWolves[w[1]] === strongWolves[sortedWolves[0][1]]) // get all players with the same wolf rank
+    let weakestWolf = mappedWolf.filter((w) => wolfList[w[1]] === wolfList[sortedWolves[0][1]]) // get all players with the same wolf rank
 
     console.log(weakestWolf)
 
@@ -148,13 +151,13 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
             let wolvesRank = filteredVotes.map((x) => db.get(`player_${x[0]}`).role) // get all werewolves' role
 
             // sort the wolves in wolvesRank from strongest to weakest
-            let sortedWolves = wolvesRank.map((a) => [strongWolves[a], a]).sort((a, b) => b[0] - a[0]) // we map the wolves into numbers, then sort the numbers from big to small
+            let sortedWolves = wolvesRank.map((a) => [wolfList[a], a]).sort((a, b) => b[0] - a[0]) // we map the wolves into numbers, then sort the numbers from big to small
 
             // check if the first and second wolf number is same
             if (sortedWolves.length > 1 && sortedWolves[0][0] === sortedWolves[1][0]) {
                 // get the last strongest wolf who votes the player
                 toKill = Object.entries(votes)
-                    .filter((v) => strongWolves.indexOf(db.get(`player_${v[0]}`).role) === sortedWolves[0][0])
+                    .filter((v) => wolfList.indexOf(db.get(`player_${v[0]}`).role) === sortedWolves[0][0])
                     .pop()[1] // gets the last strongest werewolf who voted
             } else {
                 // get the voted player by the strongest wolf
@@ -224,11 +227,11 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
                         // kill the player
 
                         db.set(`player_${result.id}.status`, "Dead") // set the player status to Dead
-                        client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
+                        client.emit("playerKilled", db.get(`player_${result.id}`), attacker, { trickster: false, werewolfKill: true })
                         let member = await guild.members.fetch(result.id) // get the discord member
                         let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the discord roles
                         await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**`)
-                        await member.roles.set(memberRoles)
+                        await member.roles.set(memberRoles).catch((e) => e)
 
                         // check if berserk is active
                         if (db.get(`isBerserkActive`)) {
@@ -239,7 +242,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
 
                                 if (protectionPlayer.status === "Alive") {
                                     db.set(`player_${protectionPlayer.id}.status`, "Dead") // set the player status to Dead
-                                    client.emit("playerKilled", db.get(`player_${protectionPlayer.id}`), attacker)
+                                    client.emit("playerKilled", db.get(`player_${protectionPlayer.id}`), attacker, { trickster: false, werewolfKill: true })
                                     let memberP = await guild.members.fetch(protectionPlayer.id) // get the discord member
                                     let memberRolesP = memberP.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the discord roles
                                     await dayChat.send(`${getEmoji("frenzy", client)} The werewolf frenzy killed **${players.indexOf(protectionPlayer.id) + 1} ${protectionPlayer.username} (${getEmoji(protectionPlayer.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${protectionPlayer.role})**`)
@@ -271,14 +274,44 @@ module.exports.beastHunterKilling = async (client) => {
         const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
         const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // gets the day chat channel
         const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
-        const attackerMember = await guild.members.fetch(confirmedWeakestWolf.id) // get the discord member
+        const allWolves = players.map((p) => db.get(`player_${p}`)).filter((p) => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
+        let weakestWolves = allWolves.sort((a, b) => wolfList[a.role] - wolfList[b.role])
+        shuffle(weakestWolves)
+        if (weakestWolves.length === 0) return
+        const weakestWolf = weakestWolves[0]
+        const attackerMember = await guild.members.fetch(weakestWolf.id) // get the discord member
         const allAttackerRoles = attackerMember.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles from the member
 
         // check if the attacker is alive
-        if (confirmedWeakestWolf.status === "Alive") {
+        if (weakestWolf.status === "Alive") {
             // kill the wolf
-            db.set(`player_${confirmedWeakestWolf.id}.status`, "Dead") // makes the attacker dead
-            await dayChat.send(`${getEmoji("trap", client)} The Beast Hunter's trap killed **${players.indexOf(confirmedWeakestWolf.id) + 1} ${confirmedWeakestWolf.username} (${getEmoji(confirmedWeakestWolf.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${confirmedWeakestWolf.role})**!`)
+            db.set(`player_${weakestWolf.id}.status`, "Dead") // makes the attacker dead
+            await dayChat.send(`${getEmoji("trap", client)} The Beast Hunter's trap killed **${players.indexOf(weakestWolf.id) + 1} ${weakestWolf.username} (${getEmoji(weakestWolf.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${weakestWolf.role})**!`)
+            await attackerMember.roles.set(allAttackerRoles) // set the role
+        }
+    }
+}
+
+module.exports.trapperKilling = async (client) => {
+    // check if the wolves were attacked by trapper
+    if (attackedByTrapper === true && confirmedWeakestWolf !== false) {
+        // kill the weakest wolf
+        const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
+        const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // gets the day chat channel
+        const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
+        const allWolves = players.map((p) => db.get(`player_${p}`)).filter((p) => p.status === "Alive" && p.team === "Werewolf" && p.role !== "Werewolf Fan")
+        let weakestWolves = allWolves.sort((a, b) => wolfList[a.role] - wolfList[b.role])
+        shuffle(weakestWolves)
+        if (weakestWolves.length === 0) return
+        const weakestWolf = weakestWolves[0]
+        const attackerMember = await guild.members.fetch(weakestWolf.id) // get the discord member
+        const allAttackerRoles = attackerMember.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles from the member
+
+        // check if the attacker is alive
+        if (weakestWolf.status === "Alive") {
+            // kill the wolf
+            db.set(`player_${weakestWolf.id}.status`, "Dead") // makes the attacker dead
+            await dayChat.send(`${getEmoji("placed", client)} The Trapper's trap killed **${players.indexOf(weakestWolf.id) + 1} ${weakestWolf.username} (${getEmoji(weakestWolf.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${weakestWolf.role})**!`)
             await attackerMember.roles.set(allAttackerRoles) // set the role
         }
     }

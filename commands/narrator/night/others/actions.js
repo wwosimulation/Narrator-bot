@@ -7,16 +7,30 @@ module.exports = async () => {
 
         // reset the actions
         db.delete(`player_${player}.vote`) // deletes the vote
+        db.delete(`player_${player}.bread`) // deletes the bread, if any
 
         if (["Beast Hunter", "Marksman"].includes(guy.role)) {
             // make their trap or mark active
             db.set(`player_${player}.placed`, true)
         }
 
+        // trapper
+        if (guy.role === "Trapper") {
+            let currentTraps = db.get(`player_${player}.traps`) || []
+            currentTraps.push(guy.target)
+            db.delete(`player_${guy.id}.target`)
+            db.set(`player_${player}.traps`, currentTraps)
+            if (db.get(`player_${player}.triggered`)) {
+                db.delete(`player_${player}.triggered`)
+                db.set(`player_${player}.traps`, [])
+                db.delete(`player_${player}.active`)
+            }
+        }
+
         // check if they have a role that can only be used once a night.
-        if (["Aura Seer", "Seer", "Detective", "Analyst", "Sorcerer", "Wolf Seer", "Hacker", "Santa Claus"].includes(guy.role)) {
+        if (["Aura Seer", "Seer", "Detective", "Analyst", "Sorcerer", "Wolf Seer", "Hacker", "Santa Claus", "Mortician", "Alpha Werewolf", "Cannibal"].includes(guy.role)) {
             // if they have uses, reset it.
-            if (typeof guy.uses === "number") db.set(`player_${player}.uses`, 1)
+            if (typeof guy.uses === "number") db.add(`player_${player}.uses`, 1)
         }
 
         // reset their target for every role except for some

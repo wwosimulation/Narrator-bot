@@ -1,3 +1,5 @@
+
+
 const { ids, fn } = require("../../config")
 const db = require("quick.db")
 
@@ -12,8 +14,8 @@ module.exports = {
         let m = await message.channel.send("Players have been kicked, I am now ending the game and deleting the role .")
         await fn.sleep(3000)
         await clearJoin(client)
-        await client.channels.cache.get("892046244715835463").send("== Game End ==")
         await m.edit("Game end complete!").catch(() => {})
+        await message.guild.channels.cache.find((c) => c.name === "carl-welcome-left-log")?.send("==== END ====")
     },
 }
 
@@ -22,7 +24,7 @@ const kick = (message) => {
         if (!e.permissions.any(["MANAGE_CHANNELS", "ADMINISTRATOR", "MANAGE_ROLES"])) {
             e.kick("Game end")
             console.log(`Kicked ${e.user.tag}`)
-        }
+        }     
     })
 }
 

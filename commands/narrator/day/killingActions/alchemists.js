@@ -1,6 +1,7 @@
 const db = require("quick.db") // database
 const { getRole, getEmoji } = require("../../../../config") // functions
 const doctor = require("./protection/doctor.js") // doctor protection
+const nightwatchman = require("./protection/nightWatchmen.js") // night watchman protection
 const beastHunter = require("./protection/beastHunter.js") // beast hunter protection
 const witch = require("./protection/witch.js") // witch protection
 const jailer = require("./protection/jailer.js") // jailer protection
@@ -9,6 +10,8 @@ const bodyguard = require("./protection/bodyguard.js") // bodyguard protection
 const toughGuy = require("./protection/toughGuy.js") // tough guy protection
 const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
+const trapper = require("./protection/trapper.js") // trapper protection
+const stubbornWerewolves = require("./protection/stubbornWolves.js") // stubborn ww
 
 async function getProtections(client, guy, attacker) {
     let getResult
@@ -16,6 +19,10 @@ async function getProtections(client, guy, attacker) {
     // check if the player they are attacking is healed by the beast hunter
     getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
     if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
+
+    // check if the player they are attacking is saved by the trapper
+    getResult = await trapper(client, guy, attacker)
+    if (getResult === true) return false // exits early if a trapper DOES have a trap on them
 
     // check if the player they are attacking is jailed
     getResult = await jailer(client, guy, attacker) // checks if they are jailed
@@ -28,6 +35,10 @@ async function getProtections(client, guy, attacker) {
     // check if the player they are attacking is healed by the doctor
     getResult = await doctor(client, guy, attacker) // checks if a doctor is protecting them
     if (getResult === true) return false // exits early if a doctor IS protecting them
+
+    // check if the player they are attacking is healed by the night watchman
+    getResult = await nightwatchman(client, guy, attacker) // checks if a night watchman is protecting them
+    if (getResult === true) return false // exits early if a night watchman IS protecting them
 
     // check if the player they are attacking is healed by the witch
     getResult = await witch(client, guy, attacker) // checks if a witch is protecting them
@@ -50,6 +61,10 @@ async function getProtections(client, guy, attacker) {
         // check if the player they are protecting has the forger's sheild
         getResult = await forger(client, guy) // checks if the player has the forger's sheild
         if (getResult === true) return false // exits early if the player DOES have the forger's sheild
+
+        // check if the player is stubborn wolf that has 2 lives
+        getResult = await stubbornWerewolves(client, guy) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
     }
 
     return typeof getResult === "object" ? getResult : guy // looks like there were no protections
@@ -72,13 +87,13 @@ module.exports = async (client) => {
         // send a message to the player who got a red potion
         let rVictim = db.get(`player_${attacker.redTarget}`) // the victim object - Object
         let rChannel = guild.channels.cache.get(rVictim?.channel) // get the channel object - Object
-        await rChannel.send(`${getEmoji("redp", client)} The Alchemist has sent you a potion. Sadly, you cannot make out the colour... you might die at the end of the day.`)
-        await rChannel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
+        await rChannel?.send(`${getEmoji("redp", client)} The Alchemist has sent you a potion. Sadly, you cannot make out the colour... you might die at the end of the day.`)
+        await rChannel?.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
 
         // check if red potion exists
         if (attacker.redTarget) {
             // check if the player was already given a red potion before
-            if (attacker.redPotions?.includes(rVictim.id)) {
+            if (attacker.redPotions?.includes(rVictim?.id)) {
                 // set that they will die at night because of alchemist
                 let allRedPotions = db.get(`player_${attacker.redTarget}.poisoned`) || [] // gets all the Alchemists id who poisoned this player - Array<Snowflake>
                 allRedPotions.push(attacker.id) // pushes the attacker to the alchemist list
@@ -87,7 +102,7 @@ module.exports = async (client) => {
                 // otherwise add the player into the redPotions array
 
                 let redPotions = attacker.redPotions || [] // get the players who have been given a red potion - Array
-                redPotions.push(rVictim.id) // pushes the player into the array
+                redPotions.push(rVictim?.id) // pushes the player into the array
                 db.set(`player_${attacker.id}.redPotions`, redPotions) // set them into the database
             }
         }
@@ -97,7 +112,7 @@ module.exports = async (client) => {
             let guy = db.get(`player_${attacker.blackTarget}`) // get the black potion victim object - Object
 
             // check if the alch's target is alive
-            if (guy.status === "Alive") {
+            if (guy?.status === "Alive") {
                 // check for any protections
                 let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
 

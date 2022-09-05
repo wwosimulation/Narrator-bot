@@ -22,7 +22,9 @@ module.exports = async (client) => {
             db.set(`player_${guy.id}.status`, "Dead")
             let member = await guild.members.fetch(guy.id) // get the discord member - Object
             let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the member roles
-            await dayChat.send(`${getEmoji("sect_hunter", client)} The Sect Hunter shot **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role.toLowerCase().replace(/\s/g, "_"), client)} ${guy.role})**!`)
+            let role = guy.role
+            if (guy.tricked) role = "Wolf Trickster"
+            await dayChat.send(`${getEmoji("sect_hunter", client)} The Sect Hunter shot **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
             await member.roles.set(memberRoles)
 
             if (players.map((p) => db.get(`player_${p}`)).filter((p) => (p.role === "Sect Leader" || (["Grave Robber", "Doppelganger"].includes(p.role) && db.get(`player_${p.target}`)?.role === "Sect Leader")) && p.status === "Alive").length === 0) {

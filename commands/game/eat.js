@@ -54,8 +54,33 @@ module.exports = {
                     break
                 }
 
-                if (guy === player.couple) {
+                let { cupid, instigator } = db.get(`player_${player.id}`)
+
+                if (
+                    cupid
+                        ?.map((a) => db.get(`player_${a}`))
+                        ?.map((a) => a.target)
+                        ?.join(",")
+                        .split(",")
+                        .includes(guy)
+                ) {
                     await message.channel.send("You cannot eat your own couple!")
+                    break
+                }
+
+                if (
+                    instigator
+                        ?.map((a) => db.get(`player_${a}`))
+                        ?.map((a) => a.target)
+                        ?.join(",")
+                        .split(",")
+                        .includes(guy)
+                ) {
+                    await message.channel.send("You cannot eat your fellow recruit!")
+                    break
+                }
+                if (instigator?.includes(guy)) {
+                    await message.channel.send("You cannot eat the Instigator who recruited you!")
                     break
                 }
             }

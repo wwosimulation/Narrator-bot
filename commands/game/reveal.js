@@ -20,7 +20,7 @@ module.exports = {
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to use the ability!")
 
-        if (args[0].toLowerCase() === "card") {
+        if (args[0]?.toLowerCase() === "card") {
             if (!player.card) return await message.channel.send("If you don't have the Fortune Teller's card, what are you trying to reveal?")
             let member = await message.guild.members.fetch(player.id)
             await daychat.send(`${getEmoji("sun", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** used the Fortune Teller's card to reveal their role!`)
@@ -61,7 +61,7 @@ module.exports = {
             await member.roles.add(message.guild.roles.cache.find((r) => r.name === "Revealed"))
 
             if (player.role !== "Vigilante") {
-                db.set(`noVoting`, true)
+                db.set(`game.noVoting`, true)
                 db.subtract(`player_${player.id}.uses`, 1)
             } else {
                 db.subtract(`player_${player.id}.usesR`, 0)

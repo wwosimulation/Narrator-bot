@@ -40,7 +40,7 @@ module.exports = {
                         message.channel.send(`Enabled spec button`)
                     })
                 })
-        } else if(args[0] === "all") {
+        } else if (args[0] === "all") {
             message.guild.channels.cache
                 .find((c) => c.name == "enter-game")
                 .messages.fetch(mid)

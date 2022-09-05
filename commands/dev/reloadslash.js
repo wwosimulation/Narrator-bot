@@ -11,7 +11,7 @@ module.exports = {
             client.slashCommands.each((cmd) => {
                 cmd.server.forEach((server) => {
                     let id = ids.server[server]
-                    client.application.commands.create(cmd.command, id)/*.then((command) => {
+                    client.application.commands.create(cmd.command, id) /*.then((command) => {
                         if (cmd.permissions[server]) command.permissions.set({ command: command, permissions: cmd.permissions[server] })
                     })
                         Discord pemissions v2 (27th of April 2022) prevents bots using this endpoint

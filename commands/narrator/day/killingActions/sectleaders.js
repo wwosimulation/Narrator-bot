@@ -1,6 +1,7 @@
 const db = require("quick.db") // database
 const { getRole, getEmoji } = require("../../../../config") // functions
 const doctor = require("./protection/doctor.js") // doctor protection
+const nightwatchman = require("./protection/nightWatchmen.js") // night watchman protection
 const beastHunter = require("./protection/beastHunter.js") // beast hunter protection
 const witch = require("./protection/witch.js") // witch protection
 const jailer = require("./protection/jailer.js") // jailer protection
@@ -9,6 +10,8 @@ const bodyguard = require("./protection/bodyguard.js") // bodyguard protection
 const toughGuy = require("./protection/toughGuy.js") // tough guy protection
 const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
+const trapper = require("./protection/trapper.js") // trapper protection
+const stubbornWerewolves = require("./protection/stubbornWolves.js") // stubborn ww
 
 async function getProtections(client, guy, attacker) {
     let getResult
@@ -16,6 +19,10 @@ async function getProtections(client, guy, attacker) {
     // check if the player they are attacking is healed by the beast hunter
     getResult = await beastHunter(client, guy, attacker) // checks if a beast hunter has a trap on them
     if (getResult === true) return false // exits early if a beast hunter DOES have a trap on them
+
+    // check if the player they are attacking is saved by the trapper
+    getResult = await trapper(client, guy, attacker)
+    if (getResult === true) return false // exits early if a trapper DOES have a trap on them
 
     // check if the player they are attacking is jailed
     getResult = await jailer(client, guy, attacker) // checks if they are jailed
@@ -28,6 +35,10 @@ async function getProtections(client, guy, attacker) {
     // check if the player they are attacking is healed by the doctor
     getResult = await doctor(client, guy, attacker) // checks if a doctor is protecting them
     if (getResult === true) return false // exits early if a doctor IS protecting them
+
+    // check if the player they are attacking is healed by the night watchman
+    getResult = await nightwatchman(client, guy, attacker) // checks if a night watchman is protecting them
+    if (getResult === true) return false // exits early if a night watchman IS protecting them
 
     // check if the player they are attacking is healed by the witch
     getResult = await witch(client, guy, attacker) // checks if a witch is protecting them
@@ -46,6 +57,10 @@ async function getProtections(client, guy, attacker) {
         // check if the player they are protecting has the forger's sheild
         getResult = await forger(client, guy) // checks if the player has the forger's sheild
         if (getResult === true) return false // exits early if the player DOES have the forger's sheild
+
+        // check if the player is stubborn wolf that has 2 lives
+        getResult = await stubbornWerewolves(client, guy) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
     }
 
     return typeof getResult === "object" ? getResult : guy // looks like there were no protections

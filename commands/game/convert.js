@@ -21,7 +21,7 @@ module.exports = {
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.role === "Bandit" && player.accomplices?.map((a) => db.get(`player_${a}`).status).includes("Alive")) return await message.channel.send("As a Bandit, you cannot convert players to become your accomplice if you already have one.")
-        if (player.role === "Sect Leader" && player.sectMembers?.map((c) => db.get(`player_${c}`).status).filter((c) => c === "Alive").length === 4) return await message.channel.send("As a Sect Leader, you may not have more than 4 sect members at a time!")
+        if (player.role === "Sect Leader" && player.sectMembers?.map((c) => db.get(`player_${c}`).status).filter((c) => c === "Alive").length === 5) return await message.channel.send("As a Sect Leader, you may not have more than 5 sect members at a time!")
 
         if (args[0] === "cancel") {
             player.role === "Bandit" ? db.delete(`player_${player.id}.accomplice`) : db.delete(`player_${player.id}.target`)

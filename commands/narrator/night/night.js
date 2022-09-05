@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const { getEmoji } = require("../../../config")
+const ritualists = require("./others/ritualists")
 
 module.exports = {
     name: "night",
@@ -15,10 +16,8 @@ module.exports = {
 
         // get all the actions
         const lynch = require("./kills/lynch.js")
-        const alchemists = require("./kills/alchemists.js")
         const bombers = require("./kills/bombers.js")
         const corruptors = require("./kills/corruptors.js")
-        const zombies = require("./kills/zombies.js")
         const toughGuy = require("./kills/toughGuy.js")
         const actions = require("./others/actions.js")
         const channels = require("./others/channels.js")
@@ -26,14 +25,12 @@ module.exports = {
         const jailers = require("./others/jailers.js")
         const naughtyboys = require("./others/naughtyboys.js")
         const nightmarewolves = require("./others/nightmarewolf.js")
+        const ritualists = require("./others/ritualists.js")
+        const jacks = require("./others/jacks.js")
 
         await lynch(client)
 
         await corruptors(client)
-
-        await alchemists(client)
-
-        await zombies(client)
 
         await toughGuy(client)
 
@@ -44,6 +41,10 @@ module.exports = {
         await dreamcatchers(client)
 
         await nightmarewolves(client)
+
+        await ritualists(client)
+
+        await jacks(client)
 
         await channels(client)
 

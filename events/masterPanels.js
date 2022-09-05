@@ -7,7 +7,7 @@ module.exports = (client) => {
             let restart = await interaction.reply({ content: "Restarting...", fetchReply: true })
             db.set("botRestart", restart.channelId + "/" + restart.id)
             client.destroy()
-            require("child_process").execSync("npm run start", { stdio: "inherit" });
+            require("child_process").execSync("npm run start", { stdio: "inherit" })
         }
 
         if (interaction.customId == "dev-emergencystop") {
@@ -26,7 +26,7 @@ module.exports = (client) => {
                     { name: "Uptime", value: `${ms(client.uptime)}`, inline: true },
                     { name: "Files", value: `Loaded ${Object.keys(require.cache).length} files in total`, inline: true },
                 ],
-                color: 0x5865F2,
+                color: 0x5865f2,
             }
             // get and sort all game variables
             let vars = db.all()
@@ -34,13 +34,13 @@ module.exports = (client) => {
             let e2 = { title: "Game Variables", description: "", color: 0x1fff43 }
             let e3 = { title: "Game Variables", description: "", color: 0x1fff43 }
             let e = []
-            vars.forEach(v => {
+            vars.forEach((v) => {
                 let e_1 = ["gamewarnIndex", "entermsg", "nextRequest", "hoster", "gamePhase", "gameCode", "wwsVote", "started", "winner", "xpGiven", "xpExclude", "stafflist", "stafflist2", "stafflist3", "commandEnabled"]
-                if(e_1.includes(v.ID)) {
+                if (e_1.includes(v.ID)) {
                     e1.description += `**${v.ID}:** \`${v.data}\`\n`
                 } else if (v.ID.includes("votemsgid_")) {
                     e2.description += `**${v.ID}:** \`${v.data}\`\n`
-                } else if(["skipVotes", "players"].includes(v.ID)) {
+                } else if (["skipVotes", "players"].includes(v.ID)) {
                     e3.description += `**${v.ID}:** \`${v.data.toString() + " - " + v.data.length}\`\n`
                 } else if (v.ID.includes("player_")) {
                     e.push(require("util").inspect(v.data))
@@ -50,17 +50,16 @@ module.exports = (client) => {
             let embeds = []
             embeds.push(embed1)
 
-            if(e1.description != "") embeds.push(e1)
-            if(e2.description != "") embeds.push(e2)
-            if(e3.description != "") embeds.push(e3)
+            if (e1.description != "") embeds.push(e1)
+            if (e2.description != "") embeds.push(e2)
+            if (e3.description != "") embeds.push(e3)
 
-            e.forEach(er => { 
+            e.forEach((er) => {
                 embeds.push({ title: "Player Data", description: "```js\n" + er + "```", color: 0x1fff43 })
             })
 
             let r = await interaction.reply({ embeds: [embeds[0]], fetchReply: true })
             client.buttonPaginator(interaction.user.id, r, embeds, 1)
-
         }
     })
 }

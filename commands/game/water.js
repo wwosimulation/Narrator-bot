@@ -11,6 +11,7 @@ module.exports = {
         const players = db.get(`players`)
         const daychat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+        const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
 
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
@@ -30,16 +31,43 @@ module.exports = {
 
         if (db.get(`player_${target}`).role === "President") return await message.channel.send("You cannot water the President!")
 
-        if (db.get(`player_${player.id}`).couple === target) return await message.channel.send("You cannot water your own couple!")
+        let { cupid, instigator } = db.get(`player_${player.id}`)
+
+        if (
+            cupid
+                ?.map((a) => db.get(`player_${a}`))
+                ?.map((a) => a.target)
+                ?.join(",")
+                .split(",")
+                .includes(target)
+        )
+            return await message.channel.send("You cannot water your own couple!")
+        if (
+            instigator
+                ?.map((a) => db.get(`player_${a}`))
+                ?.map((a) => a.target)
+                ?.join(",")
+                .split(",")
+                .includes(target)
+        )
+            return await message.channel.send("You cannot water your fellow recruit!")
+        if (instigator?.includes(target)) return await message.channel.send("You cannot water the Instigator who recruited you!")
 
         if (player.id === target) return await message.channel.send("You do know that you cannot water yourself right?")
 
         db.subtract(`player_${player.id}.uses`, 1)
 
+        let role = "Priest"
+        if (player.tricked) role = "Wolf Trickster"
+
         let gameMsg = {
             wolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("priest", client)} Priest)** has thrown holy water at and killed **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})**`,
-            notWolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("priest", client)} Priest)** tried to throw holy water on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** and killed themselves! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is not a werewolf!`,
+            notWolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to throw holy water on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** and killed themselves! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is not a werewolf!`,
         }
+
+        // check if the player is stubborn wolf that has 2 lives
+        let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
 
         let member = db.get(`player_${target}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${target}`).role) ? target : player.id
         let guy = await message.guild.members.fetch(member)
@@ -48,6 +76,9 @@ module.exports = {
         await guy.roles.set(roles)
         await message.channel.send(`${getEmoji("water", client)} You have succesfully used your ability!`)
         await daychat.send(`${guy.id === target ? gameMsg.wolf : gameMsg.notWolf}`)
+
+        db.set(`player_${member}.status`, "Dead")
+        client.emit("playerKilled", db.get(`player_${member}`), db.get(`player_${player.id}`))
 
         if (guy.id === target) await message.member.roles.add("892046205780131891")
     },

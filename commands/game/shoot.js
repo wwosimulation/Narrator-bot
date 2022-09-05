@@ -10,6 +10,7 @@ module.exports = {
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`) || []
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
+        const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
 
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
@@ -39,29 +40,58 @@ module.exports = {
         if (db.get(`player_${target}`) == "President") return await message.channel.send("You cannot shoot the President!")
 
         if (!player.hypnotized) {
-            if (target === player.couple) return await message.channel.send("You cannot shoot your lover!")
+            let { cupid, instigator } = db.get(`player_${player.id}`)
+
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot corrupt your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target)
+            )
+                return await message.channel.send("You cannot corrupt your fellow recruit!")
+            if (instigator?.includes(target)) return await message.channel.send("You cannot corrupt the Instigator who recruited you!")
 
             if (target === player.sected) return await message.channel.send("You cannot shoot your own Sect Leader!")
         }
 
         let result = true
 
-        if (db.get(`player_${target}`).team === "Village") result = false
+        if (player.role === "Marksman" && db.get(`player_${target}`).team === "Village") result = false
+
+        let guy = db.get(`player_${target}`)
+        let role = guy.role
+        if (guy.tricked || player.tricked) role = "Wolf Trickster"
 
         let messages = {
-            Gunner: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("gunner", client)} Gunner)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_")}`, client)} ${db.get(`player_${target}`).role})**!`,
-            Jailer: `${getEmoji("bullet", client)} The Jailer executed their prisoner last night! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})** is dead!`,
-            Vigilante: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("vigilante", client)} Vigilante)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_")}`, client)} ${db.get(`player_${target}`).role})**!`,
-            Marksman: `${getEmoji("arrow", client)} ${result === true ? `The Marksman shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).username})**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("marksman", client)} Marksman)** tried shotting **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** but their shot backfired! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is a villager!`}`,
+            Gunner: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("gunner", client)} Gunner)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${role.toLowerCase().replace(/\s/g, "_")}`, client)} ${role})**!`,
+            Jailer: `${getEmoji("bullet", client)} The Jailer executed their prisoner last night! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** is dead!`,
+            Vigilante: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("vigilante", client)} Vigilante)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${role.toLowerCase().replace(/\s/g, "_")}`, client)} ${role})**!`,
+            Marksman: `${getEmoji("arrow", client)} ${result === true ? `The Marksman shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role, client)} ${role})** tried shooting **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** but their shot backfired! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is a villager!`}`,
         }
+
+        db.subtract(`player_${player.id}.uses`, 1)
+
+        // check if the player is stubborn wolf that has 2 lives
+        let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
 
         let member = await message.guild.members.fetch(result === true ? target : player.id)
         let roles = member.roles.cache.map((r) => (r.name === "Alive" ? message.guild.roles.cache.find((r) => r.name === "Dead").id : r.id))
         await member.roles.set(roles)
         await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(messages[player.role])
 
-        db.subtract(`player_${player.id}.uses`, 1)
-        if (member.id === player.id) db.set(`player_${player.id}`, "Dead")
+        db.set(`player_${member.id}.status`, "Dead")
         client.emit("playerKilled", db.get(`player_${member.id}`), player.id)
     },
 }

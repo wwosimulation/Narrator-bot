@@ -22,12 +22,14 @@ module.exports = {
         // create a button to start the suggestion
         let button = {
             type: 1,
-            components: [{
-                type: 2,
-                label: "Start Suggestion",
-                custom_id: "suggestion-start",
-                style: 3,
-            }]
+            components: [
+                {
+                    type: 2,
+                    label: "Start Suggestion",
+                    custom_id: "suggestion-start",
+                    style: 3,
+                },
+            ],
         }
 
         // send the embed and button
@@ -40,50 +42,63 @@ module.exports = {
             let modal = {
                 title: "Suggestion",
                 custom_id: "suggestion-modal",
-                components: [{
-                    type: 1,
-                    components: [{
-                        type: 4,
-                        custom_id: "suggestion-title",
-                        label: "Title",
-                        style: 1,
-                        placeholder: "Enter a short title for this suggestion",
-                        required: true,
-                        min_length: 1,
-                    }]
-                }, {
-                    type: 1,
-                    components: [{
-                        type: 4,
-                        custom_id: "suggestion-description",
-                        label: "Description",
-                        style: 2,
-                        placeholder: "Describe the suggestion more in detail",
-                        required: true,
-                        min_length: 20,
-                    }]
-                }, {
-                    type: 1,
-                    components: [{
-                        type: 4,
-                        custom_id: "suggestion-part",
-                        label: "Part",
-                        style: 1,
-                        placeholder: "For which part of the bot is this suggestion intended?",
-                        required: true,
-                        min_length: 4,
-                    }]
-                }, {
-                    type: 1,
-                    components: [{
-                        type: 4,
-                        custom_id: "suggestion-origin",
-                        label: "Origin",
-                        style: 1,
-                        placeholder: "Where is this suggestion from?",
-                        required: false,
-                    }]
-                }]
+                components: [
+                    {
+                        type: 1,
+                        components: [
+                            {
+                                type: 4,
+                                custom_id: "suggestion-title",
+                                label: "Title",
+                                style: 1,
+                                placeholder: "Enter a short title for this suggestion",
+                                required: true,
+                                min_length: 1,
+                            },
+                        ],
+                    },
+                    {
+                        type: 1,
+                        components: [
+                            {
+                                type: 4,
+                                custom_id: "suggestion-description",
+                                label: "Description",
+                                style: 2,
+                                placeholder: "Describe the suggestion more in detail",
+                                required: true,
+                                min_length: 20,
+                            },
+                        ],
+                    },
+                    {
+                        type: 1,
+                        components: [
+                            {
+                                type: 4,
+                                custom_id: "suggestion-part",
+                                label: "Part",
+                                style: 1,
+                                placeholder: "For which part of the bot is this suggestion intended?",
+                                required: true,
+                                min_length: 4,
+                            },
+                        ],
+                    },
+                    {
+                        type: 1,
+                        components: [
+                            {
+                                type: 4,
+                                custom_id: "suggestion-origin",
+                                label: "Origin",
+                                style: 1,
+                                placeholder: "Where is this suggestion from?",
+                                required: false,
+                            },
+                        ],
+                    },
+                ],
             }
 
             // send the modal
@@ -91,7 +106,7 @@ module.exports = {
         })
 
         coll.on("end", async () => {
-            interaction.editReply(fn.disableButtons(repl));
+            interaction.editReply(fn.disableButtons(repl))
         })
     },
 }

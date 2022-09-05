@@ -33,32 +33,91 @@ module.exports = {
         if (db.get(`player_${target1}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
         if (db.get(`player_${target2}`).status !== "Alive") return await message.channel.send("You need to select an ALIVE player!")
 
-        if (db.get(`player_${target1}`).role === "President") return await message.channel.send("You cannot mute the President!")
-        if (db.get(`player_${target2}`).role === "President") return await message.channel.send("You cannot mute the President!")
+        if (db.get(`player_${target1}`).role === "President") return await message.channel.send("You cannot hack the President!")
+        if (db.get(`player_${target2}`).role === "President") return await message.channel.send("You cannot hack the President!")
 
         if (target1 === target2) return await message.channel.send("Why are you hacking the same player?")
 
         if (!player.hypnotized) {
-            if ([target1, target2].includes(db.get(`player_${player.id}`).couple)) return await message.channel.send("You cannot mute your own couple!")
+            let { cupid, instigator } = db.get(`player_${player.id}`)
 
-            if ([target1, target2].includes(player.id)) return await message.channel.send("You do know that you cannot mute yourself right?")
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target1)
+            )
+                return await message.channel.send("You cannot hack your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target1)
+            )
+                return await message.channel.send("You cannot hack your fellow recruit!")
+            if (instigator?.includes(target1)) return await message.channel.send("You cannot hack the Instigator who recruited you!")
+            if (
+                cupid
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target2)
+            )
+                return await message.channel.send("You cannot hack your own couple!")
+            if (
+                instigator
+                    ?.map((a) => db.get(`player_${a}`))
+                    ?.map((a) => a.target)
+                    ?.join(",")
+                    .split(",")
+                    .includes(target2)
+            )
+                return await message.channel.send("You cannot hack your fellow recruit!")
+            if (instigator?.includes(targe2t)) return await message.channel.send("You cannot hack the Instigator who recruited you!")
         }
 
-        let { role: role1, username: username1 } = db.get(`player_${target1}`)
-        let { role: role2, username: username2 } = db.get(`player_${target2}`)
+        let results = { p1: undefined, p2: undefined }[(target1, target2)].forEach((guy, index) => {
+            let { aura, role, team } = db.get(`player_${guy}`)
+
+            if (guy.disguised === true) {
+                aura = "Unknown"
+                role = "Illusionist"
+                team = "Solo"
+            }
+            if (!["Wolf Seer", "Sorcerer"].includes(guy.role) && guy.shamanned === true) {
+                aura = "Evil"
+                role = "Wolf Shaman"
+                team = "Werewolf"
+            }
+            if (guy.role === "Sorcerer" && player.team !== "Werewolf") {
+                aura = "Good"
+                role = guy.fakeRole
+                team = "Village"
+            }
+            if (guy.role === "Wolf Trickster" && guy.trickedRole) {
+                ;({ aura, role, team } = guy.trickedRole)
+            }
+
+            result[`p${index + 1}`] = { aura, team, role }
+        })
 
         db.set(`player_${player.id}.target`, [target1, target2])
 
         if (!player.hackedPlayers?.includes(target1)) {
-            await message.channel.send(`${getEmoji("hack", client)} You have hacked player **${players.indexOf(target1) + 1} ${username1} (${getEmoji(role1.toLowerCase().replace(/\s/g, "_"), client)} ${role1})**`)
+            await message.channel.send(`${getEmoji("hack", client)} You have hacked player **${players.indexOf(target1) + 1} ${username1} (${getEmoji(results[p1].role.toLowerCase().replace(/\s/g, "_"), client)} ${results[p1].role})**`)
         } else {
-            await message.channel.send(`${getEmoji("hack", client)} Player **${players.indexOf(target1) + 1} ${username1} (${getEmoji(role1.toLowerCase().replace(/\s/g, "_"), client)} ${role1})** has been hacked before, and will die today!`)
+            await message.channel.send(`${getEmoji("hack", client)} Player **${players.indexOf(target1) + 1} ${username1} (${getEmoji(results[p1].role.toLowerCase().replace(/\s/g, "_"), client)} ${results[p1].role})** has been hacked before, and will die today!`)
         }
 
         if (!player.hackedPlayers?.includes(target2)) {
-            await message.channel.send(`${getEmoji("hack", client)} You have hacked player **${players.indexOf(target2) + 1} ${username2} (${getEmoji(role2.toLowerCase().replace(/\s/g, "_"), client)} ${role2})**`)
+            await message.channel.send(`${getEmoji("hack", client)} You have hacked player **${players.indexOf(target2) + 1} ${username2} (${getEmoji(results[p2].role.toLowerCase().replace(/\s/g, "_"), client)} ${results[p2].role})**`)
         } else {
-            await message.channel.send(`${getEmoji("hack", client)} Player **${players.indexOf(target2) + 1} ${username2} (${getEmoji(role2.toLowerCase().replace(/\s/g, "_"), client)} ${role2})** has been hacked before, and will die today!`)
+            await message.channel.send(`${getEmoji("hack", client)} Player **${players.indexOf(target2) + 1} ${username2} (${getEmoji(results[p2].role.toLowerCase().replace(/\s/g, "_"), client)} ${results[p2].role})** has been hacked before, and will die today!`)
         }
 
         db.subtract(`player_${player.id}.uses`, 1)
