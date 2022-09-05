@@ -1,4 +1,4 @@
-const { gameModes } = require("../../config")
+const { gameModes, fn } = require("../../config")
 
 module.exports = {
     name: "mode",
@@ -10,7 +10,7 @@ module.exports = {
     run: async (message, args, client) => {
         let modesSent = [...gameModes]
         args.forEach((match) => {
-            modesSent.push(match.charAt(0).toUpperCase() + match.slice(1))
+            modesSent.push(fn.capitalizeFirstLetter(match))
         })
         let alive = message.guild.roles.cache.find((r) => r.name === "Alive")
         let voteChat = message.guild.channels.cache.find((x) => x.name == "vote-chat")
@@ -20,5 +20,6 @@ module.exports = {
         })
         let row = { type: 1, components: [droppy] }
         let m = await voteChat.send({ content: `${alive}, which game mode should we play?`, components: [row] })
+        message.reply(message.l10n("done"))
     },
 }
