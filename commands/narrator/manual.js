@@ -29,7 +29,7 @@ module.exports = {
         if (!player) return await message.channel.send("Player not found!")
 
         if (!player.roles.cache.has(alive.id)) return await message.channel.send("This player does not have the alive role!")
-        
+
         client.commands.get("nmanual").run(message, [args[0]], client)
 
         if (!role) return await message.channel.send("Role not found!")
