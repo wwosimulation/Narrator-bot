@@ -30,11 +30,13 @@ module.exports = {
 
         if (!player.roles.cache.has(alive.id)) return await message.channel.send("This player does not have the alive role!")
 
+        client.commands.get("nmanual").run(message, [args[0]], client)
+
         if (!role) return await message.channel.send("Role not found!")
 
         if (db.get(`game.started`) === "yes") return await message.channel.send("The game has already started! If you still want to add this player, use the `+reset` command, and then use the `/srole` command instead!")
 
-        message.react("💋")
+        await message.react("💋")
 
         let channel = await message.guild.channels.create(`priv-${role.name.toLowerCase().replace(/\s/g, "-")}`, {
             parent: "892046231516368906",
@@ -73,7 +75,7 @@ module.exports = {
         let object = {
             id: player.id,
             username: player.user.username,
-            name: role.name,
+            role: role.name,
             aura: role.aura,
             team: role.team,
             channel: channel.id,
