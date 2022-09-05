@@ -73,7 +73,7 @@ module.exports = {
         let object = {
             id: player.id,
             username: player.user.username,
-            name: role.name,
+            role: role.name,
             aura: role.aura,
             team: role.team,
             channel: channel.id,
