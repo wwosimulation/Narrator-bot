@@ -10,7 +10,7 @@ module.exports = (client) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
         console.log(interaction.customId)
         if (interaction.customId == "igjoin") {
-            interaction.deferUpdate()
+            await interaction.deferUpdate()
             let guy = interaction.member
             if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) //spec
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
@@ -32,7 +32,7 @@ module.exports = (client) => {
             if (guy.roles.cache.has(ids.alive)) guy.roles.remove(ids.alive) //alive
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
             if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
-            interaction.deferUpdate()
+            await interaction.deferUpdate()
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
         }
         if (interaction.customId == "ashish-ignarr") {
@@ -49,10 +49,10 @@ module.exports = (client) => {
                 if (interaction.member.roles.cache.has(ids.narrator)) return interaction.reply({ content: "You already have this role!", ephemeral: true })
                 interaction.member.roles.add(ids.narrator)
             }
-            interaction.deferUpdate()
+            await interaction.deferUpdate()
         }
         if (interaction.customId.startsWith("gwjoin")) {
-            let gameName = interaction.customId.split("-")[1]
+            let gameName = interaction.customId.split("-").slice(1).join("-")
             let guy = interaction.member
             if (guy.roles.cache.has("606123628693684245")) return interaction.reply({ content: "You are game banned! You cannot join any games", ephemeral: true })
             if (guy.roles.cache.has("606123676668133428")) return interaction.reply({ content: "You have already joined the game! Check <#606123823074377740> for the link!", ephemeral: true })
