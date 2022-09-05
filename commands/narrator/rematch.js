@@ -8,7 +8,7 @@ module.exports = {
     narratorOnly: true,
     gameOnly: true,
     run: async (message, args, client) => {
-        if (db.get(`game.id`)) return message.channel.send(`There is already a game in progress. Use \`+reset\` first.`)
+        if(db.get(`game.id`)) return message.channel.send(`There is already a game in progress. Use \`+reset\` first.`)
 
         client.guilds.cache.get(ids.server.game).members.cache.each((m) => {
             if (m.roles.cache.has(ids.dead) || m.roles.cache.has(ids.alive)) {
@@ -25,8 +25,10 @@ module.exports = {
 
         await client.commands.get("gwhost").run(message, [args.length > 0 ? args.join(" ") : db.get("gameCode") + " - rematch"], client, true)
         await client.commands.get("enable").run(message, ["all"], client)
-        await message.guild.channels.cache.find((c) => c.name === "carl-welcome-left-log")?.send("== Rematch ==")
+        await message.guild.channels.cache.find((c) => c.name === "carl-welcome-left-log")
+            ?.send("== rematch ==")
 
         message.channel.send("Rematch game created! Please make sure to clear all channels and we are ready to go!")
-    },
+
+    }
 }

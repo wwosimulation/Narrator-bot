@@ -2,6 +2,7 @@ module.exports = {
     name: "gamepanel",
     description: "Send the game panel.",
     usage: `${process.env.PREFIX}gamepanel`,
+    devOnly: true,
     run: async (message, args, client) => {
         if (!client.botAdmin(message.author.id)) return
 

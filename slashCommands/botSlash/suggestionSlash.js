@@ -6,11 +6,6 @@ module.exports = {
         description: "Suggest a new feature for the bot.",
         defaultPermission: true,
     },
-    permissions: {
-        sim: [{ id: "606138123260264488", type: "ROLE", permission: true }],
-        game: [{ id: "892046210536468500", type: "ROLE", permission: true }],
-    },
-    server: ["sim", "game"],
     run: async (interaction, client) => {
         // create an embed
         let embed = {

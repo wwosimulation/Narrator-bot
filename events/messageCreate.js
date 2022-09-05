@@ -74,13 +74,14 @@ module.exports = (client) => {
         if (!command) return //If such command doesn't exist, ignore it
 
         //Ignore guild-only commands inside DMs
-        if (command.guildOnly && message.channel.type !== "text") {
+        if (command.guildOnly && message.channel.type !== "GUILD_TEXT") {
             return message.reply("I can't execute that command in DMs!")
         }
 
         if (command.gameOnly && message.guild.id != config.ids.server.game) return message.channel.send("That command can only be used in the game server!")
         if (command.narratorOnly && !config.fn.isNarrator(message.member)) return
         if (command.staffOnly && !config.fn.isStaff(message.member)) return
+        if (command.devOnly && !config.fn.isDev(message.member)) return
 
         //Check if that command needs arguments
 

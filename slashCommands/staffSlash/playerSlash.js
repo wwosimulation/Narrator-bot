@@ -61,18 +61,6 @@ module.exports = {
         ],
         defaultPermission: false,
     },
-    permissions: {
-        sim: [
-            { id: ids.staff, type: "ROLE", permission: true }, // @Staff
-            { id: ids.afkstaff, type: "ROLE", permission: true }, //@AFK STAFF
-            { id: "606167032425218084", type: "ROLE", permission: false }, // @Member
-        ],
-        game: [
-            { id: ids.narrator, type: "ROLE", permission: true }, // @Narrator
-            { id: ids.mini, type: "ROLE", permission: true }, // @Narrator Trainee
-            { id: ids.player, type: "ROLE", permission: false }, // @Player
-        ],
-    },
     server: ["sim", "game"],
     staffOnly: true,
     run: async (interaction, client) => {

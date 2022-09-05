@@ -53,13 +53,6 @@ module.exports = {
         ],
         defaultPermission: false,
     },
-    permissions: {
-        sim: [
-            { id: ids.staff, type: "ROLE", permission: true }, // @Staff
-            { id: ids.afkstaff, type: "ROLE", permission: true }, //@AFK STAFF
-            { id: "606167032425218084", type: "ROLE", permission: false }, // @Member
-        ],
-    },
     server: ["sim"],
     staffOnly: true,
     run: async (interaction, client) => {

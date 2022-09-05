@@ -25,7 +25,7 @@ module.exports = (client) => {
         if (maint && !client.botAdmin(interaction.user.id)) return interaction.reply({ content: interaction.l10n("maintenance"), ephemeral: true })
         if (blacklists.includes(`/${interaction.user.id}/`)) return interaction.reply({ content: interaction.l10n("blacklisted"), ephemeral: true })
 
-        if ((commandFile.narratorOnly && !config.fn.isNarrator(interaction.member)) || (commandFile.staffOnly && !config.fn.isStaff(interaction.member))) return interaction.reply({ content: "You are missing permissions to do that!", ephemeral: true })
+        if ((commandFile.narratorOnly && !config.fn.isNarrator(interaction.user)) || (commandFile.staffOnly && !config.fn.isStaff(interaction.user)) || (commandFile.devOnly && !config.fn.isDev(interaction.user))) return interaction.reply({ content: "You are missing permissions to do that!", ephemeral: true })
 
         if (!cooldowns.has(commandFile.name)) {
             cooldowns.set(commandFile.name, new Collection())
@@ -62,7 +62,7 @@ module.exports = (client) => {
         client.channels.cache.get("832884582315458570").send({ content: `Slash command used: **${interaction.commandName}**\nArguments: **${args.join(" ")}**\nUser: ${interaction.user.tag} (${interaction.user.id}\nChannel: ${interaction.channel.id}`, allowedMentions: { parse: [] } })
         await commandFile.run(interaction, client).catch((error) => {
             console.log(error)
-            if (interaction.replied) interaction.followUp({ content: interaction.l10n("error") })
+            if (interaction.replied || interaction.deferred) interaction.followUp({ content: interaction.l10n("error") })
             else interaction.reply({ content: interaction.l10n("error"), ephemeral: true })
         })
     })
