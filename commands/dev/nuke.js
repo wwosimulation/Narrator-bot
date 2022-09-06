@@ -16,7 +16,7 @@ module.exports = {
         }
 
         async function deleteCommand(commandName, guildId = null) {
-            let command = guildId ? (await client.application.commands.fetch({ guildId: guildId })).find(c => c.name == commandName) : (await client.application.commands.fetch()).find(c => c.name == commandName)
+            let command = guildId ? (await client.application.commands.fetch({ guildId: guildId })).find((c) => c.name == commandName) : (await client.application.commands.fetch()).find((c) => c.name == commandName)
             await command?.delete()?.then((cmd) => {
                 answer += `Delete ${cmd.name} - ${guildId ? client.guilds.resolve(guildId).name : "global"}\n`
             })
@@ -32,7 +32,6 @@ module.exports = {
                 })
                 await Promise.all(promises)
             }
-
         } else if (args[0] == "global") {
             if (args.length == 1) await bulkDelete()
             else {
@@ -46,19 +45,23 @@ module.exports = {
         } else if (args[0] == "all") {
             if (args.length == 1) {
                 await bulkDelete()
-                let promises = await client.guilds.cache.filter(g => g.commands.size > 0).map(async g => {
-                    await bulkDelete(g.id)
-                    return null
-                })
+                let promises = await client.guilds.cache
+                    .filter((g) => g.commands.size > 0)
+                    .map(async (g) => {
+                        await bulkDelete(g.id)
+                        return null
+                    })
                 await Promise.all(promises)
             } else {
                 args.shift()
                 await args.map(async (commandName) => {
                     await deleteCommand(commandName)
-                    let promises = await client.guilds.cache.filter(g => g.commands.size > 0).map(async g => {
-                        await deleteCommand(commandName, g.id)
-                        return null
-                    })
+                    let promises = await client.guilds.cache
+                        .filter((g) => g.commands.size > 0)
+                        .map(async (g) => {
+                            await deleteCommand(commandName, g.id)
+                            return null
+                        })
                     await Promise.all(promises)
                 })
             }
