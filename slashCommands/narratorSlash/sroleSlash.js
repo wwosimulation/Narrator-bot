@@ -200,35 +200,77 @@ module.exports = {
                     while (a < type) {
                         let c = roles[Math.floor(Math.random() * roles.length)]
                         if (c === "seer-apprentice" && !roleOptions[0].includes("seer") && !roleOptions[0].includes("aura-seer") && !roleOptions[0].includes("spirit-seer") && !roleOptions[0].includes("detective") && !roleOptions[0].includes("sheriff") && !roleOptions[0].includes("analyst") && !roleOptions[0].includes("mortician")) continue
-                        if (c === "jailer" && roleOptions[0].includes("warden")) continue;
-                        if (c === "warden" && roleOptions[0].includes("jailer")) continue;
-                        if (c === "warden" && roleOptions[0].includes("warden")) continue;
-                        if (c === "jailer" && roleOptions[0].includes("jailer")) continue;
-                        if (c === "president" && roleOptions[0].includes("president")) continue;
-                        if (c === "werewolf-fan" && !roleOptions[0].join(" ").toLowerCase().replace(/werewolf-fan/g, "").includes("wolf") ) continue;
-                        if (c === "priest" && !roleOptions[0].join(" ").toLowerCase().includes("wolf")) c = "marksman";
-                        roleOptions[0].push(c);
-                        b.push(c);
-                        a++;
+                        if (c === "jailer" && roleOptions[0].includes("warden")) continue
+                        if (c === "warden" && roleOptions[0].includes("jailer")) continue
+                        if (c === "warden" && roleOptions[0].includes("warden")) continue
+                        if (c === "jailer" && roleOptions[0].includes("jailer")) continue
+                        if (c === "president" && roleOptions[0].includes("president")) continue
+                        if (
+                            c === "werewolf-fan" &&
+                            !roleOptions[0]
+                                .join(" ")
+                                .toLowerCase()
+                                .replace(/werewolf-fan/g, "")
+                                .includes("wolf")
+                        )
+                            continue
+                        if (c === "priest" && !roleOptions[0].join(" ").toLowerCase().includes("wolf")) c = "marksman"
+                        roleOptions[0].push(c)
+                        b.push(c)
+                        a++
                     }
                 }
-                await interaction.editReply({ embeds: [{ title: "Suggested role list", color: 0x24989F, description: `${roleOptions[0].map(role => `${getEmoji(role.replace(/-/g, "_"), client)} ${getRole(role).name}`).join("\n")}` }], components: [{ type: 1, components: [{ type: 2, style: 3, label: "Continue", custom_id: "srole-continue" }, { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll" }] }] })
-
-                await interaction.channel.awaitMessageComponent()
-                .then(async i => {
-                    await i.deferUpdate()
-                    if (i.user.id !== interaction.user.id) return await i.followUp({ content: "This is not your button!", ephemeral: true })
-                    if (i.customId.includes("reroll")) return await getRoles()
-                    await i.editReply({ components: [{ type: 1, components: [{ type: 2, style: 3, label: "Continue", custom_id: "srole-continue", disabled: true }, { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll", disabled: true }] }] })
-                    await i.followUp("Alright....")
-                    await doRest()
-                }).catch(async e => {
-                    await interaction.editReply({ content: "_ _", components: [{ type: 1, components: [{ type: 2, style: 3, label: "Continue", custom_id: "srole-continue", disabled: true }, { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll", disabled: true }] }] })
+                await interaction.editReply({
+                    embeds: [{ title: "Suggested role list", color: 0x24989f, description: `${roleOptions[0].map((role) => `${getEmoji(role.replace(/-/g, "_"), client)} ${getRole(role).name}`).join("\n")}` }],
+                    components: [
+                        {
+                            type: 1,
+                            components: [
+                                { type: 2, style: 3, label: "Continue", custom_id: "srole-continue" },
+                                { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll" },
+                            ],
+                        },
+                    ],
                 })
+
+                await interaction.channel
+                    .awaitMessageComponent()
+                    .then(async (i) => {
+                        await i.deferUpdate()
+                        if (i.user.id !== interaction.user.id) return await i.followUp({ content: "This is not your button!", ephemeral: true })
+                        if (i.customId.includes("reroll")) return await getRoles()
+                        await i.editReply({
+                            components: [
+                                {
+                                    type: 1,
+                                    components: [
+                                        { type: 2, style: 3, label: "Continue", custom_id: "srole-continue", disabled: true },
+                                        { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll", disabled: true },
+                                    ],
+                                },
+                            ],
+                        })
+                        await i.followUp("Alright....")
+                        await doRest()
+                    })
+                    .catch(async (e) => {
+                        await interaction.editReply({
+                            content: "_ _",
+                            components: [
+                                {
+                                    type: 1,
+                                    components: [
+                                        { type: 2, style: 3, label: "Continue", custom_id: "srole-continue", disabled: true },
+                                        { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll", disabled: true },
+                                    ],
+                                },
+                            ],
+                        })
+                    })
             }
 
             await getRoles()
-            return;
+            return
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
                 rww.splice(rww.indexOf("Shadow Wolf"), 1)
