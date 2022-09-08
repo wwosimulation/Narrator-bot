@@ -68,11 +68,11 @@ module.exports = {
         let rolelist = []
         let players = []
         let excludes = db.get("excludes") || []
-        let banned = ["Violinist", "Wolf Summoner", "Analyst", "Mortician", "Flagger", "Locksmith"]
+        let banned = ["violinist", "wolf-summoner", "flagger", "locksmith", "gambler", "astronomer", "pumpkin-king", "jack", "easter-bunny", "santa-claus"]
         let randoms = ["rrv", "rv", "rsv", "rww", "rk", "random", "random-regular-villager", "random-voting", "random-strong-villager", "random-werewolf", "random-killer"]
         let random = Object.keys(require("../../config/src/descriptions.js"))
             ?.map((a) => a.replace(/\s/g, "-"))
-            .filter((a) => !a.includes("random"))
+            .filter((a) => !a.includes("random") && a !== "modded")
         let rrv = ["aura-seer", "avenger", "beast-hunter", "bodyguard", "doctor", "flower-child", "grave-robber", "grumpy-grandma", "loudmouth", "mad-scientist", "marksman", "mayor", "pacifist", "priest", "red-lady", "seer-apprentice", "sheriff", "spirit-seer", "tough-guy", "villager", "witch", "forger", "trapper"]
         let rsv = ["detective", "fortune-teller", "ritualist", "gunner", "jailer", "medium", "seer", "analyst", "warden", "vigilante"]
         let rww = random.filter((a) => a.toLowerCase().includes("wolf") && a !== "werewolf-fan")
@@ -152,64 +152,125 @@ module.exports = {
         } else if (gamemode == "chainreaction") {
             roleOptions = [["avenger", "witch", "avenger", "detective", "avenger", "witch", "avenger", "corruptor", "fool", "avenger", "avenger", "aura", "illusionist", "avenger", "fool", "avenger", "medium"]]
         } else if (gamemode == "random") {
-            let gameOptions = {
-                killers: {
-                    roles: [alive.members.size < 7 ? rww.filter((r) => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r)) : rww, alive.members.size >= 8 ? rk : rk.filter((a) => !["bomber", "arsonist", "cannibal"].includes(a))].join(",").split(","),
-                    min: Math.floor(alive.members.size / 4),
-                    max: Math.floor(alive.members.size / 2) - Math.round(alive.members.size * 0.16),
-                    maxSoloKillers: alive.members.size > 12 ? 2 : 1,
-                },
-                voters: {
-                    roles: rv,
-                    min: alive.members.size >= 8 ? 1 : 0,
-                    max: alive.members.size > 12 ? 2 : alive.members.size >= 8 ? 1 : 0,
-                },
-                strongVillagers: {
-                    roles: rsv.filter((a) => (alive.members.size >= 8 ? a : !["medium", "ritualist", "gunner", "vigilante", "fortune-teller"].includes(a))),
-                    min: Math.ceil(alive.members.size / 6),
-                    max: Math.ceil(alive.members.size / 2.5) - Math.round(alive.members.size * 0.16),
-                },
-                others: {
-                    roles: random
-                        .filter((p) => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p))
-                        .filter((r) => (alive.members.size <= 8 ? r !== "Cupid" : r))
-                        .filter((r) => (alive.members.size <= 12 ? r !== "President" : r)),
-                },
-            }
-
-            let kkllers = Math.floor(Math.random() * (gameOptions.killers.max + 1 - gameOptions.killers.min)) + gameOptions.killers.min
-            let kvoters = Math.floor(Math.random() * (gameOptions.voters.max + 1 - gameOptions.voters.min)) + gameOptions.voters.min
-            let kSVills = Math.floor(Math.random() * (gameOptions.strongVillagers.max + 1 - gameOptions.strongVillagers.min)) + gameOptions.strongVillagers.min
-            let kothers = alive.members.size - kkllers - kvoters - kSVills
-            console.log(kkllers, kvoters, kSVills, kothers)
-            if (alive.members.size >= 6 && kkllers === 1) kvoters += 1
-
-            let mappedOptions = {
-                0: gameOptions.killers,
-                1: gameOptions.voters,
-                2: gameOptions.strongVillagers,
-                3: gameOptions.others,
-            }
-            roleOptions = [[]]
-            let b = []
-            for (let i = 0; i < 4; i++) {
-                let type = [kkllers, kvoters, kSVills, kothers][i]
-                let roles = mappedOptions[i].roles
-                let a = 0
-                while (a < type) {
-                    let c = roles[Math.floor(Math.random() * roles.length)]
-                    if (c === "seer-apprentice" && !roleOptions[0].includes("seer") && !roleOptions[0].includes("aura-seer") && !roleOptions[0].includes("spirit-seer") && !roleOptions[0].includes("detective") && !!roleOptions[0].includes("sheriff")) continue
-                    if (c === "jailer" && roleOptions[0].includes("warden")) continue
-                    if (c === "warden" && roleOptions[0].includes("jailer")) continue
-                    if (c === "warden" && roleOptions[0].includes("warden")) continue
-                    if (c === "jailer" && roleOptions[0].includes("jailer")) continue
-                    if (c === "president" && roleOptions[0].includes("president")) continue
-                    if (c === "priest" && !roleOptions[0].join(" ").toLowerCase().includes("wolf")) c = "marksman"
-                    roleOptions[0].push(c)
-                    b.push(c)
-                    a++
+            async function getRoles() {
+                let gameOptions = {
+                    killers: {
+                        roles: [alive.members.size < 7 ? rww.filter((r) => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r)) : rww, alive.members.size >= 8 ? rk : rk.filter((a) => !["bomber", "arsonist", "cannibal"].includes(a))].join(",").split(","),
+                        min: Math.floor(alive.members.size / 4),
+                        max: Math.floor(alive.members.size / 2) - Math.round(alive.members.size * 0.16),
+                        maxSoloKillers: alive.members.size > 12 ? 2 : 1,
+                    },
+                    voters: {
+                        roles: rv,
+                        min: alive.members.size >= 8 ? 1 : 0,
+                        max: alive.members.size > 12 ? 2 : alive.members.size >= 8 ? 1 : 0,
+                    },
+                    strongVillagers: {
+                        roles: rsv.filter((a) => (alive.members.size >= 8 ? a : !["medium", "ritualist", "gunner", "vigilante", "fortune-teller"].includes(a))),
+                        min: Math.ceil(alive.members.size / 6),
+                        max: Math.ceil(alive.members.size / 2.5) - Math.round(alive.members.size * 0.16),
+                    },
+                    others: {
+                        roles: random
+                            .filter((p) => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p))
+                            .filter((r) => (alive.members.size <= 8 ? r !== "Cupid" : r))
+                            .filter((r) => (alive.members.size <= 12 ? r !== "President" : r)),
+                    },
                 }
+
+                let kkllers = Math.floor(Math.random() * (gameOptions.killers.max + 1 - gameOptions.killers.min)) + gameOptions.killers.min
+                let kvoters = Math.floor(Math.random() * (gameOptions.voters.max + 1 - gameOptions.voters.min)) + gameOptions.voters.min
+                let kSVills = Math.floor(Math.random() * (gameOptions.strongVillagers.max + 1 - gameOptions.strongVillagers.min)) + gameOptions.strongVillagers.min
+                let kothers = alive.members.size - kkllers - kvoters - kSVills
+                console.log(kkllers, kvoters, kSVills, kothers)
+                if (alive.members.size >= 6 && kkllers === 1) kvoters += 1
+
+                let mappedOptions = {
+                    0: gameOptions.killers,
+                    1: gameOptions.voters,
+                    2: gameOptions.strongVillagers,
+                    3: gameOptions.others,
+                }
+                roleOptions = [[]]
+                let b = []
+                for (let i = 0; i < 4; i++) {
+                    let type = [kkllers, kvoters, kSVills, kothers][i]
+                    let roles = mappedOptions[i].roles
+                    let a = 0
+                    while (a < type) {
+                        let c = roles[Math.floor(Math.random() * roles.length)]
+                        if (c === "seer-apprentice" && !roleOptions[0].includes("seer") && !roleOptions[0].includes("aura-seer") && !roleOptions[0].includes("spirit-seer") && !roleOptions[0].includes("detective") && !roleOptions[0].includes("sheriff") && !roleOptions[0].includes("analyst") && !roleOptions[0].includes("mortician")) continue
+                        if (c === "jailer" && roleOptions[0].includes("warden")) continue
+                        if (c === "warden" && roleOptions[0].includes("jailer")) continue
+                        if (c === "warden" && roleOptions[0].includes("warden")) continue
+                        if (c === "jailer" && roleOptions[0].includes("jailer")) continue
+                        if (c === "president" && roleOptions[0].includes("president")) continue
+                        if (
+                            c === "werewolf-fan" &&
+                            !roleOptions[0]
+                                .join(" ")
+                                .toLowerCase()
+                                .replace(/werewolf-fan/g, "")
+                                .includes("wolf")
+                        )
+                            continue
+                        if (c === "priest" && !roleOptions[0].join(" ").toLowerCase().includes("wolf")) c = "marksman"
+                        roleOptions[0].push(c)
+                        b.push(c)
+                        a++
+                    }
+                }
+                await interaction.editReply({
+                    embeds: [{ title: "Suggested role list", color: 0x24989f, description: `${roleOptions[0].map((role) => `${getEmoji(role.replace(/-/g, "_"), client)} ${getRole(role).name}`).join("\n")}` }],
+                    components: [
+                        {
+                            type: 1,
+                            components: [
+                                { type: 2, style: 3, label: "Continue", custom_id: "srole-continue" },
+                                { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll" },
+                            ],
+                        },
+                    ],
+                })
+
+                await interaction.channel
+                    .awaitMessageComponent()
+                    .then(async (i) => {
+                        await i.deferUpdate()
+                        if (i.user.id !== interaction.user.id) return await i.followUp({ content: "This is not your button!", ephemeral: true })
+                        if (i.customId.includes("reroll")) return await getRoles()
+                        await i.editReply({
+                            components: [
+                                {
+                                    type: 1,
+                                    components: [
+                                        { type: 2, style: 3, label: "Continue", custom_id: "srole-continue", disabled: true },
+                                        { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll", disabled: true },
+                                    ],
+                                },
+                            ],
+                        })
+                        await i.followUp("Alright....")
+                        await doRest()
+                    })
+                    .catch(async (e) => {
+                        await interaction.editReply({
+                            content: "_ _",
+                            components: [
+                                {
+                                    type: 1,
+                                    components: [
+                                        { type: 2, style: 3, label: "Continue", custom_id: "srole-continue", disabled: true },
+                                        { type: 2, style: 4, label: "Reroll", custom_id: "srole-reroll", disabled: true },
+                                    ],
+                                },
+                            ],
+                        })
+                    })
             }
+
+            await getRoles()
+            return
         } else if (gamemode == "ranked") {
             if (alive.members.size < 9) {
                 rww.splice(rww.indexOf("Shadow Wolf"), 1)
@@ -249,106 +310,112 @@ module.exports = {
             roleOptions.push(roles.split(" "))
         }
 
-        shuffle(roleOptions)
-        rolelist = roleOptions[0].splice(0, db.get(`players`).length)
+        await doRest()
 
-        let dcMessage = []
+        async function doRest() {
+            shuffle(roleOptions)
+            rolelist = roleOptions[0].splice(0, db.get(`players`).length)
 
-        rolelist.forEach((role, i) => {
-            if (gamemode === "random") role = "random"
-            if (role == "rk") {
-                shuffle(rk)
-                role = rk[0]
-                rolelelist[i] = role
-                dcMessage.push(`${getEmoji(`random_killer`, client)} Random Killer`)
-            } else if (role == "rrv") {
-                shuffle(rrv)
-                role = rrv[0]
-                rolelist[i] = role
-                dcMessage.push(`${getEmoji(`random_regular_villager`, client)} Random Regular Villager`)
-            } else if (role == "rsv") {
-                shuffle(rsv)
-                role = rsv[0]
-                rolelist[i] = role
-                dcMessage.push(`${getEmoji(`random_strong_villager`, client)} Random Strong Villager`)
-            } else if (role == "rv") {
-                shuffle(rv)
-                role = rv[0]
-                rolelist[i] = role
-                dcMessage.push(`${getEmoji(`random_voting`, client)} Random Voting`)
-            } else if (role == "rww") {
-                shuffle(rww)
-                role = rww[0]
-                rolelist[i] = role
-                dcMessage.push(`${getEmoji(`random_werewolf`, client)} Random Werewolf`)
-            } else if (role == "random") {
-                shuffle(random)
-                role = random[0]
-                rolelist[i] = role
-                dcMessage.push(`${getEmoji(`random`, client)} Random`)
-            } else {
-                dcMessage.push(`${getEmoji(getRole(role).name.toLowerCase().replace(/\s/g, "_").replace(/\-/g, "_"), client)} ${getRole(role).name}`)
+            let dcMessage = []
+
+            rolelist.forEach((role, i) => {
+                if (gamemode === "random") {
+                    role = "random"
+                    dcMessage.push(`${getEmoji("random", client)} Random`)
+                } else if (role == "rk") {
+                    shuffle(rk)
+                    role = rk[0]
+                    rolelist[i] = role
+                    dcMessage.push(`${getEmoji(`random_killer`, client)} Random Killer`)
+                } else if (role == "rrv") {
+                    shuffle(rrv)
+                    role = rrv[0]
+                    rolelist[i] = role
+                    dcMessage.push(`${getEmoji(`random_regular_villager`, client)} Random Regular Villager`)
+                } else if (role == "rsv") {
+                    shuffle(rsv)
+                    role = rsv[0]
+                    rolelist[i] = role
+                    dcMessage.push(`${getEmoji(`random_strong_villager`, client)} Random Strong Villager`)
+                } else if (role == "rv") {
+                    shuffle(rv)
+                    role = rv[0]
+                    rolelist[i] = role
+                    dcMessage.push(`${getEmoji(`random_voting`, client)} Random Voting`)
+                } else if (role == "rww") {
+                    shuffle(rww)
+                    role = rww[0]
+                    rolelist[i] = role
+                    dcMessage.push(`${getEmoji(`random_werewolf`, client)} Random Werewolf`)
+                } else if (role == "random") {
+                    shuffle(random)
+                    role = random[0]
+                    rolelist[i] = role
+                    dcMessage.push(`${getEmoji(`random`, client)} Random`)
+                } else {
+                    dcMessage.push(`${getEmoji(getRole(role).name.toLowerCase().replace(/\s/g, "_").replace(/\-/g, "_"), client)} ${getRole(role).name}`)
+                }
+            })
+
+            shuffle(rolelist)
+
+            let exactList = []
+
+            for (let index = 0; index < rolelist.length; index++) {
+                let role = rolelist[index]
+                let player = db.get(`players`)[index]
+                let roleData = getRole(role)
+                exactList.push(roleData.name)
+                db.set(`player_${player}.role`, roleData.name)
+                db.set(`player_${player}.team`, roleData.team)
+                db.set(`player_${player}.aura`, roleData.aura || "Unknown")
+
+                let guy = await interaction.guild.members.fetch(player)
+
+                let channel = await interaction.guild.channels.create(`priv-${roleData.name.toLowerCase().replace(/\s/g, "-")}`, {
+                    parent: "892046231516368906",
+                })
+
+                db.set(`player_${player}.channel`, channel.id)
+
+                await channel.permissionOverwrites.create(interaction.guild.id, {
+                    VIEW_CHANNEL: false,
+                })
+
+                await channel.permissionOverwrites.create(guy.id, {
+                    SEND_MESSAGES: true,
+                    VIEW_CHANNEL: true,
+                    READ_MESSAGE_HISTORY: true,
+                })
+
+                await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
+
+                await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
+
+                await channel.send(`${roleData.description}`)
+
+                await channel.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
             }
-        })
 
-        shuffle(rolelist)
+            await oriMsg.edit("If everything looks correct, use `+startgame` to start the game!")
 
-        let exactList = []
+            client.commands.get("playerinfo").run(oriMsg, [], client)
 
-        for (let index = 0; index < rolelist.length; index++) {
-            let role = rolelist[index]
-            let player = db.get(`players`)[index]
-            let roleData = getRole(role)
-            exactList.push(roleData.name)
-            db.set(`player_${player}.role`, roleData.name)
-            db.set(`player_${player}.team`, roleData.team)
-            db.set(`player_${player}.aura`, roleData.aura || "Unknown")
+            db.set(`gamePhase`, -1)
 
-            let guy = await interaction.guild.members.fetch(player)
+            db.set(`game.gamemode`, gamemode)
+            db.set(`game.roles`, exactList)
+            db.set(`game.hideRoles`, hideroles ? true : false)
 
-            let channel = await interaction.guild.channels.create(`priv-${roleData.name.toLowerCase().replace(/\s/g, "-")}`, {
-                parent: "892046231516368906",
-            })
+            let roleMsg = `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes.size > 0 ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`
 
-            db.set(`player_${player}.channel`, channel.id)
+            if (hideroles) roleMsg = "Role list is hidden"
 
-            await channel.permissionOverwrites.create(interaction.guild.id, {
-                VIEW_CHANNEL: false,
-            })
+            await dayChat.permissionOverwrites.edit(alive.id, { SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, VIEW_CHANNEL: true })
 
-            await channel.permissionOverwrites.create(guy.id, {
-                SEND_MESSAGES: true,
-                VIEW_CHANNEL: true,
-                READ_MESSAGE_HISTORY: true,
-            })
+            let dcSent = await dayChat.send(roleMsg)
 
-            await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
-
-            await channel.permissionOverwrites.create(narrator.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, MANAGE_CHANNELS: true, MENTION_EVERYONE: true, ATTACH_FILES: true })
-
-            await channel.send(`${roleData.description}`)
-
-            await channel.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
+            await dcSent.pin()
         }
-
-        await oriMsg.edit("If everything looks correct, use `+startgame` to start the game!")
-
-        client.commands.get("playerinfo").run(oriMsg, [], client)
-
-        db.set(`gamePhase`, -1)
-
-        db.set(`game.gamemode`, gamemode)
-        db.set(`game.roles`, exactList)
-        db.set(`game.hideRoles`, hideroles ? true : false)
-
-        let roleMsg = `${gamemode.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())} Game:\n${shuffle(dcMessage).join("\n")}\n${excludes.size > 0 ? `Excluded roles: ${excludes.map((x) => (getRole(x).name ? getRole(x).name : "")).join(", ")}` : ""}`
-
-        if (hideroles) roleMsg = "Role list is hidden"
-
-        await dayChat.permissionOverwrites.edit(alive.id, { SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, VIEW_CHANNEL: true })
-
-        let dcSent = await dayChat.send(roleMsg)
-
-        await dcSent.pin()
     },
 }
