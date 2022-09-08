@@ -23,7 +23,9 @@ module.exports = {
                 m.edit(fn.disableButtons(m))
             })
         db.delete(`game`)
-        client.guilds.cache.get(ids.server.game).channels.cache.find(c => c.name === "carl-welcome-left-log")
+        client.guilds.cache
+            .get(ids.server.game)
+            .channels.cache.find((c) => c.name === "carl-welcome-left-log")
             ?.send("== Cancel ==")
     },
 }
