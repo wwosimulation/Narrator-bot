@@ -12,13 +12,13 @@ module.exports = {
 
         client.guilds.cache.get(ids.server.game).members.cache.each((m) => {
             if (m.roles.cache.has(ids.dead) || m.roles.cache.has(ids.alive)) {
-                m.roles.remove(ids.dead)
-                m.roles.remove(ids.alive)
-                m.roles.add(ids.spectator)
+                let memRoles = m.roles.cache.filter(r => ![ids.dead, ids.alive].includes(r.id)).map(r => r.id)
+                memRoles.push(ids.spectator)
+                m.roles.set(memRoles)
                 if (!m.roles.cache.has(ids.immunity)) {
                     m.setNickname("lazy spectatorz")
                 } else {
-                    m.setNickname(guy.user.username)
+                    m.setNickname(m.user.username)
                 }
             }
         })

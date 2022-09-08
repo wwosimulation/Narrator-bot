@@ -109,7 +109,7 @@ module.exports = {
             if (player.id === target) return await message.channel.send(`You do know that you cannot your own items to yourself?`)
         }
 
-        if (player.role === "Fotune Teller") {
+        if (player.role === "Fortune Teller") {
             let channel = message.guild.channels.cache.get(db.get(`player_${target}`))
             let embed = {
                 title: "You have received a fortune teller's card.",

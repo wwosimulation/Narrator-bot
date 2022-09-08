@@ -269,7 +269,7 @@ module.exports = async (client) => {
                 // set the previous roles
                 let previousRoles = player.allRoles || [player.role]
                 previousRoles.push(target.role)
-                db.set(`player_${guy.id}.allRoles`, previousRoles)
+                db.set(`player_${player.id}.allRoles`, previousRoles)
 
                 db.delete(`player_${doppel}.target`)
                 Object.entries(target).forEach((entry) => {

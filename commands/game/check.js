@@ -130,7 +130,7 @@ module.exports = {
 
         if (player.role === "Sheriff") {
             db.set(`player_${player.id}.target`, target[0])
-            await message.channel.send(`${getEmoji("snipe", client)} You decided to look out for **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0].username}`)}**!`)
+            await message.channel.send(`${getEmoji("snipe", client)} You decided to look out for **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**!`)
         }
 
         if (player.role === "Evil Detective") {

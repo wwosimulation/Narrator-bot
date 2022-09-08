@@ -34,6 +34,6 @@ module.exports = {
         if (player.id === target) return await message.channel.send("You cannot copy yourself!")
 
         db.set(`player_${player.id}.target`, target)
-        message.channel.send(`${getEmoji("copy", client)} You have selected to copy **${players.indexOf(target) + 1} ${db.get(`player_${player}`).username}**!`)
+        message.channel.send(`${getEmoji("copy", client)} You have selected to copy **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**!`)
     },
 }
