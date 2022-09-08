@@ -12,7 +12,7 @@ module.exports = {
 
         client.guilds.cache.get(ids.server.game).members.cache.each((m) => {
             if (m.roles.cache.has(ids.dead) || m.roles.cache.has(ids.alive)) {
-                let memRoles = m.roles.cache.filter(r => ![ids.dead, ids.alive].includes(r.id)).map(r => r.id)
+                let memRoles = m.roles.cache.filter((r) => ![ids.dead, ids.alive].includes(r.id)).map((r) => r.id)
                 memRoles.push(ids.spectator)
                 m.roles.set(memRoles)
                 if (!m.roles.cache.has(ids.immunity)) {
