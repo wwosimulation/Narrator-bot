@@ -154,14 +154,10 @@ module.exports = {
         } else if (gamemode == "chainreaction") {
             roleOptions = [["avenger", "witch", "avenger", "detective", "avenger", "witch", "avenger", "corruptor", "fool", "avenger", "avenger", "aura", "illusionist", "avenger", "fool", "avenger", "medium"]]
         } else if (gamemode == "random") {
-
             if (alive.members.size < 8) {
                 let bannedRoles = ["shadow-wolf", "sorcerer", "split-wolf", "medium", "analyst", "ritualist", "gunner", "vigilante", "fortune-teller", "bomber", "arsonist", "sect-leader", "zombie", "cannibal", "evil-detective", "cupid", "instigator", "president"]
                 for (let banned of bannedRoles) {
-                    rww.indexOf(banned) !== -1 ? rww.splice(rww.indexOf(banned), 1) :
-                    rk.indexOf(banned) !== -1 ? rk.splice(rk.indexOf(banned), 1) :
-                    rsv.indexOf(banned) !== -1 ? rsv.splice(rsv.indexOf(banned), 1) :
-                    random.splice(random.indexOf(banned), 1)
+                    rww.indexOf(banned) !== -1 ? rww.splice(rww.indexOf(banned), 1) : rk.indexOf(banned) !== -1 ? rk.splice(rk.indexOf(banned), 1) : rsv.indexOf(banned) !== -1 ? rsv.splice(rsv.indexOf(banned), 1) : random.splice(random.indexOf(banned), 1)
                 }
             }
 
@@ -205,7 +201,7 @@ module.exports = {
                     3: gameOptions.others,
                 }
                 roleOptions = [[]]
-               
+
                 let b = []
                 for (let i = 0; i < 4; i++) {
                     let type = [kkllers, kvoters, kSVills, kothers][i]

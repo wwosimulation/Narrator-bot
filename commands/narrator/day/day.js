@@ -269,13 +269,13 @@ module.exports = {
         if (db.get(`game.gamemode`) === "elements") {
             let elements = ["sunny", "foggy", "rainy", "thunderstorm", "tornado", "blizzard", "heatwave"]
             let messages = {
-                "sunny": "The villagers are happy today.",
-                "foggy": "Everyone's votes will be hidden today.",
-                "rainy": "A random player's role will be revealed today.",
-                "thunderstorm": "A random player will be killed today",
-                "tornado": "Every alive player's position has been reshuffled today.",
-                "blizzard": "Two random players will be frozen today.",
-                "heatwave": "It's too hot to discuss today, voting will start now."
+                sunny: "The villagers are happy today.",
+                foggy: "Everyone's votes will be hidden today.",
+                rainy: "A random player's role will be revealed today.",
+                thunderstorm: "A random player will be killed today",
+                tornado: "Every alive player's position has been reshuffled today.",
+                blizzard: "Two random players will be frozen today.",
+                heatwave: "It's too hot to discuss today, voting will start now.",
             }
 
             shuffle(elements)
@@ -285,9 +285,9 @@ module.exports = {
             await dayChat.send(`${getEmoji("day", client)} Day ${Math.floor(db.get(`gamePhase`) / 3) + 1} has started! Get ready to discuss!`)
             await dayChat.send(`Today's weather is: ${weather}\n${gameMessage}`)
             await dayChat.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
-            await dayChat.permissionOverwrites.edit(aliveRole.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })    
-            
-            return;
+            await dayChat.permissionOverwrites.edit(aliveRole.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
+
+            return
         }
 
         dayChat.send(`${getEmoji("day", client)} Day ${Math.floor(db.get(`gamePhase`) / 3) + 1} has started! Get ready to discuss!`)
