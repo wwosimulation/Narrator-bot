@@ -161,7 +161,7 @@ module.exports = {
             db.set(`player_${insti}.target`, [player1, player2])
             let channel1 = message.guild.channels.cache.get(db.get(`player_${player1}`)?.channel)
             let channel2 = message.guild.channels.cache.get(db.get(`player_${player2}`)?.channel)
-            let channel = mesage.guild.channels.cache.get(db.get(`player_${insti}`)?.channel)
+            let channel = message.guild.channels.cache.get(db.get(`player_${insti}`)?.channel)
             let player = db.get(`player_${insti}`)
             let rec1 = db.get(`player_${player1}`)
             let rec2 = db.get(`player_${recruit2}`)

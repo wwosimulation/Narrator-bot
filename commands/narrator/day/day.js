@@ -287,6 +287,7 @@ module.exports = {
             await dayChat.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
             await dayChat.permissionOverwrites.edit(aliveRole.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
 
+            require(`./${weather}.js`)(message, client)
             return
         }
 
