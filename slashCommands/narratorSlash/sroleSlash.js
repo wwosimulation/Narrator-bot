@@ -2,6 +2,7 @@ const shuffle = require("shuffle-array")
 const db = require("quick.db")
 const pull = require("array-pull")
 const { getRole, getEmoji, fn, ids } = require("../../config")
+const mongo = require("../../db")
 
 module.exports = {
     command: {
@@ -117,10 +118,12 @@ module.exports = {
         // loop through each player and set their correct nickname
         alive.members
             .sort((a, b) => Number(b.nickname) - Number(a.nickname))
-            .map((a) => a)
-            .forEach((player, i) => {
-                if (player.nickname !== i + 1) player.setNickname(`${i + 1}`)
-                players.push(player.id)
+            .map((a) => {
+                players.push(a.id)
+                return a
+            })
+            .forEach(async (player, i) => {
+                if (player.nickname !== i + 1) player.setNickname(`${i + 1}` + (await mongo.players.findOne({user: player.id})).rename ? ` | ${player.username}` : "")
                 db.set(`player_${player.id}`, { id: player.id, username: player.user.username })
             })
 
