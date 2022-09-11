@@ -12,7 +12,10 @@ module.exports = {
         await fn.sleep(3000)
         await clearJoin(client)
         await m.edit("Game end complete!").catch(() => {})
-        await client.guilds.cache.get(ids.server.game).channels.cache.find((c) => c.name === "carl-welcome-left-log")?.send("== Game End ==")
+        await client.guilds.cache
+            .get(ids.server.game)
+            .channels.cache.find((c) => c.name === "carl-welcome-left-log")
+            ?.send("== Game End ==")
     },
 }
 
