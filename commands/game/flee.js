@@ -26,7 +26,7 @@ module.exports = {
                     client.emit("playerKilled", db.get(`player_${guy.id}`), "NARRATOR")
                 }
             }
-        } else if (message.channel.name.includes("priv") || message.channel.name == "day-chat") {
+        } else if (message.channel?.parentId == "892046231516368906" || message.channel.name == "day-chat") {
             if (!message.member.roles.cache.has(ids.alive)) return
             let row = {
                 type: 1,

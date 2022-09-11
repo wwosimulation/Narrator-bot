@@ -6,17 +6,6 @@ const { shop, ids, fn, getEmoji } = require("../config")
 
 const emojis = ["🍬", "🍭", "🍫"]
 const { players } = require("../db")
-const terrorCheck = (message) => {
-    let prog = message.guild.channels.cache.filter((c) => c.name === "priv-prognosticator").map((x) => x.id)
-    let dayCount = Math.floor(db.get(`gamePhase`) / 3) + 1
-    let res = false
-    for (let i = 0; i < prog.length; i++) {
-        let terrorDay = db.get(`terror_${prog[i]}.day`) || "no"
-        let terrorGuy = db.get(`terror_${prog[i]}.guy`) || "no"
-        if (terrorDay !== "no" && terrorGuy !== "no" && terrorDay >= dayCount && message.member.nickname === terrorGuy) res = true
-    }
-    return res
-}
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {

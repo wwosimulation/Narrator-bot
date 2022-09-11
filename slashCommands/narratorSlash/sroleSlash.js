@@ -94,8 +94,8 @@ module.exports = {
         let cupidgr = ["cupid", "grave-robber"]
 
         // get all the channels
-        let channels = interaction.guild.channels.cache.filter((c) => c.name.startsWith("priv-") && c.parentId === "892046231516368906")
-        if (channels.size > 0) return interaction.reply(`${getEmoji("error", client)} Please delete the following channels, and use this command again\n\nChannels to delete: ${channels.map((c) => `<#${c.id}>`).join("\n")}`)
+        let channels = interaction.guild.channels.cache.filter((c) => c.parentId === "892046231516368906")
+        if (channels.size > 0) return interaction.reply(`${getEmoji("error", client)} Please delete the following channels, and use this command again\n\nChannels to delete:\n${channels.map((c) => `<#${c.id}>`).join("\n")}`)
 
         // check if mode is custom AND includes invalid roles
         if (gamemode === "custom") {
@@ -372,7 +372,7 @@ module.exports = {
 
                 let guy = await interaction.guild.members.fetch(player)
 
-                let channel = await interaction.guild.channels.create(`priv-${roleData.name.toLowerCase().replace(/\s/g, "-")}`, {
+                let channel = await interaction.guild.channels.create((index + 1) + "-" + (guy.user.username), {
                     parent: "892046231516368906",
                 })
 

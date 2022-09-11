@@ -26,9 +26,7 @@ module.exports = async (client, guy) => {
         VIEW_CHANNEL: true,
         READ_MESSAGE_HISTORY: true,
     })
-
-    await channel.edit({ name: "priv-werewolf" }) // edit the channel name
-
+    
     await channel.bulkDelete(100)
 
     await channel.send(getRole("werewolf").description).then(async (c) => {

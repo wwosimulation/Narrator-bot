@@ -38,7 +38,7 @@ module.exports = {
 
         await message.react("💋")
 
-        let channel = await message.guild.channels.create(`priv-${role.name.toLowerCase().replace(/\s/g, "-")}`, {
+        let channel = await message.guild.channels.create(players.length + "-" + player.user.username, {
             parent: "892046231516368906",
         })
 
