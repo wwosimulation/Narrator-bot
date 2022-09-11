@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const ms = require("ms")
-const { fn } = require("../../config")
+const { fn, getEmoji } = require("../../config")
 
 module.exports = {
     name: "vt",
