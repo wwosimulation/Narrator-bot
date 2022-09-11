@@ -11,10 +11,6 @@ module.exports = {
         let server = client.guilds.cache.get(ids.server.sim)
 
         server.channels.cache.find((c) => c.name === "game-announcements").send(`Game was canceled. Sorry for the inconvenience!`)
-        let t = server.roles.cache.get(ids.server.sim).members
-        t.forEach((e) => {
-            e.roles.remove("606123676668133428") //joining role
-        })
         let mid = db.get("game.id")
         server.channels.cache
             .get("606123818305585167") //game warning
@@ -23,6 +19,7 @@ module.exports = {
                 m.edit(fn.disableButtons(m))
             })
         db.delete(`game`)
+        client.commands.get("bye").run(message, args, client)
         client.guilds.cache
             .get(ids.server.game)
             .channels.cache.find((c) => c.name === "carl-welcome-left-log")

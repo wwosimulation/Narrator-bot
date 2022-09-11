@@ -1,24 +1,23 @@
 const { ids, fn } = require("../../config")
-const db = require("quick.db")
 
 module.exports = {
     name: "bye",
-    description: "Clean the game server.",
+    description: "Kick all players and spectators.",
     usage: `${process.env.PREFIX}bye`,
     gameOnly: true,
     narratorOnly: true,
     run: async (message, args, client) => {
-        kick(message)
+        kick(client)
         let m = await message.channel.send("Players have been kicked, I am now ending the game and deleting the role .")
         await fn.sleep(3000)
         await clearJoin(client)
         await m.edit("Game end complete!").catch(() => {})
-        await message.guild.channels.cache.find((c) => c.name === "carl-welcome-left-log")?.send("== Game End ==")
+        await client.guilds.cache.get(ids.server.game).channels.cache.find((c) => c.name === "carl-welcome-left-log")?.send("== Game End ==")
     },
 }
 
-const kick = (message) => {
-    message.guild.members.cache.forEach((e) => {
+const kick = (client) => {
+    client.guilds.cache.get(ids.server.game).members.cache.forEach((e) => {
         if (!e.permissions.any(["MANAGE_CHANNELS", "ADMINISTRATOR", "MANAGE_ROLES"])) {
             e.kick("Game end")
             console.log(`Kicked ${e.user.tag}`)
