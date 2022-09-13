@@ -80,12 +80,6 @@ module.exports = async (client, alivePlayersBefore) => {
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
     const dreamcatchers = alivePlayersBefore.filter((p) => db.get(`player_${p}`).role === "Dreamcatcher") // get the alive Dreamcatchers array - Array<Snowflake>
 
-    if (db.get(`game.peace`) === Math.floor(db.get(`gamePhase`) / 3) + 1) {
-        let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
-        await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** could not be killed as it was a peaceful night!`) // sends an error message
-        await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the player in the channel
-        return true
-    }
 
     // loop through each dreamcatcher
     for (let dc of dreamcatchers) {
@@ -93,11 +87,20 @@ module.exports = async (client, alivePlayersBefore) => {
 
         // check if the dc has a target
         if (attacker.target) {
+            
             // deletes the target
             db.delete(`player_${attacker.id}.target`) // don't worry, this won't affect the current target
 
             // delete the target
             db.delete(`player_${dc}.target`) // don't worry, this won't affect the current target
+            
+            
+            if (db.get(`game.peace`) === Math.floor(db.get(`gamePhase`) / 3) + 1) {
+                let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
+                await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** could not be killed as it was a peaceful night!`) // sends an error message
+                await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the player in the channel
+                return true
+            }
 
             // check if the dc's target is alive
             let guy = db.get(`player_${attacker.target}`)
