@@ -21,7 +21,7 @@ module.exports = async (client) => {
 
         // mute the player
         db.set(`player_${granny.id}.lastMuted`, guy.id) // set the last muted player as the current player
-        db.set(`player_${guy.id}.muted`)
+        db.set(`player_${guy.id}.muted`, true)
         await dayChat.send(`${getEmoji("ggmute", client)} **${players.indexOf(guy.id) + 1} ${guy.username}** can't talk or vote today!`) // sends a message in day chat
         await dayChat.permissionOverwrites.edit(guy.id, { SEND_MESSAGES: false }) // change the permission of this player
 
