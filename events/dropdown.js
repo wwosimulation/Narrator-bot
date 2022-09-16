@@ -113,7 +113,7 @@ module.exports = (client) => {
 
                 db.set(`player_${interaction.member.id}.vote`, target)
                 if (db.get(`game.isShadow`) || db.get(`game.fog`)) return interaction.followUp({ content: `${getEmoji("vote", client)} You have voted **${interaction.values[0].split("-")[1]} ${db.get(`player_${target}`).username}**.`, ephemeral: true })
-                let omg = await interaction.message.channel.send(`${getEmoji("vote", client)} **${allPlayers.indexOf(interaction.user.id)+1} ${interaction.user.username}** voted **${interaction.values[0].split("-")[1]} ${db.get(`player_${target}`).username}**`)
+                let omg = await interaction.message.channel.send(`${getEmoji("vote", client)} **${allPlayers.indexOf(interaction.user.id) + 1} ${interaction.user.username}** voted **${interaction.values[0].split("-")[1]} ${db.get(`player_${target}`).username}**`)
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
         }
