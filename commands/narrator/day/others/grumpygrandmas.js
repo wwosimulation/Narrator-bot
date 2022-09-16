@@ -6,7 +6,7 @@ module.exports = async (client) => {
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
     const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
-    const grumpygrandmas = players.filter((p) => ["Grumpy Grandma", "Voodoo Werewolf"].includes(db.get(`player_${a}`).role)) // get the alive Grumpy Grandmas array - Array<Snowflake>
+    const grumpygrandmas = players.filter((p) => ["Grumpy Grandma", "Voodoo Werewolf"].includes(db.get(`player_${p}`).role)) // get the alive Grumpy Grandmas array - Array<Snowflake>
 
     // loop through each grumpy grandma
     for (const gg of grumpygrandmas) {
