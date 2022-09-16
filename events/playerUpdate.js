@@ -38,13 +38,19 @@ module.exports = async (client) => {
             }
         }
 
+        if (player.couple) {
+            let target = db.get(`player_${player.couple}`)
+            let channel = guild.channels.cache.get(target.channel)
+            await channel?.send(`${getEmoji("couple", client)} **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** is your couple that has their role changed!`)
+        }
+
         if (player.instigator) {
             if (player.instigator.length > 0) {
                 player.instigator.forEach(async (cu) => {
                     let target = db.get(`player_${cu}`).target
                     let partner = db.set(`player_${target.find((a) => a !== player.id)}`)
                     let channel = guild.channels.cache.get(partner.channel)
-                    await channel?.send(`${getEmoji("couple", client)} **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** is your couple that has their role changed!`)
+                    await channel?.send(`${getEmoji("couple", client)} **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** is your recruit that has their role changed!`)
                 })
             }
         }

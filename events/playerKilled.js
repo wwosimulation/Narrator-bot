@@ -187,9 +187,26 @@ module.exports = async (client) => {
             })
         }
 
+        if (guy.coupled) {
+            let target = db.get(`player_${guy.coupled}`)
+            if (target?.status === "Alive") {
+                // check if the player is stubborn wolf that has 2 lives
+                let getResult = await stubbornWerewolves(client, target) // checks if the player is stubborn wolf and has 2 lives
+                if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                let member = await guild.members.fetch(target.id)
+                let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
+                db.set(`player_${target.id}.status`, "Dead")
+                let role = target.role
+                if (target.tricked) role = "Wolf Trickster"
+                await dayChat.send(`${getEmoji("couple", client)} Player **${players.indexOf(target.id) + 1} ${target.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** lost the love of their life and fled the village!`)
+                await member.roles.set(memberRoles)
+                client.emit("playerKilled", db.get(`player_${target.id}`), guy)
+            }
+        }
+
         if (guy.instigator) {
             db.get(`player_${guy.id}`).instigator.forEach(async (p) => {
-                let target = db.get(`player_${p}`).target.filter((a) => a !== guy.id)
+                let target = db.get(`player_${p}`).target?.filter((a) => a !== guy.id)
                 let player = db.get(`player_${target}`)
                 if (player.status === "Alive") {
                     // check if the player is stubborn wolf that has 2 lives
@@ -362,7 +379,7 @@ module.exports = async (client) => {
             if (player.target === guy.id) {
                 db.delete(`player_${trapper}.target`)
             }
-            if (player.traps.includes(guy.id)) {
+            if (player?.traps.includes(guy.id)) {
                 db.set(
                     `player_${trapper}.traps`,
                     player.traps.filter((t) => t !== guy.id)

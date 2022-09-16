@@ -94,4 +94,5 @@ module.exports = async (client) => {
 
     db.delete(`game.noVoting`)
     db.delete(`game.isShadow`)
+    db.delete(`game.fog`)
 }
