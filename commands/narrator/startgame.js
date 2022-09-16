@@ -290,20 +290,20 @@ module.exports = {
         }
 
         if (db.get(`game.gamemode`) === "trouble") {
-            players.forEach(async p => {
+            players.forEach(async (p) => {
                 let player = db.get(`player_${p}`)
                 let channel1 = message.guild.channels.cache.get(player.channel)
-                if (player.coupled) return;
-                if (!channel) return;
-                let allNoLovers = players.filter(a => !db.get(`player_${a}`).coupled && a !== p)
-                if (allNoLovers.length === 0) return;
+                if (player.coupled) return
+                if (!channel) return
+                let allNoLovers = players.filter((a) => !db.get(`player_${a}`).coupled && a !== p)
+                if (allNoLovers.length === 0) return
                 let randomPlayer = allNoLovers[Math.floor(Math.random() * allNoLovers.length)]
                 let target = db.get(`player_${randomPlayer}`)
                 let channel2 = message.guild.channels.cache.get(target.channel)
                 db.set(`player_${p}.coupled`, randomPlayer)
                 db.set(`player_${randomPlayer}.coupled`, p)
-                await channel1.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(target.id)+1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**! If they die, you will die as well.`)
-                await channel2.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(player.id)+1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})**! If they die, you will die as well.`)
+                await channel1.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(target.id) + 1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**! If they die, you will die as well.`)
+                await channel2.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})**! If they die, you will die as well.`)
             })
         }
 

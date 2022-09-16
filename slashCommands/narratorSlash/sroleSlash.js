@@ -346,27 +346,26 @@ module.exports = {
             }
 
             switch (gamemode) {
-                case 'robbers': {
+                case "robbers": {
                     roleOptions = [["Seer", "Grave Robber", "Grave Robber", "rww", "Doctor", "Grave Robber", "Grave Robber", "rww", "Spirit Seer", "Grave Robber", "Grave Robber", "rww", "Medium", "Grave Robber", "Grave Robber", "rww"]]
-                    break;
+                    break
                 }
-                case 'chainreaction': {
+                case "chainreaction": {
                     roleOptions = [["avenger", "witch", "avenger", "detective", "avenger", "witch", "avenger", "corruptor", "fool", "avenger", "avenger", "aura", "illusionist", "avenger", "fool", "avenger", "medium"]]
-                    break;
+                    break
                 }
-                case 'fools': {
+                case "fools": {
                     roleOptions = [["Spirit Seer", "Spirit Seer", "Gunner", "Gunner", "Marksman", "Marksman", "Alpha Werewolf", "Alpha Werewolf", "Alpha Werewolf", "Serial Killer", "Serial Killer", "Fool", "Fool", "Fool", "Fool", "Fool"]]
-                    break;
+                    break
                 }
-                case 'rvb': {
+                case "rvb": {
                     roleOptions = [["Sect Leader", "Sect Leader", "Serial Killer", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv"]]
-                    break;
+                    break
                 }
                 default: {
                     roleOptions = quickSandboxList()
                 }
             }
-
         }
 
         await doRest()
