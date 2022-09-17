@@ -165,10 +165,10 @@ module.exports = {
 
             async function getRoles() {
                 if (alive.members.size < 8) {
-                    rk = rk.filter(r => !["cannibal", "hacker", "bomber", "arsonist", "sect-leader", "zombie"].includes(r))
-                    rww = rww.filter(r => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r))
-                    rsv = rsv.filter(r => !["medium", "ritualist", "gunner", "vigilante", "warden", "fortune-teller"].includes(r))
-                    random = random.filter(r => !["president", "instigator", "cupid"].includes(r))
+                    rk = rk.filter((r) => !["cannibal", "hacker", "bomber", "arsonist", "sect-leader", "zombie"].includes(r))
+                    rww = rww.filter((r) => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r))
+                    rsv = rsv.filter((r) => !["medium", "ritualist", "gunner", "vigilante", "warden", "fortune-teller"].includes(r))
+                    random = random.filter((r) => !["president", "instigator", "cupid"].includes(r))
                 }
                 let gameOptions = {
                     killers: {
@@ -188,7 +188,7 @@ module.exports = {
                         max: Math.ceil(alive.members.size / 2.5) - Math.round(alive.members.size * 0.16),
                     },
                     others: {
-                        roles: random.filter((p) => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p))
+                        roles: random.filter((p) => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p)),
                     },
                 }
 
@@ -197,7 +197,7 @@ module.exports = {
                 let kSVills = Math.floor(Math.random() * (gameOptions.strongVillagers.max + 1 - gameOptions.strongVillagers.min)) + gameOptions.strongVillagers.min
                 let kothers = alive.members.size - kkllers - kvoters - kSVills
 
-                if (Math.round((kkllers + kvoters)*100/alive.members.size) < 25) kvoters += 1
+                if (Math.round(((kkllers + kvoters) * 100) / alive.members.size) < 25) kvoters += 1
 
                 let mappedOptions = {
                     0: gameOptions.killers,
