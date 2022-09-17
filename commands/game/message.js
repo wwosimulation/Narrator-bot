@@ -78,6 +78,7 @@ module.exports = {
             if (["Medium", "Ritualist"].includes(player.role) || ["Medium", "Ritualist"].includes(player?.dreamRole)) {
                 let allDeads = players.map((a) => db.get(`player_${a}`)).filter((a) => ["Medium", "Ritualist"].includes(a.role) || ["Medium", "Ritualist"].includes(a.dreamRole))
                 message.channel.send(`${getEmoji(player.corrupted ? "corrupt" : player.role.toLowerCase().replace(/\s/g, "_"), client)} ${players.includes(message.author.id) ? players.indexOf(message.author.id) + 1 : ""} ${player.username || message.author.username}: ${content}`)
+                message.guild.channels.cache.find(c => c.name === "dead-chat")?.send(`**${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role}**: ${content}`)
                 allDeads.forEach((p) => {
                     if (!p.jailed && !p.nightmared) {
                         message.guild.channels.cache.get(p.channel).send(`${getEmoji(player.corrupted ? "corrupt" : player.role.toLowerCase().replace(/\s/g, "_"), client)} ${players.includes(message.author.id) ? players.indexOf(message.author.id) + 1 : ""} ${player.username || message.author.username}: ${content}`)
