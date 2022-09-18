@@ -29,6 +29,7 @@ module.exports = {
         if (player.role === "Spirit Seer" && args.length > 2) return await message.channel.send("You can only select a maximum of 2 players to check!")
         if (["Detective", "Evil Detective", "Analyst"].includes(player.role) && args.length !== 2) return await message.channel.send("You need to select 2 players to investigate!")
         if (player.role === "Harbinger" && player.target && player.abilityType === "doom") return await message.channel.send("You have selected someone to doom! Please cancel that action using `+doom cancel` and run this command again!")
+        if (player.role === "Lethal Seer" && gamePhase === 0) return await message.channel.send("You cannot use your ability during the first night!")
         if (player.role === "Lethal Seer" && player.lethal === true) return await message.channel.send("You can't check tonight as you have killed someone tonight!")
 
         let target = []
