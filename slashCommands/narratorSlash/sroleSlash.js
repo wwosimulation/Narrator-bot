@@ -164,9 +164,15 @@ module.exports = {
             }
 
             async function getRoles() {
+                if (alive.members.size < 8) {
+                    rk = rk.filter((r) => !["cannibal", "hacker", "bomber", "arsonist", "sect-leader", "zombie"].includes(r))
+                    rww = rww.filter((r) => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r))
+                    rsv = rsv.filter((r) => !["medium", "ritualist", "gunner", "vigilante", "warden", "fortune-teller"].includes(r))
+                    random = random.filter((r) => !["president", "instigator", "cupid"].includes(r))
+                }
                 let gameOptions = {
                     killers: {
-                        roles: [alive.members.size < 7 ? rww.filter((r) => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r)) : rww, alive.members.size >= 8 ? rk : rk.filter((a) => !["bomber", "arsonist", "cannibal"].includes(a))].join(",").split(","),
+                        roles: [...rww, ...rk],
                         min: Math.floor(alive.members.size / 4),
                         max: Math.floor(alive.members.size / 2) - Math.round(alive.members.size * 0.16),
                         maxSoloKillers: alive.members.size > 12 ? 2 : 1,
@@ -177,15 +183,12 @@ module.exports = {
                         max: alive.members.size > 12 ? 2 : alive.members.size >= 8 ? 1 : 0,
                     },
                     strongVillagers: {
-                        roles: rsv.filter((a) => (alive.members.size >= 8 ? a : !["medium", "ritualist", "gunner", "vigilante", "fortune-teller"].includes(a))),
+                        roles: rsv,
                         min: Math.ceil(alive.members.size / 6),
                         max: Math.ceil(alive.members.size / 2.5) - Math.round(alive.members.size * 0.16),
                     },
                     others: {
-                        roles: random
-                            .filter((p) => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p))
-                            .filter((r) => (alive.members.size <= 8 ? r !== "Cupid" : r))
-                            .filter((r) => (alive.members.size <= 12 ? r !== "President" : r)),
+                        roles: random.filter((p) => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p)),
                     },
                 }
 
@@ -193,8 +196,8 @@ module.exports = {
                 let kvoters = Math.floor(Math.random() * (gameOptions.voters.max + 1 - gameOptions.voters.min)) + gameOptions.voters.min
                 let kSVills = Math.floor(Math.random() * (gameOptions.strongVillagers.max + 1 - gameOptions.strongVillagers.min)) + gameOptions.strongVillagers.min
                 let kothers = alive.members.size - kkllers - kvoters - kSVills
-                console.log(kkllers, kvoters, kSVills, kothers)
-                if (alive.members.size >= 6 && kkllers === 1) kvoters += 1
+
+                if (Math.round(((kkllers + kvoters) * 100) / alive.members.size) < 25) kvoters += 1
 
                 let mappedOptions = {
                     0: gameOptions.killers,
