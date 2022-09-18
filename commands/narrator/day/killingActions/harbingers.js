@@ -76,7 +76,7 @@ module.exports.killDoomed = async (client) => {
     const werewolvesChat = guild.channels.cache.find((c) => c.name === "werewolves-chat") // get the werewolves channel - Object
     const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
-    const doomedPlayers = alivePlayers.filter(p => db.get(`player_${p}`).doomed === true) // get all the doomed players array - Array<Snowflake>
+    const doomedPlayers = alivePlayers.filter((p) => db.get(`player_${p}`).doomed === true) // get all the doomed players array - Array<Snowflake>
 
     for (const p of doomedPlayers) {
         let guy = db.get(`player_${p}`)
@@ -89,10 +89,9 @@ module.exports.killDoomed = async (client) => {
         client.emit("playerKilled", db.get(`player_${guy.id}`), db.get(`player_${guy.doomAttacker}`))
         db.delete(`player_${guy.id}.doomAttacker`)
     }
-} 
+}
 
 module.exports.action = async (client) => {
-
     // define all the variables
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
@@ -115,11 +114,9 @@ module.exports.action = async (client) => {
 
             // check if the illu's target is alive
             if (guy.status === "Alive" && !guy.doomed) {
-
                 // check if harbinger's ability type is herald or doom
-                
-                if (attacker.abilityType === "doom") {
 
+                if (attacker.abilityType === "doom") {
                     // check for any protections
                     let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
 
@@ -144,7 +141,6 @@ module.exports.action = async (client) => {
                         await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the player in the channel
                     }
                 } else {
-
                     let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
 
                     let role = guy.role
@@ -152,9 +148,8 @@ module.exports.action = async (client) => {
                     if (guy.shamaned) role = "Wolf Shaman"
                     if (guy.role === "Sorcerer") role = guy.fakeRole
                     if (guy.role === "Wolf Trickster" && guy.trickedRole) role = guy.trickedRole.role
-                    
-                    channel.send(`${getEmoji("herald", client)} You checked **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
 
+                    channel.send(`${getEmoji("herald", client)} You checked **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
                 }
             }
         }
