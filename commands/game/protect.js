@@ -21,6 +21,8 @@ module.exports = {
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.role !== "Lethal Seer" && args.length !== 1) return await message.channel.send("Please select a player to protect!")
+        if (player.role === "Lethal Seer" && player.usesA === 0) return await message.channel.send("You already used up your ability!")
+        if (player.role === "Lethal Seer" && !player.target) return await message.channel.send("You need to check someone before you can use the antidote")
         if (["Night Watchman", "Ghost Lady"].includes(player.role) && player.uses === 0) return await message.channel.send("You have already used up your abilities!")
 
         let object = {
@@ -40,6 +42,7 @@ module.exports = {
 
         if (player.role === "Lethal Seer") {
             db.delete(`player_${player.id}.target`)
+            db.subtract(`player_${player.id}.usesA`, 1)
             return await message.channel.send(`${object[player.role]} You have used your antidote so the player you checked will not be killed tonight!`)
         }
 
