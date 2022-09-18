@@ -35,6 +35,6 @@ module.exports = async (client) => {
                     db.delete(`player_${attacker.id}.target`)
                 }
             }
-        } 
+        }
     }
 }

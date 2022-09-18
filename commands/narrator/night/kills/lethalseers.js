@@ -19,7 +19,6 @@ module.exports = async (client) => {
         if (attacker.status === "Alive") {
             // check if the attacker has a target
             if (attacker.target) {
-                
                 db.delete(`player_${guy.id}.target`)
 
                 let guy = db.get(`player_${attacker.target}`) // get the guy player object - Object

@@ -30,8 +30,8 @@ module.exports = async (client) => {
                 db.set(`player_${guy.id}.status`, "Dead") // change the status of the player
                 member.roles.set(memberRoles) // set the roles
                 dayChat.send(`${getEmoji("blackp", client)} The Alchemist killed **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`) // send the message
-                
-                let attacker = guy.poisoned.filter(a => alivePlayers.includes(a))[0]
+
+                let attacker = guy.poisoned.filter((a) => alivePlayers.includes(a))[0]
                 client.emit("playerKilled", db.get(`player_${guy.id}`), db.get(`player_${attacker}`))
             }
         }

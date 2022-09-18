@@ -30,7 +30,7 @@ module.exports = {
             Witch: getEmoji("potion", client),
             "Ghost Lady": getEmoji("gl_protection", client),
             "Night Watchman": getEmoji("nwm_select", client),
-            "Lethal Seer": getEmoji("lethal_seer", client)
+            "Lethal Seer": getEmoji("lethal_seer", client),
         }
 
         if (args[0].toLowerCase() === "cancel" && player.role !== "Lethal Seer") {
