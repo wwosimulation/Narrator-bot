@@ -39,6 +39,7 @@ module.exports = async (client) => {
                             if (guy.tricked) role = "Wolf Trickster"
                             db.set(`player_${guy.id}.status`, "Dead") // set the status of the player
                             dayChat.send(`${getEmoji("explode", client)} **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase()?.replace(/\s/g, "_"), client)} ${role})** was killed by an explosion!`) // send the message
+                            client.emit("playerKilled", db.get(`player_${guy.id}`), db.get(`player_${attacker.id}`))
                         }
                     })
                 }, 60000)

@@ -31,10 +31,10 @@ module.exports = async (client) => {
                         .split(",") // get all the roles and replace the Alive role with Dead.
                     await dayChat.send(`${getEmoji("corrupt", client)} The Corruptor killed **${players.indexOf(guy.id) + 1} ${guy.username}**!`) // send the message
                     await attackedPlayer.roles.set(attackedPlayerRoles) // set the status to Dead
+                    client.emit("playerKilled", db.get(`player_${guy.id}`), db.get(`player_${attacker.id}`))
+                    db.delete(`player_${attacker.id}.target`)
                 }
             }
-        } else {
-            if (attacker.target) db.delete(`player_${attacker.id}.target`)
-        }
+        } 
     }
 }

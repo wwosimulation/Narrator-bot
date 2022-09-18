@@ -28,6 +28,7 @@ module.exports = async (client) => {
                     if (zomb.tricked) role = "Wolf Trickster"
                     await dayChat.send(`${getEmoji("zombie", client)} The body of **${players.indexOf(zombie.id) + 1} ${zombie.username} (${getEmoji(role.toLowerCase()?.replace(/\s/g, "_"), client)} ${role})** has decayed and they are now dead!`) // send the message
                     await player.roles.set(playerRoles) // change the roles
+                    client.emit("playerKilled", db.get(`player_${zomb.id}`), db.get(`player_${zomb.id}`))
                 }
             }
         }

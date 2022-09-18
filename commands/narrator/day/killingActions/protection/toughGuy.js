@@ -13,6 +13,7 @@ module.exports = async (client, guy, attacker) => {
     let allProtected = db.get(`berserkProtected`) || [] // get the array of players who protected the berserk's target
 
     let isProtected = false
+
     // loop through each player to see if they are a tough guy
     for (let player of alivePlayers) {
         // check and see if the player is a tough guy
@@ -43,7 +44,7 @@ module.exports = async (client, guy, attacker) => {
                     db.set(`player_${player}.wounded`, true) // set that they are wounded
 
                     // make an exemption if the attacker is a corruptor
-                    if (attacker.role === "Corruptor") {
+                    if (["Corruptor", "Harbinger"].includes(attacker.role)) {
                         isProtected = db.get(`player_${player}`) // set the tough guy as the corrupted player
                     }
                     break // break out of the loop
