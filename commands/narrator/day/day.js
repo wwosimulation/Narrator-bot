@@ -29,6 +29,7 @@ module.exports = {
 
         // get all the actions
         let { wolves, beastHunterKilling, trapperKilling } = require("./killingActions/wolves.js")
+        let { action } = require("./killingActions/harbingers.js")
         let kittenwolf = require("./killingActions/kittenWolf.js")
         let serialkillers = require("./killingActions/serialkillers.js")
         let accomplices = require("./killingActions/accomplices.js")
@@ -123,6 +124,12 @@ module.exports = {
         // dreamcatcher doing their job
         console.log("dc running...")
         await dreamcatchers(client, alivePlayers)
+
+        sleep(100)
+
+        // harbinger doing their job
+        console.log("harbinger running...")
+        await action(client)
 
         sleep(100)
 

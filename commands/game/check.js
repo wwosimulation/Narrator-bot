@@ -16,8 +16,8 @@ module.exports = {
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to check players.")
-        if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst"].includes(player.dreamRole)) return
-        if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger"].includes(player.dreamRole)) return
+        if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only check during the night right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
@@ -28,8 +28,16 @@ module.exports = {
         if (player.role === "Wolf Seer" && player.resign) return await message.channel.send("You already resigned from checking!")
         if (player.role === "Spirit Seer" && args.length > 2) return await message.channel.send("You can only select a maximum of 2 players to check!")
         if (["Detective", "Evil Detective", "Analyst"].includes(player.role) && args.length !== 2) return await message.channel.send("You need to select 2 players to investigate!")
+        if (player.role === "Harbinger" && player.target && player.abilityType === "doom") return await message.channel.send("You have selected someone to doom! Please cancel that action using `+doom cancel` and run this command again!")
 
         let target = []
+
+        if (args[0]?.toLowerCase() === "cancel") {
+            if (["Harbinger", "Sheriff", "Spirit Seer", "Evil Detective"].includes(player.role)) {
+                db.delete(`player_${player.id}.target`)
+                message.channel.send(`${player.role === "Harbinger" ? getEmoji("herald", client) : player.role === "Spirit Seer" ? getEmoji("sscheck", client) : player.role === "Sheriff" ? getEmoji("snipe", client) : getEmoji("evildetcheck", client)} You succesfully canceled your action!`)
+            }
+        }
 
         target.push(players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0]))
 
@@ -136,6 +144,12 @@ module.exports = {
         if (player.role === "Evil Detective") {
             db.set(`player_${player.id}.target`, target)
             await message.channel.send(`${getEmoji("evildetcheck", client)} You have decided to investigate **${target.map((p) => `${players.indexOf(p) + 1} ${db.get(`player_${p}`).username}`).join("** and **")}**. These players will be killed if they belong to different teams!`)
+        }
+
+        if (player.role === "Harbinger") {
+            db.set(`player_${player.id}.target`, target[0])
+            db.set(`player_${player.id}.abilityType`, "herald")
+            await message.channel.send(`${getEmoji("herald", client)} You have decided to check **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}**!`)
         }
     },
 }
