@@ -18,7 +18,7 @@ module.exports = async (client, guy, attacker) => {
         // check and see if the player is a witch
         if (db.get(`player_${player}`).role === "Witch") {
             // check and see if the Witch protected the attacked player
-            if (db.get(`player_${player}`).protection === guy.id) {
+            if (db.get(`player_${player}`).target === guy.id) {
                 // remove the potion from the witch and remove the protection
                 db.delete(`player_${player}.protection`) // remove the protection
                 db.set(`player_${player}.uses`, 0) // remove the uses

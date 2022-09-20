@@ -290,7 +290,7 @@ module.exports = async (client) => {
 
                 db.delete(`player_${doppel}.target`)
                 Object.entries(target).forEach((entry) => {
-                    if (!["username", "id", "status", "channel", "allRoles", "target", "corrupted", "sected", "bitten", "couple", "poisoned", "hypnotized", "disguised", "shamanned", "binded"].includes(entry[0])) {
+                    if (!["username", "id", "status", "channel", "allRoles", "target", "corrupted", "sected", "bitten", "couple", "poisoned", "hypnotized", "disguised", "shamanned", "binded", "cupid", "instigator"].includes(entry[0])) {
                         db.set(`player_${doppel}.${entry[0]}`, entry[1])
                     }
                 })
