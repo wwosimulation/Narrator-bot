@@ -306,7 +306,7 @@ module.exports = (client) => {
         if (interaction.customId.startsWith("surr_")) {
             let option = interaction.customId.split("_")[1]
             let player = db.get(`player_${interaction.member.id}`)
-            let dayChat = interaction.guild.channels.cache.find(c => c.name === "day-chat")
+            let dayChat = interaction.guild.channels.cache.find((c) => c.name === "day-chat")
             if (!player) return interaction.reply({ content: "This is not your button!", ephemeral: true })
             if (player.role !== "Surrogate") return interaction.reply({ content: "Unfortunately, you can no longer use this button as you are no longer a Surrogate", ephemeral: true })
             interaction.message.components[0].components[0].disabled = true
@@ -315,19 +315,19 @@ module.exports = (client) => {
             let target = db.get(`player_${player.target}`)
             if (option === "kill") {
                 if (target.team !== "Village" && target.role !== "Werewolf Fan") {
-                    let memberRoles = interaction.member.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id)
+                    let memberRoles = interaction.member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
                     let role = player.role
                     if (player.tricked) role = "Wolf Trickster"
                     db.set(`player_${player.id}.status`, "Dead")
-                    await dayChat.send(`${getEmoji("surrogate", client)} **${db.get(`players`).indexOf(player.id)+1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to inherit **${db.get(`players`).indexOf(target.id)+1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**'s role but failed as their target did not belong to the Village. `)
+                    await dayChat.send(`${getEmoji("surrogate", client)} **${db.get(`players`).indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to inherit **${db.get(`players`).indexOf(target.id) + 1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**'s role but failed as their target did not belong to the Village. `)
                     await interaction.member.roles.set(memberRoles)
                     client.emit("playerKilled", db.get(`player_${player.id}`), db.get(`player_${player.id}`))
                 } else {
                     let member = await interaction.guild.members.fetch(target.id)
-                    let memberRoles = member.roles.cache.map(r => r.name === "Alive" ? "892046207428476989" : r.id)
+                    let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
                     db.set(`player_${target.id}.status`, "Dead")
                     db.set(`player_${target.id}.corrupted`, true)
-                    await dayChat.send(`${getEmoji("surrogate", client)} The Surrogate killed and inherited **${db.get(`players`).indexOf(target.id)+1} ${target.username}**'s role! Their role is hidden and will not be revealed`)
+                    await dayChat.send(`${getEmoji("surrogate", client)} The Surrogate killed and inherited **${db.get(`players`).indexOf(target.id) + 1} ${target.username}**'s role! Their role is hidden and will not be revealed`)
                     await member.roles.set(memberRoles)
                     client.emit("playerKilled", db.get(`player_${target.id}`), db.get(`player_${player.id}`))
 
@@ -346,7 +346,7 @@ module.exports = (client) => {
                 db.set(`player_${player.target}.shield`, true)
                 let channel = interaction.guild.channels.cache.get(target.channel)
                 await channel?.send(`${getEmoji("surrogate", client)} You have received a shield from the Surrogate! When attacked, your shield will protect you from dying once!`)
-                await channel?.send(`${interaction.guild.roles.cache.find(r => r.name === "Alive")}`)
+                await channel?.send(`${interaction.guild.roles.cache.find((r) => r.name === "Alive")}`)
                 await interaction.followUp(`${getEmoji("surrogate", client)} You have succesfully given your shield to your target!`)
             }
         }

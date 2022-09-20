@@ -33,7 +33,7 @@ module.exports = {
             "Ghost Lady": getEmoji("gl_protection", client),
             "Night Watchman": getEmoji("nwm_select", client),
             "Lethal Seer": getEmoji("lethal_seer", client),
-            "Surrogate": getEmoji("surrogate", client),
+            Surrogate: getEmoji("surrogate", client),
         }
 
         if (args[0].toLowerCase() === "cancel" && player.role !== "Lethal Seer") {
@@ -51,7 +51,7 @@ module.exports = {
 
         if (player.role === "Surrogate" && player.target) return await message.channel.send("You cannot protect anyone else until you cancel your ability!")
 
-        if (player.role === "Surrogate" && player.cancelAt < (db.get(`gamePhase`)+3)) return await message.channel.send("You must wait a full day and night before you can use this command again!")
+        if (player.role === "Surrogate" && player.cancelAt < db.get(`gamePhase`) + 3) return await message.channel.send("You must wait a full day and night before you can use this command again!")
 
         let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
 
