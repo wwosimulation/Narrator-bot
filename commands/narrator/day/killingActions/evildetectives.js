@@ -12,6 +12,7 @@ const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
 const trapper = require("./protection/trapper.js") // trapper protection
 const stubbornWerewolves = require("./protection/stubbornWolves.js") // stubborn ww
+const surrogate = require("./protection/surrogate.js") // surrogate
 
 async function getProtections(client, guy, attacker) {
     let getResult
@@ -53,6 +54,10 @@ async function getProtections(client, guy, attacker) {
         // check if the player they are attacking is healed by the tough guy
         getResult = await toughGuy(client, guy, attacker) // checks if a tough guy is protecting them
         if (getResult === true) return false // exits early if a tough guy IS protecting them
+
+        // check if the player they are attacking is protected by their surrogate
+        getResult = await surrogate(client, guy, attacker) // checks if a surrogate is prorecting them
+        if (getResult === true) return false // exits early if a surrogate IS protecting them
 
         // check if the player they are attacking is a red lady that got away visiting someone else
         getResult = await redLady(client, guy, attacker) // checks if the red lady is not home

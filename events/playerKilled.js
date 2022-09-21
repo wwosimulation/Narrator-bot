@@ -28,6 +28,8 @@ module.exports = async (client) => {
         const narrator = guild.roles.cache.find((r) => r.name === "Narrator")
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         const stubbornWerewolves = require("../commands/narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
+        const surrogate = require("../commands/narrator/day/killingActions/protection/surrogate.js") // surrogate
+
 
         guild.members.fetch(guy.id).then((a) => {
             if (a.roles.cache.has("892046205780131891")) a.roles.remove("892046205780131891")
@@ -88,6 +90,9 @@ module.exports = async (client) => {
                 // check if the player is stubborn wolf that has 2 lives
                 let getResult = await stubbornWerewolves(client, db.get(`player_${player1}`)) // checks if the player is stubborn wolf and has 2 lives
                 if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                // check if the player they are attacking is protected by their surrogate
+                getResult = await surrogate(client, db.get(`player_${player1}`), guy) // checks if a surrogate is prorecting them
+                if (typeof getResult === "object") player1 = getResult.id // exits early if a surrogate IS protecting them
 
                 let member = await guild.members.fetch(player1)
                 let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
@@ -105,6 +110,12 @@ module.exports = async (client) => {
                 // check if the player is stubborn wolf that has 2 lives
                 getResult = await stubbornWerewolves(client, db.get(`player_${player2}`)) // checks if the player is stubborn wolf and has 2 lives
                 if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                // check if the player they are attacking is protected by their surrogate
+                getResult = await surrogate(client, db.get(`player_${player1}`), guy) // checks if a surrogate is prorecting them
+                if (typeof getResult === "object") player1 = getResult.id // exits early if a surrogate IS protecting them
+                // check if the player they are attacking is protected by their surrogate
+                getResult = await surrogate(client, db.get(`player_${player2}`), guy) // checks if a surrogate is prorecting them
+                if (typeof getResult === "object") player2 = getResult.id // exits early if a surrogate IS protecting them
                 let member1 = await guild.members.fetch(player1)
                 let memberRoles1 = member1.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                 let guy1 = db.get(`player_${player1}`)
@@ -128,6 +139,9 @@ module.exports = async (client) => {
 
         if (guy.role === "Split Wolf") {
             let target = db.get(`player_${guy.target}`)
+            // check if the player they are attacking is protected by their surrogate
+            getResult = await surrogate(client, target, guy) // checks if a surrogate is prorecting them
+            if (typeof getResult === "object") target = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
             if (!target) return
             if (target.status !== "Alive") return
             db.set(`player_${target.id}.status`, "Dead")
@@ -154,6 +168,9 @@ module.exports = async (client) => {
                     // check if the player is stubborn wolf that has 2 lives
                     let getResult = await stubbornWerewolves(client, player) // checks if the player is stubborn wolf and has 2 lives
                     if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                    // check if the player they are attacking is protected by their surrogate
+                    getResult = await surrogate(client, player, guy) // checks if a surrogate is prorecting them
+                    if (typeof getResult === "object") player = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
                     let member = await guild.members.fetch(player.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${guy.target}.status`, "Dead")
@@ -174,6 +191,9 @@ module.exports = async (client) => {
                     // check if the player is stubborn wolf that has 2 lives
                     let getResult = await stubbornWerewolves(client, player) // checks if the player is stubborn wolf and has 2 lives
                     if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                    // check if the player they are attacking is protected by their surrogate
+                    getResult = await surrogate(client, player, guy) // checks if a surrogate is prorecting them
+                    if (typeof getResult === "object") player = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
                     let member = await guild.members.fetch(player.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${target}.status`, "Dead")
@@ -193,6 +213,9 @@ module.exports = async (client) => {
                 // check if the player is stubborn wolf that has 2 lives
                 let getResult = await stubbornWerewolves(client, target) // checks if the player is stubborn wolf and has 2 lives
                 if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                // check if the player they are attacking is protected by their surrogate
+                getResult = await surrogate(client, target, guy) // checks if a surrogate is prorecting them
+                if (typeof getResult === "object") target = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
                 let member = await guild.members.fetch(target.id)
                 let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                 db.set(`player_${target.id}.status`, "Dead")
@@ -212,6 +235,9 @@ module.exports = async (client) => {
                     // check if the player is stubborn wolf that has 2 lives
                     let getResult = await stubbornWerewolves(client, player) // checks if the player is stubborn wolf and has 2 lives
                     if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                    // check if the player they are attacking is protected by their surrogate
+                    getResult = await surrogate(client, player, guy) // checks if a surrogate is prorecting them
+                    if (typeof getResult === "object") player = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
                     let member = await guild.members.fetch(player.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${target}.status`, "Dead")
@@ -232,6 +258,9 @@ module.exports = async (client) => {
                 // check if the player is stubborn wolf that has 2 lives
                 let getResult = await stubbornWerewolves(client, target) // checks if the player is stubborn wolf and has 2 lives
                 if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                // check if the player they are attacking is protected by their surrogate
+                getResult = await surrogate(client, target, guy) // checks if a surrogate is prorecting them
+                if (typeof getResult === "object") target = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
                 let member = await guild.members.fetch(target.id)
                 let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                 db.set(`player_${target.id}.status`, "Dead")
@@ -351,11 +380,16 @@ module.exports = async (client) => {
             if (player.target !== guy.id) continue
             console.log("rl's target is ded")
             if (guy.killedDuring !== "night") continue
+            // check if the player they are attacking is protected by their surrogate
+            getResult = await surrogate(client, player, guy) // checks if a surrogate is prorecting them
+            if (typeof getResult === "object") redlady = getResult.id // exits early if a surrogate IS protecting them
             db.set(`player_${redlady}.status`, "Dead")
             db.delete(`player_${redlady}.target`)
+            let role = db.get(`player_${redlady}`).role
+            if (db.get(`player_${redlady}`).tricked) role = "Wolf Trickster"
             let member = await guild.members.fetch(redlady)
             await member.roles.set(member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)))
-            await dayChat.send(`${getEmoji("visit", client)} Player **${players.indexOf(redlady) + 1} ${player.username} (${getEmoji("red_lady", client)} Red Lady)** visited a player who was attacked and died!`)
+            await dayChat.send(`${getEmoji("visit", client)} Player **${players.indexOf(redlady) + 1} ${db.get(`player_${redlady}`)} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** visited a player who was attacked and died!`)
             client.emit("playerKilled", db.get(`player_${member.id}`), db.get(`player_${member.id}`))
         }
 
@@ -365,11 +399,14 @@ module.exports = async (client) => {
             let target = db.get(`player_${player?.target}`)
             if (target?.status !== "Alive") continue
             if (target.id !== guy.id) continue
+            // check if the player they are attacking is protected by their surrogate
+            let getResult = await surrogate(client, player, guy) // checks if a surrogate is prorecting them
+            if (typeof getResult === "object") splitwolf = getResult.id // exits early if a surrogate IS protecting them
             db.set(`player_${splitwolf}.status`, "Dead")
             db.delete(`player_${splitwolf}.target`)
             let member = await guild.members.fetch(splitwolf)
             await member.roles.set(member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)))
-            await dayChat.send(`${getEmoji("bind", client)} **${players.indexOf(splitwolf) + 1} ${player.username} (${getEmoji("split_wolf", client)} Split Wolf)** was killed because they bounded their soul to another player that died.`)
+            await dayChat.send(`${getEmoji("bind", client)} **${players.indexOf(splitwolf) + 1} ${db.get(`player_${splitwolf}`).username} (${getEmoji(db.get(`player_${splitwolf}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${splitwolf}`).role})** was killed because they bounded their soul to another player that died.`)
             client.emit("playerKilled", db.get(`player_${splitwolf}`), db.get(`player_${guy.id}`))
         }
 
@@ -416,6 +453,9 @@ module.exports = async (client) => {
                 if (target.status === "Alive") {
                     let getResult = await stubbornWerewolves(client, target) // checks if the player is stubborn wolf and has 2 lives
                     if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+                    // check if the player they are attacking is protected by their surrogate
+                    getResult = await surrogate(client, target, guy) // checks if a surrogate is prorecting them
+                    if (typeof getResult === "object") target = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
                     let member = await guild.members.fetch(target.id)
                     let memberRoles = member.roles.cache.map((a) => (a.name === "Alive" ? "892046207428476989" : a.id))
                     db.set(`player_${target.id}.status`, "Dead")
