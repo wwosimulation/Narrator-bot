@@ -64,6 +64,6 @@ module.exports = {
 
         db.set(`player_${player.id}.target`, target)
         db.set(`player_${player.id}.abilityType`, "doom")
-        await message.channel.send(`${getEmoji("sect_hunter", client)} You have decided to doom **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**!`)
+        await message.channel.send(`${getEmoji("harbinger", client)} You have decided to doom **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**!`)
     },
 }
