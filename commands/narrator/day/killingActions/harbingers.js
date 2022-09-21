@@ -90,7 +90,7 @@ module.exports.killDoomed = async (client) => {
         let attackedPlayer = await guild.members.fetch(guy.id) // fetch the discord member - Object
         let attackedPlayerRoles = attackedPlayer.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles and replace the Alive role with Dead.
         await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
-        await dayChat.send(`${getEmoji("doom", client)} **${players.indexOf(guy.id)+1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** has been doomed by the Harbinger!`)
+        await dayChat.send(`${getEmoji("doom", client)} **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** has been doomed by the Harbinger!`)
         db.delete(`player_${guy.id}.doomAttacker`)
         db.set(`player_${guy.id}.status`, "Dead")
         client.emit("playerKilled", db.get(`player_${guy.id}`), db.get(`player_${guy.doomAttacker}`))
