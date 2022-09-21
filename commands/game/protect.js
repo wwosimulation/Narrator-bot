@@ -17,7 +17,8 @@ module.exports = {
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to protect players.")
         if (!["Doctor", "Bodyguard", "Tough Guy", "Witch", "Ghost Lady", "Night Watchman", "Lethal Seer", "Surrogate"].includes(player.role) && !["Doctor", "Bodyguard", "Tough Guy", "Witch", "Ghost Lady", "Night Watchman", "Lethal Seer", "Surrogate"].includes(player.dreamRole)) return
         if (["Doctor", "Bodyguard", "Tough Guy", "Witch", "Ghost Lady", "Night Watchman", "Lethal Seer", "Surrogate"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
-        if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only protect during the night right? Or are you delusional?")
+        if (player.role !== "Lethal Seer" && gamePhase % 3 != 0) return await message.channel.send("You do know that you can only protect during the night right? Or are you delusional?")
+        if (player.role === "Lethal Seer" && gamePhase % 3 === 0) return await message.channel.send("You do know that you can only use your antidote during the day right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
         if (player.role !== "Lethal Seer" && args.length !== 1) return await message.channel.send("Please select a player to protect!")

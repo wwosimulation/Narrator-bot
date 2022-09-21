@@ -38,7 +38,7 @@ module.exports = async (client) => {
                     let attackedPlayerRoles = attackedPlayer.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles and replace the Alive role with Dead.
                     await dayChat.send(`${getEmoji("lethal_seer", client)} The Lethal Seer killed **${players.indexOf(guy.id) + 1} ${guy.username}**!`) // send the message
                     await attackedPlayer.roles.set(attackedPlayerRoles) // set the status to Dead
-                    db.set(`player_${guy.id}.lethal`, true)
+                    db.set(`player_${attacker.id}.lethal`, true)
                     client.emit("playerKilled", db.get(`player_${guy.id}`), db.get(`player_${attacker.id}`))
                 }
             }
