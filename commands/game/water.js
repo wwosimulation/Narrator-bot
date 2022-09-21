@@ -14,7 +14,6 @@ module.exports = {
         const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
         const surrogate = require("../narrator/day/killingActions/protection/surrogate.js") // surrogate
 
-
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to water players.")
@@ -68,7 +67,6 @@ module.exports = {
         getResult = await surrogate(client, db.get(`player_${member}`), player) // checks if a surrogate is prorecting them
         if (typeof getResult === "object") target = getResult.id // exits early if a surrogate IS protecting them
 
-
         let role = "Priest"
         if (player.tricked) role = "Wolf Trickster"
 
@@ -76,7 +74,7 @@ module.exports = {
             wolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("priest", client)} Priest)** has thrown holy water at and killed **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(db.get(`player_${target}`).role.toLowerCase().replace(/\s/g, "_"), client)} ${db.get(`player_${target}`).role})**`,
             notWolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to throw holy water on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** and killed themselves! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is not a werewolf!`,
         }
-        
+
         let guy = await message.guild.members.fetch(member)
         let roles = guy.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
 

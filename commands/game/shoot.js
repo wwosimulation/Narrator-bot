@@ -13,7 +13,6 @@ module.exports = {
         const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
         const surrogate = require("../narrator/day/killingActions/protection/surrogate.js") // surrogate
 
-
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to shoot players.")
@@ -81,7 +80,6 @@ module.exports = {
         // check if the player they are attacking is protected by their surrogate
         getResult = await surrogate(client, db.get(`player_${result === true ? target : player.id}`), player) // checks if a surrogate is prorecting them
         if (typeof getResult === "object") guy = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
-        
 
         let role = guy.role
         if (guy.tricked || player.tricked) role = "Wolf Trickster"

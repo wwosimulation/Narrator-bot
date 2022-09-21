@@ -83,7 +83,7 @@ module.exports = async (client) => {
                 // check if the player they are attacking is protected by their surrogate
                 getResult = await surrogate(client, guy, "lynch") // checks if a surrogate is prorecting them
                 if (typeof getResult === "object") guy = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
-                
+
                 // kill the player normally
                 db.set(`player_${guy.id}.status`, "Dead") // change the status of the player
                 let member = await guild.members.fetch(guy.id) // get the discord member - Object

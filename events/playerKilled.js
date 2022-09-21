@@ -30,7 +30,6 @@ module.exports = async (client) => {
         const stubbornWerewolves = require("../commands/narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
         const surrogate = require("../commands/narrator/day/killingActions/protection/surrogate.js") // surrogate
 
-
         guild.members.fetch(guy.id).then((a) => {
             if (a.roles.cache.has("892046205780131891")) a.roles.remove("892046205780131891")
         })
