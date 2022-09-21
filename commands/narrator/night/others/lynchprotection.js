@@ -5,7 +5,7 @@ module.exports = async (client, guy) => {
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat")
     const players = db.get(`players`) // get all the players in an array - Array<Snowflake>
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players in an array - Array<Snowflake>
-    const protectors = players.filter((p) => alivePlayers.includes(p) && ["Flower Child", "Guardian Angel"].includes(db.get(`player_${p}`).role)) // get the day protectors - Array<Snowflake>
+    const protectors = players.filter((p) => alivePlayers.includes(p) && ["Flower Child", "Guardian Wolf"].includes(db.get(`player_${p}`).role)) // get the day protectors - Array<Snowflake>
 
     let result = false // set the result to false by default
 
@@ -16,7 +16,7 @@ module.exports = async (client, guy) => {
         if (protector.target) {
             // check if the target is the same (Logically, I don't need to check if the target is alive, because it has already been confirmed in lynch.js)
             if (protector.target === guy.id) {
-                db.set(`player_${protector}.uses`, 0) // set the uses to 0 because their ability has been used
+                db.subtract(`player_${protector.id}.uses`, 1) // set the uses to 0 because their ability has been used
                 result = true // set the result to true
                 break // break the loop, so we don't continue
             }

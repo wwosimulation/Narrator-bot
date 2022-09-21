@@ -42,6 +42,7 @@ module.exports = {
             await daychat.send(`${getEmoji("mayoring", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("mayor", client)} Mayor)** has revealed themselves as the Mayor!`)
             await member.roles.add(message.guild.roles.cache.find((r) => r.name === "Revealed"))
             db.subtract(`player_${player.id}.uses`, 1)
+            db.set(`player_${player.id}.revealed`, true)
         } else {
             let target = players[Number(args[0]) - 1] || players.find((p) => p === args[0]) || players.map((p) => db.get(`player_${p}`)).find((p) => p.username === args[0])
 

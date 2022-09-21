@@ -22,7 +22,7 @@ module.exports = {
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
 
-        if (player.role === "Bandit" && player.accomplices.filter((p) => db.get(`player_${p}`).status === "Alive").length === 0) return await message.channel.send("You do know that you need an accomplice to stab?")
+        if (player.role === "Bandit" && player.accomplices?.filter((p) => db.get(`player_${p}`).status === "Alive").length !== 1) return await message.channel.send("You do know that you need an accomplice to stab?")
 
         let emotes = {
             "Serial Killer": `${getEmoji("serial_killer_knife", client)} You have decided to stab`,

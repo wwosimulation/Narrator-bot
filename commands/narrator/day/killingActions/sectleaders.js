@@ -110,7 +110,7 @@ module.exports = async (client) => {
                         let sectMembers = db.get(`player_${attacker.id}.sectMembers`) || [] // get the sect members
                         await playerChannel.send(`${getEmoji("sect_member", client)} You have been converted by the Sect Leader! Player **${players.indexOf(attacker.id) + 1} ${attacker.username}** is your leader!`)
                         await sectChannel.send(`${guild.roles.cache.find((r) => r.name === "Alive")} ${getEmoji("sect_member", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** is now a sect member.`)
-                        await sectChannel.permissionsOverwrite.edit(guy.id, { VIEW_CHANNEL: true, SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true })
+                        await sectChannel.permissionOverwrites.edit(guy.id, { VIEW_CHANNEL: true, SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true })
                         sectMembers.push(guy.id)
                         db.set(`player_${attacker.id}.sectMembers`, sectMembers)
                         db.set(`player_${guy.id}.sected`, attacker.id)
