@@ -9,7 +9,7 @@ module.exports = async (client) => {
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
     const lethalSeers = alivePlayers.filter((p) => db.get(`player_${p}`).role === "Lethal Seer") // get the alive Lethal Seers array - Array<Snowflake>
-    const stubbornWerewolves = require("../../day/killingActions/protection/stubbornWerewolves.js") // stubborn ww
+    const stubbornWerewolves = require("../../day/killingActions/protection/stubbornWolves.js") // stubborn ww
     const surrogate = require("../../day/killingActions/protection/surrogate.js") // surrogate
 
     // loop through each lethal seer
