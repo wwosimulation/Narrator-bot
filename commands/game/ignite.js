@@ -35,7 +35,7 @@ module.exports = {
             if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
             // check if the player they are attacking is protected by their surrogate
             getResult = await surrogate(client, db.get(`player_${target}`), player) // checks if a surrogate is prorecting them
-            if (getResult === true) target = getResult.id // exits early if a surrogate IS protecting them
+            if (typeof getResult === "object") target = getResult.id // exits early if a surrogate IS protecting them
 
             let member = await message.guild.members.fetch(target)
             let roles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))

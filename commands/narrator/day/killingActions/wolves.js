@@ -68,9 +68,7 @@ async function getProtections(client, guy, attacker) {
 
         // check if the player they are attacking is protected by their surrogate
         getResult = await surrogate(client, guy, attacker) // checks if a surrogate is prorecting them
-        console.log("=========== SURROGATE RESULT ==========")
-        console.log(getResult)
-        if (getResult === true) return false // exits early if a surrogate IS protecting them
+        if (typeof getResult === "object") return getResult // exits early if a surrogate IS protecting them
 
         // check if the player they are attacking is a red lady that got away visiting someone else
         getResult = await redLady(client, guy, attacker) // checks if the red lady is not home
@@ -227,8 +225,6 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
                     // check for protections
                     let result = await getProtections(client, guy, attacker)
 
-                    console.log("=========== PROTECTION RESULTS ========")
-                    console.log(result)
                     if (typeof result === "object") {
                         // looks like there were no protections
 
