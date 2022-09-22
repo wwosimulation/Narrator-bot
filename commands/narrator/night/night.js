@@ -28,6 +28,7 @@ module.exports = {
         const nightmarewolves = require("./others/nightmarewolf.js")
         const ritualists = require("./others/ritualists.js")
         const jacks = require("./others/jacks.js")
+        const surrogates = require("./others/surrogates.js")
 
         await lynch(client)
 
@@ -38,6 +39,8 @@ module.exports = {
         await lethalSeers(client)
 
         await naughtyboys(client)
+        
+        await surrogates(client)
 
         await jailers(client)
 
