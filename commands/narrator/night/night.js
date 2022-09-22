@@ -39,7 +39,7 @@ module.exports = {
         await lethalSeers(client)
 
         await naughtyboys(client)
-        
+
         await surrogates(client)
 
         await jailers(client)
