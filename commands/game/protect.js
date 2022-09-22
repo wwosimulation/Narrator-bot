@@ -37,7 +37,7 @@ module.exports = {
             Surrogate: getEmoji("surrogate", client),
         }
 
-        if (args[0].toLowerCase() === "cancel" && player.role !== "Lethal Seer") {
+        if (args[0]?.toLowerCase() === "cancel" && player.role !== "Lethal Seer") {
             if (!db.get(`player_${player.id}`).target && player.role === "Surrogate") return await message.channel.send("What are you trying to cancel if there is nothing to cancel?")
             db.delete(`player_${player.id}.target`)
             if (player.role === "Surrogate") db.set(`player_${player.id}.cancelAt`, db.get(`gamePhase`))

@@ -26,13 +26,15 @@ module.exports = async (client) => {
                         {
                             type: 1,
                             components: [
-                                { type: 2, style: 3, label: "Protect", custom_id: "surr_protect" },
-                                { type: 2, style: 4, label: "Kill and steal", custom_id: "surr_kill" },
+                                { type: 2, style: 3, label: "Protect", custom_id: `surr_protect_${target.id}` },
+                                { type: 2, style: 4, label: "Kill and steal", custom_id: `surr_kill_${target.id}` },
                             ],
                         },
                     ]
 
                     await channel.send({ content: `${getEmoji("surrogate", client)} You have completed your job as a Surrogate by protecting your target for 2 days! You can now choose to protect them by giving a shield or by killing them and taking their role. Please note that if the player you try to kill is not a villager, you will die and reveal your target's role.`, components })
+
+                    db.delete(`player_${sg}.target`)
                 }
             }
         }

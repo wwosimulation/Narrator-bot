@@ -311,8 +311,8 @@ module.exports = (client) => {
             if (player.role !== "Surrogate") return interaction.reply({ content: "Unfortunately, you can no longer use this button as you are no longer a Surrogate", ephemeral: true })
             interaction.message.components[0].components[0].disabled = true
             interaction.message.components[0].components[1].disabled = true
-            interaction.update({ comoonents: interaction.message.components })
-            let target = db.get(`player_${player.target}`)
+            interaction.update({ components: interaction.message.components })
+            let target = db.get(`player_${interaction.customId.split("_")[2]}`)
             if (option === "kill") {
                 if (target.team !== "Village" && target.role !== "Werewolf Fan") {
                     let memberRoles = interaction.member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
@@ -321,6 +321,8 @@ module.exports = (client) => {
                     db.set(`player_${player.id}.status`, "Dead")
                     await dayChat.send(`${getEmoji("surrogate", client)} **${db.get(`players`).indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to inherit **${db.get(`players`).indexOf(target.id) + 1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**'s role but failed as their target did not belong to the Village. `)
                     await interaction.member.roles.set(memberRoles)
+                    let member2 = await interaction.guild.members.fetch(target.id)
+                    await member2.roles.add("892046205780131891")
                     client.emit("playerKilled", db.get(`player_${player.id}`), db.get(`player_${player.id}`))
                 } else {
                     let member = await interaction.guild.members.fetch(target.id)
