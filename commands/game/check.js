@@ -134,7 +134,7 @@ module.exports = {
             await message.channel.send(`${getEmoji(results.startsWith("do") ? "detnotequal" : "detequal", client)} Player **${players.indexOf(target[0]) + 1} ${db.get(`player_${target[0]}`).username}** and **${players.indexOf(target[1]) + 1} ${db.get(`player_${target[1]}`).username}** __${results}__`)
         }
 
-        if (player.role !== "Evil Detective") db.set(`player_${player.id}.uses`, 0)
+        if (player.role !== "Evil Detective") db.subtract(`player_${player.id}.uses`, 1)
 
         if (player.role === "Spirit Seer") {
             db.set(`player_${player.id}.target`, target)
