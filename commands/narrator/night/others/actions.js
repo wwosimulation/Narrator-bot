@@ -35,7 +35,7 @@ module.exports = async () => {
         }
 
         // reset their target for every role except for some
-        if (!["Junior Werewolf", "Avenger", "Dreamcatcher", "Jailer", "Headhunter", "Villager", "Marksman", "President", "Werewolf", "Bomber", "Split Wolf", "Marksman", "Beast Hunter", "Warden", "Ritualist", "Trapper", "Instigator", "Cupid", "Grave Robber", "Wolf Trickster"].includes(guy.role)) {
+        if (!["Junior Werewolf", "Avenger", "Dreamcatcher", "Jailer", "Headhunter", "Villager", "Marksman", "President", "Werewolf", "Bomber", "Split Wolf", "Marksman", "Beast Hunter", "Warden", "Ritualist", "Trapper", "Instigator", "Cupid", "Grave Robber", "Wolf Trickster", "Surrogate", "Lethal Seer"].includes(guy.role)) {
             // delete the target
             db.delete(`player_${player}.target`)
 
