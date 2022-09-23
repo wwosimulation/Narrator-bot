@@ -25,6 +25,7 @@ module.exports = {
         const deadPlayers = players.filter((player) => !alivePlayers.includes(player))
         const drunks = alivePlayers.filter((p) => db.get(`player_${p}`).role === "Drunk")
 
+        console.log("ur mom")
         console.log("Loaded all actions...")
 
         // get all the actions
