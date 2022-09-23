@@ -15,6 +15,8 @@ module.exports = async (client, guy, attacker) => {
     let isProtected = false
     // loop through each player to see if they are a Surrogate
     for (let player of alivePlayers) {
+        console.log(`Okay suurogate has been summoned`)
+        console.log(db.get(`player_${player}`))
         // check and see if the player is a Surrogate
         if (db.get(`player_${player}`).role === "Surrogate") {
             // check and see if the Surrogate protected the attacked player
