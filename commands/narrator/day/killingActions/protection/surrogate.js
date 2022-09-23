@@ -15,13 +15,12 @@ module.exports = async (client, guy, attacker) => {
     let isProtected = false
     // loop through each player to see if they are a Surrogate
     for (let player of alivePlayers) {
-
         // check and see if the player is a Surrogate
         if (db.get(`player_${player}`).role === "Surrogate") {
             // check and see if the Surrogate protected the attacked player
-            console.log(`${players.indexOf(player)+1} is a surrogate`)
-            console.log(`Their target is ${players.indexOf(db.get(`player_${player}`).target)+1}`)
-            console.log(`Player ${players.indexOf(guy.id)+1} is the victim`)
+            console.log(`${players.indexOf(player) + 1} is a surrogate`)
+            console.log(`Their target is ${players.indexOf(db.get(`player_${player}`).target) + 1}`)
+            console.log(`Player ${players.indexOf(guy.id) + 1} is the victim`)
             if (db.get(`player_${player}`).target === guy.id) {
                 // check if berserk is active and the attacker is from the werewolves' team
                 if (isBerserkActive === true && attacker.team === "Werewolf") {
