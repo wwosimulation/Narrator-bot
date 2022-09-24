@@ -111,7 +111,7 @@ module.exports = async (client, alivePlayersBefore) => {
             // check if the bandit's target is alive
             if (guy.status === "Alive") {
                 db.delete(`player_${bandit}.target`) // deletes the target from the bandit
-                db.delete(`player_${bandit.accomplices.find((d) => accomplices.includes(d))}.target`) // deletes the target from the accomplice
+                db.delete(`player_${theAttacker.accomplices.find((d) => accomplices.includes(d))}.target`) // deletes the target from the accomplice
 
                 // check for any protections
                 let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
