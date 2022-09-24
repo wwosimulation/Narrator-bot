@@ -218,7 +218,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
                 // regular kill
 
                 // check if they are a solo killer
-                if (["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker", "Dreamcatcher", "Wise Man"].includes(guy.role)) {
+                if (["Bandit", "Corruptor", "Cannibal", "Illusionist", "Serial Killer", "Arsonist", "Bomber", "Alchemist", "Hacker", "Dreamcatcher", "Harbinger", "Wise Man"].includes(guy.role)) {
                     await werewolvesChat.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** couldn't be killed!`) // send an unsuccessful message
                     await werewolvesChat.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // ping the wolves in their chat
                 } else {

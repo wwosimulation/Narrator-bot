@@ -89,7 +89,7 @@ module.exports = async (client, alivePlayersBefore) => {
     // loop through each bandit
     for (let bandit of bandits) {
         let theAttacker = db.get(`player_${bandit}`) // the attacker (bandit) object - Object
-        let attacker = theAttacker.accomplices?.find((d) => accomplices.includes(d)) // the attacker (accomplice) object - Object
+        let attacker = db.get(`player_${theAttacker.accomplices?.find((d) => accomplices.includes(d))}`) // the attacker (accomplice) object - Object
 
         // check if the accomplice is alive. If not, turn the kill into a conversion
         if (!attacker) {

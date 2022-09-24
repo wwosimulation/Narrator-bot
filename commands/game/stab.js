@@ -26,8 +26,8 @@ module.exports = {
 
         let emotes = {
             "Serial Killer": `${getEmoji("serial_killer_knife", client)} You have decided to stab`,
-            Bandit: `${getEmoji("thieve", client)} **${players.indexOf(player.id) + 1} ${player.username}** voted to stab`,
-            Accomplice: `${getEmoji("votebandit", client)} **${players.indexOf(player.id) + 1} ${player.username}** voted to stab`,
+            Bandit: `${getEmoji("votebandit", client)} **${players.indexOf(player.id) + 1} ${player.username}** voted to stab`,
+            Accomplice: `${getEmoji("thieve", client)} **${players.indexOf(player.id) + 1} ${player.username}** voted to stab`,
         }
 
         if (args[0] === "cancel") {
