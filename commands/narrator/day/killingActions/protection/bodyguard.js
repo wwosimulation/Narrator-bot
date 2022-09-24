@@ -61,7 +61,6 @@ module.exports = async (client, guy, attacker) => {
                     }
                 }
             }
-
         }
 
         return isProtected // exit early and give whatever was set
@@ -95,7 +94,6 @@ module.exports = async (client, guy, attacker) => {
         }
     }
 
-    
     // return the isProtected value
     return isProtected
 }

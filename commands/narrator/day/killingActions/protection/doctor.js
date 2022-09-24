@@ -15,7 +15,6 @@ module.exports = async (client, guy, attacker) => {
     let isProtected = false
     // loop through each player to see if they are a doctor
     for (let player of alivePlayers) {
-
         // check and see if the player is a Doctor
         if (db.get(`player_${player}`).role === "Doctor") {
             // check and see if the Doctor protected the attacked player
