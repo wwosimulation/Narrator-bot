@@ -73,8 +73,10 @@ module.exports = {
         // alchemist
         const alchemists = require("./night/kills/alchemists.js")
         const zombies = require("./night/kills/zombies.js")
+        const { killDoomed } = require("./day/killingActions/harbingers.js")
         await alchemists(client)
         await zombies(client)
+        await killDoomed(client)
 
         db.set(`commandEnabled`, `yes`)
         db.add(`gamePhase`, 1)

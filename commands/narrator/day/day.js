@@ -24,11 +24,11 @@ module.exports = {
         const alivePlayers = players.filter((player) => db.get(`player_${player}`).status === "Alive")
         const deadPlayers = players.filter((player) => !alivePlayers.includes(player))
         const drunks = alivePlayers.filter((p) => db.get(`player_${p}`).role === "Drunk")
-
         console.log("Loaded all actions...")
 
         // get all the actions
         let { wolves, beastHunterKilling, trapperKilling } = require("./killingActions/wolves.js")
+        let { action } = require("./killingActions/harbingers.js")
         let kittenwolf = require("./killingActions/kittenWolf.js")
         let serialkillers = require("./killingActions/serialkillers.js")
         let accomplices = require("./killingActions/accomplices.js")
@@ -123,6 +123,12 @@ module.exports = {
         // dreamcatcher doing their job
         console.log("dc running...")
         await dreamcatchers(client, alivePlayers)
+
+        sleep(100)
+
+        // harbinger doing their job
+        console.log("harbinger running...")
+        await action(client)
 
         sleep(100)
 

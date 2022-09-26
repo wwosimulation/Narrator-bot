@@ -75,7 +75,29 @@ async function getProtections(client, guy, attacker) {
     return typeof getResult === "object" ? getResult : guy // looks like there were no protections
 }
 
-module.exports = async (client, alivePlayersBefore) => {
+module.exports.killDoomed = async (client) => {
+    const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
+    const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
+    const werewolvesChat = guild.channels.cache.find((c) => c.name === "werewolves-chat") // get the werewolves channel - Object
+    const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
+    const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
+    const doomedPlayers = alivePlayers.filter((p) => db.get(`player_${p}`).doomed === true) // get all the doomed players array - Array<Snowflake>
+
+    for (const p of doomedPlayers) {
+        let guy = db.get(`player_${p}`)
+        let role = guy.role
+        if (guy.tricked) role = "Wolf Trickster"
+        let attackedPlayer = await guild.members.fetch(guy.id) // fetch the discord member - Object
+        let attackedPlayerRoles = attackedPlayer.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the roles and replace the Alive role with Dead.
+        await attackedPlayer.roles.set(attackedPlayerRoles) // removes the Alive and adds the Dead discord role
+        await dayChat.send(`${getEmoji("doom", client)} **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** has been doomed by the Harbinger!`)
+        db.delete(`player_${guy.id}.doomAttacker`)
+        db.set(`player_${guy.id}.status`, "Dead")
+        client.emit("playerKilled", db.get(`player_${guy.id}`), db.get(`player_${guy.doomAttacker}`))
+    }
+}
+
+module.exports.action = async (client) => {
     // define all the variables
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
@@ -83,57 +105,58 @@ module.exports = async (client, alivePlayersBefore) => {
     const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
-    const evilDetectives = alivePlayersBefore.filter((p) => db.get(`player_${p}`).role === "Evil Detective") // get the alive Evil Detectives array - Array<Snowflake>
+    const harbingers = alivePlayers.filter((p) => db.get(`player_${p}`).role === "Harbinger") // get the alive Harbingers array - Array<Snowflake>
 
-    // loop through each evil detective
-    for (let det of evilDetectives) {
-        let attacker = db.get(`player_${det}`) // the attacker object - Object
+    // loop through each illusionist
+    for (let hb of harbingers) {
+        let attacker = db.get(`player_${hb}`) // the attacker object - Object
 
-        // check if the evil detective selected someone
+        // check if the illu has a target
         if (attacker.target) {
             // delete the target
-            db.delete(`player_${attacker.id}.target`) // don't worry, this won't affect the current target
+            db.delete(`player_${hb}.target`) // don't worry, this won't affect the current target
 
-            // check if both of the target don't belong to the same team
-            let [guy1, guy2] = attacker.target.map((t) => db.get(`player_${t}`)) // get both of the victims
-            if (guy1.team !== guy2.team || [guy1.team, guy2.team].includes("Solo")) {
-                // loop through each victim
-                ;[guy1, guy2].forEach(async (guy) => {
-                    // check if the player is not the evil detective themself
-                    if (guy.id !== det) {
-                        // check if the victim is alive
-                        if (guy.status === "Alive") {
-                            let result = await getProtections(client, guy, attacker) // gets the protections and checks the result
+            let guy = db.get(`player_${attacker.target}`)
 
-                            // check if there were no protections
-                            if (typeof result === "object") {
-                                // kill the player
-                                db.set(`player_${guy.id}.status`, "Dead") // changes the status of the victim
-                                client.emit("playerKilled", db.get(`player_${result.id}`), attacker)
-                                let role = result.role
-                                if (result.tricked) role = "Wolf Trickster"
-                                await dayChat.send(`${getEmoji("evildetcheck", client)} The evil detective has killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
+            // check if the illu's target is alive
+            if (guy.status === "Alive" && !guy.doomed) {
+                // check if harbinger's ability type is herald or doom
 
-                                // get the member and set their role
-                                let member = await guild.members.fetch(result.id) // fetches the discord member
-                                let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // gets all the roles of this member
-                                await member.roles.set(memberRoles) // sets the role for the member
-                            } else {
-                                // otherwise send a fail message to the detective
+                if (attacker.abilityType === "doom") {
+                    // check for any protections
+                    let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>
 
-                                let channel = guild.channels.cache.get(attacker.channel) // gets the channel object - Object
-                                await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** could not be killed!`) // sends an unsuccesful message
-                                await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the evil detective
-                            }
-                        }
+                    let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
+
+                    // check if the result type is an object - indicating that there were no protections
+
+                    if (typeof result === "object") {
+                        // send a succesful message to the illusionist
+                        await channel.send(`${getEmoji("doom", client)} Player **${players.indexOf(result.id) + 1} ${result.username}** is now doomed!`)
+
+                        let channel2 = guild.channels.cache.get(result.channel)
+                        await channel2.send(`${getEmoji("doom", client)} You have been doomed by the Harbinger. You cannot use your abilities and will die before voting starts.`)
+
+                        // set the database
+                        db.set(`player_${result.id}.doomed`, true) // set the player as doomed
+                        db.set(`player_${result.id}.doomAttacker`, attacker.id)
+                    } else {
+                        // otherwise they were protected
+
+                        await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** could not be doomed!`) // sends an error message
+                        await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the player in the channel
                     }
-                })
-            } else {
-                // if they are on the same team, send a message to the evil detective
+                } else {
+                    let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
 
-                let channel = guild.channels.cache.get(attacker.channel) // gets the channel object - Object
-                await channel.send(`${getEmoji("evildetcheck", client)} Your targets are on the same team. They will not be killed tonight.`) // sends an unsuccesful message
-                await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the evil detective
+                    let role = guy.role
+                    if (guy.disguised === true) role === "Illusionist"
+                    if (guy.shamaned) role = "Wolf Shaman"
+                    if (guy.role === "Sorcerer") role = guy.fakeRole
+                    if (guy.role === "Wolf Trickster" && guy.trickedRole) role = guy.trickedRole.role
+
+                    channel.send(`${getEmoji("herald", client)} You checked **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**!`)
+                }
             }
         }
     }
