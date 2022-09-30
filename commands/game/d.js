@@ -7,6 +7,7 @@ module.exports = {
     usage: `${process.env.PREFIX}d <message...>`,
     gameOnly: true,
     run: async (message, args, client) => {
+        return message.channel.send("This command no longer works. Please use the `+chat <message>` command.")
         const gamePhase = db.get(`gamePhase`)
         const players = db.get(`players`) || []
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
