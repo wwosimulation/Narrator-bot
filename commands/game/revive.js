@@ -44,19 +44,18 @@ module.exports = {
         await message.channel.send(`${getEmoji(player.role === "Wolf Summoner" ? "wolf_revive" : "revive", client)} You have decided to revive **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}**!`)
 
         if (player.role === "Wolf Summoner") {
-
-            let dayChat = message.guild.channels.cache.find(c => c.name === 'day-chat')
+            let dayChat = message.guild.channels.cache.find((c) => c.name === "day-chat")
             db.subtract(`player_${player.id}.uses`, 1)
             db.set(`player_${target}.status`, "Alive") // set the status of the player to Alive
             db.set(`player_${target}.revivedAt`, db.get(`gamePhase`))
             db.set(`player_${target}.role`, "Werewolf")
-            db.set(`player_${target}.aura`, 'Evil')
+            db.set(`player_${target}.aura`, "Evil")
             let member = await guild.members.fetch(target) // get the discord member
             let memberRoles = member.roles.cache
                 .map((r) => (r.name === "Dead" ? ["892046206698680390", "892046205780131891"] : r.id))
                 .join(",")
                 .split(",") // get the roles, and replace the dead role with alive
-            await dayChat.send(`${getEmoji("wolf_revive", client)} The Wolf Summoner revived **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji('werewolf', client)} Werewolf)**`) // sends a message in day chat
+            await dayChat.send(`${getEmoji("wolf_revive", client)} The Wolf Summoner revived **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji("werewolf", client)} Werewolf)**`) // sends a message in day chat
             await member.roles.set(memberRoles)
         }
     },
