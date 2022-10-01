@@ -395,7 +395,7 @@ module.exports = (client) => {
             await interaction.deferUpdate()
             if (!db.get("players").includes(interaction.user.id)) return await interaction.followUp({ content: "This is not your button!", ephemeral: true })
             let role = db.get(`player_${interaction.member.id}`).role
-            require(`./game/${role.replace(/\s/g, "-")}.js`)(interaction)
+            require(`./game/${role.toLowerCase().replace(/\s/g, "-")}.js`)(interaction)
         }
     })
 }
