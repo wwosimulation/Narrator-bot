@@ -15,7 +15,7 @@ module.exports = async (client) => {
         let guy = db.get(`player_${player}`) // get the player object - Object
 
         // check if the player is a werewolf who got revived two phases before
-        if (guy.revivedAt+1 === db.get(`gamePhase`)) {
+        if (guy.revivedAt + 1 === db.get(`gamePhase`)) {
             // kill the player
             let member = await guild.members.fetch(guy.id) // fetch the discord member - Object
             let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get all the player's roles - Array<Snowflake>

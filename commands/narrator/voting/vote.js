@@ -3,7 +3,6 @@ const ms = require("ms")
 const { fn, getEmoji } = require("../../config")
 
 module.exports = async (client) => {
-    
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
     const voteChat = message.guild.channels.cache.find((c) => c.name === "vote-chat") // get the vote channel - Object
@@ -36,7 +35,7 @@ module.exports = async (client) => {
 
     let timer = ms(args.join(" "))
     if (!timer) return message.channel.send("Invalid time!")
-    
+
     db.set(`wwsVote`, "NO")
     db.set(`skipVotes`, [])
 
@@ -45,9 +44,9 @@ module.exports = async (client) => {
     dayChat.send(`Get ready to vote! (${votes} vote${votes == 1 ? "" : "s"} required)`)
 
     let droppy = { type: 3, custom_id: "votephase", options: [{ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` }] }
-    
+
     for (const p of alivePlayers) {
-        droppy.options.push({ label: `${players.indexOf(p)+1}`, value: `votefor-${players.indexOf(p)+1}`, description: `${db.get(`player_${p}`).username}` })
+        droppy.options.push({ label: `${players.indexOf(p) + 1}`, value: `votefor-${players.indexOf(p) + 1}`, description: `${db.get(`player_${p}`).username}` })
     }
 
     let row = { type: 1, components: [droppy] }
@@ -61,5 +60,4 @@ module.exports = async (client) => {
         if (m.editable) await m.edit(fn.disableButtons(m))
         voteChat.send(`Time is up!`)
     }, timer)
-
 }

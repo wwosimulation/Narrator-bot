@@ -20,5 +20,5 @@ module.exports = async (client) => {
         db.delete(`player_${guy.id}.doomAttacker`)
         db.set(`player_${guy.id}.status`, "Dead")
         client.emit("playerKilled", db.get(`player_${guy.id}`), db.get(`player_${guy.doomAttacker}`))
-}
+    }
 }

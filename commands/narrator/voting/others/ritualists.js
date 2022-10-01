@@ -10,8 +10,8 @@ module.exports = async (client) => {
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake> c
     const alchemists = alivePlayers.filter((p) => db.get(`player_${p}`).role === "Alchemist") // get the alive alchemist array - Array<Snowflake>
 
-     // loop through each dead player
-     for (const player of deadPlayers) {
+    // loop through each dead player
+    for (const player of deadPlayers) {
         let guy = db.get(`player_${player}`) // get the player - Object
         if (guy.status === "Alive") continue // if the player is alive, don't do anything and check for the next player
 
@@ -27,8 +27,5 @@ module.exports = async (client) => {
             .split(",") // get the roles, and replace the dead role with alive
         await dayChat.send(`${getEmoji("ritualist_revive", client)} The Ritualist revived **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})**`) // sends a message in day chat
         await member.roles.set(memberRoles)
-
-        
     }
-
 }
