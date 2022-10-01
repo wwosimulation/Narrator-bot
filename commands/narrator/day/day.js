@@ -57,6 +57,7 @@ module.exports = {
         let bakers = require("./others/bakers.js")
         let sheriffs = require("./others/sheriffs.js")
         let spiritseers = require("./others/spiritseers.js")
+        let flaggers = require("./others/flaggers.js")
         let resets = require("./others/reset.js")
         let { getCoupleTargets, couple } = require("./others/couple.js")
 
@@ -81,6 +82,12 @@ module.exports = {
         // red ladies doing their dirty work
         console.log("rl running...")
         await redladies(client)
+
+        sleep(100)
+
+        // flaggers redirecting
+        console.log("flagger running...")
+        await flaggers(client)
 
         sleep(100)
 
