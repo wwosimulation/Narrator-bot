@@ -11,6 +11,6 @@ module.exports = {
     run: async (message, args, client) => {
         let gamephase = db.get(`gamePhase`)
         if (gamephase % 3 != 1) return message.channel.send("Please first use `+vt`")
-        require("./voting/vote.js").run(message, args, client)
+        require("./voting/vote.js")(message, args, client)
     },
 }

@@ -2,7 +2,7 @@ const db = require("quick.db")
 const ms = require("ms")
 const { fn, getEmoji } = require("../../../config")
 
-module.exports = async (client) => {
+module.exports = async (message, args, client) => {
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
     const voteChat = message.guild.channels.cache.find((c) => c.name === "vote-chat") // get the vote channel - Object
