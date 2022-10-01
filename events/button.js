@@ -240,6 +240,17 @@ module.exports = (client) => {
             interaction.update({ embeds: [embed] })
         }
 
+        if (interaction.customId === 'ft_reveal') {
+            let player = db.get(`player_${interaction.member.id}`)
+            if (!player) return interaction.reply({ content: "This button is not for you!", ephemeral: true })
+            if (player.status !== "Alive") return interaction.reply({ content: "This button is not for you!", ephemeral: true })
+            let dayChat = interaction.guild.channels.cache.find(c => c.name === 'day-chat')
+            await dayChat.send(`${getEmoji("sun", client)} **${db.get("players").indexOf(player.id)+1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** used the Fortune Teller's card to reveal their role!`)
+            await interaction.member.roles.add("892046205780131891")
+            let r = db.get(`game`).revealedPlayers | []
+            r.push(player.id)
+            db.set(`game.revealedPlayers`, r)
+        }
         if (interaction.customId.startsWith("warden-breakout")) {
             let player = db.get(`player_${interaction.member.id}`)
             if (!player) return interaction.reply({ content: "This button is not for you!", ephemeral: true })
@@ -323,6 +334,9 @@ module.exports = (client) => {
                     await interaction.member.roles.set(memberRoles)
                     let member2 = await interaction.guild.members.fetch(target.id)
                     await member2.roles.add("892046205780131891")
+                    let r = db.get(`game`).revealedPlayers | []
+                    r.push(target.id)
+                    db.set(`game.revealedPlayers`, r)
                     client.emit("playerKilled", db.get(`player_${player.id}`), db.get(`player_${player.id}`))
                 } else {
                     let member = await interaction.guild.members.fetch(target.id)
@@ -376,6 +390,12 @@ module.exports = (client) => {
             interaction.message.author = interaction.user
             interaction.message.member = interaction.member
             client.commands.get(phase).run(interaction.message, [], client)
+        }
+        if (interaction.customId.startsWith("game-action")) {
+            await interaction.deferUpdate()
+            if (!db.get("players").includes(interaction.user.id)) return await interaction.followUp({ content: "This is not your button!", ephemeral: true })
+            let role = interaction.customId.split("-")[1]
+            require(`./game/${role.replace(/\s/g, "-")}.js`)(interaction)
         }
     })
 }

@@ -15,6 +15,10 @@ module.exports = async (client) => {
         const players = db.get(`players`) || []
         let player = db.get(`player_${guy.id}`)
 
+        let r = db.get(`game`).revealedPlayers | []
+        if (r.includes(guy.id)) r.splice(r.indexOf(player.id), 1)
+        db.set(`game.revealedPlayers`, r)
+
         if (player.team === "Werewolf" && player.role !== "Werewolf Fan") {
             if (player.map((a) => db.get(`player_${a}`)).filter((a) => a.status === "Alive" && a.role === "Sorcerer").length > 0) {
                 player

@@ -85,6 +85,11 @@ module.exports = {
         db.set(`player_${member}.status`, "Dead")
         client.emit("playerKilled", db.get(`player_${member}`), db.get(`player_${player.id}`))
 
-        if (guy.id === target) await message.member.roles.add("892046205780131891")
+        if (guy.id === target) {
+            await message.member.roles.add("892046205780131891")
+            let r = db.get(`game`).revealedPlayers | []
+            r.push(guy.id)
+            db.set(`game.revealedPlayers`, r)
+        }
     },
 }
