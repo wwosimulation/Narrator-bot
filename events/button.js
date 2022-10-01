@@ -394,7 +394,7 @@ module.exports = (client) => {
         if (interaction.customId.startsWith("game-action")) {
             await interaction.deferUpdate()
             if (!db.get("players").includes(interaction.user.id)) return await interaction.followUp({ content: "This is not your button!", ephemeral: true })
-            let role = interaction.customId.split("-")[1]
+            let role = db.get(`player_${interaction.member.id}`).role
             require(`./game/${role.replace(/\s/g, "-")}.js`)(interaction)
         }
     })
