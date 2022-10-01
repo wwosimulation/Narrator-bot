@@ -86,6 +86,8 @@ async function getProtections(client, guy, attacker) {
     return typeof getResult === "object" ? getResult : guy // looks like there were no protections
 }
 
+module.exports.countVotes = countVotes
+
 function countVotes(players, alivePlayersBefore) {
     const alivePlayers = alivePlayersBefore || players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
     let votes = {} // make an object to store the votes - Object<UserId, Vote>
