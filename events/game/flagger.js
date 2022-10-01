@@ -39,8 +39,7 @@ module.exports = async (interaction) => {
                 if (action === "target") await i.update({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }] })
                 if (action === "target") createCollector(msg, "redirect")
                 if (action === "redirect") await i.update({ content: "Done!", components: [] })
-                if (action === "redirect") await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have decided to protect **${players.indexOf(flagger.target) + 1} ${db.get(`player_${flagger.target}`).username}** by redirecting attacks to **${players.indexOf(flagger.redirect) + 1} ${db.get(`player_${flagger.redirect}`).username}**!` })
-                return
+                if (action === "redirect") await interaction.followUp({ content: `${getEmoji("flagger_protect", client)} You have decided to protect **${players.indexOf(flagger.target) + 1} ${db.get(`player_${flagger.target}`).username}** by redirecting attacks to **${players.indexOf(flagger.redirect) + 1} ${db.get(`player_${flagger.redirect}`).username}**!` })
             })
             .catch(() => null)
     }
