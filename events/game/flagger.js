@@ -12,7 +12,7 @@ module.exports = async (interaction) => {
     let options = []
     for (const p of alivePlayers) {
         let player = db.get(`player_${p}`)
-        let statement = revealedPlayers.includes(p) || flagger.coupled === p || player.role === "President" || flagger.instigator?.includes(p) || flagger.instigator?.map((a) => db.get(`player_${a}`).target.find((a) => a !== flagger.id)).includes(p) || flagger.cupid?.map((a) => db.get(`player_${a}`).target.find((a) => a !== flagger.id)).includes(p) || flagger.id === p
+        let statement = revealedPlayers.includes(p) || flagger.coupled === p || player.role === "President" || flagger.instigator?.includes(p) || flagger.instigator?.map((a) => db.get(`player_${a}`).target.find((a) => a !== flagger.id))?.includes(p) || flagger.cupid?.map((a) => db.get(`player_${a}`).target.find((a) => a !== flagger.id))?.includes(p) || flagger.id === p
         if (statement) options.push({ label: `${players.indexOf(p) + 1}`, value: p, description: `Protect ${player.username}`, emoji: { id: getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client).id } })
         else options.push({ label: `${players.indexOf(p) + 1}`, value: p, description: `Protect ${player.username}` })
     }
