@@ -54,7 +54,7 @@ module.exports = async (client) => {
     guild.channels.cache
         .find((c) => c.name === "voting-logs")
         ?.send(
-            `So here are the results:\n\nAlive players: ${alivePlayers.length}\n\nPlayers required to lynch: ${Math.floor(alivePlayers.length / 2)}\n\n${Object.entries(vote)
+            `So here are the results:\n\nAlive players: ${alivePlayers.length}\n\nPlayers required to lynch: ${Math.floor(alivePlayers.length / 2)}\n\n${Object.entries(votes)
                 .map((b) => `<${b[0]}> voted <${b[1]}>`)
                 .join("\n")}\n\n${sortedVotes.map((a) => ` - <@${a[0]}> had ${a[1]} votes on them.`).join("\n")}\n\nPlayer who gets killed: ${condition ? "No one" : `<@${sortedVotes[0][0]}>`}`
         )
