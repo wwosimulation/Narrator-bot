@@ -68,7 +68,7 @@ module.exports = {
 
         for (const p of players) {
             let player = db.get(`player_${p}`)
-            if ((player.role === "Flagger" || player.dreamRole === "Flagger") && player.status === "Alive" && player.uses > 0) {
+            if ((["Serial Killer", "Flagger", "Doctor"].includes(player.role) || ["Serial Killer", "Flagger", "Doctor"].includes(player.role)) && player.status === "Alive") {
                 let chan = message.guild.channels.cache.get(player.channel)
                 await chan.send({ content: `Click the button below to do your actions!`, components: [{ type: 1, components: [{ type: 2, style: 3, label: "Action", custom_id: `game-action` }] }] })
             }

@@ -7,10 +7,12 @@ module.exports = async (interaction) => {
     let players = db.get("players")
     let revealedPlayers = db.get(`game`).revealedPlayers || []
     let alivePlayers = players.filter((a) => db.get(`player_${a}`).status === "Alive")
-
     let droppy1 = { type: 3, custom_id: "game-flagger-protect", placeholder: "Select a player to protect", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
     let droppy2 = { type: 3, custom_id: "game-flagger-redirect", placeholder: "Select a player to redirect the attack", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
     let options = []
+
+    if (flagger.uses === 0) return interaction.followUp({ content: "You already used up your ability!", ephemeral: true })
+
     for (const p of alivePlayers) {
         let player = db.get(`player_${p}`)
         let statement = revealedPlayers.includes(p) || flagger.coupled === p || player.role === "President" || flagger.instigator?.includes(p) || flagger.instigator?.map((a) => db.get(`player_${a}`).target.find((a) => a !== flagger.id))?.includes(p) || flagger.cupid?.map((a) => db.get(`player_${a}`).target.find((a) => a !== flagger.id))?.includes(p) || flagger.id === p
@@ -29,20 +31,31 @@ module.exports = async (interaction) => {
             .awaitMessageComponent()
             .then(async (i) => {
                 if (db.get(`gamePhase`) % 3 !== 0) return i.reply({ content: "This action is no longer valid now!", ephemeral: true })
+                if (db.get(`player_${flagger.id}`).status !== "Alive") return i.reply({ content: "You are not alive!", ephemeral: true })
+                if (i.values[0] === "cancel") {
+                    db.delete(`player_${flagger.id}.target`)
+                    db.delete(`player_${flagger.id}.redirect`)
+                    await i.update({ content: "Done!", components: [] })
+                    await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have sucessfully canceled your action!` })
+                    return;
+                }
                 if (db.get(`player_${i.values[0]}`).status !== "Alive") return i.reply({ content: "This player is not alive!", ephemeral: true })
                 options.splice(
                     options.findIndex((a) => a.value === i.values[0]),
                     1
                 )
+                
                 droppy2.options.push(...options)
+                droppy2.options.forEach(o => { o.description = o.description.replace("Protect", "Redirect the attack to")})
                 db.set(`player_${interaction.user.id}.${action}`, i.values[0])
                 if (action === "target") i.update({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }] })
                 if (action === "target") createCollector(msg, "redirect")
                 if (action === "redirect") {
                     await i.update({ content: "Done!", components: [] })
-                    await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have decided to protect **${players.indexOf(flagger.target) + 1} ${db.get(`player_${flagger.target}`).username}** by redirecting attacks to **${players.indexOf(flagger.redirect) + 1} ${db.get(`player_${flagger.redirect}`).username}**!` })
+                    await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have decided to protect **${players.indexOf(db.get(`player_${flagger.id}`).target) + 1} ${db.get(`player_${db.get(`player_${flagger.id}`).target}`).username}** by redirecting attacks to **${players.indexOf(i.values[0]) + 1} ${db.get(`player_${i.values[0]}`).username}**!` })
                 }
             })
             .catch(() => null)
     }
 }
+
