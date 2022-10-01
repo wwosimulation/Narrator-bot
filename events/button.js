@@ -240,12 +240,12 @@ module.exports = (client) => {
             interaction.update({ embeds: [embed] })
         }
 
-        if (interaction.customId === 'ft_reveal') {
+        if (interaction.customId === "ft_reveal") {
             let player = db.get(`player_${interaction.member.id}`)
             if (!player) return interaction.reply({ content: "This button is not for you!", ephemeral: true })
             if (player.status !== "Alive") return interaction.reply({ content: "This button is not for you!", ephemeral: true })
-            let dayChat = interaction.guild.channels.cache.find(c => c.name === 'day-chat')
-            await dayChat.send(`${getEmoji("sun", client)} **${db.get("players").indexOf(player.id)+1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** used the Fortune Teller's card to reveal their role!`)
+            let dayChat = interaction.guild.channels.cache.find((c) => c.name === "day-chat")
+            await dayChat.send(`${getEmoji("sun", client)} **${db.get("players").indexOf(player.id) + 1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})** used the Fortune Teller's card to reveal their role!`)
             await interaction.member.roles.add("892046205780131891")
             let r = db.get(`game`).revealedPlayers | []
             r.push(player.id)

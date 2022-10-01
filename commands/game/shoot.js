@@ -95,7 +95,7 @@ module.exports = {
         let roles = member.roles.cache.map((r) => (r.name === "Alive" ? message.guild.roles.cache.find((r) => r.name === "Dead").id : r.id))
         await member.roles.set(roles)
         await message.guild.channels.cache.find((c) => c.name === "day-chat")?.send(messages[player.role])
-        if (player.role === 'Gunner') {
+        if (player.role === "Gunner") {
             let r = db.get(`game`).revealedPlayers | []
             r.push(player.id)
             db.set(`game.revealedPlayers`, r)
