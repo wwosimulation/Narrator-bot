@@ -131,7 +131,7 @@ function countVotes(players, alivePlayersBefore) {
             voteObject[votes[vote]]++
         }
     }
-    
+
     // make a 2d array with [vote, quantity] pair and sort them
     let totalVotes = Object.entries(voteObject).sort((a, b) => b[1] - a[1]) // makes a 2d array, ands sorts them by vote count
 
@@ -158,7 +158,6 @@ function countVotes(players, alivePlayersBefore) {
             .filter((v) => db.get(`player_${v[0]}`).role === sortedWolves[0][1])
             .pop()[1] // gets the strongest werewolf who voted
     }
-
 }
 
 module.exports.wolves = async (client, alivePlayersBefore) => {
