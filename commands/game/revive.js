@@ -57,6 +57,20 @@ module.exports = {
                 .split(",") // get the roles, and replace the dead role with alive
             await dayChat.send(`${getEmoji("wolf_revive", client)} The Wolf Summoner revived **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji("werewolf", client)} Werewolf)**`) // sends a message in day chat
             await member.roles.set(memberRoles)
+
+            if (db.get("gamePhase") % 3 === 2) {
+                let voteChat = message.guild.channels.cache.find(c => c.name === 'vote-chat')
+                
+                let msgs = await voteChat.messages.fetch()
+                let votemsg = msgs.find(m => m.author.id === client.user.id && m.components[0]?.components[0].type === 'SELECT_MENU')
+                let droppy = { type: 3, custom_id: "votephase", options: [{ label: `Cancel`, value: `votefor-cancel`, description: `Cancel your vote` }] }
+                for (const p of players) {
+                    if (db.get(`player_${p}`).status === 'Alive') {
+                        droppy.options.push({ label: `${players.indexOf(p)+1}`, value: `votefor-${players.indexOf(p)+1}`, description: `${db.get(`player_${p}`).username}` })
+                    }
+                }
+                votemsg.edit({ components: [{ type: 1, components: [droppy] }] })
+            }
         }
     },
 }
