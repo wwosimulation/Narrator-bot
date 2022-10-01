@@ -4,7 +4,7 @@ const { getEmoji } = require("../../config")
 module.exports = async (interaction) => {
     let flagger = db.get(`player_${interaction.user.id}`)
     let players = db.get("players")
-    let revealedPlayers = db.get(`game`).revealedPlayers
+    let revealedPlayers = db.get(`game`).revealedPlayers || []
     let alivePlayers = players.filter((a) => db.get(`player_${a}`).status === "Alive")
 
     let droppy1 = { type: 3, custom_id: "game-flagger-protect", placeholder: "Select a player to protect", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
