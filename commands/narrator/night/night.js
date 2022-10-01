@@ -67,9 +67,9 @@ module.exports = {
         voteChat.bulkDelete(filteredmsgs)
 
         for (const p of players) {
-            let p = db.get(`player_${p}`)
-            if ((p.role === "Flagger" || p.dreamRole === "Flagger") && p.status === "Alive") {
-                let chan = message.guild.channels.cache.get(p.channel)
+            let player = db.get(`player_${p}`)
+            if ((player.role === "Flagger" || player.dreamRole === "Flagger") && player.status === "Alive") {
+                let chan = message.guild.channels.cache.get(player.channel)
                 await chan.send({ content: `Click the button below to do your actions!`, components: [{ type: 1, components: [{ type: 2, style: 3, label: "Action", custom_id: `game-action` }] }] })
             }
         }
