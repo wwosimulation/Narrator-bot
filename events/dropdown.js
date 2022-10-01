@@ -238,5 +238,8 @@ module.exports = (client) => {
             await guy.roles.set(roles)
             client.emit("playerKilled", db.get(`player_${target.id}`), db.get(`player_${player.id}`))
         }
+        if (interaction.customId.startsWith("game-")) {
+            
+        }
     })
 }
