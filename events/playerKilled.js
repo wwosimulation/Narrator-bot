@@ -43,12 +43,12 @@ module.exports = async (client) => {
         db.delete(`player_${guy.id}.corrupted`)
         db.delete(`player_${guy.id}.poisoned`)
 
-        if (phase.during === 'day') {
+        if (phase.during === "day") {
             if (!firstDayKill) {
                 db.set(`game.firstDayKill`, guy.id)
-            }    
+            }
         }
-       
+
         // ritualist set to revive
         for (const ritualist of ritualists) {
             let player = db.get(`player_${ritualist}`)

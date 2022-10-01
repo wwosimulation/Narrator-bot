@@ -81,18 +81,18 @@ module.exports = {
             db.set(`player_${player.id}.previousChecks`, previousChecks)
             return
         }
-        if (player.role === 'Violinist') {
+        if (player.role === "Violinist") {
             let firstDayKill = db.get(`game`).firstDayKill
             let teammate = db.get(`player_${firstDayKill}`)
             if (!firstDayKill || !teammate) return await message.channel.send("You can't check anyone if no one has been killed during the day!")
             let guy = db.get(`player_${target[0]}`)
-            if (guy.team === 'Solo' || guy.team !== teammate.team) {
-                message.channel.send(`${getEmoji("violinist_happy")} Player **${players.indexOf(guy.id)+1} ${guy.username}** is not mourning over the death of **${players.indexOf(teammate.id)+1} ${teammate.username}**!`)
+            if (guy.team === "Solo" || guy.team !== teammate.team) {
+                message.channel.send(`${getEmoji("violinist_happy")} Player **${players.indexOf(guy.id) + 1} ${guy.username}** is not mourning over the death of **${players.indexOf(teammate.id) + 1} ${teammate.username}**!`)
             } else {
-                message.channel.send(`${getEmoji("violinist_sad")} Player **${players.indexOf(guy.id)+1} ${guy.username}** is mourning over the death of **${players.indexOf(teammate.id)+1} ${teammate.username}**!`)
+                message.channel.send(`${getEmoji("violinist_sad")} Player **${players.indexOf(guy.id) + 1} ${guy.username}** is mourning over the death of **${players.indexOf(teammate.id) + 1} ${teammate.username}**!`)
             }
             db.subtract(`player_${player.id}.uses`, 1)
-            return;
+            return
         }
         if (!player.hypnotized && target.includes(player.id) && player.role !== "Evil Detective") return await message.channel.send("You can't check yourself, unless you have trust issues of course.")
         if (!player.hypnotized && player.role === "Wolf Seer" && db.get(`player_${target[0]}`).team === "Werewolf" && db.get(`player_${target[0]}`).role !== "Werewolf Fan") return await message.channel.send("I know have trust issues, but you cannot check your own teammates!")

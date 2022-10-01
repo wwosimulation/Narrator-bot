@@ -352,19 +352,26 @@ module.exports = (client) => {
                 await interaction.followUp(`${getEmoji("surrogate", client)} You have succesfully given your shield to your target!`)
             }
         }
-        if (interaction.customId === 'startgame-srole') {
+        if (interaction.customId === "startgame-srole") {
             await interaction.deferUpdate()
             interaction.message.author = interaction.user
             interaction.message.member = interaction.member
-            client.commands.get('startgame').run(interaction.message, [], client)
+            client.commands.get("startgame").run(interaction.message, [], client)
             await interaction.editReply({ components: [{ type: 1, components: [{ type: 2, style: 2, label: "Startgame", custom_id: "startgame-srole", disabled: true }] }] })
         }
         if (interaction.customId.startsWith("narrator-phase-")) {
             await interaction.deferUpdate()
             let phase = interaction.customId.split("-")[2]
-            let arr = ['day', 'vt', 'night']
-            let nextPhase = arr[arr.indexOf(phase)+1] || arr[0]
-            let comp = { type: 1, components: [{ type: 2, style: 1, label: "Day", custom_id: "narrator-phase-day", disabled: phase !== nextPhase }, { type: 2, style: 1, label: "Voting", custom_id: "narrator-phase-vt", disabled: phase !== nextPhase }, { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: phase !== nextPhase }] }
+            let arr = ["day", "vt", "night"]
+            let nextPhase = arr[arr.indexOf(phase) + 1] || arr[0]
+            let comp = {
+                type: 1,
+                components: [
+                    { type: 2, style: 1, label: "Day", custom_id: "narrator-phase-day", disabled: phase !== nextPhase },
+                    { type: 2, style: 1, label: "Voting", custom_id: "narrator-phase-vt", disabled: phase !== nextPhase },
+                    { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: phase !== nextPhase },
+                ],
+            }
             await interaction.editReply({ components: [comp] })
             interaction.message.author = interaction.user
             interaction.message.member = interaction.member

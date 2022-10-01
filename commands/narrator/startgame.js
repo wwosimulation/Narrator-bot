@@ -314,7 +314,14 @@ module.exports = {
 
         db.set("game.started", "yes")
 
-        let comp = { type: 1, components: [{ type: 2, style: 1, label: "Day", custom_id: "narrator-phase-day", disabled: false }, { type: 2, style: 1, label: "Voting", custom_id: "narrator-phase-vt", disabled: true }, { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: phase === true }] }
+        let comp = {
+            type: 1,
+            components: [
+                { type: 2, style: 1, label: "Day", custom_id: "narrator-phase-day", disabled: false },
+                { type: 2, style: 1, label: "Voting", custom_id: "narrator-phase-vt", disabled: true },
+                { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: phase === true },
+            ],
+        }
 
         message.channel.send({ content: "Click the buttons below to start the day, vote or night!", components: [comp] })
     },
