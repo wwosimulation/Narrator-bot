@@ -458,7 +458,11 @@ module.exports = {
                 await channel.send(`** **\n\n***__Do not do any actions until the Narrator says that night 1 has started!__***`)
             }
 
+            let comps = { type: 1, components: [{ type: 2, style: 3, label: "Startgame", custom_id: "startgame-srole" }] } 
+
             await oriMsg.edit("If everything looks correct, use `+startgame` to start the game!")
+
+            await interaction.followUp({ content: "You may press the button below if you want to start the game.", components: [comps] })
 
             client.commands.get("playerinfo").run(oriMsg, [], client)
 

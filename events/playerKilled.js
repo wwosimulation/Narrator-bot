@@ -29,6 +29,7 @@ module.exports = async (client) => {
         const mininarr = guild.roles.cache.find((r) => r.name === "Narrator Trainee")
         const stubbornWerewolves = require("../commands/narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
         const surrogate = require("../commands/narrator/day/killingActions/protection/surrogate.js") // surrogate
+        const firstDayKill = db.get(`game`).firstDayKill
 
         guild.members.fetch(guy.id).then((a) => {
             if (a.roles.cache.has("892046205780131891")) a.roles.remove("892046205780131891")
@@ -42,6 +43,12 @@ module.exports = async (client) => {
         db.delete(`player_${guy.id}.corrupted`)
         db.delete(`player_${guy.id}.poisoned`)
 
+        if (phase.during === 'day') {
+            if (!firstDayKill) {
+                db.set(`game.firstDayKill`, guy.id)
+            }    
+        }
+       
         // ritualist set to revive
         for (const ritualist of ritualists) {
             let player = db.get(`player_${ritualist}`)

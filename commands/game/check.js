@@ -16,12 +16,12 @@ module.exports = {
         if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to check players.")
-        if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger", "Lethal Seer"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger", "Lethal Seer"].includes(player.dreamRole)) return
-        if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger", "Lethal Seer"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
+        if (!["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger", "Lethal Seer", "Violinist"].includes(player.role) && !["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger", "Lethal Seer", "Violinist"].includes(player.dreamRole)) return
+        if (["Seer", "Aura Seer", "Spirit Seer", "Detective", "Wolf Seer", "Sorcerer", "Sheriff", "Evil Detective", "Mortician", "Analyst", "Harbinger", "Lethal Seer", "Violinist"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
         if (gamePhase % 3 != 0) return await message.channel.send("You do know that you can only check during the night right? Or are you delusional?")
         if (player.jailed) return await message.channel.send("You are jailed. You cannot use your abilities while in jail!")
         if (player.nightmared) return await message.channel.send("You are nightmared. You cannot use your abilities while you're asleep.")
-        if (player.role === "Analyst" && player?.lastChecked?.same === true && player?.lastChecked?.night === Math.floor(gamePhase / 3)) return await message.channel.send(`${getEmoji("analyst_blocked", client)} You checked two players that had the same aura yesterday. You are now blocked from checking tonight.`)
+        if (player.role === "Analyst" && player?.lastChecked?.same === true && player?.lastChecked?.night === Math.floor(gamePhase / 3) && !player.hypnotized) return await message.channel.send(`${getEmoji("analyst_blocked", client)} You checked two players that had the same aura yesterday. You are now blocked from checking tonight.`)
         if (!["Spirit Seer", "Sheriff", "Evil Detective"].includes(player.role) && player.uses === 0) return await message.channel.send("You already used up your ability!")
         if (args.length < 1) return await message.channel.send("Please select a player first.")
         if (!["Spirit Seer", "Detective", "Evil Detective", "Analyst"].includes(player.role) && args.length !== 1) return await message.channel.send("You need to select 1 player to check!")
@@ -75,11 +75,24 @@ module.exports = {
             if (attacker.team !== "Werewolf" && alivePlayers.length > 1) suspects.push(alivePlayers.filter((a) => a !== suspects[1])[Math.random() * (alivePlayers.length - 1)])
             suspects = suspects.sort((a, b) => players.indexOf(a) - players.indexOf(b))
             console.log(suspects)
-            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `**${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}**${i === suspects.length - 2 ? " or" : i === suspects.length - 1 ? "" : ","}`).join(" ")} tried to kill **${players.indexOf(guy.id) + 1} ${guy.username}**!`)
+            message.channel.send(`${getEmoji("autopsy", client)} Either ${suspects.map((a, i) => `**${players.indexOf(a) + 1} ${db.get(`player_${a}`).username}**${i === suspects.length - 2 ? " or" : i === suspects.length - 1 ? "" : ","}`).join(" ")} killed **${players.indexOf(guy.id) + 1} ${guy.username}**!`)
             db.subtract(`player_${player.id}.uses`, 1)
             previousChecks.push(guy.id)
             db.set(`player_${player.id}.previousChecks`, previousChecks)
             return
+        }
+        if (player.role === 'Violinist') {
+            let firstDayKill = db.get(`game`).firstDayKill
+            let teammate = db.get(`player_${firstDayKill}`)
+            if (!firstDayKill || !teammate) return await message.channel.send("You can't check anyone if no one has been killed during the day!")
+            let guy = db.get(`player_${target[0]}`)
+            if (guy.team === 'Solo' || guy.team !== teammate.team) {
+                message.channel.send(`${getEmoji("violinist_happy")} Player **${players.indexOf(guy.id)+1} ${guy.username}** is not mourning over the death of **${players.indexOf(teammate.id)+1} ${teammate.username}**!`)
+            } else {
+                message.channel.send(`${getEmoji("violinist_sad")} Player **${players.indexOf(guy.id)+1} ${guy.username}** is mourning over the death of **${players.indexOf(teammate.id)+1} ${teammate.username}**!`)
+            }
+            db.subtract(`player_${player.id}.uses`, 1)
+            return;
         }
         if (!player.hypnotized && target.includes(player.id) && player.role !== "Evil Detective") return await message.channel.send("You can't check yourself, unless you have trust issues of course.")
         if (!player.hypnotized && player.role === "Wolf Seer" && db.get(`player_${target[0]}`).team === "Werewolf" && db.get(`player_${target[0]}`).role !== "Werewolf Fan") return await message.channel.send("I know have trust issues, but you cannot check your own teammates!")

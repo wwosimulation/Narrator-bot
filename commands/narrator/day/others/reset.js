@@ -18,4 +18,5 @@ module.exports = async (client) => {
     })
 
     db.delete(`isBerserkActive`)
+    db.delete(`game.firstDayKill`)
 }

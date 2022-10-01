@@ -226,7 +226,7 @@ module.exports = {
         players.forEach((p) => {
             let guy = db.get(`player_${p}`)
             if (["Gunner", "Marksman", "Fortune Teller", "Nightmare Werewolf", "Lethal Seer"].includes(guy.role)) db.set(`player_${p}.uses`, 2)
-            if (["Seer", "Aura Seer", "Sorcerer", "Analyst", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator", "Wolf Trickster", "Warden", "Mortician", "Sect Leader", "Alpha Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (["Seer", "Aura Seer", "Sorcerer", "Analyst", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator", "Wolf Trickster", "Warden", "Mortician", "Sect Leader", "Alpha Werewolf", "Violinist"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
             if (guy.role === "Lethal Seer") db.set(`player_${p}.usesA`, 1)
             if (guy.role === "Forger") db.set(`player_${p}.swordUses`, 1)
             if (guy.role === "Forger") db.set(`player_${p}.shieldUses`, 2)
@@ -313,5 +313,9 @@ module.exports = {
         await message.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
 
         db.set("game.started", "yes")
+
+        let comp = { type: 1, components: [{ type: 2, style: 1, label: "Day", custom_id: "narrator-phase-day", disabled: false }, { type: 2, style: 1, label: "Voting", custom_id: "narrator-phase-vt", disabled: true }, { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: phase === true }] }
+
+        message.channel.send({ content: "Click the buttons below to start the day, vote or night!", components: [comp] })
     },
 }
