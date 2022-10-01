@@ -30,7 +30,7 @@ module.exports = async (client) => {
         }
 
         if (allTargets.includes(flag.target)) {
-            let channel = guild.channel.cache.get(flag.channel)
+            let channel = guild.channels.cache.get(flag.channel)
             db.subtract(`player_${fg}.uses`, 1)
             await dayChat.send(`${getEmoji("flagger_kill", client)} The Flagger has redirected an attack!`)
             await channel.send(`${getEmoji("flagger_protect", client)} You have succesfully redirected an attack!`)
