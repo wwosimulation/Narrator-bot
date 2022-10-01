@@ -40,7 +40,7 @@ module.exports = async (interaction) => {
                 if (action === "target") createCollector(msg, "redirect")
                 if (action === "redirect") {
                     i.update({ content: "Done!", components: [] })
-                    msg.channel.send({ content: `${getEmoji("flagger_protect", client)} You have decided to protect **${players.indexOf(flagger.target) + 1} ${db.get(`player_${flagger.target}`).username}** by redirecting attacks to **${players.indexOf(flagger.redirect) + 1} ${db.get(`player_${flagger.redirect}`).username}**!` })
+                    i.followUp({ content: `${getEmoji("flagger_protect", client)} You have decided to protect **${players.indexOf(flagger.target) + 1} ${db.get(`player_${flagger.target}`).username}** by redirecting attacks to **${players.indexOf(flagger.redirect) + 1} ${db.get(`player_${flagger.redirect}`).username}**!` })
                 }
             })
             .catch(() => null)
