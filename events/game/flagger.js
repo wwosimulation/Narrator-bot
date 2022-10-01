@@ -2,6 +2,7 @@ const db = require("quick.db")
 const { getEmoji } = require("../../config")
 
 module.exports = async (interaction) => {
+    const client = interaction.client
     let flagger = db.get(`player_${interaction.user.id}`)
     let players = db.get("players")
     let revealedPlayers = db.get(`game`).revealedPlayers || []
