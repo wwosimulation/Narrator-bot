@@ -144,18 +144,18 @@ function countVotes(players, alivePlayersBefore) {
     let wolvesRank = filteredVotes.map((x) => db.get(`player_${x[0]}`).role) // get all werewolves' role
 
     // sort the wolves in wolvesRank from strongest to weakest
-    let sortedWolves = wolvesRank.map((a) => [wolfList[a], a]).sort((a, b) => b[0] - a[0]) // we map the wolves into numbers, then sort the numbers from big to small
+    let sortedWolvess = wolvesRank.map((a) => [wolfList[a], a]).sort((a, b) => b[0] - a[0]) // we map the wolves into numbers, then sort the numbers from big to small
 
     // check if the first and second wolf number is same
-    if (sortedWolves.length > 1 && sortedWolves[0][0] === sortedWolves[1][0]) {
+    if (sortedWolvess.length > 1 && sortedWolvess[0][0] === sortedWolvess[1][0]) {
         // get the last strongest wolf who votes the player
         return Object.entries(votes)
-            .filter((v) => wolfList.indexOf(db.get(`player_${v[0]}`).role) === sortedWolves[0][0])
+            .filter((v) => wolfList.indexOf(db.get(`player_${v[0]}`).role) === sortedWolvess[0][0])
             .pop()[1] // gets the last strongest werewolf who voted
     } else {
         // get the voted player by the strongest wolf
         return Object.entries(votes)
-            .filter((v) => db.get(`player_${v[0]}`).role === sortedWolves[0][1])
+            .filter((v) => db.get(`player_${v[0]}`).role === sortedWolvess[0][1])
             .pop()[1] // gets the strongest werewolf who voted
     }
 }
