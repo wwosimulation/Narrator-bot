@@ -18,8 +18,8 @@ module.exports = async (message, args, client) => {
     const harbingers = require("./kills/harbingers.js")
     const revivedWolves = require("./kills/revivedWolves.js")
     const zombies = require("./kills/zombies.js")
-    const ritualists = require("./kills/ritualists.js")
-    const seerApprentices = require("./kills/seerApprentices.js")
+    const ritualists = require("./others/ritualists.js")
+    const seerApprentices = require("./others/seerApprentices.js")
 
     if (gamephase % 3 != 1) return message.channel.send("Please first use `+day`")
 
