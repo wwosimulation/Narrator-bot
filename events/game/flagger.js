@@ -37,16 +37,18 @@ module.exports = async (interaction) => {
                     db.delete(`player_${flagger.id}.redirect`)
                     await i.update({ content: "Done!", components: [] })
                     await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have sucessfully canceled your action!` })
-                    return;
+                    return
                 }
                 if (db.get(`player_${i.values[0]}`).status !== "Alive") return i.reply({ content: "This player is not alive!", ephemeral: true })
                 options.splice(
                     options.findIndex((a) => a.value === i.values[0]),
                     1
                 )
-                
+
                 droppy2.options.push(...options)
-                droppy2.options.forEach(o => { o.description = o.description.replace("Protect", "Redirect the attack to")})
+                droppy2.options.forEach((o) => {
+                    o.description = o.description.replace("Protect", "Redirect the attack to")
+                })
                 db.set(`player_${interaction.user.id}.${action}`, i.values[0])
                 if (action === "target") i.update({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }] })
                 if (action === "target") createCollector(msg, "redirect")
@@ -58,4 +60,3 @@ module.exports = async (interaction) => {
             .catch(() => null)
     }
 }
-

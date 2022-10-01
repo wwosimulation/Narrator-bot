@@ -31,18 +31,14 @@ module.exports = async (interaction) => {
                     db.delete(`player_${sk.id}.target`)
                     await i.update({ content: "Done!", components: [] })
                     await i.followUp({ content: `${getEmoji("serial_killer_knife", client)} You have sucessfully canceled your action!` })
-                    return;
+                    return
                 }
                 if (db.get(`player_${i.values[0]}`).status !== "Alive") return i.reply({ content: "This player is not alive!", ephemeral: true })
-                
+
                 db.set(`player_${interaction.user.id}.target`, i.values[0])
                 await i.update({ content: "Done!", components: [] })
                 await i.followUp({ content: `${getEmoji("serial_killer_knife", client)} You have decided to stab **${players.indexOf(i.values[0]) + 1} ${db.get(`player_${i.values[0]}`).username}**!` })
-                
             })
             .catch(() => null)
     }
-
-
-
 }

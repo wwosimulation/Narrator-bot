@@ -31,18 +31,14 @@ module.exports = async (interaction) => {
                     db.delete(`player_${doc.id}.target`)
                     await i.update({ content: "Done!", components: [] })
                     await i.followUp({ content: `${getEmoji("heal", client)} You have sucessfully canceled your action!` })
-                    return;
+                    return
                 }
                 if (db.get(`player_${i.values[0]}`).status !== "Alive") return i.reply({ content: "This player is not alive!", ephemeral: true })
-                
+
                 db.set(`player_${interaction.user.id}.target`, i.values[0])
                 await i.update({ content: "Done!", components: [] })
                 await i.followUp({ content: `${getEmoji("heal", client)} You have decided to protect **${players.indexOf(i.values[0]) + 1} ${db.get(`player_${i.values[0]}`).username}**!` })
-                
             })
             .catch(() => null)
     }
-
-
-
 }
