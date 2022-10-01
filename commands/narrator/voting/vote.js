@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const ms = require("ms")
-const { fn, getEmoji } = require("../../config")
+const { fn, getEmoji } = require("../../../config")
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
