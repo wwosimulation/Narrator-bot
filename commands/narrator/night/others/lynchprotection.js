@@ -15,7 +15,7 @@ module.exports = async (client, guy) => {
         // check if the target exists
         if (protector.target) {
             // check if the target is the same (Logically, I don't need to check if the target is alive, because it has already been confirmed in lynch.js)
-            if (protector.target === guy.id) {
+            if (protector.target === guy) {
                 db.subtract(`player_${protector.id}.uses`, 1) // set the uses to 0 because their ability has been used
                 result = true // set the result to true
                 break // break the loop, so we don't continue
