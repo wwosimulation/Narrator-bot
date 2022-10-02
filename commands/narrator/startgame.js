@@ -319,7 +319,7 @@ module.exports = {
             components: [
                 { type: 2, style: 1, label: "Day", custom_id: "narrator-phase-day", disabled: false },
                 { type: 2, style: 1, label: "Voting", custom_id: "narrator-phase-vt", disabled: true },
-                { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: phase === true },
+                { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: true },
             ],
         }
 
