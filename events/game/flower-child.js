@@ -28,7 +28,7 @@ module.exports = async (interaction) => {
         await msg
             .awaitMessageComponent()
             .then(async (i) => {
-                if (db.get(`gamePhase`) % 3 !== 0) return i.reply({ content: "This action is no longer valid now!", ephemeral: true })
+                if (db.get(`gamePhase`) % 3 === 0) return i.reply({ content: "This action is no longer valid now!", ephemeral: true })
                 if (db.get(`player_${fc.id}`).status !== "Alive") return i.reply({ content: "You are not alive!", ephemeral: true })
                 if (i.values[0] === "cancel") {
                     db.delete(`player_${fc.id}.target`)
