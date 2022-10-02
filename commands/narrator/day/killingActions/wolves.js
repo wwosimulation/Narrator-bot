@@ -202,7 +202,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
                 await werewolvesChat.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // ping the wolves in their chat
             } else {
                 // protection time
-                let result = await getProtections(client, guy, attacker)
+                let result = await getProtections(client, guy, confirmedWeakestWolf)
 
                 if (typeof result === "object") {
                     await require("./kittenWolf.js")(client, guy.id) // call this method to make new channels for a player being converted to a wolf
@@ -220,7 +220,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
                 await werewolvesChat.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // ping the wolves in their chat
             } else {
                 // check for protections
-                let result = await getProtections(client, guy, attacker)
+                let result = await getProtections(client, guy, confirmedWeakestWolf)
 
                 if (typeof result === "object") {
                     // looks like there were no protections
@@ -228,7 +228,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
                     // kill the player
 
                     db.set(`player_${result.id}.status`, "Dead") // set the player status to Dead
-                    client.emit("playerKilled", db.get(`player_${result.id}`), attacker, { trickster: false, werewolfKill: true })
+                    client.emit("playerKilled", db.get(`player_${result.id}`), confirmedWeakestWolf, { trickster: false, werewolfKill: true })
                     let member = await guild.members.fetch(result.id) // get the discord member
                     let memberRoles = member.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the discord roles
                     await dayChat.send(`${getEmoji("werewolf", client)} The Werewolves killed **${players.indexOf(result.id) + 1} ${result.username} (${getEmoji(result.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${result.role})**`)
@@ -243,7 +243,7 @@ module.exports.wolves = async (client, alivePlayersBefore) => {
 
                             if (protectionPlayer.status === "Alive") {
                                 db.set(`player_${protectionPlayer.id}.status`, "Dead") // set the player status to Dead
-                                client.emit("playerKilled", db.get(`player_${protectionPlayer.id}`), attacker, { trickster: false, werewolfKill: true })
+                                client.emit("playerKilled", db.get(`player_${protectionPlayer.id}`), confirmedWeakestWolf, { trickster: false, werewolfKill: true })
                                 let memberP = await guild.members.fetch(protectionPlayer.id) // get the discord member
                                 let memberRolesP = memberP.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id)) // get the discord roles
                                 await dayChat.send(`${getEmoji("frenzy", client)} The werewolf frenzy killed **${players.indexOf(protectionPlayer.id) + 1} ${protectionPlayer.username} (${getEmoji(protectionPlayer.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${protectionPlayer.role})**`)
