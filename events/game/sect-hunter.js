@@ -11,7 +11,7 @@ module.exports = async (interaction) => {
     let droppy = { type: 3, custom_id: "game-sh-hunt", placeholder: "Select a player to hunt", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
 
     for (const p of alivePlayers) {
-        if (p === sh.id) continue;
+        if (p === sh.id) continue
         let player = db.get(`player_${p}`)
         let statement = revealedPlayers.includes(p) || sh.coupled === p || player.role === "President" || sh.instigator?.includes(p) || sh.instigator?.map((a) => db.get(`player_${a}`).target.find((a) => a !== sh.id))?.includes(p) || sh.cupid?.map((a) => db.get(`player_${a}`).target.find((a) => a !== sh.id))?.includes(p) || sh.id === p
         if (statement) droppy.options.push({ label: `${players.indexOf(p) + 1}`, value: p, description: `Hunt ${player.username}`, emoji: { id: getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client).id } })
@@ -40,7 +40,6 @@ module.exports = async (interaction) => {
                 if (teammates.recruit) return await i.update({ content: "You can't hunt your own recruit!", ephemeral: true })
                 if (teammates.instigator) return await i.update({ content: "You can't hunt the Instigator who recruited you!", ephemeral: true })
                 if (db.get(`player_${i.values[0]}`).role === "President") return await i.update({ content: "You can't hunt the President!", ephemeral: true })
-                    
 
                 db.set(`player_${interaction.user.id}.target`, i.values[0])
                 await i.update({ content: "Done!", components: [] })
