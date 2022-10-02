@@ -8,10 +8,12 @@ module.exports = async (interaction) => {
     let alivePlayers = players.filter((a) => db.get(`player_${a}`).status === "Alive")
     let revealedPlayers = db.get(`game`).revealedPlayers || []
 
+    if (db.get("gamePhase") % 3 !== 0) return interaction.followUp({ content: "You can only protect during the night!", ephemeral: true })
+
     let droppy = { type: 3, custom_id: "game-doc-protect", placeholder: "Select a player to protect", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
 
     for (const p of alivePlayers) {
-        if (p === doc.id) continue
+        if (p === doc.id && !doc.hypnotized) continue;
         let player = db.get(`player_${p}`)
         let statement = revealedPlayers.includes(p) || doc.coupled === p || player.role === "President" || doc.instigator?.includes(p) || doc.instigator?.map((a) => db.get(`player_${a}`).target.find((a) => a !== doc.id))?.includes(p) || doc.cupid?.map((a) => db.get(`player_${a}`).target.find((a) => a !== doc.id))?.includes(p) || doc.id === p
         if (statement) droppy.options.push({ label: `${players.indexOf(p) + 1}`, value: p, description: `Protect ${player.username}`, emoji: { id: getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client).id } })

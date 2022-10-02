@@ -3,6 +3,7 @@ const { getEmoji } = require("../../config")
 
 module.exports = async (interaction) => {
     const client = interaction.client
+    const gamePhase = db.get("gamePhase")
     let flagger = db.get(`player_${interaction.user.id}`)
     let players = db.get("players")
     let revealedPlayers = db.get(`game`).revealedPlayers || []
@@ -11,6 +12,8 @@ module.exports = async (interaction) => {
     let droppy2 = { type: 3, custom_id: "game-flagger-redirect", placeholder: "Select a player to redirect the attack", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
     let options = []
 
+    if (gamePhase % 3 !== 0) return interaction.followUp({ content: "You can only protect during the night!", ephemeral: true })
+    if (gamePhase === 0) return interaction.followUp({ content: "You can only protect after the first night!", ephemeral: true })
     if (flagger.uses === 0) return interaction.followUp({ content: "You already used up your ability!", ephemeral: true })
 
     for (const p of alivePlayers) {

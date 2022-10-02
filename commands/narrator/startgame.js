@@ -324,5 +324,12 @@ module.exports = {
         }
 
         message.channel.send({ content: "Click the buttons below to start the day, vote or night!", components: [comp] })
+        for (const p of players) {
+            let player = db.get(`player_${p}`)
+            if (fs.readdirSync(`${__dirname.replace("commands/narrator", "events/game")}`).includes(`${player.role.toLowerCase().replace(/\s/g, "-")}.js`)) {
+                let chan = message.guild.channels.cache.get(player.channel)
+                await chan.send({ content: `Click the button below to do your actions!`, components: [{ type: 1, components: [{ type: 2, style: 3, label: "Action", custom_id: `game-action` }] }] })
+            }
+        }
     },
 }

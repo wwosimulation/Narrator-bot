@@ -1,6 +1,7 @@
 const db = require("quick.db")
 const { getEmoji } = require("../../../config")
 const ritualists = require("./others/ritualists")
+const fs = require("fs")
 
 module.exports = {
     name: "night",
@@ -68,7 +69,7 @@ module.exports = {
 
         for (const p of players) {
             let player = db.get(`player_${p}`)
-            if ((["Serial Killer", "Flagger", "Doctor"].includes(player.role) || ["Serial Killer", "Flagger", "Doctor"].includes(player.role)) && player.status === "Alive") {
+            if (fs.readdirSync(`${__dirname.replace("commands/narrator/night", "events/game")}`).includes(`${player.role.toLowerCase().replace(/\s/g, "-")}.js`)) {
                 let chan = message.guild.channels.cache.get(player.channel)
                 await chan.send({ content: `Click the button below to do your actions!`, components: [{ type: 1, components: [{ type: 2, style: 3, label: "Action", custom_id: `game-action` }] }] })
             }

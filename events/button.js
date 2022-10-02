@@ -381,9 +381,9 @@ module.exports = (client) => {
             let comp = {
                 type: 1,
                 components: [
-                    { type: 2, style: 1, label: "Day", custom_id: "narrator-phase-day", disabled: phase !== nextPhase },
-                    { type: 2, style: 1, label: "Voting", custom_id: "narrator-phase-vt", disabled: phase !== nextPhase },
-                    { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: phase !== nextPhase },
+                    { type: 2, style: 1, label: "Day", custom_id: "narrator-phase-day", disabled: arr[0] !== nextPhase },
+                    { type: 2, style: 1, label: "Voting", custom_id: "narrator-phase-vt", disabled: arr[1] !== nextPhase },
+                    { type: 2, style: 1, label: "Night", custom_id: "narrator-phase-night", disabled: arr[2] !== nextPhase },
                 ],
             }
             await interaction.editReply({ components: [comp] })
