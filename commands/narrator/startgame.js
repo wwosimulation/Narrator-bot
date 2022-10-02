@@ -1,6 +1,7 @@
 const db = require("quick.db")
 const shuffle = require("shuffle-array")
 const { getEmoji } = require("../../config")
+const fs = require("fs")
 
 module.exports = {
     name: "startgame",
