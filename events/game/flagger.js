@@ -33,16 +33,17 @@ module.exports = async (interaction) => {
         await msg
             .awaitMessageComponent()
             .then(async (i) => {
-                if (db.get(`gamePhase`) % 3 !== 0) return i.reply({ content: "This action is no longer valid now!", ephemeral: true })
-                if (db.get(`player_${flagger.id}`).status !== "Alive") return i.reply({ content: "You are not alive!", ephemeral: true })
+                await i.deferUpdate()
+                if (db.get(`gamePhase`) % 3 !== 0) return i.followUp({ content: "This action is no longer valid now!", ephemeral: true })
+                if (db.get(`player_${flagger.id}`).status !== "Alive") return i.followUp({ content: "You are not alive!", ephemeral: true })
                 if (i.values[0] === "cancel") {
                     db.delete(`player_${flagger.id}.target`)
                     db.delete(`player_${flagger.id}.redirect`)
-                    await i.update({ content: "Done!", components: [] })
+                    await i.editReply({ content: "Done!", components: [] })
                     await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have sucessfully canceled your action!` })
                     return
                 }
-                if (db.get(`player_${i.values[0]}`).status !== "Alive") return await i.update({ content: "This player is not alive!", ephemeral: true })
+                if (db.get(`player_${i.values[0]}`).status !== "Alive") return await i.editReply({ content: "This player is not alive!", ephemeral: true })
                 options.splice(
                     options.findIndex((a) => a.value === i.values[0]),
                     1
@@ -53,10 +54,9 @@ module.exports = async (interaction) => {
                     o.description = o.description.replace("Protect", "Redirect the attack to")
                 })
                 db.set(`player_${interaction.user.id}.${action}`, i.values[0])
-                if (action === "target") i.update({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }] })
-                if (action === "target") createCollector(msg, "redirect")
+                if (action === "target") await i.editReply({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }] })
+                if (action === "target") return createCollector(msg, "redirect")
                 if (action === "redirect") {
-                    await i.deferUpdate()
                     let teammates = fn.teammateCheck({ player: sk.id, target: i.values[0], db })
                     if (teammates.couple) return await i.editReply({ content: "You can't redirect an attack to your own couple!", ephemeral: true })
                     if (teammates.recruit) return await i.editReply({ content: "You can't redirect an attack to your own recruit!", ephemeral: true })
