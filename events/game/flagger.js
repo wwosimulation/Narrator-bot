@@ -44,18 +44,21 @@ module.exports = async (interaction) => {
                     return
                 }
                 if (db.get(`player_${i.values[0]}`).status !== "Alive") return await i.editReply({ content: "This player is not alive!", ephemeral: true })
-                options.splice(
-                    options.findIndex((a) => a.value === i.values[0]),
-                    1
-                )
+                if (action === "target") {
+                    options.splice(
+                        options.findIndex((a) => a.value === i.values[0]),
+                        1
+                    )
+                    
 
-                droppy2.options.push(...options)
-                droppy2.options.forEach((o) => {
-                    o.description = o.description.replace("Protect", "Redirect the attack to")
-                })
+                    droppy2.options.push(...options)
+                    droppy2.options.forEach((o) => {
+                        o.description = o.description.replace("Protect", "Redirect the attack to")
+                    })
+                }
                 db.set(`player_${interaction.user.id}.${action}`, i.values[0])
                 if (action === "target") await i.editReply({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }] })
-                if (action === "target") return createCollector(msg, "redirect")
+                if (action === "target") { return createCollector(msg, "redirect") }
                 if (action === "redirect") {
                     let teammates = fn.teammateCheck({ player: sk.id, target: i.values[0], db })
                     if (teammates.couple) return await i.editReply({ content: "You can't redirect an attack to your own couple!", ephemeral: true })
