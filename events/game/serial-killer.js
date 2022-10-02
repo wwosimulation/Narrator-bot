@@ -13,7 +13,7 @@ module.exports = async (interaction) => {
     let droppy = { type: 3, custom_id: "game-sk-kill", placeholder: "Select a player to stab", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
 
     for (const p of alivePlayers) {
-        if (p === sk.id && !sk.hypnotized) continue;
+        if (p === sk.id && !sk.hypnotized) continue
         let player = db.get(`player_${p}`)
         let statement = revealedPlayers.includes(p) || sk.coupled === p || player.role === "President" || sk.instigator?.includes(p) || sk.instigator?.map((a) => db.get(`player_${a}`).target.find((a) => a !== sk.id))?.includes(p) || sk.cupid?.map((a) => db.get(`player_${a}`).target.find((a) => a !== sk.id))?.includes(p) || sk.id === p
         if (statement) droppy.options.push({ label: `${players.indexOf(p) + 1}`, value: p, description: `Stab ${player.username}`, emoji: { id: getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client).id } })

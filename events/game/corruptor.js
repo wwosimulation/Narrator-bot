@@ -13,7 +13,7 @@ module.exports = async (interaction) => {
     let droppy = { type: 3, custom_id: "game-corr-kill", placeholder: "Select a player to corrupt", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
 
     for (const p of alivePlayers) {
-        if (p === corr.id && !corr.hypnotized) continue;
+        if (p === corr.id && !corr.hypnotized) continue
         let player = db.get(`player_${p}`)
         let statement = revealedPlayers.includes(p) || corr.coupled === p || player.role === "President" || corr.instigator?.includes(p) || corr.instigator?.map((a) => db.get(`player_${a}`).target.find((a) => a !== corr.id))?.includes(p) || corr.cupid?.map((a) => db.get(`player_${a}`).target.find((a) => a !== corr.id))?.includes(p) || corr.id === p
         if (statement) droppy.options.push({ label: `${players.indexOf(p) + 1}`, value: p, description: `Corrupt ${player.username}`, emoji: { id: getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client).id } })
