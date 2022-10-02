@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const { getEmoji } = require("../../config")
+const { getEmoji, fn } = require("../../config")
 
 module.exports = async (interaction) => {
     const client = interaction.client
@@ -11,13 +11,14 @@ module.exports = async (interaction) => {
     let droppy = { type: 3, custom_id: "game-sk-kill", placeholder: "Select a player to stab", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
 
     for (const p of alivePlayers) {
+        if (p === sk.id) continue;
         let player = db.get(`player_${p}`)
         let statement = revealedPlayers.includes(p) || sk.coupled === p || player.role === "President" || sk.instigator?.includes(p) || sk.instigator?.map((a) => db.get(`player_${a}`).target.find((a) => a !== sk.id))?.includes(p) || sk.cupid?.map((a) => db.get(`player_${a}`).target.find((a) => a !== sk.id))?.includes(p) || sk.id === p
         if (statement) droppy.options.push({ label: `${players.indexOf(p) + 1}`, value: p, description: `Stab ${player.username}`, emoji: { id: getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client).id } })
         else droppy.options.push({ label: `${players.indexOf(p) + 1}`, value: p, description: `Stab ${player.username}` })
     }
 
-    let message = await interaction.followUp({ content: `${getEmoji("serial_killer_knife", client)} Select a player below to stab`, components: [{ type: 1, components: [droppy1] }], fetchReply: true, ephemeral: true })
+    let message = await interaction.followUp({ content: `${getEmoji("serial_killer_knife", client)} Select a player below to stab`, components: [{ type: 1, components: [droppy] }], fetchReply: true, ephemeral: true })
 
     await createCollector(message)
 
@@ -33,7 +34,12 @@ module.exports = async (interaction) => {
                     await i.followUp({ content: `${getEmoji("serial_killer_knife", client)} You have sucessfully canceled your action!` })
                     return
                 }
-                if (db.get(`player_${i.values[0]}`).status !== "Alive") return i.reply({ content: "This player is not alive!", ephemeral: true })
+                if (db.get(`player_${i.values[0]}`).status !== "Alive") return await i.update({ content: "This player is not alive!", components: [] })
+                
+                let teammates = fn.teammateCheck({ player: sk.id, target: i.values[0], db })
+                if (teammates.couple) return await i.update({ content: "You can't stab your own couple!", ephemeral: true })
+                if (teammates.recruit) return await i.update({ content: "You can't stab your own recruit!", ephemeral: true })
+                if (teammates.instigator) return await i.update({ content: "You can't stab the Instigator who recruited you!", ephemeral: true })
 
                 db.set(`player_${interaction.user.id}.target`, i.values[0])
                 await i.update({ content: "Done!", components: [] })
@@ -42,3 +48,4 @@ module.exports = async (interaction) => {
             .catch(() => null)
     }
 }
+

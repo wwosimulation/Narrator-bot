@@ -9,6 +9,7 @@ module.exports = async (client) => {
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake> c
     const alchemists = alivePlayers.filter((p) => db.get(`player_${p}`).role === "Alchemist") // get the alive alchemist array - Array<Snowflake>
+    const gamephase = db.get("gamePhase")
 
     // loop through each dead player
     for (const player of deadPlayers) {

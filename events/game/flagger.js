@@ -39,7 +39,7 @@ module.exports = async (interaction) => {
                     await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have sucessfully canceled your action!` })
                     return
                 }
-                if (db.get(`player_${i.values[0]}`).status !== "Alive") return i.reply({ content: "This player is not alive!", ephemeral: true })
+                if (db.get(`player_${i.values[0]}`).status !== "Alive") return await i.update({ content: "This player is not alive!", ephemeral: true })
                 options.splice(
                     options.findIndex((a) => a.value === i.values[0]),
                     1
@@ -53,6 +53,12 @@ module.exports = async (interaction) => {
                 if (action === "target") i.update({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }] })
                 if (action === "target") createCollector(msg, "redirect")
                 if (action === "redirect") {
+                    let teammates = fn.teammateCheck({ player: sk.id, target: i.values[0], db })
+                    if (teammates.couple) return await i.update({ content: "You can't redirect an attack to your own couple!", ephemeral: true })
+                    if (teammates.recruit) return await i.update({ content: "You can't redirect an attack to your own recruit!", ephemeral: true })
+                    if (teammates.instigator) return await i.update({ content: "You can't redirect an attack to the Instigator who recruited you!", ephemeral: true })
+                    if (db.get(`player_${i.values[0]}`).role === "President") return await i.update({ content: "You can't redirect an attack to the President!", ephemeral: true })
+
                     await i.update({ content: "Done!", components: [] })
                     await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have decided to protect **${players.indexOf(db.get(`player_${flagger.id}`).target) + 1} ${db.get(`player_${db.get(`player_${flagger.id}`).target}`).username}** by redirecting attacks to **${players.indexOf(i.values[0]) + 1} ${db.get(`player_${i.values[0]}`).username}**!` })
                 }
