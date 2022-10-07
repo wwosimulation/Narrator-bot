@@ -44,7 +44,7 @@ module.exports = async (interaction) => {
                     return
                 }
                 if (db.get(`player_${i.values[0]}`).status !== "Alive") return await i.editReply({ content: "This player is not alive!", ephemeral: true })
-                
+
                 options.splice(
                     options.findIndex((a) => a.value === i.values[0]),
                     1
@@ -54,17 +54,16 @@ module.exports = async (interaction) => {
                 droppy2.options.forEach((o) => {
                     o.description = o.description.replace("Protect", "Redirect the attack to")
                 })
-                
+
                 db.set(`player_${interaction.user.id}.target`, i.values[0])
                 await i.editReply({ content: "Done!", components: [] })
                 let reply = await i.followUp({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }], ephemeral: true, fetchReply: true })
                 return createCollector2(reply)
-                
             })
             .catch(() => null)
     }
 
-    async function createCollector2 (msg) {
+    async function createCollector2(msg) {
         await i.deferUpdate()
         if (db.get(`gamePhase`) % 3 !== 0) return i.followUp({ content: "This action is no longer valid now!", ephemeral: true })
         if (db.get(`player_${flagger.id}`).status !== "Alive") return i.followUp({ content: "You are not alive!", ephemeral: true })
@@ -76,7 +75,7 @@ module.exports = async (interaction) => {
             return
         }
         if (db.get(`player_${i.values[0]}`).status !== "Alive") return await i.editReply({ content: "This player is not alive!", ephemeral: true })
-                
+
         let teammates = fn.teammateCheck({ player: sk.id, target: i.values[0], db })
         if (teammates.couple) return await i.editReply({ content: "You can't redirect an attack to your own couple!", ephemeral: true })
         if (teammates.recruit) return await i.editReply({ content: "You can't redirect an attack to your own recruit!", ephemeral: true })
