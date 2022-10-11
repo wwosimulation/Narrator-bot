@@ -77,7 +77,7 @@ module.exports = async (interaction) => {
             }
             if (db.get(`player_${i.values[0]}`).status !== "Alive") return await i.editReply({ content: "This player is not alive!", ephemeral: true })
 
-            let teammates = fn.teammateCheck({ player: sk.id, target: i.values[0], db })
+            let teammates = fn.teammateCheck({ player: flagger.id, target: i.values[0], db })
             if (teammates.couple) return await i.editReply({ content: "You can't redirect an attack to your own couple!", ephemeral: true })
             if (teammates.recruit) return await i.editReply({ content: "You can't redirect an attack to your own recruit!", ephemeral: true })
             if (teammates.instigator) return await i.editReply({ content: "You can't redirect an attack to the Instigator who recruited you!", ephemeral: true })
