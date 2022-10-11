@@ -58,7 +58,7 @@ module.exports = async (interaction) => {
                 db.set(`player_${interaction.user.id}.target`, i.values[0])
                 await i.editReply({ content: "Done!", components: [] })
                 let reply = await i.followUp({ content: `${getEmoji("flagger_kill", client)} Select a player below to redirect the attack`, components: [{ type: 1, components: [droppy2] }], ephemeral: true, fetchReply: true })
-                return createCollector2(reply)
+                await createCollector2(reply)
             })
             .catch(() => null)
     }
