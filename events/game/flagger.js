@@ -64,8 +64,7 @@ module.exports = async (interaction) => {
     }
 
     async function createCollector2(msg) {
-        msg.awaitMessageComponent()
-        .then(async i => {
+        msg.awaitMessageComponent().then(async (i) => {
             await i.deferUpdate()
             if (db.get(`gamePhase`) % 3 !== 0) return i.followUp({ content: "This action is no longer valid now!", ephemeral: true })
             if (db.get(`player_${flagger.id}`).status !== "Alive") return i.followUp({ content: "You are not alive!", ephemeral: true })
@@ -88,6 +87,5 @@ module.exports = async (interaction) => {
             await i.editReply({ content: "Done!", components: [] })
             await i.followUp({ content: `${getEmoji("flagger_protect", client)} You have decided to protect **${players.indexOf(db.get(`player_${flagger.id}`).target) + 1} ${db.get(`player_${db.get(`player_${flagger.id}`).target}`).username}** by redirecting attacks to **${players.indexOf(i.values[0]) + 1} ${db.get(`player_${i.values[0]}`).username}**!` })
         })
-        
     }
 }
