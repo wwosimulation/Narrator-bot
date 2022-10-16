@@ -395,7 +395,7 @@ module.exports = (client) => {
             await interaction.deferUpdate()
             if (!db.get("players").includes(interaction.user.id)) return await interaction.followUp({ content: "This is not your button!", ephemeral: true })
             let role = db.get(`player_${interaction.member.id}`).role
-            if (role === 'Dreamcatcher' && db.get("gamePhase") % 3 === 0) role = db.get(`player_${interaction.member.id}`).dreamRole || role
+            if (role === "Dreamcatcher" && db.get("gamePhase") % 3 === 0) role = db.get(`player_${interaction.member.id}`).dreamRole || role
             require(`./game/${role.toLowerCase().replace(/\s/g, "-")}.js`)(interaction)
         }
     })

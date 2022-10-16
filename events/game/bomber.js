@@ -126,5 +126,4 @@ module.exports = async (interaction) => {
     }
 
     collectButton(msg)
-    
 }

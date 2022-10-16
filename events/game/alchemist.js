@@ -10,13 +10,27 @@ module.exports = async (interaction) => {
 
     if (db.get("gamePhase") % 3 !== 0) return interaction.followUp({ content: "You can only give potions during the night!", ephemeral: true })
 
-    let option = await interaction.followUp({ content: `${getEmoji("alchemist", client)} Select which potion you would like to use.`, components: [{ type: 1, components: [{ type: 2, style: 4, label: "Red Potion", custom_id: "alch-redp", emoji: { id: getEmoji("redp", client).id } }, { type: 2, style: 2, label: "Black Potion", custom_id: "alch-blackp", emoji: { id: getEmoji("blackp", client).id } }] }], ephemeral: true, fetchReply: true })
-    await option.awaitMessageComponent()
-    .then(async i => {
-        i.update({ content: `${getEmoji(i.customId.split("-")[1], client)} You have chosen to give a ${i.customId.split("-")[1].replace("p", "")} potion.`, components: [] })
-        givePotion(i.customId.split("-")[1].replace("p", ""))
+    let option = await interaction.followUp({
+        content: `${getEmoji("alchemist", client)} Select which potion you would like to use.`,
+        components: [
+            {
+                type: 1,
+                components: [
+                    { type: 2, style: 4, label: "Red Potion", custom_id: "alch-redp", emoji: { id: getEmoji("redp", client).id } },
+                    { type: 2, style: 2, label: "Black Potion", custom_id: "alch-blackp", emoji: { id: getEmoji("blackp", client).id } },
+                ],
+            },
+        ],
+        ephemeral: true,
+        fetchReply: true,
     })
-    .catch(e => null)
+    await option
+        .awaitMessageComponent()
+        .then(async (i) => {
+            i.update({ content: `${getEmoji(i.customId.split("-")[1], client)} You have chosen to give a ${i.customId.split("-")[1].replace("p", "")} potion.`, components: [] })
+            givePotion(i.customId.split("-")[1].replace("p", ""))
+        })
+        .catch((e) => null)
 
     async function givePotion(potion) {
         let droppy = { type: 3, custom_id: `game-alch-${potion}`, placeholder: `Select a player to give a ${potion} potion`, options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
@@ -58,5 +72,4 @@ module.exports = async (interaction) => {
             })
             .catch(() => null)
     }
-    
 }

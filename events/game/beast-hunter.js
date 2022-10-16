@@ -13,20 +13,18 @@ module.exports = async (interaction) => {
     if (bh.placed) {
         let msg = await interaction.followUp({ content: `${getEmoji("activetrap", client)} Your trap is active! Changing your trap will deactive it.`, components: [{ type: 1, components: [{ type: 2, style: 4, label: "Change Trap", custom_id: "change-bh-trap" }] }], ephemeral: true, fetchReply: true })
         msg.awaitMessageComponent()
-        .then(async i => {
-            i.update({ content: `${getEmoji("constructiontrap", client)} Your trap has been dismantled!`, components: [] })
-            db.delete(`player_${bh.id}.target`)
-            db.delete(`player_${bh.id}.placed`)
-            setTrap()
-        })
-        .catch(() => null)
+            .then(async (i) => {
+                i.update({ content: `${getEmoji("constructiontrap", client)} Your trap has been dismantled!`, components: [] })
+                db.delete(`player_${bh.id}.target`)
+                db.delete(`player_${bh.id}.placed`)
+                setTrap()
+            })
+            .catch(() => null)
     } else {
         setTrap()
     }
 
-
     async function setTrap() {
-
         let droppy = { type: 3, custom_id: "game-bh-trap", placeholder: "Select a player to place your trap on", options: [{ label: "Cancel", value: "cancel", description: "Cancel" }] }
 
         for (const p of alivePlayers) {
@@ -62,4 +60,3 @@ module.exports = async (interaction) => {
             .catch(() => null)
     }
 }
-
