@@ -1,5 +1,5 @@
 const db = require("quick.db")
-const stats = require("./schemas/stats")
+const stats = require("../../schemas/stats")
 const { ids } = require("../../config")
 
 module.exports = {
@@ -48,19 +48,21 @@ module.exports = {
             ?.send("==== START ====")
             
         let stat = await stats.find()
-        let games = stat[0].games
+        stat = stat[0]
         let rawDate = new Date().toISOString()
         let date = rawDate.slice(0, 10)
         let time = rawDate.slice(11, 19)
-        games.push({
+        stat.games.push({
           [m.id]: {
             "time": rawDate,
             "players": [],
             "spectators": [],
             "host": message.author.id,
-            "teamWin" ""
+            "teamWin": "",
+            "status": "started",
+            "beta": client.user.username.includes("Beta")
           }
         })
-        
+        stat.save()
     },
 }

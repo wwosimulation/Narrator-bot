@@ -7,7 +7,9 @@ const l10n = require("../l10n")
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
+      console.log('ello')
         if (!interaction.isCommand()) return
+        console.log('ello')
         let commandFile = client.slashCommands.get(interaction.commandName)
 
         let maint = db.get("maintenance")

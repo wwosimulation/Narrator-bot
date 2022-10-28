@@ -1,5 +1,6 @@
 const db = require("quick.db")
 const { ids, fn } = require("../../config")
+const stats = require("../../schemas/stats")
 
 module.exports = {
     name: "cancel",
@@ -22,6 +23,11 @@ module.exports = {
             .then((m) => {
                 m.edit(fn.disableButtons(m))
             })
+        let stat = await stats.find()
+        stat = stat[0]
+        let gam = stat.games.find(game => Object.keys(game) === mid)
+        gam.status = "cancel"
+        gam.save()
         db.delete(`game`)
         client.guilds.cache
             .get(ids.server.game)

@@ -4,4 +4,4 @@ const schema = new mongoose.Schema({
     games: { type: Array, default: [] },
 })
 
-module.exports = mongoose.model("players", schema)
+module.exports = mongoose.model("stats", schema)

@@ -71,6 +71,7 @@ fs.readdir("./slashCommands/", (err, files) => {
                 props.category = file
                 try {
                     client.slashCommands.set(props.command.name, props)
+                    console.log(client.slashCommands)
                 } catch (err) {
                     if (err) console.error(err)
                 }
@@ -207,7 +208,7 @@ client.on("ready", async () => {
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
     client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
-    client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
+   // client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
     let restarted = db.get("botRestart")
     if (restarted) {
         client.channels
@@ -294,7 +295,7 @@ client.on("ready", async () => {
     }, 2000)
 
     //Invite Tracker
-    client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
+    // client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
 })
 
 let maint = db.get("maintenance")
