@@ -200,7 +200,7 @@ client.debug = async (options = { game: false }) => {
 }
 
 //Bot on startup
-client.on("ready", async () => {
+client.once("ready", async () => {
     client.config = {}
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
