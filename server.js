@@ -8,7 +8,7 @@ const { fn, getEmoji, ids } = require("./config")
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
 
-if (db.get("emergencystop")) {
+if (db.fetch("emergencystop")) {
     setTimeout(() => {
         console.log("Bot has been emergency stopped")
         process.exit(0)
@@ -305,6 +305,6 @@ if (typeof maint == "string" && maint.startsWith("config-")) {
 
 client.on("error", (e) => console.error(e))
 
-client.login(process.env.TOKEN)
+client.login(process.env.TOKENs)
 
 module.exports = { client }

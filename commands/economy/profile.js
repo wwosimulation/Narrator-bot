@@ -1,4 +1,4 @@
-const { players } = require("../../db.js")
+/*const { players } = require("../../db.js")
 const { fn } = require("../../config")
 const Canvas = require("canvas")
 const { MessageAttachment } = require("discord.js")
@@ -122,3 +122,4 @@ module.exports = {
         return message.channel.send({ files: [attachment] })
     },
 }
+*/
