@@ -46,22 +46,22 @@ module.exports = {
             .get(ids.server.game)
             .channels.cache.find((c) => c.name === "carl-welcome-left-log")
             ?.send("==== START ====")
-            
+
         let stat = await stats.find()
         stat = stat[0]
         let rawDate = new Date().toISOString()
         let date = rawDate.slice(0, 10)
         let time = rawDate.slice(11, 19)
         stat.games.push({
-          [m.id]: {
-            "time": rawDate,
-            "players": [],
-            "spectators": [],
-            "host": message.author.id,
-            "teamWin": "",
-            "status": "started",
-            "beta": client.user.username.includes("Beta")
-          }
+            [m.id]: {
+                time: rawDate,
+                players: [],
+                spectators: [],
+                host: message.author.id,
+                teamWin: "",
+                status: "started",
+                beta: client.user.username.includes("Beta"),
+            },
         })
         stat.save()
     },

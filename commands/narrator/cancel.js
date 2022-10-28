@@ -25,7 +25,7 @@ module.exports = {
             })
         let stat = await stats.find()
         stat = stat[0]
-        let gam = stat.games.find(game => Object.keys(game) === mid)
+        let gam = stat.games.find((game) => Object.keys(game) === mid)
         gam.status = "cancel"
         gam.save()
         db.delete(`game`)
