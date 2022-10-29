@@ -49,12 +49,9 @@ module.exports = {
 
         let stat = await stats.find()
         stat = stat[0]
-        let rawDate = new Date().toISOString()
-        let date = rawDate.slice(0, 10)
-        let time = rawDate.slice(11, 19)
         stat.games.push({
             [m.id]: {
-                time: rawDate,
+                time: new Date(),
                 players: [],
                 spectators: [],
                 host: message.author.id,

@@ -11,7 +11,7 @@ module.exports = {
         if (db.get(`game.id`) == null) return message.channel.send("No game is being hosted")
         let server = client.guilds.cache.get(ids.server.sim)
 
-        server.channels.cache.find((c) => c.name === "game-announcements").send(`Game was canceled. Sorry for the inconvenience!`)
+        server.channels.cache.find((c) => c.name.includes("game-announcements")).send(`Game was canceled. Sorry for the inconvenience!`)
         let t = server.roles.cache.get(ids.server.sim).members
         t.forEach((e) => {
             e.roles.remove("606123676668133428") //joining role
@@ -25,9 +25,10 @@ module.exports = {
             })
         let stat = await stats.find()
         stat = stat[0]
-        let gam = stat.games.find((game) => Object.keys(game) === mid)
-        gam.status = "cancel"
-        gam.save()
+        let gam = stat.games.find((game) => Object.keys(game) == mid)
+        Object.values(gam)[0].status = "cancel"
+        stat.markModified("games")
+        stat.save()
         db.delete(`game`)
         client.guilds.cache
             .get(ids.server.game)

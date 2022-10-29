@@ -1,7 +1,7 @@
 const ms = require("ms")
 const db = require("quick.db")
 const { shop, ids, getEmoji, getRole, fn } = require("../config")
-const { lottery, players } = require("../db")
+const { lottery, players, stats } = require("../db")
 
 // Custom id "cancel" and "flee" are used in "../commands/game/flee.js"
 
@@ -9,16 +9,28 @@ module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isMessageComponent() && interaction.componentType !== "BUTTON") return
         console.log(interaction.customId)
+        let stat = await stats.find()
+        stat = stat[0]
+        let gam = stat.games.find((game) => Object.keys(game) == db.get("game.id"))
         if (interaction.customId == "igjoin") {
             await interaction.deferUpdate()
             let guy = interaction.member
-            if (guy.roles.cache.has(ids.spectator)) guy.roles.remove(ids.spectator) //spec
+            if (guy.roles.cache.has(ids.spectator)) {
+                guy.roles.remove(ids.spectator) //spec
+                Object.values(gam)[0].spectators.indexOf(guy.id) > -1 ? Object.values(gam)[0].spectators.splice(Object.values(gam)[0].spectators.indexOf(guy.id), 1) : null
+            }
+            if (!guy.roles.cache.has(ids.alive)) {
+            Object.values(gam)[0].players.push(guy.id)
+            }
+
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
             if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
             if (guy.roles.cache.has(ids.jowov)) guy.roles.remove(ids.jowov) //jowov
             let role = interaction.guild.roles.cache.get(ids.alive)
             await guy.roles.add(ids.alive).catch((e) => interaction.reply(`Error: ${e.message}`))
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
+            stat.markModified('games');
+            stat.save()
         }
         if (interaction.customId == "igspec") {
             let guy = interaction.member
@@ -28,12 +40,20 @@ module.exports = (client) => {
             } else {
                 guy.setNickname(guy.user.username)
             }
+            if (guy.roles.cache.has(ids.alive)) {
+                guy.roles.remove(ids.alive) //alive
+                Object.values(gam)[0].players.indexOf(guy.id) > -1 ? Object.values(gam)[0].players.splice(Object.values(gam)[0].players.indexOf(guy.id), 1) : null
+            }
+            if (!guy.roles.cache.has(ids.spectator)) {
+            Object.values(gam)[0].spectators.push(guy.id)
+            }
             guy.roles.add(ids.spectator)
-            if (guy.roles.cache.has(ids.alive)) guy.roles.remove(ids.alive) //alive
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
             if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
             await interaction.deferUpdate()
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
+            stat.markModified('games');
+            stat.save()
         }
         if (interaction.customId == "ashish-ignarr") {
             let guild = client.guilds.cache.get(ids.server.sim)
