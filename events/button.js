@@ -20,7 +20,7 @@ module.exports = (client) => {
                 Object.values(gam)[0].spectators.indexOf(guy.id) > -1 ? Object.values(gam)[0].spectators.splice(Object.values(gam)[0].spectators.indexOf(guy.id), 1) : null
             }
             if (!guy.roles.cache.has(ids.alive)) {
-            Object.values(gam)[0].players.push(guy.id)
+                Object.values(gam)[0].players.push(guy.id)
             }
 
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
@@ -29,7 +29,7 @@ module.exports = (client) => {
             let role = interaction.guild.roles.cache.get(ids.alive)
             await guy.roles.add(ids.alive).catch((e) => interaction.reply(`Error: ${e.message}`))
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} joined the game!`)
-            stat.markModified('games');
+            stat.markModified("games")
             stat.save()
         }
         if (interaction.customId == "igspec") {
@@ -45,14 +45,14 @@ module.exports = (client) => {
                 Object.values(gam)[0].players.indexOf(guy.id) > -1 ? Object.values(gam)[0].players.splice(Object.values(gam)[0].players.indexOf(guy.id), 1) : null
             }
             if (!guy.roles.cache.has(ids.spectator)) {
-            Object.values(gam)[0].spectators.push(guy.id)
+                Object.values(gam)[0].spectators.push(guy.id)
             }
             guy.roles.add(ids.spectator)
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
             if (guy.roles.cache.has(ids.mini)) guy.roles.remove(ids.mini) //mininarr
             await interaction.deferUpdate()
             await interaction.guild.channels.cache.find((x) => x.name == "game-lobby").send(`${interaction.member.user.tag} is now spectating the game!`)
-            stat.markModified('games');
+            stat.markModified("games")
             stat.save()
         }
         if (interaction.customId == "ashish-ignarr") {
