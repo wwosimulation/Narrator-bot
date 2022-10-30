@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const { fn, xp, roles, getRole } = require("../../config")
-const { players } = require("../../db.js")
+const { players, stats } = require("../../db.js")
 
 module.exports = {
     name: "win",
@@ -57,7 +57,13 @@ module.exports = {
             data.save()
             xp.level(client.users.cache.get(x), xpBase + xpStreak, xpEmbed, message.guild.channels.cache.get("892046258737385473"))
         }
-
+        let stat = await stats.find()
+        stat = stat[0]
+        let gam = stat.games.find((game) => Object.keys(game) == db.get("game.id"))
+        Object.values(gam)[0].status = "finished"
+        Object.values(gam)[0].teamWin = winTeam
+        stat.markModified("games")
+        stat.save()
         message.channel.send("XP is being given! Thanks for playing :)")
         message.channel.send(`Winners: ${winners.map((x) => `<@${x}> `)}\nLosers: ${losers.map((x) => `<@${x}> `)}`)
         db.set("xpGiven", true)

@@ -1,4 +1,5 @@
 const db = require("quick.db")
+const stats = require("../../schemas/stats")
 const { ids } = require("../../config")
 
 module.exports = {
@@ -45,5 +46,20 @@ module.exports = {
             .get(ids.server.game)
             .channels.cache.find((c) => c.name === "carl-welcome-left-log")
             ?.send("==== START ====")
+
+        let stat = await stats.find()
+        stat = stat[0]
+        stat.games.push({
+            [m.id]: {
+                time: new Date(),
+                players: [],
+                spectators: [],
+                host: message.author.id,
+                teamWin: "",
+                status: "started",
+                beta: client.user.username.includes("Beta"),
+            },
+        })
+        stat.save()
     },
 }
