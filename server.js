@@ -302,7 +302,7 @@ client.on("ready", async () => {
             let members = await client.guilds.cache.get(config.ids.server.sim).members.fetch()
             let arr = []
             members.forEach((x) => arr.push(x.id))
-            if (stat.members.length != 0) stat.previousFetch.push(stat.members)
+            if (stat.members.length != 0) stat.previousFetch.push({[new Date()]: stat.members})
             stat.members = arr
             stat.newFetch = new Date().getTime() + 3600000
             stat.save()
