@@ -71,7 +71,6 @@ fs.readdir("./slashCommands/", (err, files) => {
                 props.category = file
                 try {
                     client.slashCommands.set(props.command.name, props)
-                    console.log(client.slashCommands)
                 } catch (err) {
                     if (err) console.error(err)
                 }
@@ -208,7 +207,7 @@ client.on("ready", async () => {
     client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
     client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
-    // client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
+    client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
     let restarted = db.get("botRestart")
     if (restarted) {
         client.channels
@@ -291,6 +290,21 @@ client.on("ready", async () => {
                     lot.remove()
                 }
             }
+        }
+    }, 2000)
+
+    setInterval(async () => {
+        // collect all members and put them in an array
+        let stats = require("./schemas/stats")
+        let stat = await stats.find()
+        stat = stat[0]
+        if (new Date().getTime() > stat?.newFetch) {
+            let members = await client.guilds.cache.get(config.ids.server.sim).members.fetch()
+            let arr = []
+            members.forEach((x) => arr.push(x.id))
+            stat.members = arr
+            stat.newFetch = new Date().getTime() + 3600000
+            stat.save()
         }
     }, 2000)
 
