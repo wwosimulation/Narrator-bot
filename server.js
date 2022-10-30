@@ -321,6 +321,6 @@ if (typeof maint == "string" && maint.startsWith("config-")) {
 
 client.on("error", (e) => console.error(e))
 
-client.login(process.env.TOKENs)
+client.login(process.env.TOKEN)
 
 module.exports = { client }
