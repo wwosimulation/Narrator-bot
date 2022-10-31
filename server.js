@@ -10,8 +10,10 @@ const Tracing = require("@sentry/tracing")
 
 if (db.fetch("emergencystop")) {
     setTimeout(() => {
-        console.log("Bot has been emergency stopped")
-        process.exit(0)
+        if (db.fetch("emergencystop")) {
+            console.log("Bot has been emergency stopped")
+            process.exit(0)
+        }
     }, 10000)
 }
 
@@ -100,7 +102,6 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
     if (!reaction) return msg.reactions.removeAll().catch(() => {})
     reaction = reaction.first()
-    //console.log(msg.member.users.tag)
     if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
         if (reaction.emoji.name == "◀️") {
             let m = await msg.channel.send(embeds[Math.max(pageNow - 1, 0)])
@@ -140,8 +141,9 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     }
 }
 
-client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) => {
+client.buttonPaginator = async (authorID, msg, embeds, page, options = {addButtons: true, deleteOnEnd: false}) => {
     if (embeds.length <= 1) return
+    let addButtons = [undefined, null].includes(options.addButtons) ? true : options.addButtons
 
     // buttons
     let buttonBegin = { type: 2, style: 3, emoji: { name: "⏪" }, custom_id: "begin" }
@@ -182,6 +184,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
         buttonEnd.disabled = true
         let deadRow = { type: 1, components: [buttonBegin, buttonBack, buttonNext, buttonEnd] }
         msg.edit({ components: [deadRow] })
+        if(options.deleteOnEnd) setTimeout(() => msg.delete(), 5_000)
     })
 }
 
@@ -216,10 +219,10 @@ client.once("ready", async () => {
                 c.messages
                     .fetch(restarted.split("/")[1])
                     .then((m) => {
-                        m.edit("Bot has restarted!")
+                        m.edit("Bot has restarted!").then((m) => setTimeout(() => m.delete(), 5000))
                     })
                     .catch(() => {
-                        console.log("Could not find message to edit")
+                        console.log("Could not find message to edit/delete")
                     })
             })
             .finally(() => {

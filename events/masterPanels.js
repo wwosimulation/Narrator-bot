@@ -4,20 +4,22 @@ const ms = require("ms")
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (interaction.customId === "dev-restart") {
-            let restart = await interaction.reply({ content: "Restarting...", fetchReply: true })
+            let restart = await interaction.reply({ content: "Updating and restarting...", fetchReply: true })
             db.set("botRestart", restart.channelId + "/" + restart.id)
             client.destroy()
-            require("child_process").execSync("npm run start", { stdio: "inherit" })
+            let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
+            require("child_process").execSync(`git fetch origin && git reset --hard && git pull origin ${branch} && cd config && git fetch origin && git reset --hard && git checkout main && git reset --hard && git pull && cd ../l10n && git fetch origin && git reset --hard && git checkout main && git reset --hard && git pull && ${process.env.pm_id ? "pm2 restart " + process.env.pm_id : "npm run start"}`, { stdio: "inherit" })
         }
 
         if (interaction.customId == "dev-emergencystop") {
             await interaction.reply({ content: "Emergency stop initiated by " + interaction.user.tag })
             db.set("emergencystop", true)
-            process.exit(0)
+            process.env.pm_id ? require("child_process").execSync("pm2 stop " + process.env.pm_id, { stdio: "inherit" }) : process.exit()
         }
         if (interaction.customId == "dev-status") {
             let embed1 = {
                 title: "Verion Info",
+                description: `Emergency stopped: ${db.get("emergencystop") ? "Yes" : "No"}\nMaintenance mode: ${db.get("maintenance") ? "Yes" : "No"}\nDiscord.js version: ${require("discord.js").version}`,
                 fields: [
                     { name: "Version", value: require(process.cwd() + "/package.json").version, inline: true },
                     { name: "Branch", value: require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim(), inline: true },
@@ -59,7 +61,21 @@ module.exports = (client) => {
             })
 
             let r = await interaction.reply({ embeds: [embeds[0]], fetchReply: true })
-            client.buttonPaginator(interaction.user.id, r, embeds, 1)
+            client.buttonPaginator(interaction.user.id, r, embeds, 1, {deleteOnEnd: true})
+        }
+        if (interaction.customId == "dev-maintenance") {
+            let maintenance = db.get("maintenance")
+            if (maintenance) {
+                db.delete("maintenance")
+                await interaction.reply({ content: "Maintenance mode disabled", ephemeral: true })
+                let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
+                let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
+                client.user.setPresence({ activities: [{ name: client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!", type: "PLAYING" }], status: "online" })
+            } else {
+                db.set("maintenance", true)
+                await interaction.reply({ content: "Maintenance mode enabled", ephemeral: true })
+                client.user.setPresence({ activities: [{ name: "Maintenance Mode", type: "WATCHING" }], status: "dnd" })
+            }
         }
     })
 }
