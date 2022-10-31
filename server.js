@@ -141,7 +141,7 @@ client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => 
     }
 }
 
-client.buttonPaginator = async (authorID, msg, embeds, page, options = {addButtons: true, deleteOnEnd: false}) => {
+client.buttonPaginator = async (authorID, msg, embeds, page, options = { addButtons: true, deleteOnEnd: false }) => {
     if (embeds.length <= 1) return
     let addButtons = [undefined, null].includes(options.addButtons) ? true : options.addButtons
 
@@ -184,7 +184,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, options = {addButto
         buttonEnd.disabled = true
         let deadRow = { type: 1, components: [buttonBegin, buttonBack, buttonNext, buttonEnd] }
         msg.edit({ components: [deadRow] })
-        if(options.deleteOnEnd) setTimeout(() => msg.delete(), 5_000)
+        if (options.deleteOnEnd) setTimeout(() => msg.delete(), 5_000)
     })
 }
 

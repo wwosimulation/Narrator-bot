@@ -61,7 +61,7 @@ module.exports = (client) => {
             })
 
             let r = await interaction.reply({ embeds: [embeds[0]], fetchReply: true })
-            client.buttonPaginator(interaction.user.id, r, embeds, 1, {deleteOnEnd: true})
+            client.buttonPaginator(interaction.user.id, r, embeds, 1, { deleteOnEnd: true })
         }
         if (interaction.customId == "dev-maintenance") {
             let maintenance = db.get("maintenance")
