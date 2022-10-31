@@ -79,7 +79,7 @@ fs.readdir("./slashCommands/", (err, files) => {
     })
 })
 
-const eventFiles = fs.readdirSync("./events").filter((file) => file.endsWith(".js"))
+const eventFiles = fs.readdirSync(`${__dirname}/events`).filter((file) => file.endsWith(".js"))
 for (const file of eventFiles) {
     require(`./events/${file}`)(client)
 }
