@@ -79,7 +79,7 @@ fs.readdir("./slashCommands/", (err, files) => {
     })
 })
 
-const eventFiles = fs.readdirSync("./events").filter((file) => file.endsWith(".js"))
+const eventFiles = fs.readdirSync(`${__dirname}/events`).filter((file) => file.endsWith(".js"))
 for (const file of eventFiles) {
     require(`./events/${file}`)(client)
 }
@@ -293,7 +293,7 @@ client.once("ready", async () => {
         }
     }, 2000)
 
-    setInterval(async () => {
+    /*setInterval(async () => {
         // collect all members and put them in an array
         let stats = require("./schemas/stats")
         let stat = await stats.find()
@@ -307,7 +307,7 @@ client.once("ready", async () => {
             stat.newFetch = new Date().getTime() + 3600000
             stat.save()
         }
-    }, 2000)
+    }, 2000)*/
 
     //Invite Tracker
     // client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()

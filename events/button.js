@@ -11,7 +11,7 @@ module.exports = (client) => {
         console.log(interaction.customId)
         let stat = await stats.find()
         stat = stat[0]
-        let gam = stat.games.find((game) => Object.keys(game) == db.get("game.id"))
+        let gam = stat?.games.find((game) => Object.keys(game) == db.get("game.id"))
         if (interaction.customId == "igjoin") {
             await interaction.deferUpdate()
             let guy = interaction.member
