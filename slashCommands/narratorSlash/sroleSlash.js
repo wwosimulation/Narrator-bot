@@ -123,7 +123,7 @@ module.exports = {
                 return a
             })
             .forEach(async (player, i) => {
-                if (player.nickname !== i + 1) player.setNickname(`${i + 1}` + (await mongo.players.findOne({ user: player.id })).rename ? ` | ${player.username}` : "")
+                player.setNickname(`${i + 1} | ` + (await mongo.players.findOne({ user: player.id })).rename ? `${player.username}` : player.username)
                 db.set(`player_${player.id}`, { id: player.id, username: player.user.username })
             })
 
