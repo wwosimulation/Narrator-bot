@@ -123,7 +123,7 @@ module.exports = {
                 return a
             })
             .forEach(async (player, i) => {
-                if (player.nickname !== i + 1) player.setNickname(`${i + 1}` + (await mongo.players.findOne({ user: player.id })).rename ? ` | ${player.username}` : "")
+                if (player.nickname !== i + 1) player.setNickname(`${i + 1}` + (await mongo.players.findOne({user: player.id})).rename ? ` | ${player.username}` : "")
                 db.set(`player_${player.id}`, { id: player.id, username: player.user.username })
             })
 
@@ -375,7 +375,7 @@ module.exports = {
 
                 let guy = await interaction.guild.members.fetch(player)
 
-                let channel = await interaction.guild.channels.create(index + 1 + "-" + guy.user.username, {
+                let channel = await interaction.guild.channels.create((index + 1) + "-" + (guy.user.username), {
                     parent: "892046231516368906",
                 })
 
