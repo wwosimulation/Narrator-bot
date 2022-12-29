@@ -30,7 +30,6 @@ module.exports = async (client) => {
             if (players.map((p) => db.get(`player_${p}`)).filter((p) => (p.role === "Sect Leader" || (["Grave Robber", "Doppelganger"].includes(p.role) && db.get(`player_${p.target}`)?.role === "Sect Leader")) && p.status === "Alive").length === 0) {
                 let channel = guild.channels.cache.get(hunter.channel)
                 await channel.send(`<@&${guild.roles.cache.find((r) => r.name === "Alive").id}> All players that belonged to the Sect have died! Your role is now a Villager and you can take the long deserved rest you need.`)
-                await channel.edit({ name: "priv-villager" })
                 db.set(`player_${sh}.role`, "Villager")
                 db.set(`player_${sh}.aura`, "Good")
             }

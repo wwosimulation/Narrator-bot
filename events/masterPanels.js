@@ -4,7 +4,11 @@ const ms = require("ms")
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (interaction.customId === "dev-restart") {
+<<<<<<< HEAD
             let restart = await interaction.reply({ content: "Updating and restarting...", fetchReply: true })
+=======
+            const restart = await interaction.reply({ content: "Updating and restarting...", fetchReply: true })
+>>>>>>> 8d72efe
             db.set("botRestart", restart.channelId + "/" + restart.id)
             client.destroy()
             let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()

@@ -14,6 +14,7 @@ const schema = new mongoose.Schema({
     privateChannel: { type: String, default: "" }, // private channel ID
     customRole: { type: String, default: "" }, // custom role id
     autoReact: { type: Boolean, default: false }, // Auto Reaction (when mentioned)
+    rename: { type: Boolean, default: false },
     inventory: {
         description: { type: Number, default: 0 }, // description credits
         rose: { type: Number, default: 0 }, // inventory roses

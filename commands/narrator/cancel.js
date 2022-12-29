@@ -30,6 +30,7 @@ module.exports = {
         stat.markModified("games")
         stat.save()
         db.delete(`game`)
+        client.commands.get("bye").run(message, args, client)
         client.guilds.cache
             .get(ids.server.game)
             .channels.cache.find((c) => c.name === "carl-welcome-left-log")
