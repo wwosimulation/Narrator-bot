@@ -8,12 +8,10 @@ const { fn, getEmoji, ids } = require("./config")
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
 
-if (db.fetch("emergencystop")) {
+if (db.get("emergencystop")) {
     setTimeout(() => {
-        if (db.fetch("emergencystop")) {
-            console.log("Bot has been emergency stopped")
-            process.exit(0)
-        }
+        console.log("Bot has been emergency stopped")
+        process.exit(0)
     }, 10000)
 }
 
@@ -91,9 +89,8 @@ client.botAdmin = (id) => {
     return false
 }
 
-client.buttonPaginator = async (authorID, msg, embeds, page, options = { addButtons: true, deleteOnEnd: false }) => {
+client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) => {
     if (embeds.length <= 1) return
-    let addButtons = options.addButtons ?? true
 
     // buttons
     let buttonBegin = { type: 2, style: 3, emoji: { name: "⏪" }, custom_id: "begin" }
@@ -134,7 +131,6 @@ client.buttonPaginator = async (authorID, msg, embeds, page, options = { addButt
         buttonEnd.disabled = true
         let deadRow = { type: 1, components: [buttonBegin, buttonBack, buttonNext, buttonEnd] }
         msg.edit({ components: [deadRow] })
-        if (options.deleteOnEnd) setTimeout(() => msg.delete(), 5_000)
     })
 }
 
@@ -153,11 +149,11 @@ client.debug = async (options = { game: false }) => {
 }
 
 //Bot on startup
-client.once("ready", async () => {
+client.on("ready", async () => {
     client.config = {}
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
-    client.user.setPresence({ activities: [{ name: client.user.username.toLowerCase().includes("beta") ? `testes gae on branch ${branch} and commit ${commit}` : "Wolvesville Simulation!", type: "PLAYING" }], status: "online" })
+    client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
     console.log("Connected!")
     client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
@@ -169,10 +165,10 @@ client.once("ready", async () => {
                 c.messages
                     .fetch(restarted.split("/")[1])
                     .then((m) => {
-                        m.edit("Bot has restarted!").then((m) => setTimeout(() => m.delete(), 5000))
+                        m.edit("Bot has restarted!")
                     })
                     .catch(() => {
-                        console.log("Could not find message to edit/delete")
+                        console.log("Could not find message to edit")
                     })
             })
             .finally(() => {
