@@ -245,7 +245,6 @@ client.once("ready", async () => {
             }
         }
     }, 2000)
-
 })
 
 let maint = db.get("maintenance")
