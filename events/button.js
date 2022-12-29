@@ -11,16 +11,16 @@ module.exports = (client) => {
         console.log(interaction.customId)
         let stat = await stats.find()
         stat = stat[0]
-        let gam = stat.games.find((game) => Object.keys(game) == db.get("game.id"))
+        let gameStats = stat.games.find((game) => Object.keys(game) == db.get("game.id"))
         if (interaction.customId == "igjoin") {
             await interaction.deferUpdate()
             let guy = interaction.member
             if (guy.roles.cache.has(ids.spectator)) {
                 guy.roles.remove(ids.spectator) //spec
-                Object.values(gam)[0].spectators.indexOf(guy.id) > -1 ? Object.values(gam)[0].spectators.splice(Object.values(gam)[0].spectators.indexOf(guy.id), 1) : null
+                Object.values(gameStats)[0].spectators.indexOf(guy.id) > -1 ? Object.values(gameStats)[0].spectators.splice(Object.values(gameStats)[0].spectators.indexOf(guy.id), 1) : null
             }
             if (!guy.roles.cache.has(ids.alive)) {
-                Object.values(gam)[0].players.push(guy.id)
+                Object.values(gameStats)[0].players.push(guy.id)
             }
 
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr
@@ -42,10 +42,10 @@ module.exports = (client) => {
             }
             if (guy.roles.cache.has(ids.alive)) {
                 guy.roles.remove(ids.alive) //alive
-                Object.values(gam)[0].players.indexOf(guy.id) > -1 ? Object.values(gam)[0].players.splice(Object.values(gam)[0].players.indexOf(guy.id), 1) : null
+                Object.values(gameStats)[0].players.indexOf(guy.id) > -1 ? Object.values(gameStats)[0].players.splice(Object.values(gameStats)[0].players.indexOf(guy.id), 1) : null
             }
             if (!guy.roles.cache.has(ids.spectator)) {
-                Object.values(gam)[0].spectators.push(guy.id)
+                Object.values(gameStats)[0].spectators.push(guy.id)
             }
             guy.roles.add(ids.spectator)
             if (guy.roles.cache.has(ids.narrator)) guy.roles.remove(ids.narrator) //narr

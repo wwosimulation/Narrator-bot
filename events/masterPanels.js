@@ -4,7 +4,7 @@ const ms = require("ms")
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction) => {
         if (interaction.customId === "dev-restart") {
-            let restart = await interaction.reply({ content: "Restarting...", fetchReply: true })
+            const restart = await interaction.reply({ content: "Updating and restarting...", fetchReply: true })
             db.set("botRestart", restart.channelId + "/" + restart.id)
             client.destroy()
             require("child_process").execSync("npm run start", { stdio: "inherit" })
