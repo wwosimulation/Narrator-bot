@@ -11,6 +11,7 @@ module.exports = {
         const players = db.get(`players`) || []
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
         const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
+        const surrogate = require("../narrator/day/killingActions/protection/surrogate.js") // surrogate
 
         if (!message.channel.parentId == "892046231516368906") return // if they are not in the private channel
 
@@ -70,6 +71,16 @@ module.exports = {
         if (player.role === "Marksman" && db.get(`player_${target}`).team === "Village") result = false
 
         let guy = db.get(`player_${target}`)
+
+        db.subtract(`player_${player.id}.uses`, 1)
+
+        // check if the player is stubborn wolf that has 2 lives
+        let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+        // check if the player they are attacking is protected by their surrogate
+        getResult = await surrogate(client, db.get(`player_${result === true ? target : player.id}`), player) // checks if a surrogate is prorecting them
+        if (typeof getResult === "object") guy = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
+
         let role = guy.role
         if (guy.tricked || player.tricked) role = "Wolf Trickster"
 
@@ -79,12 +90,6 @@ module.exports = {
             Vigilante: `${getEmoji("bullet", client)} Player **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji("vigilante", client)} Vigilante)** shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(`${role.toLowerCase().replace(/\s/g, "_")}`, client)} ${role})**!`,
             Marksman: `${getEmoji("arrow", client)} ${result === true ? `The Marksman shot **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})**` : `**${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role, client)} ${role})** tried shooting **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** but their shot backfired! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is a villager!`}`,
         }
-
-        db.subtract(`player_${player.id}.uses`, 1)
-
-        // check if the player is stubborn wolf that has 2 lives
-        let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
-        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
 
         let member = await message.guild.members.fetch(result === true ? target : player.id)
         let roles = member.roles.cache.map((r) => (r.name === "Alive" ? message.guild.roles.cache.find((r) => r.name === "Dead").id : r.id))

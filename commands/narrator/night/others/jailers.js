@@ -7,6 +7,7 @@ module.exports = async (client) => {
     const jailedChat = guild.channels.cache.find((c) => c.name === "jailed-chat")
     const wardenChat = guild.channels.cache.find((c) => c.name === "warden-jail")
     const werewolvesChat = guild.channels.cache.find((c) => c.name === "werewolves-chat") // get the werewolves channel - Object
+    const wwVote = guild.channels.cache.find((c) => c.name === "ww-vote") // get the werewolves vote channel - Object
     const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
     const alivePlayers = players.filter((p) => db.get(`player_${p}`).status === "Alive") // get the alive players array - Array<Snowflake>
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
@@ -44,6 +45,8 @@ module.exports = async (client) => {
                         if (guy.team === "Werewolf" && guy.role !== "Werewolf Fan") {
                             // send the message
                             werewolvesChat.send(`Your werewolf teammate **${players.indexOf(guy.id) + 1} ${guy.username} (${getEmoji(guy.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy.role})** has been jailed by the Jailer!`)
+                            werewolvesChat.permissionOverwrites.edit(guy.id, { SEND_MESSAGES: false, VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: true })
+                            wwVote.permissionOverwrites.edit(guy.id, { SEND_MESSAGES: false, VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: true })
                         }
 
                         channel.send(`You have been jailed by the Jailer! You can't do your actions for tonight! Head to <#${jailedChat.id}> to talk with the jailer!`) // send the message
@@ -87,11 +90,15 @@ module.exports = async (client) => {
                         if (guy1.team === "Werewolf" && guy1.role !== "Werewolf Fan") {
                             // send the message
                             werewolvesChat.send(`Your werewolf teammate **${players.indexOf(guy1.id) + 1} ${guy1.username} (${getEmoji(guy1.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy1.role})** has been jailed by the Warden!`)
+                            werewolvesChat.permissionOverwrites.edit(guy1.id, { SEND_MESSAGES: false, VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: true })
+                            wwVote.permissionOverwrites.edit(guy1.id, { SEND_MESSAGES: false, VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: true })
                         }
 
                         if (guy2.team === "Werewolf" && guy2.role !== "Werewolf Fan") {
                             // send the message
                             werewolvesChat.send(`Your werewolf teammate **${players.indexOf(guy2.id) + 1} ${guy2.username} (${getEmoji(guy2.role?.toLowerCase()?.replace(/\s/g, "_"), client)} ${guy2.role})** has been jailed by the Warden!`)
+                            werewolvesChat.permissionOverwrites.edit(guy2.id, { SEND_MESSAGES: false, VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: true })
+                            wwVote.permissionOverwrites.edit(guy2.id, { SEND_MESSAGES: false, VIEW_CHANNEL: false, READ_MESSAGE_HISTORY: true })
                         }
 
                         channel1.send(`${getEmoji("warden_jail", client)} You have been jailed by the Warden! You can't do your actions for tonight! Head to <#${wardenChat.id}> to talk with your inmate!`) // send the messages

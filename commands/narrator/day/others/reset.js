@@ -12,6 +12,7 @@ module.exports = async (client) => {
             db.delete(`player_${player}.jailedPlayers`)
         }
 
+        if (db.get(`player_${player}`).lethal) db.delete(`player_${player}.lethal`)
         db.delete(`player_${player}.shamanned`)
         db.delete(`player_${player}.jailed`)
     })

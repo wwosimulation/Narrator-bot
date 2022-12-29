@@ -13,26 +13,21 @@ module.exports = async (client, guy, attacker) => {
     let allProtected = db.get(`berserkProtected`) || [] // get the array of players who protected the berserk's target
 
     let isProtected = false
-    // loop through each player to see if they are a witch
+    // loop through each player to see if they are a Surrogate
     for (let player of alivePlayers) {
-        // check and see if the player is a witch
-        if (db.get(`player_${player}`).role === "Witch") {
-            // check and see if the Witch protected the attacked player
+        // check and see if the player is a Surrogate
+        if (db.get(`player_${player}`).role === "Surrogate") {
             if (db.get(`player_${player}`).target === guy.id) {
-                // remove the potion from the witch and remove the protection
-                db.delete(`player_${player}.protection`) // remove the protection
-                db.set(`player_${player}.uses`, 0) // remove the uses
-
                 // check if berserk is active and the attacker is from the werewolves' team
                 if (isBerserkActive === true && attacker.team === "Werewolf") {
                     allProtected.push(player)
                     db.set(`berserkProtected`, allProtected)
                 } else {
                     // alert and exit early
-                    isProtected = true // set the protection to true
                     let channel = guild.channels.cache.get(db.get(`player_${player}`).channel) // get the channel object - Object
-                    await channel.send(`${getEmoji("potion", client)} Your potion saved **${players.indexOf(guy.id) + 1} ${guy.username}**!`) // sends the message that they got alerted
+                    await channel.send(`${getEmoji("heal", client)} Your protection saved **${players.indexOf(guy.id) + 1} ${guy.username}**!`) // sends the message that they got alerted
                     await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings alive in the channel
+                    isProtected = db.get(`player_${player}`)
                     break // break out of the loop
                 }
             }

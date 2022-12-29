@@ -61,9 +61,6 @@ module.exports = async (client, guy, attacker) => {
                     }
                 }
             }
-
-            // check if no one was protected even until now
-            if (isProtected === false) isProtected = guy // set isProtected to the attacked player since no one protected them
         }
 
         return isProtected // exit early and give whatever was set
@@ -96,9 +93,6 @@ module.exports = async (client, guy, attacker) => {
             }
         }
     }
-
-    // check if no one was protected even until now
-    if (isProtected === false) isProtected = guy // set isProtected to the attacked player since no one protected them
 
     // return the isProtected value
     return isProtected

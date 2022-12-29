@@ -12,6 +12,7 @@ module.exports = {
         const daychat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
         const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
+        const surrogate = require("../narrator/day/killingActions/protection/surrogate.js") // surrogate
 
         if (!message.channel.parentId == "892046231516368906") return // if they are not in the private channel
 
@@ -57,6 +58,15 @@ module.exports = {
 
         db.subtract(`player_${player.id}.uses`, 1)
 
+        let member = db.get(`player_${target}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${target}`).role) ? target : player.id
+
+        // check if the player is stubborn wolf that has 2 lives
+        let getResult = await stubbornWerewolves(client, db.get(`player_${member}`)) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+        // check if the player they are attacking is protected by their surrogate
+        getResult = await surrogate(client, db.get(`player_${member}`), player) // checks if a surrogate is prorecting them
+        if (typeof getResult === "object") target = getResult.id // exits early if a surrogate IS protecting them
+
         let role = "Priest"
         if (player.tricked) role = "Wolf Trickster"
 
@@ -65,11 +75,6 @@ module.exports = {
             notWolf: `${getEmoji("water", client)} **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** tried to throw holy water on **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** and killed themselves! **${players.indexOf(target) + 1} ${db.get(`player_${target}`).username}** is not a werewolf!`,
         }
 
-        // check if the player is stubborn wolf that has 2 lives
-        let getResult = await stubbornWerewolves(client, db.get(`player_${target}`)) // checks if the player is stubborn wolf and has 2 lives
-        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
-
-        let member = db.get(`player_${target}`).team === "Werewolf" && !["Werewolf Fan", "Sorcerer"].includes(db.get(`player_${target}`).role) ? target : player.id
         let guy = await message.guild.members.fetch(member)
         let roles = guy.roles.cache.map((r) => (r.name === "Alive" ? "892046207428476989" : r.id))
 

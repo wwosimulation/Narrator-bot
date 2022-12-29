@@ -48,6 +48,9 @@ module.exports = async (client) => {
                     }
 
                     db.set(`player_${guy.id}.nightmared`, true)
+
+                    if (granny.role === "Voodoo Werewolf") return db.subtract(`player_${gg}.usesN`, 1) // if they are a voodoo werewolf, then subtract their uses
+                    db.subtract(`player_${night}.uses`, 1)
                 }
             }
         }

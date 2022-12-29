@@ -25,6 +25,11 @@ module.exports = async (client) => {
             wwchat.permissionOverwrites.edit(guy.id, { SEND_MESSAGES: false })
         }
 
+        if (guy.role === "Bandit" || guy.role === "Accomplice") {
+            let banditChan = guild.channels.cache.get(guy.banditChannel)
+            banditChan.permissionOverwrites.edit(guy.id, { SEND_MESSAGES: false })
+        }
+
         // if the player was nightmared or jailed
         if (guy.nightmared || guy.jailed || guy.hypnotized) {
             // unlock their channel

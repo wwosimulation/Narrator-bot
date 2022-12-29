@@ -82,6 +82,7 @@ module.exports = (client) => {
         if (command.narratorOnly && !config.fn.isNarrator(message.member)) return
         if (command.staffOnly && !config.fn.isStaff(message.member)) return
         if (command.devOnly && !config.fn.isDev(message.member)) return
+        if (command.category === "game" && db.get(`player_${message.member?.id}`) && db.get(`player_${message.member.id}`).doomed && message.channel.name.startsWith("priv")) return message.channel.send("You cannot use any commands while being doomed!")
 
         //Check if that command needs arguments
 

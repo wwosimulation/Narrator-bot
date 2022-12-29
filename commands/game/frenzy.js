@@ -24,5 +24,6 @@ module.exports = {
         db.set(`isBerserkActive`, true)
         await message.channel.send(`${getEmoji("frenzy", client)} You have activated frenzy for tonight!`)
         await wwchat.send(`${getEmoji("frenzy", client)} The Werewolf Berserk has activated frenzy for tonight!`)
+        db.subtract(`player_${player.id}.uses`, 1)
     },
 }

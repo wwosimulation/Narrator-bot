@@ -1,6 +1,7 @@
 const { getRole, getEmoji } = require("../../../config") // functions
 const db = require("quick.db")
 const nightWatchmen = require("./others/nightWatchmen.js")
+const shuffle = require("shuffle-array")
 
 module.exports = {
     name: "day",
@@ -23,11 +24,11 @@ module.exports = {
         const alivePlayers = players.filter((player) => db.get(`player_${player}`).status === "Alive")
         const deadPlayers = players.filter((player) => !alivePlayers.includes(player))
         const drunks = alivePlayers.filter((p) => db.get(`player_${p}`).role === "Drunk")
-
         console.log("Loaded all actions...")
 
         // get all the actions
         let { wolves, beastHunterKilling, trapperKilling } = require("./killingActions/wolves.js")
+        let { action } = require("./killingActions/harbingers.js")
         let kittenwolf = require("./killingActions/kittenWolf.js")
         let serialkillers = require("./killingActions/serialkillers.js")
         let accomplices = require("./killingActions/accomplices.js")
@@ -122,6 +123,12 @@ module.exports = {
         // dreamcatcher doing their job
         console.log("dc running...")
         await dreamcatchers(client, alivePlayers)
+
+        sleep(100)
+
+        // harbinger doing their job
+        console.log("harbinger running...")
+        await action(client)
 
         sleep(100)
 
@@ -264,6 +271,31 @@ module.exports = {
         if (db.get(`game.peace`) === Math.floor(db.get(`gamePhase`) / 3) + 1) db.delete(`game.peace`)
 
         db.add(`gamePhase`, 1)
+
+        if (db.get(`game.gamemode`) === "elements") {
+            let elements = ["sunny", "foggy", "rainy", "thunderstorm", "tornado", "blizzard", "heatwave"]
+            let messages = {
+                sunny: "The villagers are happy today.",
+                foggy: "Everyone's votes will be hidden today.",
+                rainy: "A random player's role will be revealed today.",
+                thunderstorm: "A random player will be killed today",
+                tornado: "Every alive player's position has been reshuffled today.",
+                blizzard: "Two random players will be frozen today.",
+                heatwave: "It's too hot to discuss today, voting will start now.",
+            }
+
+            shuffle(elements)
+            let weather = elements[0]
+            let gameMessage = messages[weather]
+
+            await dayChat.send(`${getEmoji("day", client)} Day ${Math.floor(db.get(`gamePhase`) / 3) + 1} has started! Get ready to discuss!`)
+            await dayChat.send(`Today's weather is: ${weather}\n${gameMessage}`)
+            await dayChat.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)
+            await dayChat.permissionOverwrites.edit(aliveRole.id, { SEND_MESSAGES: true, VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true })
+
+            require(`./weather/${weather}.js`)(message, client)
+            return
+        }
 
         dayChat.send(`${getEmoji("day", client)} Day ${Math.floor(db.get(`gamePhase`) / 3) + 1} has started! Get ready to discuss!`)
         dayChat.send(`${message.guild.roles.cache.find((r) => r.name === "Alive")}`)

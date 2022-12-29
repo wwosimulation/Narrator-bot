@@ -61,6 +61,17 @@ module.exports = {
         db.subtract(`player_${player.id}.usesK`, 1)
 
         let guy = db.get(`player_${target}`)
+
+        const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWerewolves.js") // stubborn www
+        const surrogate = require("../narrator/day/killingActions/protection/surrogate.js") // surrogate
+
+        // check if the player is stubborn wolf that has 2 lives
+        let getResult = await stubbornWerewolves(client, guy) // checks if the player is stubborn wolf and has 2 lives
+        if (getResult === true) return false // exits early if the player IS stubborn wolf AND has 2 lives
+        // check if the player they are attacking is protected by their surrogate
+        getResult = await surrogate(client, guy, player) // checks if a surrogate is prorecting them
+        if (typeof getResult === "object") guy = db.get(`player_${getResult.id}`) // exits early if a surrogate IS protecting them
+
         let role = guy.role
 
         if (guy.tricked) role = "Wolf Trickster"

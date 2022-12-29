@@ -19,6 +19,12 @@ module.exports = {
                     { name: "Sandbox", value: "sandbox" },
                     { name: "Custom", value: "custom" },
                     { name: "Chain Reaction", value: "chainreaction" },
+                    { name: "Mandatory Vote", value: "forcevote" },
+                    { name: "Unleashed Elements", value: "elements" },
+                    { name: "Robbers of the Dead", value: "robbers" },
+                    { name: "Double Trouble", value: "trouble" },
+                    { name: "Fools", value: "fools" },
+                    { name: "Red vs Blue", value: "rvb" },
                     { name: "Pure Random", value: "random" },
                     { name: "Ranked", value: "ranked" },
                 ],
@@ -152,13 +158,24 @@ module.exports = {
                 ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Tough Guy", alphashaman[0], "Marksman", foolhh[0], jailerwitch[0], skcanni[0], "Medium", seerdet[0], "Junior Werewolf", "Cursed", "Beast Hunter", "Werewolf"],
                 ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Detective", "Wolf Shaman", "Gunner", foolhh[0], "Jailer", "Arsonist", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Bodyguard", "Werewolf"],
             ]
-        } else if (gamemode == "chainreaction") {
-            roleOptions = [["avenger", "witch", "avenger", "detective", "avenger", "witch", "avenger", "corruptor", "fool", "avenger", "avenger", "aura", "illusionist", "avenger", "fool", "avenger", "medium"]]
         } else if (gamemode == "random") {
+            if (alive.members.size < 8) {
+                let bannedRoles = ["shadow-wolf", "sorcerer", "split-wolf", "medium", "analyst", "ritualist", "gunner", "vigilante", "fortune-teller", "bomber", "arsonist", "sect-leader", "zombie", "cannibal", "evil-detective", "cupid", "instigator", "president"]
+                for (let banned of bannedRoles) {
+                    rww.indexOf(banned) !== -1 ? rww.splice(rww.indexOf(banned), 1) : rk.indexOf(banned) !== -1 ? rk.splice(rk.indexOf(banned), 1) : rsv.indexOf(banned) !== -1 ? rsv.splice(rsv.indexOf(banned), 1) : random.splice(random.indexOf(banned), 1)
+                }
+            }
+
             async function getRoles() {
+                if (alive.members.size < 8) {
+                    rk = rk.filter((r) => !["cannibal", "hacker", "bomber", "arsonist", "sect-leader", "zombie"].includes(r))
+                    rww = rww.filter((r) => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r))
+                    rsv = rsv.filter((r) => !["medium", "ritualist", "gunner", "vigilante", "warden", "fortune-teller"].includes(r))
+                    random = random.filter((r) => !["president", "instigator", "cupid"].includes(r))
+                }
                 let gameOptions = {
                     killers: {
-                        roles: [alive.members.size < 7 ? rww.filter((r) => !["shadow-wolf", "sorcerer", "split-wolf"].includes(r)) : rww, alive.members.size >= 8 ? rk : rk.filter((a) => !["bomber", "arsonist", "cannibal"].includes(a))].join(",").split(","),
+                        roles: [...rww, ...rk],
                         min: Math.floor(alive.members.size / 4),
                         max: Math.floor(alive.members.size / 2) - Math.round(alive.members.size * 0.16),
                         maxSoloKillers: alive.members.size > 12 ? 2 : 1,
@@ -169,15 +186,12 @@ module.exports = {
                         max: alive.members.size > 12 ? 2 : alive.members.size >= 8 ? 1 : 0,
                     },
                     strongVillagers: {
-                        roles: rsv.filter((a) => (alive.members.size >= 8 ? a : !["medium", "ritualist", "gunner", "vigilante", "fortune-teller"].includes(a))),
+                        roles: rsv,
                         min: Math.ceil(alive.members.size / 6),
                         max: Math.ceil(alive.members.size / 2.5) - Math.round(alive.members.size * 0.16),
                     },
                     others: {
-                        roles: random
-                            .filter((p) => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p))
-                            .filter((r) => (alive.members.size <= 8 ? r !== "Cupid" : r))
-                            .filter((r) => (alive.members.size <= 12 ? r !== "President" : r)),
+                        roles: random.filter((p) => !rsv.includes(p) && !rv.includes(p) && !rww.includes(p) && !rk.includes(p)),
                     },
                 }
 
@@ -185,8 +199,8 @@ module.exports = {
                 let kvoters = Math.floor(Math.random() * (gameOptions.voters.max + 1 - gameOptions.voters.min)) + gameOptions.voters.min
                 let kSVills = Math.floor(Math.random() * (gameOptions.strongVillagers.max + 1 - gameOptions.strongVillagers.min)) + gameOptions.strongVillagers.min
                 let kothers = alive.members.size - kkllers - kvoters - kSVills
-                console.log(kkllers, kvoters, kSVills, kothers)
-                if (alive.members.size >= 6 && kkllers === 1) kvoters += 1
+
+                if (Math.round(((kkllers + kvoters) * 100) / alive.members.size) < 25) kvoters += 1
 
                 let mappedOptions = {
                     0: gameOptions.killers,
@@ -195,6 +209,7 @@ module.exports = {
                     3: gameOptions.others,
                 }
                 roleOptions = [[]]
+
                 let b = []
                 for (let i = 0; i < 4; i++) {
                     let type = [kkllers, kvoters, kSVills, kothers][i]
@@ -311,6 +326,52 @@ module.exports = {
                 rv = pull(rv, role)
             })
             roleOptions.push(roles.split(" "))
+        } else {
+            function quickSandboxList() {
+                let list = []
+                shuffle(auraspirit)
+                shuffle(docbg)
+                shuffle(rrv)
+                shuffle(beastbunny)
+                shuffle(gunnermarks)
+                shuffle(cupidgr)
+                shuffle(alphashaman)
+                shuffle(foolhh)
+                shuffle(jailerwitch)
+                shuffle(skcanni)
+                shuffle(seerdet)
+                list = [
+                    ["Aura Seer", "Wolf Seer", "Doctor", "Avenger", "Detective", "Wolf Shaman", "Gunner", rv[0], "Witch", "Cannibal", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Werewolf", "Cupid"],
+                    ["Aura Seer", "Wolf Seer", "Doctor", "Beast Hunter", "Aura Seer", "Wolf Shaman", "Gunner", rv[0], "Witch", "Bomber", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Avenger", "Werewolf"],
+                    ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Tough Guy", alphashaman[0], "Marksman", foolhh[0], jailerwitch[0], skcanni[0], "Medium", seerdet[0], "Junior Werewolf", "Cursed", "Beast Hunter", "Werewolf"],
+                    ["Aura Seer", "Wolf Seer", "Doctor", "Priest", "Detective", "Wolf Shaman", "Gunner", foolhh[0], "Jailer", "Arsonist", "Medium", "Seer", "Alpha Werewolf", "Cursed", "Bodyguard", "Werewolf"],
+                    [auraspirit[0], "alpha-werewolf", docbg[0], "rrv", beastbunny[0], "wolf-seer", gunnermarks[0], foolhhrv[0], ftprog[0], dcrk[0], "medium", "seer", "werewolf-berserk", "rrv", "rww", cupidgr[0]],
+                    ["aura-seer", "alpha-werewolf", "bodyguard", "rrv", mortrrv[0], "wolf-seer", "gunner", "rv", "jailer", "hacker", "medium", "seer", "shadow-wolf", "rrv", "rww", "cupid"],
+                ]
+                return list
+            }
+
+            switch (gamemode) {
+                case "robbers": {
+                    roleOptions = [["Seer", "Grave Robber", "Grave Robber", "rww", "Doctor", "Grave Robber", "Grave Robber", "rww", "Spirit Seer", "Grave Robber", "Grave Robber", "rww", "Medium", "Grave Robber", "Grave Robber", "rww"]]
+                    break
+                }
+                case "chainreaction": {
+                    roleOptions = [["avenger", "witch", "avenger", "detective", "avenger", "witch", "avenger", "corruptor", "fool", "avenger", "avenger", "aura", "illusionist", "avenger", "fool", "avenger", "medium"]]
+                    break
+                }
+                case "fools": {
+                    roleOptions = [["Spirit Seer", "Spirit Seer", "Gunner", "Gunner", "Marksman", "Marksman", "Alpha Werewolf", "Alpha Werewolf", "Alpha Werewolf", "Serial Killer", "Serial Killer", "Fool", "Fool", "Fool", "Fool", "Fool"]]
+                    break
+                }
+                case "rvb": {
+                    roleOptions = [["Sect Leader", "Sect Leader", "Serial Killer", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv", "rrv"]]
+                    break
+                }
+                default: {
+                    roleOptions = quickSandboxList()
+                }
+            }
         }
 
         await doRest()

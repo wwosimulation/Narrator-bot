@@ -12,6 +12,7 @@ const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
 const trapper = require("./protection/trapper.js") // trapper protection
 const stubbornWerewolves = require("./protection/stubbornWolves.js") // stubborn ww
+const surrogate = require("./protection/surrogate.js") // surrogate
 
 async function getProtections(client, guy, attacker) {
     let getResult
@@ -54,6 +55,10 @@ async function getProtections(client, guy, attacker) {
         getResult = await toughGuy(client, guy, attacker) // checks if a tough guy is protecting them
         if (getResult === true) return false // exits early if a tough guy IS protecting them
 
+        // check if the player they are attacking is protected by their surrogate
+        getResult = await surrogate(client, guy, attacker) // checks if a surrogate is prorecting them
+        if (typeof getResult === "object") return getResult // exits early if a surrogate IS protecting them
+
         // check if the player they are attacking is a red lady that got away visiting someone else
         getResult = await redLady(client, guy, attacker) // checks if the red lady is not home
         if (getResult === true) return false // exits early if the red lady IS not home
@@ -84,7 +89,7 @@ module.exports = async (client, alivePlayersBefore) => {
     // loop through each bandit
     for (let bandit of bandits) {
         let theAttacker = db.get(`player_${bandit}`) // the attacker (bandit) object - Object
-        let attacker = theAttacker.accomplices?.find((d) => accomplices.includes(d)) // the attacker (accomplice) object - Object
+        let attacker = db.get(`player_${theAttacker.accomplices?.find((d) => accomplices.includes(d))}`) // the attacker (accomplice) object - Object
 
         // check if the accomplice is alive. If not, turn the kill into a conversion
         if (!attacker) {
@@ -106,7 +111,7 @@ module.exports = async (client, alivePlayersBefore) => {
             // check if the bandit's target is alive
             if (guy.status === "Alive") {
                 db.delete(`player_${bandit}.target`) // deletes the target from the bandit
-                db.delete(`player_${bandit.accomplices.find((d) => accomplices.includes(d))}.target`) // deletes the target from the accomplice
+                db.delete(`player_${theAttacker.accomplices.find((d) => accomplices.includes(d))}.target`) // deletes the target from the accomplice
 
                 // check for any protections
                 let result = await getProtections(client, guy, attacker) // returns - Promise<Object|Boolean>

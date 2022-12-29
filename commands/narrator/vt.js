@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const ms = require("ms")
-const { fn } = require("../../config")
+const { fn, getEmoji } = require("../../config")
 
 module.exports = {
     name: "vt",
@@ -45,6 +45,7 @@ module.exports = {
             if (guy.ritualRevive !== gamephase + 1) continue // if the phase isn't over yet, don't do anything and check for the next player
 
             db.set(`player_${guy.id}.status`, "Alive") // set the status of the player to Alive
+            db.delete(`player_${guy.id}.ritualRevive`)
             let member = await message.guild.members.fetch(guy.id) // get the discord member
             let memberRoles = member.roles.cache
                 .map((r) => (r.name === "Dead" ? ["892046206698680390", "892046205780131891"] : r.id))
@@ -71,8 +72,10 @@ module.exports = {
         // alchemist
         const alchemists = require("./night/kills/alchemists.js")
         const zombies = require("./night/kills/zombies.js")
+        const { killDoomed } = require("./day/killingActions/harbingers.js")
         await alchemists(client)
         await zombies(client)
+        await killDoomed(client)
 
         db.set(`commandEnabled`, `yes`)
         db.add(`gamePhase`, 1)

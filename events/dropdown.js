@@ -78,6 +78,7 @@ module.exports = (client) => {
             if (interaction.values[0].split("-")[1] == allPlayers.indexOf(interaction.user.id) + 1) return interaction.reply({ content: `Trying to win as fool by voting yourself won't get you anywhere. Get a life dude.`, ephemeral: true })
             if (interaction.values[0].split("-")[1] == "cancel") {
                 await interaction.deferUpdate()
+                if (db.get(`game.isShadow`) || db.get(`game.fog`)) return interaction.followUp({ content: "Your vote has been canceled.", ephemeral: true })
                 let voted = db.get(`votemsgid_${interaction.member.id}`)
                 if (voted) {
                     let tmestodel = await interaction.message.channel.messages.fetch(voted).catch((e) => console.log(e.message))
@@ -87,7 +88,6 @@ module.exports = (client) => {
                 }
                 db.delete(`player_${interaction.member.id}.vote`)
                 db.delete(`votemsgid_${interaction.member.id}`)
-                if (db.get(`game.isShadow`)) return
             } else {
                 let target = allPlayers[Number(interaction.values[0].split("-")[1]) - 1]
                 if (db.get(`player_${target}`).status !== "Alive") return interaction.reply({ content: "You good? Voting dead players is NOT cool.", ephemeral: true })
@@ -101,8 +101,8 @@ module.exports = (client) => {
                 }
 
                 db.set(`player_${interaction.member.id}.vote`, target)
-                if (db.get(`game.isShadow`)) return
-                let omg = await interaction.message.channel.send(`${allPlayers.indexOf(interaction.user.id) + 1} ${interaction.user.username} voted ${interaction.values[0].split("-")[1]} ${db.get(`player_${target}`).username}`)
+                if (db.get(`game.isShadow`) || db.get(`game.fog`)) return interaction.followUp({ content: `${getEmoji("vote", client)} You have voted **${interaction.values[0].split("-")[1]} ${db.get(`player_${target}`).username}**.`, ephemeral: true })
+                let omg = await interaction.message.channel.send(`${getEmoji("vote", client)} **${allPlayers.indexOf(interaction.user.id) + 1} ${interaction.user.username}** voted **${interaction.values[0].split("-")[1]} ${db.get(`player_${target}`).username}**`)
                 db.set(`votemsgid_${interaction.member.id}`, omg.id)
             }
         }

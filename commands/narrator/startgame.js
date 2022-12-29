@@ -161,7 +161,7 @@ module.exports = {
             db.set(`player_${insti}.target`, [player1, player2])
             let channel1 = message.guild.channels.cache.get(db.get(`player_${player1}`)?.channel)
             let channel2 = message.guild.channels.cache.get(db.get(`player_${player2}`)?.channel)
-            let channel = mesage.guild.channels.cache.get(db.get(`player_${insti}`)?.channel)
+            let channel = message.guild.channels.cache.get(db.get(`player_${insti}`)?.channel)
             let player = db.get(`player_${insti}`)
             let rec1 = db.get(`player_${player1}`)
             let rec2 = db.get(`player_${recruit2}`)
@@ -225,8 +225,9 @@ module.exports = {
         // add uses
         players.forEach((p) => {
             let guy = db.get(`player_${p}`)
-            if (["Gunner", "Marksman", "Fortune Teller", "Nightmare Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 2)
+            if (["Gunner", "Marksman", "Fortune Teller", "Nightmare Werewolf", "Lethal Seer"].includes(guy.role)) db.set(`player_${p}.uses`, 2)
             if (["Seer", "Aura Seer", "Sorcerer", "Analyst", "Detective", "Cannibal", "Jailer", "Priest", "Witch", "Santa Claus", "Shadow Wolf", "Werewolf Berserk", "Ghost Lady", "Pacifist", "Mayor", "Medium", "Ritualist", "Hacker", "Prognosticator", "Wolf Trickster", "Warden", "Mortician", "Sect Leader", "Alpha Werewolf"].includes(guy.role)) db.set(`player_${p}.uses`, 1)
+            if (guy.role === "Lethal Seer") db.set(`player_${p}.usesA`, 1)
             if (guy.role === "Forger") db.set(`player_${p}.swordUses`, 1)
             if (guy.role === "Forger") db.set(`player_${p}.shieldUses`, 2)
             if (guy.role === "Witch") db.set(`player_${p}.usesK`, 1)
@@ -289,11 +290,28 @@ module.exports = {
             }
         }
 
+        if (db.get(`game.gamemode`) === "trouble") {
+            players.forEach(async (p) => {
+                let player = db.get(`player_${p}`)
+                let channel1 = message.guild.channels.cache.get(player.channel)
+                if (player.coupled) return
+                if (!channel) return
+                let allNoLovers = players.filter((a) => !db.get(`player_${a}`).coupled && a !== p)
+                if (allNoLovers.length === 0) return
+                let randomPlayer = allNoLovers[Math.floor(Math.random() * allNoLovers.length)]
+                let target = db.get(`player_${randomPlayer}`)
+                let channel2 = message.guild.channels.cache.get(target.channel)
+                db.set(`player_${p}.coupled`, randomPlayer)
+                db.set(`player_${randomPlayer}.coupled`, p)
+                await channel1.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(target.id) + 1} ${target.username} (${getEmoji(target.role.toLowerCase().replace(/\s/g, "_"), client)} ${target.role})**! If they die, you will die as well.`)
+                await channel2.send(`${getEmoji("couple", client)} You are in love with **${players.indexOf(player.id) + 1} ${player.username} (${getEmoji(player.role.toLowerCase().replace(/\s/g, "_"), client)} ${player.role})**! If they die, you will die as well.`)
+            })
+        }
+
         client.channels.cache.find((x) => x.id == "606123818305585167")?.send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
 
         await message.guild.channels.cache.find((x) => x.name == "enter-game").send(`A ${gamemode} game has started, you can no longer join. Feel free to spectate!`)
 
         db.set("game.started", "yes")
-        db.delete(`gamemode`)
     },
 }

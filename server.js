@@ -8,7 +8,7 @@ const { fn, getEmoji, ids } = require("./config")
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
 
-if (db.get("emergencystop")) {
+if (db.fetch("emergencystop")) {
     setTimeout(() => {
         console.log("Bot has been emergency stopped")
         process.exit(0)
@@ -200,7 +200,7 @@ client.debug = async (options = { game: false }) => {
 }
 
 //Bot on startup
-client.on("ready", async () => {
+client.once("ready", async () => {
     client.config = {}
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
@@ -293,8 +293,24 @@ client.on("ready", async () => {
         }
     }, 2000)
 
+    setInterval(async () => {
+        // collect all members and put them in an array
+        let stats = require("./schemas/stats")
+        let stat = await stats.find()
+        stat = stat[0]
+        if (new Date().getTime() > stat?.newFetch) {
+            let members = await client.guilds.cache.get(config.ids.server.sim).members.fetch()
+            let arr = []
+            members.forEach((x) => arr.push(x.id))
+            if (stat.members.length != 0) stat.previousFetch.push({ [new Date()]: stat.members })
+            stat.members = arr
+            stat.newFetch = new Date().getTime() + 3600000
+            stat.save()
+        }
+    }, 2000)
+
     //Invite Tracker
-    client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
+    // client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
 })
 
 let maint = db.get("maintenance")

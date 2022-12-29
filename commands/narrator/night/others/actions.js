@@ -8,6 +8,7 @@ module.exports = async () => {
         // reset the actions
         db.delete(`player_${player}.vote`) // deletes the vote
         db.delete(`player_${player}.bread`) // deletes the bread, if any
+        db.delete(`player_${player}.muted`) // delete that they are muted, if any
 
         if (["Beast Hunter", "Marksman"].includes(guy.role)) {
             // make their trap or mark active
@@ -34,7 +35,7 @@ module.exports = async () => {
         }
 
         // reset their target for every role except for some
-        if (!["Junior Werewolf", "Avenger", "Dreamcatcher", "Jailer", "Headhunter", "Villager", "Marksman", "President", "Werewolf", "Bomber", "Split Wolf", "Marksman", "Beast Hunter", "Warden", "Ritualist", "Trapper", "Instigator", "Cupid", "Grave Robber", "Wolf Trickster"].includes(guy.role)) {
+        if (!["Junior Werewolf", "Avenger", "Dreamcatcher", "Jailer", "Headhunter", "Villager", "Marksman", "President", "Werewolf", "Bomber", "Split Wolf", "Marksman", "Beast Hunter", "Warden", "Ritualist", "Trapper", "Instigator", "Cupid", "Grave Robber", "Wolf Trickster", "Surrogate", "Lethal Seer"].includes(guy.role)) {
             // delete the target
             db.delete(`player_${player}.target`)
 

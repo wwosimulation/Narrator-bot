@@ -18,6 +18,7 @@ module.exports = async (client) => {
         if (guy.ritualRevive !== db.get(`gamePhase`) + 1) return // if the phase isn't over yet, don't do anything and check for the next player
 
         db.set(`player_${guy.id}.status`, "Alive") // set the status of the player to Alive
+        db.delete(`player_${guy.id}.ritualRevive`)
         let member = await guild.members.fetch(guy.id) // get the discord member
         let memberRoles = member.roles.cache
             .map((r) => (r.name === "Dead" ? ["892046206698680390", "892046205780131891"] : r.id))

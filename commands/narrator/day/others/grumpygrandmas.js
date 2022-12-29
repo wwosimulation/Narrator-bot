@@ -6,7 +6,7 @@ module.exports = async (client) => {
     const guild = client.guilds.cache.get("890234659965898813") // get the guild object - Object
     const dayChat = guild.channels.cache.find((c) => c.name === "day-chat") // get the day channel - Object
     const players = db.get(`players`) || [] // get the players array - Array<Snowflake>
-    const grumpygrandmas = players.filter((p) => db.get(`player_${p}`).role === "Grumpy Grandmas") // get the alive Grumpy Grandmas array - Array<Snowflake>
+    const grumpygrandmas = players.filter((p) => ["Grumpy Grandma", "Voodoo Werewolf"].includes(db.get(`player_${p}`).role)) // get the alive Grumpy Grandmas array - Array<Snowflake>
 
     // loop through each grumpy grandma
     for (const gg of grumpygrandmas) {
@@ -21,7 +21,10 @@ module.exports = async (client) => {
 
         // mute the player
         db.set(`player_${granny.id}.lastMuted`, guy.id) // set the last muted player as the current player
+        db.set(`player_${guy.id}.muted`, true)
         await dayChat.send(`${getEmoji("ggmute", client)} **${players.indexOf(guy.id) + 1} ${guy.username}** can't talk or vote today!`) // sends a message in day chat
         await dayChat.permissionOverwrites.edit(guy.id, { SEND_MESSAGES: false }) // change the permission of this player
+
+        if (granny.role === "Voodoo Werewolf") db.subtract(`player_${gg}.usesM`, 1) // if they are a voodoo werewolf, then subtract their uses
     }
 }

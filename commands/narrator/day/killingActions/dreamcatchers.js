@@ -12,6 +12,7 @@ const forger = require("./protection/forger.js") // forger protection
 const ghostLady = require("./protection/ghostLady.js") // ghost lady protection
 const trapper = require("./protection/trapper.js") // trapper protection
 const stubbornWerewolves = require("./protection/stubbornWolves.js") // stubborn ww
+const surrogate = require("./protection/surrogate.js") // surrogate
 
 async function getProtections(client, guy, attacker) {
     let getResult
@@ -54,6 +55,10 @@ async function getProtections(client, guy, attacker) {
         getResult = await toughGuy(client, guy, attacker) // checks if a tough guy is protecting them
         if (getResult === true) return false // exits early if a tough guy IS protecting them
 
+        // check if the player they are attacking is protected by their surrogate
+        getResult = await surrogate(client, guy, attacker) // checks if a surrogate is prorecting them
+        if (typeof getResult === "object") return getResult // exits early if a surrogate IS protecting them
+
         // check if the player they are attacking is a red lady that got away visiting someone else
         getResult = await redLady(client, guy, attacker) // checks if the red lady is not home
         if (getResult === true) return false // exits early if the red lady IS not home
@@ -80,13 +85,6 @@ module.exports = async (client, alivePlayersBefore) => {
     const deadPlayers = players.filter((p) => !alivePlayers.includes(p)) // get the dead players array - Array<Snowflake>
     const dreamcatchers = alivePlayersBefore.filter((p) => db.get(`player_${p}`).role === "Dreamcatcher") // get the alive Dreamcatchers array - Array<Snowflake>
 
-    if (db.get(`game.peace`) === Math.floor(db.get(`gamePhase`) / 3) + 1) {
-        let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
-        await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** could not be killed as it was a peaceful night!`) // sends an error message
-        await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the player in the channel
-        return true
-    }
-
     // loop through each dreamcatcher
     for (let dc of dreamcatchers) {
         let attacker = db.get(`player_${dc}`) // the attacker object - Object
@@ -98,6 +96,13 @@ module.exports = async (client, alivePlayersBefore) => {
 
             // delete the target
             db.delete(`player_${dc}.target`) // don't worry, this won't affect the current target
+
+            if (db.get(`game.peace`) === Math.floor(db.get(`gamePhase`) / 3) + 1) {
+                let channel = guild.channels.cache.get(attacker.channel) // get the channel object - Object
+                await channel.send(`${getEmoji("guard", client)} Player **${players.indexOf(guy.id) + 1} ${guy.username}** could not be killed as it was a peaceful night!`) // sends an error message
+                await channel.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`) // pings the player in the channel
+                return true
+            }
 
             // check if the dc's target is alive
             let guy = db.get(`player_${attacker.target}`)

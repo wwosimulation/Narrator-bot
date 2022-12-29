@@ -19,6 +19,7 @@ module.exports = {
         const bombers = require("./kills/bombers.js")
         const corruptors = require("./kills/corruptors.js")
         const toughGuy = require("./kills/toughGuy.js")
+        const lethalSeers = require("./kills/lethalseers.js")
         const actions = require("./others/actions.js")
         const channels = require("./others/channels.js")
         const dreamcatchers = require("./others/dreamcatcher.js")
@@ -27,6 +28,7 @@ module.exports = {
         const nightmarewolves = require("./others/nightmarewolf.js")
         const ritualists = require("./others/ritualists.js")
         const jacks = require("./others/jacks.js")
+        const surrogates = require("./others/surrogates.js")
 
         await lynch(client)
 
@@ -34,7 +36,11 @@ module.exports = {
 
         await toughGuy(client)
 
+        await lethalSeers(client)
+
         await naughtyboys(client)
+
+        await surrogates(client)
 
         await jailers(client)
 

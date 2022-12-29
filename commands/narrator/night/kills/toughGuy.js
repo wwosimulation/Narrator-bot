@@ -27,6 +27,7 @@ module.exports = async (client) => {
                 if (tg.tricked) role = "Wolf Trickster"
                 await dayChat.send(`${getEmoji("tough_guy", client)} **${players.indexOf(tg.id) + 1} ${tg.username} (${getEmoji(role.toLowerCase().replace(/\s/g, "_"), client)} ${role})** was wounded last night and has died!`) // send the message
                 await player.roles.set(playerRoles) // change the roles
+                client.emit("playerKilled", db.get(`player_${tg.id}`), db.get(`player_${tg.id}`))
             }
         }
     }
