@@ -93,7 +93,7 @@ client.botAdmin = (id) => {
 
 client.buttonPaginator = async (authorID, msg, embeds, page, options = { addButtons: true, deleteOnEnd: false }) => {
     if (embeds.length <= 1) return
-    let addButtons = [undefined, null].includes(options.addButtons) ? true : options.addButtons
+    let addButtons = options.addButtons ?? true
 
     // buttons
     let buttonBegin = { type: 2, style: 3, emoji: { name: "⏪" }, custom_id: "begin" }
