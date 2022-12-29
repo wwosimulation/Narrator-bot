@@ -79,7 +79,7 @@ module.exports = {
 
             if (!enoughMoney(item, info.amount || 1)) return l10nMesssage({ code: "notEnoughCurrency", toReplace: { currency: item.currency + "s" } })
 
-            if (["profile", "cmi", "autoReact"].includes(dbName)) {
+            if (["profile", "cmi", "autoReact", "rename"].includes(dbName)) {
                 obj[dbName] = true
             }
 

@@ -13,7 +13,7 @@ module.exports = {
         const stubbornWerewolves = require("../narrator/day/killingActions/protection/stubbornWolves.js") // stubborn ww
         const surrogate = require("../narrator/day/killingActions/protection/surrogate.js") // surrogate
 
-        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+        if (!message.channel.parentId == "892046231516368906") return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to shoot players.")
         if (!["Gunner", "Jailer", "Marksman", "Vigilante"].includes(player.role) && !["Gunner", "Jailer", "Marksman", "Vigilante"].includes(player.dreamRole)) return

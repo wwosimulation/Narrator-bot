@@ -1,6 +1,6 @@
 const db = require("quick.db")
 const stats = require("../../schemas/stats")
-const { ids } = require("../../config")
+const { ids, fn } = require("../../config")
 
 module.exports = {
     name: "gwhost",
@@ -16,7 +16,7 @@ module.exports = {
         let sup = ""
 
         if (member.roles.cache.has(ids.minisim) && !rematch) {
-            let guy = guild.members.cache.get(args[0]) || guild.members.cache.find((m) => m.nickname === args[0]) || guild.members.cache.find((m) => m.user.username === args[0]) || guild.members.cache.find((m) => m.user.tag === args[0])
+            let guy = fn.getUser(args[0], message)
             if (!guy) return message.channel.send(`Supervisor \`${args[0]}\` was not found!`)
             let rol = guild.roles.cache.find((r) => r.name === "Supervisor")
             if (!guy.roles.cache.has(rol.id)) return message.channel.send(`${guy.user.tag} is not a supervisor!`)

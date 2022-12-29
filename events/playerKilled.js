@@ -296,7 +296,6 @@ module.exports = async (client) => {
                 let wwvote = guild.channels.cache.find((c) => c.name === "ww-vote")
                 await wwchat.permissionOverwrites.edit({ VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, SEND_MESSAGES: db.get(`gamePhase`) % 3 === 0 ? true : false })
                 await wwvote.permissionOverwrites.edit({ VIEW_CHANNEL: true, READ_MESSAGE_HISTORY: true, SEND_MESSAGES: false })
-                await channel.edit({ name: "priv-werewolf" })
                 await channel.send(`${getRole("werewolf").description}`)
                 db.set(`player_${sorc}.role`, "Werewolf")
                 db.set(`player_${sorc}.aura`, "Evil")
@@ -324,8 +323,6 @@ module.exports = async (client) => {
                 })
 
                 let channel = guild.channels.cache.get(player.channel)
-
-                await channel.edit({ name: `priv-${target.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
 
                 await channel.bulkDelete(100)
 
@@ -438,7 +435,6 @@ module.exports = async (client) => {
             let channel = guild.channels.cache.get(db.get(`player_${seerapp}`)?.channel)
             channel?.send(`${guy.role.startsWith("A") ? "An" : "A"} **${guy.role}** has died so you have taken over their role!`)
             channel?.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
-            channel?.edit({ name: `priv-${guy.role.toLowerCase().replace(/\s/g, "-")}` })
         }
 
         for (const astral of astralwolves) {

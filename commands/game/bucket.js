@@ -14,7 +14,7 @@ module.exports = {
         const wwchat = message.guild.channels.cache.find((c) => c.name === "werewolves-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+        if (!message.channel.parentId == "892046231516368906") return // if they are not in the private channel
 
         if (!["Pumpkin King"].includes(player.role) && !["Pumpkin King"].includes(player.dreamRole)) return
         if (["Pumpkin King"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)

@@ -36,8 +36,6 @@ module.exports = async (client) => {
         previousRoles.push(db.get(`player_${gr}.role`)) // push them to the array
         db.set(`player_${gr}.allRoles`, previousRoles) // set them into the database
 
-        await channel.edit({ name: `priv-${guy.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
-
         await channel.bulkDelete(100)
 
         await channel.send(getRole(guy.role.toLowerCase().replace(/\s/g, "-")).description).then(async (c) => {

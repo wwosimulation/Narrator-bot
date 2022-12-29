@@ -6,6 +6,7 @@ module.exports = {
     usage: `${process.env.PREFIX}massping <nickname>`,
     aliases: ["sjjsjs", "wake"],
     narratorOnly: true,
+    gameOnly: true,
     run: async (message, args) => {
         for (let i = 0; i < 10; i++) {
             let a = getUser(args.join(" "), message)
