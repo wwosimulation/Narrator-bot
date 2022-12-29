@@ -8,10 +8,12 @@ const { fn, getEmoji, ids } = require("./config")
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
 
-if (db.get("emergencystop")) {
+if (db.fetch("emergencystop")) {
     setTimeout(() => {
-        console.log("Bot has been emergency stopped")
-        process.exit(0)
+        if (db.fetch("emergencystop")) {
+            console.log("Bot has been emergency stopped")
+            process.exit(0)
+        }
     }, 10000)
 }
 
@@ -89,59 +91,9 @@ client.botAdmin = (id) => {
     return false
 }
 
-client.paginator = async (author, msg, embeds, pageNow, addReactions = true) => {
-    if (embeds.length === 1) return
-    if (addReactions) {
-        await msg.react("⏪")
-        await msg.react("◀️")
-        await msg.react("▶️")
-        await msg.react("⏩")
-    }
-    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
-    if (!reaction) return msg.reactions.removeAll().catch(() => {})
-    reaction = reaction.first()
-    //console.log(msg.member.users.tag)
-    if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
-        if (reaction.emoji.name == "◀️") {
-            let m = await msg.channel.send(embeds[Math.max(pageNow - 1, 0)])
-            msg.delete()
-            client.paginator(author, m, embeds, Math.max(pageNow - 1, 0))
-        } else if (reaction.emoji.name == "▶️") {
-            let m = await msg.channel.send(embeds[Math.min(pageNow + 1, embeds.length - 1)])
-            msg.delete()
-            client.paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1))
-        } else if (reaction.emoji.name == "⏪") {
-            let m = await msg.channel.send(embeds[0])
-            msg.delete()
-            client.paginator(author, m, embeds, 0)
-        } else if (reaction.emoji.name == "⏩") {
-            let m = await msg.channel.send(embeds[embeds.length - 1])
-            msg.delete()
-            client.paginator(author, m, embeds, embeds.length - 1)
-        }
-    } else {
-        if (reaction.emoji.name == "◀️") {
-            await reaction.users.remove(author)
-            let m = await msg.edit(embeds[Math.max(pageNow - 1, 0)])
-            client.paginator(author, m, embeds, Math.max(pageNow - 1, 0), false)
-        } else if (reaction.emoji.name == "▶️") {
-            await reaction.users.remove(author)
-            let m = await msg.edit(embeds[Math.min(pageNow + 1, embeds.length - 1)])
-            client.paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1), false)
-        } else if (reaction.emoji.name == "⏪") {
-            await reaction.users.remove(author)
-            let m = await msg.edit(embeds[0])
-            client.paginator(author, m, embeds, 0, false)
-        } else if (reaction.emoji.name == "⏩") {
-            await reaction.users.remove(author)
-            let m = await msg.edit(embeds[embeds.length - 1])
-            client.paginator(author, m, embeds, embeds.length - 1, false)
-        }
-    }
-}
-
-client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) => {
+client.buttonPaginator = async (authorID, msg, embeds, page, options = { addButtons: true, deleteOnEnd: false }) => {
     if (embeds.length <= 1) return
+    let addButtons = options.addButtons ?? true
 
     // buttons
     let buttonBegin = { type: 2, style: 3, emoji: { name: "⏪" }, custom_id: "begin" }
@@ -182,6 +134,7 @@ client.buttonPaginator = async (authorID, msg, embeds, page, addButtons = true) 
         buttonEnd.disabled = true
         let deadRow = { type: 1, components: [buttonBegin, buttonBack, buttonNext, buttonEnd] }
         msg.edit({ components: [deadRow] })
+        if (options.deleteOnEnd) setTimeout(() => msg.delete(), 5_000)
     })
 }
 
@@ -200,11 +153,11 @@ client.debug = async (options = { game: false }) => {
 }
 
 //Bot on startup
-client.on("ready", async () => {
+client.once("ready", async () => {
     client.config = {}
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
-    client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
+    client.user.setPresence({ activities: [{ name: client.user.username.toLowerCase().includes("beta") ? `testes gae on branch ${branch} and commit ${commit}` : "Wolvesville Simulation!", type: "PLAYING" }], status: "online" })
     console.log("Connected!")
     client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
@@ -216,10 +169,10 @@ client.on("ready", async () => {
                 c.messages
                     .fetch(restarted.split("/")[1])
                     .then((m) => {
-                        m.edit("Bot has restarted!")
+                        m.edit("Bot has restarted!").then((m) => setTimeout(() => m.delete(), 5000))
                     })
                     .catch(() => {
-                        console.log("Could not find message to edit")
+                        console.log("Could not find message to edit/delete")
                     })
             })
             .finally(() => {
@@ -293,8 +246,6 @@ client.on("ready", async () => {
         }
     }, 2000)
 
-    //Invite Tracker
-    client.allInvites = await client.guilds.cache.get(config.ids.server.sim).invites.fetch()
 })
 
 let maint = db.get("maintenance")
