@@ -104,8 +104,6 @@ module.exports = async (client, alivePlayersBefore) => {
                 READ_MESSAGE_HISTORY: true,
             })
 
-            await channel.edit({ name: "priv-zombie" }) // edit the channel name
-
             await channel.bulkDelete(100)
 
             await channel.send(getRole("zombie").description).then(async (c) => {

@@ -11,7 +11,7 @@ module.exports = {
         const players = db.get(`players`) || []
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+        if (!message.channel.parentId == "892046231516368906") return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to copy players.")
         if (!["Doppelganger"].includes(player.role) && !["Doppelganger"].includes(player.dreamRole)) return

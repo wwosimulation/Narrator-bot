@@ -149,8 +149,6 @@ module.exports = async (client) => {
                             READ_MESSAGE_HISTORY: true,
                         })
 
-                        await channel.edit({ name: "priv-accomplice" }) // edit the channel name
-
                         await channel.bulkDelete(100)
 
                         await channel.send(getRole("accomplice").description).then(async (c) => {

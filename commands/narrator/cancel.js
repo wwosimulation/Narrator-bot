@@ -25,11 +25,12 @@ module.exports = {
             })
         let stat = await stats.find()
         stat = stat[0]
-        let gam = stat.games.find((game) => Object.keys(game) == mid)
-        Object.values(gam)[0].status = "cancel"
+        let gameStats = stat.games.find((game) => Object.keys(game) == mid)
+        Object.values(gameStats)[0].status = "cancel"
         stat.markModified("games")
         stat.save()
         db.delete(`game`)
+        client.commands.get("bye").run(message, args, client)
         client.guilds.cache
             .get(ids.server.game)
             .channels.cache.find((c) => c.name === "carl-welcome-left-log")

@@ -44,7 +44,7 @@ module.exports = {
             return arr
         }
 
-        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+        if (!message.channel.parentId == "892046231516368906") return // if they are not in the private channel
 
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" } // get the player object
         let night = Math.floor(gamePhase / 3) + 1

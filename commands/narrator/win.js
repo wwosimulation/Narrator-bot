@@ -59,9 +59,9 @@ module.exports = {
         }
         let stat = await stats.find()
         stat = stat[0]
-        let gam = stat.games.find((game) => Object.keys(game) == db.get("game.id"))
-        Object.values(gam)[0].status = "finished"
-        Object.values(gam)[0].teamWin = winTeam
+        let gameStats = stat.games.find((game) => Object.keys(game) == db.get("game.id"))
+        Object.values(gameStats)[0].status = "finished"
+        Object.values(gameStats)[0].teamWin = winTeam
         stat.markModified("games")
         stat.save()
         message.channel.send("XP is being given! Thanks for playing :)")

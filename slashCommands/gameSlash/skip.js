@@ -17,7 +17,7 @@ module.exports = {
 
         if (interaction.guild.id !== ids.server.game) return interaction.editReply(interaction.l10n("commandRestrictGameServer"))
         if (!guy || !alivePlayers) return interaction.editReply("You are not in the game.")
-        if (interaction.channel.name !== "day-chat" && !interaction.channel.name.startsWith("priv")) return interaction.editReply("You can only use this command in the day-chat or your private channel.")
+        if (interaction.channel.name !== "day-chat" && !interaction.channel?.parentId == "892046231516368906") return interaction.editReply("You can only use this command in the day-chat or your private channel.")
 
         if (get("gamePhase") % 3 !== 1) return interaction.editReply("You can only use this command during the discussion phase.")
         if (guy.status !== "Alive") return interaction.editReply("You can only use this command while you are alive.")

@@ -66,7 +66,6 @@ module.exports = {
                 let channel = guild.channels.cache.get(db.get(`player_${seerapp}`)?.channel)
                 channel?.send(`The **${guy.role}** has been revived so you have become a **Seer Apprentice** again.`)
                 channel?.send(`${guild.roles.cache.find((r) => r.name === "Alive")}`)
-                channel?.edit({ name: `priv-seer-apprentice` })
             }
         }
 

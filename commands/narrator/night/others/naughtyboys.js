@@ -59,9 +59,6 @@ module.exports = async (client) => {
         previousRoles2.push(player1.role)
         db.set(`player_${player2.id}.allRoles`, previousRoles2)
 
-        await channel1.edit({ name: `priv-${player2.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
-        await channel2.edit({ name: `priv-${player1.role.toLowerCase().replace(/\s/g, "-")}` }) // edit the channel name
-
         await channel1.bulkDelete(100)
         await channel2.bulkDelete(100)
 

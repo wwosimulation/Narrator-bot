@@ -19,7 +19,7 @@ module.exports = {
             .replace(/@here/g, "here")
             .replace(/<([@#])+[&]?[\d]{10,20}>/g, "[ping]")
 
-        if (message.channel.name.startsWith("priv")) {
+        if (message.channel.parentId == "892046231516368906") {
             if (!["Jailer", "Medium", "Ritualist", "Alpha Werewolf", "Sect Leader", "Instigator"].includes(player.role) && !["Jailer", "Medium", "Ritualist", "Alpha Werewolf", "Sect Leader", "Instigator"].includes(player.dreamRole)) return
             if (["Medium", "Ritualist", "Jailer", "Alpha Werewolf", "Sect Leader", "Instigator"].includes(player.dreamRole)) player = db.get(`player_${player.target}`)
             if (player.status !== "Alive") return message.channel.send("Listen to me, you need to be ALIVE to send messsages.")

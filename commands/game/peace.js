@@ -12,7 +12,7 @@ module.exports = {
         const daychat = message.guild.channels.cache.find((c) => c.name === "day-chat")
         let player = db.get(`player_${message.author.id}`) || { status: "Dead" }
 
-        if (!message.channel.name.startsWith("priv")) return // if they are not in the private channel
+        if (!message.channel.parentId == "892046231516368906") return // if they are not in the private channel
 
         if (player.status !== "Alive") return await message.channel.send("Listen to me, you need to be ALIVE to activate peace.")
         if (!["Prognosticator"].includes(player.role) && !["Prognosticator"].includes(player.dreamRole)) return
