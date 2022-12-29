@@ -157,7 +157,7 @@ client.once("ready", async () => {
     client.config = {}
     let commit = require("child_process").execSync("git rev-parse --short HEAD").toString().trim()
     let branch = require("child_process").execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
-    client.user.setActivity(client.user.username.toLowerCase().includes("beta") ? "testes gae on branch " + branch + " and commit " + commit : "Wolvesville Simulation!")
+    client.user.setPresence({ activities: [{ name: client.user.username.toLowerCase().includes("beta") ? `testes gae on branch ${branch} and commit ${commit}` : "Wolvesville Simulation!", type: "PLAYING" }], status: "online" })
     console.log("Connected!")
     client.userEmojis = client.emojis.cache.filter((x) => config.ids.emojis.includes(x.guild.id))
     client.channels.cache.get("832884582315458570").send(`Bot has started, running commit \`${commit}\` on branch \`${branch}\``)
